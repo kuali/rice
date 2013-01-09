@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
-import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService;
 
 /**
  * Default implementation of the {@link FunctionService}.
@@ -43,10 +44,17 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
 	
 	@Override
 	public List<FunctionDefinition> getFunctions(List<String> functionIds) {
-		
+
+        if (functionIds == null) throw new RiceIllegalArgumentException();
+
 		List<FunctionDefinition> functionDefinitions = new ArrayList<FunctionDefinition>();
 		for (String functionId : functionIds){
-			functionDefinitions.add( getFunctionById(functionId) );
+            if (!StringUtils.isBlank(functionId)) {
+                FunctionDefinition functionDefinition = getFunctionById(functionId);
+                if (functionDefinition != null) {
+                    functionDefinitions.add(functionDefinition);
+                }
+            }
 		}
         return Collections.unmodifiableList(functionDefinitions);
 	}
@@ -112,7 +120,7 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
 	@Override
 	public FunctionDefinition getFunctionById(String functionId) {
 		if (StringUtils.isBlank(functionId)){
-            throw new IllegalArgumentException("functionId is null or blank");			
+            throw new RiceIllegalArgumentException("functionId is null or blank");
 		}
 		FunctionBo functionBo = businessObjectService.findBySinglePrimaryKey(FunctionBo.class, functionId);
 		return FunctionBo.to(functionBo);

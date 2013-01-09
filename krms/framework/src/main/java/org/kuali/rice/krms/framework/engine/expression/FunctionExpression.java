@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krms.framework.engine.expression;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService;
 import org.kuali.rice.krms.framework.engine.Function;
 
 /**
@@ -30,27 +30,45 @@ import org.kuali.rice.krms.framework.engine.Function;
 public final class FunctionExpression implements Expression<Object> {
 
 	private final Function function;
-	private final List<Expression<? extends Object>> arguments;
+    private final String [] parameterTypes;
+	private final List<Expression<? extends Object>> parameters;
+    private final ComparisonOperatorService comparisonOperatorService;
 
     /**
      * Create a FunctionExpression with the given values.
      * @param function {@link Function} to be invoked using the invoked results of the given List of {@link Expression}s
-     * @param arguments List of {@link Expression}s to be invoked whose results (of the given {@link ExecutionEnvironment})
+     * @param parameterTypes the full class names for the function's parameter types in sequential order
+     * @param parameters List of {@link Expression}s to be invoked whose results (of the given {@link ExecutionEnvironment})
+     * @param comparisonOperatorService -- TODO:
      * will be used to invoke the given {@link Function}.
      */
-	public FunctionExpression(Function function,
-			List<Expression<? extends Object>> arguments) {
+	public FunctionExpression(Function function, String[] parameterTypes,
+			List<Expression<? extends Object>> parameters,
+            ComparisonOperatorService comparisonOperatorService) {
 		this.function = function;
-		this.arguments = arguments;
+        this.parameterTypes = parameterTypes;
+		this.parameters = parameters;
+        this.comparisonOperatorService = comparisonOperatorService;
 	}
 
 	@Override
 	public Object invoke(ExecutionEnvironment environment) {
-		List<Object> argumentValues = new ArrayList<Object>(arguments.size());
-		for (Expression<? extends Object> argument : arguments) {
-			argumentValues.add(argument.invoke(environment));
+        Object[] argumentValues = new Object[parameters.size()];
+
+        int argValIndex = 0;
+
+		for (Expression<? extends Object> argument : parameters) {
+			Object argumentValue = argument.invoke(environment);
+            String expectedArgumentType = parameterTypes[argValIndex];
+
+            argumentValue = ComparisonOperatorServiceUtils.coerceIfNeeded(argumentValue, expectedArgumentType, comparisonOperatorService);
+
+            argumentValues[argValIndex] = argumentValue;
+            argValIndex += 1;
 		}
+
 		return function.invoke(argumentValues);
 	}
+
 
 }

@@ -26,8 +26,10 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
@@ -293,7 +295,21 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 //    }
 
     public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
-        XPath xpath = XPathHelper.newXPath(docContent.getDocument());
+        XPath xpath = null;
+        String xPathCacheKey = null;
+        RouteNodeInstance rni = docContent.getRouteContext().getNodeInstance();
+        if (rni != null) {
+            xPathCacheKey = "xPath" + rni.getRouteNodeInstanceId() + "-" + rni.getName();
+            if(docContent.getRouteContext().getParameters().containsKey(xPathCacheKey)) {
+                xpath = (XPath)docContent.getRouteContext().getParameters().get(xPathCacheKey);
+            } else {
+                xpath = XPathHelper.newXPath(docContent.getDocument());
+                docContent.getRouteContext().getParameters().put(xPathCacheKey, xpath);
+            }
+        } else {
+            xpath = XPathHelper.newXPath(docContent.getDocument());
+            docContent.getRouteContext().getParameters().put(xPathCacheKey, xpath);
+        }
         WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
         resolver.setRuleExtensions(ruleExtensions);
         List<String> xPathExpressionsToEvaluate = extractExpressionsToEvaluate(xpath, docContent, ruleExtensions);
@@ -590,15 +606,15 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         }
     }
 
-    public List<WorkflowServiceError> validateRuleData(Map paramMap) {
+    public List<RemotableAttributeError> validateRuleData(Map paramMap) {
         this.paramMap = paramMap;
         try {
-            return validate(getConfigXML(), new String[] { "ALL", "RULE" }, paramMap, new ErrorGenerator<WorkflowServiceError>() {
-                public WorkflowServiceError generateInvalidFieldError(Node field, String fieldName, String message) {
-                    return new WorkflowServiceErrorImpl("Xml attribute error.", "routetemplate.xmlattribute.error", message);
+            return validate(getConfigXML(), new String[] { "ALL", "RULE" }, paramMap, new ErrorGenerator<RemotableAttributeError>() {
+                public RemotableAttributeError generateInvalidFieldError(Node field, String fieldName, String message) {
+                    return RemotableAttributeError.Builder.create("routetemplate.xmlattribute.error", message).build();
                 }
-                public WorkflowServiceError generateMissingFieldError(Node field, String fieldName, String message) {
-                    return new WorkflowServiceErrorImpl("Xml attribute error.", "routetemplate.xmlattribute.required.error", field.getAttributes().getNamedItem("title").getNodeValue());
+                public RemotableAttributeError generateMissingFieldError(Node field, String fieldName, String message) {
+                    return RemotableAttributeError.Builder.create("routetemplate.xmlattribute.required.error", field.getAttributes().getNamedItem("title").getNodeValue()).build();
                 }
             });
         } catch (XPathExpressionException e) {
@@ -628,7 +644,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
     }
 
     // TODO: possibly simplify even further by unifying AttributeError and WorkflowServiceError
-    public List<? extends RemotableAttributeErrorContract> validateClientRoutingData() {
+    public List<RemotableAttributeError> validateClientRoutingData() {
         LOG.debug("validating client routing data");
         try {
             return validate(getConfigXML(), new String[] { "ALL", "RULE" }, getParamMap(), new ErrorGenerator<RemotableAttributeError>() {

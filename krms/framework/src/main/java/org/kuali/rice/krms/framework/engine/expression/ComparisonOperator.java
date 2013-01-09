@@ -60,8 +60,18 @@ public enum ComparisonOperator implements Coded {
     /**
      * use this flag with the static factory to get a {@link ComparisonOperator} LESS_THAN_EQUAL
      */
-	LESS_THAN_EQUAL("<=");
-	
+	LESS_THAN_EQUAL("<="),
+
+    /**
+     * use this flag with the static factory to get a {@link ComparisonOperator} EXISTS
+     */
+    EXISTS("!=null"),
+
+    /**
+     * use this flag with the static factory to get a {@link ComparisonOperator} DOES_NOT_EXISTS
+     */
+    DOES_NOT_EXIST("=null");
+
 	private final String code;
 
     ComparisonOperatorService comparisonOperatorService;
@@ -125,6 +135,10 @@ public enum ComparisonOperator implements Coded {
             return result < 0;
         } else if (this == LESS_THAN_EQUAL) {
             return result <= 0;
+        } else if (this == EXISTS) {
+            return rhs != null;
+        } else if (this == DOES_NOT_EXIST) {
+            return rhs == null;
         }
         throw new IllegalStateException("Invalid comparison operator detected: " + this);
 	}

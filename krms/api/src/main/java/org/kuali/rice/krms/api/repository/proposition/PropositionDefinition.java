@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
@@ -405,10 +406,10 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
          */
 		public void setCompoundComponents(List<PropositionDefinition.Builder> components){
 			if (components == null || components.isEmpty()){
-				this.compoundComponents = Collections.unmodifiableList(new ArrayList<PropositionDefinition.Builder>());
+				this.compoundComponents = new ArrayList<PropositionDefinition.Builder>();
 				return;
 			}
-			this.compoundComponents = Collections.unmodifiableList(components);
+			this.compoundComponents = new ArrayList<PropositionDefinition.Builder>(components);
 		}
 
         /**
@@ -502,5 +503,8 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 		final static String CMPND_COMPONENT = "proposition";
 	}
 
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + PropositionDefinition.Constants.TYPE_NAME;
+    }
 	
 }

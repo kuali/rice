@@ -100,7 +100,7 @@
                     <para>The following properties are supported on the View component:</para>
                     <itemizedlist>
                             <listitem>
-                            <para>viewNamespaceCode – Module (or application) namespace code the
+                                <para>namespaceCode – Module (or application) namespace code the
                                 view is associated with. If given this will be used when making KIM
                                 permissions checks (other future uses are planned as well)</para>
                         </listitem>
@@ -167,7 +167,7 @@
                                 Chapter 6</para>
                         </listitem>
                         <listitem>
-                            <para>abstractTypeClasses – A map of property paths to class mappings.
+                            <para>objectPathToConcreteClassMapping – A map of property paths to class mappings.
                                 When a property has an abstract type (interface or abstract class)
                                 it is not possible for the framework to create instances of that
                                 class or in many cases find data dictionary or persistence metadata.
@@ -249,20 +249,20 @@
                                 then inserted into this group through code.</para>
                         </listitem>
                         <listitem>
-                            <para>viewMenuGrouping – A string that identifier the group the view
+                            <para>viewMenuGroupName – A string that identifier the group the view
                                 belongs to. This is currently not being used by KRAD but is in place
                                 for future portal improvements (in portal terms we can think of this
                                 as the channel the view link will be placed in).</para>
                         </listitem>
                         <listitem>
-                            <para>validateDirty – Boolean this enables or disable the dirty fields
+                            <para>applyDirtyCheck – Boolean this enables or disable the dirty fields
                                 check.</para>
                         </listitem>
                         <listitem>
                             <para>translateCodes – Boolean that indicates whether code properties
                                 should automatically be translated to their name property for read
                                 only display. This is similar to the function of DataField’s
-                                additionalDisplayPropertyName, however the framework will attempt to
+                                readOnlyDisplaySuffixPropertyName, however the framework will attempt to
                                 do this automatically.</para>
                         </listitem>
                         </itemizedlist>

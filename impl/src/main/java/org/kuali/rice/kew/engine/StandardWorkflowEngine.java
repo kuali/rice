@@ -48,6 +48,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -392,8 +393,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	// document state
 	protected DocumentRouteHeaderValue nodePostProcess(RouteContext context) throws InvalidActionTakenException {
 		DocumentRouteHeaderValue document = context.getDocument();
-		Collection<RouteNodeInstance> activeNodes = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
-		boolean moreNodes = false;
+        Collection<RouteNodeInstance> activeNodes = RouteNodeUtils.getActiveNodeInstances(document);
+        boolean moreNodes = false;
 		for (Iterator<RouteNodeInstance> iterator = activeNodes.iterator(); iterator.hasNext();) {
 			RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
 			moreNodes = moreNodes || !nodeInstance.isComplete();
@@ -413,6 +414,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			}
 			// TODO perhaps the policies could also be factored out?
 			checkDefaultApprovalPolicy(document);
+            document.setApprovedDate(new Timestamp(System.currentTimeMillis()));
 
 			LOG.debug("Marking document processed");
 			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KewApiConstants.ROUTE_HEADER_PROCESSED_CD);
@@ -703,21 +705,24 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		// initialized for reporting purposes.
 		RouteContext context = new RouteContext();
 		context.setDocument(document);
+
 		if (context.getEngineState() == null) {
 			context.setEngineState(new EngineState());
 		}
+
 		ProcessDefinitionBo process = document.getDocumentType().getPrimaryProcess();
-		if (process == null || process.getInitialRouteNode() == null) {
-		    if (process == null) {
-		        throw new IllegalDocumentTypeException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
-		    }
-			return;
-		}
-		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), process.getInitialRouteNode());
-		nodeInstance.setActive(true);
-		helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
-		document.getInitialRouteNodeInstances().add(nodeInstance);
-		saveNode(context, nodeInstance);
+
+        if (process == null) {
+            throw new IllegalDocumentTypeException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
+        }
+
+        if (process.getInitialRouteNode() != null) {
+            RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), process.getInitialRouteNode());
+            nodeInstance.setActive(true);
+            helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
+            document.getInitialRouteNodeInstances().add(nodeInstance);
+            saveNode(context, nodeInstance);
+        }
 	}
 
     private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {

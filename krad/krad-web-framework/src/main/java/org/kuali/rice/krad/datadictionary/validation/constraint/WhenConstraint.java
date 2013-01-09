@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,38 +27,41 @@ import java.util.List;
  *
  * <p>It provides a specific additional constraint that should be processed when
  * the condition itself is true.</p>
- * 
- * <p>So a case constraint on country, might have a when constraint with value='USA', and another with value='Canada'. Each of these
- * {@code WhenConstraint}'s would define a constraint of their own that would only be processed when the country was USA, or when the country
+ *
+ * <p>So a case constraint on country, might have a when constraint with value='USA', and another with value='Canada'.
+ * Each of these
+ * {@code WhenConstraint}'s would define a constraint of their own that would only be processed when the country was
+ * USA, or when the country
  * was Canada.</p>
  *
  * <p>A {@code WhenConstraint} either specifies an attribute path whose value it then provides or a constraint.
  * The parent @{CaseConstraint} is defined on the field on which the constraints are desired to take effect.</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@BeanTag(name = "whenConstraint", parent = "WhenConstraint")
 public class WhenConstraint implements Constraint {
-	protected List<Object> values;
-	protected String valuePath;
-	protected Constraint constraint;
+    protected List<Object> values;
+    protected String valuePath;
+    protected Constraint constraint;
 
     /**
      * gets the list of values defined for this constraint
      *
      * @return a list of values for which to activate the associated constraint
      */
-	public List<Object> getValues() {
-		return values;
-	}
+    @BeanTagAttribute(name = "values", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    public List<Object> getValues() {
+        return values;
+    }
 
     /**
      * setter for values
      *
      * @param values - the values to set
      */
-	public void setValues(List<Object> values) {
+    public void setValues(List<Object> values) {
         this.values = values;
     }
 
@@ -65,44 +70,66 @@ public class WhenConstraint implements Constraint {
      *
      * @param value - a values for which to activate the associated constraint
      */
-    public void setValue(Object value) {	    
-	    values = new ArrayList<Object>();
-	    values.add(value);
-	}
+    public void setValue(Object value) {
+        values = new ArrayList<Object>();
+        values.add(value);
+    }
 
     /**
      * gets a path that can retrieve an attributes value
      *
      * @return a string representation of specifically which attribute (at some depth) is being accessed
      */
-	public String getValuePath() {
-		return valuePath;
-	}
+    @BeanTagAttribute(name = "valuePath")
+    public String getValuePath() {
+        return valuePath;
+    }
 
     /**
      * setter for the value path
      *
      * @param valuePath - the value path to set
      */
-	public void setValuePath(String valuePath) {
-		this.valuePath = valuePath;
-	}
+    public void setValuePath(String valuePath) {
+        this.valuePath = valuePath;
+    }
 
     /**
      * gets the constraint to apply to the field when the {@code WhenConstraint} value/values match
      *
      * @return
      */
-	public Constraint getConstraint() {
-		return constraint;
-	}
+    @BeanTagAttribute(name = "constraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Constraint getConstraint() {
+        return constraint;
+    }
 
     /**
      * setter for constraint
      *
      * @param constraint - the constraint to set
      */
-	public void setConstraint(Constraint constraint) {
-		this.constraint = constraint;
-	}
+    public void setConstraint(Constraint constraint) {
+        this.constraint = constraint;
+    }
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     */
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean("WhenConstraint", ValidationTrace.NO_BEAN_ID);
+
+        if (getConstraint() == null) {
+            String currentValues[] = {"constraint = " + getConstraint()};
+            tracer.createWarning("Constraint must be set", currentValues);
+        }
+
+        if (getValuePath() == null || getValues() == null) {
+            String currentValues[] = {"valuePath = " + getValuePath(), "values = " + getValues()};
+            tracer.createWarning("Value Path or Values must be set", currentValues);
+        }
+    }
 }

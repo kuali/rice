@@ -33,6 +33,7 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
@@ -130,22 +131,38 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         criteriaMap.remove(KRADConstants.DOC_FORM_KEY);
         criteriaMap.remove(KRADConstants.BACK_LOCATION);
         criteriaMap.remove(KRADConstants.DOC_NUM);
+        String refToRef = criteriaMap.get(KRADConstants.REFERENCES_TO_REFRESH);
+        if (StringUtils.isNotBlank(refToRef) && refToRef.equalsIgnoreCase("GroupBo")) {
+            criteriaMap.remove(KRADConstants.REFERENCES_TO_REFRESH);
+        }
 
         if (!criteriaMap.isEmpty()) {
             List<Predicate> predicates = new ArrayList<Predicate>();
             //principalId doesn't exist on 'Group'.  Lets do this predicate conversion separately
             if (StringUtils.isNotBlank(criteriaMap.get(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME))) {
-                String principalId = KimApiServiceLocator.getIdentityService()
-                        .getPrincipalByPrincipalName(criteriaMap.get(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME)).getPrincipalId();
-                Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                predicates.add( and(
-                                    equal("members.memberId", principalId),
+                QueryByCriteria.Builder principalCriteria = QueryByCriteria.Builder.create();
+                Predicate principalPred = like("principalName", criteriaMap.get(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME));
+                principalCriteria.setPredicates(principalPred);
+                //String principalId = KimApiServiceLocator.getIdentityService()
+                //        .getPrincipalByPrincipalName(criteriaMap.get(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME)).getPrincipalId();
+                PrincipalQueryResults principals = KimApiServiceLocator.getIdentityService()
+                        .findPrincipals(principalCriteria.build());
+                List<String> principalIds = new ArrayList<String>();
+                for (Principal principal : principals.getResults()) {
+                    principalIds.add(principal.getPrincipalId());
+                }
+                if (CollectionUtils.isNotEmpty(principalIds)) {
+                    Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                    predicates.add( and(
+                                    in("members.memberId", principalIds.toArray(
+                                            new String[principalIds.size()])),
                                     equal("members.typeCode", KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()),
                                     and(
-                                        or(isNull("members.activeFromDateValue"), greaterThanOrEqual("members.activeFromDateValue", currentTime)),
-                                        or(isNull("members.activeToDateValue"), lessThan("members.activeToDateValue", currentTime))
+                                            or(isNull("members.activeFromDateValue"), lessThanOrEqual("members.activeFromDateValue", currentTime)),
+                                            or(isNull("members.activeToDateValue"), greaterThan("members.activeToDateValue", currentTime))
                                     )
                                 ));
+                }
 
             }
             criteriaMap.remove(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME);
@@ -157,13 +174,15 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     	List<Group> groups = groupResults.getResults();
 
         //have to convert back to Bos :(
-        List<GroupBo> groupBos = new ArrayList<GroupBo>(groups.size());
+        Map<String, GroupBo> groupBos = new HashMap<String, GroupBo>(groups.size());
         for (Group group : groups) {
-            groupBos.add(GroupBo.from(group));
+            if (groupBos.get(group.getId()) == null) {
+                groupBos.put(group.getId(), GroupBo.from(group));
+            }
         }
 
 
-    	return groupBos;
+    	return new ArrayList<GroupBo>(groupBos.values());
     }
 
     @Override
@@ -443,25 +462,11 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
 						String attrDefnId = d.getId();
 						typeField.setFieldLabel(definition.getLabel());
-						typeField.setPropertyName(definition.getName()+"."+attrDefnId);
+						typeField.setPropertyName("attributes(" + definition.getName()+")");
 						typeField.setPropertyValue(fieldValues.get(typeField.getPropertyName()));
 						if (definition.getControl().isSelect()) {
-					        try {
-					            KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
-					            // need to initialize KIM Values Finder before retrieving values
-					            if (finder instanceof KimAttributeValuesFinder) {
-					            	((KimAttributeValuesFinder) finder).setKimTypeId(field.getPropertyValue());
-					            	((KimAttributeValuesFinder) finder).setKimAttributeName(definition.getName());
-					            }
-						        typeField.setFieldValidValues(finder.getKeyValues());
-						        typeField.setFieldType(Field.DROPDOWN);
-					        }
-					        catch (InstantiationException e) {
-					            throw new RuntimeException(e.getMessage());
-					        }
-					        catch (IllegalAccessException e) {
-					            throw new RuntimeException(e.getMessage());
-					        }
+                            typeField.setFieldValidValues(definition.getOptionsFinder().getKeyValues());
+                            typeField.setFieldType(Field.DROPDOWN);
 						} else if (definition.getControl().isText()){
 							typeField.setMaxLength(definition.getMaxLength());
 							if (definition.getControl().getSize() != null) {
@@ -469,17 +474,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 							}
 						    typeField.setFieldType(Field.TEXT);
 						} else if (definition.getControl().isRadio()) {
-						    try {
-                                KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
-                                typeField.setFieldValidValues(finder.getKeyValues());
-                                typeField.setFieldType(Field.RADIO);
-                            }
-                            catch (InstantiationException e) {
-                                throw new RuntimeException(e.getMessage());
-                            }
-                            catch (IllegalAccessException e) {
-                                throw new RuntimeException(e.getMessage());
-                            }
+                            typeField.setFieldValidValues(definition.getOptionsFinder().getKeyValues());
+                            typeField.setFieldType(Field.RADIO);
 						} else if (definition.getControl().isCheckbox()) {
 						    KeyValuesFinder finder = new IndicatorValuesFinder();
                             typeField.setFieldValidValues(finder.getKeyValues());

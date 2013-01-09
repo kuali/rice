@@ -138,7 +138,10 @@ public class LazyRemoteServiceRegistryConnector implements ServiceRegistry {
 	@Override
 	public void takeInstanceOffline(String instanceId)
 			throws RiceIllegalArgumentException {
-		getDelegate().takeInstanceOffline(instanceId);
+        // if Service Registry has not been initialized by this point, do not shutdown
+        if (this.delegate != null) {
+		    getDelegate().takeInstanceOffline(instanceId);
+        }
 	}
 	
 	private ServiceRegistry getDelegate() {

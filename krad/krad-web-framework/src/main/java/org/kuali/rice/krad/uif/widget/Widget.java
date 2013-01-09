@@ -20,13 +20,13 @@ import org.kuali.rice.krad.uif.component.Component;
 /**
  * Components that provide a user interface function (besides the basic form
  * handing) should implement the widget interface
- * 
+ *
  * <p>
  * Widgets generally provide a special function such as a calendar or navigation
  * element. The can render one or more <code>Field</code> instances and
  * generally have associated client side code
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Widget extends Component {

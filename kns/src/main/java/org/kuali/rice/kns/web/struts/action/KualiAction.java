@@ -26,6 +26,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
@@ -126,6 +127,9 @@ public abstract class KualiAction extends DispatchAction {
         		LOG.debug("methodToCall: '" + methodToCall+"'");
         	}
             returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
+            if (returnForward.getRedirect() && returnForward.getName()!=null && returnForward.getName().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
+                return returnForward;
+            }
         }
         else {
             returnForward = defaultDispatch(mapping, form, request, response);
@@ -193,13 +197,13 @@ public abstract class KualiAction extends DispatchAction {
         KualiForm kualiForm = (KualiForm) form;
         String tabToToggle = getTabToToggle(request);
         if (StringUtils.isNotBlank(tabToToggle)) {
-            if (kualiForm.getTabState(tabToToggle).equals("OPEN")) {
+            if (kualiForm.getTabState(tabToToggle).equals(KualiForm.TabState.OPEN.name())) {
             	kualiForm.getTabStates().remove(tabToToggle);
-            	kualiForm.getTabStates().put(tabToToggle, "CLOSE");
+            	kualiForm.getTabStates().put(tabToToggle, KualiForm.TabState.CLOSE.name());
             }
             else {
             	kualiForm.getTabStates().remove(tabToToggle);
-            	kualiForm.getTabStates().put(tabToToggle, "OPEN");
+            	kualiForm.getTabStates().put(tabToToggle, KualiForm.TabState.OPEN.name());
             }
         }
 
@@ -285,6 +289,16 @@ public abstract class KualiAction extends DispatchAction {
     }
 
     /**
+     * Parses the method to call attribute to pick off the line number which should be edited.
+     *
+     * @param request
+     * @return
+     */
+    protected int getLineToEdit(HttpServletRequest request) {
+        return getSelectedLine(request);
+    }
+
+    /**
      * Parses the method to call attribute to pick off the line number which should have an action performed on it.
      *
      * @param request
@@ -295,6 +309,9 @@ public abstract class KualiAction extends DispatchAction {
         String parameterName = (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
             String lineNumber = StringUtils.substringBetween(parameterName, ".line", ".");
+            if (StringUtils.isEmpty(lineNumber)) {
+                return selectedLine;
+            }
             selectedLine = Integer.parseInt(lineNumber);
         }
 
@@ -392,11 +409,11 @@ public abstract class KualiAction extends DispatchAction {
     	String value;
     	if (StringUtils.contains(parameterValuePropertyName, "'")) {
     		value = StringUtils.replace(parameterValuePropertyName, "'", "");
-    	}
-    	else if (request.getParameterMap().containsKey(parameterValuePropertyName)) {
+    	} else if (request.getParameterMap().containsKey(parameterValuePropertyName)) {
     		value = request.getParameter(parameterValuePropertyName);
-    	}
-    	else {
+    	} else if (request.getParameterMap().containsKey(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + parameterValuePropertyName)) {
+            value = request.getParameter(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + parameterValuePropertyName);
+        } else {
     		if (form instanceof KualiForm) {
     			value = ((KualiForm) form).retrieveFormValueForLookupInquiryParameters(parameterName, parameterValuePropertyName);
     		} else {
@@ -443,11 +460,20 @@ public abstract class KualiAction extends DispatchAction {
             throw new RuntimeException("Illegal call to perform lookup, no business object class name specified.");
         }
         Class boClass = null;
-		try{
-			boClass = Class.forName(boClassName);
-		} catch(ClassNotFoundException cnfex){
-            throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class which this application understands.");
-		}
+
+        try{
+            boClass = Class.forName(boClassName);
+        } catch(ClassNotFoundException cnfex){
+            if ((StringUtils.isNotEmpty(baseLookupUrl) && baseLookupUrl.startsWith(getApplicationBaseUrl() + "/kr/"))
+                    || StringUtils.isEmpty(baseLookupUrl)) {
+                throw new IllegalArgumentException("The class (" + boClassName + ") cannot be found by this particular "
+                    + "application. " + "ApplicationBaseUrl: " + getApplicationBaseUrl()
+                    + " ; baseLookupUrl: " + baseLookupUrl);
+            }  else {
+                LOG.info("The class (" + boClassName + ") cannot be found by this particular application. "
+                   + "ApplicationBaseUrl: " + getApplicationBaseUrl() + " ; baseLookupUrl: " + baseLookupUrl);
+            }
+        }
 		
         // build the parameters for the lookup url
         Properties parameters = new Properties();

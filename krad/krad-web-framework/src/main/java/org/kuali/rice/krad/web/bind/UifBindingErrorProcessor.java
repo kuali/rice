@@ -23,13 +23,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.DefaultBindingErrorProcessor;
 
 /**
- * This is a description of what this class does - pctsh don't forget to fill this in. 
- * 
+ * This is a description of what this class does - pctsh don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class UifBindingErrorProcessor extends DefaultBindingErrorProcessor {
-	
+
 	public void processPropertyAccessException(PropertyAccessException ex, BindingResult bindingResult) {
 		// Create field error with the exceptions's code, e.g. "typeMismatch".
 		super.processPropertyAccessException(ex, bindingResult);
@@ -41,7 +41,7 @@ public class UifBindingErrorProcessor extends DefaultBindingErrorProcessor {
 			}else{
 				GlobalVariables.getMessageMap().putError(ex.getPropertyName(), RiceKeyConstants.ERROR_CUSTOM,
 						new String[] {"Invalid format"});
-			}			
+			}
 		}
 	}
 

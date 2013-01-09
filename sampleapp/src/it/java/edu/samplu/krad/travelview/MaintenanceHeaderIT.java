@@ -15,20 +15,16 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
-public class MaintenanceHeaderIT {
-    private DefaultSelenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class MaintenanceHeaderIT extends KradMenuITBase {
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -36,23 +32,10 @@ public class MaintenanceHeaderIT {
      * Verify Document Number, Initiator Network Id, Document Status, and Creation Timestamp fields appear
      */
     public void testVerifyHeaderFields() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-        assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentNumber')]"));
-        assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentInitiatorNetworkId')]"));
-        assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentStatus')]"));
-        assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentCreateDate')]"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        gotoMenuLinkLocator();
+        assertElementPresent("//div[contains(@class, 'uif-documentNumber')]");
+        assertElementPresent("//div[contains(@class, 'uif-documentInitiatorNetworkId')]");
+        assertElementPresent("//div[contains(@class, 'uif-documentStatus')]");
+        assertElementPresent("//div[contains(@class, 'uif-documentCreateDate')]");
     }
 }

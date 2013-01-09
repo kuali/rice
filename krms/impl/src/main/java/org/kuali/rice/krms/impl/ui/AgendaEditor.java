@@ -51,6 +51,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     private String oldContextId;
     private String ruleEditorMessage;
     private boolean addRuleInProgress = false;
+    private boolean disableButtons = false;
     private Map<String, String> customAttributesMap = new HashMap<String, String>();
     private Map<String, String> customRuleAttributesMap = new HashMap<String, String>();
     private Map<String, String> customRuleActionAttributesMap = new HashMap<String, String>();
@@ -302,6 +303,23 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 
     public void setAddRuleInProgress(boolean addRuleInProgress) {
         this.addRuleInProgress = addRuleInProgress;
+    }
+
+    /**
+     *
+     * @return if the tree buttons should be disabled
+     */
+    public boolean isDisableButtons() {
+        return disableButtons;
+    }
+
+    /**
+     * Setter for disableButtons. Set to true when the Agenda is submitted
+     *
+     * @param disableButtons the cutPropositionId to set
+     */
+    public void setDisableButtons(boolean disableButtons) {
+        this.disableButtons = disableButtons;
     }
 
     /**

@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.io.Serializable;
 
@@ -27,7 +30,8 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HistoryEntry extends ConfigurableBase implements Serializable {
+@BeanTag(name = "historyEntry", parent = "Uif-HistoryEntry")
+public class HistoryEntry extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -8310916657379268794L;
 
     private String viewId;
@@ -37,7 +41,7 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
     private String formKey;
 
     public HistoryEntry() {
-       super();
+        super();
     }
 
     public HistoryEntry(String viewId, String pageId, String title, String url, String formKey) {
@@ -50,7 +54,14 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
         this.formKey = formKey;
     }
 
+    /**
+     * Returns a representation of the history entry as a request parameter string
+     *
+     * @return String containing the entries values
+     */
     public String toParam() {
+        viewId = (StringUtils.isNotBlank(viewId)) ? viewId : "null";
+        pageId = (StringUtils.isNotBlank(pageId)) ? pageId : "null";
         return viewId
                 + History.VAR_TOKEN
                 + pageId
@@ -67,6 +78,7 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
      *
      * @return the viewId
      */
+    @BeanTagAttribute(name="viewId")
     public String getViewId() {
         return this.viewId;
     }
@@ -83,6 +95,7 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
      *
      * @return the pageId
      */
+    @BeanTagAttribute(name="pageId")
     public String getPageId() {
         return this.pageId;
     }
@@ -99,6 +112,7 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
      *
      * @return the title
      */
+    @BeanTagAttribute(name="title")
     public String getTitle() {
         return this.title;
     }
@@ -115,6 +129,7 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
      *
      * @return the url
      */
+    @BeanTagAttribute(name="url")
     public String getUrl() {
         return this.url;
     }
@@ -129,13 +144,13 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
     /**
      * @return the formKey
      */
+    @BeanTagAttribute(name="formKey")
     public String getFormKey() {
         return this.formKey;
     }
 
     /**
      * The formKey of the form in the view
-     * TODO unsure of use
      *
      * @param formKey the formKey to set
      */

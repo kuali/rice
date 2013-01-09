@@ -63,7 +63,7 @@ public interface ViewDictionaryService {
 
     /**
      * Indicates whether the given data object class has an associated
-     * <code>MaintenanceView</code> configured
+     * <code>MaintenanceDocumentView</code> configured
      *
      * @param dataObjectClass - object class to get maintenance view for
      * @return boolean true if the class has an maintenance view, false if no

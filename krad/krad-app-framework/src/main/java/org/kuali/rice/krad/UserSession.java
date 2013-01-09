@@ -148,9 +148,6 @@ public class UserSession implements Serializable {
         // only allow backdoor in non-production environments
         if (!isProductionEnvironment()) {
             this.backdoorUser = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
-            if (backdoorUser == null) {
-                throw new RiceRuntimeException(principalName + " is not a valid principalName");
-            }
         }
     }
 
@@ -343,5 +340,12 @@ public class UserSession implements Serializable {
      */
     public Map<String, Object> getObjectMap() {
         return Collections.unmodifiableMap(this.objectMap);
+    }
+
+    /**
+     * clear the objectMap
+     */
+    public void clearObjectMap() {
+        this.objectMap = Collections.synchronizedMap(new HashMap<String,Object>());
     }
 }

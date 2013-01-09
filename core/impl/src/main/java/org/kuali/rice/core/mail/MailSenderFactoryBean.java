@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.mail;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -41,7 +42,7 @@ public class MailSenderFactoryBean extends AbstractFactoryBean {
     private static final String PASSWORD_PROPERTY = "mail.smtp.password";
     private static final String HOST_PROPERTY = "mail.smtp.host";
     private static final String PORT_PROPERTY = "mail.smtp.port";
-    
+    private static final String PROTOCOL_PROPERTY = "mail.transport.protocol";
     private Session mailSession;
     
     @Override
@@ -80,6 +81,11 @@ public class MailSenderFactoryBean extends AbstractFactoryBean {
 			int smtpPort = Integer.parseInt(properties.getProperty(PORT_PROPERTY).trim());
 			mailSender.setPort(smtpPort);
 		}
+        String protocol = properties.getProperty(PROTOCOL_PROPERTY);
+        if (StringUtils.isNotBlank(protocol)) {
+            LOG.debug("createInstance(): setting mail transport protocol = " + protocol);
+            mailSender.setProtocol(protocol);
+        }
 		mailSender.setSession(mailSession);
 		
 		LOG.info("createInstance(): Mail Sender Factory Bean initialized.");

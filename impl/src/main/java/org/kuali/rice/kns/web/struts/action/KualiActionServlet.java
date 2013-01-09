@@ -126,8 +126,7 @@ public class KualiActionServlet extends ActionServlet {
             }
             // loop over the installed modules, adding their struts configuration to the servlet
             // if they have a web interface
-            @SuppressWarnings("unchecked")
-			final Collection<ModuleConfigurer> riceModules = (Collection<ModuleConfigurer>) ConfigContext.getCurrentContextConfig().getObject("ModuleConfigurers");
+			final Collection<ModuleConfigurer> riceModules = ModuleConfigurer.getCurrentContextConfigurers();
             
             if ( LOG.isInfoEnabled() ) {
             	LOG.info( "Configuring init parameters of the KualiActionServlet from riceModules: " + riceModules );

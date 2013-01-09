@@ -21,13 +21,14 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
-    <version>2.2.0-M2-SNAPSHOT</version>
+    <version>2.2.0</version>
   </parent>
   <artifactId>rice-config</artifactId>
   <packaging>pom</packaging>
   <name>Rice CM</name>
   <description>Rice Configuration Management</description>
   <modules>
+    <module>archetype</module>
     <module>checkstyle</module>
     <module>deploy</module>
   </modules>

@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveEvent;
 
@@ -27,7 +28,7 @@ import java.util.List;
 
 /**
  * Defines various operations that support the Document framework.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentService {
@@ -53,6 +54,16 @@ public interface DocumentService {
      * @return
      */
     public Document getNewDocument(Class<? extends Document> documentClass) throws WorkflowException;
+
+    /**
+     * get a new blank document instance based on the document type name. The principal name
+     * passed in will be used as the document initiator.
+     *
+     * @param documentTypeName
+     * @param initiatorPrincipalNm
+     * @return
+     */
+    public Document getNewDocument(String documentTypeName, String initiatorPrincipalNm) throws WorkflowException;
 
     /**
      * get a document based on the document header id which is the primary key for all document types
@@ -93,7 +104,7 @@ public interface DocumentService {
     /**
      * This is a helper method that performs the same as the {@link #saveDocument(Document, Class)} method.  The convenience
      * of this method is that the event being used is the standard SaveDocumentEvent.
-     * 
+     *
      * @see org.kuali.rice.krad.service.DocumentService#saveDocument(Document, Class)
      */
     public Document saveDocument(Document document) throws WorkflowException;
@@ -108,14 +119,14 @@ public interface DocumentService {
      * workflow.
      *
      * NOTE: This method will not check the document action flags to check if a save is valid
-     * 
+     *
      * @param document The document to be saved
      * @param kualiDocumentEventClass The event class to use when saving (class must implement the SaveEvent interface)
      * @return the document that was passed in
      * @throws WorkflowException
      */
     public Document saveDocument(Document document, Class<? extends KualiDocumentEvent> kualiDocumentEventClass) throws WorkflowException;
-    
+
     /**
      * start the route the document for approval, optionally providing a list of ad hoc recipients, and additionally provideing a
      * annotation to show up in the route log for the document
@@ -172,6 +183,18 @@ public interface DocumentService {
      * @throws WorkflowException
      */
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException;
+
+    /**
+     * disapprove this document as super user, without saving, optionally providing an annotation which will show up in the route log for this document
+     * for this action taken
+     *
+     * @param document
+     * @param annotation
+     * @return
+     * @throws WorkflowException
+     */
+    public Document superUserDisapproveDocumentWithoutSaving(Document document, String annotation) throws WorkflowException;
+
 
     /**
      * disapprove this document, optionally providing an annotation for the disapproval which will show up in the route log for the
@@ -240,30 +263,30 @@ public interface DocumentService {
      * @throws WorkflowException
      */
     public void prepareWorkflowDocument(Document document) throws WorkflowException;
-    
-    
+
+
     /**
      * This method creates a note from a given document and note text.  The resulting Note will
      * have it's note type set to the value of {@link Document#getNoteType()}.  Additionally, it's
      * remoteObjectId will be set to the object id of the document's note target.
-     * 
+     *
      * @param document the document from which to use the note type and note target when creating the note
      * @param text the text value to include in the resulting note
      * @return the note that was created
      */
     public Note createNoteFromDocument(Document document, String text);
-    
+
     /**
      * Saves the notes associated with the given document if they are in a state where they can be
      * saved.  In certain cases they may not be ready to be saved.  For example, in maintenance documents
      * where the notes are associated with the business object instead of the document header, the notes
      * cannot be saved until the business object itself has been persisted.
-     * 
+     *
      * @param document the document for which to save notes
      * @return true if the notes were saved, false if they were not
      */
     public boolean saveDocumentNotes(Document document);
-    
+
     public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
@@ -275,4 +298,32 @@ public interface DocumentService {
      * @throws WorkflowException
      */
     public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
+
+    /**
+     * recall this document, optionally providing an annotation for the recall which will show up in the route log for the
+     * document for this action taken
+     *
+     * @since 2.1
+     * @param document
+     * @param annotation
+     * @return
+     */
+    public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException;
+
+    /**
+     * Complete action for a document
+     *
+     * @param document Document
+     * @param annotation Annotation text
+     * @param adHocRecipients list of adhoc recipients
+     */
+    public Document completeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException;
+
+    /**
+     * Helper method used to save and validate a document
+     *
+     * @param document Document
+     * @param event KualiDocumentEvent
+     */
+    public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException;
 }

@@ -38,7 +38,7 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
 
     /**
      * Reads the data dictionary to determine which properties of the document should be serialized.
-     * 
+     *
      * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator#initializeEvaluator(org.kuali.rice.krad.document.Document)
      */
 	@Override
@@ -47,9 +47,9 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
         DocumentEntry docEntry = dictionary.getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
         WorkflowProperties workflowProperties = docEntry.getWorkflowProperties();
         List<WorkflowPropertyGroup> groups = workflowProperties.getWorkflowPropertyGroups();
-        
+
         serializableProperties = new PropertySerializerTrie();
-        
+
         for (WorkflowPropertyGroup group : groups) {
             // the basepath of each workflow property group is serializable
             if (StringUtils.isEmpty(group.getBasePath())) {
@@ -59,14 +59,14 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
             else {
                serializableProperties.addSerializablePropertyName(group.getBasePath(), false);
             }
-            
+
             for (WorkflowProperty property : group.getWorkflowProperties()) {
                 String fullPath;
                 if (StringUtils.isEmpty(group.getBasePath())) {
                     fullPath = document.getBasePathToDocumentDuringSerialization() + "." + property.getPath();
                 }
                 else {
-                    fullPath = group.getBasePath() + "." + property.getPath(); 
+                    fullPath = group.getBasePath() + "." + property.getPath();
                 }
                 serializableProperties.addSerializablePropertyName(fullPath, false);
             }

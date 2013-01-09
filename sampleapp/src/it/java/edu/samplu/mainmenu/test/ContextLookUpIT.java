@@ -15,15 +15,7 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.MainMenuLookupITBase;
 
 /**
  * tests that user 'admin' can display the Context lookup screen, search,
@@ -32,39 +24,13 @@ import com.thoughtworks.selenium.Selenium;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContextLookUpIT {
-
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
-        // selenium.setSpeed("2000");
+public class ContextLookUpIT extends MainMenuLookupITBase {
+    @Override
+    public String getLinkLocator() {
+        return "link=Context Lookup";
     }
-    
-    @Test
-    public void testContextLookUp() throws Exception {
-	
-    	selenium.open(System.getProperty("remote.public.url"));
-		selenium.type("name=__login_user", "admin");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=Context Lookup");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("//button");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=edit");
-		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.isTextPresent("cancel"));
-		selenium.click("link=cancel");
-		selenium.waitForPageToLoad("30000");
-        
+    @Override
+    public void lookupAssertions() {
+        assertTextPresent("Text Notes and Attachments not present", "Notes and Attachments");
     }
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-
 }

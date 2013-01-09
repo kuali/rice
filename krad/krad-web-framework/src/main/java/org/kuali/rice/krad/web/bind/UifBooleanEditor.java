@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 /**
  * PropertyEditor for booleans supports y/n which the spring version does not
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifBooleanEditor extends PropertyEditorSupport implements Serializable {
@@ -28,7 +28,7 @@ public class UifBooleanEditor extends PropertyEditorSupport implements Serializa
 
 	private static final String TRUE_VALUES = "/true/yes/y/on/1/";
 	private static final String FALSE_VALUES = "/false/no/n/off/0/";
-	
+
 	private static final String TRUE_VALUE = "true";
 	private static final String FALSE_VALUE = "false";
 
@@ -70,12 +70,12 @@ public class UifBooleanEditor extends PropertyEditorSupport implements Serializa
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		String input = null;
-		
+
 		if(text != null) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("/").append(text.toLowerCase()).append("/");
 			input = builder.toString();
-			
+
 			if(TRUE_VALUES.contains(input)) {
 				this.setValue(Boolean.TRUE);
 			}

@@ -147,9 +147,11 @@ public class ViewIndex implements Serializable {
             if (component != null) {
                 // if component has a refresh condition we need to keep it
                 if ((StringUtils.isNotBlank(component.getProgressiveRender()) || StringUtils.isNotBlank(
-                        component.getConditionalRefresh()) || (component.getRefreshWhenChangedPropertyNames() != null
-                        && !component.getRefreshWhenChangedPropertyNames().isEmpty()) || component
-                        .isRefreshedByAction()) && !component.isDisableSessionPersistence()) {
+                        component.getConditionalRefresh()) || component.getRefreshTimer() > 0 ||
+                        (component.getRefreshWhenChangedPropertyNames() != null &&
+                                !component.getRefreshWhenChangedPropertyNames().isEmpty()) ||
+                        component.isRefreshedByAction() || component.isDisclosedByAction()) &&
+                        !component.isDisableSessionPersistence()) {
                     holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }
@@ -386,7 +388,7 @@ public class ViewIndex implements Serializable {
      * </p>
      *
      * @return Map<String, Map<String, String>> key is component id and value is expression graph map
-     * @see org.kuali.rice.krad.uif.util.ExpressionUtils#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.uif.component.Configurable,
+     * @see org.kuali.rice.krad.uif.util.ExpressionUtils#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean,
      *      boolean)
      */
     public Map<String, Map<String, String>> getComponentExpressionGraphs() {

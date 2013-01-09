@@ -31,7 +31,6 @@
 	  <c:otherwise>
       <logic-el:iterate id="actionItem" name="DocumentOperationForm" property="routeHeader.actionItems" indexId="ctr">
       <html-el:hidden property="routeHeader.docActionItem[${ctr}].id" />
-      <html-el:hidden property="routeHeader.docActionItem[${ctr}].lockVerNbr" />  
  	  <tr>
 	    <td width="33%" class="headercell3-b-l" align="right"><b> Action Item ID: </b><c:out value="${actionItem.id}" /> </td>
 	    <td width="66%" class="headercell3-b-l">
@@ -59,10 +58,10 @@
   	  </tr>
    	  <tr>
   	    <td width="33%" align="right" class="thnormal">* Date Assigned:</td>
-  	    <td width="66%" class="datacell"><%-- <html-el:text property="routeHeader.docActionItem[${ctr}].dateAssignedString" />&nbsp;--%>
-  	      <input type='text' name='actionItemDateAssigned<c:out value="${ctr}"/>' value='<c:out value="${actionItem.dateAssignedString}"/>'>
+  	    <td width="66%" class="datacell">
+  	      <input type='text' name='actionItemDateAssigned<c:out value="${ctr}"/>' value='<c:out value="${actionItem.dateAssignedStringValue}"/>'>
 	  	  <a href="javascript:addCalendar('actionItemDateAssigned<c:out value="${ctr}"/>', 'Select Date', 'actionItemDateAssigned<c:out value="${ctr}"/>', 'DocumentOperationForm'); showCal('actionItemDateAssigned<c:out value="${ctr}"/>');"><img src="images/cal.gif" width="16" height="16" align="absmiddle" alt="Click Here to select a date"></a>
-  	      <html-el:hidden property="routeHeader.docActionItem[${ctr}].dateAssignedString" />
+  	      <html-el:hidden property="routeHeader.docActionItem[${ctr}].dateAssignedStringValue" />
   	    </td>
   	  </tr>
   	  <tr>

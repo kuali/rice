@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -25,6 +26,7 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.InquiryForm;
 import org.kuali.rice.kns.web.ui.Field;
@@ -34,6 +36,8 @@ import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.bo.Note;
+import org.kuali.rice.krad.bo.PersistableAttachment;
+import org.kuali.rice.krad.bo.PersistableAttachmentList;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -132,8 +136,49 @@ public class KualiInquiryAction extends KualiAction {
 
 		return continueWithInquiry(mapping, form, request, response);
     }
-    
-    
+
+
+    /**
+     * Downloads the attachment to the user's browser
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return ActionForward
+     * @throws Exception
+     */
+    public ActionForward downloadAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        InquiryForm inquiryForm = (InquiryForm) form;
+        int line = getSelectedLine(request);
+
+        BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+        if (line < 0) {
+            if (bo instanceof PersistableAttachment) {
+                PersistableAttachment attachment = (PersistableAttachment)bo;
+                if (StringUtils.isNotBlank(attachment.getFileName())
+                        && attachment.getAttachmentContent() != null) {
+                    streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
+                }
+            }
+        } else {
+            if (bo instanceof PersistableAttachmentList) {
+                PersistableAttachmentList<PersistableAttachment> attachmentsBo = (PersistableAttachmentList<PersistableAttachment>)bo;
+                if (CollectionUtils.isEmpty(attachmentsBo.getAttachments())) {
+                    return null;
+                }
+
+                List<? extends PersistableAttachment> attachments = attachmentsBo.getAttachments();
+                if (CollectionUtils.isNotEmpty(attachments)
+                        && attachments.size() > line) {
+                    PersistableAttachment attachment = (PersistableAttachment)attachmentsBo.getAttachments().get(line);
+                    streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
+                }
+            }
+        }
+        return null;
+    }
+
     public ActionForward downloadCustomBOAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	String fileName = request.getParameter(KRADConstants.BO_ATTACHMENT_FILE_NAME);
 		String contentType = request.getParameter(KRADConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE);
@@ -239,53 +284,15 @@ public class KualiInquiryAction extends KualiAction {
         //////////////////////////////
         
         populateSections(mapping, request, inquiryForm, bo);
-        
+
+        // toggling the display to be visible again, re-open any previously closed inactive records
         if (showInactive) {
-        	reopenInactiveRecords(inquiryForm, collectionName);
+        	WebUtils.reopenInactiveRecords(inquiryForm.getSections(), inquiryForm.getTabStates(), collectionName);
         }
         
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
-    /**
-     * Attempts to reopen sub tabs which would have been closed for inactive records
-     * 
-     * @param inquiryForm the form to reopen records on
-     * @param collectionName the name of the collection reopening
-     */
-    protected void reopenInactiveRecords(InquiryForm inquiryForm, String collectionName) {
-    	for (Object sectionAsObject : inquiryForm.getSections()) {
-    		final Section section = (Section)sectionAsObject;
-    		for (Row row: section.getRows()) {
-    			for (Field field : row.getFields()) {
-    				if (field.getFieldType().equals(Field.CONTAINER) && field.getContainerName().startsWith(collectionName)) {
-    					final String tabKey = WebUtils.generateTabKey(generateCollectionSubTabName(field));
-    					inquiryForm.getTabStates().put(tabKey, "OPEN");
-    				}
-    			}
-    		}
-    	}
-    }
-    
-    /**
-     * Finds a container field's sub tab name
-     * 
-     * @param field the collection sub tab name to  
-     * @return the sub tab name
-     */
-    protected String generateCollectionSubTabName(Field field) {
-    	final String containerName = field.getContainerElementName();
-    	final String cleanedContainerName = 
-    		(containerName == null) ?
-    				"" :
-    				containerName.replaceAll("\\d+", "");
-    	StringBuilder subTabName = new StringBuilder(cleanedContainerName);
-    	for (Field containerField : field.getContainerDisplayFields()) {
-    		subTabName.append(containerField.getPropertyValue());
-    	}
-    	return subTabName.toString();
-    }
-    
+
     @Override
     public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         InquiryForm inquiryForm = (InquiryForm) form;
@@ -404,7 +411,7 @@ public class KualiInquiryAction extends KualiAction {
     	
     	if (bo != null) {
     		// get list of populated sections for display
-    		List sections = kualiInquirable.getSections(bo);
+    		List<Section> sections = kualiInquirable.getSections(bo);
         	inquiryForm.setSections(sections);
         	kualiInquirable.addAdditionalSections(sections, bo);
     	} else {

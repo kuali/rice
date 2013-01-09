@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.Configurable;
 import org.kuali.rice.krad.uif.component.Ordered;
 
 import java.io.Serializable;
@@ -48,7 +48,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ComponentModifier extends Configurable, Serializable, Ordered {
+public interface ComponentModifier extends UifDictionaryBean, Serializable, Ordered {
 
     /**
      * Should be called to initialize the ComponentModifier
@@ -80,8 +80,8 @@ public interface ComponentModifier extends Configurable, Serializable, Ordered {
      * @param view - the view instance to which the component belongs
      * @param model - top level object containing the view data
      * @param component - the component instance to modify
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier.performModification
-     *      (View, Component)
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification
+     *      (View, Object, Component)
      */
     public void performModification(View view, Object model, Component component);
 

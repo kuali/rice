@@ -407,15 +407,15 @@ public final class RuleResponsibility
             this.delegationRules = delegationRules;
         }
 
-        private void setUsingRole(boolean usingRole) {
+        public void setUsingRole(boolean usingRole) {
             this.usingRole = usingRole;
         }
 
-        private void setUsingPrincipal(boolean usingPrincipal) {
+        public void setUsingPrincipal(boolean usingPrincipal) {
             this.usingPrincipal = usingPrincipal;
         }
 
-        private void setUsingGroup(boolean usingGroup) {
+        public void setUsingGroup(boolean usingGroup) {
             this.usingGroup = usingGroup;
         }
 

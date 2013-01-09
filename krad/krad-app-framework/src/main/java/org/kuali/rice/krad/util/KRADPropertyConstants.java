@@ -48,6 +48,7 @@ public final class KRADPropertyConstants {
 	public static final String CAMPUS_TYPE_CODE = "code";
 	public static final String CREATE_DATE = "createDate";
 	public static final String CODE = "code";
+    public static final String COMPONENT_CODE = "componentCode";
 	public static final String CURRENT = "current";
 	public static final String DATA_OBJECT_MAINTENANCE_CODE_ACTIVE_INDICATOR = "dataObjectMaintenanceCodeActiveIndicator";
 	public static final String DESCRIPTION = "description";
@@ -73,8 +74,11 @@ public final class KRADPropertyConstants {
 	public static final String GROUPS = "groups";
 	public static final String ID = "id";
 	public static final String INITIATOR_NETWORK_ID = "initiatorNetworkId";
+    public static final String KEY = "key";
 	public static final String LOOKUP_DATE = "lookupDate";
+    public static final String METHOD_TO_CALL = "methodToCall";
 	public static final String NAME = "name";
+    public static final String NAMESPACE_CODE = "namespaceCode";
 	public static final String NEW_DOCUMENT_NOTE = "newDocumentNote";
 	public static final String NEW_COLLECTION_RECORD = "newCollectionRecord";
 	public static final String NEW_MAINTAINABLE_OBJECT = "newMaintainableObject";
@@ -96,6 +100,7 @@ public final class KRADPropertyConstants {
 	public static final String LAST_UPDATED_DATE = "lastUpdatedDate";	
 	public static final String POSTAL_COUNTRY_RESTRICTED_INDICATOR = "restricted";
 	public static final String POSTAL_COUNTRY_CODE = "code";
+    public static final String PROPERTY_NAME = "propertyName";
 	public static final String ALTERNATE_POSTAL_COUNTRY_CODE = "alternateCode";
 	public static final String STATE_CODE = "stateCode";
     public static final String COUNTY_CODE = "countyCode";

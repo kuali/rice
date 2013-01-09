@@ -46,12 +46,15 @@ public final class CompatUtils {
     
     public static Integer getLevelForNode(DocumentType documentType, String nodeName) {
         if (isRouteLevelCompatible(documentType)) {
-            return getLevelForNode(documentType.getPrimaryProcess().getInitialRouteNode(), nodeName, new Integer(0));
+            return getLevelForNode(documentType.getPrimaryProcess().getInitialRouteNode(), nodeName, 0);
         }
         return new Integer(KewApiConstants.INVALID_ROUTE_LEVEL);
     }
     
     private static Integer getLevelForNode(RouteNode node, String nodeName, Integer currentLevel) {
+        if (node == null) {
+            throw new WorkflowRuntimeException("Could not locate node with name '"+nodeName+"'");
+        }
         // TODO potential for infinite recursion here if their document type has loops in it.  Should this be a concern?
         // If their routing version is really "route level" then there should be no cycles.
         if (node.getRouteNodeName().equals(nodeName)) {
@@ -74,8 +77,14 @@ public final class CompatUtils {
      * because the route level as a number becomes arbitrary in that case. 
      */
     public static RouteNode getNodeForLevel(DocumentType documentType, Integer routeLevel) {
-        Object[] node = getNodeForLevel(documentType.getPrimaryProcess().getInitialRouteNode(), routeLevel, new Integer(0));
-        return (RouteNode)node[0];
+        RouteNode result = null;
+        
+        RouteNode initialRouteNode = documentType.getPrimaryProcess().getInitialRouteNode();
+        if (initialRouteNode != null) {
+            Object[] node = getNodeForLevel(initialRouteNode, routeLevel, new Integer(0));
+            result = (RouteNode)node[0];
+        }
+        return result;
     }
     
     private static Object[] getNodeForLevel(RouteNode node, Integer routeLevel, Integer currentLevel) {
@@ -137,19 +146,21 @@ public final class CompatUtils {
         List<RouteNode> nodes = new ArrayList<RouteNode>();
         int count = 0;
         int maxCount = 100;
-        while (true) {
-            nodes.add(routeNode);
-            List<RouteNode> nextNodes = routeNode.getNextNodes();
-            if (nextNodes.size() == 0) {
-                break;
+        if (routeNode != null) {
+            while (true) {
+                nodes.add(routeNode);
+                List<RouteNode> nextNodes = routeNode.getNextNodes();
+                if (nextNodes.size() == 0) {
+                    break;
+                }
+                if (nextNodes.size() > 1) {
+                    throw new RuntimeException("Node has more than one next node!  It is not route level compatible!" + routeNode.getRouteNodeName());
+                }
+                if (count >= maxCount) {
+                    throw new RuntimeException("A runaway loop was detected when attempting to create route level compatible node graph.  documentType=" + documentType.getDocumentTypeId()+","+documentType.getName());
+                }
+                routeNode = nextNodes.iterator().next();
             }
-            if (nextNodes.size() > 1) {
-                throw new RuntimeException("Node has more than one next node!  It is not route level compatible!" + routeNode.getRouteNodeName());
-            }
-            if (count >= maxCount) {
-                throw new RuntimeException("A runaway loop was detected when attempting to create route level compatible node graph.  documentType=" + documentType.getDocumentTypeId()+","+documentType.getName());
-            }
-            routeNode = nextNodes.iterator().next();
         }
         return nodes;
     }

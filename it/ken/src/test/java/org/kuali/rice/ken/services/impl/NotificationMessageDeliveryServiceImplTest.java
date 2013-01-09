@@ -16,7 +16,7 @@
 package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.test.KENTestCase;
@@ -62,7 +62,7 @@ public class NotificationMessageDeliveryServiceImplTest extends KENTestCase {
 
     @Test
     public void testGetSpecificNotificationMessageDeliveries() {
-        Notification n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
+        NotificationBo n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
         NotificationMessageDeliveryService nSvc = services.getNotificationMessageDeliveryService();
         Collection<NotificationMessageDelivery> deliveries = nSvc.getNotificationMessageDeliveries(n, TestConstants.TEST_USER_FIVE);
         assertNotNull(deliveries);

@@ -23,31 +23,31 @@ import org.kuali.rice.krad.document.Document;
  *
  */
 public interface PropertySerializabilityEvaluator {
-    
+
     /**
      * Initializes the evaluator so that calls to {@link #isPropertySerializable(DocumentSerializationState, Object, String, Object)} and
      * {@link #determinePropertyType(Object)} will function properly
-     * 
+     *
      * @param document the document instance
      */
     public void initializeEvaluatorForDocument(Document document);
-    
+
     public void initializeEvaluatorForDataObject(Object businessObject);
-    
+
     /**
      * Determines whether a child property of an object is serializable.
-     * 
+     *
      * @param state Information about the properties that have been serialized so far
      * @param containingObject The object containing the reference to childPropertyValue
-     * @param childPropertyName The name property to determine whether to serialize, relative to containingObject (i.e. not a nested attribute) 
+     * @param childPropertyName The name property to determine whether to serialize, relative to containingObject (i.e. not a nested attribute)
      * @param childPropertyValue If serializable, this property would be serialized by the serializer service.
      * @return
      */
     public boolean isPropertySerializable(SerializationState state, Object containingObject, String childPropertyName, Object childPropertyValue);
-    
+
     /**
      * Determines the type of a object
-     * 
+     *
      * @param object
      * @return
      */

@@ -36,6 +36,11 @@ public final class KrmsConstants {
     public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 
     /**
+     * KRMS distributed cache bean id
+     */
+    public static final String KRMS_DISTRIBUTED_CACHE = "krmsDistributedCacheManager";
+
+    /**
      * Namespaces
      */
 	public final static class Namespaces {

@@ -15,21 +15,22 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class MaintenanceDisclosuresIT extends KradMenuITBase{
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
+    }
 
-public class MaintenanceDisclosuresIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -37,193 +38,37 @@ public class MaintenanceDisclosuresIT {
      * Verify disclosures are present and functional
      */
     public void testVerifyDisclosures() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
+        assertElementPresent("//span[contains(.,'Document Overview')]");
+        assertElementPresent("//span[contains(.,'Document Overview')]");
+        assertElementPresent("//span[contains(.,'Account Information')]");
+        assertElementPresent("//span[contains(.,'Fiscal Officer Accounts')]");
+        assertElementPresent("//span[contains(.,'Notes and Attachments')]");
+        assertElementPresent("//span[contains(.,'Ad Hoc Recipients')]");
+        assertElementPresent("//span[contains(.,'Route Log')]");
 
-        assertTrue(selenium.isElementPresent("css=#u93_exp"));
-        assertTrue(selenium.isElementPresent("css=#u779_exp"));
-        assertTrue(selenium.isElementPresent("css=#u955_exp"));
-        assertTrue(selenium.isElementPresent("css=#u168_col"));
-        assertTrue(selenium.isElementPresent("css=#u416_col"));
-        assertTrue(selenium.isElementPresent("css=#u755_col"));
-        selenium.click("id=u93_exp");
+        colapseExpand("//span[contains(.,'Document Overview')]//img",
+                "//label[contains(.,'Organization Document Number')]");
+        colapseExpand("//span[contains(.,'Account Information')]//img",
+                "//label[contains(.,'Travel Account Type Code')]");
+        colapseExpand("//span[contains(.,'Fiscal Officer Accounts')]//img",
+                "//a[contains(.,'Lookup/Add Multiple Lines')]");
 
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
+        expandColapse("//span[contains(.,'Notes and Attachments')]//img", "//label[contains(.,'Note Text')]");
+        expandColapse("//span[contains(.,'Ad Hoc Recipients')]", "//span[contains(.,'Ad Hoc Group Requests')]");
 
-            if (!selenium.isVisible("css=#u116_label")) {
-                break;
-            }
+        // Handle frames
+        waitAndClick("//span[contains(.,'Route Log')]//img");
+        selectFrame("routeLogIFrame");
 
-            Thread.sleep(1000);
-        }
+        waitIsVisible("//img[@alt='refresh']");
 
-        selenium.click("id=u93_col");
+        // relative=top iframeportlet might look weird but either alone results in something not found.
+        selectFrame("relative=top");
+        selectFrame("iframeportlet");
+        waitAndClick("//span[contains(.,'Route Log')]//img");
+        selectFrame("routeLogIFrame");
 
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isVisible("css=#u116_label")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("id=u779_exp");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (!selenium.isVisible("css=#u802_label")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("id=u779_col");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isVisible("css=#u802_label")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("css=#u955_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (!selenium.isVisible("css=h4.uif-headerText > span.uif-headerText-span")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("css=#u955_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isVisible("css=h4.uif-headerText > span.uif-headerText-span")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("css=#u168_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isVisible("css=#u221_add")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("css=#u168_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (!selenium.isVisible("css=#u221_add")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("css=#u416_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isVisible("css=#u440 > h4.uif-headerText > span.uif-headerText-span")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("css=#u416_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (!selenium.isVisible("css=#u440 > h4.uif-headerText > span.uif-headerText-span")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("css=#u755_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isVisible("id=routeLogIFrame")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        selenium.click("css=#u755_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (!selenium.isVisible("id=routeLogIFrame")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        waitNotVisible("//img[@alt='refresh']");
     }
 }

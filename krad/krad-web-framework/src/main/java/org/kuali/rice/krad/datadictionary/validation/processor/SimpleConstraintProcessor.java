@@ -42,6 +42,7 @@ public class SimpleConstraintProcessor extends MandatoryElementConstraintProcess
     /**
      * Processes the SimpleConstraint by calling process on the other smaller constraints it represents and
      * putting the results together in ProcessorResult
+     *
      * @return
      * @throws AttributeValidationException
      * @see MandatoryElementConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult,

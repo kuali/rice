@@ -175,18 +175,6 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     }
     
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader) {
-    	// need to clear action list cache for users who have this item in their action list
-    	ActionListService actionListSrv = KEWServiceLocator.getActionListService();
-    	Collection actionItems = actionListSrv.findByDocumentId(routeHeader.getDocumentId());
-    	for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-    		ActionItem actionItem = (ActionItem) iter.next();
-    		try {
-    			KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
-    		} catch (Exception e) {
-    			LOG.error("error saving refreshUserOption", e);
-    		}
-    	}
-    	
     	DocumentRouteHeaderValue attachedRouteHeader = findRouteHeader(routeHeader.getDocumentId());
     	entityManager.remove(attachedRouteHeader);
     }
@@ -207,12 +195,12 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
             return new ArrayList();
         }
 
-        String respIds = "(";
+        String respIds = "('";
         int index = 0;
         for (String responsibilityId : responsibilityIds) {
-            respIds += responsibilityId + (index == responsibilityIds.size()-1 ? "" : ",");
+            respIds += responsibilityId + (index == responsibilityIds.size()-1 ? "" : "','");
         }
-        respIds += ")";
+        respIds += "')";
 
         String query = "SELECT DISTINCT(doc_hdr_id) FROM KREW_ACTN_RQST_T "+
         	"WHERE (STAT_CD='" +

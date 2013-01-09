@@ -17,7 +17,7 @@ package org.kuali.rice.kew.impl.peopleflow;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -43,7 +43,7 @@ public class PeopleFlowController extends MaintenanceDocumentController {
     @RequestMapping(params = "methodToCall=" + "prepareTypeAttributes")
     public ModelAndView prepareTypeAttributes(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
 
         PeopleFlowBo peopleFlow =
                 (PeopleFlowBo) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();

@@ -16,7 +16,8 @@
 package org.kuali.rice.krad.util;
 
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.uif.util.UifFormManager;
+import org.kuali.rice.krad.web.form.UifFormManager;
+import org.kuali.rice.core.framework.util.ApplicationThreadLocal;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,7 +31,7 @@ import java.util.concurrent.Callable;
  */
 public final class GlobalVariables {
 
-    private static ThreadLocal<LinkedList<GlobalVariables>> GLOBAL_VARIABLES_STACK = new ThreadLocal<LinkedList<GlobalVariables>>() {
+    private static ThreadLocal<LinkedList<GlobalVariables>> GLOBAL_VARIABLES_STACK = new ApplicationThreadLocal<LinkedList<GlobalVariables>>() {
         protected LinkedList<GlobalVariables> initialValue() {
             LinkedList<GlobalVariables> globalVariablesStack = new LinkedList<GlobalVariables>();
             globalVariablesStack.add(new GlobalVariables());
@@ -136,7 +137,7 @@ public final class GlobalVariables {
     }
 
     /**
-     * Retrieves the {@link org.kuali.rice.krad.uif.util.UifFormManager} which can be used to store and remove forms
+     * Retrieves the {@link org.kuali.rice.krad.web.form.UifFormManager} which can be used to store and remove forms
      * from the session
      *
      * @return UifFormManager
@@ -147,7 +148,7 @@ public final class GlobalVariables {
     }
 
     /**
-     * Sets a {@link org.kuali.rice.krad.uif.util.UifFormManager} for the current thread
+     * Sets a {@link org.kuali.rice.krad.web.form.UifFormManager} for the current thread
      *
      * @param uifFormManager
      */

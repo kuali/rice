@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.config.ControllerConfig;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
@@ -34,7 +35,9 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,6 +58,11 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     private static final Logger LOG = Logger.getLogger(PojoFormBase.class);
     
     private static final String PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID = "editablePropertiesGuid";
+
+    /**
+     * Used only in the case that no other parameters have been defined for the max file upload size.
+     */
+    private static final String DEFAULT_MAX_FILE_UPLOAD_SIZE = "250M";
 
 	// removed member variables: cachedActionErrors, coder, errorInfo, fieldOrder, formConfig, HEADING_KEY, IGNORED_KEYS,
 	//     invalidValueKeys, logger, messageResourceKey, messageResources, padNonRequiredFields, valueBinder
@@ -109,7 +117,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     // end Kuali Foundation modification
 
- 
+
+    private static final String WATCH_NAME = "PojoFormBase.populate";
 
     /**
      * Populates the form with values from the current request. Uses instances of Formatter to convert strings to the Java types of
@@ -118,11 +127,12 @@ public class PojoFormBase extends ActionForm implements PojoForm {
      */
     @Override
 	public void populate(HttpServletRequest request) {
-        String watchName = "PojoFormBase.populate";
-        StopWatch watch = new StopWatch();
-        watch.start();
+
+        StopWatch watch = null;
         if (LOG.isDebugEnabled()) {
-            LOG.debug(watchName + ": started");
+            watch = new StopWatch();
+            watch.start();
+            LOG.debug(WATCH_NAME + ": started");
         }
         unconvertedValues.clear();
         unknownKeys = new ArrayList();
@@ -148,8 +158,19 @@ public class PojoFormBase extends ActionForm implements PojoForm {
          * Iterate through request parameters, if parameter matches a form variable, get the property type, formatter and convert,
          * if not add to the unknowKeys map.
          */
-        for (Iterator iter = params.keySet().iterator(); iter.hasNext();) {
-            String keypath = (String) iter.next();
+        Comparator<String> nestedPathComparator = new Comparator<String>() {
+            public int compare(String prop1, String prop2) {
+                Integer i1 =  new Integer(prop1.split("\\.").length);
+                Integer i2 =  new Integer(prop2.split("\\.").length);
+                return (i1.compareTo(i2));
+            }
+        };
+
+
+        List<String> pathKeyList = new ArrayList<String>(params.keySet());
+        Collections.sort( pathKeyList , nestedPathComparator);
+
+        for (String keypath : pathKeyList) {
             if (shouldPropertyBePopulatedInForm(keypath, request)) {
 	            Object param = params.get(keypath);
 	            //LOG.debug("(keypath,paramType)=(" + keypath + "," + param.getClass().getName() + ")");
@@ -158,9 +179,9 @@ public class PojoFormBase extends ActionForm implements PojoForm {
             }
         }
         this.registerIsNewForm(false);
-        watch.stop();
         if (LOG.isDebugEnabled()) {
-            LOG.debug(watchName + ": " + watch.toString());	
+            watch.stop();
+            LOG.debug(WATCH_NAME + ": " + watch.toString());
         }
     }
 
@@ -172,7 +193,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 * @param paramValue the value of that property
 	 * @param params the Map of parameters from the request
 	 */
-	protected void populateForProperty(String paramPath, Object paramValue,
+	public void populateForProperty(String paramPath, Object paramValue,
 			Map params) {
 		// get type for property
 		Class type = null;
@@ -443,8 +464,12 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	    customInitMaxUploadSizes();
     	    // if it's still empty, add the default
     	    if ( maxUploadFileSizes.isEmpty() ) {
-    	        addMaxUploadSize(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                        KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.MAX_UPLOAD_SIZE_PARM_NM));
+                String systemDefault = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.MAX_UPLOAD_SIZE_PARM_NM);
+                if (StringUtils.isBlank(systemDefault)) {
+                    LOG.error("System parameter " + KRADConstants.KNS_NAMESPACE + ":" + KRADConstants.DetailTypes.ALL_DETAIL_TYPE + ":" + KRADConstants.MAX_UPLOAD_SIZE_PARM_NM + " not defined, using hardcoded default max file upload size");
+                    systemDefault = DEFAULT_MAX_FILE_UPLOAD_SIZE;
+                }
+                addMaxUploadSize(systemDefault);
     	    }
     	}	
     }
@@ -553,7 +578,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 			return false; // don't repopulate this
 		}
 		else if (StringUtils.equalsIgnoreCase("session",getStrutsActionMappingScope()) && !getIsNewForm()) {
-			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName); 
+			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName);
 		}
 		return true;
 		

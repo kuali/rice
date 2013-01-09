@@ -25,18 +25,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 import org.kuali.rice.coreservice.api.parameter.EvaluationOperator;
-import org.kuali.rice.coreservice.api.parameter.ParameterContract;
+import org.kuali.rice.coreservice.framework.parameter.ParameterEbo;
 import org.kuali.rice.coreservice.impl.component.ComponentBo;
+import org.kuali.rice.coreservice.impl.component.DerivedComponentBo;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.coreservice.impl.component.DerivedComponentBo;
-import org.kuali.rice.coreservice.impl.component.ComponentBo;
 
 @IdClass(ParameterId.class)
 @Entity
 @Table(name = "KRCR_PARM_T")
-public class ParameterBo extends PersistableBusinessObjectBase implements ParameterContract {
+public class ParameterBo extends PersistableBusinessObjectBase implements ParameterEbo {
 
     private static final long serialVersionUID = 1L;
 

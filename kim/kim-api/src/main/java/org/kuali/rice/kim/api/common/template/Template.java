@@ -287,7 +287,7 @@ public final class Template extends AbstractDataTransferObject implements Templa
 		}
 
 		public void setVersionNumber(final Long versionNumber) {
-			if (versionNumber == null || versionNumber <= 0) {
+			if (versionNumber <= 0) {
 	            throw new IllegalArgumentException("versionNumber is invalid");
 	        }
 			this.versionNumber = versionNumber;

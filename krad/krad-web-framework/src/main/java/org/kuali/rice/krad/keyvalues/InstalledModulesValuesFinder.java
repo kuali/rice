@@ -37,9 +37,9 @@ public class InstalledModulesValuesFinder extends KeyValuesBase {
     	List<KeyValue> keyValues = new ArrayList<KeyValue>();
         KualiModuleService kms = KRADServiceLocatorWeb.getKualiModuleService();
         for ( ModuleService moduleService : kms.getInstalledModuleServices() ) {
-            keyValues.add(new ConcreteKeyValue(moduleService.getModuleConfiguration().getNamespaceCode(), 
-            		moduleService.getModuleConfiguration().getNamespaceCode() + " - " + 
-            		kms.getNamespaceName(moduleService.getModuleConfiguration().getNamespaceCode()))); 
+            keyValues.add(new ConcreteKeyValue(moduleService.getModuleConfiguration().getNamespaceCode(),
+            		moduleService.getModuleConfiguration().getNamespaceCode() + " - " +
+            		kms.getNamespaceName(moduleService.getModuleConfiguration().getNamespaceCode())));
         }
 
         return keyValues;

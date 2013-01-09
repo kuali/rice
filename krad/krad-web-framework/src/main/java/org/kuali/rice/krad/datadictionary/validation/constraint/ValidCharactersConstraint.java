@@ -15,35 +15,33 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
- * This is a constraint that limits attribute values to some subset of valid characters or to match a particular regular expression.
- * 
- * For example: 
+ * This is a constraint that limits attribute values to some subset of valid characters or to match a particular
+ * regular
+ * expression.
+ *
+ * For example:
  * - To limit to both upper and lower-case letters, value can be set to "[A-Za-z]*"
  * - To limit to any character except carriage returns and line feeds, value can be set to "[^\n\r]*"
- * 
- * 
- * @author Kuali Student Team
- * @since 1.1
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@BeanTag(name = "validCharactersConstraint", parent="ValidCharactersConstraint")
 public class ValidCharactersConstraint extends BaseConstraint {
 
-    @XmlElement
     protected String value;
 
     /**
      * The Java based regex for valid characters
      * This value should include the ^ and $ symbols if needed
+     *
      * @return the value
      */
+    @BeanTagAttribute(name = "value")
     public String getValue() {
         return value;
     }
@@ -55,5 +53,21 @@ public class ValidCharactersConstraint extends BaseConstraint {
         this.value = value;
     }
 
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean("ValidCharacterConstraint", getMessageKey());
 
+        if (getValue() == null) {
+            String currentValues[] = {"getValue =" + getValue()};
+            tracer.createWarning("GetValue should return something", currentValues);
+        }
+
+        super.completeValidation(tracer.getCopy());
+    }
 }

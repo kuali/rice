@@ -15,23 +15,8 @@
  */
 package edu.sampleu.demo.kitchensink;
 
-import javax.management.RuntimeErrorException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader;
-import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -42,11 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyEditor;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.Properties;
 
 /**
  * Controller for the Test UI Page
@@ -72,21 +57,21 @@ public class UifComponentsTestController extends UifControllerBase {
         UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
         form.setState("state1");
         //for generated view:
-        if(form.getView().getId().equals("UifGeneratedFields")){
-            for(int i=0; i<100; i++){
-                ((UifComponentsTestForm)form).getList1generated().add(
-                        new UITestObject("A" + i, "B" + i, "C" + i, "D" + i));
+        if (form.getView().getId().equals("UifGeneratedFields")) {
+            for (int i = 0; i < 100; i++) {
+                ((UifComponentsTestForm) form).getList1generated().add(new UITestObject("A" + i, "B" + i, "C" + i,
+                        "D" + i));
             }
-            for(int i=0; i<100; i++){
-                ((UifComponentsTestForm)form).getList2generated().add(
-                        new UITestObject("A" + i, "B" + i, "C" + i, "D" + i));
+            for (int i = 0; i < 100; i++) {
+                ((UifComponentsTestForm) form).getList2generated().add(new UITestObject("A" + i, "B" + i, "C" + i,
+                        "D" + i));
             }
-            for(int i=0; i<100; i++){
-                ((UifComponentsTestForm)form).getList3generated().add(
-                        new UITestObject("A" + i, "B" + i, "C" + i, "D" + i));
-                for(int j=0; j<10; j++){
-                    ((UifComponentsTestForm)form).getList3generated().get(i).getSubList().add(
-                            new UITestObject("i" + i + "-" + j, "i" + i + "-" + j, "i" + i + "-" + j, "i" + i + "-" + j));
+            for (int i = 0; i < 10; i++) {
+                ((UifComponentsTestForm) form).getList3generated().add(new UITestObject("A" + i, "B" + i, "C" + i,
+                        "D" + i));
+                for (int j = 0; j < 10; j++) {
+                    ((UifComponentsTestForm) form).getList3generated().get(i).getSubList().add(new UITestObject(
+                            "i" + i + "-" + j, "i" + i + "-" + j, "i" + i + "-" + j, "i" + i + "-" + j));
                 }
             }
         }
@@ -102,7 +87,6 @@ public class UifComponentsTestController extends UifControllerBase {
         KRADServiceLocatorWeb.getViewValidationService().validateView(uiTestForm);
         return getUIFModelAndView(uiTestForm);
     }
-
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
     public ModelAndView close(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
@@ -129,8 +113,6 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putInfo("gField2", "serverTestInfo");
             GlobalVariables.getMessageMap().putInfo("gField3", "serverTestInfo");
         }
-        // only refreshing page
-        form.setRenderFullView(false);
 
         return getUIFModelAndView(form, pageId);
     }
@@ -169,7 +151,6 @@ public class UifComponentsTestController extends UifControllerBase {
         return refresh(uiTestForm, result, request, response);
     }
 
-    
     /**
      * Adds errors to fields defined in the validationMessageFields array
      */
@@ -177,22 +158,28 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView addErrors(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        if(form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageSectionMessages")){
+        if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageSectionMessages")) {
             GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-Section1", "errorSectionTest");
             GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-Section2", "errorSectionTest");
-        }
-        else if(form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageUnmatched")){
+        } else if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageUnmatched")) {
             GlobalVariables.getMessageMap().putError("badKey", "unmatchedTest");
+        } else if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SubSectionsPage")) {
+            GlobalVariables.getMessageMap().putError("Uif-ValidationLayout-SubGroup", "errorSectionTest");
         }
-        
+
+        if (form.getPostedView().getId().equals("RichMessagesView")) {
+            GlobalVariables.getMessageMap().putError("Demo-BasicMessagesSection", "richValidationMessageTest");
+            GlobalVariables.getMessageMap().putError("field5", "richValidationMessageTest2");
+        }
+
         Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
-        for(String key: propertyEditors.keySet()){
+        for (String key : propertyEditors.keySet()) {
             GlobalVariables.getMessageMap().putError(key, "error1Test");
         }
-       
+
         return getUIFModelAndView(form);
     }
-    
+
     /**
      * Adds warnings to fields defined in the validationMessageFields array
      */
@@ -200,22 +187,21 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView addWarnings(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        if(form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageSectionMessages")){
+        if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageSectionMessages")) {
             GlobalVariables.getMessageMap().putWarning("Demo-ValidationLayout-Section1", "warningSectionTest");
             GlobalVariables.getMessageMap().putWarning("Demo-ValidationLayout-Section2", "warningSectionTest");
-        }
-        else if(form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageUnmatched")){
+        } else if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageUnmatched")) {
             GlobalVariables.getMessageMap().putWarning("badKey", "unmatchedTest");
         }
 
         Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
-        for(String key: propertyEditors.keySet()){
+        for (String key : propertyEditors.keySet()) {
             GlobalVariables.getMessageMap().putWarning(key, "warning1Test");
         }
 
         return getUIFModelAndView(form);
     }
-    
+
     /**
      * Adds infos to fields defined in the validationMessageFields array
      */
@@ -223,22 +209,21 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView addInfo(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        if(form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageSectionMessages")){
+        if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageSectionMessages")) {
             GlobalVariables.getMessageMap().putInfo("Demo-ValidationLayout-Section1", "infoSectionTest");
             GlobalVariables.getMessageMap().putInfo("Demo-ValidationLayout-Section2", "infoSectionTest");
-        }
-        else if(form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageUnmatched")){
+        } else if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageUnmatched")) {
             GlobalVariables.getMessageMap().putInfo("badKey", "unmatchedTest");
         }
 
         Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
-        for(String key: propertyEditors.keySet()){
+        for (String key : propertyEditors.keySet()) {
             GlobalVariables.getMessageMap().putInfo(key, "info1Test");
         }
 
         return getUIFModelAndView(form);
     }
-    
+
     /**
      * Adds all message types to fields defined in the validationMessageFields array
      */
@@ -280,9 +265,25 @@ public class UifComponentsTestController extends UifControllerBase {
     }
 
     /**
+     * Adds only 1 error message for testing
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addSingleErrorMessage")
+    public ModelAndView addSingleErrorMessage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SubSectionsPage")) {
+            GlobalVariables.getMessageMap().putError("Uif-ValidationLayout-SubGroup", "errorSectionTest");
+        } else {
+            GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-Section1", "errorSectionTest");
+        }
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
      * Adds warning and info messages to fields defined in the validationMessageFields array
      */
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addWarningInfoMessages")
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addWarnInfoMessages")
     public ModelAndView addWarnInfoMessages(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
@@ -291,13 +292,13 @@ public class UifComponentsTestController extends UifControllerBase {
 
         return getUIFModelAndView(form);
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=gotoState2")
     public ModelAndView gotoState2(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        
+
         KRADServiceLocatorWeb.getViewValidationService().validateView(form.getPostedView(), form, "state2");
-        if(!GlobalVariables.getMessageMap().hasErrors()){
+        if (!GlobalVariables.getMessageMap().hasErrors()) {
             form.setState("state2");
         }
 
@@ -309,7 +310,7 @@ public class UifComponentsTestController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
 
         KRADServiceLocatorWeb.getViewValidationService().validateView(form.getPostedView(), form, "state3");
-        if(!GlobalVariables.getMessageMap().hasErrors()){
+        if (!GlobalVariables.getMessageMap().hasErrors()) {
             form.setState("state3");
         }
 
@@ -321,32 +322,92 @@ public class UifComponentsTestController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
 
         KRADServiceLocatorWeb.getViewValidationService().validateView(form.getPostedView(), form, "state4");
-        if(!GlobalVariables.getMessageMap().hasErrors()){
+        if (!GlobalVariables.getMessageMap().hasErrors()) {
             form.setState("state4");
         }
-        
-        return getUIFModelAndView(form);
-    }
-
-
-
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=successCheck")
-    public ModelAndView successCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
 
         return getUIFModelAndView(form);
     }
 
-
+    /**
+     * Generates a fake incident report to test for errorCallback
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return ModelAndView model and view
+     */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=errorCheck")
     public ModelAndView errorCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        if(true) {
+        if (true) {
             throw new RuntimeException("Generate fake incident report");
         }
 
         return getUIFModelAndView(form);
     }
 
+    /**
+     * Test controller method to check for ajax redirect functionality. Redirects to the portal main page
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return ModelAndView model and view
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=redirectCheck")
+    public ModelAndView redirectCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        Properties props = new Properties();
+        props.put(UifParameters.VIEW_ID, form.getViewId());
+        props.put(UifParameters.FORM_KEY, form.getFormKey());
+        return performRedirect(form, "http://localhost:8080/kr-dev", props);
+    }
+
+    @Override
+    public ModelAndView addLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        GlobalVariables.getMessageMap().addGrowlMessage("Greetings!", "kitchenSink.welcome");
+        if (uifForm.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-CollectionsErrorPage")) {
+            GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-CollectionErrorSection",
+                    "errorSectionTest");
+            GlobalVariables.getMessageMap().putErrorForSectionId("Demo-ValidationLayout-CollectionErrorSection",
+                    "errorSectionTest");
+        }
+        return super.addLine(uifForm, result, request, response);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=customLineAction")
+    public ModelAndView customLineAction(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        String actionParm1 = uifForm.getActionParamaterValue("field1");
+        String actionParm2 = uifForm.getActionParamaterValue("field2");
+
+        GlobalVariables.getMessageMap().addGrowlMessage("Action Parameters", "actionParms.message", actionParm1,
+                actionParm2);
+
+        return super.deleteLine(uifForm, result, request, response);
+
+    }
+
+    /**
+     * Changes the view to readOnly and returns.
+     *
+     * @param uifForm
+     * @param result
+     * @param request
+     * @param response
+     * @return readOnly View
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=makeReadOnly")
+    public ModelAndView makeReadOnly(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        //set View to readOnly
+        uifForm.getView().setReadOnly(true);
+        return getUIFModelAndView(uifForm);
+    }
 }

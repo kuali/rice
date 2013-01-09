@@ -16,7 +16,7 @@
 package org.kuali.rice.ken.service.impl;
 
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.NotificationChannel;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
 import org.kuali.rice.ken.service.NotificationChannelService;
 
 import java.util.Collection;
@@ -41,19 +41,19 @@ public class NotificationChannelServiceImpl implements NotificationChannelServic
     /**
      * @see org.kuali.rice.ken.service.NotificationChannelService#getNotificationChannel(java.lang.String)
      */
-    public NotificationChannel getNotificationChannel(String id) {
+    public NotificationChannelBo getNotificationChannel(String id) {
         Map<String,  String> primaryKeys = new HashMap<String, String>();
         primaryKeys.put("id", id);
-        return (NotificationChannel) businessObjectDao.findByPrimaryKey(NotificationChannel.class, primaryKeys);
+        return (NotificationChannelBo) businessObjectDao.findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
     }
 
     /**
      * @see org.kuali.rice.ken.service.NotificationChannelService#getNotificationChannelByName(java.lang.String)
      */
-    public NotificationChannel getNotificationChannelByName(String name) {
+    public NotificationChannelBo getNotificationChannelByName(String name) {
         Map<String,  String> fields = new HashMap<String, String>();
         fields.put("name", name);
-        Collection<NotificationChannel> found = businessObjectDao.findMatching(NotificationChannel.class, fields);
+        Collection<NotificationChannelBo> found = businessObjectDao.findMatching(NotificationChannelBo.class, fields);
         assert(found.size() <= 1);
         if (found.size() == 0) return null;
         return found.iterator().next();
@@ -66,7 +66,7 @@ public class NotificationChannelServiceImpl implements NotificationChannelServic
         Map<String, Boolean> fieldValues = new HashMap<String, Boolean>();
         String sortField = new String("name");
         fieldValues.put("subscribable", true);
-        return businessObjectDao.findMatchingOrderBy(NotificationChannel.class, fieldValues, sortField, true);
+        return businessObjectDao.findMatchingOrderBy(NotificationChannelBo.class, fieldValues, sortField, true);
     }
 
     /**
@@ -74,6 +74,6 @@ public class NotificationChannelServiceImpl implements NotificationChannelServic
      */
     public Collection getAllNotificationChannels() {
         String sortField = new String("name");
-        return businessObjectDao.findAllOrderBy(NotificationChannel.class, sortField, true);
+        return businessObjectDao.findAllOrderBy(NotificationChannelBo.class, sortField, true);
     }
 }

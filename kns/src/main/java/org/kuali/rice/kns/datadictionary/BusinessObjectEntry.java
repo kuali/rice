@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
-import org.kuali.rice.krad.datadictionary.DataDictionaryException;
-import org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition;
-import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

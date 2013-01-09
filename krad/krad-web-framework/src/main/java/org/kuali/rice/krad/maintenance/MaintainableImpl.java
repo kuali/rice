@@ -20,6 +20,8 @@ import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.bo.AdHocRoutePerson;
+import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
@@ -39,7 +41,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -222,14 +224,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     public void saveDataObject() {
         if (dataObject instanceof PersistableBusinessObject) {
-            if(getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
-               if(org.apache.commons.lang.StringUtils.isNotBlank(((PersistableBusinessObject) dataObject).getObjectId())){
-                    ((PersistableBusinessObject) dataObject).setObjectId("");
-                }
-                 if(null!= ((PersistableBusinessObject) dataObject).getVersionNumber()){
-                    ((PersistableBusinessObject) dataObject).setVersionNumber(null);
-                }
-            }
             getBusinessObjectService().linkAndSave((PersistableBusinessObject) dataObject);
         } else {
             throw new RuntimeException(
@@ -427,16 +421,25 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         super.processAfterAddLine(view, collectionGroup, model, addLine);
-        
-        // Check for maintenance documents in edit but exclude notes
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) && !(addLine instanceof Note)) {
-            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+
+        // Check for maintenance documents in edit but exclude notes and ad hoc recipients
+        if (model instanceof MaintenanceDocumentForm
+                && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction()) && !(addLine instanceof Note) && !(addLine instanceof AdHocRoutePerson) && !(addLine instanceof AdHocRouteWorkgroup)) {
+            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
             // get the old object's collection
+            //KULRICE-7970 support multiple level objects
+            String bindingPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix();
+            String propertyPath = collectionGroup.getPropertyName();
+            if(bindingPrefix!=""&&bindingPrefix!= null)     {
+                propertyPath = bindingPrefix + "." + propertyPath;
+            }
+
             Collection<Object> oldCollection = ObjectPropertyUtils
                     .getPropertyValue(document.getOldMaintainableObject().getDataObject(),
-                            collectionGroup.getPropertyName());
+                            propertyPath);
+
 
             try {
                 Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();
@@ -451,7 +454,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             }
         }
     }
-    
+
     /**
      * In the case of edit maintenance deleted the item on the old side
      *
@@ -462,11 +465,14 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
         super.processAfterDeleteLine(view, collectionGroup, model, lineIndex);
-        
-        // Check for maintenance documents in edit but exclude notes
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) 
-                && !collectionGroup.getCollectionObjectClass().getName().equals(Note.class.getName())) {
-            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+
+        // Check for maintenance documents in edit but exclude notes and ad hoc recipients
+        if (model instanceof MaintenanceDocumentForm
+                && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction())
+                && !collectionGroup.getCollectionObjectClass().getName().equals(Note.class.getName())
+                && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRoutePerson.class.getName())
+                && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRouteWorkgroup.class.getName())) {
+            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
             // get the old object's collection
@@ -480,7 +486,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
                 throw new RuntimeException("Unable to delete line instance for old maintenance object", e);
             }
         }
-    }    
+    }
 
     /**
      * Retrieves the document number configured on this maintainable

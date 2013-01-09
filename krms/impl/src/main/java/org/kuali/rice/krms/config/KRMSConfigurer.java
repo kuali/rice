@@ -16,9 +16,11 @@
 package org.kuali.rice.krms.config;
 
 import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.krms.api.KrmsConstants;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,13 +32,33 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KRMSConfigurer extends ModuleConfigurer {
-
+    public static final String KRMS_DATASOURCE_OBJ = "krms.datasource";
     private static final String KRMS_SPRING_LOCAL_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSLocalSpringBeans.xml";
     private static final String KRMS_SPRING_REMOTE_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSRemoteSpringBeans.xml";
+    private DataSource dataSource;
 
 	public KRMSConfigurer() {
         super(KrmsConstants.Namespaces.MODULE_NAME);
         setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
+    }
+
+    @Override
+    public void addAdditonalToConfig() {
+        configureDataSource();
+    }
+
+    private void configureDataSource() {
+        if (getDataSource() != null) {
+            ConfigContext.getCurrentContextConfig().putObject(KRMS_DATASOURCE_OBJ, getDataSource());
+        }
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override

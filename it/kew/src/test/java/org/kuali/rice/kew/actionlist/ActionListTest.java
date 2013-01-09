@@ -18,11 +18,18 @@ package org.kuali.rice.kew.actionlist;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.actionlist.web.ActionListUtil;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -150,6 +157,59 @@ public class ActionListTest extends KEWTestCase {
         });
     }
 
+    @Test
+    public void testActionListMaxActionItemDateAssignedAndCountForUser() throws Exception {
+        setUpOldSchool();
+        TransactionTemplate transactionTemplate = getTransactionTemplate();
+        transactionTemplate.execute(new TransactionCallback() {
+            public Object doInTransaction(TransactionStatus status) {
+                return TestUtilities.getJdbcTemplate().execute(new StatementCallback() {
+                    public Object doInStatement(Statement stmt) {
+                        try {
+                            Connection conn = stmt.getConnection();
+                            PreparedStatement ps = conn.prepareStatement(
+                                    "select distinct PRNCPL_ID from krew_actn_itm_t");
+                            ResultSet rs = ps.executeQuery();
+                            int cnt = 0;
+                            Date maxDate = null;
+                            int loopCnt = 0;
+                            //do first 5 for time sake
+                            while (rs.next() && ++loopCnt < 6) {
+                                String workflowId = rs.getString(1);
+                                PreparedStatement ps1 = conn.prepareStatement(
+                                        "select max(ASND_DT) as max_date, count(distinct(doc_hdr_id)) as total_records"
+                                                + "  from ("
+                                                + "  select ASND_DT,doc_hdr_id "
+                                                + "  from KREW_ACTN_ITM_T   where    prncpl_id=? "
+                                                + "  group by  ASND_DT,doc_hdr_id "
+                                                + "  ) T");
+                                ps1.setString(1, workflowId);
+                                ResultSet rsWorkflowIdCnt = ps1.executeQuery();
+                                if (rsWorkflowIdCnt.next()) {
+                                    maxDate = rsWorkflowIdCnt.getTimestamp(1);
+                                    cnt = rsWorkflowIdCnt.getInt(2);
+                                } else {
+                                    throw new Exception(
+                                            "WorkflowId " + workflowId + " didn't return a result set.  Test SQL invalid.");
+                                }
+                                List<Object> ls = getActionListService().getMaxActionItemDateAssignedAndCountForUser(workflowId);
+                                assertEquals((Integer) cnt, ls.get(1));
+                                assertEquals(maxDate, ls.get(0));
+                                ps1.close();
+                                rsWorkflowIdCnt.close();
+                            }
+                            rs.close();
+                            ps.close();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        return null;
+                    }
+                });
+            }
+        });
+    }
+
     /**
      * Tests that the user's secondary action list works appropriately.  Also checks that if a user
      * is their own secondary delegate, their request shows up in their main action list rather than
@@ -182,7 +242,7 @@ public class ActionListTest extends KEWTestCase {
     	excludeSecondaryFilter.setExcludeDelegationType(true);
     	ActionListFilter secondaryFilter = new ActionListFilter();
     	secondaryFilter.setDelegationType(DelegationType.SECONDARY.getCode());
-    	Collection<ActionItem> actionItems = null;
+    	Collection<ActionItemActionListExtension> actionItems = null;
     	ActionItem actionItem = null;
 
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
@@ -311,7 +371,7 @@ public class ActionListTest extends KEWTestCase {
 
     	ActionListFilter showPrimaryFilter = new ActionListFilter();
     	showPrimaryFilter.setDelegationType(DelegationType.PRIMARY.getCode());
-    	Collection<ActionItem> actionItems = null;
+    	Collection<ActionItemActionListExtension> actionItems = null;
     	ActionItem actionItem = null;
 
     	// make sure showing primary delegations show primary delegated action items
@@ -411,10 +471,121 @@ public class ActionListTest extends KEWTestCase {
         assertTrue("Should have found user " + user2, foundUser2);
         assertTrue("Should have found user " + user3, foundUser3);
 
-    	recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
-    	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 1, recipients.size());
-    	WebFriendlyRecipient recipient = (WebFriendlyRecipient)recipients.iterator().next();
-    	assertEquals("Wrong employee id of primary delegate", "bmcgough", getPrincipalNameForId(recipient.getRecipientId()));
+        recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
+    	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 2, recipients.size());
+        Iterator<Recipient> recipientsIt = recipients.iterator();
+    	WebFriendlyRecipient recipient = (WebFriendlyRecipient) recipientsIt.next();
+    	assertEquals("Wrong employee id of delegator", "bmcgough", getPrincipalNameForId(recipient.getRecipientId()));
+        assertEquals("Wrong group id of delegator", getGroupIdForName("KR-WKFLW", "NonSIT"), ((KimGroupRecipient) recipientsIt.next()).getGroupId());
+    }
+
+    @Test
+    public void testCreateActionItemForActionRequest() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"),
+                "ActionListDocumentType");
+        document.route("");
+        List<ActionRequest> requests = document.getRootActionRequests();
+        assertTrue("there must be ActionRequestDTOs to test!", requests != null && requests.size() > 0);
+
+        for (ActionRequest reqDTO : requests) {
+            if (reqDTO.getParentActionRequestId() == null) {
+                ActionRequestValue reqVal = ActionRequestValue.from(reqDTO);
+
+                List<ActionItem> actionItems = new ArrayList<ActionItem>();
+                actionItems.add(getActionListService().createActionItemForActionRequest(reqVal));
+                assertTrue(actionItems.size() > 0);
+            }
+        }
+
+    }
+
+    @Test
+    public void testDeleteActionItem() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"),
+                "ActionListDocumentType");
+        document.route("");
+        Collection<ActionItemActionListExtension> actionItems = getActionListService().getActionList(getPrincipalIdForName("bmcgough"),
+                new ActionListFilter());
+        assertEquals("bmcgough should have 1 item in his action list.", 1, actionItems.size());
+        //delete one of the action items
+        ActionItem itm = null;
+        for (Iterator<ActionItemActionListExtension> iterator = actionItems.iterator(); iterator.hasNext(); ) {
+            ActionItem actionItem = iterator.next();
+            itm = getActionListService().findByActionItemId(actionItem.getId());
+            getActionListService().deleteActionItem(itm);
+            break;
+        }
+        actionItems = getActionListService().getActionList(getPrincipalIdForName("bmcgough"), new ActionListFilter());
+        assertEquals("bmcgough should have 0 item in his action list.", 0, actionItems.size());
+    }
+
+    @Test
+    public void testFindByDocumentTypeName() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"),
+                "ActionListDocumentType");
+        document.route("");
+        Collection<ActionItem> actionItems = getActionListService().findByDocumentTypeName("ActionListDocumentType");
+        assertEquals("There should be 10 action items", 10, actionItems.size());
+    }
+
+    @Test
+    public void testFindByActionRequestId() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"),
+                "ActionListDocumentType");
+        document.route("");
+        Collection<ActionRequest> actionRequests = document.getRootActionRequests();
+        for (Iterator<ActionRequest> iterator = actionRequests.iterator(); iterator.hasNext(); ) {
+            ActionRequest actionRequest = iterator.next();
+            if (actionRequest.getActionRequested().getCode().equals(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ)) {
+                Collection<ActionItem> actionItems = getActionListService().findByActionRequestId(
+                        actionRequest.getId());
+                assertTrue(actionItems.size() == 1);
+            }
+        }
+    }
+    @Test
+    public void testUpdateActionItemForTitleChange() throws Exception {
+          setUpOldSchool();
+        Collection<ActionItem> actionItems;
+        actionItems = getActionListService().findByDocumentId(routeHeader1.getDocumentId());
+         for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); ) {
+            ActionItem actionItem = iterator.next();
+            assertEquals("Test",actionItem.getDocTitle());
+         }
+        DocumentUpdate.Builder builder = DocumentUpdate.Builder.create();
+        builder.setTitle("NewTitle");
+        DocumentUpdate documentUpdate = builder.build();
+        routeHeader1.applyDocumentUpdate(documentUpdate);
+        actionItems = getActionListService().findByDocumentId(routeHeader1.getDocumentId());
+        for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); ) {
+            ActionItem actionItem = iterator.next();
+            assertEquals("NewTitle",actionItem.getDocTitle());
+         }
+    }
+
+    /**
+     * KULRICE-7615
+     * bmcgough is a secondary delegate *for* the NonSIT group; getWebFriendlyRecipients should handle this
+     */
+    @Test
+    public void testGetWebFriendlyRecipientsWithGroup() {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+        document.route("");
+        Person bmcgough = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        Collection<Recipient> delegators = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
+        String nonSITGroupId = getGroupIdForName("KR-WKFLW", "NonSIT");
+        assertFalse(delegators.isEmpty());
+        boolean nonSITGroupFound = false;
+        for (Recipient d: delegators) {
+            if (d instanceof KimGroupRecipient) {
+                if (nonSITGroupId.equals(((KimGroupRecipient) d).getGroupId())) {
+                    nonSITGroupFound = true;
+                }
+            }
+        }
+        assertTrue("NonSIT group was not found as a delegator to bmcgough (has test config changed?)", nonSITGroupFound);
+        // now test that it can actually deal with the KimGroupRecipient
+        ActionListUtil.getWebFriendlyRecipients(delegators);
     }
 
     private DocumentRouteHeaderValue generateDocRouteHeader() {

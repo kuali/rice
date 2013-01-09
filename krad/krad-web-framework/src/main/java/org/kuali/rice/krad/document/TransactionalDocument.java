@@ -17,7 +17,9 @@ package org.kuali.rice.krad.document;
 
 
 /**
- * This is the TransactionalDocument interface. All transaction processing entities that are regarded as "eDocs" in the system.
+ * Interface for all documents that have transactional behavior
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface TransactionalDocument extends Document {
 

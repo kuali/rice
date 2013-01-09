@@ -17,7 +17,8 @@
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans         
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
@@ -27,12 +28,12 @@
   <bean id="Uif-BaseTheme-parentBean" abstract="true" parent="Uif-ViewTheme">
     <property name="cssFiles">
       <list>
-        <!--<value>krad/css/krad.min.css</value>-->
+        <value>krad/min/css/krad_@{#ConfigProperties['rice.version']}.min.css</value>
         <!-- For Debugging, uncomment out the values below (and comment out the minimized css above) -->
-        <value>krad/css/global/fss-reset.css</value>
+        <!--value>krad/css/global/fss-reset.css</value>
         <value>krad/css/global/fss-layout.css</value>
         <value>krad/css/global/fss-text.css</value>
-        <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.css</value>
+        <value>krad/plugins/jqueryUI/jquery-ui-1.8.23.css</value>
         <value>krad/plugins/jgrowl/jquery.jgrowl.css</value>
         <value>krad/plugins/rice/datatables/jquery.dataTables.css</value>
         <value>krad/plugins/rice/datatables/TableTools.css</value>
@@ -42,32 +43,34 @@
         <value>krad/plugins/rice/spinner/smartspinner.css</value>
         <value>krad/plugins/tooltip/jquery.tools.tooltip.css</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
-        <value>krad/css/global/base.css</value>
+        <value>krad/css/global/base.css</value-->
       </list>
     </property>
     <property name="scriptFiles">
       <list>
-        <!--<value>krad/scripts/krad.min.js</value>-->
+        <value>krad/min/scripts/krad_@{#ConfigProperties['rice.version']}.min.js</value>
         <!-- For Debugging, uncomment out the values below (and comment out the minimized js above) -->
-        <value>krad/plugins/jquery/jquery-1.7.2.js</value>
-        <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.js</value>
+        <!--value>krad/plugins/jquery/jquery-1.8.0.js</value>
+        <value>krad/plugins/jqueryUI/jquery-ui-1.8.23.js</value>
+        <value>krad/plugins/jqueryUI/jquery.ui.autocomplete.html.js</value>
+        <value>krad/plugins/color/jquery.color.js</value>
         <value>krad/plugins/cookie/jquery.cookie.js</value>
-        <value>krad/plugins/postmsg/jquery.ba-postmessage.js</value>
         <value>krad/plugins/jgrowl/jquery.jgrowl.js</value>
         <value>krad/plugins/blockUI/jquery.blockUI.js</value>
         <value>krad/plugins/watermark/jquery.watermark.js</value>
         <value>krad/plugins/validate/jquery.validate.js</value>
         <value>krad/plugins/tooltip/jquery.tools.min.js</value>
-        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</value>
+        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.js</value>
         <value>krad/plugins/rice/spinner/smartspinner.js</value>
         <value>krad/plugins/rice/menu/krad.navigationMenu.js</value>
         <value>krad/plugins/rice/textpopout/krad.textareaPopout.js</value>
         <value>krad/plugins/dirtyform/jquery.dirtyform.js</value>
-        <value>krad/plugins/scrollto/jquery.scrollTo-1.4.2-min.js</value>
+        <value>krad/plugins/scrollto/jquery.scrollTo-1.4.3-min.js</value>
         <value>krad/plugins/rice/menu/krad.tabMenu.js</value>
         <value>krad/plugins/rice/datatables/jquery.dataTables.js</value>
         <value>krad/plugins/rice/datatables/ZeroClipboard.js</value>
         <value>krad/plugins/rice/datatables/TableTools.js</value>
+        <value>krad/plugins/rice/datatables/jquery.dataTables.rowGrouping.js</value>
         <value>krad/plugins/jstree/jquery.jstree.js</value>
         <value>krad/plugins/validate/additional_validations.js</value>
         <value>krad/plugins/jqform/jquery.form.js</value>
@@ -80,16 +83,19 @@
         <value>krad/scripts/krad.variables.js</value>
         <value>krad/scripts/krad.message.js</value>
         <value>krad/scripts/krad.widget.js</value>
-        <value>krad/scripts/krad.initialize.js</value>
-        <value>krad/scripts/krad.ajax.js</value>
         <value>krad/scripts/krad.utility.js</value>
-        <value>krad/scripts/krad.validate.js</value>
+        <value>krad/scripts/krad.initialize.js</value>
+        <value>krad/scripts/krad.request.js</value>
+        <value>krad/scripts/krad.response.js</value>
+        <value>krad/scripts/krad.actions.js</value>
+        <value>krad/scripts/krad.validate.js</value-->
       </list>
     </property>
   </bean>
 
   <bean id="Uif-ClassicKnsTheme" abstract="true" parent="Uif-ClassicKnsTheme-parentBean"/>
   <bean id="Uif-ClassicKnsTheme-parentBean" parent="Uif-BaseTheme">
+    <property name="imageDirectory" value="@{#ConfigProperties['krad.externalizable.images.url']}kns/"/>
     <property name="cssFiles">
       <list merge="true">
         <value>krad/css/kns/theme-kns.css</value>
@@ -99,6 +105,7 @@
 
   <bean id="Uif-KradTheme" abstract="true" parent="Uif-KradTheme-parentBean"/>
   <bean id="Uif-KradTheme-parentBean" parent="Uif-BaseTheme">
+    <property name="imageDirectory" value="@{#ConfigProperties['krad.externalizable.images.url']}ks/"/>
     <property name="cssFiles">
       <list merge="true">
         <value>krad/css/ks/theme-krad.css</value>
@@ -112,7 +119,8 @@
   <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean"/>
   <bean id="Uif-View-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.View" scope="prototype" parent="Uif-ComponentBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/view/view.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/view/view.ftl"/>
+    <property name="templateName" value="uif_view"/>
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
     </property>
@@ -122,7 +130,6 @@
       </list>
     </property>
     <property name="renderBreadcrumbsInView" value="true"/>
-    <property name="onSubmitScript" value="createLoading(true);"/>
     <property name="viewTypeName" value="DEFAULT"/>
     <property name="viewName" value="default"/>
     <property name="viewHelperServiceClass"
@@ -138,6 +145,14 @@
     <property name="growlMessagingEnabled" value="true"/>
     <property name="growls">
       <bean parent="Uif-Growls"/>
+    </property>
+    <property name="navigationBlockUI">
+      <bean parent="Uif-BlockUI"
+            p:blockingImageSource="@{#ConfigProperties['krad.externalizable.images.url']}loading.gif"/>
+    </property>
+    <property name="refreshBlockUI">
+      <bean parent="Uif-BlockUI"
+            p:blockingImageSource="@{#ConfigProperties['krad.externalizable.images.url']}loader.gif"/>
     </property>
     <property name="header">
       <bean parent="Uif-ViewHeader"/>
@@ -171,10 +186,29 @@
 
   <!-- Common Views -->
 
+  <bean id="Uif-MessageView" parent="Uif-MessageView-parentBean"/>
+  <bean id="Uif-MessageView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.view.MessageView" parent="Uif-FormView">
+    <property name="page">
+      <bean parent="Uif-Page"/>
+    </property>
+    <property name="message">
+      <bean parent="Uif-Message">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>uif-applicationMessage</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="persistFormToSession" value="false"/>
+    <property name="breadcrumbs.render" value="false"/>
+  </bean>
 
   <bean id="Uif-Page" parent="Uif-Page-parentBean"/>
   <bean id="Uif-Page-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/page/page.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/pageGroup.ftl"/>
+    <property name="templateName" value="uif_pageGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-page</value>

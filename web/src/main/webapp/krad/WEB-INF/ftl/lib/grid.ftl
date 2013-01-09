@@ -1,19 +1,20 @@
 <#--
-  ~ Copyright 2006-2012 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
 
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <#macro grid items rowCssClasses=[] numberOfColumns=2 renderFirstRowHeader=false renderHeaderRow=false applyAlternatingRowStyles=false
 applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHeaderColumns=false>
 
@@ -24,13 +25,32 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
     <#local defaultCellWidth=100/numberOfColumns/>
 
     <#local colCount=0/>
+    <#local itemIndex=0/>
     <#local carryOverColCount=0/>
     <#local tmpCarryOverColCount=0/>
     <#local rowCount=0/>
+    <#local indexCount= 1/>
+    <#local splitter = ";"/>
+    <#local columnArray=[]/>
+    <#local columnLoopArray=""/>
 
-    <#list items as item>
+    <#local firstRow=true/>
+
+    <#list 1..numberOfColumns as i>
+        <#local columnArray = columnArray + [1] />
+    </#list>
+
+    <#local loopCounter = 0/>
+
+    <#list 0..100000 as i>
+        <#if (loopCounter >= items?size)>
+           <#break>
+        </#if>
+
+        <#local item = items[loopCounter] />
+        <#local loopCounter = loopCounter + 1/>
+        <#local columnIndex = (colCount % numberOfColumns)/>
         <#local colCount=colCount + 1/>
-        <#local firstRow=(item_index == 0)/>
 
         <#-- begin table row -->
         <#if (colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)>
@@ -58,52 +78,71 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
             <#local rowCount=rowCount + 1/>
         </#if>
 
-        <#-- build cells for row -->
-
-        <#-- skip column positions from previous rowspan -->
-        <#local skipColCount=carryOverColCount/>
-        <#if skipColCount gt 0>
-            <#list 1..skipColCount as i>
-                <#local colCount=colCount + 1/>
-                <#local carryOverColCount=carryOverColCount - 1/>
-
-                <#if (colCount % numberOfColumns) == 0>
-                  </tr><tr>
-                </#if>
-            </#list>
-        </#if>
-
-        <#-- determine cell width by using default or configured width -->
-        <#if item.width?has_content>
-            <#local cellWidth=item.width/>
+        <#-- determine cell width by using default or configured width and round off to two decimal places-->
+        <#if item.cellWidth?has_content>
+            <#local cellWidth=item.cellWidth />
         <#elseif applyDefaultCellWidths>
-            <#local cellWidth="${defaultCellWidth * item.colSpan}%"/>
+            <#local width= (defaultCellWidth * item.colSpan)?number?string("0.##") />
+            <#local cellWidth="${width}%"/>
         </#if>
 
         <#if cellWidth?has_content>
             <#local cellWidth="width=\"${cellWidth}\""/>
         </#if>
-    
+
         <#local singleCellRow=(numberOfColumns == 1) || (item.colSpan == numberOfColumns)/>
         <#local renderHeaderColumn=renderHeaderRow || (renderFirstRowHeader && firstRow)
                  || ((renderFirstCellHeader || renderAlternateHeader) && !singleCellRow)/>
 
-        <#if renderHeaderColumn>
-            <#if renderHeaderRow || (renderFirstRowHeader && firstRow)>
-              <#local headerScope="col"/>
+        <#-- build cells for row if value @ columnArray itemIndex = 1 -->
+        <#local index = columnArray[columnIndex]?number />
+
+        <#local cellClassAttr=""/>
+        <#if item.cellStyleClassesAsString?has_content>
+            <#local cellClassAttr="class=\"${item.cellStyleClassesAsString}\""/>
+        </#if>
+
+        <#local cellStyleAttr=""/>
+        <#if item.cellStyle?has_content>
+            <#local cellStyleAttr="style=\"${item.cellStyle}\""/>
+        </#if>
+
+        <#if (index == 1)>
+            <#if renderHeaderColumn>
+                <#if renderHeaderRow || (renderFirstRowHeader && firstRow)>
+                  <#local headerScope="col"/>
+                <#else>
+                  <#local headerScope="row"/>
+                </#if>
+
+                <th scope="${headerScope}" ${cellWidth!} colspan="${item.colSpan}"
+                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}>
+                    <@template component=item/>
+                </th>
             <#else>
-              <#local headerScope="row"/>
+                <td role="presentation" ${cellWidth!} colspan="${item.colSpan}"
+                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}>
+                    <@template component=item/>
+                </td>
             </#if>
 
-            <th scope="${headerScope}" ${cellWidth!} colspan="${item.colSpan}"
-                rowspan="${item.rowSpan}" ${attrBuild(item)}>
-                <@template component=item/>
-            </th>
+            <#local columnLoopArray = columnLoopArray + item.rowSpan + splitter />
+            <#local colCount=colCount + item.colSpan - 1/>
+
+            <#--skip the number of columns if colspan more than 1 and append the rowspan-->
+            <#if (item.colSpan > 1)>
+                <#list 1..item.colSpan - 1 as j>
+                    <#local jValue = (columnArray[columnIndex + j]?number)/>
+                    <#if (jValue > 1)>
+                        <#local jValue = (jValue -1)/>
+                    </#if>
+
+                    <#local columnLoopArray = columnLoopArray + jValue + splitter />
+                </#list>
+            </#if>
         <#else>
-            <td role="presentation" ${cellWidth!} colspan="${item.colSpan}"
-                rowspan="${item.rowSpan}" ${attrBuild(item)}>
-                <@template component=item/>
-            </td>
+            <#local loopCounter = (loopCounter - 1)/>
+            <#local columnLoopArray = columnLoopArray + (index - 1) + splitter />
         </#if>
 
         <#-- flip alternating flags -->
@@ -115,18 +154,15 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
             <#local renderFirstCellHeader=false/>
         </#if>
 
-        <#local colCount=colCount + item.colSpan - 1/>
-
-        <#-- set carry over count to hold positions for fields that span multiple rows -->
-        <#local tmpCarryOverColCount=tmpCarryOverColCount + item.rowSpan - 1/>
-
         <#-- end table row -->
-        <#if !item_has_next || (colCount % numberOfColumns) == 0>
+        <#if (colCount % numberOfColumns) == 0>
            </tr>
 
-           <#local carryOverColCount=carryOverColCount + tmpCarryOverColCount/>
-           <#local tmpCarryOverColCount=0/>
-        </#if>
-    </#list>
+           <#local firstRow=false/>
 
+           <#local columnArray = columnLoopArray?split(splitter) />
+           <#local columnLoopArray=""/>
+        </#if>
+
+    </#list>
 </#macro>

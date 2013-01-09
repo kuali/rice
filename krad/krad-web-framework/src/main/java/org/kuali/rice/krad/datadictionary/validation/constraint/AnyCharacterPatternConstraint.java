@@ -16,11 +16,16 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * Pattern for matching any printable character
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "anyCharacterPatternConstraint", parent="AnyCharacterPatternConstraint")
 public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstraint {
     protected boolean allowWhitespace = false;
     protected boolean omitNewline = false;
@@ -28,6 +33,7 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
     /**
      * @return allowWhitespace
      */
+    @BeanTagAttribute(name = "allowWhitespace")
     public boolean getAllowWhitespace() {
         return allowWhitespace;
     }
@@ -59,14 +65,15 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override
-    public String getLabelKey() {
-        String labelKey = super.getLabelKey();
+    public String getMessageKey() {
+        String labelKey = super.getMessageKey();
         if (StringUtils.isNotEmpty(labelKey)) {
             return labelKey;
         }
+
         if (!allowWhitespace) {
             return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "noWhitespace";
         } else {
@@ -74,6 +81,7 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
         }
     }
 
+    @BeanTagAttribute(name = "omitNewline")
     public boolean isOmitNewline() {
         return omitNewline;
     }
@@ -82,6 +90,7 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
      * When set to true, omit new line characters from the set of valid characters.  This flag
      * will only have an effect if the allowWhitespace flag is true, otherwise all whitespace
      * including new lines characters are omitted.
+     *
      * @param omitNewline
      */
     public void setOmitNewline(boolean omitNewline) {

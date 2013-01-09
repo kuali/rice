@@ -15,21 +15,19 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class MaintenanceExpandCollapseIT {
-    private Selenium selenium;
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class MaintenanceExpandCollapseIT extends KradMenuITBase {
 
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -37,21 +35,9 @@ public class MaintenanceExpandCollapseIT {
      * Verify expand and collapse all buttons appear
      */
     public void testVerifyExpandCollapse() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-        assertTrue(selenium.isElementPresent("//button[contains(@class, 'uif-expandDisclosuresButton')]"));
-        assertTrue(selenium.isElementPresent("//button[contains(@class, 'uif-collapseDisclosuresButton')]"));
+        gotoMenuLinkLocator();
+        assertTrue(isElementPresent("//button[contains(@class, 'uif-expandDisclosuresButton')]"));
+        assertTrue(isElementPresent("//button[contains(@class, 'uif-collapseDisclosuresButton')]"));
     }
 
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
 }

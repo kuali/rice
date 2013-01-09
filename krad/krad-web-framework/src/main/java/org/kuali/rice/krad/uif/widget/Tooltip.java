@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -29,12 +31,14 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags(
+        {@BeanTag(name = "tooltip", parent = "Uif-Tooltip"), @BeanTag(name = "tooltipHelp", parent = "Uif-TooltipHelp"),
+                @BeanTag(name = "tooltipFocus", parent = "Uif-TooltipFocus")})
 public class Tooltip extends WidgetBase {
 
     private String tooltipContent;
 
     private boolean onFocus;
-
     private boolean onMouseHover;
 
     public Tooltip() {
@@ -55,6 +59,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return String
      */
+    @BeanTagAttribute(name = "tooltipContent")
     public String getTooltipContent() {
         return tooltipContent;
     }
@@ -73,6 +78,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name = "onFocus")
     public boolean isOnFocus() {
         return onFocus;
     }
@@ -91,6 +97,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name = "onMouseHover")
     public boolean isOnMouseHover() {
         return onMouseHover;
     }

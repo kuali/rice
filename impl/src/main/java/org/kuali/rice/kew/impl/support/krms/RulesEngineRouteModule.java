@@ -67,7 +67,9 @@ public class RulesEngineRouteModule implements RouteModule {
     @Override
     public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception {
         EngineResults engineResults = executeRulesEngine(context, getRulesEngine());
-        processEngineResults(context, engineResults);
+        if (engineResults != null) {
+            processEngineResults(context, engineResults);
+        }
         return peopleFlowRouteModule.findActionRequests(context);
     }
 

@@ -34,7 +34,7 @@ public interface KualiRuleService {
      * Retrieves and instantiates the businessRulesClass associated with the event's document type (if any), and calls the
      * appropriate process* method of that businessRule for handling the given event type. This is a helper method that takes in the
      * generic KualiDocumentEvent class and determines which event call to make.
-     * 
+     *
      * @param event
      * @return true if no rule is applied, or all rules are applied successfully, false otherwise
      */
@@ -42,7 +42,7 @@ public interface KualiRuleService {
 
     /**
      * Builds a list containing ad hoc route person events appropriate for the context.
-     * 
+     *
      * @param document
      * @return List
      */
@@ -50,7 +50,7 @@ public interface KualiRuleService {
 
     /**
      * Builds a list containing ad hoc route workgroup events appropriate for the context.
-     * 
+     *
      * @param document
      * @return List
      */
@@ -58,7 +58,7 @@ public interface KualiRuleService {
 
     /**
      * Allows code in actions or business objects to directly access rule methods in the class.
-     * 
+     *
      * @param document
      * @param ruleInterface
      * @return BusinessRule

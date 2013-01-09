@@ -26,6 +26,7 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 
 /**
@@ -82,7 +83,19 @@ public class KewExportDataSet {
 	
 	public void populateExportDataSet(ExportDataSet exportDataSet) {
 		if (documentTypes != null && !documentTypes.isEmpty()) {
-			exportDataSet.addDataSet(DOCUMENT_TYPES, documentTypes);
+            /* 
+             * this is a terrible hack to fix a problem where not everything for document type is getting exported 
+             * This is caused because the KEWModuleService creates an EBO from the api DocumentTypeService, which doesn't contain
+             * all the data needed for exporting.
+             * 
+             * Sooo... we put this ugly code here until we can hope to remove EBOs from this project, or create a DocumentType dto class that 
+             * contains the information needed
+             */
+            List<DocumentType> correctDocumentTypes = new ArrayList<DocumentType>();
+            for (DocumentType docType : documentTypes) {
+                correctDocumentTypes.add(KEWServiceLocator.getDocumentTypeService().findById(docType.getDocumentTypeId()));
+            }
+			exportDataSet.addDataSet(DOCUMENT_TYPES, correctDocumentTypes);
 		}
 		if (groups != null && !groups.isEmpty()) {
 			exportDataSet.addDataSet(GROUPS, groups);

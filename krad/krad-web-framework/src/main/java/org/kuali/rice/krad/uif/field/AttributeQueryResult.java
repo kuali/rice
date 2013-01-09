@@ -34,11 +34,11 @@ public class AttributeQueryResult implements Serializable {
     private String resultMessageStyleClasses;
 
     private Map<String, String> resultFieldData;
-    private List<String> resultData;
+    private List<Object> resultData;
 
     public AttributeQueryResult() {
         resultFieldData = new HashMap<String, String>();
-        resultData = new ArrayList<String>();
+        resultData = new ArrayList<Object>();
     }
 
     /**
@@ -98,12 +98,11 @@ public class AttributeQueryResult implements Serializable {
     }
 
     /**
-     * Result data as a List of string objects for queries that
-     * return single field multiple values
+     * Result of an attribute query that will be sent back to the client
      *
-     * @return List<String> result data
+     * @return List<Object> result data
      */
-    public List<String> getResultData() {
+    public List<Object> getResultData() {
         return resultData;
     }
 
@@ -112,7 +111,7 @@ public class AttributeQueryResult implements Serializable {
      *
      * @param resultData
      */
-    public void setResultData(List<String> resultData) {
+    public void setResultData(List<Object> resultData) {
         this.resultData = resultData;
     }
 }

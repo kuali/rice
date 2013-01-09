@@ -27,35 +27,35 @@ public class PropertySerializerTrieNode implements PropertySerializabilityMetada
     private String pathString;
     private String propertyNameComponent;
     private PropertySerializability propertySerializability;
-    
+
     private List<PropertySerializerTrieNode> childNodes;
-    
+
     public PropertySerializerTrieNode(String pathString, String propertyNameComponent) {
         this.pathString = pathString;
         this.propertyNameComponent = propertyNameComponent;
         this.childNodes = null;
         this.propertySerializability = PropertySerializability.SERIALIZE_OBJECT;
     }
-    
+
     public void addChildNode(PropertySerializerTrieNode child) {
         if (childNodes == null) {
             childNodes = new ArrayList<PropertySerializerTrieNode>();
         }
         childNodes.add(child);
     }
-    
+
     /**
-     * The name of this property, relative to the parent node (i.e. the child node name relative to its parents). 
-     * 
+     * The name of this property, relative to the parent node (i.e. the child node name relative to its parents).
+     *
      * @return
      */
     public String getPropertyNameComponent() {
         return propertyNameComponent;
     }
-    
+
     /**
      * Retrieves the child node with the given name
-     * 
+     *
      * @param propertyNameComponent
      * @return
      */
@@ -71,14 +71,14 @@ public class PropertySerializerTrieNode implements PropertySerializabilityMetada
         }
         return null;
     }
-    
+
     /**
      * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityMetadata#getSerializableChildProperty(java.lang.String)
      */
     public PropertySerializabilityMetadata getSerializableChildProperty(String propertyNameComponent) {
         return getChildNode(propertyNameComponent);
     }
-    
+
     /**
      * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityMetadata#getPathString()
      */

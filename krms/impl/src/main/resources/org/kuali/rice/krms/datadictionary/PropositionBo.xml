@@ -51,8 +51,8 @@
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Proposition Id"/>
-  </bean>  
-  
+  </bean>
+
   <bean id="PropositionBo-description" parent="PropositionBo-description-parentBean"/>
   <bean id="PropositionBo-description-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
@@ -62,8 +62,8 @@
     </property>
     <property name="name" value="description"/>
     <property name="label" value="Description"/>
-  </bean>  
-  
+  </bean>
+
   <bean id="PropositionBo-typeId" parent="PropositionBo-typeId-parentBean"/>
   <bean id="PropositionBo-typeId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
@@ -74,7 +74,7 @@
     <property name="name" value="typeId"/>
     <property name="label" value="Proposition Type Id"/>
   </bean>
-    
+
   <bean id="PropositionBo-ruleId" parent="PropositionBo-ruleId-parentBean"/>
   <bean id="PropositionBo-ruleId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
@@ -85,7 +85,7 @@
     <property name="name" value="ruleId"/>
     <property name="label" value="Rule Id"/>
   </bean>
-    
+
   <bean id="PropositionBo-propositionTypeCode" parent="PropositionBo-propositionTypeCode-parentBean"/>
   <bean id="PropositionBo-propositionTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
@@ -96,58 +96,5 @@
     <property name="name" value="propositionTypeCode"/>
     <property name="label" value="Proposition Type Code"/>
   </bean>
-    
-    
-  <bean id="PropositionBo-LookupView" parent="Uif-LookupView">
-    <property name="headerText" value="Proposition Lookup" />
-    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.PropositionBo" />
-    <property name="criteriaFields">
-      <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="description" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="ruleId" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeId" />
-      </list>
-    </property>
-    <property name="resultFields">
-      <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="description" />
-        <bean parent="Uif-InputField" p:propertyName="ruleId" />
-        <bean parent="Uif-InputField" p:propertyName="typeId" />
-        <bean parent="Uif-InputField" p:propertyName="propositionTypeCode" />
-      </list>
-    </property>
-  </bean>
-<!--   
-  <bean id="PropositionBo-InquiryView" parent="Uif-InquiryView">
-    <property name="headerText" value="Rule Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.PropositionBo"/>
-    <property name="singlePageView" value="true"/>
-    <property name="items">
-        <list>
-            <bean parent="Uif-Page" p:id="page1">
-                <property name="items">
-                    <list>
-					  <bean parent="Uif-Disclosure-GridSection">
-					      <property name="layoutManager.numberOfColumns" value="2"/>
-					      <property name="items">
-					        <list>
-					          <bean parent="Uif-InputField" p:propertyName="id"/>
-					          <bean parent="Uif-InputField" p:propertyName="description"/>
-					          <bean parent="Uif-InputField" p:propertyName="ruleId"/>
-					          <bean parent="Uif-InputField" p:propertyName="typeId"/>
-					          <bean parent="Uif-InputField" p:propertyName="propositionTypeCode"/>
-					        </list>
-					      </property>
-					      <property name="headerText" value="Proposition Attributes"/>
-					  </bean>
-                    </list>
-                </property>
-            </bean>
-        </list>
-    </property>
-  </bean>
- -->  
 
 </beans>

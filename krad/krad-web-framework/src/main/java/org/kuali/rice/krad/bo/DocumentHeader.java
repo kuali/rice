@@ -30,7 +30,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
  * Business Object representing a document header. The document header contains metadata about a document.
  * This contains a reference to the template associated with the document.
  * This also provides the access to the underlying {@link WorkflowDocument} associated with this document header.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
@@ -48,13 +48,13 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
 	private String documentTemplateNumber;
     @Column(name="EXPLANATION")
 	private String explanation;
-    
+
     @Transient
     private WorkflowDocument workflowDocument;
 
     /**
      * Constructor - creates empty instances of dependent objects
-     * 
+     *
      */
     public DocumentHeader() {
         super();

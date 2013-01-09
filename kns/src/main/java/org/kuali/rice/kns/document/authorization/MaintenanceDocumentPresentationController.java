@@ -16,12 +16,14 @@
 package org.kuali.rice.kns.document.authorization;
 
 import org.kuali.rice.kns.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 
 import java.util.Set;
 
 public interface MaintenanceDocumentPresentationController extends InquiryOrMaintenanceDocumentPresentationController,
         org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationController {
+
+    @Override
 	public boolean canCreate(Class boClass);
 
 	public Set<String> getConditionallyReadOnlyPropertyNames(
@@ -29,7 +31,7 @@ public interface MaintenanceDocumentPresentationController extends InquiryOrMain
 
 	public Set<String> getConditionallyReadOnlySectionIds(
 			MaintenanceDocument document);
-	
+
 	public Set<String> getConditionallyRequiredPropertyNames(
 			MaintenanceDocument document);
 }

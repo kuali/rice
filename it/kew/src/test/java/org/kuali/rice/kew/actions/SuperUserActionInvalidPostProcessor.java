@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actions;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.postprocessor.*;
 import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
@@ -49,6 +50,16 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent event) throws Exception {
+        if (isDocumentPostProcessable(WorkflowDocumentFactory.loadDocument(getPrincipalId(USER_AUTH_ID), event.getDocumentId()))) {
+            return new ProcessDocReport(true, "");
+        }
+        throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
+    }
+
+    /**
+     * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
+     */
+    public ProcessDocReport afterActionTaken(ActionType performed, org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent event) throws Exception {
         if (isDocumentPostProcessable(WorkflowDocumentFactory.loadDocument(getPrincipalId(USER_AUTH_ID), event.getDocumentId()))) {
             return new ProcessDocReport(true, "");
         }

@@ -890,3 +890,7 @@ div.blockPage{
     z-index: 10101 !important;
     text-align: center;
 }
+
+.overlay-fixed{
+    opacity: 0.4 !important;
+}

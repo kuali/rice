@@ -21,14 +21,14 @@ import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import java.util.Collection;
 
 /**
- * This service detects whether there are any records that block the inactivation of a particular record 
- * 
+ * This service detects whether there are any records that block the inactivation of a particular record
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface InactivationBlockingDetectionService {
     /**
      * Determines whether there is ANY record in the relationship defined by the inactivationBlockingMetadata that prevents inactivation of blockedBo
-     * 
+     *
      * @param blockedBo a BO that is potentially inactivation blocked
      * @param inactivationBlockingMetadata
      * @return true iff there was a record that blocks the blockedBo using the metadata in inactivationBlockingMetadata
@@ -37,7 +37,7 @@ public interface InactivationBlockingDetectionService {
 
     /**
      * Lists all records in the relationship defined by the inactivationBlockingMetadata that prevents inactivation of blockedBo
-     * 
+     *
      * @param blockedBo a BO that is potentially inactivation blocked
      * @param inactivationBlockingMetadata
      * @return true iff there was a record that blocks the blockedBo using the metadata in inactivationBlockingMetadata

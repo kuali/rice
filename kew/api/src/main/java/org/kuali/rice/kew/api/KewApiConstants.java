@@ -18,6 +18,9 @@ package org.kuali.rice.kew.api;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.CoreConstants.Versions;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.doctype.DocumentTypePolicy;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,20 +128,25 @@ public final class KewApiConstants {
     public static final String INHERITED_CD = "I";
     public static final String INHERITED_LABEL = "Inherited";
 
-    public static final String DISAPPROVE_POLICY = "DISAPPROVE";
+    public static final String DISAPPROVE_POLICY = DocumentTypePolicy.DISAPPROVE.getCode();
     public static final String DISAPPROVE_POLICY_CANCEL_CD = "C";
-    public static final String ALLOW_UNREQUESTED_ACTION_POLICY = "ALLOW_UNREQUESTED_ACTION";
-    public static final String DEFAULT_APPROVE_POLICY = "DEFAULT_APPROVE";
-    public static final String INITIATOR_MUST_ROUTE_POLICY = "INITIATOR_MUST_ROUTE";
-    public static final String INITIATOR_MUST_SAVE_POLICY = "INITIATOR_MUST_SAVE";
-    public static final String INITIATOR_MUST_CANCEL_POLICY = "INITIATOR_MUST_CANCEL";
-    public static final String INITIATOR_MUST_BLANKET_APPROVE_POLICY = "INITIATOR_MUST_BLANKET_APPROVE";
-    public static final String USE_KEW_SUPERUSER_DOCHANDLER = "USE_KEW_SUPERUSER_DOCHANDLER";
-    public static final String SEND_NOTIFICATION_ON_SU_APPROVE_POLICY = "SEND_NOTIFICATION_ON_SU_APPROVE";
-    public static final String ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY = "ALLOW_SU_POSTPROCESSOR_OVERRIDE";
-    public static final String FAIL_ON_INACTIVE_GROUP_POLICY = "FAIL_ON_INACTIVE_GROUP";
-    public static final String ENROUTE_ERROR_SUPPRESSION_POLICY = "ENROUTE_ERROR_SUPPRESSION";
-    public static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE_POLICY = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";
+    public static final String ALLOW_UNREQUESTED_ACTION_POLICY = DocumentTypePolicy.ALLOW_UNREQUESTED_ACTION.getCode();
+    public static final String DEFAULT_APPROVE_POLICY = DocumentTypePolicy.DEFAULT_APPROVE.getCode();
+    public static final String INITIATOR_MUST_ROUTE_POLICY = DocumentTypePolicy.INITIATOR_MUST_ROUTE.getCode();
+    public static final String INITIATOR_MUST_SAVE_POLICY = DocumentTypePolicy.INITIATOR_MUST_SAVE.getCode();
+    public static final String INITIATOR_MUST_CANCEL_POLICY = DocumentTypePolicy.INITIATOR_MUST_CANCEL.getCode();
+    public static final String INITIATOR_MUST_BLANKET_APPROVE_POLICY = DocumentTypePolicy.INITIATOR_MUST_BLANKET_APPROVE.getCode();
+    public static final String USE_KEW_SUPERUSER_DOCHANDLER = DocumentTypePolicy.USE_KEW_SUPERUSER_DOCHANDLER.getCode();
+    public static final String SEND_NOTIFICATION_ON_SU_APPROVE_POLICY = DocumentTypePolicy.SEND_NOTIFICATION_ON_SU_APPROVE.getCode();
+    public static final String ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY = DocumentTypePolicy.ALLOW_SU_POSTPROCESSOR_OVERRIDE.getCode();
+    public static final String FAIL_ON_INACTIVE_GROUP_POLICY = DocumentTypePolicy.FAIL_ON_INACTIVE_GROUP.getCode();
+    public static final String ENROUTE_ERROR_SUPPRESSION_POLICY = DocumentTypePolicy.ENROUTE_ERROR_SUPPRESSION.getCode();
+    public static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE_POLICY = DocumentTypePolicy.REGENERATE_ACTION_REQUESTS_ON_CHANGE.getCode();
+    public static final String NOTIFY_PENDING_ON_RETURN_POLICY = DocumentTypePolicy.NOTIFY_PENDING_ON_RETURN.getCode();
+    public static final String NOTIFY_COMPLETED_ON_RETURN_POLICY = DocumentTypePolicy.NOTIFY_COMPLETED_ON_RETURN.getCode();
+    public static final String RECALL_NOTIFICATION_POLICY = DocumentTypePolicy.RECALL_NOTIFICATION.getCode();
+    public static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE_POLICY = DocumentTypePolicy.SEND_NOTIFICATION_ON_SU_DISAPPROVE.getCode();
+    public static final String SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION_POLICY = DocumentTypePolicy.SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION.getCode();
 
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";
@@ -281,6 +289,7 @@ public final class KewApiConstants {
         DOCUMENT_STATUSES.put(KewApiConstants.ROUTE_HEADER_INITIATED_CD, KewApiConstants.ROUTE_HEADER_INITIATED_LABEL);
         DOCUMENT_STATUSES.put(KewApiConstants.ROUTE_HEADER_PROCESSED_CD, KewApiConstants.ROUTE_HEADER_PROCESSED_LABEL);
         DOCUMENT_STATUSES.put(KewApiConstants.ROUTE_HEADER_SAVED_CD, KewApiConstants.ROUTE_HEADER_SAVED_LABEL);
+        DOCUMENT_STATUSES.put(DocumentStatus.RECALLED.getCode(), DocumentStatus.RECALLED.getLabel());
     }
 
     // below must be negative to be 30 days in the past... positive number will push date into future
@@ -371,7 +380,7 @@ public final class KewApiConstants {
     public static final String ROUTE_HEADER_ENROUTE_LABEL = "ENROUTE";
     /** The document is currently being routed. */
     public static final String ROUTE_HEADER_ENROUTE_CD = "R";
-    
+
     public static String UNKNOWN_STATUS = "";
 
     /** Actions Taken Constants **/
@@ -661,6 +670,7 @@ public final class KewApiConstants {
         ACTION_TAKEN_CD.put(KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS);
         ACTION_TAKEN_CD.put(KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY);
         ACTION_TAKEN_CD.put(KewApiConstants.ACTION_TAKEN_MOVE_CD, KewApiConstants.ACTION_TAKEN_MOVE);
+        ACTION_TAKEN_CD.put(ActionType.RECALL.getCode(), ActionType.RECALL.getLabel());
     }
 
     public static final String DOCUMENT_CONTENT_VERSION_1 = "1";
@@ -784,6 +794,8 @@ public final class KewApiConstants {
 
 	public static final int DEFAULT_TRANSACTION_TIMEOUT_SECONDS = 3600;
 
+    public static final int DELEGATE_RULE_LOOKUP_MAX_ROWS_RETURNED = 500;
+
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
 
     public static final String DAILY_EMAIL_CRON_EXPRESSION = "dailyEmail.cronExpression";
@@ -792,6 +804,7 @@ public final class KewApiConstants {
     public static final String WEEKLY_EMAIL_ACTIVE = "weeklyEmail.active";
 
     public static final String ACTION_LIST_NO_REFRESH = "ActionList.norefresh";
+    public static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";
 
 
     // receive future action request contants
@@ -869,13 +882,20 @@ public final class KewApiConstants {
 	public static final String ACTION_REQUEST_CD_DETAIL = "actionRequestCd";
 	public static final String ROUTE_NODE_NAME_DETAIL = "routeNodeName";
 	public static final String DOCUMENT_STATUS_DETAIL = "routeStatusCode";
+    public static final String APP_DOC_STATUS_DETAIL = "appDocStatus";
+
 
 	// Permissions
 
 	public static final String BLANKET_APPROVE_PERMISSION = "Blanket Approve Document";
 	public static final String AD_HOC_REVIEW_PERMISSION = "Ad Hoc Review Document";
 	public static final String ADMINISTER_ROUTING_PERMISSION = "Administer Routing for Document";
-	public static final String CANCEL_PERMISSION = "Cancel Document";
+    public static final String SUPER_USER_APPROVE_SINGLE_ACTION_REQUEST = "Super User Approve Single Action Request";
+    public static final String SUPER_USER_APPROVE_DOCUMENT = "Super User Approve Document";
+    public static final String SUPER_USER_DISAPPROVE_DOCUMENT = "Super User Disapprove Document";
+
+    public static final String CANCEL_PERMISSION = "Cancel Document";
+    public static final String RECALL_PERMISSION = "Recall Document";
 	public static final String INITIATE_PERMISSION = "Initiate Document";
 	public static final String ROUTE_PERMISSION = "Route Document";
 	public static final String SAVE_PERMISSION = "Save Document";

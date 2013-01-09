@@ -127,7 +127,7 @@
 		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="INTEGER" nullable="false"/>
 		<field-descriptor name="accountOwner" column="ACCT_OWNR" jdbc-type="VARCHAR" nullable="false"/>
 		<field-descriptor name="accountBalance" column="ACCT_BAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion" nullable="false"/>
-		<field-descriptor name="accountOpenDate" column="ACCT_OPN_DAT" jdbc-type="DATE" nullable="false"/>
+		<field-descriptor name="accountOpenDate" column="ACCT_OPN_DAT" jdbc-type="TIMESTAMP" nullable="false"/>
 		<field-descriptor name="accountState" column="ACCT_STAT" jdbc-type="VARCHAR" nullable="false"/>
 		<field-descriptor name="accountUpdateDateTime" column="ACCT_UPDATE_DT_TM" jdbc-type="TIMESTAMP" nullable="false"/>
 		<field-descriptor name="accountAwake" column="ACCT_AWAKE" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
@@ -151,5 +151,10 @@
 		<field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
 	</class-descriptor>-->
-	
+
+  <class-descriptor class="org.kuali.rice.krad.test.document.BOContainingPerson" table="KR_KIM_TEST_BO">
+    <field-descriptor name="boPrimaryKey" column="PK" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+  </class-descriptor>
+
 </descriptor-repository>

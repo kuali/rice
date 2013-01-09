@@ -21,6 +21,7 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
@@ -31,6 +32,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,6 +58,8 @@ import java.util.Map;
     Rule.Elements.RULE_EXTENSIONS,
     Rule.Elements.RULE_TEMPLATE_NAME,
     Rule.Elements.RULE_EXPRESSION_DEF,
+    Rule.Elements.FROM_DATE_VALUE,
+    Rule.Elements.TO_DATE_VALUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Rule
@@ -80,11 +84,21 @@ public final class Rule
     @XmlElement(name = Elements.DOC_TYPE_NAME, required = false)
     private final String docTypeName;
 
+    @Deprecated
     @XmlElement(name = Elements.FROM_DATE, required = false)
     private final DateTime fromDate;
 
+    @Deprecated
     @XmlElement(name = Elements.TO_DATE, required = false)
     private final DateTime toDate;
+
+    @XmlElement(name = Elements.FROM_DATE_VALUE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime fromDateValue;
+
+    @XmlElement(name = Elements.TO_DATE_VALUE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime toDateValue;
 
     @XmlElement(name = Elements.FORCE_ACTION, required = false)
     private final boolean forceAction;
@@ -123,6 +137,8 @@ public final class Rule
         this.docTypeName = null;
         this.fromDate = null;
         this.toDate = null;
+        this.fromDateValue = null;
+        this.toDateValue = null;
         this.forceAction = false;
         this.ruleResponsibilities = null;
         this.ruleExtensions = null;
@@ -140,6 +156,8 @@ public final class Rule
         this.docTypeName = builder.getDocTypeName();
         this.fromDate = builder.getFromDate();
         this.toDate = builder.getToDate();
+        this.fromDateValue = builder.getFromDate();
+        this.toDateValue = builder.getToDate();
         this.forceAction = builder.isForceAction();
         if (CollectionUtils.isNotEmpty(builder.getRuleResponsibilities())) {
             List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
@@ -201,12 +219,12 @@ public final class Rule
 
     @Override
     public DateTime getFromDate() {
-        return this.fromDate;
+        return this.fromDateValue == null ? this.fromDate : this.fromDateValue;
     }
 
     @Override
     public DateTime getToDate() {
-        return this.toDate;
+        return this.toDateValue == null ? this.toDate : this.toDateValue;
     }
 
     @Override
@@ -474,6 +492,8 @@ public final class Rule
         final static String DOC_TYPE_NAME = "docTypeName";
         final static String FROM_DATE = "fromDate";
         final static String TO_DATE = "toDate";
+        final static String FROM_DATE_VALUE = "fromDateValue";
+        final static String TO_DATE_VALUE = "toDateValue";
         final static String FORCE_ACTION = "forceAction";
         final static String RULE_RESPONSIBILITIES = "ruleResponsibilities";
         final static String RULE_RESPONSIBILITY = "ruleResponsibility";

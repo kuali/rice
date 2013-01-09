@@ -44,7 +44,13 @@ public class DefaultComparisonOperator implements EngineComparatorExtension, Str
             return 1;
         }
 
-        rhs = coerceRhs(lhs, rhs);
+        if (rhs instanceof String && !(lhs instanceof String)) {
+            rhs = coerceStringOperand(lhs, rhs.toString());
+        } else if (lhs instanceof String && !(rhs instanceof String)) {
+            lhs = coerceStringOperand(rhs, lhs.toString());
+        }
+
+
         if (ObjectUtils.equals(lhs, rhs)) {
             return 0;
         }
@@ -70,66 +76,67 @@ public class DefaultComparisonOperator implements EngineComparatorExtension, Str
 
     /**
      * 
-     * @param lhs
-     * @param rhs
+     * @param objectArg
+     * @param stringArg
      * @return Object
      * @throws IncompatibleTypeException
      */
-    private Object coerceRhs(Object lhs, Object rhs) {
-        if (lhs != null && rhs != null) {
-            if  (!lhs.getClass().equals(rhs.getClass()) && rhs instanceof String) {
-                rhs = coerceRhsHelper(lhs, rhs.toString(), Double.class, Float.class, Long.class, Integer.class);
+    private Object coerceStringOperand(Object objectArg, String stringArg) {
+        Object result = stringArg;
+        if (objectArg != null && stringArg != null) {
+            if  (!(objectArg instanceof String)) {
+                result = coerceHelper(objectArg, stringArg, Double.class, Float.class, Long.class, Integer.class, Boolean.class);
 
-                if (rhs instanceof String) { // was coercion successful?
-                    if (lhs instanceof BigDecimal) {
+                if (result instanceof String) { // was coercion successful?
+                    if (objectArg instanceof BigDecimal) {
                         try {
-                            rhs = BigDecimal.valueOf(Double.valueOf(rhs.toString()));
+                            result = BigDecimal.valueOf(Double.valueOf(stringArg.toString()));
                         } catch (NumberFormatException e) {
-                            throw new IncompatibleTypeException("Could not coerce String to BigDecimal" + this, rhs, lhs.getClass());
+                            throw new IncompatibleTypeException("Could not coerce String to BigDecimal" + this, stringArg, objectArg.getClass());
                         }
-                    } else if (lhs instanceof BigInteger) {
+                    } else if (objectArg instanceof BigInteger) {
                         try {
-                            rhs = BigInteger.valueOf(Long.valueOf(rhs.toString()));
+                            result = BigInteger.valueOf(Long.valueOf(stringArg.toString()));
                         } catch (NumberFormatException e) {
-                            throw new IncompatibleTypeException("Could not coerce String to BigInteger" + this, rhs, lhs.getClass());
+                            throw new IncompatibleTypeException("Could not coerce String to BigInteger" + this, stringArg, objectArg.getClass());
                         }
                     } else {
-                        throw new IncompatibleTypeException("Could not compare values for operator " + this, lhs, rhs.getClass());
+                        throw new IncompatibleTypeException("Could not compare values for operator " + this, objectArg, stringArg.getClass());
                     }
                 }
             }
         }
-        return rhs;
+        return result;
     }
 
     /**
      *
-     * @param lhs
-     * @param rhs
+     * @param objectArg
+     * @param stringArg
      * @param clazzes
-     * @return The object of one of the given types, whose value is rhs
+     * @return The object of one of the given types, whose value is stringArg
      */
-    private Object coerceRhsHelper(Object lhs, String rhs, Class<?> ... clazzes) {
+    private Object coerceHelper(Object objectArg, String stringArg, Class<?> ... clazzes) {
         for (Class clazz : clazzes) {
-            if (clazz.isInstance(lhs)) {
+            if (clazz.isInstance(objectArg)) {
                 try {
-                    return clazz.getMethod("valueOf", String.class).invoke(null, rhs);
+                    return clazz.getMethod("valueOf", String.class).invoke(null, stringArg);
                 } catch (NumberFormatException e) {
                     throw new IncompatibleTypeException("Could not coerce String to " +
-                            clazz.getSimpleName() + " " + this, rhs, lhs.getClass());
+                            clazz.getSimpleName() + " " + this, stringArg, objectArg.getClass());
                 } catch (NoSuchMethodException e) {
                     throw new IncompatibleTypeException("Could not coerce String to " +
-                            clazz.getSimpleName() + " " + this, rhs, lhs.getClass());
+                            clazz.getSimpleName() + " " + this, stringArg, objectArg.getClass());
                 } catch (InvocationTargetException e) {
                     throw new IncompatibleTypeException("Could not coerce String to " +
-                            clazz.getSimpleName() + " " + this, rhs, lhs.getClass());
+                            clazz.getSimpleName() + " " + this, stringArg, objectArg.getClass());
                 } catch (IllegalAccessException e) {
                     throw new IncompatibleTypeException("Could not coerce String to " +
-                            clazz.getSimpleName() + " " + this, rhs, lhs.getClass());
+                            clazz.getSimpleName() + " " + this, stringArg, objectArg.getClass());
                 }
             }
         }
-        return rhs;
+        return stringArg;
     }
 
     @Override

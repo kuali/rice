@@ -15,21 +15,19 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MaintenanceAddDeleteNoteIT {
-    private Selenium selenium;
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
 
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -37,63 +35,49 @@ public class MaintenanceAddDeleteNoteIT {
      * Verify we can add and delete a note
      */
     public void testVerifyAddDeleteNote() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-        selenium.click("css=#u168_col");
+        gotoMenuLinkLocator();
+        waitAndClick("css=div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
+        
 
         for (int second = 0;; second++) {
             if (second >= 15) {
                 fail("timeout");
             }
-
-            if (selenium.isElementPresent("css=#u221_add")) {
+            if (isElementPresent("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton")) {
                 break;
             }
 
             Thread.sleep(1000);
         }
 
-        selenium.click("id=u334_add_control");
-        selenium.type("id=u334_add_control", "Test note");
-        selenium.click("id=u282_add");
-
+        waitAndClick("name=newCollectionLines['document.notes'].noteText");
+        waitAndType("name=newCollectionLines['document.notes'].noteText", "Test note");
+        waitAndClick("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         for (int second = 0;; second++) {
             if (second >= 15) {
-                fail("timeout");
+                fail("timeout, https://jira.kuali.org/browse/KULRICE-8038");
             }
 
-            if (selenium.isElementPresent("name=document.notes[0].noteText")) {
+            if (isElementPresent("name=document.notes[0].noteText")) {
                 break;
             }
 
             Thread.sleep(1000);
         }
 
-        assertEquals("Test note", selenium.getText("name=document.notes[0].noteText"));
-        selenium.click("id=u280_line0");
+        assertEquals("Test note", getText("name=document.notes[0].noteText"));
+        waitAndClick("css=button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
 
         for (int second = 0;; second++) {
             if (second >= 15) {
                 fail("timeout");
             }
 
-            if (!selenium.isElementPresent("name=document.notes[0].noteText")) {
+            if (!isElementPresent("name=document.notes[0].noteText")) {
                 break;
             }
 
             Thread.sleep(1000);
         }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

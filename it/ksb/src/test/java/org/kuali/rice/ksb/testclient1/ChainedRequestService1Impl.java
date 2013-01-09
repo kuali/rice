@@ -28,7 +28,7 @@ public class ChainedRequestService1Impl implements ChainedRequestService {
 	public String sendRequest(String value) {
 		StringBuffer buffer = new StringBuffer(value);
 		buffer.append(CoreConfigHelper.getApplicationId()).append(",");
-		ChainedRequestService service = (ChainedRequestService) GlobalResourceLoader.getService(new QName("TestCl2", "chainedRequestService2"));
+		ChainedRequestService service = (ChainedRequestService) GlobalResourceLoader.getService(new QName("TestCl1", "chainedRequestService2"));
 		return service.sendRequest(buffer.toString());
 	}
 

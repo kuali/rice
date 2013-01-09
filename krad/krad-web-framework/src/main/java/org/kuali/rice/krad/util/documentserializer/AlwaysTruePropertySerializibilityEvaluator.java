@@ -18,7 +18,7 @@ package org.kuali.rice.krad.util.documentserializer;
 import org.kuali.rice.krad.document.Document;
 
 /**
- * This implementation of {@link PropertySerializabilityEvaluator} specifies that all properties of a document are serializable. 
+ * This implementation of {@link PropertySerializabilityEvaluator} specifies that all properties of a document are serializable.
  *
  */
 public class AlwaysTruePropertySerializibilityEvaluator extends PropertySerializabilityEvaluatorBase implements PropertySerializabilityEvaluator {
@@ -32,7 +32,7 @@ public class AlwaysTruePropertySerializibilityEvaluator extends PropertySerializ
 
     /**
      * Trivially returns true
-     * 
+     *
      * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator#isPropertySerializable(org.kuali.rice.krad.util.documentserializer.DocumentSerializationState, Object, java.lang.String, java.lang.Object)
      */
 	@Override

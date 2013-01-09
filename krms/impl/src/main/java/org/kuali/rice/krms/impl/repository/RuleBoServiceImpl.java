@@ -17,8 +17,10 @@ package org.kuali.rice.krms.impl.repository;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
 import java.util.*;
@@ -26,6 +28,7 @@ import java.util.*;
 public final class RuleBoServiceImpl implements RuleBoService {
 
 	private BusinessObjectService businessObjectService;
+    private KrmsAttributeDefinitionService attributeDefinitionService;
 
 	/**
 	 * This overridden creates a KRMS Rule in the repository
@@ -86,6 +89,14 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		// update the rule and create new attributes
 		businessObjectService.save(boToUpdate);
 	}
+
+    @Override
+    public void deleteRule(String ruleId) {
+        if (ruleId == null){ throw new IllegalArgumentException("ruleId is null"); }
+        final RuleDefinition existing = getRuleByRuleId(ruleId);
+        if (existing == null){ throw new IllegalStateException("the Rule to delete does not exists: " + ruleId);}
+        businessObjectService.delete(from(existing));
+    }
 
 	/**
 	 * This method retrieves a rule from the repository given the rule id.
@@ -183,7 +194,96 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		return bo;
 	}
 
-	/**
+    /**
+     * Converts a immutable {@link RuleDefinition} to its mutable {@link RuleBo} counterpart.
+     * @param rule the immutable object.
+     * @return a {@link RuleBo} the mutable RuleBo.
+     *
+     */
+    public RuleBo from(RuleDefinition rule) {
+        if (rule == null) { return null; }
+        RuleBo ruleBo = new RuleBo();
+        ruleBo.setName(rule.getName());
+        ruleBo.setDescription(rule.getDescription());
+        ruleBo.setNamespace(rule.getNamespace());
+        ruleBo.setTypeId(rule.getTypeId());
+        ruleBo.setPropId(rule.getPropId());
+        ruleBo.setProposition(PropositionBo.from(rule.getProposition()));
+        ruleBo.setId(rule.getId());
+        ruleBo.setActive(rule.isActive());
+        ruleBo.setVersionNumber(rule.getVersionNumber());
+        // TODO collections, etc.
+//        Set<RuleAttributeBo> attributes = buildAttributeBo(rule);
+        ruleBo.setAttributeBos(buildAttributeBoList(rule));
+        return ruleBo;
+    }
+
+    private Set<RuleAttributeBo> buildAttributeBo(RuleDefinition im) {
+        Set<RuleAttributeBo> attributes = new HashSet<RuleAttributeBo>();
+
+        // build a map from attribute name to definition
+        Map<String, KrmsAttributeDefinition> attributeDefinitionMap = new HashMap<String, KrmsAttributeDefinition>();
+
+        List<KrmsAttributeDefinition> attributeDefinitions = getAttributeDefinitionService().findAttributeDefinitionsByType(im.getTypeId());
+
+        for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
+            attributeDefinitionMap.put(attributeDefinition.getName(), attributeDefinition);
+        }
+
+        // for each entry, build a RuleAttributeBo and add it to the set
+        if (im.getAttributes() != null) {
+            for (Map.Entry<String,String> entry  : im.getAttributes().entrySet()) {
+                KrmsAttributeDefinition attrDef = attributeDefinitionMap.get(entry.getKey());
+
+                if (attrDef != null) {
+                    RuleAttributeBo attributeBo = new RuleAttributeBo();
+                    attributeBo.setRuleId( im.getId() );
+                    attributeBo.setAttributeDefinitionId(attrDef.getId());
+                    attributeBo.setValue(entry.getValue());
+                    attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attrDef));
+                    attributes.add( attributeBo );
+                } else {
+                    throw new RiceIllegalStateException("there is no attribute definition with the name '" +
+                            entry.getKey() + "' that is valid for the rule type with id = '" + im.getTypeId() +"'");
+                }
+            }
+        }
+        return attributes;
+    }
+
+    private List<RuleAttributeBo> buildAttributeBoList(RuleDefinition im) {
+        List<RuleAttributeBo> attributes = new LinkedList<RuleAttributeBo>();
+
+        // build a map from attribute name to definition
+        Map<String, KrmsAttributeDefinition> attributeDefinitionMap = new HashMap<String, KrmsAttributeDefinition>();
+
+        List<KrmsAttributeDefinition> attributeDefinitions = getAttributeDefinitionService().findAttributeDefinitionsByType(im.getTypeId());
+
+        for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
+            attributeDefinitionMap.put(attributeDefinition.getName(), attributeDefinition);
+        }
+
+        // for each entry, build a RuleAttributeBo and add it to the set
+        if (im.getAttributes() != null) {
+            for (Map.Entry<String,String> entry  : im.getAttributes().entrySet()) {
+                KrmsAttributeDefinition attrDef = attributeDefinitionMap.get(entry.getKey());
+
+                if (attrDef != null) {
+                    RuleAttributeBo attributeBo = new RuleAttributeBo();
+                    attributeBo.setRuleId( im.getId() );
+                    attributeBo.setAttributeDefinitionId(attrDef.getId());
+                    attributeBo.setValue(entry.getValue());
+                    attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attrDef));
+                    attributes.add( attributeBo );
+                } else {
+                    throw new RiceIllegalStateException("there is no attribute definition with the name '" +
+                            entry.getKey() + "' that is valid for the rule type with id = '" + im.getTypeId() +"'");
+                }
+            }
+        }
+        return attributes;
+    }
+    /**
 	 * Sets the businessObjectService attribute value.
 	 *
 	 * @param businessObjectService The businessObjectService to set.
@@ -195,7 +295,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	/**
 	 * Converts a List<RuleBo> to an Unmodifiable List<Rule>
 	 *
-	 * @param RuleBos a mutable List<RuleBo> to made completely immutable.
+	 * @param ruleBos a mutable List<RuleBo> to made completely immutable.
 	 * @return An unmodifiable List<Rule>
 	 */
 	public List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos) {
@@ -206,5 +306,13 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		}
 		return Collections.unmodifiableList(rules);
 	}
+
+
+    protected KrmsAttributeDefinitionService getAttributeDefinitionService() {
+        if (attributeDefinitionService == null) {
+            attributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
+        }
+        return attributeDefinitionService;
+    }
 
 }

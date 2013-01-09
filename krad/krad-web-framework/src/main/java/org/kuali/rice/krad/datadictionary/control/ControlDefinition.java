@@ -19,16 +19,16 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryDefinition;
 
 /**
  * ControlDefinition
- *
- *
  */
 @Deprecated
 public interface ControlDefinition extends DataDictionaryDefinition {
 
     public boolean isDatePicker();
+
     public void setDatePicker(boolean datePicker);
-    
+
     public boolean isExpandedTextArea();
+
     public void setExpandedTextArea(boolean eTextArea);
 
     /**
@@ -50,7 +50,7 @@ public interface ControlDefinition extends DataDictionaryDefinition {
      * @return true if this ControlDefinition instance represents an HTML select control
      */
     public boolean isSelect();
-    
+
     /**
      * @return true if this ControlDefinition instance represents an HTML select control
      */
@@ -67,7 +67,6 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isTextarea();
 
     /**
-     *
      * @return any Script associated with this control
      */
     public String getScript();
@@ -78,7 +77,6 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isCurrency();
 
     /**
-     *
      * @return true if the ControlDefinition instance represents a kualiUser control
      */
     public boolean isKualiUser();
@@ -92,7 +90,7 @@ public interface ControlDefinition extends DataDictionaryDefinition {
      * @return true if this ControlDefinition instance represents an HTML File control
      */
     public boolean isFile();
-    
+
     /**
      * @return true if the ControlDefinition instance represents a lookupHidden control
      */
@@ -102,22 +100,22 @@ public interface ControlDefinition extends DataDictionaryDefinition {
      * @return true if the ControlDefinition instance represents a lookupReadonly control
      */
     public boolean isLookupReadonly();
-    
+
     /**
      * @return true if the ControlDefinition instance represents a button control
      */
     public boolean isButton();
-    
+
     /**
      * @return true if the ControlDefinition instance represents a link control
      */
     public boolean isLink();
-    
+
     /**
      * @return true if the ControlDefinition instance represents a ranged (will render from and to fields) date control
-     */   
+     */
     public boolean isRanged();
-    
+
     /**
      * Sets the Class used to retrieve the complete range of values for radiobutton and select controls.
      *
@@ -126,12 +124,12 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public void setValuesFinderClass(String valuesFinderClass);
 
     /**
-     * Sets the BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for radiobutton and select controls.
+     * Sets the BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for
+     * radiobutton and select controls.
      *
      * @param businessObjectClass
      */
     public void setBusinessObjectClass(String businessObjectClass);
-
 
     /**
      * Sets the keyAttribute used for building radiobutton and select controls.
@@ -148,7 +146,7 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public void setLabelAttribute(String labelAttribute);
 
     public void setIncludeBlankRow(Boolean includeBlankRow);
-    
+
     /**
      * @param includeKeyInLabel whether to include the key with the label to be displayed or not.
      */
@@ -167,7 +165,8 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public String getValuesFinderClass();
 
     /**
-     * @return BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for radiobutton and select controls.
+     * @return BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for
+     *         radiobutton and select controls.
      */
     public String getBusinessObjectClass();
 
@@ -182,7 +181,7 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public String getLabelAttribute();
 
     public Boolean getIncludeBlankRow();
-    
+
     /**
      * Gets the flag that indicates if the labels the ValuesFinder class returns should include the key.
      *

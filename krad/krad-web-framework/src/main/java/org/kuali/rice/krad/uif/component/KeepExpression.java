@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation that can be used on a {@link Configurable} field to specify any expressions configured for
+ * Annotation that can be used on a {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean} field to specify any expressions configured for
  * that field should not be picked up and processed as normal, but left as the property value to be handled
  * by the component itself or some other process
  *

@@ -21,7 +21,8 @@
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
-    <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRAD-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
+    <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
+    <param name="context.names.app" override="false">${app.context.name}</param>
     <param name="http.port" override="false">8080</param>
     <param name="application.host" override="false">localhost</param>
     <param name="application.http.scheme" override="false">http</param>
@@ -112,12 +113,14 @@
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
     <param name="krad.url" override="false">${application.url}/kr-krad</param>
+    <param name="rice.server.krad.url" override="false">${rice.server.url}/kr-krad</param>
     <param name="krad.lookup.url" override="false">${krad.url}/lookup</param>
+    <param name="rice.server.krad.lookup.url" override="false">${rice.server.krad.url}/lookup</param>
     <param name="krad.inquiry.url" override="false">${krad.url}/inquiry</param>
     <param name="rice.server.url" override="false">${application.url}</param>
     <param name="workflow.url" override="false">${rice.server.url}/kew</param>
     <param name="workflow.documentsearch.base.url" override="false">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>
-
+    <param name="initiated.document.url" override="false">/initdocinfo?viewId=InitiatedDocumentView&amp;methodToCall=start</param>
     <param name="rice.default.soap.service" override="false">false</param>
 
     <param name="cas.context.name" override="false">cas</param>
@@ -146,6 +149,16 @@
     <param name="travel.externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
     <param name="krad.externalizable.images.url" override="false">${application.url}/krad/images/</param>
 
+    <!-- Defined images for specific file types (mime type codes) -->
+    <param name="attach.img.application/msword" override="false">word.gif</param>
+    <param name="attach.img.application/vnd.ms-excel" override="false">xls.gif</param>
+    <param name="attach.img.application/pdf" override="false">pdf.gif</param>
+    <param name="attach.img.application/xml" override="false">xml.gif</param>
+    <param name="attach.img.text/xml" override="false">xml.gif</param>
+    <param name="attach.img.application/vnd.openxmlformats-officedocument.wordprocessingml.document" override="false">word.gif</param>
+    <param name="attach.img.application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" override="false">xls.gif</param>
+    <param name="attach.img.default" override="false">clip.gif</param>
+
     <!-- Code Options: (dev|snd|unt|reg|stg|trn|prd) -->
     <param name="production.environment.code" override="false">prd</param>
      <!-- I think this is workflow related; everywhere it was specified as 'iu' so I'll just keep that for now -->
@@ -159,11 +172,11 @@
     <param name="mailing.list.batch" override="false">mailing.list.batch</param>
 
     <!-- TODO: remove once all KNS screen converted to KRAD -->
-    <param name="kns.javascript.files" override="false">krad/plugins/jquery/jquery-1.7.2.js,krad/plugins/postmsg/jquery.ba-postmessage.js,krad/plugins/cookie/jquery.cookie.js,kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
+    <param name="kns.javascript.files" override="false">krad/plugins/jquery/jquery-1.8.0.js,krad/plugins/cookie/jquery.cookie.js,kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
     <param name="kns.css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
 
     <param name="portal.css.files" override="false">rice-portal/css/portal.css,krad/plugins/fancybox/jquery.fancybox.css,krad/plugins/rice/textpopout/popoutTextarea.css,krad/plugins/jgrowl/jquery.jgrowl.css</param>
-    <param name="portal.javascript.files" override="false">krad/plugins/jquery/jquery-1.7.2.js,krad/plugins/postmsg/jquery.ba-postmessage.js,krad/plugins/cookie/jquery.cookie.js,krad/plugins/scrollto/jquery.scrollTo-1.4.2-min.js,krad/plugins/blockUI/jquery.blockUI.js,kr/scripts/my_common.js,krad/plugins/easydrag/jquery.easydrag.js,krad/plugins/fancybox/jquery.fancybox.pack.js,krad/plugins/easing/jquery.easing-1.3.pack.js,krad/plugins/jgrowl/jquery.jgrowl.js,rice-portal/scripts/portal.initialize.js</param>
+    <param name="portal.javascript.files" override="false">krad/plugins/jquery/jquery-1.8.0.js,krad/plugins/cookie/jquery.cookie.js,krad/plugins/scrollto/jquery.scrollTo-1.4.3-min.js,krad/plugins/blockUI/jquery.blockUI.js,kr/scripts/my_common.js,krad/plugins/fancybox/jquery.fancybox.pack.js,krad/plugins/easing/jquery.easing-1.3.pack.js,krad/plugins/jgrowl/jquery.jgrowl.js,rice-portal/scripts/portal.initialize.js,rice-portal/scripts/easyXDM/easyXDM.js</param>
     <param name="portal.title" override="false">Kuali Rice</param>
 
   	<!-- JPA-related parameters -->
@@ -216,8 +229,9 @@
 
     <!-- KNS -->
     <param name="kr.incident.mailing.list" override="false"></param>
+    <param name="kr.feedback.mailing.list" override="false"></param>
 
-    <param name="session.document.cache.size" override="false">100</param>
+  <param name="session.document.cache.size" override="false">100</param>
 
 
 	  <param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
@@ -237,6 +251,7 @@
 	  <param name="rice.ksb.registry.serviceUrl" override="false">${rice.server.url}/remoting/soap/ksb/v2_0/serviceRegistry</param>
 	  <param name="rice.ksb.serviceRegistry.security" override="false">true</param>
     <param name="rice.ksb.config.allowSelfSignedSSL" override="false">false</param>
+    <param name="rice.ksb.cxf.client.receiveTimeout" override="false">120000</param>
 
 	  <param name="dev.mode" override="false">false</param>
     <param name="bam.enabled" override="false">false</param>
@@ -386,7 +401,7 @@
 	<!-- KRAD -->
 	<param name="rice.kr.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
 	<param name="kr.url" override="false">${application.url}/kr</param>
-    <param name="kr.krad.url" override="false">${application.url}/kr-krad</param>
+  <param name="kr.krad.url" override="false">${application.url}/kr-krad</param>
 	<param name="kr.mode" override="false">LOCAL</param>
 	<param name="kradServer.datasource.jndi.location" override="false"></param>
 	<param name="kradApplication.datasource.jndi.location" override="false"></param>
@@ -395,9 +410,24 @@
 	<param name="load.data.dictionary" override="false">true</param>=
 	<param name="validate.data.dictionary" override="false">true</param>
 	<param name="validate.data.dictionary.ebo.references" override="false">true</param>
+  <param name="validate.views.onbuild" override="false">false</param>
 	<param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
   <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
   <param name="reload.data.dictionary.interval" override="false">3000</param>
+  <param name="maxNumberOfSessionForms" override="false">10</param>
+  <param name="krad.schema.classes">META-INF/krad_schemaclasses.xml</param>
+
+  <!-- list of resource bundle names (full qualified classnames) for application messages (default namespace
+   of KUALI), for messages associated with a namespace use the resourceBundleName configuration on the
+   corresponding ModuleDefinition -->
+  <param name="resourceBundleNames" override="false">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources</param>
+
+  <!-- indicates whether messages from an external repository should bea loaded for data dictionary beans. Enable if
+  external messages are being used for dictionary text. Disable if external messages are not, or to improve startup
+  time in development -->
+  <param name="load.dictionary.external.messages" override="false">true</param>
+
+  <param name="krad.ehcache.config.location" override="false">classpath:org/kuali/rice/krad/config/krad.ehcache.xml</param>
 
 	<!-- KCB -->
 	<param name="rice.kcb.struts.config.files" override="false">/kcb/WEB-INF/struts-config.xml</param>
@@ -422,7 +452,9 @@
 	<param name="rice.kew.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kew.expose.services.on.bus" override="false">true</param>
   <param name="rice.kew.ignoreUnknownPrincipalIds" override="false">false</param>
-
+	<!-- This is used to get the standalone version of WorkflowDocumentActionsService when kew.mode is REMOTE or THIN --> 
+	<param name="standalone.application.id" override="false">RICE</param>
+	
 	<!-- KIM -->
 	<param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
 	<param name="kim.url" override="false">${application.url}/kim</param>
@@ -435,10 +467,13 @@
   <param name="krms.mode" override="false">REMOTE</param>
   <param name="krms.soapExposedService.jaxws.security" override="false">true</param>
   <param name="rice.krms.ruleRepositoryService.secure" override="false">true</param>
+  <param name="rice.krms.functionRepositoryService.secure" override="false">true</param>
+  <param name="rice.krms.termRepositoryService.secure" override="false">true</param>
   <param name="rice.krms.krmsTypeRepositoryService.secure" override="false">true</param>
   <param name="rice.krms.notificationPeopleFlowActionTypeService.secure" override="false">true</param>
   <param name="rice.krms.approvalPeopleFlowActionTypeService.secure" override="false">true</param>
   <param name="rice.krms.expose.services.on.bus" override="false">true</param>
+  <param name="krms.ehcache.config.location" override="false">classpath:org/kuali/rice/krms/config/krms.ehcache.xml</param>
 
   <!-- LOCATION -->
 
@@ -449,6 +484,7 @@
   <param name="location.ehcache.config.location" override="false">classpath:org/kuali/rice/location/config/location.ehcache.xml</param>
 
 	<!-- KSB -->
+  <param name="rice.ksb.web.forceEnable" override="false">false</param>
 	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
 	<param name="ksb.url" override="false">${application.url}/ksb</param>
 	<param name="ksb.mode" override="false">REMOTE</param>
@@ -506,6 +542,8 @@
   <param name="rice.kew.peopleFlowService.secure" override="false">true</param>
   <param name="rice.kew.extensionRepositoryService.secure" override="false">true</param>
   <param name="rice.kew.immediateEmailReminderQueue.secure" override="false">true</param>
+  <param name="nonproduction.notification.mailing.list" override="false"></param>
+  <param name="real.notifications.enabled" override="false">true</param>
 
   <param name="rice.resourceloader.servicesToCache" override="false">
       userTransaction,
@@ -559,7 +597,6 @@
   <param name="rice.krad.componentPublishing.enabled" override="false">false</param>
   <param name="rice.krad.componentPublishing.delay" override="false">15000</param>
 
-
   <!-- Valid Date Formats -->
   <param name="STRING_TO_DATE_FORMATS" override="false">MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MM-dd-yyyy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss</param>
   <param name="STRING_TO_TIMESTAMP_FORMATS" override="false">MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss</param>
@@ -567,7 +604,6 @@
   <param name="TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE" override="false">MM/dd/yyyy hh:mm a</param>
   <param name="DATE_TO_STRING_FORMAT_FOR_FILE_NAME" override="false">yyyyMMdd</param>
   <param name="TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME" override="false">yyyyMMdd-HH-mm-ss-S</param>
-
 
   <param name="kew.ehcache.config.location" override="false">classpath:org/kuali/rice/kew/impl/config/kew.ehcache.xml</param>
 

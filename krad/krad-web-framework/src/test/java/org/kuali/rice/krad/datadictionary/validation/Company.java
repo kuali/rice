@@ -18,7 +18,7 @@ package org.kuali.rice.krad.datadictionary.validation;
 import java.util.List;
 
 /**
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Company {
@@ -26,21 +26,21 @@ public class Company {
 	private String id;
 	private String name;
 	private List<Address> locations;
-	
+
 	private Employee mainContact;
 	private Address mainAddress;
 	private List<Employee> employees;
 	private List<String> slogans;
-	
+
 
     public Company(){
 	}
-	
-	
+
+
 	/**
 	 * @return the id
 	 */
-	
+
 	public String getId() {
 		return this.id;
 	}
@@ -57,7 +57,7 @@ public class Company {
 	public Company(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * @return the name
 	 */
@@ -126,8 +126,8 @@ public class Company {
 	public void setMainContact(Employee mainContact) {
 		this.mainContact = mainContact;
 	}
-	
-	
+
+
     /**
      * @return the slogans
      */
@@ -142,5 +142,5 @@ public class Company {
     public void setSlogans(List<String> slogans) {
         this.slogans = slogans;
     }
-	
+
 }

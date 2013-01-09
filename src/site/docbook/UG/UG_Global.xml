@@ -1079,8 +1079,8 @@
                         <para>Go to the Jira Issue Navigator page to search through the issues that
                             have already been reported for Kuali Rice, looking for an issue like
                             yours: <link
-                                xlink:href="https://test.kuali.org/jira/secure/IssueNavigator.jspa?mode=show&amp;requestId=11791"
-                                >https://test.kuali.org/jira/secure/IssueNavigator.jspa?mode=show&amp;requestId=11791</link>.</para>
+                                xlink:href="https://jira.kuali.org"
+                                >https://jira.kuali.org</link>.</para>
                     </listitem>
                     <listitem>
                         <para>Find the Text Search section at the top of the of the Issue Navigator
@@ -1132,12 +1132,12 @@
                 issue with Kuali Rice and not with your application.)<orderedlist>
                     <listitem>
                         <para>Go to Kuali JIRA (<link
-                                xlink:href="https://test.kuali.org/jira/secure/CreateIssue!default.jspa"
-                                >https://test.kuali.org/jira/secure/CreateIssue!default.jspa</link>).
+                                xlink:href="https://jira.kuali.org/secure/CreateIssue!default.jspa"
+                                >https://jira.kuali.org/secure/CreateIssue!default.jspa</link>).
                         </para>
                     </listitem>
                     <listitem>
-                        <para>In the Project field, select Kuali Rice from the dropdown list.
+                        <para>In the Project field, select Kuali Rice Development from the dropdown list.
                         </para>
                     </listitem>
                     <listitem>

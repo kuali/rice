@@ -17,13 +17,21 @@ package org.kuali.rice.krad.datadictionary;
 
 import no.geosoft.cc.io.FileListener;
 import no.geosoft.cc.io.FileMonitor;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -32,7 +40,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Extends the DataDictionary to add reloading of changed dictionary files
@@ -51,13 +62,17 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReloadingDataDictionary extends DataDictionary implements FileListener, URLMonitor.URLContentChangedListener {
+public class ReloadingDataDictionary extends DataDictionary implements FileListener, URLMonitor.URLContentChangedListener, ApplicationContextAware {
     private static final Log LOG = LogFactory.getLog(DataDictionary.class);
 
     private static final String CLASS_DIR_CONFIG_PARM = "reload.data.dictionary.classes.dir";
     private static final String SOURCE_DIR_CONFIG_PARM = "reload.data.dictionary.source.dir";
     private static final String INTERVAL_CONFIG_PARM = "reload.data.dictionary.interval";
 
+    private Map<String, String> fileToNamespaceMapping;
+    private Map<String, String> urlToNamespaceMapping;
+    
+    private FileMonitor dictionaryFileMonitor;
     private URLMonitor dictionaryUrlMonitor;
 
     public ReloadingDataDictionary() {
@@ -83,38 +98,50 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
         // interval to poll for changes in milliseconds
         int reloadInterval = Integer.parseInt(configurationService.getPropertyValueAsString(INTERVAL_CONFIG_PARM));
 
-        FileMonitor dictionaryFileMonitor = new FileMonitor(reloadInterval);
+        dictionaryFileMonitor = new FileMonitor(reloadInterval);
+        dictionaryFileMonitor.addListener(this);
 
         dictionaryUrlMonitor = new URLMonitor(reloadInterval);
         dictionaryUrlMonitor.addListener(this);
 
-        // need to copy the configFileLocations list here because it gets
-        // cleared out after processing by super
-        List<String> configLocations = new ArrayList<String>(configFileLocations);
-
         super.parseDataDictionaryConfigurationFiles(allowConcurrentValidation);
-        for (String configLocation : configLocations) {
-            Resource classFileResource = getFileResource(configLocation);
-            try {
-                if (classFileResource.getURI().toString().startsWith("jar:")) {
-                    LOG.debug("Monitoring dictionary file at URI: " + classFileResource.getURI().toString());
-                    dictionaryUrlMonitor.addURI(classFileResource.getURL());
-                } else {
-                    String filePathClassesDir = classFileResource.getFile().getAbsolutePath();
-                    String sourceFilePath = StringUtils.replace(filePathClassesDir, classesDir, sourceDir);
-                    File dictionaryFile = new File(filePathClassesDir);
-                    if (dictionaryFile.exists()) {
-                        LOG.debug("Monitoring dictionary file: " + dictionaryFile.getName());
-                        dictionaryFileMonitor.addFile(dictionaryFile);
+
+        // need to hold mappings of file/url to namespace so we can correctly add beans to the associated
+        // namespace when reloading the resource
+        fileToNamespaceMapping = new HashMap<String, String>();
+        urlToNamespaceMapping = new HashMap<String, String>();
+
+        // add listener for each dictionary file
+        for (Map.Entry<String, List<String>> moduleDictionary : moduleDictionaryFiles.entrySet()) {
+            String namespace = moduleDictionary.getKey();
+            List<String> configLocations = moduleDictionary.getValue();
+
+            for (String configLocation : configLocations) {
+                Resource classFileResource = getFileResource(configLocation);
+
+                try {
+                    if (classFileResource.getURI().toString().startsWith("jar:")) {
+                        LOG.trace("Monitoring dictionary file at URI: " + classFileResource.getURI().toString());
+
+                        dictionaryUrlMonitor.addURI(classFileResource.getURL());
+                        urlToNamespaceMapping.put(classFileResource.getURL().toString(), namespace);
+                    } else {
+                        String filePathClassesDir = classFileResource.getFile().getAbsolutePath();
+                        String sourceFilePath = StringUtils.replace(filePathClassesDir, classesDir, sourceDir);
+
+                        File dictionaryFile = new File(filePathClassesDir);
+                        if (dictionaryFile.exists()) {
+                            LOG.trace("Monitoring dictionary file: " + dictionaryFile.getName());
+
+                            dictionaryFileMonitor.addFile(dictionaryFile);
+                            fileToNamespaceMapping.put(dictionaryFile.getAbsolutePath(), namespace);
+                        }
                     }
+                } catch (Exception e) {
+                    LOG.info("Exception in picking up dictionary file for monitoring:  " + e.getMessage(), e);
                 }
-            } catch (Exception e) {
-                LOG.info("Exception in picking up dictionary file for monitoring:  " + e.getMessage(), e);
             }
         }
-
-        // add the dictionary as a listener for file changes
-        dictionaryFileMonitor.addListener(this);
     }
 
     /**
@@ -127,15 +154,22 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
     public void fileChanged(File file) {
         LOG.info("reloading dictionary configuration for " + file.getName());
         try {
+            List<String> beforeReloadBeanNames = Arrays.asList(ddBeans.getBeanDefinitionNames());
+            
             Resource resource = new FileSystemResource(file);
             xmlReader.loadBeanDefinitions(resource);
+            
+            List<String> afterReloadBeanNames = Arrays.asList(ddBeans.getBeanDefinitionNames());
+            
+            List<String> addedBeanNames = ListUtils.removeAll(afterReloadBeanNames, beforeReloadBeanNames);
+            String namespace = KRADConstants.DEFAULT_NAMESPACE;
+            if (fileToNamespaceMapping.containsKey(file.getAbsolutePath())) {
+                namespace = fileToNamespaceMapping.get(file.getAbsolutePath());
+            }
 
-            UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
-            factoryPostProcessor.postProcessBeanFactory(ddBeans);
+            ddIndex.addBeanNamesToNamespace(namespace, addedBeanNames);
 
-            // indexing
-            ddIndex.run();
-            uifIndex.run();
+            performDictionaryPostProcessing(true);
         } catch (Exception e) {
             LOG.info("Exception in dictionary hot deploy: " + e.getMessage(), e);
         }
@@ -147,19 +181,42 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
             InputStream urlStream = url.openStream();
             InputStreamResource resource = new InputStreamResource(urlStream);
 
+            List<String> beforeReloadBeanNames = Arrays.asList(ddBeans.getBeanDefinitionNames());
+            
             int originalValidationMode = xmlReader.getValidationMode();
             xmlReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_XSD);
             xmlReader.loadBeanDefinitions(resource);
             xmlReader.setValidationMode(originalValidationMode);
+            
+            List<String> afterReloadBeanNames = Arrays.asList(ddBeans.getBeanDefinitionNames());
+            
+            List<String> addedBeanNames = ListUtils.removeAll(afterReloadBeanNames, beforeReloadBeanNames);
+            String namespace = KRADConstants.DEFAULT_NAMESPACE;
+            if (urlToNamespaceMapping.containsKey(url.toString())) {
+                namespace = urlToNamespaceMapping.get(url.toString());
+            }
 
-            UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
-            factoryPostProcessor.postProcessBeanFactory(ddBeans);
+            ddIndex.addBeanNamesToNamespace(namespace, addedBeanNames);
 
-            // re-index
-            ddIndex.run();
-            uifIndex.run();
+            performDictionaryPostProcessing(true);
         } catch (Exception e) {
             LOG.info("Exception in dictionary hot deploy: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        // register a context close handler
+        if (applicationContext instanceof ConfigurableApplicationContext) {
+            ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
+            context.addApplicationListener(new ApplicationListener<ContextClosedEvent>() {
+                @Override
+                public void onApplicationEvent(ContextClosedEvent e) {
+                    LOG.info("Context '" + e.getApplicationContext().getDisplayName() +
+                            "' closed, shutting down URLMonitor scheduler");
+                    dictionaryUrlMonitor.shutdownScheduler();
+                }
+            });
         }
     }
 }

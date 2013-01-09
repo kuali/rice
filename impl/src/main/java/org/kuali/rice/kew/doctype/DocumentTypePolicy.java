@@ -21,6 +21,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
 
+import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
 
 /**
  * Model bean representing a policy of a document type.
@@ -90,15 +91,15 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
     }
     
     public boolean isAllowUnrequestedAction() {
-        return KewApiConstants.ALLOW_UNREQUESTED_ACTION_POLICY.equals(this.getPolicyName());
+        return ALLOW_UNREQUESTED_ACTION.equals(this.getPolicyName());
     }
 
     public boolean isDefaultApprove() {
-        return KewApiConstants.DEFAULT_APPROVE_POLICY.equals(this.getPolicyName());
+        return DEFAULT_APPROVE.equals(this.getPolicyName());
     }
 
     public boolean isDisApprove() {
-        return KewApiConstants.DISAPPROVE_POLICY.equals(this.getPolicyName());
+        return DISAPPROVE.getCode().equals(this.getPolicyName());
     }
 
     public String getDocumentTypeId() {
@@ -123,9 +124,9 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
          * with serialization compatibility issues (if any).
          * So instead, let's just be sure to fail-fast.
          */
-        DocumentTypePolicyEnum policy = DocumentTypePolicyEnum.lookup(policyName);
-        this.policyName = policy.getName();
-        this.getDocumentTypePolicyId().setPolicyName(policy.getName());
+        org.kuali.rice.kew.api.doctype.DocumentTypePolicy policy = fromCode(policyName);
+        this.policyName = policy.getCode();
+        this.getDocumentTypePolicyId().setPolicyName(policy.getCode());
     }
 
     public Boolean getPolicyValue() {

@@ -30,7 +30,6 @@
     </property>
     <property name="viewTypeName" value="INQUIRY"/>
     <property name="viewHelperServiceClass" value="org.kuali.rice.krad.inquiry.InquirableImpl"/>
-    <property name="persistFormToSession" value="false"/>
     <property name="presentationControllerClass"
               value="org.kuali.rice.krad.inquiry.InquiryViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.inquiry.InquiryViewAuthorizerBase"/>
@@ -74,15 +73,14 @@
     <property name="items">
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="export" p:actionLabel="export"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}"
-              p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);"/>
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}" p:disableBlocking="true"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToPrevious" p:actionLabel="Cancel"
-              p:render="@{#view.renderedInLightBox and formHistory != null and !formHistory?.historyEntries?.empty}"/>
+              p:render="@{#form.renderedInLightBox and formHistory != null and !formHistory?.historyEntries?.empty}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToHub" p:actionLabel="Home"
-              p:render="@{#view.renderedInLightBox and formHistory != null and (formHistory?.historyEntries?.size() > 1)}"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#view.renderedInLightBox}"
+              p:render="@{#form.renderedInLightBox and formHistory != null and (formHistory?.historyEntries?.size() > 1)}"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
               p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{!#view.renderedInLightBox}"
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{!#form.renderedInLightBox}"
               p:onClickScript="e.preventDefault();window.close();return false;"/>
       </list>
     </property>

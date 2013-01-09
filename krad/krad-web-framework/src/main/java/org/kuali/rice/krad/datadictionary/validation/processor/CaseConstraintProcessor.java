@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
@@ -34,6 +31,9 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * CaseConstraintProcessor processes 'case constraints', which are constraints that are imposed only in specific cases
  *
@@ -46,7 +46,9 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
     private static final String CONSTRAINT_NAME = "case constraint";
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult,
+     *      Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint,
+     *      org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
      */
     @Override
     public ProcessorResult process(DictionaryValidationResult result, Object value, CaseConstraint caseConstraint,
@@ -115,6 +117,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
         if (ValidationUtils.hasText(wc.getValuePath())) {
             Object whenValue = null;
 
+            //String originalName = attributeValueReader.getAttributeName();
             AttributeValueReader whenValueReader = getChildAttributeValueReader(wc.getValuePath(),
                     attributeValueReader);
             whenValue = whenValueReader.getValue(whenValueReader.getAttributeName());
@@ -123,6 +126,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
                     caseConstraint.isCaseSensitive(), dateTimeService) && null != wc.getConstraint()) {
                 constraints.add(wc.getConstraint());
             }
+            //whenValueReader.setAttributeName(originalName);
         } else {
             List<Object> whenValueList = wc.getValues();
 
@@ -161,7 +165,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
             AttributeValueReader attributeValueReader) throws AttributeValidationException {
         String[] lookupPathTokens = ValidationUtils.getPathTokens(key);
 
-        AttributeValueReader localAttributeValueReader = attributeValueReader;
+        AttributeValueReader localAttributeValueReader = attributeValueReader.clone();
         for (int i = 0; i < lookupPathTokens.length; i++) {
             for (Constrainable definition : localAttributeValueReader.getDefinitions()) {
                 String attributeName = definition.getName();

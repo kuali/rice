@@ -1458,6 +1458,9 @@
 					_fnInitComplete( oSettings );
 				}
 			}
+            /* Kuali customization */
+            $(oSettings.oInstance).trigger('dataTables.tableDraw', oSettings);
+            /* end Kuali customization */
 		}
 		
 		
@@ -2430,20 +2433,26 @@
 				$(n[i]).html( sOut );
 			}
 		}
-		
-		
+
 		function _fnInfoMacros ( oSettings, str )
 		{
-			var
-				iStart = oSettings._iDisplayStart+1,
-				sStart = oSettings.fnFormatNumber( iStart ),
+            /* Kuali customization - change the start value for when an add line is in the table - KULRICE-8246*/
+			var iStart = oSettings._iDisplayStart+1,
 				iEnd = oSettings.fnDisplayEnd(),
 				sEnd = oSettings.fnFormatNumber( iEnd ),
 				iTotal = oSettings.fnRecordsDisplay(),
 				sTotal = oSettings.fnFormatNumber( iTotal ),
 				iMax = oSettings.fnRecordsTotal(),
 				sMax = oSettings.fnFormatNumber( iMax );
-		
+
+            var iCurrentPage = Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
+            if ($(oSettings.nTable).hasClass("uif-hasAddLine") && iCurrentPage > 1) {
+                iStart = oSettings._iDisplayStart;
+            }
+            var	sStart = oSettings.fnFormatNumber( iStart )
+
+            /* End Kuali customization */
+
 			// When infinite scrolling, we are always starting at 1. _iDisplayStart is used only
 			// internally
 			if ( oSettings.oScroll.bInfinite )
@@ -2801,11 +2810,19 @@
 			
 			if ( typeof mAction === "number" )
 			{
-				oSettings._iDisplayStart = mAction * oSettings._iDisplayLength;
-				if ( oSettings._iDisplayStart > oSettings.fnRecordsDisplay() )
+                oSettings._iDisplayStart = mAction * oSettings._iDisplayLength;
+
+                // Kuali customization - allow for add lines
+                var start = oSettings._iDisplayStart;
+                if (!$(oSettings.nTable).hasClass("uif-hasAddLine")) {
+                    start = start + 1;
+                }
+
+				if ( start > oSettings.fnRecordsDisplay() )
 				{
 					oSettings._iDisplayStart = 0;
 				}
+                // End Kuali customization
 			}
 			else if ( mAction == "first" )
 			{
@@ -2855,7 +2872,7 @@
 				_fnLog( oSettings, 0, "Unknown paging action: "+mAction );
 			}
 			$(oSettings.oInstance).trigger('page', oSettings);
-			
+            jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 			return iOldStart != oSettings._iDisplayStart;
 		}
 		
@@ -5444,6 +5461,13 @@
 				_fnReDraw( oSettings );
 			}
 		};
+
+
+        this.fnGetSettings = function( )
+        {
+            var oSettings = _fnSettingsFromNode( this[DataTable.ext.iApiIndex] );
+            return oSettings;
+        };
 		
 		
 		/**
@@ -5779,7 +5803,61 @@
 			
 			return nNewRow;
 		};
-		
+
+        /* Kuali customization - this method allows us to invoke the footer callback directly instead of redrawing */
+        this.fnCallFooterCallback = function(){
+            var oSettings = _fnSettingsFromNode( this[DataTable.ext.iApiIndex] );
+            _fnCallbackFire( oSettings, 'aoFooterCallback', 'footer', [ $(oSettings.nTFoot).children('tr')[0],
+                _fnGetDataMaster( oSettings ), oSettings._iDisplayStart, oSettings.fnDisplayEnd(), oSettings.aiDisplay ] );
+        }
+
+        /* Kuali customization begin */
+        /**
+         * Kuali custom method, same as fnOpen except takes in a jqObject instead of html to detach
+         * and attach to the row instead
+         * @param nTr
+         * @param jqObject
+         * @param sClass
+         */
+        this.fnOpenCustom = function( nTr, jqObject, sClass )
+        {
+            /* Find settings from table node */
+            var oSettings = _fnSettingsFromNode( this[DataTable.ext.iApiIndex] );
+
+            /* Check that the row given is in the table */
+            var nTableRows = _fnGetTrNodes( oSettings );
+            if ( $.inArray(nTr, nTableRows) === -1 )
+            {
+                return;
+            }
+
+            /* the old open one if there is one */
+            this.fnClose( nTr );
+
+            var nNewRow = document.createElement("tr");
+            var nNewCell = document.createElement("td");
+            nNewRow.appendChild( nNewCell );
+            nNewCell.className = sClass;
+            nNewRow.className = "detailsRow";
+            nNewCell.colSpan = _fnVisbleColumns( oSettings );
+
+            jQuery(nNewCell).append(jqObject.detach());
+
+            /* If the nTr isn't on the page at the moment - then we don't insert at the moment */
+            var nTrs = $('tr', oSettings.nTBody);
+            if ( $.inArray(nTr, nTrs) != -1  )
+            {
+                $(nNewRow).insertAfter(nTr);
+            }
+
+            oSettings.aoOpenRows.push( {
+                "nTr": nNewRow,
+                "nParent": nTr
+            } );
+
+            return nNewRow;
+        };
+		/* Kuali customization end */
 		
 		/**
 		 * Change the pagination - provides the internal logic for pagination in a simple API 
@@ -5991,8 +6069,13 @@
 			_fnSortAttachListener( _fnSettingsFromNode( this[DataTable.ext.iApiIndex] ), nNode, iColumn,
 			 	fnCallback );
 		};
-		
-		
+
+
+        /*
+         * Kuali Customization
+         *
+         * This function was changed to be handle updating cells with objects
+         */
 		/**
 		 * Update a table cell or row - this method will accept either a single value to
 		 * update the cell with, an array of values with one element for each column or
@@ -6033,7 +6116,12 @@
 				}
 				oSettings.__fnUpdateDeep = undefined;
 			}
-			else if ( oSettings.__fnUpdateDeep === undefined && mData !== null && typeof mData === 'object' )
+            /*
+             * Kuali Customization
+             *
+             * Add 'iColumn == null' check
+             */
+			else if ( oSettings.__fnUpdateDeep === undefined && mData !== null && typeof mData === 'object' && iColumn == null)
 			{
 				/* Object update - update the whole row - assume the developer gets the object right */
 				oSettings.aoData[iRow]._aData = $.extend( true, {}, mData );
@@ -6050,7 +6138,7 @@
 				/* Individual cell update */
 				_fnSetCellData( oSettings, iRow, iColumn, mData );
 				sDisplay = _fnGetCellData( oSettings, iRow, iColumn, 'display' );
-				
+
 				var oCol = oSettings.aoColumns[iColumn];
 				if ( oCol.fnRender !== null )
 				{
@@ -6060,11 +6148,20 @@
 						_fnSetCellData( oSettings, iRow, iColumn, sDisplay );
 					}
 				}
-				
-				if ( oSettings.aoData[iRow].nTr !== null )
+
+                /* Kuali customization - changed meaning of bRedraw to include omitting the redraw of the cell
+                 * content itself
+                 */
+				if ( (bRedraw || bRedraw === undefined) && oSettings.aoData[iRow].nTr !== null )
 				{
 					/* Do the actual HTML update */
-					_fnGetTdNodes( oSettings, iRow )[iColumn].innerHTML = sDisplay;
+                    /*
+                     * Kuali Customization
+                     *
+                     * Use append to allow for objects
+                     */
+//					_fnGetTdNodes( oSettings, iRow )[iColumn].innerHTML = sDisplay;
+                    jQuery(_fnGetTdNodes( oSettings, iRow )[iColumn]).append(sDisplay);
 				}
 			}
 			
@@ -11191,7 +11288,7 @@
          * KULRICE-6959
          */
         "subtractAddLineRow": function (recordCount) {
-            if ($(this.nTable).find("[class ~= 'uif-collectionAddItem']").length != 0) {
+            if ($(this.nTable).hasClass("uif-hasAddLine")) {
                 return recordCount - 1;
             } else {
                 return recordCount;
@@ -11570,6 +11667,11 @@
 				var iPageCount = DataTable.ext.oPagination.iFullNumbersShowPages;
 				var iPageCountHalf = Math.floor(iPageCount / 2);
 				var iPages = Math.ceil((oSettings.fnRecordsDisplay()) / oSettings._iDisplayLength);
+
+                /* Kuali customization - change the total pages when an add line is in the table - KULRICE-8246 */
+                if ($(oSettings.nTable).hasClass("uif-hasAddLine")) {
+                    iPages = Math.ceil(((oSettings.fnRecordsDisplay()) + 1) / oSettings._iDisplayLength);
+                }
 				var iCurrentPage = Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
 				var sList = "";
 				var iStartButton, iEndButton, i, iLen;

@@ -16,20 +16,21 @@
 package org.kuali.rice.krad.datadictionary;
 
 /**
- * Performs overrides on properties of fields in a Data Dictionary bean. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * Performs overrides on properties of fields in a Data Dictionary bean.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface FieldOverride {
-	/**
+    /**
      * Return the property name to perform the override.
+     *
      * @return
      */
     public String getPropertyName();
+
     /**
      * perform the override.
-     * 
+     *
      * @param bean
      * @param property
      * @return

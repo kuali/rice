@@ -34,12 +34,12 @@ public class ModuleValuesFinder extends KeyValuesBase {
         keyValues.add(new ConcreteKeyValue("", ""));
         //keyValues.add(getKeyValue(RiceConstants.CROSS_MODULE_CODE, RiceConstants.CROSS_MODULE_NAME));
         for (ModuleService moduleService : KRADServiceLocatorWeb.getKualiModuleService().getInstalledModuleServices()) {
-            keyValues.add(getKeyValue(moduleService.getModuleConfiguration().getNamespaceCode(), 
+            keyValues.add(getKeyValue(moduleService.getModuleConfiguration().getNamespaceCode(),
             		KRADServiceLocatorWeb.getKualiModuleService().getNamespaceName(moduleService.getModuleConfiguration().getNamespaceCode())));
         }
         return keyValues;
     }
-    
+
     private KeyValue getKeyValue(String moduleCode, String moduleName) {
         return new ConcreteKeyValue(moduleCode, moduleCode + " - " + moduleName);
     }

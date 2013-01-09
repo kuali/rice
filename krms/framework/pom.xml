@@ -21,7 +21,7 @@
   <parent>
     <artifactId>rice-krms</artifactId>
     <groupId>org.kuali.rice</groupId>
-    <version>2.2.0-M2-SNAPSHOT</version>
+    <version>2.2.0</version>
   </parent>
   <artifactId>rice-krms-framework</artifactId>
   <name>Rice KRMS Framework</name>
@@ -49,5 +49,57 @@
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+    </dependency>
   </dependencies>
+
+  <properties>
+    <svc.va.name>ValidationActionService</svc.va.name>
+    <svc.va.wsdl>${wsdl.dir}/${svc.va.name}.wsdl</svc.va.wsdl>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-java2ws-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>validationActionService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.krms.framework.type.ValidationActionService</className>
+              <outputFile>${svc.va.wsdl}</outputFile>
+              <serviceName>${svc.va.name}</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-wsdls</id>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${svc.va.wsdl}</file>
+                  <classifier>${svc.va.name}</classifier>
+                  <type>wsdl</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

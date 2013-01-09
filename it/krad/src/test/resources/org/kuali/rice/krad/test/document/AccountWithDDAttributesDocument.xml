@@ -151,7 +151,7 @@
 		<property name="maxLength" value="60"/>
 		<property name="required" value="true"/>
 		<property name="validationPattern">
-			<bean parent="DateValidationPattern"/>
+			<bean parent="TimestampValidationPattern"/>
 		</property>
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="60" p:datePicker="true"/>

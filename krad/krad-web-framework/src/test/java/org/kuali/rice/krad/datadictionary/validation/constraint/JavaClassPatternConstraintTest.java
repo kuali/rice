@@ -36,7 +36,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 
 /**
  * Things this test should check:
- * 
+ *
  * 1. empty value check. (failure) {@link #testValueInvalidJavaClassEmpty()}
  * 2. value with valid java class. (success) {@link #testValueValidJavaClass()}
  * 3. value with valid java class. (success) {@link #testValueValidJavaClass1()}
@@ -45,19 +45,19 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 6. value with invalid java class. (failure) {@link #testValueInvalidJavaClass1()}
  * 7. value with invalid java class. (failure) {@link #testValueInvalidJavaClass2()}
  * 8. value with invalid java class. (failure) {@link #testValueInvalidJavaClass3()}
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JavaClassPatternConstraintTest {
-	
+
 	private final String PATTERN_CONSTRAINT = "validationPatternRegex.javaClass";
 
 	private AttributeDefinition javaClassDefinition;
-	
+
 	private DictionaryValidationResult dictionaryValidationResult;
-	
+
 	private ValidCharactersConstraintProcessor processor;
-	
+
 	private String validJavaClass;
 	private String validJavaClass1;
 	private String validJavaClass2;
@@ -66,36 +66,36 @@ public class JavaClassPatternConstraintTest {
 	private String invalidJavaClass1;
 	private String invalidJavaClass2;
 	private String invalidJavaClass3;
-		
-	private ConfigurationBasedRegexPatternConstraint javaClassPatternConstraint;		
-	
+
+	private ConfigurationBasedRegexPatternConstraint javaClassPatternConstraint;
+
 	@Before
-	public void setUp() throws Exception {	
-		
+	public void setUp() throws Exception {
+
 		String regex = getProperty(PATTERN_CONSTRAINT);
-		
+
 		processor = new ValidCharactersConstraintProcessor();
-		
+
 		dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		
+
 		validJavaClass = Integer.class.getName();
 		validJavaClass1 = "org.kuali.rice.krad.datadictionary.validation.constraint.JavaClassPattternConstraintTest";
-		validJavaClass2 = "String"; 					
+		validJavaClass2 = "String";
 		invalidJavaClassEmpty = "";
 		invalidJavaClass = "123.mypackage.com";
 		invalidJavaClass1 = "mypackage.com.";
 		invalidJavaClass2 = "123 mypackage";
 		invalidJavaClass3 = "something.mypackage:com";
-					
+
 		javaClassPatternConstraint = new ConfigurationBasedRegexPatternConstraint();
 		javaClassPatternConstraint.setValue(regex);
 
 		javaClassDefinition = new AttributeDefinition();
 		javaClassDefinition.setName("javaClass");
-		javaClassDefinition.setValidCharactersConstraint(javaClassPatternConstraint);												
+		javaClassDefinition.setValidCharactersConstraint(javaClassPatternConstraint);
 	}
-	
+
 	@Test
 	public void testValueInvalidJavaClassEmpty() {
 		ConstraintValidationResult result = process(invalidJavaClassEmpty, "javaClass", javaClassPatternConstraint);
@@ -104,7 +104,7 @@ public class JavaClassPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.INAPPLICABLE, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidJavaClass() {
 		ConstraintValidationResult result = process(validJavaClass, "javaClass", javaClassPatternConstraint);
@@ -113,7 +113,7 @@ public class JavaClassPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidJavaClass1() {
 		ConstraintValidationResult result = process(validJavaClass1, "javaClass", javaClassPatternConstraint);
@@ -122,7 +122,7 @@ public class JavaClassPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidJavaClass2() {
 		ConstraintValidationResult result = process(validJavaClass2, "javaClass", javaClassPatternConstraint);
@@ -130,8 +130,8 @@ public class JavaClassPatternConstraintTest {
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
-	}				
-	
+	}
+
 	@Test
 	public void testValueInvalidJavaClass() {
 		ConstraintValidationResult result = process(invalidJavaClass, "javaClass", javaClassPatternConstraint);
@@ -140,7 +140,7 @@ public class JavaClassPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidJavaClass1() {
 		ConstraintValidationResult result = process(invalidJavaClass1, "javaClass", javaClassPatternConstraint);
@@ -149,7 +149,7 @@ public class JavaClassPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidJavaClass2() {
 		ConstraintValidationResult result = process(invalidJavaClass2, "javaClass", javaClassPatternConstraint);
@@ -158,7 +158,7 @@ public class JavaClassPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidJavaClass3() {
 		ConstraintValidationResult result = process(invalidJavaClass3, "javaClass", javaClassPatternConstraint);
@@ -166,24 +166,24 @@ public class JavaClassPatternConstraintTest {
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
-	}		
-	
+	}
+
 	private ConstraintValidationResult process(Object object, String attributeName, ValidCharactersConstraint constraint) {
-		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", attributeName,  javaClassDefinition);		
+		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", attributeName,  javaClassDefinition);
 		Object value = attributeValueReader.getValue();
 		return processor.process(dictionaryValidationResult, value, constraint, attributeValueReader).getFirstConstraintValidationResult();
 	}
-	
+
 	private String getProperty(String key) {
 		String value = null;
 		String filePath = "org/kuali/rice/krad/ApplicationResources.properties";
 		Properties properties = new Properties();
-		try {			
+		try {
 			InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
 			properties.load(in);
-			value = properties.getProperty(key);			
-		} catch (IOException e) {		
+			value = properties.getProperty(key);
+		} catch (IOException e) {
 		}
-		return value;	
+		return value;
 	}
 }

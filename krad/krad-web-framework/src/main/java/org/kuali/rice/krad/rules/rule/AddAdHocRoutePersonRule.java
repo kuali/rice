@@ -25,7 +25,7 @@ public interface AddAdHocRoutePersonRule extends BusinessRule {
     /**
      * This method is responsible for housing business rules that need to be checked before a document adHocRoutePerson is added to
      * a document.
-     * 
+     *
      * @param document
      * @param adHocRoutePerson
      * @return false if the rule fails

@@ -16,9 +16,12 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Represents a HTML TextArea control. Generally used for values that are very
@@ -26,6 +29,10 @@ import org.kuali.rice.krad.uif.component.Component;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "textAreaControl", parent = "Uif-TextAreaControl"),
+        @BeanTag(name = "smallTextAreaControl", parent = "Uif-SmallTextAreaControl"),
+        @BeanTag(name = "mediumTextAreaControl", parent = "Uif-MediumTextAreaControl"),
+        @BeanTag(name = "largeTextAreaControl", parent = "Uif-LargeTextAreaControl")})
 public class TextAreaControl extends ControlBase {
     private static final long serialVersionUID = -4664558047325456844L;
 
@@ -72,6 +79,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return int number of rows
      */
+    @BeanTagAttribute(name = "rows")
     public int getRows() {
         return this.rows;
     }
@@ -90,6 +98,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return int number of columns
      */
+    @BeanTagAttribute(name = "cols")
     public int getCols() {
         return this.cols;
     }
@@ -110,6 +119,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return int max number of characters
      */
+    @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
         return maxLength;
     }
@@ -130,6 +140,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return int max number of characters
      */
+    @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {
         return minLength;
     }
@@ -146,6 +157,7 @@ public class TextAreaControl extends ControlBase {
     /**
      * @return the watermarkText
      */
+    @BeanTagAttribute(name = "watermarkText")
     public String getWatermarkText() {
         return this.watermarkText;
     }
@@ -168,6 +180,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return the textExpand
      */
+    @BeanTagAttribute(name = "textExpand")
     public boolean isTextExpand() {
         return this.textExpand;
     }

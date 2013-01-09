@@ -41,6 +41,8 @@ public interface RoleDao {
 
     List<DelegateMemberBo> getDelegationGroupsForGroupIdsAndDelegationIds(Collection<String> delegationIds, List<String> groupIds);
 
+    List<RoleMemberBo> getRoleMembersForGroupIds(String roleId, List<String> groupIds);
+
     List<RoleMemberBo> getRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode, Map<String, String> qualification);
 
     List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Map<String, String> qualification);

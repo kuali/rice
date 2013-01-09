@@ -26,13 +26,13 @@ import java.util.List;
  * This class represents the approve event that is part of an eDoc in Kuali. This could be triggered when a user presses the approve
  * button for a given document enroute or it could happen when another piece of code calls the approve method in the document
  * service.
- * 
- * 
+ *
+ *
  */
 public class ApproveDocumentEvent extends KualiDocumentEventBase {
     /**
      * Constructs an ApproveDocumentEvent with the specified errorPathPrefix and document
-     * 
+     *
      * @param errorPathPrefix
      * @param document
      */
@@ -42,7 +42,7 @@ public class ApproveDocumentEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs an ApproveDocumentEvent with the given document
-     * 
+     *
      * @param document
      */
     public ApproveDocumentEvent(Document document) {
@@ -52,7 +52,7 @@ public class ApproveDocumentEvent extends KualiDocumentEventBase {
     /**
      * Constructs a ApproveDocumentEvent, allowing the eventType to be passed in so that subclasses can specify a more accurate
      * message.
-     * 
+     *
      * @param eventType
      * @param errorPathPrefix
      * @param document

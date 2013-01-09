@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.rule.GenericWorkflowAttribute;
@@ -115,7 +116,7 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
     private List<RemotableAttributeError> validateInputMap(Map paramMap) {
     	List errors = new ArrayList();
     	this.destination = (String) paramMap.get(DEST_FIELD_KEY);
-    	if (this.destination == null  && required) {
+    	if (StringUtils.isBlank(destination)  && required) {
     		errors.add(RemotableAttributeError.Builder.create(DEST_FIELD_KEY, "Destination is required.").build());
     	}
     	return errors;

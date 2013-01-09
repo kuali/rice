@@ -75,7 +75,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
         }
 
         LOG.debug("Logging document action");
-        ActionTakenValue actionTaken = saveActionTaken(Boolean.FALSE);
+        ActionTakenValue actionTaken = saveActionTaken(Boolean.TRUE);
         // LogDocumentAction should not contact the PostProcessor which is why we don't call notifyActionTaken
        
     }

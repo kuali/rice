@@ -21,34 +21,24 @@ import java.util.Map;
 
 /**
  * This is used for sending report of an incident
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KualiExceptionIncidentService {
+public interface KualiExceptionIncidentService extends KualiFeedbackService {
 
-    /**
-     * This method send email to the defined mailing list with a specified subject and
-     * message.
-     * 
-     * @param subject
-     * @param message
-     * @throws Exception
-     */
-    public void emailReport(String subject, String message) throws Exception;
-    
     /**
      * This method send email to the defined mailing list using the exception incident
      * instance.
-     * 
+     *
      * @param exceptionIncident
      * @throws Exception
      */
     public void report(KualiExceptionIncident exceptionIncident) throws Exception;
-    
+
     /**
      * This method create an instance of the KualiExceptionIncident from its factory.
-     * 
+     *
      * @param exception
      * @param properties Additional information when the exception is thrown
      * <p>example:
@@ -67,7 +57,7 @@ public interface KualiExceptionIncidentService {
      * This method create an instance of the KualiExceptionIncident from its factory.
      * This method is used when the thrown exception is not available. It's an implicit
      * initialization.
-     * 
+     *
      * @param properties The list of name-value pairs containing the thrown exception
      * information
      * @return

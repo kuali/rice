@@ -110,21 +110,26 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return this.documentSearchCustomizationMediator;
     }
 
+    @Override
 	public void clearNamedSearches(String principalId) {
 		String[] clearListNames = { NAMED_SEARCH_ORDER_BASE + "%", LAST_SEARCH_BASE_NAME + "%", LAST_SEARCH_ORDER_OPTION + "%" };
         for (String clearListName : clearListNames)
         {
             List<UserOptions> records = userOptionsService.findByUserQualified(principalId, clearListName);
             for (UserOptions userOptions : records) {
-                userOptionsService.deleteUserOptions((UserOptions) userOptions);
+                userOptionsService.deleteUserOptions(userOptions);
             }
         }
 	}
 
+    @Override
     public DocumentSearchCriteria getNamedSearchCriteria(String principalId, String searchName) {
-        return getSavedSearchCriteria(principalId, NAMED_SEARCH_ORDER_BASE + searchName);
+        //if not prefixed, prefix it.  otherwise, leave as-is
+        searchName = searchName.startsWith(NAMED_SEARCH_ORDER_BASE) ? searchName : (NAMED_SEARCH_ORDER_BASE + searchName);
+        return getSavedSearchCriteria(principalId, searchName);
     }
 
+    @Override
     public DocumentSearchCriteria getSavedSearchCriteria(String principalId, String searchName) {
         UserOptions savedSearch = userOptionsService.findByOptionId(searchName, principalId);
         if (savedSearch == null) {
@@ -138,7 +143,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         try {
             return DocumentSearchInternalUtils.unmarshalDocumentSearchCriteria(optionValue);
         } catch (IOException e) {
-            throw new WorkflowRuntimeException("Failed to load saved search for name '" + savedSearch.getOptionId() + "'", e);
+            //we need to remove the offending records, otherwise the User is stuck until User options are cleared out manually
+            LOG.warn("Failed to load saved search for name '" + savedSearch.getOptionId() + "' removing saved search from database.");
+            userOptionsService.deleteUserOptions(savedSearch);
+            return DocumentSearchCriteria.Builder.create().build();
+
         }
     }
 
@@ -160,16 +169,34 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     @Override
 	public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria) {
 		DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
-		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
+		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByNameCaseInsensitive(criteria.getDocumentTypeName());
         DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
         validateDocumentSearchCriteria(docSearchGenerator, criteriaBuilder);
         DocumentSearchCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
+
+        // copy over applicationDocumentStatuses if they came back empty -- version compatibility hack!
+        // we could have called into an older client that didn't have the field and it got wiped, but we
+        // still want doc search to work as advertised.
+        if (!CollectionUtils.isEmpty(criteria.getApplicationDocumentStatuses())
+                && CollectionUtils.isEmpty(builtCriteria.getApplicationDocumentStatuses())) {
+            DocumentSearchCriteria.Builder patchedCriteria = DocumentSearchCriteria.Builder.create(builtCriteria);
+            patchedCriteria.setApplicationDocumentStatuses(criteriaBuilder.getApplicationDocumentStatuses());
+            builtCriteria = patchedCriteria.build();
+        }
+
         builtCriteria = applyCriteriaDefaults(builtCriteria);
         boolean criteriaModified = !criteria.equals(builtCriteria);
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
         DocumentSearchResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
-            DocumentSearchResultValues resultValues = getDocumentSearchCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
+             // Pass in the principalId as part of searchCriteria to result customizers
+            //TODO: The right way  to do this should have been to update the API for document customizer
+
+            DocumentSearchCriteria.Builder docSearchUserIdCriteriaBuilder = DocumentSearchCriteria.Builder.create(builtCriteria);
+            docSearchUserIdCriteriaBuilder.setDocSearchUserId(principalId);
+            DocumentSearchCriteria docSearchUserIdCriteria = docSearchUserIdCriteriaBuilder.build();
+
+            DocumentSearchResultValues resultValues = getDocumentSearchCustomizationMediator().customizeResults(documentType, docSearchUserIdCriteria, searchResults.build());
             if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
                 Map<String, DocumentSearchResultValue> resultValueMap = new HashMap<String, DocumentSearchResultValue>();
                 for (DocumentSearchResultValue resultValue : resultValues.getResultValues()) {
@@ -258,15 +285,22 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         DocumentSearchCriteria.Builder comparisonCriteria = createEmptyComparisonCriteria(criteria);
         boolean isCriteriaEmpty = criteria.equals(comparisonCriteria.build());
         boolean isTitleOnly = false;
+        boolean isDocTypeOnly = false;
         if (!isCriteriaEmpty) {
             comparisonCriteria.setTitle(criteria.getTitle());
             isTitleOnly = criteria.equals(comparisonCriteria.build());
         }
 
-        if (isCriteriaEmpty || isTitleOnly) {
+        if (!isCriteriaEmpty && !isTitleOnly) {
+            comparisonCriteria = createEmptyComparisonCriteria(criteria);
+            comparisonCriteria.setDocumentTypeName(criteria.getDocumentTypeName());
+            isDocTypeOnly = criteria.equals(comparisonCriteria.build());
+        }
+
+        if (isCriteriaEmpty || isTitleOnly || isDocTypeOnly) {
             DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
             Integer defaultCreateDateDaysAgoValue = null;
-            if (isCriteriaEmpty) {
+            if (isCriteriaEmpty || isDocTypeOnly) {
                 // if they haven't set any criteria, default the from created date to today minus days from constant variable
                 defaultCreateDateDaysAgoValue = KewApiConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
             } else if (isTitleOnly) {
@@ -274,6 +308,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 // days ago.  This will allow for a more efficient query.
                 defaultCreateDateDaysAgoValue = KewApiConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
             }
+
             if (defaultCreateDateDaysAgoValue != null) {
                 // add a default create date
                 MutableDateTime mutableDateTime = new MutableDateTime();
@@ -292,6 +327,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         builder.setStartAtIndex(criteria.getStartAtIndex());
         builder.setMaxResults(criteria.getMaxResults());
         builder.setIsAdvancedSearch(criteria.getIsAdvancedSearch());
+        builder.setSearchOptions(criteria.getSearchOptions());
         return builder;
     }
 

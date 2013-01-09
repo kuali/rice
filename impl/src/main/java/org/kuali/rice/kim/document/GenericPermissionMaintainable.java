@@ -15,20 +15,20 @@
  */
 package org.kuali.rice.kim.document;
 
-import org.apache.cxf.common.util.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
-import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -40,35 +40,12 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 
 	private static final Logger LOG = Logger.getLogger( GenericPermissionMaintainable.class );	
 	private static final long serialVersionUID = -8102504656976243468L;
-
-	/**
-	 * Saves the responsibility via the responsibility update service
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
-	 */
-	@Override
-	public void saveBusinessObject() {
-		try {
-			if ( LOG.isInfoEnabled() ) {
-				LOG.info( "Attempting to save Permission BO via PermissionService: " + getBusinessObject() );
-			}
-            GenericPermissionBo genericPermissionBo = (GenericPermissionBo)getBusinessObject();
-            if (genericPermissionBo.getTemplateId() != null && genericPermissionBo.getTemplate() == null) {
-                genericPermissionBo.setTemplate(
-                        PermissionTemplateBo.from(
-                                KimApiServiceLocator.getPermissionService().getPermissionTemplate(genericPermissionBo.getTemplateId())));
-            }
-			PermissionBo perm = GenericPermissionBo.toPermissionBo(genericPermissionBo);
-			
-			KimApiServiceLocator.getPermissionService().createPermission(PermissionBo.to(perm));
-		} catch ( RuntimeException ex ) {
-			LOG.error( "Exception in saveBusinessObject()", ex );
-			throw ex;
-		}
-	}
+    protected transient SequenceAccessorService sequenceAccessorService;
 
     /**
-     * @see org.kuali.rice.krad.maintenance.Maintainable#saveDataObject
+     * Saves the responsibility via the responsibility update service
+     *
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
      */
     @Override
     public void saveDataObject() {
@@ -88,24 +65,27 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
             if (permissionExists) {
                 KimApiServiceLocator.getPermissionService().updatePermission(PermissionBo.to(perm));
             } else {
-                //if its a copy the objectId should be empty and versionNumber should be null
-                if(getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
-                    if(org.apache.commons.lang.StringUtils.isNotBlank(perm.getObjectId())){
-                        perm.setObjectId("");
-                    }
-                    if(null!= perm.getVersionNumber()){
-                        perm.setVersionNumber(null);
-                    }
-                }
                 KimApiServiceLocator.getPermissionService().createPermission(PermissionBo.to(perm));
             }
-            //getBusinessObjectService().linkAndSave((PersistableBusinessObject) dataObject);
         } else {
             throw new RuntimeException(
                     "Cannot save object of type: " + getDataObjectClass() + " with permission service");
         }
     }
 	
+    /**
+     * Pre-populates the ID field of the new PermissionBo to be created.
+     *
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     */
+    @Override
+    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
+        super.processAfterCopy(document,parameters);
+        // get id for new permission
+        String newId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S).toString();
+        ((GenericPermissionBo)document.getNewMaintainableObject().getDataObject()).setId(newId);
+    }
+
 	/**
 	 * This overridden method ...
 	 * 
@@ -156,5 +136,12 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 			throw ex;
 		}
 	}
-	
+
+    protected SequenceAccessorService getSequenceAccessorService(){
+        if(this.sequenceAccessorService==null){
+            this.sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+        }
+        return this.sequenceAccessorService;
+    }
+
 }

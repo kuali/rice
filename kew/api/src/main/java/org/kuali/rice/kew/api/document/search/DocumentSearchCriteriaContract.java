@@ -96,7 +96,9 @@ public interface DocumentSearchCriteriaContract {
      * Returns the application document status criteria to search against when executing the document search.
      *
      * @return the application document status criteria
+     * @deprecated please use {@link #getApplicationDocumentStatuses()} instead
      */
+    @Deprecated
     String getApplicationDocumentStatus();
 
     /**
@@ -108,6 +110,14 @@ public interface DocumentSearchCriteriaContract {
     String getInitiatorPrincipalName();
 
     /**
+     * Returns the criteria for the principal id of the document initiator to search against when executing the
+     * document search.
+     *
+     * @return the initiator principal id criteria
+     */
+    String getInitiatorPrincipalId();
+
+    /**
      * Returns the criteria for the principal name of a "viewer" of a document (someone who received an action request
      * related to the document) to search against when executing the document search.  Follows the rules for principal
      * name criteria (see class-level documentation).
@@ -115,6 +125,14 @@ public interface DocumentSearchCriteriaContract {
      * @return the viewer principal name criteria
      */
     String getViewerPrincipalName();
+
+    /**
+     * Returns the criteria for the principal id of a "viewer" of a document (someone who received an action request
+     * related to the document) to search against when executing the document search.
+     *
+     * @return the viewer principal id criteria
+     */
+    String getViewerPrincipalId();
 
     /**
      * Returns the criteria for the id of a group who is a "viewer" of a document (a group who received an action request
@@ -156,6 +174,14 @@ public interface DocumentSearchCriteriaContract {
      * @return the viewer principal name criteria
      */
     String getApproverPrincipalName();
+
+    /**
+     * Returns the criteria for the principal id of an "approver" of a document (someone who took action against
+     * the document) to search against when executing the document search.
+     *
+     * @return the viewer principal id criteria
+     */
+    String getApproverPrincipalId();
 
     /**
      * Returns the route node name criteria to search against when executing the document search.  By default this will
@@ -290,6 +316,18 @@ public interface DocumentSearchCriteriaContract {
     Map<String, List<String>> getDocumentAttributeValues();
 
     /**
+     * Returns a map of custom options for document search when either executing the document search or returning results.
+     * The key of the map is the name of the document attribute, while the list of values contains values of those
+     * attributes to customize against.
+     *
+     * <p>In order for the search options to be processed as part of the criteria during the search, a custom document
+     * search customizer must be used to fill and process these values.
+     * @since 2.1.1
+     * @return
+     */
+    Map<String, List<String>> getSearchOptions();
+
+    /**
      * Return the name under which to save this criteria so that it can be recalled and used again in the future.  If no
      * save name is specified, then this criteria will not be saved for future use.
      * @return
@@ -326,4 +364,20 @@ public interface DocumentSearchCriteriaContract {
      * @return whether or not the search was run in advanced mode
      */
     String getIsAdvancedSearch();
+
+    /**
+     * Return the list of application document statuses to match when executing the document search.
+     *
+     * @since 2.1.2
+     * @return the list of application document statuses to match
+     */
+    List<String> getApplicationDocumentStatuses();
+
+    /**
+     * Returns the principalId of the user performing the search
+     *
+     * @since 2.1.2
+     * @return
+     */
+    String getDocSearchUserId();
 }

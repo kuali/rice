@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @import url("/kr-dev/krad/css/global/fss-reset.css");
 @import url("/kr-dev/krad/css/global/fss-layout.css");
 @import url("/kr-dev/krad/css/global/fss-text.css");
 @import url("/kr-dev/krad/css/global/base.css");
-@import url("/kr-dev/krad/plugins/jqueryUI/jquery-ui-1.8.19.css");
+@import url("/kr-dev/krad/plugins/jqueryUI/jquery-ui-1.8.23.css");
 @import url("/kr-dev/krad/plugins/rice/datatables/TableTools.css");
 @import url("/kr-dev/krad/plugins/rice/menu/tabs.css");
 @import url("/kr-dev/krad/plugins/rice/spinner/smartspinner.css");

@@ -17,6 +17,11 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -24,17 +29,12 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +59,41 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "collectionGroup", parent = "Uif-CollectionGroupBase"),
+        @BeanTag(name = "stackedCollectionGroup", parent = "Uif-StackedCollectionGroup"),
+        @BeanTag(name = "stackedCollectionSection", parent = "Uif-StackedCollectionSection"),
+        @BeanTag(name = "stackedCollectionSubSection", parent = "Uif-StackedCollectionSubSection"),
+        @BeanTag(name = "stackedSubCollection-withinSection", parent = "Uif-StackedSubCollection-WithinSection"),
+        @BeanTag(name = "stackedSubCollection-withinSubSection", parent = "Uif-StackedSubCollection-WithinSubSection"),
+        @BeanTag(name = "disclosure-stackedCollectionSection", parent = "Uif-Disclosure-StackedCollectionSection"),
+        @BeanTag(name = "disclosure-stackedCollectionSubSection",
+                parent = "Uif-Disclosure-StackedCollectionSubSection"),
+        @BeanTag(name = "disclosure-stackedSubCollection-withinSection",
+                parent = "Uif-Disclosure-StackedSubCollection-WithinSection"),
+        @BeanTag(name = "disclosure-stackedSubCollection-withinSubSection",
+                parent = "Uif-Disclosure-StackedSubCollection-WithinSubSection"),
+        @BeanTag(name = "tableCollectionGroup", parent = "Uif-TableCollectionGroup"),
+        @BeanTag(name = "tableCollectionSection", parent = "Uif-TableCollectionSection"),
+        @BeanTag(name = "tableCollectionSubSection", parent = "Uif-TableCollectionSubSection"),
+        @BeanTag(name = "tableSubCollection-withinSection", parent = "Uif-TableSubCollection-WithinSection"),
+        @BeanTag(name = "tableSubCollection-withinSubSection", parent = "Uif-TableSubCollection-WithinSubSection"),
+        @BeanTag(name = "disclosure-tableCollectionSection", parent = "Uif-Disclosure-TableCollectionSection"),
+        @BeanTag(name = "disclosure-tableCollectionSubSection", parent = "Uif-Disclosure-TableCollectionSubSection"),
+        @BeanTag(name = "disclosure-tableSubCollection-withinSection",
+                parent = "Uif-Disclosure-TableSubCollection-WithinSection"),
+        @BeanTag(name = "disclosure-tableSubCollection-withinSubSection",
+                parent = "Uif-Disclosure-TableSubCollection-WithinSubSection"),
+        @BeanTag(name = "listCollectionGroup", parent = "Uif-ListCollectionGroup"),
+        @BeanTag(name = "listCollectionSection", parent = "Uif-ListCollectionSection"),
+        @BeanTag(name = "listCollectionSubSection", parent = "Uif-ListCollectionSubSection"),
+        @BeanTag(name = "documentNotesSection", parent = "Uif-DocumentNotesSection"),
+        @BeanTag(name = "lookupResultsCollectionSection", parent = "Uif-LookupResultsCollectionSection"),
+        @BeanTag(name = "maintenanceStackedCollectionSection", parent = "Uif-MaintenanceStackedCollectionSection"),
+        @BeanTag(name = "maintenanceStackedSubCollection-withinSection",
+                parent = "Uif-MaintenanceStackedSubCollection-WithinSection"),
+        @BeanTag(name = "maintenanceTableCollectionSection", parent = "Uif-MaintenanceTableCollectionSection"),
+        @BeanTag(name = "maintenanceTableSubCollection-withinSection",
+                parent = "Uif-MaintenanceTableSubCollection-withinSection")})
 public class CollectionGroup extends Group implements DataBinding {
     private static final long serialVersionUID = -6496712566071542452L;
 
@@ -96,11 +131,8 @@ public class CollectionGroup extends Group implements DataBinding {
     private int displayCollectionSize = -1;
 
     private boolean highlightNewItems;
-
     private boolean highlightAddItem;
-
     private String newItemsCssClass;
-
     private String addItemCssClass;
 
     private boolean renderAddBlankLineButton;
@@ -108,14 +140,10 @@ public class CollectionGroup extends Group implements DataBinding {
     private String addLinePlacement;
 
     private boolean renderSaveLineActions;
-    private List<Action> validatedLineActions;
-
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
 
-    private Group rowDetailsGroup;
-    private String rowDetailsLinkName = "Details";
-    private boolean rowDetailsUseImage;
+    private List<String> totalColumns;
 
     public CollectionGroup() {
         renderAddLine = true;
@@ -129,7 +157,6 @@ public class CollectionGroup extends Group implements DataBinding {
 
         filters = new ArrayList<CollectionFilter>();
         lineActions = new ArrayList<Action>();
-        validatedLineActions = new ArrayList<Action>();
         addLineItems = new ArrayList<Field>();
         addLineActions = new ArrayList<Action>();
         subCollections = new ArrayList<CollectionGroup>();
@@ -154,48 +181,6 @@ public class CollectionGroup extends Group implements DataBinding {
     @Override
     public void performInitialization(View view, Object model) {
         setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
-        
-        //If this collection is using a layoutManager of type TableLayoutManager and is rendering
-        //its richTable widget, then check to see if a rowDetailsGroup is setup for this table
-        //and configure
-        if(this.getRowDetailsGroup() != null && this.getLayoutManager() instanceof TableLayoutManager
-                && ((TableLayoutManager)this.getLayoutManager()).getRichTable() != null 
-                && ((TableLayoutManager)this.getLayoutManager()).getRichTable().isRender()){
-            this.getRowDetailsGroup().setHidden(true);
-            FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
-            detailsFieldGroup.setDataRoleAttribute("detailsFieldGroup");
-            Action rowDetailsAction = ComponentFactory.getActionLink();
-            rowDetailsAction.addStyleClass("uif-detailsAction");
-            view.assignComponentIds(rowDetailsAction);
-
-            if(rowDetailsUseImage){
-                Image rowDetailsImage = ComponentFactory.getImage();
-                view.assignComponentIds(rowDetailsImage);
-                rowDetailsImage.setAltText(rowDetailsLinkName);
-                rowDetailsImage.getPropertyExpressions().put("source", KRADConstants.IMAGE_URL_EXPRESSION +
-                        KRADConstants.DETAILS_IMAGE);
-                rowDetailsAction.setActionImage(rowDetailsImage);
-            }
-            else if(StringUtils.isNotBlank(rowDetailsLinkName)){
-                rowDetailsAction.setActionLabel(rowDetailsLinkName);
-            }
-
-            //build js for link
-            rowDetailsAction.setActionScript("expandDataTableDetail(this,'"+ this.getId() +"',"+ rowDetailsUseImage + ")");
-
-            List<Component> detailsItems = new ArrayList<Component>();
-            
-            detailsItems.add(rowDetailsAction);
-            this.getRowDetailsGroup().setDataRoleAttribute("details");
-            detailsItems.add(getRowDetailsGroup());
-            detailsFieldGroup.setItems(detailsItems);
-            view.assignComponentIds(detailsFieldGroup);
-            
-            List<Component> theItems = new ArrayList<Component>();
-            theItems.add(detailsFieldGroup);
-            theItems.addAll(this.getItems());
-            this.setItems(theItems);
-        }
 
         super.performInitialization(view, model);
 
@@ -263,34 +248,28 @@ public class CollectionGroup extends Group implements DataBinding {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
 
+        for (CollectionGroup collectionGroup : getSubCollections()) {
+            collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
+        }
+
         // add collection entry to abstract classes
         if (!view.getObjectPathToConcreteClassMapping().containsKey(collectionPath)) {
             view.getObjectPathToConcreteClassMapping().put(collectionPath, getCollectionObjectClass());
         }
 
-        // initialize container items and sub-collections (since they are not in
-        // child list)
-        for (Component item : getItems()) {
-            view.getViewHelperService().performComponentInitialization(view, model, item);
-        }
-
-        // initialize addLineFields
-        for (Component item : addLineItems) {
-            view.getViewHelperService().performComponentInitialization(view, model, item);
-        }
-
-        for (CollectionGroup collectionGroup : getSubCollections()) {
-            collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
-            view.getViewHelperService().performComponentInitialization(view, model, collectionGroup);
-        }
-
-        if (renderAddBlankLineButton && (addBlankLineAction != null)) {
-            String actionScript = "performCollectionAction('" + getId() + "');";
-            if (StringUtils.isNotBlank(addBlankLineAction.getActionScript())) {
-                actionScript = addBlankLineAction.getActionScript() + actionScript;
+        // Adds the script to the add line buttons to keep collection on the same page
+        if (renderAddBlankLineButton) {
+            if (addLinePlacement.equals("BOTTOM")) {
+                addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
+            } else {
+                addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
             }
-            addBlankLineAction.setActionScript(actionScript);
-            addBlankLineAction.setJumpToIdAfterSubmit(getId());
+        } else if (addViaLightBox) {
+            if (addLinePlacement.equals("BOTTOM")) {
+                addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
+            } else {
+                addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
+            }
         }
     }
 
@@ -322,7 +301,8 @@ public class CollectionGroup extends Group implements DataBinding {
      * instance, and sets name as parameter for an action fields in the group
      */
     protected void pushCollectionGroupToReference() {
-        List<Component> components = this.getComponentsForLifecycle(true);
+        List<Component> components = getComponentsForLifecycle();
+        components.addAll(getComponentPrototypes());
 
         ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
@@ -355,39 +335,21 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
-        return getComponentsForLifecycle(false);
-    }
-
-    /**
-     * Retrieve list of components that are contained within the component and should be sent through
-     * the lifecycle
-     *
-     * <p>The items need to be included when an object is being copied to all the groups nested components
-     *
-     * @param includeItems - whether the components items should be included.
-     * @see #pushCollectionGroupToReference()
-     *      The items are left out when the components are being retrieved for the <code>ViewHelperService</code></p>
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
-     */
-    public List<Component> getComponentsForLifecycle(boolean includeItems) {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(addLineLabel);
         components.add(collectionLookup);
         components.add(addBlankLineAction);
-        components.addAll(validatedLineActions);
         components.add(addViaLightBoxAction);
 
-        if (!includeItems) {
-            // remove the containers items because we don't want them as children
-            // (they will become children of the layout manager as the rows are
-            // created)
-            for (Component item : getItems()) {
-                if (components.contains(item)) {
-                    components.remove(item);
-                }
+        // remove the containers items because we don't want them as children
+        // (they will become children of the layout manager as the rows are created)
+        for (Component item : getItems()) {
+            if (components.contains(item)) {
+                components.remove(item);
             }
         }
+
         return components;
     }
 
@@ -400,10 +362,18 @@ public class CollectionGroup extends Group implements DataBinding {
 
         components.addAll(lineActions);
         components.addAll(addLineActions);
-        components.addAll(validatedLineActions);
         components.addAll(getItems());
         components.addAll(getSubCollections());
-        components.addAll(addLineItems);
+
+        // iterate through addLineItems to make sure we have not already
+        // added them as prototypes (they could have been copied from add lines)
+        if (addLineItems != null) {
+            for (Component addLineItem : addLineItems) {
+                if (!components.contains(addLineItem)) {
+                    components.add(addLineItem);
+                }
+            }
+        }
 
         return components;
     }
@@ -414,6 +384,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return Class<?> collection object class
      */
+    @BeanTagAttribute(name = "collectionObjectClass")
     public Class<?> getCollectionObjectClass() {
         return this.collectionObjectClass;
     }
@@ -430,6 +401,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
      */
+    @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
         return this.propertyName;
     }
@@ -450,6 +422,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
      */
+    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;
     }
@@ -469,6 +442,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<Action> line action fields
      */
+    @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Action> getLineActions() {
         return this.lineActions;
     }
@@ -488,6 +462,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return boolean true if the actions should be rendered, false if not
      * @see #getLineActions()
      */
+    @BeanTagAttribute(name = "renderLineActions")
     public boolean isRenderLineActions() {
         return this.renderLineActions;
     }
@@ -507,6 +482,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return boolean true if add line should be rendered, false if it should
      *         not be
      */
+    @BeanTagAttribute(name = "renderAddLine")
     public boolean isRenderAddLine() {
         return this.renderAddLine;
     }
@@ -559,6 +535,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return Label add line label field
      * @see #getAddLabel
      */
+    @BeanTagAttribute(name = "addLineLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getAddLineLabel() {
         return this.addLineLabel;
     }
@@ -581,6 +558,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String add line property name
      */
+    @BeanTagAttribute(name = "addLinePropertyName")
     public String getAddLinePropertyName() {
         return this.addLinePropertyName;
     }
@@ -604,6 +582,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return BindingInfo add line binding info
      */
+    @BeanTagAttribute(name = "addLineBindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getAddLineBindingInfo() {
         return this.addLineBindingInfo;
     }
@@ -625,6 +604,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return List<? extends Component> add line field list
      * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
+    @BeanTagAttribute(name = "addLineItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineItems() {
         return this.addLineItems;
     }
@@ -645,6 +625,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<Action> add line action fields
      */
+    @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Action> getAddLineActions() {
         return this.addLineActions;
     }
@@ -669,6 +650,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true if select field should be rendered, false if not
      */
+    @BeanTagAttribute(name = "includeLineSelectionField")
     public boolean isIncludeLineSelectionField() {
         return includeLineSelectionField;
     }
@@ -700,6 +682,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String property name for select field
      */
+    @BeanTagAttribute(name = "lineSelectPropertyName")
     public String getLineSelectPropertyName() {
         return lineSelectPropertyName;
     }
@@ -724,6 +707,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return QuickFinder instance configured for the collection lookup
      */
+    @BeanTagAttribute(name = "collectionLookup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public QuickFinder getCollectionLookup() {
         return collectionLookup;
     }
@@ -749,6 +733,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true to show inactive records, false to not render inactive records
      */
+    @BeanTagAttribute(name = "showInactiveLines")
     public boolean isShowInactiveLines() {
         return showInactiveLines;
     }
@@ -768,6 +753,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return CollectionFilter
      */
+    @BeanTagAttribute(name = "activeCollectionFilter", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionFilter getActiveCollectionFilter() {
         return activeCollectionFilter;
     }
@@ -788,6 +774,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<CollectionFilter>
      */
+    @BeanTagAttribute(name = "filters", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionFilter> getFilters() {
         return filters;
     }
@@ -807,6 +794,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<CollectionGroup> sub collections
      */
+    @BeanTagAttribute(name = "subCollection", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionGroup> getSubCollections() {
         return this.subCollections;
     }
@@ -848,8 +836,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return CollectionGroupSecurity instance
      */
-    @Override
-    public CollectionGroupSecurity getComponentSecurity() {
+    public CollectionGroupSecurity getCollectionGroupSecurity() {
         return (CollectionGroupSecurity) super.getComponentSecurity();
     }
 
@@ -879,6 +866,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return CollectionGroupBuilder instance
      */
+    @BeanTagAttribute(name = "collectionGroupBuilder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionGroupBuilder getCollectionGroupBuilder() {
         if (this.collectionGroupBuilder == null) {
             this.collectionGroupBuilder = new CollectionGroupBuilder();
@@ -905,6 +893,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * @return the showHideInactiveButton
      */
+    @BeanTagAttribute(name = "renderInactiveToggleButton")
     public boolean isRenderInactiveToggleButton() {
         return renderInactiveToggleButton;
     }
@@ -914,6 +903,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return int
      */
+    @BeanTagAttribute(name = "displayCollectionSize")
     public int getDisplayCollectionSize() {
         return this.displayCollectionSize;
     }
@@ -932,6 +922,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true if new items must be highlighted
      */
+    @BeanTagAttribute(name = "highlightNewItems")
     public boolean isHighlightNewItems() {
         return highlightNewItems;
     }
@@ -950,6 +941,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String - the new items css style class
      */
+    @BeanTagAttribute(name = "newItemsCssClass")
     public String getNewItemsCssClass() {
         return newItemsCssClass;
     }
@@ -968,6 +960,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String - the add item group or row css style class
      */
+    @BeanTagAttribute(name = "addItemCssClass")
     public String getAddItemCssClass() {
         return addItemCssClass;
     }
@@ -986,6 +979,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true if add item group or row must be highlighted
      */
+    @BeanTagAttribute(name = "highlightAddItem")
     public boolean isHighlightAddItem() {
         return highlightAddItem;
     }
@@ -1009,6 +1003,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name = "renderAddBlankLineButton")
     public boolean isRenderAddBlankLineButton() {
         return renderAddBlankLineButton;
     }
@@ -1027,6 +1022,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name = "addBlankLineAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getAddBlankLineAction() {
         return addBlankLineAction;
     }
@@ -1051,6 +1047,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String - the add blank line action placement
      */
+    @BeanTagAttribute(name = "addLinePlacement")
     public String getAddLinePlacement() {
         return addLinePlacement;
     }
@@ -1069,6 +1066,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name = "renderSaveLineActions")
     public boolean isRenderSaveLineActions() {
         return renderSaveLineActions;
     }
@@ -1083,33 +1081,11 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * {@link Action} fields that should do client side validation on the line before doing post
-     *
-     * <p>
-     * These actions will get an actionScript script added that does a call to validateAndPerformCollectionAction in
-     * krad.ajax.js.
-     * </p>
-     *
-     * @return List<Action>
-     */
-    public List<Action> getValidatedLineActions() {
-        return validatedLineActions;
-    }
-
-    /**
-     * Setter for the new line {@link Action} fields
-     *
-     * @param validatedLineActions
-     */
-    public void setValidatedLineActions(List<Action> validatedLineActions) {
-        this.validatedLineActions = validatedLineActions;
-    }
-
-    /**
      * Indicates that a add action should be rendered and that the add group be displayed in a lightbox
      *
      * @return boolean
      */
+    @BeanTagAttribute(name = "addViaLightBox")
     public boolean isAddViaLightBox() {
         return addViaLightBox;
     }
@@ -1128,6 +1104,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return Action
      */
+    @BeanTagAttribute(name = "addViaLightBoxAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getAddViaLightBoxAction() {
         return addViaLightBoxAction;
     }
@@ -1142,62 +1119,21 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * The row details info group to use when using a TableLayoutManager with the a richTable.  This group will be
-     * displayed when the user clicks the "Details" link/image on a row.  This allows extra/long data to be
-     * hidden in table rows and then revealed during interaction with the table without the need to
-     * leave the page.  Allows for any group content.
-     *
-     * Does not currently work with javascript required content.
-     *
-     * @return rowDetailsGroup component
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
-    public Group getRowDetailsGroup() {
-        return rowDetailsGroup;
-    }
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
 
-    /**
-     * Set the row details info group
-     *
-     * @param rowDetailsGroup
-     */
-    public void setRowDetailsGroup(Group rowDetailsGroup) {
-        this.rowDetailsGroup = rowDetailsGroup;
-    }
+        // Checking if collectionObjectClass is set
+        if (getCollectionObjectClass() == null) {
+            if (Validator.checkExpressions(this, "collectionObjectClass")) {
+                String currentValues[] = {"collectionObjectClass = " + getCollectionObjectClass()};
+                tracer.createWarning("CollectionObjectClass is not set (disregard if part of an abstract)",
+                        currentValues);
+            }
+        }
 
-    /**
-     * Name of the link for displaying row details in a TableLayoutManager CollectionGroup
-     *
-     * @return name of the link
-     */
-    public String getRowDetailsLinkName() {
-        return rowDetailsLinkName;
-    }
-
-    /**
-     * Row details link name
-     *
-     * @param rowDetailsLinkName
-     */
-    public void setRowDetailsLinkName(String rowDetailsLinkName) {
-        this.rowDetailsLinkName = rowDetailsLinkName;
-    }
-
-    /**
-     * If true, the row details link will use an image instead of a link to display row details in
-     * a TableLayoutManager CollectionGroup
-     *
-     * @return true if displaying an image instead of a link for row details
-     */
-    public boolean isRowDetailsUseImage() {
-        return rowDetailsUseImage;
-    }
-
-    /**
-     * Sets row details link use image flag
-     *
-     * @param rowDetailsUseImage
-     */
-    public void setRowDetailsUseImage(boolean rowDetailsUseImage) {
-        this.rowDetailsUseImage = rowDetailsUseImage;
+        super.completeValidation(tracer.getCopy());
     }
 }

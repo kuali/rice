@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.apache.cxf.common.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.impl.repository.CategoryBo;
-import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,11 +55,11 @@ public class CategoryValuesFinder extends UifKeyValuesFinderBase {
     public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
 
-        MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
 
         // if we have an agenda w/ a selected context
-        if (agendaEditor.getAgenda() != null && !StringUtils.isEmpty(agendaEditor.getAgenda().getContextId())) {
+        if (agendaEditor.getAgenda() != null && StringUtils.isNotBlank(agendaEditor.getAgenda().getContextId())) {
 
             // key off the namespace
 

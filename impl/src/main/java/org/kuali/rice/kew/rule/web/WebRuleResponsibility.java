@@ -17,10 +17,9 @@ package org.kuali.rice.kew.rule.web;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ClassUtils;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
@@ -29,7 +28,6 @@ import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -291,51 +289,6 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 				RuleDelegationBo delegation = (RuleDelegationBo) iterator.next();
 				((WebRuleBaseValues) delegation.getDelegationRule()).establishRequiredState();
 			}
-		}
-	}
-
-	public void validateResponsibility(String keyPrefix, ActionErrors errors) {
-		if (KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
-			boolean invalidUser = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
-			if (!invalidUser)
-			{
-				//chb: 10Jan2009: not using KEW IdentityHelperService b/c we want to deal w/ exception here
-				Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(getReviewer());
-				if( principal != null)
-				{
-					setRuleResponsibilityName(principal.getPrincipalId());
-				}
-				else
-				{
-					invalidUser = true;
-				}
-			}
-			if (invalidUser) {
-				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.user.invalid"));
-			}
-		} else if (KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
-			boolean invalidWorkgroup = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
-			;
-			if (!invalidWorkgroup) {
-			    Group workgroup = KimApiServiceLocator.getGroupService().getGroup(getReviewerId());
-				if (workgroup == null) {
-					invalidWorkgroup = true;
-				} else {
-					setRuleResponsibilityName(workgroup.getId());
-				}
-			} else {
-				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.workgroup.invalid"));
-			}
-
-		} else if (KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
-			setRuleResponsibilityName(getRoleReviewer());
-		}
-
-		int delIndex = 0;
-		for (Iterator respIterator = getDelegationRules().iterator(); respIterator.hasNext();) {
-			String delPrefix = keyPrefix + "delegationRule[" + delIndex + "].delegationRuleBaseValues.";
-			RuleDelegationBo ruleDelegation = (RuleDelegationBo) respIterator.next();
-			((WebRuleBaseValues) ruleDelegation.getDelegationRule()).validateRule(delPrefix, errors);
 		}
 	}
 

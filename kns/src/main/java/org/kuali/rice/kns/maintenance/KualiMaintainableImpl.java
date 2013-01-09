@@ -46,7 +46,6 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
-import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -58,6 +57,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -168,8 +168,9 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 								+ " should not be encrypted.");
 				}
 				else if (fieldValue != null && !"".equals(fieldValue)
-						&& shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths, methodToCall))
-					throw new RuntimeException("The field value for field name " + fieldName + " should be encrypted.");
+				    && auths.hasRestriction(fieldName)
+				    && shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths, methodToCall))
+					    throw new RuntimeException("The field value for field name " + fieldName + " should be encrypted.");
 			}
 		}
 		catch (GeneralSecurityException e) {
@@ -291,10 +292,6 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	}
 
 
-    @Override
-    public void saveDataObject(){
-        saveBusinessObject();
-    }
     /**
 	 * 
 	 * @see Maintainable#saveBusinessObject()
@@ -303,7 +300,16 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		getBusinessObjectService().linkAndSave(businessObject);
 	}
 
-	/**
+    /**
+     * delegate this call to KNS' {@link org.kuali.rice.kns.maintenance.Maintainable#saveBusinessObject()} in order
+     * to support KNS maintainables.
+     */
+    @Override
+    public void saveDataObject() {
+        saveBusinessObject();
+    }
+
+    /**
 	 * Retrieves title for maintenance document from data dictionary
 	 */
 	public String getMaintainableTitle() {
@@ -378,42 +384,47 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 					else if (ObjectUtils.isNestedAttribute(reference)) {
 						Object nestedObject = ObjectUtils.getNestedValue(getBusinessObject(),
 								ObjectUtils.getNestedAttributePrefix(reference));
-						if (nestedObject instanceof Collection) {
-							// do nothing, probably because it's not really a
-							// collection reference but a relationship defined
-							// in the DD for a collections lookup
-							// this part will need to be rewritten when the DD
-							// supports true collection references
-						}
-						else if (nestedObject instanceof PersistableBusinessObject) {
-							String propertyToRefresh = ObjectUtils.getNestedAttributePrimitive(reference);
-							if (persistenceStructureService.hasReference(nestedObject.getClass(), propertyToRefresh)
-									|| persistenceStructureService.hasCollection(nestedObject.getClass(),
-											propertyToRefresh)) {
-								if (LOG.isDebugEnabled()) {
-									LOG.debug("Refeshing " + ObjectUtils.getNestedAttributePrefix(reference) + " "
-											+ ObjectUtils.getNestedAttributePrimitive(reference));
-								}
-								((PersistableBusinessObject) nestedObject).refreshReferenceObject(propertyToRefresh);
-							}
-							else {
-								// a DD mapping, try to go straight to the
-								// object and refresh it there
-								Object possibleBO = ObjectUtils.getPropertyValue(nestedObject, propertyToRefresh);
-								if (possibleBO != null && possibleBO instanceof PersistableBusinessObject) {
-									if (getDataDictionaryService().hasRelationship(possibleBO.getClass().getName(),
-											propertyToRefresh)) {
-										((PersistableBusinessObject) possibleBO).refresh();
-									}
-								}
-							}
-						}
-						else {
-							LOG.warn("Expected that a referenceToRefresh ("
-									+ reference
-									+ ")  would be a PersistableBusinessObject or Collection, but instead, it was of class "
-									+ nestedObject.getClass().getName());
-						}
+                        if (nestedObject == null) {
+                            LOG.warn("Unable to refresh ReferenceToRefresh (" + reference + ")  was found to be null");
+                        }
+                        else {
+                            if (nestedObject instanceof Collection) {
+                                // do nothing, probably because it's not really a
+                                // collection reference but a relationship defined
+                                // in the DD for a collections lookup
+                                // this part will need to be rewritten when the DD
+                                // supports true collection references
+                            }
+                            else if (nestedObject instanceof PersistableBusinessObject) {
+                                String propertyToRefresh = ObjectUtils.getNestedAttributePrimitive(reference);
+                                if (persistenceStructureService.hasReference(nestedObject.getClass(), propertyToRefresh)
+                                        || persistenceStructureService.hasCollection(nestedObject.getClass(),
+                                                propertyToRefresh)) {
+                                    if (LOG.isDebugEnabled()) {
+                                        LOG.debug("Refeshing " + ObjectUtils.getNestedAttributePrefix(reference) + " "
+                                                + ObjectUtils.getNestedAttributePrimitive(reference));
+                                    }
+                                    ((PersistableBusinessObject) nestedObject).refreshReferenceObject(propertyToRefresh);
+                                }
+                                else {
+                                    // a DD mapping, try to go straight to the
+                                    // object and refresh it there
+                                    Object possibleBO = ObjectUtils.getPropertyValue(nestedObject, propertyToRefresh);
+                                    if (possibleBO != null && possibleBO instanceof PersistableBusinessObject) {
+                                        if (getDataDictionaryService().hasRelationship(possibleBO.getClass().getName(),
+                                                propertyToRefresh)) {
+                                            ((PersistableBusinessObject) possibleBO).refresh();
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                LOG.warn("Expected that a referenceToRefresh ("
+                                        + reference
+                                        + ")  would be a PersistableBusinessObject or Collection, but instead, it was of class "
+                                        + nestedObject.getClass().getName());
+                            }
+                        }
 					}
 					else {
 						if (LOG.isDebugEnabled()) {
@@ -584,8 +595,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		try {
 			ObjectUtils.setObjectPropertyDeep(businessObject, KRADPropertyConstants.NEW_COLLECTION_RECORD,
 					boolean.class, true, 2);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LOG.error("unable to set newCollectionRecord property: " + e.getMessage(), e);
 			throw new RuntimeException("unable to set newCollectionRecord property: " + e.getMessage(), e);
 		}

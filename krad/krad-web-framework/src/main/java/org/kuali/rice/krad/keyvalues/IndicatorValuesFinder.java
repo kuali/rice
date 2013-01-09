@@ -25,23 +25,23 @@ import java.util.List;
 
 /**
  * This class returns list of boolean key value pairs.
- * 
- * 
+ *
+ *
  */
 public class IndicatorValuesFinder extends KeyValuesBase {
 
 	public static final IndicatorValuesFinder INSTANCE = new IndicatorValuesFinder();
-	
+
 	protected static final List<KeyValue> ACTIVE_LABELS;
 	static {
 		final List<KeyValue> activeLabels = new ArrayList<KeyValue>(3);
         activeLabels.add(new ConcreteKeyValue(KRADConstants.YES_INDICATOR_VALUE, "Yes"));
         activeLabels.add(new ConcreteKeyValue(KRADConstants.NO_INDICATOR_VALUE, "No"));
         activeLabels.add(new ConcreteKeyValue("", "Both"));
-        
+
         ACTIVE_LABELS = Collections.unmodifiableList(activeLabels);
 	}
-	
+
     @Override
 	public List<KeyValue> getKeyValues() {
         return ACTIVE_LABELS;

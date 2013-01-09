@@ -16,6 +16,10 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 
@@ -40,6 +44,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "attributeQueryConfig", parent = "Uif-AttributeQueryConfig")
 public class AttributeQuery implements Serializable {
     private static final long serialVersionUID = -4569905665441735255L;
 
@@ -61,11 +66,14 @@ public class AttributeQuery implements Serializable {
 
     public AttributeQuery() {
         renderNotFoundMessage = true;
+
         queryFieldMapping = new HashMap<String, String>();
         returnFieldMapping = new HashMap<String, String>();
         additionalCriteria = new HashMap<String, String>();
         sortPropertyNames = new ArrayList<String>();
+
         queryMethodArgumentFieldList = new ArrayList<String>();
+        queryMethodInvokerConfig = new MethodInvokerConfig();
     }
 
     /**
@@ -165,21 +173,22 @@ public class AttributeQuery implements Serializable {
     }
 
     /**
-     * Builds String for passing the queryMethodArgumentFieldList as a Javascript array
+     * Builds String for passing the queryMethodArgumentFieldList as a Javascript Object
      *
      * @return String js parameter string
      */
     public String getQueryMethodArgumentFieldsJsString() {
-        String queryMethodArgsJs = "[";
+        String queryMethodArgsJs = "{";
 
         for (String methodArg : queryMethodArgumentFieldList) {
-            if (!StringUtils.equals(queryMethodArgsJs, "[")) {
+            if (!StringUtils.equals(queryMethodArgsJs, "{")) {
                 queryMethodArgsJs += ",";
             }
-            queryMethodArgsJs += "\"" + methodArg + "\"";
+
+            queryMethodArgsJs += "\"" + methodArg + "\":\"" + methodArg + "\"";
         }
 
-        queryMethodArgsJs += "]";
+        queryMethodArgsJs += "}";
 
         return queryMethodArgsJs;
     }
@@ -197,7 +206,9 @@ public class AttributeQuery implements Serializable {
 
         if (StringUtils.isNotBlank(getQueryMethodToCall())) {
             configuredMethod = true;
-        } else if (getQueryMethodInvokerConfig() != null) {
+        } else if (getQueryMethodInvokerConfig() != null && (StringUtils.isNotBlank(
+                getQueryMethodInvokerConfig().getTargetMethod()) || StringUtils.isNotBlank(
+                getQueryMethodInvokerConfig().getStaticMethod()))) {
             configuredMethod = true;
         }
 
@@ -209,6 +220,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return String data object class name
      */
+    @BeanTagAttribute(name="dataObjectClassName")
     public String getDataObjectClassName() {
         return dataObjectClassName;
     }
@@ -235,6 +247,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return Map<String, String> mapping of query parameters
      */
+    @BeanTagAttribute(name="queryFieldMapping",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getQueryFieldMapping() {
         return queryFieldMapping;
     }
@@ -261,6 +274,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return Map<String, String> return field mapping
      */
+    @BeanTagAttribute(name="returnFieldMapping",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getReturnFieldMapping() {
         return returnFieldMapping;
     }
@@ -282,6 +296,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return Map<String, String> field name/value pairs for query criteria
      */
+    @BeanTagAttribute(name="additionalCriteria",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalCriteria() {
         return additionalCriteria;
     }
@@ -303,6 +318,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return List<String> property names
      */
+    @BeanTagAttribute(name="sortPropertyNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getSortPropertyNames() {
         return sortPropertyNames;
     }
@@ -322,6 +338,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return boolean true if not found message should be added, false otherwise
      */
+    @BeanTagAttribute(name="renderNotFoundMessage")
     public boolean isRenderNotFoundMessage() {
         return renderNotFoundMessage;
     }
@@ -340,6 +357,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return String literal message text
      */
+    @BeanTagAttribute(name="returnMessageText")
     public String getReturnMessageText() {
         return returnMessageText;
     }
@@ -359,6 +377,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return String style classes
      */
+    @BeanTagAttribute(name="returnMessageStyleClasses")
     public String getReturnMessageStyleClasses() {
         return returnMessageStyleClasses;
     }
@@ -384,6 +403,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return String query method name
      */
+    @BeanTagAttribute(name="queryMethodToCall")
     public String getQueryMethodToCall() {
         return queryMethodToCall;
     }
@@ -408,6 +428,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return List<String> query method argument list
      */
+    @BeanTagAttribute(name="queryMethodArgumentFieldList",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getQueryMethodArgumentFieldList() {
         return queryMethodArgumentFieldList;
     }
@@ -434,6 +455,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return MethodInvokerConfig query method config
      */
+    @BeanTagAttribute(name="queryMethodInvokerConfig",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MethodInvokerConfig getQueryMethodInvokerConfig() {
         return queryMethodInvokerConfig;
     }
@@ -445,5 +467,18 @@ public class AttributeQuery implements Serializable {
      */
     public void setQueryMethodInvokerConfig(MethodInvokerConfig queryMethodInvokerConfig) {
         this.queryMethodInvokerConfig = queryMethodInvokerConfig;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean("AttributeQuery", ValidationTrace.NO_BEAN_ID);
+
+        // Checks that at least one aspect is set
+        if(getDataObjectClassName()==null && getQueryMethodToCall()==null && getQueryMethodInvokerConfig()==null){
+            String currentValues [] = {"dataObjectClassName = "+getDataObjectClassName(),"queryMethodToCall = "+getQueryMethodToCall(),"queryMethodInvokerConfig = "+getQueryMethodInvokerConfig()};
+            tracer.createWarning("At least 1 should be set: dataObjectClass, queryMethodToCall or queryMethodInvokerConfig",currentValues);
+        }
     }
 }

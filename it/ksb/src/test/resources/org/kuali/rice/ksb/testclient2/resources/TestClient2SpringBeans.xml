@@ -17,8 +17,8 @@
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:beans="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -56,39 +56,39 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="bootstrapConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
-		<property name="configLocations">
-			<list>
-				<value>classpath:META-INF/ksb-test-config.xml</value>
-			</list>
-		</property>
-	</bean>
+    <bean id="bootstrapConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
+        <property name="configLocations">
+            <list>
+                <value>classpath:META-INF/ksb-test-config.xml</value>
+            </list>
+        </property>
+    </bean>
 
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" />
-		<property name="arguments">
-			<list><ref bean="bootstrapConfig"/></list>
-		</property>
-	</bean>
+        <property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" />
+        <property name="arguments">
+            <list><ref bean="bootstrapConfig"/></list>
+        </property>
+    </bean>
 
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties" value="#{bootstrapConfig.getProperties()}" />
-	</bean>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties" value="#{bootstrapConfig.getProperties()}" />
+    </bean>
 
-  <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/>
-  <alias name="riceDataSource${connection.pool.impl}" alias="dataSource"/>
+    <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/>
+    <alias name="riceDataSource${connection.pool.impl}" alias="dataSource"/>
 
-	<bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
-		<property name="transactionManager" ref="transactionManagerXAPool" />
-		<property name="driverClassName" value="${datasource.driver.name}" />
-		<property name="url" value="${datasource.url}" />
-		<property name="maxSize" value="${datasource.pool.maxSize}" />
-		<property name="minSize" value="${datasource.pool.minSize}" />
-		<property name="maxWait" value="${datasource.pool.maxWait}" />
-		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
-		<property name="username" value="${datasource.username}" />
-		<property name="password" value="${datasource.password}" />
-	</bean>
+    <bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+        <property name="transactionManager" ref="transactionManagerXAPool" />
+        <property name="driverClassName" value="${datasource.driver.name}" />
+        <property name="url" value="${datasource.url}" />
+        <property name="maxSize" value="${datasource.pool.maxSize}" />
+        <property name="minSize" value="${datasource.pool.minSize}" />
+        <property name="maxWait" value="${datasource.pool.maxWait}" />
+        <property name="validationQuery" value="${datasource.pool.validationQuery}" />
+        <property name="username" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+    </bean>
 
     <bean id="client2NonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
@@ -102,72 +102,72 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="echoService" class="org.kuali.rice.ksb.testclient2.EchoService2Impl" />
-	<bean id="chainedRequestService" class="org.kuali.rice.ksb.testclient2.ChainedRequestService2Impl" />
-	<bean id="sharedQueue" class="org.kuali.rice.ksb.testclient2.ClientApp2SharedQueue" />
-	<bean id="testServiceFailover" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
-	<bean id="soapService" class="org.kuali.rice.ksb.testclient2.Client2SOAPService" />
+    <bean id="echoService" class="org.kuali.rice.ksb.testclient2.EchoService2Impl" />
+    <bean id="chainedRequestService" class="org.kuali.rice.ksb.testclient2.ChainedRequestService2Impl" />
+    <bean id="sharedQueue" class="org.kuali.rice.ksb.testclient2.ClientApp2SharedQueue" />
+    <bean id="testServiceFailover" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
+    <bean id="soapService" class="org.kuali.rice.ksb.testclient2.Client2SOAPService" />
 
-	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory" />
+    <bean id="credentialsSourceFactory" class="org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory" />
 
-	<bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
-		<property name="properties">
-			<props>
-				<prop key="plugin.registry.enabled">true</prop>
-				<prop key="application.id">TestCl2</prop>
-				<prop key="serviceServletUrl">http://localhost:${ksb.client2.port}/TestClient2/remoting</prop>
-			</props>
-		</property>
-		
-		<property name="dataSource" ref="dataSource" />
-		<property name="nonTransactionalDataSource" ref="client2NonTransactionalDataSource" />
-		<property name="transactionManager" ref="transactionManager${connection.pool.impl}" />
-		<property name="userTransaction" ref="transactionManager${connection.pool.impl}" />
-		<property name="credentialsSourceFactory" ref="credentialsSourceFactory" />
-	</bean>
+    <bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
+        <property name="properties">
+            <props>
+                <prop key="plugin.registry.enabled">true</prop>
+                <prop key="application.id">TestCl1</prop>
+                <prop key="serviceServletUrl">http://localhost:${ksb.client2.port}/TestClient2/remoting</prop>
+            </props>
+        </property>
 
-  <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>
+        <property name="dataSource" ref="dataSource" />
+        <property name="nonTransactionalDataSource" ref="client2NonTransactionalDataSource" />
+        <property name="transactionManager" ref="transactionManager${connection.pool.impl}" />
+        <property name="userTransaction" ref="transactionManager${connection.pool.impl}" />
+        <property name="credentialsSourceFactory" ref="credentialsSourceFactory" />
+    </bean>
 
-	<bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-		<property name="services">
-			<list>
-				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
-					<property name="service">
-						<ref bean="soapService" />
-					</property>
-					<property name="localServiceName" value="soap-cluster-test" />
-					<property name="serviceNameSpaceURI" value="testNameSpace" />
-					<property name="priority" value="3" />
-					<property name="retryAttempts" value="1" />
-					<property name="busSecurity" value="false"></property>
-				</bean>
-				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-					<property name="service">
-						<ref bean="testServiceFailover" />
-					</property>
-					<property name="localServiceName" value="testServiceFailover" />
-					<property name="serviceNameSpaceURI" value="KEW" />
-				</bean>
-				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-					<property name="service" ref="echoService" />
-					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
-					<property name="localServiceName" value="echoService" />
-				</bean>
-				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-					<property name="service" ref="chainedRequestService" />
-					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.ChainedRequestService" />
-					<property name="localServiceName" value="chainedRequestService2" />
-				</bean>
-				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-					<property name="service" ref="sharedQueue" />
-					<property name="localServiceName" value="sharedQueue" />
-					<property name="serviceNameSpaceURI" value="testAppsSharedQueue" />
-				</bean>
-			</list>
-		</property>
-	</bean>
+    <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.testclient2.InstanceIdFactoryBeanTest"/>
 
-  <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
+    <bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+        <property name="services">
+            <list>
+                <bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
+                    <property name="service">
+                        <ref bean="soapService" />
+                    </property>
+                    <property name="localServiceName" value="soap-cluster-test" />
+                    <property name="serviceNameSpaceURI" value="testNameSpace" />
+                    <property name="priority" value="3" />
+                    <property name="retryAttempts" value="1" />
+                    <property name="busSecurity" value="false"></property>
+                </bean>
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+                    <property name="service">
+                        <ref bean="testServiceFailover" />
+                    </property>
+                    <property name="localServiceName" value="testServiceFailover" />
+                    <property name="serviceNameSpaceURI" value="KEW" />
+                </bean>
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+                    <property name="service" ref="echoService" />
+                    <property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
+                    <property name="localServiceName" value="echoService" />
+                </bean>
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+                    <property name="service" ref="chainedRequestService" />
+                    <property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.ChainedRequestService" />
+                    <property name="localServiceName" value="chainedRequestService2" />
+                </bean>
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+                    <property name="service" ref="sharedQueue" />
+                    <property name="localServiceName" value="sharedQueue" />
+                    <property name="serviceNameSpaceURI" value="testAppsSharedQueue" />
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
+    <import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 
 </beans>

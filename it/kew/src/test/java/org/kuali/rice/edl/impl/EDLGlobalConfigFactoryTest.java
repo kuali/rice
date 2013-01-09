@@ -38,20 +38,20 @@ public class EDLGlobalConfigFactoryTest extends KEWTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testEDLGlobalConfigParsing() throws Exception {
-		
-		EDLGlobalConfig edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig("classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
+
+        EDLGlobalConfig edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig("classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 		Map preProcessors = edlGlobalConfig.getPreProcessors();
 		Map postProcessors = edlGlobalConfig.getPostProcessors();
 		Map stateComps = edlGlobalConfig.getStateComponents();
-		
-		InputStream fakeyEDL = TestUtilities.loadResource(this.getClass(), "FakeyEDL.xml");
+
+        InputStream fakeyEDL = TestUtilities.loadResource(this.getClass(), "FakeyEDL.xml");
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fakeyEDL);
 		
 		Object configProcessorInst = null;
 		NodeList edlDefinitionNodes = doc.getElementsByTagName("fieldDef");
 		for (int i = 0; i < edlDefinitionNodes.getLength(); i++) {
 			Node definitionNode = edlDefinitionNodes.item(i);
-			Class configClass = (Class)edlGlobalConfig.getConfigProcessor(definitionNode);
+			Class configClass = (Class)edlGlobalConfig.getConfigProcessor(definitionNode, null);
 			if (configClass != null) {
 				configProcessorInst = configClass.newInstance();
 			}

@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Defines business logic methods that support the Lookup framework
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface LookupService {
@@ -38,7 +38,7 @@ public interface LookupService {
 
     /**
      * Returns a collection of objects based on the given search parameters.
-     * 
+     *
      * @return Collection returned from the search
      */
     public <T extends Object> Collection<T> findCollectionBySearch(Class<T> example, Map<String, String> formProps);
@@ -49,7 +49,7 @@ public interface LookupService {
     /**
      * Retrieves a Object based on the search criteria, which should uniquely
      * identify a record.
-     * 
+     *
      * @return Object returned from the search
      */
     public <T extends Object> T findObjectBySearch(Class<T> example, Map<String, String> formProps);

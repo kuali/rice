@@ -22,8 +22,6 @@ import java.util.regex.Pattern;
 
 /**
  * Abstraction of the regular expressions used to validate attribute values.
- * 
- * 
  */
 @Deprecated
 abstract public class CharacterLevelValidationPattern extends ValidationPattern {
@@ -34,12 +32,13 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
 
     /**
      * Sets maxLength parameter for the associated regex.
-     * 
+     *
      * @param maxLength
      */
     public void setMaxLength(int maxLength) {
         if (this.exactLength != -1) {
-            throw new IllegalStateException("illegal attempt to set maxLength after mutually-exclusive exactLength has been set");
+            throw new IllegalStateException(
+                    "illegal attempt to set maxLength after mutually-exclusive exactLength has been set");
         }
 
         this.maxLength = maxLength;
@@ -52,15 +51,15 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
         return maxLength;
     }
 
-
     /**
      * Sets exactLength parameter for the associated regex.
-     * 
+     *
      * @param exactLength
      */
     public void setExactLength(int exactLength) {
         if (this.maxLength != -1) {
-            throw new IllegalStateException("illegal attempt to set exactLength after mutually-exclusive maxLength has been set");
+            throw new IllegalStateException(
+                    "illegal attempt to set exactLength after mutually-exclusive maxLength has been set");
         }
 
         this.exactLength = exactLength;
@@ -73,34 +72,30 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
         return exactLength;
     }
 
-
     /**
      * @return regular expression Pattern generated using the individual ValidationPattern subclass
      */
     final public Pattern getRegexPattern() {
-        if ( regexPattern == null ) {
+        if (regexPattern == null) {
             String regexString = getRegexString();
-    
+
             StringBuffer completeRegex = new StringBuffer("^");
             completeRegex.append(getRegexString());
-    
+
             if (maxLength != -1) {
                 completeRegex.append("{0," + maxLength + "}");
-            }
-            else if (exactLength != -1) {
+            } else if (exactLength != -1) {
                 completeRegex.append("{" + exactLength + "}");
-            }
-            else {
+            } else {
                 completeRegex.append("*");
             }
-    
+
             completeRegex.append("$");
-    
+
             regexPattern = Pattern.compile(completeRegex.toString());
         }
         return regexPattern;
     }
-
 
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#buildExportMap(java.lang.String)
@@ -110,8 +105,7 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
 
         if (getMaxLength() != -1) {
             exportMap.set("maxLength", Integer.toString(getMaxLength()));
-        }
-        else if (getExactLength() != -1) {
+        } else if (getExactLength() != -1) {
             exportMap.set("exactLength", Integer.toString(getExactLength()));
         }
 
@@ -122,41 +116,41 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
 
     /**
      * Extends the given (parent class) exportMap as needed to represent subclass instances
-     * 
+     *
      * @param exportMap
      */
     abstract public void extendExportMap(ExportMap exportMap);
 
-	@Override
-	public String[] getValidationErrorMessageParameters(String attributeLabel) {
-		if (getMaxLength() != -1) {
-			return new String[] {attributeLabel, String.valueOf(getMaxLength())};
-		}
-		if (getExactLength() != -1) {
-			return new String[] {attributeLabel, String.valueOf(getExactLength())};
-		}
-		return new String[] {attributeLabel};
-	}
+    @Override
+    public String[] getValidationErrorMessageParameters(String attributeLabel) {
+        if (getMaxLength() != -1) {
+            return new String[]{attributeLabel, String.valueOf(getMaxLength())};
+        }
+        if (getExactLength() != -1) {
+            return new String[]{attributeLabel, String.valueOf(getExactLength())};
+        }
+        return new String[]{attributeLabel};
+    }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getValidationErrorMessageKey()
-	 */
-	@Override
-	public String getValidationErrorMessageKey() {
-		StringBuilder buf = new StringBuilder();
-		buf.append("error.format.").append(getClass().getName()).append(getValidationErrorMessageKeyOptions());
-		if (getMaxLength() != -1) {
-			buf.append(".maxLength");
-		}
-		if (getExactLength() != -1) {
-			buf.append(".exactLength");
-		}	
-		return buf.toString();
-	}
-	
-	protected String getValidationErrorMessageKeyOptions() {
-		return KRADConstants.EMPTY_STRING;
-	}
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getValidationErrorMessageKey()
+     */
+    @Override
+    public String getValidationErrorMessageKey() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("error.format.").append(getClass().getName()).append(getValidationErrorMessageKeyOptions());
+        if (getMaxLength() != -1) {
+            buf.append(".maxLength");
+        }
+        if (getExactLength() != -1) {
+            buf.append(".exactLength");
+        }
+        return buf.toString();
+    }
+
+    protected String getValidationErrorMessageKeyOptions() {
+        return KRADConstants.EMPTY_STRING;
+    }
 }

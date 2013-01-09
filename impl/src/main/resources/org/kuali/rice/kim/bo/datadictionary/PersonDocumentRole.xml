@@ -53,9 +53,9 @@
   </bean>
  
    <bean id="DocRole-roleId" parent="DocRole-roleId-parentBean"/>
-  <bean id="DocRole-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="roleId" p:forceUppercase="true" p:label="Role" p:shortLabel="Role" p:maxLength="10" p:required="false">
+  <bean id="DocRole-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="roleId" p:forceUppercase="true" p:label="Role" p:shortLabel="Role" p:maxLength="40" p:required="false">
     <property name="control">
-      <bean parent="TextControlDefinition" p:size="10"/>
+      <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
   

@@ -34,7 +34,6 @@ public class KRADServiceLocator {
     public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
     public static final String KEY_VALUES_SERVICE = "keyValuesService";
 
-
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
@@ -86,4 +85,5 @@ public class KRADServiceLocator {
     public static KeyValuesService getKeyValuesService() {
         return getService(KEY_VALUES_SERVICE);
     }
+
 }

@@ -121,15 +121,10 @@
            		<c:if test="${!readOnlyRole}">
 					<td>
 						<div align=center>&nbsp;
-			        	     <c:choose>
-				        	       <c:when test="${role.edit or readOnly}">
-				        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
-				        	       </c:when>
-				        	       <c:otherwise>
+
 				        	          <html:image property='methodToCall.deleteRole.line${status.index}.anchor${currentTabIndex}'
-											src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
-				        	       </c:otherwise>
-			        	     </c:choose>  
+											src='${ConfigProperties.kr.externalizable.images.url}tinybutton-inactivate.gif' styleClass='tinybutton'/>
+
 						</div>
 	                </td>
 	           </c:if>     

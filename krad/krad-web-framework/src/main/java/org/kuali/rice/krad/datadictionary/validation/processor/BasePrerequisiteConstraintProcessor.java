@@ -27,52 +27,50 @@ import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidation
 import java.util.Collection;
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> extends MandatoryElementConstraintProcessor<C> {
-	
-	protected ConstraintValidationResult processPrerequisiteConstraint(PrerequisiteConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
-		ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(getName());
-		
-		if (constraint == null) {
-			constraintValidationResult.setStatus(ErrorLevel.NOCONSTRAINT);
-			return constraintValidationResult;
-		}
-			
-		
-    	// TODO: Does this code need to be able to look at more than just the other immediate members of the object? 
-        String attributeName = constraint.getPropertyName();
-        
-        if (ValidationUtils.isNullOrEmpty(attributeName)) {
-        	throw new AttributeValidationException("Prerequisite constraints must include the name of the attribute that is required");
+    protected ConstraintValidationResult processPrerequisiteConstraint(PrerequisiteConstraint constraint,
+            AttributeValueReader attributeValueReader) throws AttributeValidationException {
+        ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(getName());
+
+        if (constraint == null) {
+            constraintValidationResult.setStatus(ErrorLevel.NOCONSTRAINT);
+            return constraintValidationResult;
         }
-        
+
+        // TODO: Does this code need to be able to look at more than just the other immediate members of the object?
+        String attributeName = constraint.getPropertyName();
+
+        if (ValidationUtils.isNullOrEmpty(attributeName)) {
+            throw new AttributeValidationException(
+                    "Prerequisite constraints must include the name of the attribute that is required");
+        }
+
         Object value = attributeValueReader.getValue(attributeName);
 
         boolean isSuccessful = true;
 
         if (value instanceof java.lang.String) {
-        	isSuccessful = ValidationUtils.hasText((String) value);
+            isSuccessful = ValidationUtils.hasText((String) value);
         } else if (value instanceof Collection) {
-        	isSuccessful = (((Collection<?>) value).size() > 0);
+            isSuccessful = (((Collection<?>) value).size() > 0);
         } else {
-        	isSuccessful = (null != value) ? true : false;
+            isSuccessful = (null != value) ? true : false;
         }
 
-        
-        
-        if (!isSuccessful) {        	
-        	String label = attributeValueReader.getLabel(attributeName); 
-        	if (label != null)
-        		attributeName = label;
-        	
-        	constraintValidationResult.setError(RiceKeyConstants.ERROR_REQUIRES_FIELD, attributeName);
-            constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+        if (!isSuccessful) {
+            String label = attributeValueReader.getLabel(attributeName);
+            if (label != null) {
+                attributeName = label;
+            }
+
+            constraintValidationResult.setError(RiceKeyConstants.ERROR_REQUIRES_FIELD, attributeName);
+            constraintValidationResult.setConstraintLabelKey(constraint.getMessageKey());
             constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
-        } 
-        
+        }
+
         return constraintValidationResult;
     }
 

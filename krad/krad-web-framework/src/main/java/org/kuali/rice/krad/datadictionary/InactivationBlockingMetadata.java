@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.datadictionary;
 
 /**
- * This interface provides read-only metadata about inactivation blocking.  This metadata object is associated with a business object.
+ * This interface provides read-only metadata about inactivation blocking.  This metadata object is associated with a
+ * business object.
  * The source of this information often comes from the data dictionary file.
- *  
- * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface InactivationBlockingMetadata {
 
@@ -31,14 +31,14 @@ public interface InactivationBlockingMetadata {
 
     /**
      * The type of the object that is blocked
-     * 
+     *
      * @return
      */
     public Class getBlockedBusinessObjectClass();
 
     /**
-     * The bean name of the service that is responsible for determining whether there are any records that block inactivation
-     * 
+     * The bean name of the service that is responsible for determining whether there are any records that block
+     * inactivation
      */
     public String getInactivationBlockingDetectionServiceBeanName();
 
@@ -46,10 +46,10 @@ public interface InactivationBlockingMetadata {
      * The type of the object that is blocking another record
      */
     public Class getBlockingReferenceBusinessObjectClass();
-    
+
     /**
      * Returns the human-meaningful name of the relationship
-     * 
+     *
      * @return
      */
     public String getRelationshipLabel();

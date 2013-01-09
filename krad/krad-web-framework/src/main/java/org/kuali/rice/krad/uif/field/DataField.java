@@ -17,11 +17,18 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
@@ -46,6 +53,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "dataField", parent = "Uif-DataField"),
+        @BeanTag(name = "dataField-labelTop", parent = "Uif-DataField-LabelTop"),
+        @BeanTag(name = "dataField-labelRight", parent = "Uif-DataField-LabelRight"),
+        @BeanTag(name = "dataField-withoutLabel", parent = "Uif-DataField-withoutLabel")})
 public class DataField extends FieldBase implements DataBinding, Helpable {
     private static final long serialVersionUID = -4129678891948564724L;
 
@@ -72,14 +83,17 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     private String readOnlyDisplayReplacement;
     private String readOnlyDisplaySuffix;
 
+    private String readOnlyListDisplayType;
+    private String readOnlyListDelimiter;
+
     private boolean applyMask;
     private MaskFormatter maskFormatter;
 
     private List<String> additionalHiddenPropertyNames;
     private List<String> propertyNamesForAdditionalDisplay;
 
-    private boolean escapeHtmlInPropertyValue;
-
+    private boolean escapeHtmlInPropertyValue = true;
+    private boolean multiLineReadOnlyDisplay;
     // widgets
     private Inquiry inquiry;
     private Help help;
@@ -137,6 +151,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * <li>Set the ids for the various attribute components</li>
      * <li>Sets up the client side validation for constraints on this field. In
      * addition, it sets up the messages applied to this field</li>
+     * <li>If this field is of type list and readOnly, generates the appropriate readOnly output.  Handles other
+     * readOnlyReplacement cases, as well.</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
@@ -163,8 +179,107 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         }
         this.propertyNamesForAdditionalDisplay = informationalPropertyPaths;
 
-        // Additional and Alternate display value
-        setAlternateAndAdditionalDisplayValue(view, model);
+        //Special processing for List<?> readOnly
+        Class<?> type = ObjectPropertyUtils.getPropertyType(model, getBindingInfo().getBindingPath());
+        if (this.isReadOnly() && type != null && List.class.isAssignableFrom(type) && StringUtils.isBlank(
+                getReadOnlyDisplayReplacement()) && StringUtils.isBlank(getReadOnlyDisplayReplacementPropertyName())) {
+            //get the list
+            Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
+
+            //check for null, empty or non-simple type content (not supported by DataField)
+            if (fieldValue != null && fieldValue instanceof List<?> && !((List) fieldValue).isEmpty()) {
+                List<?> list = (List<?>) fieldValue;
+                processReadOnlyListDisplay(model, list);
+            } else {
+                this.setReadOnlyDisplayReplacement("&nbsp;");
+            }
+
+        } else {
+            // Additional and Alternate display value
+            setAlternateAndAdditionalDisplayValue(view, model);
+        }
+
+        if (this.getFieldLabel() != null && StringUtils.isNotBlank(this.getId())) {
+            this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.CONTROL);
+        }
+    }
+
+    /**
+     * This method is called when the list is readOnly as determined in DataField's performFinalize method.  This
+     * method
+     * should be overridden to perform any additional processing to the values before calling
+     * generateReadOnlyListDisplayReplacement.  The default implementation calls it directly with the originalList.
+     *
+     * @param model the model
+     * @param originalList originalList of values
+     */
+    protected void processReadOnlyListDisplay(Object model, List<?> originalList) {
+        generateReadOnlyListDisplayReplacement(originalList);
+    }
+
+    /**
+     * Generates the html to be used and sets the readOnlyDisplayReplacement for DataFields that contain lists and
+     * do not have their own readOnlyDisplayReplacement defined.  The type of html generated is based on the options
+     * set on readOnlyListDisplayType and readOnlyListDelimiter.
+     *
+     * @param list the list to be converted to readOnly html
+     */
+    protected void generateReadOnlyListDisplayReplacement(List<?> list) {
+        String generatedHtml = "";
+
+        //Default to delimited if nothing is set
+        if (getReadOnlyListDisplayType() == null) {
+            this.setReadOnlyListDisplayType(UifConstants.ReadOnlyListTypes.DELIMITED.name());
+        }
+
+        //begin generation setup
+        if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())) {
+            generatedHtml = "<ul class='uif-readOnlyStringList'>";
+        } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
+            generatedHtml = "<ol class='uif-readOnlyStringList'>";
+        } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.BREAK.name())) {
+            setReadOnlyListDelimiter("<br/>");
+        } else if (this.getReadOnlyListDelimiter() == null) {
+            setReadOnlyListDelimiter(", ");
+        }
+
+        //iterate through each value
+        for (Object value : list) {
+            //if blank skip
+            if (!TypeUtils.isSimpleType(value.getClass()) || StringUtils.isBlank(value.toString())) {
+                continue;
+            }
+
+            //handle mask if any
+            if (isApplyMask()) {
+                value = getMaskFormatter().maskValue(value);
+            }
+            //TODO the value should use the formatted text property value we would expect to see instead of toString
+            //two types - delimited and html list
+            if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())
+                    || getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
+                generatedHtml = generatedHtml + "<li>" + value.toString() + "</li>";
+            } else {
+                //no matching needed - delimited is always the fallback and break uses same logic
+                generatedHtml = generatedHtml + value.toString() + this.getReadOnlyListDelimiter();
+            }
+        }
+
+        //end the generation
+        if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())) {
+            generatedHtml = generatedHtml + "</ul>";
+        } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
+            generatedHtml = generatedHtml + "</ol>";
+        } else {
+            generatedHtml = StringUtils.removeEnd(generatedHtml, this.getReadOnlyListDelimiter());
+        }
+
+        if (StringUtils.isNotBlank(generatedHtml)) {
+            this.setReadOnlyDisplayReplacement(generatedHtml);
+        } else {
+            //this must be done or the ftl will skip and throw error
+            this.setReadOnlyDisplayReplacement("&nbsp;");
+        }
     }
 
     /**
@@ -275,8 +390,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         }
 
         // security
-        if (getComponentSecurity().getAttributeSecurity() == null) {
-            getComponentSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
+        if (getDataFieldSecurity().getAttributeSecurity() == null) {
+            getDataFieldSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 
         // alternate property name
@@ -323,6 +438,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     /**
      * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
      */
+    @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
         return this.propertyName;
     }
@@ -348,6 +464,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return PropertyEditor property editor instance to use for this field
      */
+    @BeanTagAttribute(name = "propertyEditor", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PropertyEditor getPropertyEditor() {
         return propertyEditor;
     }
@@ -373,6 +490,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     /**
      * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
      */
+    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;
     }
@@ -407,6 +525,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return String attribute name
      */
+    @BeanTagAttribute(name = "dictionaryAttributeName")
     public String getDictionaryAttributeName() {
         return this.dictionaryAttributeName;
     }
@@ -440,6 +559,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return
      */
+    @BeanTagAttribute(name = "dictionaryObjectEntry")
     public String getDictionaryObjectEntry() {
         return this.dictionaryObjectEntry;
     }
@@ -464,6 +584,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return String default value
      */
+    @BeanTagAttribute(name = "defaultValue")
     public String getDefaultValue() {
         return this.defaultValue;
     }
@@ -483,6 +604,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Class<? extends ValueFinder> default value finder class
      */
+    @BeanTagAttribute(name = "defaultValueFinderClass")
     public Class<? extends ValueFinder> getDefaultValueFinderClass() {
         return this.defaultValueFinderClass;
     }
@@ -507,6 +629,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return String default value
      */
+    @BeanTagAttribute(name = "defaultValues", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public Object[] getDefaultValues() {
         return this.defaultValues;
     }
@@ -525,6 +648,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return String summary help text
      */
+    @BeanTagAttribute(name = "helpSummary")
     public String getHelpSummary() {
         return this.help.getTooltipHelpContent();
     }
@@ -543,8 +667,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return DataFieldSecurity instance
      */
-    @Override
-    public DataFieldSecurity getComponentSecurity() {
+    public DataFieldSecurity getDataFieldSecurity() {
         return (DataFieldSecurity) super.getComponentSecurity();
     }
 
@@ -562,6 +685,9 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         super.setComponentSecurity(componentSecurity);
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentSecurityClass()
+     */
     @Override
     protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
         return DataFieldSecurity.class;
@@ -576,6 +702,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return boolean true if field should be readOnly hidden, false if not
      */
+    @BeanTagAttribute(name = "addHiddenWhenReadOnly")
     public boolean isAddHiddenWhenReadOnly() {
         return addHiddenWhenReadOnly;
     }
@@ -602,6 +729,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Inquiry field inquiry
      */
+    @BeanTagAttribute(name = "inguiry", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Inquiry getInquiry() {
         return this.inquiry;
     }
@@ -627,6 +755,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @return Help for datafield
      */
     @Override
+    @BeanTagAttribute(name = "help", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Help getHelp() {
         return this.help;
     }
@@ -647,6 +776,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip))
      */
     @Override
+    @BeanTagAttribute(name = "tooltipOfComponent", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public void setTooltipOfComponent(Tooltip tooltip) {
         getFieldLabel().setToolTip(tooltip);
     }
@@ -655,7 +785,6 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * Return the field label for the help title
      *
      * @return field label
-     *
      * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
      */
     @Override
@@ -678,6 +807,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Additional Display Attribute Name
      */
+    @BeanTagAttribute(name = "readOnlyDisplaceSuffixPropertyName")
     public String getReadOnlyDisplaySuffixPropertyName() {
         return this.readOnlyDisplaySuffixPropertyName;
     }
@@ -697,6 +827,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return alternate Display Property Name
      */
+    @BeanTagAttribute(name = "readOnlyDisplayReplacementPropertyName")
     public String getReadOnlyDisplayReplacementPropertyName() {
         return this.readOnlyDisplayReplacementPropertyName;
     }
@@ -706,6 +837,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return the alternate display value set for this field
      */
+    @BeanTagAttribute(name = "readOnlyDisplayReplacement")
     public String getReadOnlyDisplayReplacement() {
         return readOnlyDisplayReplacement;
     }
@@ -724,6 +856,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return the additional display value set for this field
      */
+    @BeanTagAttribute(name = "readOnlyDispalySuffix")
     public String getReadOnlyDisplaySuffix() {
         return readOnlyDisplaySuffix;
     }
@@ -735,6 +868,53 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public void setReadOnlyDisplaySuffix(String value) {
         this.readOnlyDisplaySuffix = value;
+    }
+
+    /**
+     * Gets the readOnlyListDisplayType.
+     *
+     * <p>When this is not set, the list will default to the delimited list display with a default of comma and space
+     * (", ") - if readOnlyListDelimiter is not set as well.  The type can be set as the following:
+     * <ul>
+     * <li>"DELIMITED" - list will be output with delimiters between each item defined by readOnlyListDelimiter</li>
+     * <li>"BREAK" - list will be output with breaks between each item</li>
+     * <li>"OL" - list will be output in ordered list format (numbered)</li>
+     * <li>"UL" - list will be output in unordered list format (bulleted)</li>
+     * </ul>
+     * </p>
+     *
+     * @return the display type to use
+     */
+    public String getReadOnlyListDisplayType() {
+        return readOnlyListDisplayType;
+    }
+
+    /**
+     * Set the readOnlyListDisplayType
+     *
+     * @param readOnlyListDisplayType
+     */
+    public void setReadOnlyListDisplayType(String readOnlyListDisplayType) {
+        this.readOnlyListDisplayType = readOnlyListDisplayType;
+    }
+
+    /**
+     * The readOnlyListDelimiter is used to set the delimiter used when "DELIMITED" type is set for
+     * readOnlyListDisplayType
+     *
+     * @return the delimiter to use in readOnly list output with "DELIMITED" type set
+     */
+    public String getReadOnlyListDelimiter() {
+        return readOnlyListDelimiter;
+    }
+
+    /**
+     * Set the readOnlyListDelimiter
+     *
+     * @param readOnlyListDelimiter
+     */
+    public void setReadOnlyListDelimiter(String readOnlyListDelimiter) {
+        this.readOnlyListDelimiter = readOnlyListDelimiter;
     }
 
     /**
@@ -754,6 +934,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return boolean true if the field value should be masked, false if not
      */
+    @BeanTagAttribute(name = "applyMask")
     public boolean isApplyMask() {
         return applyMask;
     }
@@ -777,6 +958,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return MaskFormatter instance
      */
+    @BeanTagAttribute(name = "maskFormatter", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MaskFormatter getMaskFormatter() {
         return maskFormatter;
     }
@@ -796,6 +978,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return List<String> hidden property names
      */
+    @BeanTagAttribute(name = "additionalHiddenPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalHiddenPropertyNames() {
         return additionalHiddenPropertyNames;
     }
@@ -827,6 +1010,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return List<String> informational property names
      */
+    @BeanTagAttribute(name = "propertyNamesForAdditionalDisplay", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getPropertyNamesForAdditionalDisplay() {
         return propertyNamesForAdditionalDisplay;
     }
@@ -853,8 +1037,32 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return true if escaping allowed
      */
+    @BeanTagAttribute(name = "escapeHtmlInPropertyValue")
     public boolean isEscapeHtmlInPropertyValue() {
         return this.escapeHtmlInPropertyValue;
+    }
+
+    /**
+     * Returns true if this field is of type {@code TextAreaControl}.
+     *
+     * <p>
+     * Used to preserve text formatting in a textarea when the view
+     * is readOnly by enclosing the text in a </pre> tag.
+     * </p>
+     *
+     * @return true if the field is of type {@code TextAreaControl}
+     */
+    public boolean isMultiLineReadOnlyDisplay() {
+        return multiLineReadOnlyDisplay;
+    }
+
+    /**
+     * Setter for multiLineReadOnlyDisplay
+     *
+     * @param multiLineReadOnlyDisplay
+     */
+    public void setMultiLineReadOnlyDisplay(boolean multiLineReadOnlyDisplay) {
+        this.multiLineReadOnlyDisplay = multiLineReadOnlyDisplay;
     }
 
     /**
@@ -869,8 +1077,52 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public boolean hasSecureValue() {
         return isApplyMask() || ((getComponentSecurity().isViewAuthz()
-                || getComponentSecurity().isViewInLineAuthz()
-                || ((getComponentSecurity().getAttributeSecurity() != null) && getComponentSecurity()
+                || getDataFieldSecurity().isViewInLineAuthz()
+                || ((getDataFieldSecurity().getAttributeSecurity() != null) && getDataFieldSecurity()
                 .getAttributeSecurity().isHide())) && isHidden());
+    }
+
+    public boolean isRenderFieldset() {
+        return (!this.isReadOnly()
+                && inquiry != null
+                && inquiry.isRender()
+                && inquiry.getInquiryLink() != null
+                && inquiry.getInquiryLink().isRender()) || (help != null
+                && help.isRender()
+                && help.getHelpAction() != null
+                && help.getHelpAction().isRender());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that the property is connected to the field
+        if (getPropertyName() == null) {
+            if (!Validator.checkExpressions(this, "propertyName")) {
+                String currentValues[] = {"propertyName = " + getPropertyName()};
+                tracer.createError("Property name not set", currentValues);
+            }
+        }
+
+        // Checks that the default values  present
+        if (getDefaultValue() != null && getDefaultValues() != null) {
+            String currentValues[] =
+                    {"defaultValue =" + getDefaultValue(), "defaultValues Size =" + getDefaultValues().length};
+            tracer.createWarning("Both Default Value and Default Values set", currentValues);
+        }
+
+        // Checks that a mask formatter is set if the data field is to be masked
+        if (isApplyMask()) {
+            if (maskFormatter == null) {
+                String currentValues[] = {"applyMask =" + isApplyMask(), "maskFormatter =" + maskFormatter};
+                tracer.createWarning("Apply mask is true, but no value is set for maskFormatter", currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

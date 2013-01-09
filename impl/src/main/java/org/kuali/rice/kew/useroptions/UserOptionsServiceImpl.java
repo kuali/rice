@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 
-import org.kuali.rice.kew.useroptions.dao.ReloadActionListDAO;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserOptionsServiceImpl implements UserOptionsService {
 
     private UserOptionsDAO userOptionsDAO;
-    private ReloadActionListDAO reloadActionListDAO;
 
     private static final Properties defaultProperties = new Properties();
 
@@ -97,22 +95,18 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     }
 
     public void save(String principalId, String optionId, String optionValue) {
-        UserOptions option = findByOptionId(optionId, principalId);
-        if (option == null) {
-            option = new UserOptions();
-            option.setWorkflowId(principalId);
+        //KULRICE-7796 Don't save where val is greater than field length
+        if(optionValue.length() <= 2000)
+        {
+            UserOptions option = findByOptionId(optionId, principalId);
+            if (option == null) {
+                option = new UserOptions();
+                option.setWorkflowId(principalId);
+            }
+            option.setOptionId(optionId);
+            option.setOptionVal(optionValue);
+            getUserOptionsDAO().save(option);
         }
-        option.setOptionId(optionId);
-        option.setOptionVal(optionValue);
-        getUserOptionsDAO().save(option);
-    }
-
-    public boolean refreshActionList(String principalId) {
-    	return getReloadActionListDAO().checkAndResetReloadActionListFlag(principalId);
-    }
-
-    public void saveRefreshUserOption(String principalId) {
-    	getReloadActionListDAO().setReloadActionListFlag(principalId);
     }
 
     public UserOptionsDAO getUserOptionsDAO() {
@@ -123,17 +117,6 @@ public class UserOptionsServiceImpl implements UserOptionsService {
         userOptionsDAO = optionsDAO;
     }
     
-    /**
-	 * @return the reloadActionListDAO
-	 */
-	public ReloadActionListDAO getReloadActionListDAO() {
-		return this.reloadActionListDAO;
-	}
-	
-	public void setReloadActionListDAO(ReloadActionListDAO rald) {
-		this.reloadActionListDAO = rald;
-	}
-
     @Override
     public List<UserOptions> retrieveEmailPreferenceUserOptions(String emailSetting) {
         return this.getUserOptionsDAO().findEmailUserOptionsByType(emailSetting);

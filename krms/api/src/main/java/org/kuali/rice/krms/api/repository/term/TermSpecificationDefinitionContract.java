@@ -77,4 +77,13 @@ public interface TermSpecificationDefinitionContract extends Identifiable, Inact
      */
     List<? extends CategoryDefinitionContract> getCategories();
 
+    // TODO: ensure that @since is accurate when this sandbox branch is merged back into Rice proper
+    /**
+     * Gets a list of the IDs for the contexts this TermSpecification can be used in.
+     *
+     * @return the list of contexts for this term specification definition
+     * @since 2.2
+     */
+    List<String> getContextIds();
+
 }

@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.cache.CacheKeyUtils;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.delegation.DelegationType;
@@ -52,7 +53,11 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -83,6 +88,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return Collections.unmodifiableMap(map);
     }
 
+    private RoleService proxiedRoleService;
+    private CacheManager cacheManager;
+
+    public RoleServiceImpl() {
+        this.cacheManager = new NoOpCacheManager();
+    }
 
     @Override
     public Role createRole(final Role role) throws RiceIllegalArgumentException, RiceIllegalStateException {
@@ -99,7 +110,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public Role updateRole(final Role role) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(role, "role");
 
-        RoleBo originalRole = getRoleBo(role.getId());
+        RoleBoLite originalRole = getRoleBoLite(role.getId());
         if (StringUtils.isBlank(role.getId()) || originalRole == null) {
             throw new RiceIllegalStateException("the role does not exist: " + role);
         }
@@ -221,26 +232,69 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @Override
     public Role getRole(String roleId) throws RiceIllegalStateException  {
         incomingParamCheck(roleId, "roleId");
-
-        RoleBo roleBo = getRoleBo(roleId);
-        if (roleBo == null) {
-            return null;
-        }
-        return RoleBo.to(roleBo);
+        return loadRole(roleId);
     }
 
-    protected Map<String, RoleBo> getRoleBoMap(Collection<String> roleIds) {
-        Map<String, RoleBo> result;
+    /**
+     * Loads the role with the given id, leveraging the cache where possible and querying the database
+     * if role not already in the cache. If the role is not in the cache, then it will be placed in
+     * the cache once it is loaded.
+     */
+    protected Role loadRole(String roleId) {
+        Role role = getRoleFromCache(roleId);
+        if (role == null) {
+        	RoleBoLite roleBo = getRoleBoLite(roleId);
+            if (roleBo != null) {
+                role = RoleBoLite.to(roleBo);
+                putRoleInCache(role);
+            }
+        }
+        return role;
+    }
+
+    protected Role getRoleFromCache(String id) {
+        Cache cache = cacheManager.getCache(Role.Cache.NAME);
+        Cache.ValueWrapper cachedValue = cache.get("id=" + id);
+        if (cachedValue != null) {
+            return (Role)cachedValue.get();
+        }
+        return null;
+    }
+
+    protected Role getRoleFromCache(String namespaceCode, String name) {
+        Cache cache = cacheManager.getCache(Role.Cache.NAME);
+        Cache.ValueWrapper cachedValue = cache.get("namespaceCode=" + namespaceCode + "|name=" + name);
+        if (cachedValue != null) {
+            return (Role)cachedValue.get();
+        }
+        return null;
+    }
+
+    protected void putRoleInCache(Role role) {
+        if (role != null) {
+            Cache cache = cacheManager.getCache(Role.Cache.NAME);
+            String idKey = "id=" + role.getId();
+            String nameKey = "namespaceCode=" + role.getNamespaceCode() + "|name=" + role.getName();
+            cache.put(idKey, role);
+            cache.put(nameKey, role);
+        }
+    }
+
+    protected Map<String, RoleBoLite> getRoleBoLiteMap(Collection<String> roleIds) {
+        Map<String, RoleBoLite> result;
         // check for a non-null result in the cache, return it if found
         if (roleIds.size() == 1) {
             String roleId = roleIds.iterator().next();
-            RoleBo bo = getRoleBo(roleId);
-            result = bo.isActive() ? Collections.singletonMap(roleId, bo) :  Collections.<String, RoleBo>emptyMap();
+            RoleBoLite bo = getRoleBoLite(roleId);
+            if (bo == null) {
+                return Collections.<String, RoleBoLite>emptyMap();
+            }
+            result = bo.isActive() ? Collections.singletonMap(roleId, bo) :  Collections.<String, RoleBoLite>emptyMap();
         } else {
-            result = new HashMap<String, RoleBo>(roleIds.size());
+            result = new HashMap<String, RoleBoLite>(roleIds.size());
             for (String roleId : roleIds) {
-                RoleBo bo = getRoleBo(roleId);
-                if (bo.isActive()) {
+                RoleBoLite bo = getRoleBoLite(roleId);
+                if (bo != null && bo.isActive()) {
                     result.put(roleId, bo);
                 }
             }
@@ -253,25 +307,65 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         if (CollectionUtils.isEmpty(roleIds)) {
             throw new RiceIllegalArgumentException("roleIds is null or empty");
         }
+        return Collections.unmodifiableList(loadRoles(roleIds));
+    }
 
-        Collection<RoleBo> roleBos = getRoleBoMap(roleIds).values();
-        List<Role> roles = new ArrayList<Role>(roleBos.size());
-        for (RoleBo bo : roleBos) {
-            roles.add(RoleBo.to(bo));
+    /**
+     * Loads the roles with the given ids, leveraging the cache where possible and querying the database
+     * for role ids not already in the cache. If the role is not in the cache, then it will be placed in
+     * the cache once it is loaded.
+     */
+    protected List<Role> loadRoles(List<String> roleIds) {
+        List<String> remainingRoleIds = new ArrayList<String>();
+        Map<String, Role> roleMap = new HashMap<String, Role>(roleIds.size());
+        for (String roleId : roleIds) {
+            Role role = getRoleFromCache(roleId);
+            if (role != null) {
+                roleMap.put(roleId, role);
+            } else {
+                remainingRoleIds.add(roleId);
+            }
         }
-        return Collections.unmodifiableList(roles);
+        if (!remainingRoleIds.isEmpty()) {
+            Map<String, RoleBoLite> roleBoMap = getRoleBoLiteMap(remainingRoleIds);
+            for (String roleId : roleBoMap.keySet()) {
+                RoleBoLite roleBo = roleBoMap.get(roleId);
+                if (roleBo != null) {
+                    Role role = RoleBoLite.to(roleBo);
+                    roleMap.put(roleId, role);
+                    putRoleInCache(role);
+                }
+            }
+        }
+        List<Role> roles = new ArrayList<Role>(roleMap.values());
+        return roles;
     }
 
     @Override
     public Role getRoleByNamespaceCodeAndName(String namespaceCode, String roleName) throws RiceIllegalStateException  {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
+        return loadRoleByName(namespaceCode, roleName);
+    }
 
-        RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
-        if (roleBo != null) {
-            return RoleBo.to(roleBo);
+    /**
+     * Loads the role with the given name, leveraging the cache where possible and querying the database
+     * if role not already in the cache. If the role is not in the cache, then it will be placed in
+     * the cache once it is loaded.
+     */
+    protected Role loadRoleByName(String namespaceCode, String roleName) {
+        Role role = getRoleFromCache(namespaceCode, roleName);
+        if (role == null) {
+            RoleBoLite roleBo = getRoleBoLiteByName(namespaceCode, roleName);
+            if (roleBo != null) {
+                role = getRoleFromCache(roleBo.getId());
+                if (role == null) {
+                    role = RoleBoLite.to(roleBo);
+                }
+                putRoleInCache(role);
+            }
         }
-        return null;
+        return role;
     }
 
     @Override
@@ -290,9 +384,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @Override
     public boolean isRoleActive(String roleId) throws RiceIllegalStateException  {
         incomingParamCheck(roleId, "roleId");
-
-        RoleBo roleBo = getRoleBo(roleId);
-        return roleBo != null && roleBo.isActive();
+        Role role = getRole(roleId);
+        return role != null && role.isActive();
     }
 
     @Override
@@ -386,7 +479,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
-        Map<String, RoleBo> roleBosById = getRoleBoMap(roleIds);
+        Map<String, RoleBoLite> roleBosById = getRoleBoLiteMap(roleIds);
 
         // get the person's groups
         List<String> groupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
@@ -420,10 +513,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 // need to convert qualification using this role's service
                 Map<String, String> nestedQualification = qualification;
                 if (roleTypeService != null) {
-                    RoleBo roleBo = roleBosById.get(roleMemberBo.getRoleId());
+                    RoleBoLite roleBo = roleBosById.get(roleMemberBo.getRoleId());
                     // pulling from here as the nested roleBo is not necessarily (and likely is not)
                     // in the roleBosById Map created earlier
-                    RoleBo nestedRole = getRoleBo(roleMemberBo.getMemberId());
+                    RoleBoLite nestedRole = getRoleBoLite(roleMemberBo.getMemberId());
                     //it is possible that the the roleTypeService is coming from a remote application
                     // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                     try {
@@ -436,7 +529,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 nestedRoleId.add(roleMemberBo.getMemberId());
                 // if the user has the given role, add the qualifier the *nested role* has with the
                 // originally queries role
-                if (principalHasRole(principalId, nestedRoleId, nestedQualification, false)) {
+                if (this.getProxiedRoleService().principalHasRole(principalId, nestedRoleId, nestedQualification, false)) {
                     results.add(roleMemberBo.getAttributes());
                 }
             }
@@ -463,7 +556,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(roleIds, "roleIds");
 
         Set<String> foundRoleTypeMembers = new HashSet<String>();
-        return getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
+        List<RoleMembership> roleMembers = getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
+
+        return Collections.unmodifiableList(roleMembers);
     }
 
     @Override
@@ -481,24 +576,23 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 principalIds.add(roleMembership.getMemberId());
             }
         }
+
         return Collections.unmodifiableSet(principalIds);
     }
 
     @Override
     public boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification) throws RiceIllegalStateException {
-        incomingParamCheck(principalId, "principalId");
-        incomingParamCheck(roleIds, "roleIds");
 
         if ( LOG.isDebugEnabled() ) {
             logPrincipalHasRoleCheck(principalId, roleIds, qualification);
         }
-        
-        Boolean hasRole = principalHasRole(principalId, roleIds, qualification, true);
+
+        boolean hasRole = this.getProxiedRoleService().principalHasRole(principalId, roleIds, qualification, true);
         
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Result: " + hasRole );
         }
-        
+
         return hasRole;
     }
 
@@ -510,9 +604,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(roleName, "roleName");
 
         List<String> subList = new ArrayList<String>();
-        RoleBo role = getRoleBoByName(roleNamespaceCode, roleName);
+        RoleBoLite role = getRoleBoLiteByName(roleNamespaceCode, roleName);
         for (String principalId : principalIds) {
-            if (principalHasRole(principalId, Collections.singletonList(role.getId()), qualification)) {
+            if (this.getProxiedRoleService().principalHasRole(principalId, Collections.singletonList(role.getId()), qualification)) {
                 subList.add(principalId);
             }
         }
@@ -523,14 +617,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public RoleQueryResults findRoles(QueryByCriteria queryByCriteria) throws RiceIllegalStateException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<RoleBo> results = getCriteriaLookupService().lookup(RoleBo.class, queryByCriteria);
+        GenericQueryResults<RoleBoLite> results = getCriteriaLookupService().lookup(RoleBoLite.class, queryByCriteria);
 
         RoleQueryResults.Builder builder = RoleQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
         builder.setTotalRowCount(results.getTotalRowCount());
 
         final List<Role.Builder> ims = new ArrayList<Role.Builder>();
-        for (RoleBo bo : results.getResults()) {
+        for (RoleBoLite bo : results.getResults()) {
             ims.add(Role.Builder.create(bo));
         }
 
@@ -656,7 +750,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         List<RoleMembership> results = new ArrayList<RoleMembership>();
         Set<String> allRoleIds = new HashSet<String>();
         for (String roleId : roleIds) {
-            if (isRoleActive(roleId)) {
+            if (this.getProxiedRoleService().isRoleActive(roleId)) {
                 allRoleIds.add(roleId);
             }
         }
@@ -666,7 +760,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
         Set<String> matchingRoleIds = new HashSet<String>(allRoleIds.size());
         // for efficiency, retrieve all roles and store in a map
-        Map<String, RoleBo> roles = getRoleBoMap(allRoleIds);
+        Map<String, RoleBoLite> roles = getRoleBoLiteMap(allRoleIds);
 
         List<String> copyRoleIds = new ArrayList<String>(allRoleIds);
         List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
@@ -697,24 +791,24 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getAttributes()).build();
 
             // if the qualification check does not need to be made, just add the result
-            if ((qualification == null || qualification.isEmpty()) || getRoleTypeService(roleMemberBo.getRoleId()) == null) {
+            RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
+            if ((qualification == null || qualification.isEmpty()) || roleTypeService == null) {
                 if (MemberType.ROLE.equals(roleMemberBo.getType())) {
                     // if a role member type, do a non-recursive role member check
                     // to obtain the group and principal members of that role
                     // given the qualification
                     Map<String, String> nestedRoleQualification = qualification;
-                    if (getRoleTypeService(roleMemberBo.getRoleId()) != null) {
+                    if (roleTypeService != null) {
                         // get the member role object
-                        RoleBo memberRole = getRoleBo(mi.getMemberId());
-                        nestedRoleQualification = getRoleTypeService(roleMemberBo.getRoleId())
-                                .convertQualificationForMemberRoles(
+                        RoleBoLite memberRole = getRoleBoLite(mi.getMemberId());
+                        nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
                                         roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
                                         roles.get(roleMemberBo.getRoleId()).getName(),
                                         memberRole.getNamespaceCode(),
                                         memberRole.getName(),
                                         qualification);
                     }
-                    if (isRoleActive(roleMemberBo.getRoleId())) {
+                    if (this.getProxiedRoleService().isRoleActive(roleMemberBo.getRoleId())) {
                         Collection<RoleMembership> nestedRoleMembers = getNestedRoleMembers(nestedRoleQualification, mi, foundRoleTypeMembers);
                         if (!nestedRoleMembers.isEmpty()) {
                             results.addAll(nestedRoleMembers);
@@ -754,7 +848,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             // to obtain the group and principal members of that role
                             // given the qualification
                             // get the member role object
-                            RoleBo memberRole = getRoleBo(roleMemberships.getMemberId());
+                            RoleBoLite memberRole = getRoleBoLite(roleMemberships.getMemberId());
                             if (memberRole.isActive()) {
                                 Map<String, String> nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
                                         roles.get(roleMemberships.getRoleId()).getNamespaceCode(),
@@ -782,10 +876,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // handle derived roles
     	for ( String roleId : allRoleIds ) {
     		RoleTypeService roleTypeService = getRoleTypeService( roleId );
-			RoleBo role = roles.get( roleId );
+			RoleBoLite role = roles.get( roleId );
     		// check if a derived role
             try {
-        		if ( isDerivedRoleType(role.getKimTypeId(), roleTypeService) ) {
+                if ( isDerivedRoleType(roleTypeService) ) {
                     // for each derived role, get the list of principals and groups which are in that role given the qualification (per the role type service)
         			List<RoleMembership> roleMembers = roleTypeService.getRoleMembersFromDerivedRole(role.getNamespaceCode(), role.getName(), qualification);
         			if ( !roleMembers.isEmpty()  ) {
@@ -962,170 +1056,325 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
     }
 
-    protected boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification, boolean checkDelegations) {
-        if (StringUtils.isBlank(principalId)) {
-            return false;
-        }
-        Set<String> allRoleIds = new HashSet<String>();
-        // remove inactive roles
-        for (String roleId : roleIds) {
-            if (isRoleActive(roleId)) {
-                allRoleIds.add(roleId);
-            }
-        }
-        // short-circuit if no roles match
-        if (allRoleIds.isEmpty()) {
-            return false;
-        }
-        // for efficiency, retrieve all roles and store in a map
-        Map<String, RoleBo> roles = getRoleBoMap(allRoleIds);
-        // get all roles to which the principal is assigned
-        List<String> copyRoleIds = new ArrayList<String>(allRoleIds);
-        List<RoleMemberBo> rps = new ArrayList<RoleMemberBo>();
+    @Override
+    public boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification, boolean checkDelegations) {
 
-        for (String roleId : allRoleIds) {
-            RoleTypeService roleTypeService = getRoleTypeService(roleId);
-            if (roleTypeService != null) {
-                List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                    copyRoleIds.remove(roleId);
-                    rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(roleId), principalId, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(roleIds, "roleIds");
+        return principalHasRole(new Context(principalId), principalId, roleIds, qualification, checkDelegations);
+    }
+
+    /**
+     * An internal helper class which is used to keep context for an invocation of principalHasRole.
+     */
+    private final class Context {
+
+        private String principalId;
+        private List<String> principalGroupIds;
+        private Map<String, RoleTypeService> roleTypeServiceCache;
+        private Map<String, Boolean> isDerivedRoleTypeCache;
+
+        Context(String principalId) {
+            this.principalId = principalId;
+            this.roleTypeServiceCache = new HashMap<String, RoleTypeService>();
+            this.isDerivedRoleTypeCache = new HashMap<String, Boolean>();
+        }
+
+        String getPrincipalId() {
+            return principalId;
+        }
+
+        List<String> getPrincipalGroupIds() {
+            if (principalGroupIds == null) {
+                principalGroupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
+            }
+            return principalGroupIds;
+        }
+
+        RoleTypeService getRoleTypeService(String kimTypeId) {
+            if (roleTypeServiceCache.containsKey(kimTypeId)) {
+                return roleTypeServiceCache.get(kimTypeId);
+            }
+            RoleTypeService roleTypeService = null;
+            if (kimTypeId != null) {
+                KimType roleType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
+                if (roleType != null && StringUtils.isNotBlank(roleType.getServiceName())) {
+                    roleTypeService = getRoleTypeServiceByName(roleType.getServiceName());
                 }
             }
-        }
-        if (CollectionUtils.isNotEmpty(copyRoleIds)) {
-            rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(copyRoleIds, principalId, null));
-        }
-
-        // if the qualification is null and the role list is not, then any role in the list will match
-        // so since the role ID list is not blank, we can return true at this point
-        if ((qualification == null || qualification.isEmpty()) && !rps.isEmpty()) {
-            return true;
-        }
-
-        // check each membership to see if the principal matches
-
-        // build a map of role ID to membership information
-        // this will be used for later qualification checks
-        Map<String, List<RoleMembership>> roleIdToMembershipMap = new HashMap<String, List<RoleMembership>>();
-        if (getRoleIdToMembershipMap(roleIdToMembershipMap, rps)) {
-            return true;
-        }
-
-        // perform the checks against the role type services
-        for (Map.Entry<String, List<RoleMembership>> entry : roleIdToMembershipMap.entrySet()) {
-            try {
-                RoleTypeService roleTypeService = getRoleTypeService(entry.getKey());
-                if (!roleTypeService.getMatchingRoleMemberships(qualification, entry.getValue()).isEmpty()) {
-                    return true;
-                }
-            } catch (Exception ex) {
-                LOG.warn("Unable to find role type service with id: " + entry.getKey());
+            if (roleTypeService == null) {
+                roleTypeService = KimImplServiceLocator.getDefaultRoleTypeService();
             }
+            roleTypeServiceCache.put(kimTypeId, roleTypeService);
+            return roleTypeService;
         }
 
-        // find the groups that the principal belongs to
-        List<String> principalGroupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
-        // find the role/group associations
-        if (!principalGroupIds.isEmpty()) {
-            List<RoleMemberBo> rgs = getStoredRoleGroupsUsingExactMatchOnQualification(principalGroupIds, allRoleIds, qualification);
-            roleIdToMembershipMap.clear(); // clear the role/member map for further use
-            if (getRoleIdToMembershipMap(roleIdToMembershipMap, rgs)) {
-                return true;
+        boolean isDerivedRoleType(String kimTypeId) {
+            Boolean isDerived = isDerivedRoleTypeCache.get(kimTypeId);
+            if (isDerived == null) {
+                isDerived = Boolean.valueOf(RoleServiceImpl.this.isDerivedRoleType(getRoleTypeService(kimTypeId)));
+                isDerivedRoleTypeCache.put(kimTypeId, isDerived);
             }
-
-            // perform the checks against the role type services
-            for (Map.Entry<String, List<RoleMembership>> entry : roleIdToMembershipMap.entrySet()) {
-                try {
-                    RoleTypeService roleTypeService = getRoleTypeService(entry.getKey());
-                    if (!roleTypeService.getMatchingRoleMemberships(qualification, entry.getValue()).isEmpty()) {
-                        return true;
-                    }
-                } catch (Exception ex) {
-                    LOG.warn("Unable to find role type service with id: " + entry.getKey(), ex);
-                }
-            }
+            return isDerived.booleanValue();
         }
 
-        // check member roles
-        // first, check that the qualifiers on the role membership match
-        // then, perform a principalHasRole on the embedded role
-        List<RoleMemberBo> roleMemberBos = getStoredRoleMembersForRoleIds(roleIds, MemberType.ROLE.getCode(), null);
-        for (RoleMemberBo roleMemberBo : roleMemberBos) {
-            RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
-            if (roleTypeService != null) {
-                //it is possible that the the roleTypeService is coming from a remote application
-                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
-                try {
-                    if (roleTypeService.doesRoleQualifierMatchQualification(qualification, roleMemberBo.getAttributes())) {
-                        RoleBo memberRole = getRoleBo(roleMemberBo.getMemberId());
-                        Map<String, String> nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
-                                roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
-                                roles.get(roleMemberBo.getRoleId()).getName(),
-                                memberRole.getNamespaceCode(),
-                                memberRole.getName(),
-                                qualification);
-                        ArrayList<String> roleIdTempList = new ArrayList<String>(1);
-                        roleIdTempList.add(roleMemberBo.getMemberId());
-                        if (principalHasRole(principalId, roleIdTempList, nestedRoleQualification, true)) {
-                            return true;
-                        }
-                    }
-                } catch (Exception ex) {
-                    LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleMemberBo.getRoleId(), ex);
-                    //return false;
-                }
-            } else {
-                // no qualifiers - role is always used - check membership
-                ArrayList<String> roleIdTempList = new ArrayList<String>(1);
-                roleIdTempList.add(roleMemberBo.getMemberId());
-                // no role type service, so can't convert qualification - just pass as is
-                if (principalHasRole(principalId, roleIdTempList, qualification, true)) {
-                    return true;
-                }
-            }
-
-        }
-
-
-        // check for derived roles and extract principals and groups from that - then check them against the
-        // role type service passing in the qualification and principal - the qualifier comes from the
-        // external system (application)
-
-        // loop over the allRoleIds list
-        for (String roleId : allRoleIds) {
-            RoleBo role = roles.get(roleId);
-            RoleTypeService roleTypeService = getRoleTypeService(roleId);
-            // check if an derived role
-            //it is possible that the the roleTypeService is coming from a remote application
-            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
-            try {
-                if (isDerivedRoleType(role.getKimTypeId(), roleTypeService)) {
-                    if (roleTypeService.hasDerivedRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getName(), qualification)) {
-                        return true;
-                    }
-                }
-            } catch (Exception ex) {
-                LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
-                //return false;
-            }
-        }
-
-        // delegations
-        if (checkDelegations) {
-            if (matchesOnDelegation(allRoleIds, principalId, principalGroupIds, qualification)) {
-                return true;
-            }
-        }
-
-        // NOTE: this logic is a little different from the getRoleMembers method
-        // If there is no primary (matching non-delegate), this method will still return true
-        return false;
     }
 
 
-    protected boolean isDerivedRoleType(String roleTypeId, RoleTypeService service) {
+    protected boolean principalHasRole(Context context, String principalId, List<String> roleIds, Map<String, String> qualification, boolean checkDelegations) {
+
+        /**
+         * This method uses a multi-phase approach to determining if the given principal of any of the roles given based
+         * on the qualification map that is pased.
+         *
+         * Phase 1: Check the cache to find if it's already been determined that the principal is a member of any of
+         *          the roles with the given ids.
+         * Phase 2: Perform exact database-level matching. This can be done for all roles if the given qualification map
+         *          is null or empty since that means qualification matching does not need to be performed. It can also
+         *          be done for roles who's RoleTypeService defines qualifiers for exact match.
+         * Phase 3: Use RoleTypeService matching for roles which have not already been checked. Will need to determine
+         *          which role memberships match the given principal then delegate to the appropriate RoleTypeService
+         *          to execute matching logic.
+         * Phase 4: Check nested roles.
+         * Phase 5: For any cases where derived roles are used, determine if the principal is a member of those
+         *          derived roles.
+         * Phase 6: If checkDelegations is true, check if any delegations match
+         */
+        try {
+            // Phase 1: first check if any of the role membership is cached, only proceed with checking the role ids that
+            // aren't already cached
+
+            List<String> roleIdsToCheck = new ArrayList<String>(roleIds.size());
+            for (String roleId : roleIds) {
+                Boolean hasRole = getPrincipalHasRoleFromCache(principalId, roleId, qualification, checkDelegations);
+                if (hasRole != null) {
+                    if (hasRole.booleanValue()) {
+                        return true;
+                    }
+                } else {
+                    roleIdsToCheck.add(roleId);
+                }
+            }
+
+            // load the roles, this will also filter out inactive roles!
+            List<Role> roles = loadRoles(roleIdsToCheck);
+            // short-circuit if no roles match
+            if (roles.isEmpty()) {
+                return false;
+            }
+
+            // Phase 2: If they didn't pass any qualifications or they are using exact qualifier matching, we can go
+            // straight to the database
+
+            Set<String> rolesCheckedForExactMatch = new HashSet<String>();
+            for (Role role : roles) {
+                Map<String, String> qualificationForExactMatch = null;
+                if (qualification == null || qualification.isEmpty()) {
+                    qualificationForExactMatch = new HashMap<String, String>();
+                } else {
+                    RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
+                    if (roleTypeService != null) {
+                        List<String> attributesForExactMatch = getQualifiersForExactMatch(role.getKimTypeId(), roleTypeService);
+                        if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                            qualificationForExactMatch = populateQualifiersForExactMatch(qualification, attributesForExactMatch);
+                        }
+                    }
+                }
+                if (qualificationForExactMatch != null) {
+                    rolesCheckedForExactMatch.add(role.getId());
+                    List<RoleMemberBo> matchingRoleMembers = getStoredRolePrincipalsForPrincipalIdAndRoleIds(
+                            Collections.singletonList(role.getId()), principalId, qualificationForExactMatch);
+                    // if a role member matched our principal, we're good to go
+                    if (CollectionUtils.isNotEmpty(matchingRoleMembers)) {
+                        return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
+                    }
+                    // now check groups
+                    if (!context.getPrincipalGroupIds().isEmpty()) {
+                        List<RoleMemberBo> matchingRoleGroupMembers =
+                                getStoredRoleGroupsUsingExactMatchOnQualification(context.getPrincipalGroupIds(), role.getId(), qualification);
+                        if (CollectionUtils.isNotEmpty(matchingRoleGroupMembers)) {
+                            return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
+                        }
+                    }
+                    // if we drop to this point, either we didn't match or the role has nested or derived role membership,
+                    // we'll check that later
+                }
+            }
+
+            // Phase 3: If we couldn't do an exact match, we need to work with the RoleTypeService in order to
+            // perform matching
+
+            for (Role role : roles) {
+                // if we didn't do an exact match, we need to do a manual match
+                if (!rolesCheckedForExactMatch.contains(role.getId())) {
+                    List<RoleMemberBo> matchingPrincipalRoleMembers = getRoleMembersForPrincipalId(role.getId(), principalId);
+                    List<RoleMemberBo> matchingGroupRoleMembers = getRoleMembersForGroupIds(role.getId(), context.getPrincipalGroupIds());
+                    List<RoleMembership> roleMemberships = convertToRoleMemberships(matchingPrincipalRoleMembers, matchingGroupRoleMembers);
+                    for (RoleMembership roleMembership : roleMemberships) {
+                        try {
+                            RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
+                            if (!roleTypeService.getMatchingRoleMemberships(qualification, roleMemberships).isEmpty()) {
+                                return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
+                            }
+                        } catch (Exception ex) {
+                            LOG.warn("Unable to find role type service with id: " + role.getKimTypeId());
+                        }
+                    }
+                }
+            }
+
+            // Phase 4: If we have nested roles, execute a recursive check on those
+
+            // first, check that the qualifiers on the role membership match
+            // then, perform a principalHasRole on the embedded role
+            Map<String, Role> roleIndex = new HashMap<String, Role>();
+            for (Role role :roles) {
+                roleIndex.put(role.getId(), role);
+            }
+            List<RoleMemberBo> roleMemberBos = getStoredRoleMembersForRoleIds(new ArrayList<String>(roleIndex.keySet()),
+                    MemberType.ROLE.getCode(), null);
+            for (RoleMemberBo roleMemberBo : roleMemberBos) {
+                Role role = roleIndex.get(roleMemberBo.getRoleId());
+                RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
+                if (roleTypeService != null) {
+                    //it is possible that the the roleTypeService is coming from a remote application
+                    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+                    try {
+                        if (roleTypeService.doesRoleQualifierMatchQualification(qualification,
+                                roleMemberBo.getAttributes())) {
+                            RoleBoLite memberRole = getRoleBoLite(roleMemberBo.getMemberId());
+                            Map<String, String> nestedRoleQualification =
+                                    roleTypeService.convertQualificationForMemberRoles(role.getNamespaceCode(),
+                                            role.getName(), memberRole.getNamespaceCode(), memberRole.getName(),
+                                            qualification);
+                            if (principalHasRole(context, principalId,
+                                    Collections.singletonList(roleMemberBo.getMemberId()), nestedRoleQualification, true)) {
+                                return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleMemberBo
+                                .getRoleId(), ex);
+                    }
+                } else {
+                    // no qualifiers - role is always used - check membership
+                    // no role type service, so can't convert qualification - just pass as is
+                    if (principalHasRole(context, principalId, Collections.singletonList(roleMemberBo.getMemberId()),
+                            qualification, true)) {
+                        return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
+                    }
+                }
+
+            }
+
+            // Phase 5: derived roles
+
+            // check for derived roles and extract principals and groups from that - then check them against the
+            // role type service passing in the qualification and principal - the qualifier comes from the
+            // external system (application)
+            for (Role role : roles) {
+                // check if an derived role
+                //it is possible that the the roleTypeService is coming from a remote application
+                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+                try {
+                    boolean isDerivedRoleType = context.isDerivedRoleType(role.getKimTypeId());
+                    if (isDerivedRoleType) {
+                        RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
+                        if (roleTypeService.hasDerivedRole(principalId,
+                                context.getPrincipalGroupIds(), role.getNamespaceCode(), role.getName(), qualification)) {
+                            if (!roleTypeService.dynamicRoleMembership(role.getNamespaceCode(), role.getName())) {
+                                putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
+                            }
+                            return true;
+                        }
+                    } else {
+                        if(!checkDelegations) {
+                            putPrincipalHasRoleInCache(false, principalId, role.getId(), qualification, checkDelegations);
+                        }
+                    }
+                } catch (Exception ex) {
+                    LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + role.getId(), ex);
+                }
+            }
+
+            // Phase 6: delegations
+
+            if (checkDelegations) {
+                if (matchesOnDelegation(roleIndex.keySet(), principalId, context.getPrincipalGroupIds(), qualification, context)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            LOG.warn("Caught exception during a principalHasRole check", e);
+        }
+        return false;
+    }
+
+    protected Boolean getPrincipalHasRoleFromCache(String principalId, String roleId, Map<String, String> qualification, boolean checkDelegations) {
+        String key = buildPrincipalHasRoleCacheKey(principalId, roleId, qualification, checkDelegations);
+        Cache.ValueWrapper value = cacheManager.getCache(Role.Cache.NAME).get(key);
+        return value == null ? null : (Boolean)value.get();
+    }
+
+    protected boolean putPrincipalHasRoleInCache(boolean principalHasRole, String principalId, String roleId,
+            Map<String, String> qualification, boolean checkDelegations) {
+        String key = buildPrincipalHasRoleCacheKey(principalId, roleId, qualification, checkDelegations);
+        cacheManager.getCache(Role.Cache.NAME).put(key, Boolean.valueOf(principalHasRole));
+        return principalHasRole;
+    }
+
+    private String buildPrincipalHasRoleCacheKey(String principalId, String roleId, Map<String, String> qualification, boolean checkDelegations) {
+        return new StringBuilder("{principalHasRole}")
+                .append("principalId=").append(principalId).append("|")
+                .append("roleId=").append(roleId).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification)).append("|")
+                .append("checkDelegations=").append(checkDelegations).toString();
+    }
+
+    protected List<String> getQualifiersForExactMatch(String kimTypeId, RoleTypeService roleTypeService) {
+        String cacheKey = "{getQualifiersForExactMatch}kimTypeId=" + kimTypeId;
+        Cache cache = cacheManager.getCache(Role.Cache.NAME);
+        Cache.ValueWrapper value = cache.get(cacheKey);
+        List<String> qualifiers = new ArrayList<String>();
+        if (value == null) {
+            try {
+                qualifiers = roleTypeService.getQualifiersForExactMatch();
+                cache.put(cacheKey, qualifiers);
+            } catch (Exception e) {
+                LOG.warn("Caught exception when attempting to invoke a role type service", e);
+            }
+        } else {
+            qualifiers = (List<String>)value.get();
+        }
+        return qualifiers;
+    }
+
+    public boolean isDerivedRoleType(RoleTypeService service) {
         return service != null && service.isDerivedRoleType();
+    }
+
+    private boolean dynamicRoleMembership(RoleTypeService service, Role role) {
+        return service != null && service.dynamicRoleMembership(role.getNamespaceCode(), role.getName());
+    }
+
+    @Override
+    public boolean isDerivedRole(String roleId) {
+        incomingParamCheck(roleId, "roleId");
+        RoleTypeService service = getRoleTypeService(roleId);
+        return isDerivedRoleType(service);
+    }
+
+    @Override
+    public boolean isDynamicRoleMembership(String roleId) {
+        incomingParamCheck(roleId, "roleId");
+        RoleTypeService service = getRoleTypeService(roleId);
+        try {
+            return dynamicRoleMembership(service, getRole(roleId));   
+        } catch (Exception e) {
+            LOG.warn("Caught exception while invoking a role type service for role " + roleId, e);
+            // Returning true so the role won't be cached
+            return true;
+        }
     }
 
     /**
@@ -1145,35 +1394,75 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * For Example: dollar amount range, effective dates, document types.
      * As a subsequent step, those qualifiers are checked against the qualification passed in from the client.
      */
-    protected boolean matchesOnDelegation(Set<String> allRoleIds, String principalId, List<String> principalGroupIds, Map<String, String> qualification) {
+    protected boolean matchesOnDelegation(Set<String> allRoleIds, String principalId, List<String> principalGroupIds, Map<String, String> qualification, Context context) {
         // get the list of delegations for the roles
         Map<String, DelegateTypeBo> delegations = getStoredDelegationImplMapFromRoleIds(allRoleIds);
-        // loop over the delegations - determine those which need to be inspected more directly
-        for (DelegateTypeBo delegation : delegations.values()) {
-            // check if each one matches via the original role type service
-            if (!delegation.isActive()) {
-                continue;
+
+        // If there are no delegations then we should cache that the principal
+        // doesn't have the given roles if those roles do not have dynamic
+        // membership
+        if(delegations.isEmpty()) {
+            for(String roleId : allRoleIds) {
+                Role role = loadRole(roleId);
+                RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
+                if(!context.isDerivedRoleType(role.getKimTypeId()) || roleTypeService == null || !roleTypeService.dynamicRoleMembership(role.getNamespaceCode(), role.getName())) {
+                    putPrincipalHasRoleInCache(false, principalId, roleId, qualification, true);
+                }
             }
-            RoleTypeService roleTypeService = getRoleTypeService(delegation.getRoleId());
-            for (DelegateMemberBo delegateMemberBo : delegation.getMembers()) {
-                if (!delegateMemberBo.isActive(new Timestamp(new Date().getTime()))) {
+            return false;
+        }
+
+        // Build a map from a role ID to the delegations for that role ID
+        Map<String, List<DelegateTypeBo>> roleToDelegations = new HashMap<String, List<DelegateTypeBo>>();
+        for(DelegateTypeBo delegation : delegations.values()) {
+            List<DelegateTypeBo> roleDelegations = roleToDelegations.get(delegation.getRoleId());
+            if(roleDelegations == null) {
+                roleDelegations = new ArrayList<DelegateTypeBo>();
+                roleToDelegations.put(delegation.getRoleId(), roleDelegations);
+            }
+            roleDelegations.add(delegation);
+        }
+        // Iterate through each role and check its delegations to determine if
+        // the principal has one of the roles
+        for(String roleId : roleToDelegations.keySet()) {
+            boolean matchesOnRoleDelegation = false;
+            Role role = getRole(roleId);
+            RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
+            // Iterate through each delegation for this role and determine if
+            // the principal has the role through this delegation
+            for(DelegateTypeBo delegation : roleToDelegations.get(roleId)) {
+                // If the delegation isn't active skip it
+                if (!delegation.isActive()) {
                     continue;
                 }
-                // check if this delegateBo record applies to the given person
-                if (MemberType.PRINCIPAL.equals(delegateMemberBo.getType())
-                        && !delegateMemberBo.getMemberId().equals(principalId)) {
-                    continue; // no match on principal
-                }
-                // or if a group
-                if (MemberType.GROUP.equals(delegateMemberBo.getType())
-                        && !principalGroupIds.contains(delegateMemberBo.getMemberId())) {
-                    continue; // no match on group
-                }
-                // or if a role
-                if (MemberType.ROLE.equals(delegateMemberBo.getType())
-                        && !principalHasRole(principalId, Collections.singletonList(delegateMemberBo.getMemberId()), qualification, false)) {
-                    continue; // no match on role
-                }
+                // Now iterate through all of the members of the delegation to
+                // determine if any of them apply to this principal
+                for (DelegateMemberBo delegateMemberBo : delegation.getMembers()) {
+                    // If the membership isn't active skip the rest of the checks
+                    if (!delegateMemberBo.isActive(new Timestamp(new Date().getTime()))) {
+                        continue;
+                    }
+                    // If the membership is a principal type then check the
+                    // delegate's member ID against the principal ID
+                    if (MemberType.PRINCIPAL.equals(delegateMemberBo.getType())
+                            && !delegateMemberBo.getMemberId().equals(principalId)) {
+                        continue; // no match on principal
+                    }
+                    // If the membership is a group type then check to see if
+                    // the group's ID is contained in the list of groups the
+                    // principal belongs to
+                    if (MemberType.GROUP.equals(delegateMemberBo.getType())
+                            && !principalGroupIds.contains(delegateMemberBo.getMemberId())) {
+                        continue; // No match on group
+                    }
+                    // If the membership is a role type then we need to recurse
+                    // into the principalHasRole method to check if this
+                    // principal is a member of that role
+                    if (MemberType.ROLE.equals(delegateMemberBo.getType())
+                            && !principalHasRole(principalId, Collections.singletonList(delegateMemberBo.getMemberId()), qualification, false)) {
+                        continue; // No match on role
+                    }
+
                 // OK, the member matches the current user, now check the qualifications
 
                 // NOTE: this compare is slightly different than the member enumeration
@@ -1183,7 +1472,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 //it is possible that the the roleTypeService is coming from a remote application
                 // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
-                    //TODO: remove reference to Attributes here and use Attributes instead.
                     if (roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification(qualification, delegateMemberBo.getQualifier())) {
                         continue; // no match - skip to next record
                     }
@@ -1229,11 +1517,49 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         LOG.warn("       assignedToId: " + delegateMemberBo.getDelegationMemberId() + " / roleMemberId: " + delegateMemberBo.getRoleMemberId());
                     }
                 }
-                // all tests passed, return true
-                return true;
+                // If we've made it here then all of the tests pass so the
+                // principal must belong to this delegation so set the flag
+                // to true and break out of this loop
+                matchesOnRoleDelegation = true;
+                break;
+            }
+
+            // If we've found a match for one of the delegations break out
+            // of this loop
+            if(matchesOnRoleDelegation) {
+                break;
+            }
+            }
+            // If the role is not derived nor dynamic then cache the result of
+            // this since the principal has the role through one of these
+            // delegations
+            if(!context.isDerivedRoleType(role.getKimTypeId()) || roleTypeService == null || !roleTypeService.dynamicRoleMembership(role.getNamespaceCode(), role.getName())) {
+                putPrincipalHasRoleInCache(matchesOnRoleDelegation, principalId, roleId, qualification, true);
+            }
+            // If we've found a matching delegation skip processing the rest of
+            // the roles
+            if(matchesOnRoleDelegation) {
+                return matchesOnRoleDelegation;
             }
         }
+        // If we get here we didn't find a matching delegation so return false
         return false;
+    }
+
+    protected List<RoleMembership> convertToRoleMemberships(List<RoleMemberBo>... roleMemberLists) {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        for (List<RoleMemberBo> roleMembers : roleMemberLists) {
+            for (RoleMemberBo roleMember : roleMembers) {
+                RoleMembership roleMembership = RoleMembership.Builder.create(
+                        roleMember.getRoleId(),
+                        roleMember.getId(),
+                        roleMember.getMemberId(),
+                        roleMember.getType(),
+                        roleMember.getAttributes()).build();
+                roleMemberships.add(roleMembership);
+            }
+        }
+        return roleMemberships;
     }
 
     /**
@@ -1352,10 +1678,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : roleIds) {
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
             if (roleTypeService != null) {
-                List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                    copyRoleIds.remove(roleId);
-                    roleMemberBoList.addAll(getStoredRoleMembersForRoleIdsWithFilters(Collections.singletonList(roleId), principalId, groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                try {
+                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                        copyRoleIds.remove(roleId);
+                        roleMemberBoList.addAll(getStoredRoleMembersForRoleIdsWithFilters(Collections.singletonList(roleId), principalId, groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                    }
+                } catch (Exception e) {
+                    LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
                 }
             }
         }
@@ -1365,6 +1695,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return roleMemberBoList;
     }
 
+    private List<RoleMemberBo> getStoredRoleGroupsUsingExactMatchOnQualification(List<String> groupIds, String roleId, Map<String, String> qualification) {
+        Set<String> roleIds = new HashSet<String>();
+        if (roleId != null) {
+            roleIds.add(roleId);
+        }
+        return getStoredRoleGroupsUsingExactMatchOnQualification(groupIds, roleIds, qualification);
+    }
+
     private List<RoleMemberBo> getStoredRoleGroupsUsingExactMatchOnQualification(List<String> groupIds, Set<String> roleIds, Map<String, String> qualification) {
         List<String> copyRoleIds = new ArrayList<String>(roleIds);
         List<RoleMemberBo> roleMemberBos = new ArrayList<RoleMemberBo>();
@@ -1372,10 +1710,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : roleIds) {
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
             if (roleTypeService != null) {
-                List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                    copyRoleIds.remove(roleId);
-                    roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                try {
+                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                        copyRoleIds.remove(roleId);
+                        roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                    }
+                } catch (Exception e) {
+                    LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
                 }
             }
         }
@@ -1407,7 +1749,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public RoleMember assignPrincipalToRole(String principalId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) 
+            String namespaceCode, String roleName, Map<String, String> qualifier)
             throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
@@ -1479,7 +1821,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public RoleMember assignRoleToRole(String roleId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) 
+            String namespaceCode, String roleName, Map<String, String> qualifier)
             throws RiceIllegalStateException {
         incomingParamCheck(roleId, "roleId");
         incomingParamCheck(namespaceCode, "namespaceCode");
@@ -1499,7 +1841,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             return anyMemberMatch;
         }
 
-        
+
         // Check to make sure this doesn't create a circular membership
         if (!checkForCircularRoleMembership(roleId, roleBo)) {
             throw new IllegalArgumentException("Circular roleBo reference.");
@@ -1524,7 +1866,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             throw new RiceIllegalStateException("the roleMember to create already exists: " + roleMember);
         }
 
-        String kimTypeId = getRoleBo(roleMember.getRoleId()).getKimTypeId();
+        String kimTypeId = getRoleBoLite(roleMember.getRoleId()).getKimTypeId();
         List<RoleMemberAttributeDataBo> attrBos = Collections.emptyList();
         attrBos = KimAttributeDataBo.createFrom(RoleMemberAttributeDataBo.class, roleMember.getAttributes(), kimTypeId);
 
@@ -1538,17 +1880,153 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(roleMember, "roleMember");
 
-        if (StringUtils.isBlank(roleMember.getId()) || getRoleMemberBo(roleMember.getId()) == null) {
+        RoleMemberBo originalRoleMemberBo = null;
+        if (StringUtils.isNotBlank(roleMember.getId())) {
+            originalRoleMemberBo = getRoleMemberBo(roleMember.getId());
+        }
+        if (StringUtils.isBlank(roleMember.getId()) || originalRoleMemberBo == null) {
             throw new RiceIllegalStateException("the roleMember to update does not exists: " + roleMember);
         }
 
-        String kimTypeId = getRoleBo(roleMember.getRoleId()).getKimTypeId();
+        String kimTypeId = getRoleBoLite(roleMember.getRoleId()).getKimTypeId();
         List<RoleMemberAttributeDataBo> attrBos = Collections.emptyList();
         attrBos = KimAttributeDataBo.createFrom(RoleMemberAttributeDataBo.class, roleMember.getAttributes(), kimTypeId);
 
         RoleMemberBo bo = RoleMemberBo.from(roleMember);
-        bo.setAttributeDetails(attrBos);
+        List<RoleMemberAttributeDataBo> updateAttrBos =   new ArrayList<RoleMemberAttributeDataBo>();
+
+        boolean matched = false;
+        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo :  attrBos) {
+            for (RoleMemberAttributeDataBo oldRoleMemberAttrDataBo :  originalRoleMemberBo.getAttributeDetails()) {
+                if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
+                    newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
+                        newRoleMemberAttrDataBo.setAssignedToId(oldRoleMemberAttrDataBo.getAssignedToId());
+                        newRoleMemberAttrDataBo.setVersionNumber(oldRoleMemberAttrDataBo.getVersionNumber());
+                        newRoleMemberAttrDataBo.setId(oldRoleMemberAttrDataBo.getId());
+                        updateAttrBos.add(newRoleMemberAttrDataBo);
+                        matched = true;
+                        break;
+                }
+            }
+            if (!matched) {
+                updateAttrBos.add(newRoleMemberAttrDataBo);
+            } else  {
+                matched = false;
+            }
+        }
+
+        bo.setAttributeDetails(updateAttrBos);
+
         return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(bo));
+    }
+
+    @Override
+    public DelegateMember updateDelegateMember(@WebParam(
+            name = "delegateMember") DelegateMember delegateMember) throws RiceIllegalArgumentException, RiceIllegalStateException {
+
+        //check delegateMember not empty
+        incomingParamCheck(delegateMember, "delegateMember");
+
+        //check delegate exists
+        String delegationId =  delegateMember.getDelegationId();
+        incomingParamCheck(delegationId,"delegationId");
+        DelegateTypeBo delegate = getKimDelegationImpl(delegationId);
+        DelegateMemberBo  originalDelegateMemberBo = null;
+        String delegationMemberId = delegateMember.getDelegationMemberId();
+        if (StringUtils.isNotEmpty(delegationMemberId)) {
+            originalDelegateMemberBo = getDelegateMemberBo(delegateMember.getDelegationMemberId());
+        }
+        if(delegate==null)   {
+            throw new RiceIllegalStateException("the delegate does not exist: " + delegationId);
+        }
+
+        //save the delegateMember  (actually updates)
+        String kimTypeId = getRoleBoLite(delegate.getRoleId()).getKimTypeId();
+        List<DelegateMemberAttributeDataBo> attrBos = Collections.emptyList();
+        attrBos = KimAttributeDataBo.createFrom(DelegateMemberAttributeDataBo.class, delegateMember.getAttributes(), kimTypeId);
+        DelegateMemberBo bo = DelegateMemberBo.from(delegateMember);
+
+        List<DelegateMemberAttributeDataBo> updateAttrBos =   new ArrayList<DelegateMemberAttributeDataBo>();
+
+        boolean matched = false;
+        if (originalDelegateMemberBo !=null ) {
+            bo.setVersionNumber(originalDelegateMemberBo.getVersionNumber());
+            for (DelegateMemberAttributeDataBo newDelegateMemberAttrDataBo :  attrBos) {
+                for (DelegateMemberAttributeDataBo oldDelegateMemberAttrDataBo :  originalDelegateMemberBo.getAttributeDetails()) {
+                    if (newDelegateMemberAttrDataBo.getKimTypeId().equals(oldDelegateMemberAttrDataBo.getKimTypeId()) &&
+                            newDelegateMemberAttrDataBo.getKimAttributeId().equals(oldDelegateMemberAttrDataBo.getKimAttributeId())) {
+                            newDelegateMemberAttrDataBo.setAssignedToId(oldDelegateMemberAttrDataBo.getAssignedToId());
+                            newDelegateMemberAttrDataBo.setVersionNumber(oldDelegateMemberAttrDataBo.getVersionNumber());
+                            newDelegateMemberAttrDataBo.setId(oldDelegateMemberAttrDataBo.getId());
+                            updateAttrBos.add(newDelegateMemberAttrDataBo);
+                            matched = true;
+                            break;
+                    }
+                }
+                if (!matched) {
+                    updateAttrBos.add(newDelegateMemberAttrDataBo);
+                } else  {
+                    matched = false;
+                }
+            }
+        }
+
+        bo.setAttributeDetails(updateAttrBos);
+        return DelegateMemberBo.to(getResponsibilityInternalService().saveDelegateMember(bo));
+    }
+
+    @Override
+    public DelegateMember createDelegateMember(@WebParam(
+            name = "delegateMember") DelegateMember delegateMember) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        //ensure object not empty
+        incomingParamCheck(delegateMember, "delegateMember");
+
+        //check key is null
+        if(delegateMember.getDelegationMemberId()!=null )   {
+            throw new RiceIllegalStateException("the delegate member already exists: " + delegateMember.getDelegationMemberId());
+        }
+
+        //check delegate exists
+        String delegationId =  delegateMember.getDelegationId();
+        incomingParamCheck(delegationId,"delegationId");
+        DelegateTypeBo delegate = getKimDelegationImpl(delegationId);
+        if(delegate==null)   {
+            throw new RiceIllegalStateException("the delegate does not exist: " + delegationId); 
+        }
+
+        //check member exists
+        String memberId = delegateMember.getMemberId();
+        incomingParamCheck(memberId,"memberId");
+        Principal kPrincipal = KimApiServiceLocator.getIdentityService().getPrincipal(memberId);
+        if(kPrincipal==null){
+            throw new RiceIllegalStateException("the user does not exist: " + memberId);
+        }
+
+        //create member delegate
+        String kimTypeId = getRoleBoLite(delegate.getRoleId()).getKimTypeId();
+        List<DelegateMemberAttributeDataBo> attrBos = Collections.emptyList();
+        attrBos = KimAttributeDataBo.createFrom(DelegateMemberAttributeDataBo.class, delegateMember.getAttributes(), kimTypeId);
+        DelegateMemberBo bo = DelegateMemberBo.from(delegateMember);
+        bo.setAttributeDetails(attrBos);
+        return DelegateMemberBo.to(getResponsibilityInternalService().saveDelegateMember(bo));
+    }
+
+    @Override
+    public void removeDelegateMembers(@WebParam(
+            name = "delegateMembers") List<DelegateMember> delegateMembers) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(delegateMembers, "delegateMembers");
+        for (DelegateMember delegateMember : delegateMembers) {
+            DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();
+            delegateMemberInfo.setDelegationMemberId(delegateMember.getDelegationMemberId());
+            delegateMemberInfo.setAttributes(delegateMember.getAttributes());
+            delegateMemberInfo.setDelegationId(delegateMember.getDelegationId());
+            delegateMemberInfo.setMemberId(delegateMember.getMemberId());
+            delegateMemberInfo.setRoleMemberId(delegateMember.getRoleMemberId());
+            delegateMemberInfo.setType(delegateMember.getType());
+            delegateMemberInfo.setActiveFromDate(delegateMember.getActiveFromDate());
+            delegateMemberInfo.setActiveToDate(DateTime.now());
+            updateDelegateMember(delegateMemberInfo.build());
+        }
     }
 
     @Override
@@ -1558,13 +2036,57 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
 
         if (StringUtils.isNotBlank(roleResponsibilityAction.getId())
-                && getBusinessObjectService().findByPrimaryKey
-                (RoleResponsibilityActionBo.class, Collections.singletonMap("id", roleResponsibilityAction.getId()))  != null) {
+                && getRoleResponsibilityActionBo(roleResponsibilityAction.getId()) != null) {
             throw new RiceIllegalStateException("the roleResponsibilityAction to create already exists: " + roleResponsibilityAction);
         }
 
         RoleResponsibilityActionBo bo = RoleResponsibilityActionBo.from(roleResponsibilityAction);
         return RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
+    }
+
+    /**
+     * Queues ActionRequest refresh/regeneration for RoleResponsbilityAction change
+     * @param bo the changed or deleted RoleResponsibilityActionBo
+     */
+    protected void updateActionRequestsForRoleResponsibilityActionChange(RoleResponsibilityActionBo bo) {
+        RoleResponsibilityBo rr = bo.getRoleResponsibility();
+        if (rr != null) {
+            getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(Collections.singleton(rr.getResponsibilityId()));
+        }
+    }
+
+    @Override
+    public RoleResponsibilityAction updateRoleResponsibilityAction(RoleResponsibilityAction roleResponsibilityAction)
+            throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(roleResponsibilityAction, "roleResponsibilityAction");
+
+        if (StringUtils.isBlank(roleResponsibilityAction.getId()) || getRoleResponsibilityActionBo(roleResponsibilityAction.getId()) == null) {
+            throw new RiceIllegalStateException("the roleResponsibilityAction to create does not exist: " + roleResponsibilityAction);
+        }
+
+        RoleResponsibilityActionBo bo = RoleResponsibilityActionBo.from(roleResponsibilityAction);
+        roleResponsibilityAction = RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
+
+        // update action requests
+        updateActionRequestsForRoleResponsibilityActionChange(bo);
+
+        return roleResponsibilityAction;
+    }
+
+    @Override
+    public void deleteRoleResponsibilityAction(String roleResponsibilityActionId)
+            throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(roleResponsibilityActionId, "roleResponsibilityActionId");
+
+        RoleResponsibilityActionBo bo = getRoleResponsibilityActionBo(roleResponsibilityActionId);
+        if (StringUtils.isBlank(roleResponsibilityActionId) || bo == null) {
+            throw new RiceIllegalStateException("the roleResponsibilityAction to delete does not exist: " + roleResponsibilityActionId);
+        }
+
+        getBusinessObjectService().delete(bo);
+
+        // update action requests
+        updateActionRequestsForRoleResponsibilityActionChange(bo);
     }
 
     @Override
@@ -1579,7 +2101,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         DelegateTypeBo bo = DelegateTypeBo.from(delegateType);
         return DelegateTypeBo.to(getBusinessObjectService().save(bo));
     	// look up the role
-    	/*RoleBo role = getRoleBo(delegationType.getRoleId());
+        /*RoleBo role = getRoleBo(delegationType.getRoleId());
     	DelegateTypeBo delegation = getDelegationOfType(role.getId(), delegationType.getDelegationTypeCode());
     	// create the new role member object
     	DelegateMemberBo newDelegationMember = new DelegateMemberBo();
@@ -1642,6 +2164,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             }
         }
     }
+
 
     private List<RoleMemberBo> getRoleMembersByDefaultStrategy(RoleBo role, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
@@ -1898,5 +2421,33 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
+    }
+
+    /**
+     * This gets the proxied version of the role service which will go through
+     * Spring's caching mechanism for method calls rather than skipping it when
+     * methods are called directly.
+     * 
+     * @return The proxied role service
+     */
+    protected RoleService getProxiedRoleService() {
+        if(this.proxiedRoleService == null) {
+            this.proxiedRoleService = KimApiServiceLocator.getRoleService();
+        }
+        return this.proxiedRoleService;
+    }
+
+    /**
+     * Sets the cache manager which this service implementation can for internal caching.
+     * Calling this setter is optional, though the value passed to it must not be null.
+     *
+     * @param cacheManager the cache manager to use for internal caching, must not be null
+     * @throws IllegalArgumentException if a null cache manager is passed
+     */
+    public void setCacheManager(CacheManager cacheManager) {
+        if (cacheManager == null) {
+            throw new IllegalArgumentException("cacheManager must not be null");
+        }
+        this.cacheManager = cacheManager;
     }
 }

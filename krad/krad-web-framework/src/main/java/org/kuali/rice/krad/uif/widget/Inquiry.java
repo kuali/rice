@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.widget;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -56,6 +58,7 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "inquiry", parent = "Uif-Inquiry")
 public class Inquiry extends WidgetBase {
     private static final long serialVersionUID = -2154388007867302901L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Inquiry.class);
@@ -203,10 +206,16 @@ public class Inquiry extends WidgetBase {
 
         urlParameters.setProperty(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
         urlParameters.setProperty(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
+        if(StringUtils.isNotBlank(this.viewName)){
+          urlParameters.setProperty(UifParameters.VIEW_NAME, this.viewName);
+        }
+        // add inquiry specific parms to url
+        if (getInquiryLink().getLightBox() != null) {
+            getInquiryLink().getLightBox().setAddAppParms(true);
+        }
 
         // configure inquiry when read only
         if (isReadOnly()) {
-
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
                 String parameterName = inquiryParameter.getKey();
 
@@ -232,8 +241,8 @@ public class Inquiry extends WidgetBase {
                     try {
                         parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
                     } catch (GeneralSecurityException e) {
-                        LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-                        throw new RuntimeException(e);
+                        throw new RuntimeException("Exception while trying to encrypted value for inquiry framework.",
+                                e);
                     }
                 }
 
@@ -248,7 +257,7 @@ public class Inquiry extends WidgetBase {
             ModuleService responsibleModuleService =
                     KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(inquiryObjectClass);
             if (responsibleModuleService != null && responsibleModuleService.isExternalizable(inquiryObjectClass)) {
-                inquiryUrl = responsibleModuleService.getExternalizableDataObjectLookupUrl(inquiryObjectClass,
+                inquiryUrl = responsibleModuleService.getExternalizableDataObjectInquiryUrl(inquiryObjectClass,
                         urlParameters);
             } else {
                 inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
@@ -266,31 +275,32 @@ public class Inquiry extends WidgetBase {
 
         // configure direct inquiry when editable
         if (!isReadOnly()) {
-
             // Direct inquiry
             String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
+
             StringBuilder paramMapString = new StringBuilder();
 
-            // Check if lightbox is set. Get lightbox options.
-            String lightBoxOptions = "";
-            boolean lightBoxShow = directInquiryAction.getLightBoxDirectInquiry() != null;
-            if (lightBoxShow) {
-                lightBoxOptions = directInquiryAction.getLightBoxDirectInquiry().getTemplateOptionsJSString();
-            }
-
-            // Build parameter string using the actual names of the fields as on the
-            // html page
+            // Build parameter string using the actual names of the fields as on the html page
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
                 String inquiryParameterFrom = inquiryParameter.getKey();
+
                 if (adjustInquiryParameters && (fieldBindingInfo != null)) {
                     inquiryParameterFrom = fieldBindingInfo.getPropertyAdjustedBindingPath(inquiryParameterFrom);
                 }
+
                 paramMapString.append(inquiryParameterFrom);
                 paramMapString.append(":");
                 paramMapString.append(inquiryParameter.getValue());
                 paramMapString.append(",");
             }
             paramMapString.deleteCharAt(paramMapString.length() - 1);
+
+            // Check if lightbox is set. Get lightbox options.
+            String lightBoxOptions = "";
+            boolean lightBoxShow = (getInquiryLink().getLightBox() != null);
+            if (lightBoxShow) {
+                lightBoxOptions = getInquiryLink().getLightBox().getTemplateOptionsJSString();
+            }
 
             // Create onlick script to open the inquiry window on the click event
             // of the direct inquiry
@@ -308,7 +318,6 @@ public class Inquiry extends WidgetBase {
             directInquiryAction.setActionScript(onClickScript.toString());
 
             setRender(true);
-
         }
     }
 
@@ -344,7 +353,6 @@ public class Inquiry extends WidgetBase {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(getInquiryLink());
-
         components.add(getDirectInquiryAction());
 
         return components;
@@ -362,6 +370,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return String inquiry base URL
      */
+    @BeanTagAttribute(name="baseInquiryUrl")
     public String getBaseInquiryUrl() {
         return this.baseInquiryUrl;
     }
@@ -386,6 +395,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return String inquiry class name
      */
+    @BeanTagAttribute(name="dataObjectClassName")
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }
@@ -410,6 +420,7 @@ public class Inquiry extends WidgetBase {
      * identify the inquiry view
      * </p>
      */
+    @BeanTagAttribute(name="viewName")
     public String getViewName() {
         return this.viewName;
     }
@@ -435,6 +446,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return Map<String, String> mapping of calling view properties to inquiry data object properties
      */
+    @BeanTagAttribute(name="inquiryParameters",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getInquiryParameters() {
         return this.inquiryParameters;
     }
@@ -454,6 +466,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return the inquiry link
      */
+    @BeanTagAttribute(name="inquiryLink",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Link getInquiryLink() {
         return this.inquiryLink;
     }
@@ -472,6 +485,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return the directInquiryAction
      */
+    @BeanTagAttribute(name="directInquiryAction",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getDirectInquiryAction() {
         return this.directInquiryAction;
     }
@@ -490,6 +504,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return boolean true if the direct inquiry should be rendered, false if not
      */
+    @BeanTagAttribute(name="enableDirectInquiry")
     public boolean isEnableDirectInquiry() {
         return enableDirectInquiry;
     }

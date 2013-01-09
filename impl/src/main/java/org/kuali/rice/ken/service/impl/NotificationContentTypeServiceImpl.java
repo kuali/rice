@@ -16,8 +16,8 @@
 package org.kuali.rice.ken.service.impl;
 
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 
 import java.util.Collection;
@@ -48,7 +48,7 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getNotificationContentType(java.lang.String)
      */
     //this is the one need to tweek on criteria
-    public NotificationContentType getNotificationContentType(String name) {
+    public NotificationContentTypeBo getNotificationContentType(String name) {
 //        Criteria c = new Criteria();
 //        c.addEqualTo("name", name);
 //        c.addEqualTo("current", true);	
@@ -59,7 +59,7 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
     	c.put("name", name);
     	c.put("current", new Boolean(true));
     	
-        Collection<NotificationContentType> coll = businessObjectDao.findMatching(NotificationContentType.class, c);
+        Collection<NotificationContentTypeBo> coll = businessObjectDao.findMatching(NotificationContentTypeBo.class, c);
         if (coll.size() == 0) {
             return null;
         } else {
@@ -71,7 +71,7 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
         // there's probably a better way...'report'? or direct SQL
         Map<String, Object> fields = new HashMap<String, Object>(2);
         fields.put("name", name);
-        Collection<NotificationContentType> types = businessObjectDao.findMatchingOrderBy(NotificationContentType.class, fields, "version", false);
+        Collection<NotificationContentTypeBo> types = businessObjectDao.findMatchingOrderBy(NotificationContentTypeBo.class, fields, "version", false);
         if (types.size() > 0) {
             return types.iterator().next().getVersion();
         }
@@ -79,20 +79,20 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
     }
 
     /**
-     * @see org.kuali.rice.ken.service.NotificationContentTypeService#saveNotificationContentType(org.kuali.rice.ken.bo.NotificationContentType)
+     * @see org.kuali.rice.ken.service.NotificationContentTypeService#saveNotificationContentType(org.kuali.rice.ken.bo.NotificationContentTypeBo)
      */
-    public void saveNotificationContentType(NotificationContentType contentType) {
-        NotificationContentType previous = getNotificationContentType(contentType.getName());
+    public void saveNotificationContentType(NotificationContentTypeBo contentType) {
+        NotificationContentTypeBo previous = getNotificationContentType(contentType.getName());
         if (previous != null) {
             previous.setCurrent(false);
             businessObjectDao.save(previous);
         }
         int lastVersion = findHighestContentTypeVersion(contentType.getName());
-        NotificationContentType next;
+        NotificationContentTypeBo next;
         if (contentType.getId() == null) {
             next = contentType; 
         } else {
-            next = new NotificationContentType();
+            next = new NotificationContentTypeBo();
             next.setName(contentType.getName());
             next.setDescription(contentType.getDescription());
             next.setNamespace(contentType.getNamespace());
@@ -106,23 +106,23 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
         
         // update all the old references
         if (previous != null) {
-            Collection<Notification> ns = getNotificationsOfContentType(previous);
-            for (Notification n: ns) {
+            Collection<NotificationBo> ns = getNotificationsOfContentType(previous);
+            for (NotificationBo n: ns) {
                 n.setContentType(next);
                 businessObjectDao.save(n);
             }
         }
     }
 
-    protected Collection<Notification> getNotificationsOfContentType(NotificationContentType ct) {
+    protected Collection<NotificationBo> getNotificationsOfContentType(NotificationContentTypeBo ct) {
         Map<String, Object> fields = new HashMap<String, Object>(1);
         fields.put("contentType", ct.getId());
-        return businessObjectDao.findMatching(Notification.class, fields);
+        return businessObjectDao.findMatching(NotificationBo.class, fields);
     }
     /**
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getAllCurrentContentTypes()
      */
-    public Collection<NotificationContentType> getAllCurrentContentTypes() {
+    public Collection<NotificationContentTypeBo> getAllCurrentContentTypes() {
 //        Criteria c = new Criteria();
 //        c.addEqualTo("current", true);
 ////    	Criteria c = new Criteria(NotificationContentType.class.getName());
@@ -131,13 +131,13 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
     	Map<String, Boolean> c = new HashMap<String, Boolean>();
     	c.put("current", new Boolean(true));
    
-        return businessObjectDao.findMatching(NotificationContentType.class, c);
+        return businessObjectDao.findMatching(NotificationContentTypeBo.class, c);
     }
     
     /**
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getAllContentTypes()
      */
-    public Collection<NotificationContentType> getAllContentTypes() {
-        return businessObjectDao.findAll(NotificationContentType.class);
+    public Collection<NotificationContentTypeBo> getAllContentTypes() {
+        return businessObjectDao.findAll(NotificationContentTypeBo.class);
     }
 }

@@ -16,11 +16,13 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 import javax.xml.namespace.QName;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -76,7 +78,11 @@ private static final Logger LOG = Logger.getLogger(KSBClientProxy.class);
         }
 
         if (s != null) {
-            return method.invoke(s, args);
+            try {
+                return method.invoke(s, args);
+            } catch (InvocationTargetException e) {
+                throw ExceptionUtils.getRootCause(e);
+            }
         }
 
         LOG.warn("serviceName: " + serviceName + " was not found");

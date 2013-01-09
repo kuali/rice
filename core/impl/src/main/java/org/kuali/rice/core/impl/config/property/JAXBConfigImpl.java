@@ -637,6 +637,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 	public void putConfig(Config config) {
 		this.copyConfig(config);
 	}
-	
+
+    @Override
+    public String toString() {
+        return String.valueOf(resolvedProperties);
+    }
     
 }

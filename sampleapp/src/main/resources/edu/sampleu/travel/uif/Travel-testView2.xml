@@ -400,7 +400,7 @@
                         <bean parent="Uif-TextControl"/>
                     </property>
                     <property name="validCharactersConstraint">
-                        <bean parent="ValidCharactersConstraint" p:labelKey="yOrN" p:value="^[ynYN]$"/>
+                        <bean parent="ValidCharactersConstraint" p:messageKey="yOrN" p:value="^[ynYN]$"/>
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">

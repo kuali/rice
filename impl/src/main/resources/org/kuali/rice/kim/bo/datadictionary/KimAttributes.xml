@@ -59,6 +59,7 @@
         <ref bean="KimAttributes-actionRequestCd"/>
         <ref bean="KimAttributes-routeStatusCode"/>
         <ref bean="KimAttributes-routeNodeName"/>
+        <ref bean="KimAttributes-appDocStatus"/>
         <ref bean="KimAttributes-roleName"/>
         <ref bean="KimAttributes-permissionName"/>
         <ref bean="KimAttributes-responsibilityName"/>
@@ -251,6 +252,15 @@
         p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
+    </property>
+  </bean>
+
+  <bean id="KimAttributes-appDocStatus" parent="KimAttributes-appDocStatus-parentBean"/>
+  <bean id="KimAttributes-appDocStatus-parentBean" parent="AttributeDefinition" abstract="true" p:name="appDocStatus"
+        p:forceUppercase="false" p:label="Application Document Status" p:shortLabel="App Doc Status" p:maxLength="255"
+        p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 

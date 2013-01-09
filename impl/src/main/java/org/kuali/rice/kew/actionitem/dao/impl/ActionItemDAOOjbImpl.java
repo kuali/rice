@@ -102,11 +102,11 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return getItemsByDocumentType(ActionItem.class, documentTypeName);
     }
 
-    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName) {
+    public Collection<OutboxItemActionListExtension> getOutboxItemsByDocumentType(String documentTypeName) {
         return getItemsByDocumentType(OutboxItemActionListExtension.class, documentTypeName);
     }
 
-    private Collection<ActionItem> getItemsByDocumentType(Class<? extends ActionItem> objectClass, String documentTypeName) {
+    private <T extends ActionItem> Collection<T> getItemsByDocumentType(Class<T> objectClass, String documentTypeName) {
         Criteria crit = new Criteria();
         crit.addEqualTo("docName", documentTypeName);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(objectClass, crit));
@@ -181,9 +181,10 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             	if (person != null) {
             		WebFriendlyRecipient rec = new WebFriendlyRecipient(person);
             	    delegators.put((String) ids[0],rec);
-            	    LOG.warn("The name for " + (String) ids[0] + " was not added to the primary delegate drop down list because the delegate does not exist.");
-            	}
-              	
+            	}  else {
+                    LOG.warn("The name for " + (String) ids[0] + " was not added to the primary delegate drop down list because the delegate does not exist.");
+                }
+
             }
         }
         return delegators.values();

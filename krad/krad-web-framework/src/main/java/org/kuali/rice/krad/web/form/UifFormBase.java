@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.web.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -23,6 +25,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
+import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -53,105 +56,80 @@ import java.util.UUID;
 public class UifFormBase implements ViewModel {
     private static final long serialVersionUID = 8432543267099454434L;
 
+    // logger
+    private static final Log LOG = LogFactory.getLog(UifFormBase.class);
+
     // current view
-
     protected String viewId;
-
     protected String viewName;
-
     protected ViewType viewTypeName;
-
     protected String pageId;
-
     protected String methodToCall;
-
     protected String formKey;
 
     @SessionTransient
     protected String jumpToId;
-
     @SessionTransient
     protected String jumpToName;
-
     @SessionTransient
     protected String focusId;
 
     protected String formPostUrl;
 
     protected String state;
-
     protected boolean defaultsApplied;
-
-    protected boolean validateDirty;
+    protected boolean renderedInLightBox;
 
     @SessionTransient
     protected String growlScript;
-
     @SessionTransient
     protected String lightboxScript;
 
     protected View view;
-
     protected View postedView;
 
     protected Map<String, String> viewRequestParameters;
-
     protected List<String> readOnlyFieldsList;
-
     protected Map<String, Object> newCollectionLines;
 
     @SessionTransient
     protected Map<String, String> actionParameters;
-
-    @SessionTransient
     protected Map<String, Object> clientStateForSyncing;
-
     @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
 
-    private List addedCollectionItems;
+    protected List<Object> addedCollectionItems;
 
     protected MultipartFile attachmentFile;
 
     // navigation
-
     protected String returnLocation;
-
     protected String returnFormKey;
 
     @SessionTransient
+    protected boolean ajaxRequest;
+    @SessionTransient
+    protected String ajaxReturnType;
+
     protected History formHistory;
 
     // dialog fields
     @SessionTransient
     protected String dialogExplanation;
-
     @SessionTransient
     protected String dialogResponse;
+    protected DialogManager dialogManager;
 
     @SessionTransient
-    private DialogManager dialogManager;
-
-    @SessionTransient
-    protected boolean skipViewInit;
-
-    @SessionTransient
-    protected boolean requestRedirect;
-
+    protected boolean requestRedirected;
     @SessionTransient
     protected String updateComponentId;
 
-    @SessionTransient
-    protected boolean renderFullView;
-
     public UifFormBase() {
         formKey = generateFormKey();
-        renderFullView = true;
         defaultsApplied = false;
-        skipViewInit = false;
-        requestRedirect = false;
-
-        formHistory = new History();
+        renderedInLightBox = false;
+        requestRedirected = false;
 
         readOnlyFieldsList = new ArrayList<String>();
         viewRequestParameters = new HashMap<String, String>();
@@ -202,18 +180,11 @@ public class UifFormBase implements ViewModel {
             String readOnlyFields = request.getParameter(UifParameters.READ_ONLY_FIELDS);
             setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
         }
-
-        // reset skip view init parameter if not passed
-        if (!request.getParameterMap().containsKey(UifParameters.SKIP_VIEW_INIT)) {
-            skipViewInit = false;
-        }
     }
-
 
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getViewId()
      */
-
     @Override
     public String getViewId() {
         return this.viewId;
@@ -444,6 +415,15 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * Setter for the client state
+     *
+     * @param clientStateForSyncing
+     */
+    public void setClientStateForSyncing(Map<String, Object> clientStateForSyncing) {
+        this.clientStateForSyncing = clientStateForSyncing;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getSelectedCollectionLines()
      */
     @Override
@@ -500,39 +480,21 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Indicates whether a new view is being initialized or the call is refresh (or query) call
-     *
-     * @return boolean true if view initialization was skipped, false if new view is being created
-     */
-    public boolean isSkipViewInit() {
-        return skipViewInit;
-    }
-
-    /**
-     * Setter for the skip view initialization flag
-     *
-     * @param skipViewInit
-     */
-    public void setSkipViewInit(boolean skipViewInit) {
-        this.skipViewInit = skipViewInit;
-    }
-
-    /**
      * Indicates whether a redirect has been requested for the view
      *
      * @return boolean true if redirect was requested, false if not
      */
-    public boolean isRequestRedirect() {
-        return requestRedirect;
+    public boolean isRequestRedirected() {
+        return requestRedirected;
     }
 
     /**
      * Setter for the request redirect indicator
      *
-     * @param requestRedirect
+     * @param requestRedirected
      */
-    public void setRequestRedirect(boolean requestRedirect) {
-        this.requestRedirect = requestRedirect;
+    public void setRequestRedirected(boolean requestRedirected) {
+        this.requestRedirected = requestRedirected;
     }
 
     /**
@@ -569,25 +531,6 @@ public class UifFormBase implements ViewModel {
      */
     public void setUpdateComponentId(String updateComponentId) {
         this.updateComponentId = updateComponentId;
-    }
-
-    /**
-     * Indicates if the full view is to be rendered or if its just a component that
-     * needs to be refreshed
-     *
-     * @return the renderFullView
-     */
-    public boolean isRenderFullView() {
-        return this.renderFullView;
-    }
-
-    /**
-     * Setter for renderFullView
-     *
-     * @param renderFullView
-     */
-    public void setRenderFullView(boolean renderFullView) {
-        this.renderFullView = renderFullView;
     }
 
     /**
@@ -711,28 +654,27 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Indicates whether the form should be validated for dirtyness
+     * Indicates whether the view is rendered within a lightbox
      *
      * <p>
-     * For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
-     * InputFields will be validated on refresh, navigate, cancel or close Action or on form
-     * unload and if dirty, displays a message and user can decide whether to continue with
-     * the action or stay on the form
+     * Some discussion (for example how a close button behaves) need to change based on whether the
+     * view is rendered within a lightbox or the standard browser window. This boolean is true when it is
+     * within a lightbox
      * </p>
      *
-     * @return boolean true if dirty validation should be enabled
+     * @return boolean true if view is rendered within a lightbox, false if not
      */
-    public boolean isValidateDirty() {
-        return this.validateDirty;
+    public boolean isRenderedInLightBox() {
+        return this.renderedInLightBox;
     }
 
     /**
-     * Setter for dirty validation indicator
+     * Setter for the rendered within lightbox indicator
      *
-     * @param validateDirty
+     * @param renderedInLightBox
      */
-    public void setValidateDirty(boolean validateDirty) {
-        this.validateDirty = validateDirty;
+    public void setRenderedInLightBox(boolean renderedInLightBox) {
+        this.renderedInLightBox = renderedInLightBox;
     }
 
     /**
@@ -752,7 +694,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getState() 
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getState()
      */
     public String getState() {
         return state;
@@ -779,6 +721,94 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setLightboxScript(String lightboxScript) {
         this.lightboxScript = lightboxScript;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isAjaxRequest()
+     */
+    @Override
+    public boolean isAjaxRequest() {
+        return ajaxRequest;
+    }
+
+     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxRequest(boolean)
+     */
+    @Override
+    public void setAjaxRequest(boolean ajaxRequest) {
+        this.ajaxRequest = ajaxRequest;
+    }
+
+     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getAjaxReturnType()
+     */
+    @Override
+    public String getAjaxReturnType() {
+        return ajaxReturnType;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateComponentRequest()
+     */
+    @Override
+    public boolean isUpdateComponentRequest() {
+        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateDialogRequest()
+     */
+    @Override
+    public boolean isUpdateDialogRequest() {
+        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATEDIALOG.getKey());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdatePageRequest()
+     */
+    @Override
+    public boolean isUpdatePageRequest() {
+        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATEPAGE.getKey());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateNoneRequest()
+     */
+    @Override
+    public boolean isUpdateNoneRequest() {
+        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATENONE.getKey());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isBuildViewRequest()
+     */
+    @Override
+    public boolean isBuildViewRequest() {
+        return !isAjaxRequest() || (StringUtils.isNotBlank(getAjaxReturnType()) && (getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATEVIEW.getKey()) || isUpdatePageRequest()));
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateViewRequest()
+     */
+    @Override
+    public boolean isUpdateViewRequest() {
+        return isAjaxRequest() &&
+                StringUtils.isNotBlank(getAjaxReturnType()) &&
+                (isUpdateComponentRequest() || getAjaxReturnType().equals(
+                        UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey()));
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxReturnType(java.lang.String)
+     */
+    @Override
+    public void setAjaxReturnType(String ajaxReturnType) {
+        this.ajaxReturnType = ajaxReturnType;
     }
 
     /**
@@ -850,9 +880,9 @@ public class UifFormBase implements ViewModel {
 
     /**
      * The {@code List} that contains all newly added items for the collections on the model
-     * 
+     *
      * <p>
-     * This list contains the new items for all the collections on the model.    
+     * This list contains the new items for all the collections on the model.
      * </p>
      *
      * @return List of the newly added item lists
@@ -874,7 +904,7 @@ public class UifFormBase implements ViewModel {
      * Indicates whether an collection item has been newly added
      *
      * <p>
-     * Tests collection items against the list of newly added items on the model. This list gets cleared when the view 
+     * Tests collection items against the list of newly added items on the model. This list gets cleared when the view
      * is submitted and the items are persisted.
      * </p>
      *

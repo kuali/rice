@@ -50,8 +50,7 @@
                 <listitem>
                     <para><emphasis role="bold">Release Notes</emphasis> (<link xlink:show="new"
                             xlink:href="release-notes.html">HTML</link> / <link xlink:show="new"
-                            xlink:href="../pdf/release-notes.pdf">PDF</link> ) - list of changes and
-                        also includes upgrade guide</para>
+                            xlink:href="../pdf/release-notes.pdf">PDF</link> ) - list of changes </para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Installation Guide</emphasis> (<link
@@ -66,9 +65,14 @@
                         Rice Concepts and Architecture</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:show="new" xlink:href="UG.html"
-                            >HTML</link> / <link xlink:show="new" xlink:href="../pdf/UG.pdf">PDF</link> ) - How to
-                        use a feature </para>
+                <para><emphasis role="bold">KRAD Guide</emphasis> (<link
+                    xlink:show="new" xlink:href="KRAD_Guide.html">HTML</link> /<link
+                        xlink:show="new" xlink:href="../pdf/KRAD_Guide.pdf">PDF</link> ) - Manual on how to get started and use KRAD, Rice's primary development framework</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:show="new"
+                            xlink:href="UG.html">HTML</link> / <link xlink:show="new"
+                            xlink:href="../pdf/UG.pdf">PDF</link> ) - How to use a feature </para>
                 </listitem>
 <!--            TODO: Flesh out this guide    
                 <listitem>
@@ -98,7 +102,14 @@
                     <itemizedlist>
                         <para>* When using Internet Explorer, we recommend viewing the PDF files
                             since the size of the diagrams may be illegible in IE.</para>
+
+                        <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
 <!-- TODO: regenerate and add back in
+                        <listitem>
+                            <para><link xlink:show="new" xlink:href="../html/schema-spy/index.html">Schema Spy</link></para>
+                        </listitem>
+
+
                         <listitem>
                             <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>
                         </listitem>
@@ -160,7 +171,7 @@
                 <para><link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE">Issue
                     Tracking</link></para>
             </listitem>
-            <listitem><para><link xlink:show="new" xlink:href="https://ci.rice.kuali.org/">Continuous Integration</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://ci.rice.kuali.org/">Continuous Integration</link></para></listitem>
             <listitem><para><link xlink:show="new" xlink:href="http://svn.kuali.org/repos/rice/">Source Code Repository</link></para></listitem>
             <listitem><para><link xlink:show="new" xlink:href="http://fisheye.kuali.org/browse/rice">FishEye</link></para></listitem>
         </itemizedlist>

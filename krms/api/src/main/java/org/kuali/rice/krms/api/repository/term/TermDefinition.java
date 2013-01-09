@@ -32,6 +32,7 @@ import org.jdom.IllegalAddException;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
 
 /**
@@ -287,6 +288,8 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 		public static final String PARAMETERS = "parameters";
         public static final String DESCRIPTION = "description";
     }
-	
-	
+
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + TermDefinition.Constants.TYPE_NAME;
+    }
 }

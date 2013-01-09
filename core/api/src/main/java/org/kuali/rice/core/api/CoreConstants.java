@@ -45,6 +45,12 @@ public final class CoreConstants {
     	 * This constant value should never be changed!  If it is changed then it will break compatibility with legacy clients.
     	 */
     	public static final String VERSION_2_0 = "v2_0";
+
+        /**
+         *  Name for complete version 2.1.2 of Kuali Rice which is used to compare against the version of callback services to ensure
+         *  that backwards compatibility is not broken
+         */
+        public static final String VERSION_2_1_2 = "2.1.2";
     	
     }
     

@@ -46,23 +46,25 @@
   </util:list>
 
   <bean id="AgendaTreeWidget" parent="Uif-Tree">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/agendaTree.ftl"/>
+    <property name="templateName" value="uif_agendaTree"/>
   </bean>
 
   <bean id="Editor-MaintenanceView" parent="Uif-MaintenanceView">
     <property name="additionalScriptFiles">
       <list>
-        <value>/krms/scripts/ruleTree.js</value>
-        <value>/krms/scripts/agendaTree.js</value>
-        <value>/krms/scripts/requiredAlerts.js</value>
-        <value>/krms/scripts/disableButtons.js</value>
-        <value>/krms/scripts/countdownInputs.js</value>
+        <value>krms/scripts/ruleTree.js</value>
+        <value>krms/scripts/agendaTree.js</value>
+        <value>krms/scripts/requiredAlerts.js</value>
+        <value>krms/scripts/disableButtons.js</value>
+        <value>krms/scripts/countdownInputs.js</value>
+        <value>krms/scripts/rulebo-maintenanceview.js</value>
       </list>
     </property>
     <property name="additionalCssFiles">
       <list>
-        <value>/krms/css/agendaTree.css</value>
-        <value>/krms/css/disableButtons.css</value>
+        <value>krms/css/agendaTree.css</value>
+        <value>krms/css/disableButtons.css</value>
       </list>
     </property>
     <property name="headerText" value="Agenda Editor"/>
@@ -101,7 +103,7 @@
       <bean parent="Uif-FooterBase">
         <property name="items">
           <list>
-            <bean parent="Uif-NavigationActionButton" p:methodToCall="addRule" p:actionLabel="Add Rule">
+            <bean parent="Uif-NavigationActionButton" p:methodToCall="addRule" p:actionLabel="Add Rule" p:performDirtyValidation="false">
               <property name="cssClasses">
                 <list merge="true">
                   <value>tree-bar-button</value>
@@ -130,7 +132,7 @@
       <bean parent="Uif-FooterBase">
         <property name="items">
           <list>
-            <bean parent="Uif-NavigationActionButton" p:methodToCall="editRule" p:actionLabel="Update Rule"/>
+            <bean parent="Uif-NavigationActionButton" p:methodToCall="editRule" p:actionLabel="Update Rule" />
             <bean parent="Uif-NavigationActionButton" p:navigateToPageId="AgendaEditorView-Agenda-Page" p:actionLabel="Cancel"/>
           </list>
         </property>
@@ -334,6 +336,11 @@
             <bean parent="Uif-HiddenControl" p:cssClasses="selectedAgendaItemId"/>
           </property>
         </bean>
+        <bean parent="Uif-InputField" p:propertyName="disableButtons" p:showLabel="false" p:render="true">
+          <property name="control">
+            <bean parent="Uif-HiddenControl" p:cssClasses="disableButtons"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -373,12 +380,13 @@
     <property name="layoutManager">
       <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
+    <property name="onDocumentReadyScript" value="loadControlsInit();"/>
 
     <property name="items">
       <list>
         <!-- javascript to work around required issue -->
         <bean parent="Uif-NavigationActionButton" p:methodToCall="viewRule" p:actionLabel="View Rule"
-              p:actionScript="var requiredMessage = '';
+              p:preSubmitCall="var requiredMessage = '';
               if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
                 requiredMessage = requiredMessage + 'Please select the rule to view, then click view rule.';
                 requiredMessage = '';
@@ -387,7 +395,7 @@
                 alert(requiredMessage);
                 return false;
               }
-              submitForm();
+              return true;
               "
                p:style="margin-right: 15pt;">
           <property name="cssClasses">
@@ -422,13 +430,13 @@
         -->
 
         <!-- javascript to work around required issue -->
-        <bean parent="Uif-NavigationActionButton" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
-              p:actionScript="var requiredMessage = requiredsSet();
+        <bean parent="Uif-NavigationActionButton" p:methodToCall="goToAddRule" p:actionLabel="Add Rule" p:performDirtyValidation="false"
+              p:preSubmitCall="var requiredMessage = requiredsSet();
               if (requiredMessage.length > 0) {
                 alert(requiredMessage);
                 return false;
               }
-              submitForm();
+              return true;
               "
           p:style="margin-right: 15pt;">
           <property name="cssClasses">
@@ -448,7 +456,7 @@
 -->
         <!-- javascript to work around required issue -->
         <bean parent="Uif-NavigationActionButton" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
-              p:actionScript="var requiredMessage = requiredsSet();
+              p:preSubmitCall="var requiredMessage = requiredsSet();
               if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
                 requiredMessage = requiredMessage + 'Please select the rule to edit (or add a rule), then click edit rule.';
               }
@@ -456,7 +464,7 @@
                 alert(requiredMessage);
                 return false;
               }
-              submitForm();
+              return true;
               "
               p:style="margin-right: 15pt;">
           <property name="cssClasses">
@@ -525,6 +533,11 @@
 
         <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxCut', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
+          <property name="cssClasses">
+            <list merge="true">
+              <value>kr-cut-button</value>
+            </list>
+          </property>
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
                   p:altText="Cut"/>
@@ -535,7 +548,12 @@
             p:conditionalDisable="document.newMaintainableObject.dataObject.agendaItemCutPaste == null -->
         <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxPaste', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Paste">
-          <property name="actionImage">
+          <property name="cssClasses">
+            <list merge="true">
+              <value>kr-paste-button</value>
+            </list>
+          </property>
+         <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
                   p:altText="Paste"/>
           </property>

@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -51,7 +51,7 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 		criteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, tm);
 		criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
 
-		Collection<Notification> available_notifications = dao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
+		Collection<NotificationBo> available_notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
 
 		return available_notifications;
 	}
@@ -62,14 +62,14 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotificationsForUnlock(java.sql.Timestamp, org.kuali.rice.core.framework.persistence.dao.GenericDao)
 	 */
 	@Override
-	public Collection findMatchedNotificationsForUnlock(Notification not, GenericDao dao) {
+	public Collection findMatchedNotificationsForUnlock(NotificationBo not, GenericDao dao) {
 
 		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForForUnlock************************ ");
 		
 		Criteria criteria = new Criteria();
 		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId());
 
-		Collection<Notification> notifications = dao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
+		Collection<NotificationBo> notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
 
 		return notifications;
 	}

@@ -21,6 +21,8 @@ package org.kuali.test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class KRADTestConstants {
+    
+    public static final String TEST_NAMESPACE_CODE = "TEST";
 
     public static final class TestConstants {
         private static final String HOST = "localhost";

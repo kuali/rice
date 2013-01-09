@@ -110,6 +110,20 @@ public interface WorkflowDocumentService {
     @WebResult(name = "rootActionRequests")
 	List<ActionRequest> getRootActionRequests(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
+    
+    /**
+     * Gets a list of ActionRequests which are pending for a given documentId
+     * 
+     * @since 2.1
+     * @param documentId the unique id of a document
+     * @return the list of pending ActionRequests for a given documentId
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getPendingActionRequests")
+    @XmlElementWrapper(name = "pendingActionRequests", required = true)
+    @XmlElement(name = "pendingActionRequest", required = false)
+    @WebResult(name = "pendingActionRequests")
+    List<ActionRequest> getPendingActionRequests(String documentId);
 
     /**
      * Gets a list of ActionRequests for a given documentId, nodeName and principalId
@@ -139,12 +153,48 @@ public interface WorkflowDocumentService {
      *
      * @throws RiceIllegalArgumentException if {@code documentId} is null
      */
-    @WebMethod(operationName = "getActionRequests")
+    @WebMethod(operationName = "getActionsTaken")
     @XmlElementWrapper(name = "actionsTaken", required = true)
     @XmlElement(name = "actionTaken", required = false)
     @WebResult(name = "actionsTaken")
 	List<ActionTaken> getActionsTaken(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
+
+    /**
+     * @deprecated mistaken operation name...use getActionsTaken instead
+     *
+     * @param documentId the unique id of a document
+     *
+     * @return the list of past ActionTakens for a given documentId
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getActionRequests")
+    @XmlElementWrapper(name = "actionsTaken", required = true)
+    @XmlElement(name = "actionTaken", required = false)
+    @WebResult(name = "actionsTaken")
+    @Deprecated
+    List<ActionTaken> _getActionsTaken(@WebParam(name = "documentId") String documentId)
+            throws RiceIllegalArgumentException;
+
+
+    /**
+    * Gets a list of all {@link ActionTaken} of a {@link Document} with the given documentId
+    *
+    * @since 2.0.2
+    *
+    * @param documentId the unique id of a document
+    *
+    * @return the list of ActionTakens (both current and not) for a given documentId
+    *
+    * @throws RiceIllegalArgumentException if {@code documentId} is null
+    */
+      @WebMethod(operationName = "getAllActionRequests")
+      @XmlElementWrapper(name = "actionsTaken", required = true)
+      @XmlElement(name = "actionTaken", required = false)
+      @WebResult(name = "actionsTaken")
+      List<ActionTaken> getAllActionsTaken(@WebParam(name = "documentId") String documentId)
+              throws RiceIllegalArgumentException;
 
 
     /**
@@ -566,5 +616,55 @@ public interface WorkflowDocumentService {
     @WebMethod(operationName = "getDocumentLink")
     @WebResult(name = "documentLinks")
     DocumentLink getDocumentLink(@WebParam(name = "documentLinkId") String documentLinkId) throws RiceIllegalArgumentException;
+    
+    /**
+     * Gets a list of active route node names for a {@link Document} with the given documentId.   Will never return null but an empty collection to indicate no results.
+     *
+     * @param documentId the unique id of a Document
+     *
+     * @return an unmodifiable list of active route node names for the {@link Document} with the given documentId
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null or blank
+     * 
+     * @since rice 2.2
+     */
+    @WebMethod(operationName = "getActiveRouteNodeNames")
+    @XmlElementWrapper(name = "nodes", required = true)
+    @XmlElement(name = "node", required = false)
+    @WebResult(name = "nodes")
+    List<String> getActiveRouteNodeNames(@WebParam(name = "documentId") String documentId) throws RiceIllegalArgumentException;
+    
+    /**
+     * Gets a list of terminal route node names for a {@link Document} with the given documentId.   Will never return null but an empty collection to indicate no results.
+     *
+     * @param documentId the unique id of a Document
+     *
+     * @return an unmodifiable list of terminal route node names for the {@link Document} with the given documentId
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null or blank
+     * 
+     * @since rice 2.2
+     */
+    @WebMethod(operationName = "getTerminalRouteNodeNames")
+    @XmlElementWrapper(name = "nodes", required = true)
+    @XmlElement(name = "node", required = false)
+    @WebResult(name = "nodes")
+    List<String> getTerminalRouteNodeNames(@WebParam(name = "documentId") String documentId) throws RiceIllegalArgumentException;
 
+    /**
+     * Gets a list of current route node names for a {@link Document} with the given documentId.  Will never return null but an empty collection to indicate no results.
+     *
+     * @param documentId the unique id of a Document
+     *
+     * @return an unmodifiable list of current route node names for the {@link Document} with the given documentId
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null or blank
+     * 
+     * @since rice 2.2
+     */
+    @WebMethod(operationName = "getCurrentRouteNodeNames")
+    @XmlElementWrapper(name = "nodes", required = true)
+    @XmlElement(name = "node", required = false)
+    @WebResult(name = "nodes")
+    List<String> getCurrentRouteNodeNames(@WebParam(name = "documentId") String documentId) throws RiceIllegalArgumentException;
 }

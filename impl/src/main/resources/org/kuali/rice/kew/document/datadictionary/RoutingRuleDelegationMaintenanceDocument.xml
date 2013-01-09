@@ -74,8 +74,8 @@
         <bean parent="MaintainableFieldDefinition" p:name="delegationTypeCode" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRule.name" p:required="false" p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRule.description" p:required="true" p:noLookup="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.fromDateValue" p:required="false" p:noLookup="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.toDateValue" p:required="false" p:noLookup="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="delegationRule.fromDateValue" p:required="false" p:noLookup="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="delegationRule.toDateValue" p:required="false" p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRule.forceAction" p:required="true" p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRule.active" p:required="true" p:noLookup="true"/>
       </list>
@@ -156,7 +156,7 @@
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableCollectionDefinition">
-          <property name="name" value="delegationRuleBaseValues.roleResponsibilities"/>
+          <property name="name" value="delegationRule.roleResponsibilities"/>
           <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
           <property name="summaryTitle" value="Role"/>
           <property name="alwaysAllowCollectionDeletion" value="true"/>

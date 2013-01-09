@@ -16,6 +16,9 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +27,11 @@ import java.util.List;
  * Represents a group of HTML checkbox controls. Provides preset options for the
  * user to choose by a series of checkbox controls. Only or more options can be
  * select
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "verticalCheckboxesControl", parent = "Uif-VerticalCheckboxesControl"),
+        @BeanTag(name = "horizontalCheckboxesControl", parent = "Uif-HorizontalCheckboxesControl")})
 public class CheckboxGroupControl extends MultiValueControlBase {
     private static final long serialVersionUID = 8800478332086081970L;
 
@@ -45,16 +50,17 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      * <p>
      * defaults to none.
      * </p>
-     * 
+     *
      * @return String delimiter string
      */
+    @BeanTagAttribute(name = "delimiter")
     public String getDelimiter() {
         return this.delimiter;
     }
 
     /**
      * Setter for the string delimiter for each checkbox option
-     * 
+     *
      * @param delimiter
      */
     public void setDelimiter(String delimiter) {
@@ -63,15 +69,18 @@ public class CheckboxGroupControl extends MultiValueControlBase {
 
     /**
      * Get fieldsetClasses which are the classes that will be applied to this component's fieldset when generated
-     * @return
+     *
+     * @return fieldset css classes
      */
+    @BeanTagAttribute(name = "fieldsetClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getFieldsetClasses() {
         return fieldsetClasses;
     }
 
     /**
-     * Set fieldsetClasses
-     * @param fieldsetClasses
+     * Set fieldsetClasses - css classes for the element
+     *
+     * @param fieldsetClasses fieldset css classes list
      */
     public void setFieldsetClasses(List<String> fieldsetClasses) {
         this.fieldsetClasses = fieldsetClasses;

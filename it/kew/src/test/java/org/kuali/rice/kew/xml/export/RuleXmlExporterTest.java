@@ -137,7 +137,11 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         	// do another conversion in the ready-for-render state:
         	byte[] loadXmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         	String loadStr = new String(loadXmlBytes);
-        	
+
+            // FIXME: currently failing due to:
+            // * WebRuleUtils.populateRuleMaintenanceFields clears rule extensions
+            // * RuleXmlExporter detects missing extensions and re-adds them: but in a different order...
+
         	// check that the results are identical:
         	assertTrue("The load/render state of the RuleBaseValues shouldn't effect the export: \n" + 
         			saveStr + "\n\n != \n\n" + loadStr, 

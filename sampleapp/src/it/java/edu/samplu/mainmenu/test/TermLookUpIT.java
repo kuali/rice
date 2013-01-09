@@ -15,16 +15,7 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
+import edu.samplu.common.MainMenuLookupITBase;
 
 /**
  * tests that user 'admin' can display the Term lookup screen, search,
@@ -33,39 +24,13 @@ import com.thoughtworks.selenium.Selenium;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpIT {
-
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class TermLookUpIT extends MainMenuLookupITBase {
+    @Override
+    public String getLinkLocator() {
+		return "link=Term Lookup";
     }
-    
-    @Test
-    public void testTermLookUp() throws Exception {
-               
-        selenium.open(System.getProperty("remote.public.url"));
-		selenium.type("name=__login_user", "admin");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=Term Lookup");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("//button");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=edit");
-		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.isTextPresent("cancel"));
-		selenium.click("link=cancel");
-		selenium.waitForPageToLoad("30000");
-        
-        
+    @Override
+    public void lookupAssertions() {
+        assertTextPresent("Text Parameters not present", "Term Parameters");
     }
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-
 }

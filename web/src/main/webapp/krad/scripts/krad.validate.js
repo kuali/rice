@@ -23,20 +23,25 @@ function hideMessageTooltip(fieldId) {
     var element = elementInfo.element;
     if (elementInfo.type == "fieldset") {
         //for checkbox/radio fieldsets we put the tooltip on the label of the first input
-        element = jQuery(element).filter("label:first");
+        element = jQuery(element).filter(".uif-tooltip");
     }
+
     var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
     if (data && data.showTimer) {
         clearTimeout(data.showTimer);
     }
+
     var tooltipId = jQuery(element).GetBubblePopupID();
-    if (tooltipId) {
+
+    if(tooltipId){
         //this causes the tooltip to be IMMEDIATELY hidden, rather than wait for animation
         jQuery("#" + tooltipId).css("opacity", 0);
         jQuery("#" + tooltipId).hide();
+        jQuery(element).HideBubblePopup();
     }
-    jQuery(element).HideBubblePopup();
-
+    else{
+        jQuery(element).HideBubblePopup();
+    }
 }
 
 /**
@@ -45,10 +50,11 @@ function hideMessageTooltip(fieldId) {
  * @param fieldId the id of the field
  */
 function getHoverElement(fieldId) {
-    var hasFieldset = jQuery("#" + fieldId).find("fieldset").length;
+    var fieldset = jQuery("#" + fieldId).find("fieldset");
+    var hasFieldset = fieldset.length;
     var elementInfo = {};
 
-    if (!hasFieldset) {
+    if (!hasFieldset || (hasFieldset && fieldset.data("type") == "InputSet")) {
         //regular case
         elementInfo.element = jQuery("#" + fieldId).find("input:text, input:password, input:file, input:checkbox, "
                 + "select, textarea");
@@ -56,14 +62,15 @@ function getHoverElement(fieldId) {
         if (elementInfo.element.is("input:checkbox")) {
             elementInfo.themeMargins = {
                 total:'13px',
-                difference:'0px'
+                difference:'2px'
             };
         }
     }
     else if (hasFieldset && jQuery("#" + fieldId).find("fieldset > span > input").length) {
         //radio and checkbox fieldset case
         //get the fieldset, the inputs its associated with, and the associated labels as hover elements
-        elementInfo.element = jQuery("#" + fieldId).find("fieldset, fieldset input, fieldset label");
+        elementInfo.element = jQuery("#" + fieldId).find("fieldset, fieldset > span > input:radio,"
+                + "fieldset > span > input:checkbox, fieldset > span > label, .uif-tooltip");
         elementInfo.type = "fieldset";
         elementInfo.themeMargins = {
             total:'13px',
@@ -95,7 +102,7 @@ function mouseLeaveHideMessageTooltip(id, currentElement, elements, type, force)
         hide = force || jQuery(currentElement).is("fieldset");
         focus = elements.filter("fieldset").is(":focus")
                 || elements.filter("input").is(":focus");
-        tooltipElement = elements.filter("label:first");
+        tooltipElement = elements.filter(".uif-tooltip");
     }
 
     //hide only if hide flag is true, the field is not focused, and the tooltip is open
@@ -124,26 +131,32 @@ function getTooltipMargin(tooltipElement) {
  * @param triggerElements - the elements that can trigger mouseover
  * @param callingElement - original element that invoked the mouseleave
  * @param type - type of the field
+ * @param data - the fields validation data - updates the mouseInTooltip property
+ * @return false if the mouse is not out of the tooltip (mouse in tooltip), true if it is in the tooltip
  */
-function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement, type) {
+function mouseOutBubblePopupCheck(event, fieldId, triggerElements, callingElement, type, data) {
     if (event.relatedTarget &&
             jQuery(event.relatedTarget).length &&
-            jQuery(event.relatedTarget).attr("class") != null &&
-            jQuery(event.relatedTarget).attr("class").indexOf("jquerybubblepopup") >= 0) {
+            ((jQuery(event.relatedTarget).attr("class") != null &&
+            jQuery(event.relatedTarget).attr("class").indexOf("jquerybubblepopup") >= 0)
+            || jQuery(event.relatedTarget).parents('.jquerybubblepopup-innerHtml').length)) {
         //this bind is only every invoked once, then unbound - return false to stop hide
         jQuery(event.relatedTarget).one("mouseleave", function (event) {
-            mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement, type);
+            mouseOutBubblePopupCheck(event, fieldId, triggerElements, callingElement, type, data);
         });
+        data.mouseInTooltip = true;
         return false;
     }
     //If target moving into is not a triggerElement for this hover
     // and if the source of the event is not a trigger element
     else if (!jQuery(event.relatedTarget).is(triggerElements) && !jQuery(event.target).is(triggerElements)) {
         //hide the tooltip for the original element
+        data.mouseInTooltip = false;
         mouseLeaveHideMessageTooltip(fieldId, callingElement, triggerElements, type, true);
         return true;
     }
     else {
+        data.mouseInTooltip = false;
         return true;
     }
 }
@@ -158,11 +171,11 @@ function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement
  */
 function showMessageTooltip(fieldId, showAndClose, change) {
     var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-    if(data && data.useTooltip){
+    if(data && data.useTooltip && data.messagingEnabled && !haltValidationMessaging){
         var elementInfo = getHoverElement(fieldId);
         var tooltipElement = jQuery(elementInfo.element);
         if (elementInfo.type == "fieldset") {
-            tooltipElement = tooltipElement.filter("label:first");
+            tooltipElement = tooltipElement.filter(".uif-tooltip");
         }
 
         var options = {
@@ -173,7 +186,8 @@ function showMessageTooltip(fieldId, showAndClose, change) {
             manageMouseEvents:false,
             themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
             alwaysVisible:false,
-            tail:{align:"left"}
+            tail:{align:"left"},
+            themeMargins: {total: "13px",difference: "2px"}
         };
 
         if (elementInfo.themeMargins) {
@@ -203,8 +217,20 @@ function showMessageTooltip(fieldId, showAndClose, change) {
 
             if(show){
                 if (!tooltipElement.IsBubblePopupOpen()) {
-                    //timer to get around bizarre interactions with the iframe resize logic
-                    data.showTimer = setTimeout(function () {
+                    if(showAndClose){
+                        //close other bubble popups so we dont get too many during fast tabbing
+                        hideBubblePopups();
+                    }
+                    tooltipElement.SetBubblePopupOptions(options, true);
+                    tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
+                    tooltipElement.ShowBubblePopup();
+                    var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
+                    jQuery("#" + tooltipId).css("opacity", 1);
+                }
+                else if (tooltipElement.IsBubblePopupOpen()) {
+
+                    if (change) {
+                        //if the messages shown were changed, reshow to get around placement issues
                         if(showAndClose){
                             //close other bubble popups so we dont get too many during fast tabbing
                             hideBubblePopups();
@@ -214,30 +240,10 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                         tooltipElement.ShowBubblePopup();
                         var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
                         jQuery("#" + tooltipId).css("opacity", 1);
-                    }, 250);
-                }
-                else if (tooltipElement.IsBubblePopupOpen()) {
-
-                    if (change) {
-                        //if the messages shown were changed, reshow to get around placement issues
-
-                        //timer to get around bizarre interactions with the iframe resize logic
-                        data.showTimer = setTimeout(function () {
-                            if(showAndClose){
-                                //close other bubble popups so we dont get too many during fast tabbing
-                                hideBubblePopups();
-                            }
-                            tooltipElement.SetBubblePopupOptions(options, true);
-                            tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
-                            tooltipElement.ShowBubblePopup();
-                            var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
-                            jQuery("#" + tooltipId).css("opacity", 1);
-                        }, 250);
                     }
                 }
 
                 if (showAndClose) {
-
                     //setup a timer to close the tooltip automatically
                     data.tooltipTimer = setTimeout("hideMessageTooltip('" + fieldId + "')", 3000);
                     jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES, data);
@@ -456,24 +462,38 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
             data.messageMap = messageMap;
         }
 
+        //retrieve header for section
+        if(data.isSection == undefined){
+            var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label");
+            data.isSection = sectionHeader.length;
+        }
+
         //add fresh data to group's message data based on the new field info
         messageMap[fieldId] = fieldData;
 
-        data = calculateMessageTotals(data);
+
 
         //write messages for this group
         if(!pageSetupPhase){
             //Display counts in the header even if messages aren't displayed at that level
+            data = calculateMessageTotals(id, data);
             displayHeaderMessageCount(id, data);
             writeMessagesForGroup(id, data);
         }
     }
 
     if (!pageLevel && parent) {
-        handleMessagesAtGroup(parent, fieldId, fieldData);
+        var parentData = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+        handleMessagesAtGroup(parent, fieldId, fieldData, pageSetupPhase);
     }
 }
 
+/**
+ * Write the messages out for the group that are present its data
+ *
+ * @param id id of the group
+ * @param data validationData for the group
+ */
 function writeMessagesForGroup(id, data){
     var parent = jQuery("#" + id).data("parent");
 
@@ -510,10 +530,24 @@ function writeMessagesForGroup(id, data){
 
             var newList = jQuery("<ul class='" + kradVariables.VALIDATION_MESSAGES_CLASS + "'></ul>");
 
-            if(data.messageTotal){
-                if(data.hasOwnMessages){
-                    newList = generateSectionLevelMessages(id, data, newList);
+            //init data for group
+            if(data.messageTotal == undefined){
+                //init empty params
+                if (!data.errors) {
+                    data.errors = [];
                 }
+                if (!data.warnings) {
+                    data.warnings = [];
+                }
+                if (!data.info) {
+                    data.info = [];
+                }
+                calculateMessageTotals(id, data);
+            }
+
+            if(data.messageTotal){
+
+                newList = generateSectionLevelMessages(id, data, newList);
 
                 if (data.summarize) {
                     newList = generateSummaries(id, messageMap, sections, order, newList);
@@ -575,23 +609,52 @@ function writeMessagesForGroup(id, data){
     }
 }
 
+/**
+ * Write messages out for the page if any exist
+ */
 function writeMessagesForPage(){
     var page = jQuery("[data-type='Page']");
     var pageId = page.attr("id");
     var data = page.data(kradVariables.VALIDATION_MESSAGES);
-    writeMessagesForGroup(pageId, data);
+
+    if(data){
+        var messageMap = data.messageMap;
+        if (!messageMap) {
+            messageMap = {};
+            data.messageMap = messageMap;
+        }
+    }
+
     writeMessagesForChildGroups(pageId);
+    writeMessagesForGroup(pageId, data);
+    displayHeaderMessageCount(pageId, data);
     jQuery(".uif-errorMessageItem > div").show();
 }
 
+/**
+ * Write messages out for each of the child groups of the parent with parentId
+ *
+ * @param parentId - id of parent
+ */
 function writeMessagesForChildGroups(parentId){
     jQuery("[data-parent='"+ parentId +"']").each(function(){
+
         var currentGroup = jQuery(this);
         var id = currentGroup.attr("id");
         var data = currentGroup.data(kradVariables.VALIDATION_MESSAGES);
-        if(!(currentGroup.is("[data-role='InputField']"))){
-            writeMessagesForGroup(id, data);
+
+        if(data){
+            var messageMap = data.messageMap;
+            if (!messageMap) {
+                messageMap = {};
+                data.messageMap = messageMap;
+            }
+        }
+
+        if(!(currentGroup.is("div[data-role='InputField']"))){
             writeMessagesForChildGroups(id);
+            writeMessagesForGroup(id, data);
+            displayHeaderMessageCount(id, data);
         }
     });
 }
@@ -630,18 +693,27 @@ function handleTabStyle(id, error, warning, info) {
  */
 function generateSectionLevelMessages(id, data, newList) {
     if (data != undefined && data != null) {
-        //Write all message items for section
-        var errors = jQuery(generateListItems(data.errors, "uif-errorMessageItem", 0, true)
-                + generateListItems(data.serverErrors, "uif-errorMessageItem", 0, true));
-        var warnings = jQuery(generateListItems(data.warnings, "uif-warningMessageItem", 0, true)
-                + generateListItems(data.serverWarnings, "uif-warningMessageItem", 0, true));
-        var info = jQuery(generateListItems(data.info, "uif-infoMessageItem", 0, true)
-                + generateListItems(data.serverInfo, "uif-infoMessageItem", 0, true));
+        if(data.hasOwnMessages){
+            //Write all message items for section
+            var errors = jQuery(generateListItems(data.errors, "uif-errorMessageItem", 0, true)
+                    + generateListItems(data.serverErrors, "uif-errorMessageItem", 0, true));
+            var warnings = jQuery(generateListItems(data.warnings, "uif-warningMessageItem", 0, true)
+                    + generateListItems(data.serverWarnings, "uif-warningMessageItem", 0, true));
+            var info = jQuery(generateListItems(data.info, "uif-infoMessageItem", 0, true)
+                    + generateListItems(data.serverInfo, "uif-infoMessageItem", 0, true));
 
-        //Write all items to the list
-        newList = writeMessageItemToList(errors, newList);
-        newList = writeMessageItemToList(warnings, newList);
-        newList = writeMessageItemToList(info, newList);
+            //Write all items to the list
+            newList = writeMessageItemToList(errors, newList);
+            newList = writeMessageItemToList(warnings, newList);
+            newList = writeMessageItemToList(info, newList);
+        }
+
+        jQuery("#" + id).find("div[data-parent='"+ id +"']").not("div[data-role='InputField']").each(function(){
+            var groupData = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
+            if(groupData && !groupData.isSection){
+                newList = generateSectionLevelMessages(jQuery(this).attr("id"), groupData, newList);
+            }
+        });
     }
     return newList;
 }
@@ -650,23 +722,66 @@ function generateSectionLevelMessages(id, data, newList) {
  * Calculates the message totals for the data passed in, appends these totals to the data map, and passes it back
  * @param data - 'validationMessages' data to count message totals on
  */
-function calculateMessageTotals(data) {
+function calculateMessageTotals(id, data) {
     var errorTotal = 0;
     var warningTotal = 0;
     var infoTotal = 0;
     var messageMap = data.messageMap;
     //Add totals for messages of fields in group
-    for (var id in messageMap) {
-        var currentData = messageMap[id];
+    for (var fId in messageMap) {
+        var currentData = messageMap[fId];
         errorTotal = errorTotal + currentData.serverErrors.length + currentData.errors.length;
         warningTotal = warningTotal + currentData.serverWarnings.length + currentData.warnings.length;
         infoTotal = infoTotal + currentData.serverInfo.length + currentData.info.length;
     }
+
+    var childGroupCount = recursiveGroupMessageCount(id);
+    errorTotal += childGroupCount.errorTotal;
+    warningTotal += childGroupCount.warningTotal;
+    infoTotal += childGroupCount.infoTotal;
+
     //Add totals for messages for THIS Group
     data.errorTotal = errorTotal + data.serverErrors.length + data.errors.length;
     data.warningTotal = warningTotal + data.serverWarnings.length + data.warnings.length;
     data.infoTotal = infoTotal + data.serverInfo.length + data.info.length;
     data.messageTotal = data.errorTotal + data.warningTotal + data.infoTotal;
+
+
+    return data;
+}
+
+/**
+ * Find the count of messages that each subGroup of the parent by id has for its group specifically (does not include
+ * its fields - these are messages keyed to that group)
+ *
+ * @param parentId parent group id to use
+ * @return {Object} data object containing the message count totals
+ */
+function recursiveGroupMessageCount(parentId){
+    var data = {
+        errorTotal: 0,
+        warningTotal: 0,
+        infoTotal: 0
+    };
+
+    if(!parentId){
+        return data;
+    }
+
+    jQuery("#" + parentId).find("div[data-parent='"+ parentId +"']").not("div[data-role='InputField']").each(function(){
+        var groupData = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
+        if(groupData){
+            data.errorTotal = data.errorTotal + groupData.serverErrors.length + (groupData.errors?groupData.errors.length:0);
+            data.warningTotal = data.warningTotal +  groupData.serverWarnings.length + (groupData.warnings?groupData.warnings.length:0);
+            data.infoTotal = data.infoTotal +  groupData.serverInfo.length + (groupData.info?groupData.info.length:0);
+        }
+
+        var childData = recursiveGroupMessageCount(jQuery(this).attr("id"));
+        data.errorTotal += childData.errorTotal;
+        data.warningTotal += childData.warningTotal;
+        data.infoTotal += childData.infoTotal;
+    });
+
     return data;
 }
 
@@ -716,15 +831,15 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
     var countMessage = "";
     if (errorTotal) {
         if (errorTotal == 1) {
-            countMessage = errorTotal + " error";
+            countMessage = getMessage(kradVariables.MESSAGE_TOTAL_ERROR, null, null, errorTotal);
         }
         else {
-            countMessage = errorTotal + " errors";
+            countMessage = getMessage(kradVariables.MESSAGE_TOTAL_ERRORS, null, null, errorTotal);
         }
     }
 
     if ((errorTotal > 0) + (warningTotal > 0) + (infoTotal > 0) == 3) {
-        countMessage = countMessage + " & " + (warningTotal + infoTotal) + " other messages";
+        countMessage = getMessage(kradVariables.MESSAGE_TOTAL_OTHER_MESSAGES, null, null, countMessage, (warningTotal + infoTotal));
     }
     else {
 
@@ -734,10 +849,10 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
             }
 
             if (warningTotal == 1) {
-                countMessage = countMessage + warningTotal + " warning";
+                countMessage = getMessage(kradVariables.MESSAGE_TOTAL_WARNING, null, null, warningTotal);
             }
             else {
-                countMessage = countMessage + warningTotal + " warnings";
+                countMessage = getMessage(kradVariables.MESSAGE_TOTAL_WARNINGS, null, null, warningTotal);
             }
         }
 
@@ -747,10 +862,10 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
             }
 
             if (infoTotal == 1) {
-                countMessage = countMessage + infoTotal + " message";
+                countMessage = getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null, infoTotal);
             }
             else {
-                countMessage = countMessage + infoTotal + " messages";
+                countMessage = getMessage(kradVariables.MESSAGE_TOTAL_MESSAGES, null, null, infoTotal);
             }
         }
     }
@@ -820,10 +935,12 @@ function generateListItems(messageArray, itemClass, startIndex, focusable, image
     if (messageArray && messageArray.length) {
         for (var i = startIndex; i < messageArray.length; i++) {
             if (focusable) {
-                elements = elements + "<li tabindex='0' class='" + itemClass + "'>" + image + " " + messageArray[i] + "</li>";
+                elements = elements + "<li tabindex='0' class='" + itemClass + "'>" + image + " "
+                        + convertToHtml(messageArray[i]) + "</li>";
             }
             else {
-                elements = elements + "<li class='" + itemClass + "'>" + image + " " + messageArray[i] + "</li>";
+                elements = elements + "<li class='" + itemClass + "'>" + image + " "
+                        + convertToHtml(messageArray[i]) + "</li>";
             }
         }
     }
@@ -1026,11 +1143,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
 
                 if (count > 1) {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_ERRORS_CLASS + "'> [+"
-                            + count + " errors]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_ERRORS, null, null, count) + "]</span>";
                 }
                 else {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_ERRORS_CLASS + "'> [+"
-                            + count + " error]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_ERROR, null, null, count) + "]</span>";
                 }
             }
             else if(collapsedErrors.exist && !collapseMessages){
@@ -1058,11 +1175,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
 
                 if (count > 1) {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_WARNINGS_CLASS + "'> [+"
-                            + count + " warnings]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_WARNINGS, null, null, count) + "]</span>";
                 }
                 else {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_WARNINGS_CLASS + "'> [+"
-                            + count + " warning]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_WARNING, null, null, count) + "]</span>";
                 }
             }
             else if(collapsedWarnings.exist && !collapseMessages){
@@ -1091,11 +1208,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
 
                 if (count > 1) {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_INFO_CLASS + "'> [+"
-                            + count + " messages]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGES, null, null, count) + "]</span>";
                 }
                 else {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_INFO_CLASS + "'> [+"
-                            + count + " message]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null, count) + "]</span>";
                 }
             }
             else if(collapsedInfo.exist && !collapseMessages){
@@ -1114,7 +1231,7 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
             var name = jQuery("#" + fieldId).data("label");
 
             if (name && showLabel) {
-                name = name.trim();
+                name = jQuery.trim(name);
                 if(name.indexOf(":") == name.length - 1){
                     name = name + " ";
                 }
@@ -1128,7 +1245,7 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
             }
 
             link = jQuery("<li data-messageItemFor='" + fieldId + "'><a href='#'>"
-                    + name + linkText + collapsedElements + "</a> </li>");
+                    + name + convertToHtml(linkText, true) + collapsedElements + "</a> </li>");
 
             if(messageData.fieldModified){
                 jQuery(link).find("a").prepend("<span class='modified'>(Modified) </span>");
@@ -1137,14 +1254,15 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
                 }
             }
             jQuery(link).addClass(linkType);
-            jQuery(link).find("a").click(function () {
+            jQuery(link).find("a").click(function (event) {
+                event.preventDefault();
                 var control = jQuery("#" + fieldId + "_control");
                 if (control.length) {
 
                     jQuery(control).focus();
                 }
                 else {
-                    jQuery("#" + fieldId + "_control1").focus();
+                    jQuery("#" + fieldId + "_control_0").focus();
                 }
             });
             jQuery(link).find("a").focus(function () {
@@ -1218,9 +1336,9 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
         }
     }
     if (errorCount || warningCount || infoCount) {
-        var locationText = "before";
+        var locationText = getMessage(kradVariables.MESSAGE_BEFORE);
         if (!before) {
-            locationText = "after";
+            locationText = getMessage(kradVariables.MESSAGE_AFTER);
         }
 
         if (errorCount) {
@@ -1238,7 +1356,8 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
 
         var countMessage = generateCountString(errorCount, warningCount, infoCount);
 
-        disclosureText = countMessage + " " + locationText + " the \"" + sectionTitle + "\" " + sectionType;
+        sectionTitle = sectionTitle.replace(/\r?\n/g, "");
+        disclosureText = countMessage + " " + locationText + " " + getMessage(kradVariables.MESSAGE_THE) + " \"" + sectionTitle + "\" " + sectionType;
 
         if (links.length) {
             var subSummary = jQuery("<ul></ul>");
@@ -1281,8 +1400,9 @@ function generateSummaryLink(sectionId) {
 
     if (sectionData && sectionData.messageTotal) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
-
-        summaryMessage = "The \"" + sectionTitle + "\" " + sectionType + " has " + countMessage;
+        //remove newline characters
+        sectionTitle = sectionTitle.replace(/\r?\n/g, "");
+        summaryMessage = getMessage(kradVariables.MESSAGE_THE_SECTION_HAS_COUNT, null, null, sectionTitle, sectionType, countMessage);
     }
 
     if (summaryMessage != "") {
@@ -1304,7 +1424,8 @@ function generateSummaryLink(sectionId) {
         summaryLink = jQuery("<li data-messageItemFor='" + sectionId + "' class='" + linkType + "'><a href='#'>"
                 + summaryMessage + "</a></li>");
 
-        summaryLink.find("a").click(function () {
+        summaryLink.find("a").click(function (event) {
+            event.preventDefault();
             var header = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label");
             jumpToElementById(sectionId);
             if (header.length) {

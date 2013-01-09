@@ -17,26 +17,23 @@ package org.kuali.rice.krad.datadictionary.exception;
 
 /**
  * This class represents an UnknownDocumentTypeException.
- * 
- * 
  */
 public class UnknownDocumentTypeException extends RuntimeException {
     private static final long serialVersionUID = -148438432691990699L;
 
     /**
      * Create an UnknownDocumentTypeException with the given message
-     * 
+     *
      * @param message
      */
     public UnknownDocumentTypeException(String message) {
         super(message);
 
-
     }
 
     /**
      * Create an UnknownDocumentTypeException with the given message and cause
-     * 
+     *
      * @param message
      * @param cause
      */

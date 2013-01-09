@@ -307,6 +307,14 @@ public interface WorkflowDocument extends DocumentContract {
      */
     void cancel(String annotation);
     /**
+     * Recalls the document, commits updates.
+     * @since 2.1
+     * @param annotation the document action annotation
+     * @see org.kuali.rice.kew.api.action.WorkflowDocumentActionsService#approve(org.kuali.rice.kew.api.action.DocumentActionParameters)
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException
+     */
+    void recall(String annotation, boolean cancel);
+    /**
      * Cancels the document, commits updates.
      * @param annotation the document action annotation
      * @see org.kuali.rice.kew.api.action.WorkflowDocumentActionsService#cancel(org.kuali.rice.kew.api.action.DocumentActionParameters)
@@ -490,21 +498,21 @@ public interface WorkflowDocument extends DocumentContract {
     void revokeAllAdHocRequests(String annotation);
     /**
      * Returns the document to a previous node; commits updates.
-     * @param nodeName the node to return to
      * @param annotation the routing annotation
+     * @param nodeName the node to return to
      * @see org.kuali.rice.kew.api.action.WorkflowDocumentActionsService#returnToPreviousNode(org.kuali.rice.kew.api.action.DocumentActionParameters, org.kuali.rice.kew.api.action.ReturnPoint)
      * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException
      */
-    void returnToPreviousNode(String nodeName, String annotation);
+    void returnToPreviousNode(String annotation, String nodeName);
     /**
      * Returns the document to a previous node; commits updates.
-     * @param returnPoint the node to return to
      * @param annotation the routing annotation
-     * @see #returnToPreviousNode(String, String) 
+     * @param returnPoint the node to return to
+     * @see #returnToPreviousNode(String, String)
      * @see org.kuali.rice.kew.api.action.WorkflowDocumentActionsService#returnToPreviousNode(org.kuali.rice.kew.api.action.DocumentActionParameters, org.kuali.rice.kew.api.action.ReturnPoint)
      * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException
      */
-    void returnToPreviousNode(ReturnPoint returnPoint, String annotation);
+    void returnToPreviousNode(String annotation, ReturnPoint returnPoint);
     /**
      * Moves the document to a different node; commits updates.
      * @param movePoint the node to move to
@@ -680,6 +688,13 @@ public interface WorkflowDocument extends DocumentContract {
      * @return true if in the specified state
      */
     boolean isCanceled();
+    /**
+     * Indicates if the document is in the recalled state or not.
+     * @since 2.1
+     * @see #getStatus()
+     * @return true if in the specified state
+     */
+    boolean isRecalled();
     /**
      * Indicates if the document is in the disapproved state or not.
      * @see #getStatus()

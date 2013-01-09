@@ -147,10 +147,10 @@ public class KualiDefaultListableBeanFactory extends AbstractAutowireCapableBean
 	/** Cached array of bean definition names in case of frozen configuration */
 	private String[] frozenBeanDefinitionNames;
 
-    // JHK : performance fix for slow loading Spring context
+    // Rice : performance fix for slow loading Spring context
 	private final Map<String,Set<String>> beanDefinitionsByParent = new ConcurrentHashMap<String, Set<String>>();
-    // JHK : END performance fix for slow loading Spring context
-	
+    // Rice : END performance fix for slow loading Spring context
+
 	/**
 	 * Create a new KualiDefaultListableBeanFactory.
 	 */
@@ -165,7 +165,6 @@ public class KualiDefaultListableBeanFactory extends AbstractAutowireCapableBean
 	public KualiDefaultListableBeanFactory(BeanFactory parentBeanFactory) {
 		super(parentBeanFactory);
 	}
-
 
 	/**
 	 * Specify an id for serialization purposes, allowing this BeanFactory to be
@@ -602,51 +601,49 @@ public class KualiDefaultListableBeanFactory extends AbstractAutowireCapableBean
 	// Implementation of BeanDefinitionRegistry interface
 	//---------------------------------------------------------------------
 
-	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
-			throws BeanDefinitionStoreException {
+    public void registerBeanDefinition(String beanName,
+            BeanDefinition beanDefinition) throws BeanDefinitionStoreException {
 
-		Assert.hasText(beanName, "Bean name must not be empty");
-		Assert.notNull(beanDefinition, "BeanDefinition must not be null");
+        Assert.hasText(beanName, "Bean name must not be empty");
+        Assert.notNull(beanDefinition, "BeanDefinition must not be null");
 
-		if (beanDefinition instanceof AbstractBeanDefinition) {
-			try {
-				((AbstractBeanDefinition) beanDefinition).validate();
-			}
-			catch (BeanDefinitionValidationException ex) {
-				throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
-						"Validation of bean definition failed", ex);
-			}
-		}
+        if (beanDefinition instanceof AbstractBeanDefinition) {
+            try {
+                ((AbstractBeanDefinition) beanDefinition).validate();
+            } catch (BeanDefinitionValidationException ex) {
+                throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
+                        "Validation of bean definition failed", ex);
+            }
+        }
 
-		synchronized (this.beanDefinitionMap) {
-			Object oldBeanDefinition = this.beanDefinitionMap.get(beanName);
-			if (oldBeanDefinition != null) {
-				if (!this.allowBeanDefinitionOverriding) {
-					throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
-							"Cannot register bean definition [" + beanDefinition + "] for bean '" + beanName +
-							"': There is already [" + oldBeanDefinition + "] bound.");
-				}
-				else {
-					if (this.logger.isInfoEnabled()) {
-						this.logger.info("Overriding bean definition for bean '" + beanName +
-								"': replacing [" + oldBeanDefinition + "] with [" + beanDefinition + "]");
-					}
-				}
-			}
-			else {
-				this.beanDefinitionNames.add(beanName);
-				this.frozenBeanDefinitionNames = null;
-			}
-			this.beanDefinitionMap.put(beanName, beanDefinition);
-            // JHK : performance fix for slow loading Spring context
-            if ( StringUtils.hasText( beanDefinition.getParentName() ) ) {
+        synchronized (this.beanDefinitionMap) {
+            Object oldBeanDefinition = this.beanDefinitionMap.get(beanName);
+            if (oldBeanDefinition != null) {
+                if (!this.allowBeanDefinitionOverriding) {
+                    throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
+                            "Cannot register bean definition [" + beanDefinition + "] for bean '" + beanName +
+                                    "': There is already [" + oldBeanDefinition + "] bound.");
+                } else {
+                    if (this.logger.isInfoEnabled()) {
+                        this.logger.info("Overriding bean definition for bean '" + beanName +
+                                "': replacing [" + oldBeanDefinition + "] with [" + beanDefinition + "]");
+                    }
+                }
+            } else {
+                this.beanDefinitionNames.add(beanName);
+                this.frozenBeanDefinitionNames = null;
+            }
+            this.beanDefinitionMap.put(beanName, beanDefinition);
+
+            // Rice : performance fix for slow loading Spring context
+            if (StringUtils.hasText(beanDefinition.getParentName())) {
                 addBeanToParentMap(beanDefinition.getParentName(), beanName);
             }
-            // JHK : END performance fix for slow loading Spring context
+            // Rice : END performance fix for slow loading Spring context
 
-			resetBeanDefinition(beanName);
-		}
-	}
+            resetBeanDefinition(beanName);
+        }
+    }
 
 	public void removeBeanDefinition(String beanName) throws NoSuchBeanDefinitionException {
 		Assert.hasText(beanName, "'beanName' must not be empty");
@@ -661,14 +658,15 @@ public class KualiDefaultListableBeanFactory extends AbstractAutowireCapableBean
 			}
 			this.beanDefinitionNames.remove(beanName);
 			this.frozenBeanDefinitionNames = null;
-	        // JHK : performance fix for slow loading Spring context
+
+	        // Rice : performance fix for slow loading Spring context
             // Pull it out of the parent map
             if ( StringUtils.hasText( bd.getParentName() ) ) {
                 if ( beanDefinitionsByParent.get(bd.getParentName()) != null ) {
                     beanDefinitionsByParent.get(bd.getParentName()).remove(beanName);
                 }
             }
-            // JHK : END performance fix for slow loading Spring context
+            // Rice : END performance fix for slow loading Spring context
 
 			resetBeanDefinition(beanName);
 		}
@@ -720,7 +718,6 @@ public class KualiDefaultListableBeanFactory extends AbstractAutowireCapableBean
     }
     // JHK : END performance fix for slow loading Spring context
 
-	
 	/**
 	 * Only allows alias overriding if bean definition overriding is allowed.
 	 */
@@ -871,8 +868,8 @@ public class KualiDefaultListableBeanFactory extends AbstractAutowireCapableBean
 	protected Map<String, Object> findAutowireCandidates(
 			String beanName, Class requiredType, DependencyDescriptor descriptor) {
 
-		String[] candidateNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
-				this, requiredType, true, descriptor.isEager());
+		String[] candidateNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this, requiredType, true,
+                descriptor.isEager());
 		Map<String, Object> result = new LinkedHashMap<String, Object>(candidateNames.length);
 		for (Class autowiringType : this.resolvableDependencies.keySet()) {
 			if (autowiringType.isAssignableFrom(requiredType)) {

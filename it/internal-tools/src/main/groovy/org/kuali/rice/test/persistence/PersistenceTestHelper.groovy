@@ -24,6 +24,7 @@ import java.sql.Timestamp
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
 import org.joda.time.DateTime
 import org.junit.Assert
+import org.apache.commons.collections.CollectionUtils
 
 /**
  * Helps with BO persistence tests
@@ -98,6 +99,7 @@ class PersistenceTestHelper {
             println(e.getKey());
             println(e.getValue());
         }*/
-        Assert.assertEquals(new HashMap(fields), new HashMap(row))
+
+        Assert.assertEquals(fields, row);
     }
 }

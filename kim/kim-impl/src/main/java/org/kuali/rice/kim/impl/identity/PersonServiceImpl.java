@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.criteria.CountFlag;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -348,19 +349,57 @@ public class PersonServiceImpl implements PersonService {
 
         QueryByCriteria.Builder queryBuilder = QueryByCriteria.Builder.create();
         queryBuilder.setPredicates(predicate);
-
+        
+		if (!unbounded) {
+			Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit(PersonImpl.class);
+    		if (searchResultsLimit != null && searchResultsLimit >= 0) {
+    			queryBuilder.setMaxResults(searchResultsLimit);
+    			queryBuilder.setCountFlag(CountFlag.INCLUDE);
+			}
+		}
+		
 		List<Person> people = new ArrayList<Person>();
 
 		EntityDefaultQueryResults qr = getIdentityService().findEntityDefaults( queryBuilder.build() );
 
-		for ( EntityDefault e : qr.getResults() ) {
-			// get to get all principals for the identity as well
-			for ( Principal p : e.getPrincipals() ) {
-				people.add( convertEntityToPerson( e, p ) );
-			}
-		}
+        if (qr.getResults().size() > 0) {
 
-		return people;
+            for ( EntityDefault e : qr.getResults() ) {
+			    // get to get all principals for the identity as well
+			    for ( Principal p : e.getPrincipals() ) {
+			    	people.add( convertEntityToPerson( e, p ) );
+			    }
+		    }
+        } else if (!qr.isMoreResultsAvailable() && entityCriteria.containsKey("principals.principalId")) {
+            if (!(entityCriteria.containsKey(KIMPropertyConstants.Person.ACTIVE)) || (criteria.get(KIMPropertyConstants.Person.ACTIVE).equals("N"))) {
+                String principalId =  entityCriteria.get("principals.principalId");
+                try {
+                    EntityDefault entityDefault = getIdentityService().getEntityDefaultByPrincipalId(principalId);
+                    for ( Principal p : entityDefault.getPrincipals() ) {
+                        if (!p.isActive()){
+                            people.add( convertEntityToPerson(entityDefault, p ) );
+                        }
+                    }
+                } catch ( Exception e ) {
+                    LOG.info( "A principal Id of " + principalId + " dose not exist in the system");
+                }
+            }
+        } else if (!qr.isMoreResultsAvailable() &&  entityCriteria.containsKey("principals.principalName")) {
+            if (!(entityCriteria.containsKey(KIMPropertyConstants.Person.ACTIVE)) || (criteria.get(KIMPropertyConstants.Person.ACTIVE).equals("N"))) {
+                String principalNm =  entityCriteria.get("principals.principalName");
+                try {
+                    EntityDefault entityDefault = getIdentityService().getEntityDefaultByPrincipalName(principalNm);
+                    for ( Principal p : entityDefault.getPrincipals() ) {
+                        if (!p.isActive()){
+                            people.add( convertEntityToPerson(entityDefault, p ) );
+                        }
+                    }
+                } catch ( Exception e ) {
+                    LOG.info( "A principal name of " + principalNm + " dose not exist in the system");
+                }
+            }
+        }
+        return people;
 	}
 
 	public Map<String,String> convertPersonPropertiesToEntityProperties( Map<String,String> criteria ) {
@@ -385,7 +424,7 @@ public class PersonServiceImpl implements PersonService {
 			for ( String key : criteria.keySet() ) {
 			    //check active radio button
 	            if(key.equals(KIMPropertyConstants.Person.ACTIVE)) {
-	                newCriteria.put(KIMPropertyConstants.Person.ACTIVE, criteria.get(KIMPropertyConstants.Person.ACTIVE));
+	                newCriteria.put(criteriaConversion.get(KIMPropertyConstants.Person.ACTIVE), criteria.get(KIMPropertyConstants.Person.ACTIVE));
 	            } else {
 	                // The following if statement enables the "both" button to work correctly.
 	                if (!(criteria.containsKey(KIMPropertyConstants.Person.ACTIVE))) {

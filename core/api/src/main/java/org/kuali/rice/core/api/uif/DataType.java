@@ -16,6 +16,7 @@
 package org.kuali.rice.core.api.uif;
 
 import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 
 import java.util.Date;
 
@@ -26,7 +27,8 @@ import java.util.Date;
  */
 public enum DataType {
 	STRING(String.class), MARKUP(String.class), DATE(Date.class), TRUNCATED_DATE(Date.class),
-    BOOLEAN(Boolean.class), INTEGER(Integer.class), FLOAT(Float.class), DOUBLE(Double.class), LONG(Long.class),DATETIME(Date.class);
+    BOOLEAN(Boolean.class), INTEGER(Integer.class), FLOAT(Float.class), DOUBLE(Double.class),
+    LONG(Long.class),DATETIME(Date.class),CURRENCY(KualiDecimal.class);
 	
 	private final Class<?> type;
 	

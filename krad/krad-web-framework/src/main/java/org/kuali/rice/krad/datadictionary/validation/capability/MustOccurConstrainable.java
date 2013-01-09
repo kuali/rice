@@ -20,14 +20,15 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstra
 import java.util.List;
 
 /**
- * Validation capability to constrain an object to has some specified acceptable number of prerequisite constraints nested
- * within must occur constraints. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * Validation capability to constrain an object to has some specified acceptable number of prerequisite constraints
+ * nested
+ * within must occur constraints.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public interface MustOccurConstrainable extends Constrainable {
 
-	public List<MustOccurConstraint> getMustOccurConstraints();
-	
+    public List<MustOccurConstraint> getMustOccurConstraints();
+
 }

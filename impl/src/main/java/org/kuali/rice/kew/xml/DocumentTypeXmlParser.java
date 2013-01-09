@@ -25,9 +25,9 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.exception.InvalidParentDocTypeException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory;
 import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
 import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
@@ -59,6 +59,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -68,6 +69,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -108,14 +111,13 @@ public class DocumentTypeXmlParser {
         return xpath;
     }
     
-    public List parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, GroupNotFoundException {
+    public List<DocumentType> parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, GroupNotFoundException {
         Document routeDocument=XmlHelper.trimXml(input);
-        Map documentTypesByName = new HashMap();
-        for (Iterator iterator = parseAllDocumentTypes(routeDocument).iterator(); iterator.hasNext();) {
-            DocumentType type = (DocumentType) iterator.next();
+        Map<String, DocumentType> documentTypesByName = new HashMap();
+        for (DocumentType type:  parseAllDocumentTypes(routeDocument)) {
             documentTypesByName.put(type.getName(), type);
         }
-        return new ArrayList(documentTypesByName.values());
+        return new ArrayList<DocumentType>(documentTypesByName.values());
     }
 
     /**
@@ -812,25 +814,12 @@ public class DocumentTypeXmlParser {
             throw xpee;
         }
 
-        // set the valid application document statuses for the document type
-        /*
-         * The following code does not need to apply the isOverwrite mode logic because it already checks to see if each node
-         * is available on the ingested XML. If the node is ingested then it doesn't matter if we're in overwrite mode or not
-         * the ingested code should save.
-         */
-        NodeList appDocStatusList = (NodeList) getXPath().evaluate("./" + APP_DOC_STATUSES, documentTypeNode, XPathConstants.NODESET);
-        if (appDocStatusList.getLength() > 1) {
-            // more than one <validDocumentStatuses> tag is invalid
-            throw new XmlException("More than one " + APP_DOC_STATUSES + " node is present in a document type node");
-        }
-        else if (appDocStatusList.getLength() > 0) {
-            // if there is exactly one <validDocumentStatuses> tag then parse it and use the values
-//        	NodeList statusNodes = appDocStatusList.item(0).getChildNodes();
-            NodeList statusNodes = (NodeList) getXPath().evaluate("./" + STATUS, appDocStatusList.item(0), XPathConstants.NODESET);
-            documentType.setValidApplicationStatuses(getDocumentTypeStatuses(statusNodes, documentType));
-        }
-        
-        
+        // KULRICE-7786: Document Specific Doc Search Application Document Status should be available (and groupable)
+        // on the basic version of search.
+        //
+        // Side-effect: populates the application statuses and categories on the documentType
+        ApplicationDocumentStatusParser.parseValidApplicationStatuses(documentType, documentTypeNode, getXPath());
+
         return documentType;
     }
 
@@ -1343,7 +1332,7 @@ public class DocumentTypeXmlParser {
 		return node.getNodeValue();
 	}
 
-    private List getDocumentTypePolicies(NodeList documentTypePolicies, DocumentType documentType) throws XPathExpressionException, XmlException {
+    private List getDocumentTypePolicies(NodeList documentTypePolicies, DocumentType documentType) throws XPathExpressionException, XmlException, ParserConfigurationException {
         List policies = new ArrayList();
         Set policyNames = new HashSet();
 
@@ -1352,7 +1341,7 @@ public class DocumentTypeXmlParser {
             policy.setDocumentType(documentType);
             try {
                 String policyName = (String) getXPath().evaluate("./name", documentTypePolicies.item(i), XPathConstants.STRING);
-                policy.setPolicyName(DocumentTypePolicyEnum.lookup(policyName).getName().toUpperCase());
+                policy.setPolicyName(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policyName).getCode().toUpperCase());
             } catch (XPathExpressionException xpee) {
                 LOG.error("Error obtaining document type policy name", xpee);
                 throw xpee;
@@ -1373,7 +1362,7 @@ public class DocumentTypeXmlParser {
             		policy.setPolicyStringValue(policyStringValue.toUpperCase());
             		policy.setPolicyValue(Boolean.TRUE);
             		// if DocumentStatusPolicy, check against allowable values
-            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
+            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policy.getPolicyName()).getCode())){
             			boolean found = false;
             			for (int index=0; index<KewApiConstants.DOCUMENT_STATUS_POLICY_VALUES.length; index++) {
             				if (KewApiConstants.DOCUMENT_STATUS_POLICY_VALUES[index].equalsIgnoreCase(policyStringValue)){
@@ -1388,9 +1377,14 @@ public class DocumentTypeXmlParser {
             		
             	} else {
             		//DocumentStatusPolicy requires a <stringValue> tag
-            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
+            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policy.getPolicyName()).getCode())){
             			throw new XmlException("Application Document Status Policy requires a <stringValue>");
             		}
+
+                    String customConfig = parseDocumentPolicyCustomXMLConfig(documentTypePolicies.item(i));
+                    if (customConfig != null) {
+                        policy.setPolicyStringValue(customConfig);
+                    }
             	}
             } catch (XPathExpressionException xpee) {
                 LOG.error("Error obtaining document type policy string value", xpee);
@@ -1407,23 +1401,29 @@ public class DocumentTypeXmlParser {
         return policies;
     }
 
-    private List getDocumentTypeStatuses(NodeList documentTypeStatuses, DocumentType documentType) throws XPathExpressionException, XmlException {
-        List statuses = new ArrayList();
-        Set statusNames = new HashSet();
-
-        for (int i = 0; i < documentTypeStatuses.getLength(); i++) {
-        	ApplicationDocumentStatus status = new ApplicationDocumentStatus();
-        	status.setDocumentType(documentType);
-        	Node myNode = documentTypeStatuses.item(i);  
-        	String statusName = myNode.getFirstChild().getNodeValue();
-        	status.setStatusName(statusName);
-        	if (!statusNames.add(status.getStatusName())) {
-        		throw new XmlException("Application Status '" + status.getStatusName() + "' has already been defined on this document");
-        	} else {
-        		statuses.add(status);
-        	}      
+    /**
+     * Parses any custom XML configuration if present and returns it as an XML string.
+     * If no custom XML elements are present in the policy configuration, null is returned.
+     * @param policyNode the document type policy Node
+     * @return XML configuration string or null
+     * @throws ParserConfigurationException
+     */
+    private static String parseDocumentPolicyCustomXMLConfig(Node policyNode) throws ParserConfigurationException {
+        final Collection<String> KNOWN_POLICY_ELEMENTS = Arrays.asList(new String[] { "name", "value", "stringValue" });
+        // Store any other elements as XML in the policy string value
+        Document policyConfig = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        Element root = policyConfig.createElement("config");
+        policyConfig.appendChild(root);
+        // add unknown nodes from the config document
+        NodeList children = policyNode.getChildNodes();
+        for (int j = 0; j < children.getLength(); j++) {
+            Node c = children.item(j);
+            if (c instanceof Element && !KNOWN_POLICY_ELEMENTS.contains(c.getNodeName())) {
+                root.appendChild(policyConfig.importNode(c, true));
+            }
         }
-        return statuses;
+        // if there are in-fact custom xml configuration nodes, then go ahead and save the config doc as XML
+        return (root.getChildNodes().getLength() > 0) ? XmlJotter.jotDocument(policyConfig) : null;
     }
 
     private List getDocumentTypeAttributes(NodeList documentTypeAttributes, DocumentType documentType) throws XPathExpressionException, WorkflowException {
@@ -1483,4 +1483,176 @@ public class DocumentTypeXmlParser {
         }
     }
 
+    /**
+     * Utility class used to produce an ascending sequence of integer values starting with 0
+     */
+    private static class Counter {
+        private int value = 0;
+
+        public int nextValue() {
+            return value++;
+        }
+    }
+
+    /**
+     * <p>Helper class encapsulating parsing logic for building ApplicationDocumentStatus and
+     * ApplicationDocumentStatusCategory from the document type DOM.</p>
+     *
+     * <p>Note that this class should not be instantiated.  Instead use the static utility method 
+     * {@link org.kuali.rice.kew.xml.DocumentTypeXmlParser.ApplicationDocumentStatusParser#parseValidApplicationStatuses(org.kuali.rice.kew.doctype.bo.DocumentType, org.w3c.dom.Node, javax.xml.xpath.XPath)}.</p>
+     */
+    private static class ApplicationDocumentStatusParser {
+
+        // set used to make sure there are no problematic or confusing name collisions
+        private final Set<String> uniqueStatusNames = new HashSet<String>();
+
+        private final List<ApplicationDocumentStatus> parsedStatuses = new ArrayList<ApplicationDocumentStatus>();
+        private final List<ApplicationDocumentStatusCategory> parsedCategories = new ArrayList<ApplicationDocumentStatusCategory>();
+
+        Counter newStatusSequence = new Counter(); // used to order the statuses
+
+        /**
+         * Do not instantiate, instead use the static utility method
+         * {@link #parseValidApplicationStatuses(org.kuali.rice.kew.doctype.bo.DocumentType, org.w3c.dom.Node, javax.xml.xpath.XPath)}
+         */
+        @Deprecated  // deprecated to discourage improper use since private is not strong enough in an inner class
+        private ApplicationDocumentStatusParser() { }
+
+        /**
+         *
+         * @param documentType
+         * @param documentTypeNode
+         * @param xpath
+         * @throws XPathExpressionException
+         */
+        @SuppressWarnings("deprecated")
+        public static void parseValidApplicationStatuses(DocumentType documentType, Node documentTypeNode, XPath xpath) throws XPathExpressionException {
+            ApplicationDocumentStatusParser parser = new ApplicationDocumentStatusParser();
+            parser.parseValidApplicationStatusesHelper(documentType, documentTypeNode, xpath);
+        }
+
+        /**
+         * Parses the validApplicationStatuses in the doc type (if there are any) and (<b>SIDE EFFECT</b>) adds the
+         * results to the given documentType.
+         *
+         * @param documentType the documentType being built
+         * @param documentTypeNode the DOM {@link Node} for the xml representation of the document type
+         * @param xpath the XPath object to use for searching within the documentTypeNode
+         * @throws XPathExpressionException
+         */
+        private void parseValidApplicationStatusesHelper(DocumentType documentType, Node documentTypeNode, XPath xpath)
+                throws XPathExpressionException {
+            /*
+            * The following code does not need to apply the isOverwrite mode logic because it already checks to see if each node
+            * is available on the ingested XML. If the node is ingested then it doesn't matter if we're in overwrite mode or not
+            * the ingested code should save.
+            */
+            NodeList appDocStatusList = (NodeList) xpath.evaluate("./" + APP_DOC_STATUSES, documentTypeNode,
+                    XPathConstants.NODESET);
+            if (appDocStatusList.getLength() > 1) {
+                // more than one <validDocumentStatuses> tag is invalid
+                throw new XmlException("More than one " + APP_DOC_STATUSES + " node is present in a document type node");
+
+            } else if (appDocStatusList.getLength() > 0) {
+
+                // if there is exactly one <validDocumentStatuses> tag then parse it and use the values
+                parseCategoriesAndStatusesHelper(documentType, appDocStatusList);
+            }
+        }
+
+        /**
+         * <p>Parses the application document status content (both statuses and categories) from the given NodeList.</p>
+         *
+         * <p>SIDE EFFECT: sets the ValidApplicationStatuses and ApplicationStatusCategories on the DocumentType
+         * argument</p>
+         *
+         * @param documentType the documentType that is being built from the DOM content
+         * @param appDocStatusList the NodeList holding the children of the validApplicationStatuses element
+         */
+        private void parseCategoriesAndStatusesHelper(DocumentType documentType, NodeList appDocStatusList) {
+
+            NodeList appDocStatusChildren = appDocStatusList.item(0).getChildNodes();
+
+            for (int appDocStatusChildrenIndex = 0; appDocStatusChildrenIndex < appDocStatusChildren.getLength();
+                 appDocStatusChildrenIndex ++) {
+
+                Node child = appDocStatusChildren.item(appDocStatusChildrenIndex);
+
+                if (STATUS.equals(child.getNodeName())) {
+
+                    ApplicationDocumentStatus status =
+                            parseApplicationDocumentStatusHelper(documentType, child);
+
+                    parsedStatuses.add(status);
+
+                } else if (CATEGORY.equals(child.getNodeName())) {
+
+                    Node categoryNameAttribute = child.getAttributes().getNamedItem("name");
+                    String categoryName = categoryNameAttribute.getNodeValue();
+
+                    // validate category names are all unique
+                    validateUniqueName(categoryName);
+
+                    ApplicationDocumentStatusCategory category = new ApplicationDocumentStatusCategory();
+                    category.setCategoryName(categoryName);
+                    category.setDocumentType(documentType);
+
+                    // iterate through children
+                    NodeList categoryChildren = child.getChildNodes();
+                    for (int categoryChildIndex = 0; categoryChildIndex < categoryChildren.getLength();
+                         categoryChildIndex++) {
+                        Node categoryChild = categoryChildren.item(categoryChildIndex);
+                        if (Node.ELEMENT_NODE == categoryChild.getNodeType()) {
+                            ApplicationDocumentStatus status =
+                                    parseApplicationDocumentStatusHelper(documentType, categoryChild);
+                            status.setCategoryName(category.getCategoryName());
+
+                            parsedStatuses.add(status);
+                        }
+                    }
+
+                    parsedCategories.add(category);
+                }
+            }
+
+            documentType.setValidApplicationStatuses(parsedStatuses);
+            documentType.setApplicationStatusCategories(parsedCategories);
+        }
+
+        /**
+         * Parse an element Node containg a single application document status name and return an
+         * ApplicationDocumentStatus object for it.
+         *
+         * @param documentType the document type we are building
+         * @param node the status element node
+         * @return the ApplicationDocumentStatus constructed
+         */
+        private ApplicationDocumentStatus parseApplicationDocumentStatusHelper(DocumentType documentType, Node node) {
+            String statusName = node.getTextContent();
+            validateUniqueName(statusName);
+
+            ApplicationDocumentStatus status = new ApplicationDocumentStatus();
+            status.setStatusName(statusName);
+            status.setDocumentType(documentType);
+            // order the statuses according to the order we encounter them
+            status.setSequenceNumber(newStatusSequence.nextValue());
+
+            return status;
+        }
+
+        /**
+         * <p>check that the name has not been used already.
+         *
+         * <p>Side-effect: This check adds the name to the uniqueStatusNames Set.
+         * @param name
+         * @throws XmlException if the name has already been used for another status or category
+         */
+        private void validateUniqueName(String name) throws XmlException {
+            // validate category names are all unique
+            if (!uniqueStatusNames.add(name)) {
+                throw new XmlException("duplicate application document status / category name in document type: "+name);
+            }
+        }
+
+    }
 }

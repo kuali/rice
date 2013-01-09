@@ -18,6 +18,7 @@ package org.kuali.rice.core.api.mo;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -127,7 +128,7 @@ public class ModelObjectUtils {
 	 * @param xform
 	 * @return
 	 */
-	public static <A,B> List<B> transform(List<? extends A> toConvert, Transformer<A,B> xform) {
+	public static <A,B> List<B> transform(Collection<? extends A> toConvert, Transformer<A,B> xform) {
 		if (CollectionUtils.isEmpty(toConvert)) {
 			return new ArrayList<B>();
 		} else {
@@ -149,7 +150,7 @@ public class ModelObjectUtils {
      * @param xform
      * @return
      */
-	public static <A,B> Set<B> transform(Set<? extends A> toConvert, Transformer<A,B> xform) {
+	public static <A,B> Set<B> transformSet(Collection<? extends A> toConvert, Transformer<A,B> xform) {
 		if (CollectionUtils.isEmpty(toConvert)) {
 			return new HashSet<B>();
 		} else {

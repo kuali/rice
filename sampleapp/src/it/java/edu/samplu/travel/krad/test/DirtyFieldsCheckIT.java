@@ -16,90 +16,65 @@
 
 package edu.samplu.travel.krad.test;
 
-import com.thoughtworks.selenium.*;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
 import org.junit.Test;
-import java.util.regex.Pattern;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
+import edu.samplu.common.WebDriverITBase;
+
 /**
  * test that dirty fields check happens for all pages in a view
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DirtyFieldsCheckIT {
-    private DefaultSelenium selenium;
-
-    @Before
-	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-		selenium.start();
+public class DirtyFieldsCheckIT extends WebDriverITBase {
+	@Override
+	public String getTestUrl() {
+		// open Other Examples page in kitchen sink view
+		return "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
 	}
 
 	@Test
 	public void testDirtyFieldsCheck() throws Exception {
-		selenium.open("/kr-dev/portal.do");
-		selenium.type("name=__login_user", "admin");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=KRAD");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=Uif Components (Kitchen Sink)");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-        Thread.sleep(3000);
-		selenium.focus("id=u73_control");
-		selenium.type("id=u73_control", "test 1");
-		selenium.focus("id=u103_control");
-		selenium.type("id=u103_control", "test 2");
-		// 'Other Fields' navigation link
-		selenium.click("id=u967");
-        assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-        Thread.sleep(3000);
-        for (int second = 0;; second++) {
-            if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u51_control")) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        selenium.focus("id=u51_control");
-		selenium.type("id=u51_control", "here");
-        selenium.focus("id=u81_control");
-		selenium.type("id=u81_control", "there");
-		// 'Validation' navigation link
-		selenium.click("id=u970");
-        assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-        Thread.sleep(3000);
-        for (int second = 0;; second++) {
-            if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u114_control")) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        selenium.focus("id=u114_control");
-		selenium.type("id=u114_control", "this");
-        selenium.focus("id=u144_control");
-		selenium.type("id=u144_control", "that");
-		// 'Validation - Regex' navigation link
-		selenium.click("id=u973");
-        assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-        Thread.sleep(2000);
-        for (int second = 0;; second++) {
-            if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u44_control")) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        selenium.focus("id=u44_control");
-		selenium.type("id=u44_control", "1");
-        selenium.focus("id=u74_control");
-		selenium.type("id=u74_control", "2");
-        // 'Progressive Disclosure' navigation link
-		selenium.click("id=u976");
-		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
+		checkForIncidentReport(getTestUrl());
+		Thread.sleep(5000);
+		
+		waitAndTypeByName("field1", "test 1");
+		waitAndTypeByName("field102", "test 2");
+		
+		assertCancelConfirmation(); 
+	
+		// testing manually
+		waitForElementPresentByName("field100");
+		waitAndTypeByName("field100", "here");
+		waitAndTypeByName("field103", "there");
+		
+	    // 'Validation' navigation link
+		assertCancelConfirmation();
+	
+		// testing manually
+		waitForElementPresentByName("field106");
+		// //Asserting text-field style to uppercase. This style would display
+		// input text in uppercase.
+		assertEquals("text-transform: uppercase;",getAttributeByName("field112", "style"));
+		assertCancelConfirmation(); 
+		waitForElementPresentByName("field101");
+		assertEquals("val", getAttributeByName("field101","value")); 
+		clearTextByName("field101");
+		waitAndTypeByName("field101", "1");
+		waitAndTypeByName("field104", "");
+
+		assertEquals("1", getAttributeByName("field101","value"));
+		waitAndTypeByName("field104", "2");
+		// 'Progressive Disclosure' navigation link
+		assertCancelConfirmation();
+									
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		selenium.stop();
+	private void assertCancelConfirmation() throws InterruptedException {
+		waitAndClickByLinkText("Cancel");
+		dismissAlert();
 	}
 }

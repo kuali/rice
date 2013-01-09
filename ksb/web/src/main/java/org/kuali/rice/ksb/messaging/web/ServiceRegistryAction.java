@@ -72,7 +72,8 @@ public class ServiceRegistryAction extends KSBAction {
     	List<ServiceInfo> serviceInfos = serviceRegistry.getAllOnlineServices();
     	List<String> serviceEndpointsToDelete = new ArrayList<String>();
     	for (ServiceInfo serviceInfo : serviceInfos) {
-    		if (serviceInfo.getServerIpAddress().equals("localhost")) {
+    		if (serviceInfo.getServerIpAddress().equals("localhost") ||
+                serviceInfo.getEndpointUrl().contains("localhost")) {
     			serviceEndpointsToDelete.add(serviceInfo.getServiceId());
     		}
     	}

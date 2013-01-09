@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="TravelAuthorizationDocument" parent="TravelAuthorizationDocument-parentBean"/>
+  <bean id="TravelAuthorizationDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
+    <property name="documentTypeName" value="TravelAuthorization"/>
+    <property name="documentClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocument"/>
+    <property name="businessRulesClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocumentRule"/>
+    <property name="attributes">
+      <list>
+        <ref bean="TravelAuthorizationDocument-travelDocumentNumber"/>
+        <ref bean="TravelAuthorizationDocument-tripTypeCode"/>
+        <ref bean="TravelAuthorizationDocument-tripBegin"/>
+        <ref bean="TravelAuthorizationDocument-tripEnd"/>
+        <ref bean="TravelAuthorizationDocument-primaryDestinationId"/>
+        <ref bean="TravelAuthorizationDocument-primaryDestinationName"/>
+        <ref bean="TravelAuthorizationDocument-primaryDestinationCountryState"/>
+        <ref bean="TravelAuthorizationDocument-primaryDestinationCounty"/>
+        <ref bean="TravelAuthorizationDocument-tripDescription"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelDocumentNumber"
+        parent="TravelAuthorizationDocument-travelDocumentNumber-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelDocumentNumber-parentBean" parent="AttributeDefinition">
+    <property name="name" value="travelDocumentIdentifier"/>
+    <property name="label" value="TEM Doc #"/>
+    <property name="shortLabel" value="TEM Doc #"/>
+    <property name="maxLength" value="32"/>
+    <property name="summary" value="TEM Doc #"/>
+    <property name="description" value="TEM Doc #"/>
+    <property name="forceUppercase" value="true"/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="32"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-tripTypeCode" parent="TravelAuthorizationDocument-tripTypeCode-parentBean"/>
+  <bean id="TravelAuthorizationDocument-tripTypeCode-parentBean" abstract="true"
+        parent="PrimaryDestination-tripTypeCode">
+    <property name="controlField">
+      <bean parent="Uif-DropdownControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="" p:value=""/>
+            <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Conference"/>
+            <bean parent="Uif-KeyLabelPair" p:key="T" p:value="Team Meeting"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="optionsFinderClass"
+              value="edu.sampleu.travel.approval.TripTypeValuesFinder"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-tripBegin" parent="TravelAuthorizationDocument-tripBegin-parentBean"/>
+  <bean id="TravelAuthorizationDocument-tripBegin-parentBean" parent="AttributeDefinition">
+    <property name="name" value="tripBegin"/>
+    <property name="label" value="Trip Begin"/>
+    <property name="shortLabel" value="Trip Begin"/>
+    <property name="maxLength" value="20"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Trip Begin"/>
+    <property name="description" value="Trip Begin"/>
+    <property name="controlField">
+      <bean parent="Uif-DateControl"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-tripEnd" parent="TravelAuthorizationDocument-tripEnd-parentBean"/>
+  <bean id="TravelAuthorizationDocument-tripEnd-parentBean" parent="AttributeDefinition">
+    <property name="name" value="tripEnd"/>
+    <property name="label" value="Trip End"/>
+    <property name="shortLabel" value="Trip End"/>
+    <property name="maxLength" value="20"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Trip End"/>
+    <property name="description" value="Trip End"/>
+    <property name="controlField">
+      <bean parent="Uif-DateControl"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-primaryDestinationId"
+        parent="TravelAuthorizationDocument-primaryDestinationId-parentBean"/>
+  <bean id="TravelAuthorizationDocument-primaryDestinationId-parentBean" abstract="true" parent="PrimaryDestination-id">
+    <property name="name" value="primaryDestinationId"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-primaryDestinationName"
+        parent="TravelAuthorizationDocument-primaryDestinationName-parentBean"/>
+  <bean id="TravelAuthorizationDocument-primaryDestinationName-parentBean" abstract="true"
+        parent="PrimaryDestination-primaryDestinationName">
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="70"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-primaryDestinationCountryState"
+        parent="TravelAuthorizationDocument-primaryDestinationCountryState-parentBean"/>
+  <bean id="TravelAuthorizationDocument-primaryDestinationCountryState-parentBean" abstract="true"
+        parent="PrimaryDestination-countryState">
+    <property name="name" value="primaryDestinationCountryState"/>
+    <property name="label" value="Primary Destination Country/State"/>
+    <property name="shortLabel" value="Primary Destination Country/State"/>
+    <property name="required" value="false"/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-primaryDestinationCounty"
+        parent="TravelAuthorizationDocument-primaryDestinationCounty-parentBean"/>
+  <bean id="TravelAuthorizationDocument-primaryDestinationCounty-parentBean" abstract="true"
+        parent="PrimaryDestination-county">
+    <property name="name" value="primaryDestinationCounty"/>
+    <property name="label" value="Primary Destination County"/>
+    <property name="shortLabel" value="Primary Destination County"/>
+    <property name="required" value="false"/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-tripDescription"
+        parent="TravelAuthorizationDocument-tripDescription-parentBean"/>
+  <bean id="TravelAuthorizationDocument-tripDescription-parentBean" parent="AttributeDefinition">
+    <property name="name" value="tripDescription"/>
+    <property name="label" value="Business Purpose"/>
+    <property name="shortLabel" value="Business Purpose"/>
+    <property name="maxLength" value="255"/>
+    <property name="summary" value="Business Purpose"/>
+    <property name="description" value="Business Purpose"/>
+    <property name="required" value="true"/>
+    <property name="controlField">
+      <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="60"/>
+    </property>
+  </bean>
+
+</beans>

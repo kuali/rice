@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
@@ -54,10 +56,10 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     public ContextDefinition selectContext(
     		ContextSelectionCriteria contextSelectionCriteria) {
     	if (contextSelectionCriteria == null){
-    		throw new IllegalArgumentException("selection criteria is null");
+    		throw new RiceIllegalArgumentException("selection criteria is null");
     	}
     	if (StringUtils.isBlank(contextSelectionCriteria.getNamespaceCode())){
-    		throw new IllegalArgumentException("selection criteria namespaceCode is null or blank");
+    		throw new RiceIllegalArgumentException("selection criteria namespaceCode is null or blank");
     	}
     	QueryByCriteria queryCriteria = buildQuery(contextSelectionCriteria);
         GenericQueryResults<ContextBo> results = getCriteriaLookupService().lookup(ContextBo.class, queryCriteria);
@@ -66,12 +68,12 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 
     	//assuming 1 ?
     	ContextDefinition result = null;
-    	if (resultBos != null) {
+    	if (!CollectionUtils.isEmpty(resultBos)) {
     		if (resultBos.size() == 1) {
     			ContextBo bo = resultBos.iterator().next();
     			return ContextBo.to(bo);
     		}
-    		else throw new IllegalArgumentException("ambiguous qualifiers");
+    		else throw new RiceIllegalArgumentException("Ambiguous context qualifiers, can not select more than one context.");
     	}
     	return result;
     }
@@ -79,7 +81,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	@Override
 	public AgendaTreeDefinition getAgendaTree(String agendaId) {
 		if (StringUtils.isBlank(agendaId)){
-    		throw new IllegalArgumentException("agenda id is null or blank");
+    		throw new RiceIllegalArgumentException("agenda id is null or blank");
     	}
 		// Get agenda items from db, then build up agenda tree structure
 		AgendaBo agendaBo = getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
@@ -88,12 +90,14 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		// walk thru the agenda items, building an agenda tree definition Builder along the way
 		AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create();
 		myBuilder.setAgendaId( agendaId );
-		myBuilder = walkAgendaItemTree(agendaItemId, myBuilder);
+        if (agendaItemId != null) {
+		    myBuilder = walkAgendaItemTree(agendaItemId, myBuilder);
+        }
 		
 		// build the agenda tree and return it
 		return myBuilder.build();
 	}
-	
+    	
 	@Override
 	public List<AgendaTreeDefinition> getAgendaTrees(List<String> agendaIds) {
 		List<AgendaTreeDefinition> agendaTrees = new ArrayList<AgendaTreeDefinition>();
@@ -114,7 +118,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	
 	@Override
 	public List<RuleDefinition> getRules(List<String> ruleIds) {
-        if (ruleIds == null) throw new IllegalArgumentException("ruleIds must not be null");
+        if (ruleIds == null) throw new RiceIllegalArgumentException("ruleIds must not be null");
 
         // Fetch BOs
         List<RuleBo> bos = null;

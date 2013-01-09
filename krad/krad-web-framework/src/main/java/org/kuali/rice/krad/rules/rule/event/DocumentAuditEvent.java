@@ -20,16 +20,16 @@ import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.rules.rule.DocumentAuditRule;
 
 /**
- * Event class for document audit  
- * 
+ * Event class for document audit
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentAuditEvent extends KualiDocumentEventBase {
-    
+
     /**
      * Constructs a RunAuditEvent with the given errorPathPrefix and document.
-     * 
+     *
      * @param errorPathPrefix
      * @param document
      * @param accountingLine
@@ -40,7 +40,7 @@ public class DocumentAuditEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs a RunAuditEvent with the given document.
-     * 
+     *
      * @param errorPathPrefix
      * @param document
      * @param accountingLine

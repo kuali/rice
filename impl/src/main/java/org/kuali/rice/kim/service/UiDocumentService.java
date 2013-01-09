@@ -21,6 +21,8 @@ import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.type.KimAttributeField;
@@ -50,7 +52,7 @@ public interface UiDocumentService {
 	 * 	  
 	 * @param identityManagementPersonDocument
 	 */
-    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, GroupMember.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, Principal.Cache.NAME, GroupMember.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
     void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument);
     
     /**
@@ -76,14 +78,31 @@ public interface UiDocumentService {
 	 * @param identityManagementRoleDocument
 	 */
 	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, Role kimRole);
-	
-	/**
+
+    /**
+     *
+     * This method loads a role document members based on search criteria
+     *
+     * @param identityManagementRoleDocument
+     */
+    public void loadRoleMembersBasedOnSearch(IdentityManagementRoleDocument identityManagementRoleDocument,
+                                             String memberSearchValue);
+
+    /**
+     *
+     * This method loads a document's original role members
+     *
+     * @param identityManagementRoleDocument
+     */
+    public void clearRestrictedRoleMembersSearchResults(IdentityManagementRoleDocument identityManagementRoleDocument);
+
+    /**
 	 * 
 	 * This method ...
 	 * 
 	 * @param identityManagementRoleDocument
 	 */
-    @CacheEvict(value={Role.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, RoleMember.Cache.NAME, Permission.Cache.NAME}, allEntries = true)
 	public void saveRole(IdentityManagementRoleDocument identityManagementRoleDocument);
 
 

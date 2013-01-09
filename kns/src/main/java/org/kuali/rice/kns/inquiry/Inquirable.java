@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.inquiry;
 
 import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public interface Inquirable extends org.kuali.rice.krad.inquiry.Inquirable {
 	public String getTitle();
 
 	@Deprecated
-	public List getSections(BusinessObject bo);
+	public List<Section> getSections(BusinessObject bo);
 
 	@Deprecated
 	public void addAdditionalSections(List columns, BusinessObject bo);

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.config;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.util.ApplicationThreadLocal;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -37,15 +38,20 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
 	private boolean mustExist;
 
 	// used to prevent a stack overflow when trying to get the service
-	private boolean isFetchingService = false;
+	private ThreadLocal<Boolean> isFetchingService = new ApplicationThreadLocal<Boolean>() {
+        @Override
+        protected Boolean initialValue() {
+            return false;
+        }
+	};
 	
 	public GlobalResourceLoaderServiceFactoryBean() {
 		this.mustExist = true;
 	}
 	
 	public Object getObject() throws Exception {
-		if (isFetchingService) return null; // we already have been invoked, don't recurse, just return null.
-		isFetchingService = true;
+		if (isFetchingService.get()) return null; // we already have been invoked, don't recurse, just return null.
+		isFetchingService.set(true);
 		try {
             Object service = null;
             if (StringUtils.isBlank(getServiceNamespace())) {
@@ -58,7 +64,7 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
 			}
 			return service;
 		} finally {
-			isFetchingService = false;
+			isFetchingService.remove();
 		}
 	}
 

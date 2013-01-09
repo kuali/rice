@@ -17,24 +17,24 @@ package org.kuali.rice.krad.uif;
 
 /**
  * Constants for property paths
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifPropertyPaths {
-	
-	public static final String ACTION_PARAMETERS = "actionParameters";
-	public static final String BIND_OBJECT_PATH = "bindingInfo.bindingObjectPath";
-	public static final String BIND_TO_FORM = "bindingInfo.bindToForm";
-	public static final String COMPONENT_MODIFIERS = "componentModifiers";
-	public static final String CONTEXT = "context";
-	public static final String CRITERIA_FIELDS = "criteriaFields";
+
+    public static final String ACTION_PARAMETERS = "actionParameters";
+    public static final String BIND_OBJECT_PATH = "bindingInfo.bindingObjectPath";
+    public static final String BIND_TO_FORM = "bindingInfo.bindToForm";
+    public static final String COMPONENT_MODIFIERS = "componentModifiers";
+    public static final String CONTEXT = "context";
     public static final String DOCUMENT_ID = "documentId";
     public static final String EXPRESSION_GRAPH = "expressionGraph";
     public static final String ID = "id";
     public static final String FACTORY_ID = "factoryId";
-	public static final String NEW_COLLECTION_LINES = "newCollectionLines";
+    public static final String NEW_COLLECTION_LINES = "newCollectionLines";
     public static final String OBJECT_ID = "objectId";
-	public static final String PROPERTY_EXPRESSIONS = "propertyExpressions";
+    public static final String PROPERTY_EXPRESSIONS = "propertyExpressions";
+    public static final String LOOKUP_CRITERIA = "lookupCriteria";
     public static final String SELECTED_COLLECTION_LINES = "selectedCollectionLines";
     public static final String SEARCH_RESULTS = "searchResults";
     public static final String VIEW_HELPER_SERVICE_CLASS = "viewHelperServiceClass";

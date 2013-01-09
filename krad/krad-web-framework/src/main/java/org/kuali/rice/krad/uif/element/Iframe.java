@@ -15,12 +15,20 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+
+import java.util.ArrayList;
 
 /**
  * Content element that encloses an iframe
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "iFrame", parent = "Uif-Iframe")
 public class Iframe extends ContentElementBase {
 	private static final long serialVersionUID = 5797473302619055088L;
 
@@ -37,6 +45,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return String source
      */
+    @BeanTagAttribute(name="source")
 	public String getSource() {
 		return this.source;
 	}
@@ -55,6 +64,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return String height
      */
+    @BeanTagAttribute(name="height")
 	public String getHeight() {
 		return this.height;
 	}
@@ -73,6 +83,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return String frameborder
      */
+    @BeanTagAttribute(name="frameborder")
 	public String getFrameborder() {
 		return this.frameborder;
 	}
@@ -86,4 +97,21 @@ public class Iframe extends ContentElementBase {
 		this.frameborder = frameborder;
 	}
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean(this);
+
+        // Checks that a source is set
+        if(getSource()==null){
+            if(!Validator.checkExpressions(this, "source")){
+                String currentValues [] = {"source ="+getSource()};
+                tracer.createError("Source must be set",currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
+    }
 }

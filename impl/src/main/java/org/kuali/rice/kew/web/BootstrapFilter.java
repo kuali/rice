@@ -31,6 +31,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -46,6 +48,11 @@ import java.util.TreeSet;
  * and initializes those filters, and invokes them when it is invoked. This
  * allows runtime user configuration of arbitrary filters in the webapp context.
  *
+ * <p>
+ * Note : filter mapping order numbers must be unique across all filters. Filter exclusions will do a regex match
+ * against the full path of the request.
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BootstrapFilter implements Filter {
@@ -57,11 +64,15 @@ public class BootstrapFilter implements Filter {
 
 	private static final String FILTER_MAPPING_PREFIX = "filtermapping.";
 
+    private static final String FILTER_EXCLUDE_PREFIX = "filterexclude.";
+
 	private FilterConfig config;
 
 	private final Map<String, Filter> filters = new HashMap<String, Filter>();
 
 	private final SortedSet<FilterMapping> filterMappings = new TreeSet<FilterMapping>();
+
+    private final Map<String, ArrayList<String>> filterExclusions = new HashMap<String, ArrayList<String>>();
 
 	private boolean initted = false;
 
@@ -103,6 +114,24 @@ public class BootstrapFilter implements Filter {
 		filterMappings.add(new FilterMapping(filterName, orderNumber, value));
 	}
 
+    /**
+     * Adds an exclusion to the exclusion list for a filter
+     *
+     * <p>
+     * If this is the first exclusion to be added, the list will be created and added to the exclusion map
+     * </p>
+     *
+     * @param filterName - name of the filter
+     * @param exclusion - exclusion string
+     */
+    private void addFilterExclusion(String filterName, String exclusion) {
+        if (filterExclusions.containsKey(filterName)) {            
+            filterExclusions.get(filterName).add(exclusion);
+        } else {
+            filterExclusions.put(filterName, new ArrayList(Arrays.asList(exclusion)));
+        }
+    }
+
 	private synchronized void init() throws ServletException {
 		if (initted) {
 			return;
@@ -131,7 +160,15 @@ public class BootstrapFilter implements Filter {
 				// SpringServiceLocator.getPluginRegistry().getInstitutionPlugin().getClassLoader();
 				// addFilter(name, value, cl, p);
 				addFilter(name, value, p);
-			}
+			} else if (key.startsWith(FILTER_EXCLUDE_PREFIX)) {
+                String[] values = key.split("\\.");
+                if (values.length != 2 && values.length != 3) {
+                    throw new ServletException("Invalid filter mapping defined.  Should contain 2 or 3 pieces in the form of filterexclusion.<<filter name>>.<<number>> with the last piece optional.");
+                }
+                String filterName = values[1];
+                String value = entry.getValue();
+                addFilterExclusion(filterName, value);
+            }
 		}
 		// do a diff log a warn if any filter has no mappings
 		for (String filterName : filters.keySet()) {
@@ -168,12 +205,31 @@ public class BootstrapFilter implements Filter {
 		String requestPath = request.getServletPath();
 		for (FilterMapping mapping : filterMappings) {
 			Filter filter = filters.get(mapping.getFilterName());
-			if (!chain.containsFilter(filter) && matchFiltersURL(mapping.getUrlPattern(), requestPath)) {
-				chain.addFilter(filter);
+			if (!chain.containsFilter(filter) && matchFiltersURL(mapping.getUrlPattern(), requestPath) 
+                    && !excludeFilter(mapping.getFilterName(), request.getRequestURL().toString())) {
+                chain.addFilter(filter);
 			}
 		}
 		return chain;
 	}
+
+    /**
+     * Returns true if the path matches the exclusion regex
+     *
+     * @param filterName - filter name
+     * @param requestPath - full path of request
+     * @return boolean
+     */
+    private boolean excludeFilter(String filterName, String requestPath) {
+        if (filterExclusions.containsKey(filterName)) {
+            for (String exclusionString : filterExclusions.get(filterName)) {
+                if (requestPath.matches(exclusionString)) {
+                    return true;
+                }
+            }
+        }
+        return false;    
+    }
 
 	public void destroy() {
 		for (Filter filter : filters.values()) {

@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is a description of what this class does - wliang don't forget to fill this in. 
- * 
+ * This is a description of what this class does - wliang don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -38,20 +38,20 @@ public class SendAdHocRequestsEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs a SaveDocumentEvent with the given document
-     * 
+     *
      * @param document
      */
     public SendAdHocRequestsEvent(Document document) {
         this("", document);
     }
-    
+
     public SendAdHocRequestsEvent(String description, String errorPathPrefix, Document document) {
     	super(description, errorPathPrefix, document);
     }
-    
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
 	 */
 	public Class<? extends BusinessRule> getRuleInterfaceClass() {
@@ -71,7 +71,7 @@ public class SendAdHocRequestsEvent extends KualiDocumentEventBase {
 	@Override
 	public List<KualiDocumentEvent> generateEvents() {
 		KualiRuleService ruleService = KRADServiceLocatorWeb.getKualiRuleService();
-		
+
 		List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
         events.addAll(ruleService.generateAdHocRoutePersonEvents(getDocument()));
         events.addAll(ruleService.generateAdHocRouteWorkgroupEvents(getDocument()));

@@ -17,10 +17,7 @@ package org.kuali.rice.krms.impl.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.web.form.InquiryForm;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
@@ -52,7 +49,8 @@ public class KrmsRetriever {
     public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(AgendaEditor agendaEditor) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
         // if we have an rule action w/ a typeId set on it
-        if (!StringUtils.isBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
+        if (agendaEditor != null && agendaEditor.getAgendaItemLineRuleAction() != null
+                &&!StringUtils.isBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
             ActionTypeService actionTypeService = getActionTypeService(agendaEditor.getAgendaItemLineRuleAction().getTypeId());
             results.addAll(actionTypeService.getAttributeFields(agendaEditor.getAgendaItemLineRuleAction().getTypeId()));
         }
@@ -61,12 +59,12 @@ public class KrmsRetriever {
     }
 
     /**
-     * Get the AgendaEditor out of the MaintenanceForm's newMaintainableObject
-     * @param model the MaintenanceForm
+     * Get the AgendaEditor out of the MaintenanceDocumentForm's newMaintainableObject
+     * @param model the MaintenanceDocumentForm
      * @return the AgendaEditor
      */
     private AgendaEditor getAgendaEditor(Object model) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm)model;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm)model;
         return (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
     }
 
@@ -103,7 +101,8 @@ public class KrmsRetriever {
     public List<RemotableAttributeField> retrieveAgendaCustomAttributes(AgendaEditor agendaEditor) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
         // if we have an agenda w/ a typeId set on it
-        if (agendaEditor.getAgenda() != null && !StringUtils.isBlank(agendaEditor.getAgenda().getTypeId())) {
+        if (agendaEditor != null && agendaEditor.getAgenda() != null
+                && !StringUtils.isBlank(agendaEditor.getAgenda().getTypeId())) {
 
             String krmsTypeId = agendaEditor.getAgenda().getTypeId();
 
@@ -141,7 +140,7 @@ public class KrmsRetriever {
     public List<RemotableAttributeField> retrieveRuleCustomAttributes(AgendaEditor agendaEditor) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
         // if we have an rule w/ a typeId set on it
-        if (agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
+        if (agendaEditor != null && agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
                 && !StringUtils.isBlank(agendaEditor.getAgendaItemLine().getRule().getTypeId())) {
 
             String krmsTypeId = agendaEditor.getAgendaItemLine().getRule().getTypeId();

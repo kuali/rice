@@ -15,63 +15,40 @@
  */
 package edu.samplu.travel.krad.test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import static junit.framework.Assert.assertEquals;
+
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.WebDriverITBase;
 
 /**
- * tests whether the watermarks is work as expected even when they contain an apostrophe
+ * tests whether the watermarks is work as expected even when they contain an
+ * apostrophe
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WatermarkValidationIT {
-    private Selenium selenium;
+public class WatermarkValidationIT extends WebDriverITBase {
+	@Override
+	public String getTestUrl() {
+		return ITUtil.PORTAL;
+	}
 
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));//was http://localhost:8080/
-        selenium.start();
-    }
-
-    @Test
-    /**
-     * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
-     * the scripts will be working ok
-     */
-    public void testWatermarking() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-		selenium.type("name=__login_user", "quickstart");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("100000");
-		selenium.click("link=KRAD");
-		selenium.waitForPageToLoad("50000");
-		selenium.click("link=Uif Components (Kitchen Sink)");
-		selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-        selenium.focus("id=u73_control");
-		selenium.type("id=u73_control", "something");
-        selenium.focus("id=u103_control");
-        selenium.type("id=u103_control", "something else");
-        assertEquals("something", selenium.getValue("xpath=//*[@id=\"u73_control\"]"));
-		selenium.chooseCancelOnNextConfirmation();
-        // 'cancel' link
-		selenium.click("id=u29");
-		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-    
-    public void clearText(String field) throws Exception {
-        selenium.focus(field);
-        selenium.type(field, "");  
-        Thread.sleep(100); 
-    }
+	@Test
+	/**
+	 * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
+	 * the scripts will be working ok
+	 */
+	public void testWatermarking() throws Exception {
+		waitAndClickByLinkText("KRAD");
+		Thread.sleep(5000);
+		waitAndClickByLinkText("Uif Components (Kitchen Sink)");
+		Thread.sleep(5000);
+		Thread.sleep(2000);
+		//Switch to new window.
+		switchWindow();
+		Thread.sleep(3000);
+		assertEquals("It's watermarked ",getAttributeByName("field106", "placeholder"));
+		assertEquals("Watermark... ",getAttributeByName("field110", "placeholder"));
+	}
 }

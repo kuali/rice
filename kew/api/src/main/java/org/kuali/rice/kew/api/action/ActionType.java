@@ -104,7 +104,13 @@ public enum ActionType implements Coded {
      * The document is being returned to a previous routelevel
      */
     @XmlEnumValue("Z") RETURN_TO_PREVIOUS("Z", "RETURN TO PREVIOUS"),
-    
+
+    /**
+     * The document is being recalled.
+     * @since 2.1
+     */
+    @XmlEnumValue("L") RECALL("L", "RECALL"),
+
     /**
      * The document has non-routed activity against it that is recorded in the route log
      */
@@ -160,5 +166,25 @@ public enum ActionType implements Coded {
 		}
 		throw new IllegalArgumentException("Failed to locate the ActionType with the given code: " + code);
 	}
+
+    public static ActionType fromLabel(String label) {
+        if (label == null) {
+            return null;
+        }
+        for (ActionType status : values()) {
+            if (status.label.equals(label)) {
+                return status;
+            }
+        }
+        return null;
+    }
+
+    public static ActionType fromCodeOrLabel(String str) {
+        ActionType at = ActionType.fromCode(str, true);
+        if (at == null && str != null) {
+            at = ActionType.fromLabel(str.toUpperCase());
+        }
+        return at;
+    }
 	
 }

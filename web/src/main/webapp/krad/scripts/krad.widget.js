@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /** Navigation */
 
 /**
@@ -20,47 +21,40 @@
  * Pages are handled by js on the breadcrumb because the page retrieval happens through
  * ajax
  */
-function setPageBreadcrumb(){
-	//check to see if page has navigation element, if so show breadcrumb
-	if(jQuery("#Uif-Navigation").html() && jQuery("#breadcrumbs").length){
-		var pageTitle = jQuery("#currentPageTitle").val();
-		var pageId = jQuery("#pageId").val();
-		jQuery("#breadcrumbs").find("#page_breadcrumb").remove();
-		var bcSet = false;
-		if(pageTitle && pageTitle != "&nbsp;" && pageTitle != ""){
-			jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
-			jQuery("#current_breadcrumb_span").hide();
-            if(jQuery("#current_breadcrumb_span").parent("li").length){
+function setPageBreadcrumb() {
+    // check to see if page has navigation element, if so show breadcrumb
+    if (jQuery("#Uif-Navigation").html() && jQuery("#breadcrumbs").length) {
+        var pageTitle = jQuery("#pageTitle").val();
+        var pageId = jQuery("#pageId").val();
+
+        jQuery("#breadcrumbs").find("#page_breadcrumb").remove();
+
+        // if page title not set attempt to find from navigation
+        if ((!pageTitle || pageTitle == "&nbsp;") && pageId) {
+            pageTitle = jQuery("a[name='" + escapeName(pageId) + "']").text();
+        }
+
+        if (pageTitle && pageTitle != "&nbsp;") {
+            jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
+            jQuery("#current_breadcrumb_span").hide();
+
+            if (jQuery("#current_breadcrumb_span").parent("li").length) {
                 jQuery("#current_breadcrumb_span").unwrap();
             }
-            var anchor = jQuery("#current_breadcrumb_anchor");
-            jQuery("#current_breadcrumb_anchor").wrap("<li/>");
-			jQuery("#current_breadcrumb_anchor").show();
-			bcSet = true;
-		}
-		else if(pageId){
-			pageTitle = jQuery("a[name='"+ escapeName(pageId) + "']").text();
-			if(pageTitle && pageTitle != "&nbsp;" && pageTitle != ""){
-				jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
-				jQuery("#current_breadcrumb_span").hide();
-                if(jQuery("#current_breadcrumb_span").parent("li").length){
-                    jQuery("#current_breadcrumb_span").unwrap();
-                }
-                jQuery("#current_breadcrumb_anchor").wrap();
-				jQuery("#current_breadcrumb_anchor").show();
-				bcSet=true;
-			}
-		}
 
-		if(!bcSet){
-			jQuery("#current_breadcrumb_anchor").hide();
-            if(jQuery("#current_breadcrumb_anchor").parent("li").length){
+            jQuery("#current_breadcrumb_anchor").wrap("<li/>");
+            jQuery("#current_breadcrumb_anchor").show();
+        }
+        else {
+            jQuery("#current_breadcrumb_anchor").hide();
+            if (jQuery("#current_breadcrumb_anchor").parent("li").length) {
                 jQuery("#current_breadcrumb_anchor").unwrap();
             }
+
             jQuery("#current_breadcrumb_span").wrap("<li/>");
-			jQuery("#current_breadcrumb_span").show();
-		}
-	}
+            jQuery("#current_breadcrumb_span").show();
+        }
+    }
 }
 
 /**
@@ -73,18 +67,18 @@ function setPageBreadcrumb(){
  *          the navigation style to render
  */
 function createNavigation(listId, navigationType, options) {
-	if (navigationType == "VERTICAL_MENU") {
-		createVerticalMenu(listId, options);
-	}
-	else if(navigationType == "TAB_MENU"){
-		createTabMenu(listId, options);
-	}
+    if (navigationType == "VERTICAL_MENU") {
+        createVerticalMenu(listId, options);
+    }
+    else if (navigationType == "TAB_MENU") {
+        createTabMenu(listId, options);
+    }
 }
 
 function createTabMenu(listId, options) {
-	jQuery(document).ready(function(){
-		jQuery("#" + listId).tabMenu(options);
-	});
+    jQuery(document).ready(function () {
+        jQuery("#" + listId).tabMenu(options);
+    });
 }
 
 /**
@@ -94,9 +88,9 @@ function createTabMenu(listId, options) {
  *          unique id for the unordered list
  */
 function createVerticalMenu(listId, options) {
-	jQuery(document).ready(function() {
-		jQuery("#" + listId).navMenu(options);
-	});
+    jQuery(document).ready(function () {
+        jQuery("#" + listId).navMenu(options);
+    });
 }
 
 /** Widgets */
@@ -112,135 +106,195 @@ function createVerticalMenu(listId, options) {
  * @param imageUrl - the url for the popout icon
  */
 function setupTextPopout(id, label, summary, constraint, imageUrl) {
-    var options = {label: label, summary: summary, constraint: constraint};
+    var options = {label:label, summary:summary, constraint:constraint};
     jQuery("#" + id).initPopoutText(options, imageUrl);
 }
 
 /**
- * Uses jQuery fancybox to link a fancybox to a given control id. The second
+ * Uses jQuery fancybox to open a lightbox for a link's content. The second
  * argument is a Map of options that are available for the FancyBox. See
- * <link>http://fancybox.net/api</link> for documentation on these options
+ * <link>http://fancybox.net/api</link> for documentation on these options.
+ * The third argument should only be true for inquiries and lookups.  When this
+ * argument is true additional URL parameters are added for the bread crumbs history.
  *
- * @param controlId -
- *          id for the control that the fancybox should be linked to
+ * @param linkId -
+ *          id for the link that the fancybox should be linked to
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
+ * @parm isAddAppParms -
+ *          true if application parameters should be added to the link, false otherwise
  */
-function createLightBoxLink(controlId, options) {
+function createLightBoxLink(linkId, options, addAppParms) {
     jQuery(function () {
-        var showHistory = false;
+        var renderedInLightBox = isCalledWithinLightbox();
+
+        // first time content is brought up in lightbox we don't want to show history
+        var showHistory = renderedInLightBox;
 
         // Check if this is called within a light box
-        if (!jQuery(".fancybox-iframe", parent.document).length) {
-
-            // Perform cleanup when lightbox is closed
-            options['beforeClose'] = cleanupClosedLightboxForms;
-
+        if (!renderedInLightBox) {
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
-            if (top == self) {
-                jQuery("#" + controlId).fancybox(options);
-            } else {
-                jQuery("#" + controlId).click(function (e) {
-                    e.preventDefault();
-                    options['href'] = jQuery("#" + controlId).attr('href');
-                    top.jQuery.fancybox(options);
-                });
-            }
+            jQuery("#" + linkId).click(function (e) {
+                e.preventDefault();
+
+                options['href'] = jQuery("#" + linkId).attr('href');
+                getContext().fancybox(options);
+            });
         } else {
-            jQuery("#" + controlId).attr('target', '_self');
+            jQuery("#" + linkId).attr('target', '_self');
+
+            // for going to a new view in a lightbox we want to show history
             showHistory = true;
         }
 
-        // Set the renderedInLightBox = true param
-        if (jQuery("#" + controlId).attr('href').indexOf('&renderedInLightBox=true') == -1) {
-            jQuery("#" + controlId).attr('href', jQuery("#" + controlId).attr('href') + '&renderedInLightBox=true'
-                    + '&showHome=false' + '&showHistory=' + showHistory
-                    + '&history=' + jQuery('#formHistory\\.historyParameterString').val());
+        if (addAppParms) {
+            // Set the renderedInLightBox = true param
+            if (jQuery("#" + linkId).attr('href').indexOf('&renderedInLightBox=true') == -1) {
+                var href = jQuery("#" + linkId).attr('href');
+                var anchor = "";
+
+                if (jQuery("#" + linkId).attr('href').indexOf('#') != -1) {
+                    href = jQuery("#" + linkId).attr('href').substring(0, jQuery("#" + linkId).attr('href').indexOf('#'));
+                    anchor = jQuery("#" + linkId).attr('href').substring(jQuery("#" + linkId).attr('href').indexOf('#'));
+                }
+
+                jQuery("#" + linkId).attr('href', href + '&renderedInLightBox=true'
+                        + '&showHome=false' + '&showHistory=' + showHistory
+                        + '&history=' + jQuery('#historyParameterString').val() + anchor);
+            }
         }
     });
 }
 
 /**
- * Get post paramaters dynamic Uses
- * jQuery fancybox to create lightbox for lookups. It prevents the default
- * submit and makes an ajax post. The second argument is a Map of options that
- * are available for the FancyBox. See <link>http://fancybox.net/api</link> for
- * documentation on these options
+ * Submits the form based on the quickfinder action identified by the given id and display the result content in
+ * a lightbox using the jQuery fancybox. If we are not currently in a lightbox, we will request a redirect URL
+ * for the lightbox contents. Otherwise, the internal iframe of the lightbox will be redirected.
  *
- * @param controlId -
- *          id for the control that the fancybox should be linked to
+ * <p>
+ * See <link>http://fancybox.net/api</link> for documentation on plugin options
+ * </p>
+ *
+ * @param componentId -
+ *          id for the action component that the fancybox should be linked to
  * @param options -
- *          map of option settings (option name/value pairs) for the plugin
+ *          map of option settings (option name/value pairs) for the fancybox plugin
+ * @param lookupReturnByScript - boolean that indicates whether the lookup should return through script
+ *        or via a server post
  */
-function createLightBoxPost(controlId, options, actionParameterMapString, lookupReturnByScript) {
+function createLightBoxPost(componentId, options, lookupReturnByScript) {
     jQuery(function () {
+        // get data that should be submitted when the action is selected
+        var data = {};
+
+        var submitData = jQuery("#" + componentId).data("submitData");
+        jQuery.extend(data, submitData);
 
         // Check if this is not called within a lightbox
-        if (!jQuery(".fancybox-iframe", parent.document).length) {
-            jQuery("#" + controlId).click(function (e) {
-
+        var renderedInLightBox = isCalledWithinLightbox();
+        if (!renderedInLightBox) {
+            jQuery("#" + componentId).click(function (e) {
                 // Prevent the default submit
                 e.preventDefault();
-                jQuery("[name='jumpToId']").val(controlId);
 
-                // Add the lightBoxCall parameter so that the controller can avoid the redirect
-                actionParameterMapString['actionParameters[renderedInLightBox]'] = 'true';
-                actionParameterMapString['actionParameters[lightBoxCall]'] = 'true';
-                actionParameterMapString['actionParameters[showHistory]'] = 'false';
-                actionParameterMapString['actionParameters[showHome]'] = 'false';
-                actionParameterMapString['actionParameters[returnByScript]'] = '' + lookupReturnByScript;
+                data['jumpToId'] = componentId;
+                data['actionParameters[renderedInLightBox]'] = 'true';
+                data['actionParameters[lightBoxCall]'] = 'true';
+                data['actionParameters[showHistory]'] = 'false';
+                data['actionParameters[showHome]'] = 'false';
+                data['actionParameters[returnByScript]'] = '' + lookupReturnByScript;
 
                 // If this is the top frame, the page is not displayed in the iframeprotlet
                 // set the return target
                 if (top == self) {
-                    actionParameterMapString['actionParameters[returnTarget]'] = '_parent';
+                    data['actionParameters[returnTarget]'] = '_parent';
                 } else {
-                    actionParameterMapString['actionParameters[returnTarget]'] = 'iframeportlet';
+                    data['actionParameters[returnTarget]'] = 'iframeportlet';
                 }
 
-                // Add the action parameters hidden to form
-                for (var key in actionParameterMapString) {
-                    writeHiddenToForm(key, actionParameterMapString[key]);
+                var jsonViewState = getSerializedViewState();
+                if (jsonViewState) {
+                    jQuery.extend(data, {clientViewState:jsonViewState});
+                }
+
+                // TODO: we need a fix here so dirty fields don't get cleared out
+                // if refreshing the page on return from lookup need to clear dirty fields else
+                // a warning is given
+                if (!lookupReturnByScript) {
+                    jQuery('*').removeClass(kradVariables.DIRTY_CLASS);
                 }
 
                 // Do the Ajax submit on the kualiForm form
                 jQuery("#kualiForm").ajaxSubmit({
+                    data:data,
+                    success:function (data) {
+                        // Perform cleanup when lightbox is closed
+                        // TODO: this stomps on the post form (clear out) so need to another
+                        // way to clear forms when the lightbox performs a post back
+                        // options['beforeClose'] = cleanupClosedLightboxForms;
 
-                            success: function(data) {
-                                // Perform cleanup when lightbox is closed
-                                // TODO: this stomps on the post form (clear out) so need to another
-                                // way to clear forms when the lightbox performs a post back
-                               // options['beforeClose'] = cleanupClosedLightboxForms;
+                        // Add the returned URL to the FancyBox href setting
+                        options['href'] = data.replace(/&amp;/g, '&');
 
-                                // Add the returned URL to the FancyBox href setting
-                                options['href'] = data.replace(/&amp;/g, '&');
-
-                                // Open the light box
-                                if (top == self) {
-                                    jQuery.fancybox(options);
-                                } else {
-                                    // for portal usage
-                                    parent.jQuery.fancybox(options);
-                                }
-                            }
-                        });
+                        // Open the light box
+                        getContext().fancybox(options);
+                    }
+                });
             });
         } else {
+            // add parameters for lightbox and do standard submit
+            jQuery("#" + componentId).click(function (e) {
+                // Prevent the default submit
+                e.preventDefault();
 
-            // Add the action parameters hidden to form and allow the submit action
-            jQuery("#" + controlId).click(function (e) {
-                actionParameterMapString['actionParameters[renderedInLightBox]'] = 'true';
-                actionParameterMapString['actionParameters[returnTarget]'] = '_self';
-                actionParameterMapString['actionParameters[showHistory]'] = 'true';
-                actionParameterMapString['actionParameters[showHome]'] = 'false';
-                for (var key in actionParameterMapString) {
-                    writeHiddenToForm(key, actionParameterMapString[key]);
-                }
+                data['actionParameters[renderedInLightBox]'] = 'true';
+                data['actionParameters[returnTarget]'] = '_self';
+                data['actionParameters[showHistory]'] = 'true';
+                data['actionParameters[showHome]'] = 'false';
+
+                nonAjaxSubmitForm(data['methodToCall'], data);
             });
         }
-
     });
+}
+
+/**
+ * Check if the code is inside a lightbox
+ *
+ * @return true if called within a lightbox, false otherwise
+ */
+function isCalledWithinLightbox() {
+    return jQuery('#renderedInLightBox').val() == 'true'
+    // reverting for KULRICE-8346
+//    try {
+//        // For security reasons the browsers will not allow cross server scripts and
+//        // throw an exception instead.
+//        // Note that bad browsers (e.g. google chrome) will not catch the exception
+//        if (jQuery("#fancybox-frame", parent.document).length) {
+//            return true;
+//        }
+//    }
+//    catch (e) {
+//        // ignoring error
+//    }
+//
+//    return false;
+}
+
+/*
+ * Reload page with lookup result URL
+ */
+function returnLookupResultReload(aElement) {
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
+        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', aElement.attr('href'));
+    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
+        // portal and content on different domain
+        parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', aElement.attr('href'))
+    } else {
+        window.open(aElement.attr('href'), aElement.attr('target'));
+    }
 }
 
 /*
@@ -248,11 +302,20 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-    if (top != self) {
-        returnField = parent.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
-    }else{
-        returnField = parent.jQuery('[name="' + escapeName(fieldName) + '"]');
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
+        returnField = top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('[name="' + escapeName(fieldName) + '"]');
+    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
+        // portal and content on different domain
+        returnField = parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('[name="' + escapeName(fieldName) + '"]');
+    } else {
+        returnField = top.jq('[name="' + escapeName(fieldName) + '"]');
     }
+
+    if (!returnField.length) {
+        return;
+    }
+
     returnField.val(value);
     returnField.focus();
     returnField.blur();
@@ -266,10 +329,16 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    if (top != self) {
-        jQuery('#kualiForm').attr('target',parent.jQuery('#iframeportlet').attr('name'));
-    }else{
-        jQuery('#kualiForm').attr('target','_parent');
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
+        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('#' + kradVariables.KUALI_FORM).attr('target',kradVariables.PORTAL_IFRAME_ID);
+    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
+        // portal and content on different domain
+        parent.jQuery('#' + kradVariables.KUALI_FORM).attr('target',kradVariables.PORTAL_IFRAME_ID);
+    } else if (parent != null) {
+        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target',parent.name);
+    } else {
+        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target','_parent');
     }
 }
 
@@ -282,48 +351,37 @@ function setMultiValueReturnTarget() {
  * @param url -
  *          the base url to use to call the inquiry
  * @param paramMap -
- *          map of option settings (option name/value pairs) for the plugin
+ *          array of field parameters for the inquiry
  * @param showLightBox -
  *          flag to indicate if it must be shown in a lightbox
  * @param lightBoxOptions -
  *          map of option settings (option name/value pairs) for the lightbox plugin
  */
 function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
-
-    parameterPairs = paramMap.split(",");
-    queryString = "&showHome=false";
+    var parameterPairs = paramMap.split(",");
+    var queryString = "&showHome=false";
 
     for (i in parameterPairs) {
-        parameters = parameterPairs[i].split(":");
-
-        if (jQuery('[name="' + escapeName(parameters[0]) + '"]').val() == "") {
-            alert("Please enter a value in the appropriate field.");
+        var parameters = parameterPairs[i].split(":");
+        var value = checkDirectInquiryValueValid(jQuery('[name="' + escapeName(parameters[0]) + '"]').val());
+        if (!value) {
+            alert(getMessage(kradVariables.MESSAGE_PLEASE_ENTER_VALUE));
             return false;
         } else {
-            queryString = queryString + "&" + parameters[1] + "=" + jQuery('[name="' + escapeName(parameters[0]) + '"]').val();
+            queryString = queryString + "&" + parameters[1] + "=" + value;
         }
     }
 
     if (showLightBox) {
-
         // Check if this is called within a light box
-        if (!jQuery(".fancybox-iframe", parent.document).length) {
-
+        if (!getContext().find('.fancybox-inner', parent.document).length) {
             // Perform cleanup when lightbox is closed
             lightBoxOptions['beforeClose'] = cleanupClosedLightboxForms;
 
-            // If this is not the top frame, then create the lightbox
-            // on the top frame to put overlay over whole window
             queryString = queryString + "&showHistory=false&renderedInLightBox=true";
-            if (top == self) {
-                lightBoxOptions['href'] = url + queryString;
-                jQuery.fancybox(lightBoxOptions);
-            } else {
-                lightBoxOptions['href'] = url + queryString;
-                top.jQuery.fancybox(lightBoxOptions);
-            }
+            lightBoxOptions['href'] = url + queryString;
+            getContext().fancybox(lightBoxOptions);
         } else {
-
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&showHistory=true&renderedInLightBox=true";
             window.open(url + queryString, "_self");
@@ -335,21 +393,36 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 }
 
 /**
+ * Removes wildcards and check for empty values
+ *
+ * @param value - value without wildcards or false if empty
+ */
+function checkDirectInquiryValueValid(value) {
+    value = value.replace(/\*/g, '');
+    if (value == "") {
+        return false;
+    }
+    return value;
+}
+
+/**
  * Closes the lightbox window
-*/
+ */
 function closeLightbox() {
-    top.jQuery.fancybox.close();
+    getContext().fancybox.close();
 }
 
 /**
  * Cleanup form data from server when lightbox window is closed
  */
 function cleanupClosedLightboxForms() {
-    // get the formKey of the lightbox (fancybox)
-    var context = getContext();
-    var formKey = context('iframe.fancybox-iframe').contents().find('input#formKey').val();
+    if (jQuery('#formKey').length) {
+        // get the formKey of the lightbox (fancybox)
+        var context = getContext();
+        var formKey = context('iframe.fancybox-iframe').contents().find('input#formKey').val();
 
-    clearServerSideForm(formKey);
+        clearServerSideForm(formKey);
+    }
 }
 
 /**
@@ -365,19 +438,42 @@ function cleanupClosedLightboxForms() {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createDatePicker(controlId, options) {
-    jQuery(function() {
-        jQuery("#" + controlId).datepicker(options);
-        jQuery("#" + controlId).datepicker('option','onSelect', function(){jQuery(this).trigger("focusout");});
+    var fieldId = jQuery("#" + controlId).closest("div[data-role='InputField']").attr("id");
+    jQuery(function () {
+        var datePickerControl = jQuery("#" + controlId);
+        datePickerControl.datepicker(options);
+        datePickerControl.datepicker('option', 'onClose',
+                function () {
+                    jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = true;
+                    jQuery(this).trigger("focusout");
+                    jQuery(this).trigger("focus");
+                });
+        datePickerControl.datepicker('option', 'beforeShow',
+                function () {
+                    jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = false;
+                });
+
+        //KULRICE-7310 can't change only month or year with picker (jquery limitation)
+        datePickerControl.datepicker('option', 'onChangeMonthYear',
+                function (y, m, i) {
+                    var d = i.selectedDay;
+                    jQuery(this).datepicker('setDate', new Date(y, m - 1, d));
+                });
+
+        //KULRICE-7261 fix date format passed back.  jquery expecting mm-dd-yy
+        if (options.dateFormat == "mm-dd-yy" && datePickerControl[0].getAttribute("value").indexOf("/") != -1) {
+            datePickerControl.datepicker('setDate', new Date(datePickerControl[0].getAttribute("value")));
+        }
     });
 
     // in order to compensate for jQuery's "Today" functionality (which does not actually return the date to the input box), alter the functionality
-    jQuery.datepicker._gotoToday = function(id) {
+    jQuery.datepicker._gotoToday = function (id) {
         var target = jQuery(id);
         var inst = this._getInst(target[0]);
         if (this._get(inst, 'gotoCurrent') && inst.currentDay) {
             inst.selectedDay = inst.currentDay;
-        inst.drawMonth = inst.selectedMonth = inst.currentMonth;
-        inst.drawYear = inst.selectedYear = inst.currentYear;
+            inst.drawMonth = inst.selectedMonth = inst.currentMonth;
+            inst.drawYear = inst.selectedYear = inst.currentYear;
         }
         else {
             var date = new Date();
@@ -415,14 +511,14 @@ function createDatePicker(controlId, options) {
  *          boolean that indicates whether the expanded or collapsed image should be rendered
  */
 function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function () {
         var groupToggleLinkId = groupId + "_toggle";
 
         var expandImage = "";
         var collapseImage = "";
         if (renderImage) {
-            var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand' class='uif-disclosure-image'/>";
-            var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='uif-disclosure-image'/>";
+            var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_EXPAND) + "' class='uif-disclosure-image'/>";
+            var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
         }
 
         var groupAccordionSpanId = groupId + "_disclosureContent";
@@ -438,38 +534,46 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
             headerText.prepend(collapseImage);
         }
 
-        headerText.wrap("<a href='#' id='" + groupToggleLinkId + "'>");
+        headerText.wrap("<a data-role='disclosureLink' data-linkfor='" + groupAccordionSpanId + "' href='#' "
+                + "id='" + groupToggleLinkId + "'></a>");
 
-        var animationFinishedCallback = function(){
+        var animationFinishedCallback = function () {
             jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", false);
         };
+        var disclosureContent = jQuery("#" + groupAccordionSpanId);
         // perform slide and switch image
         if (defaultOpen) {
+            disclosureContent.data("open", true);
             jQuery("#" + groupToggleLinkId).toggle(
-                    function() {
+                    function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        jQuery("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
+                        disclosureContent.data("open", false);
+                        disclosureContent.slideUp(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
-                    }, function() {
+                    }, function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        jQuery("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
+                        disclosureContent.data("open", true);
+                        disclosureContent.slideDown(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
                     }
             );
         }
         else {
+            disclosureContent.data("open", false);
             jQuery("#" + groupToggleLinkId).toggle(
-                    function() {
+                    function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        jQuery("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
+                        disclosureContent.data("open", true);
+                        disclosureContent.slideDown(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
 
-                    }, function() {
+                    }, function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        jQuery("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
+                        disclosureContent.data("open", false);
+                        disclosureContent.slideUp(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
                     }
@@ -482,92 +586,249 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
  * Expands all the disclosure divs on the page
  */
 function expandDisclosures() {
-    jQuery('img[alt="collapse"]').click();
+    jQuery("a[data-role='disclosureLink']").each(function () {
+        var contentId = jQuery(this).attr("data-linkfor");
+        if (!jQuery("#" + contentId).data("open")) {
+            jQuery(this).click();
+        }
+    });
 }
 
 /**
  * Collapses all the disclosure divs on the page
  */
 function collapseDisclosures() {
-    jQuery('img[alt="expand"]').click();
+    jQuery("a[data-role='disclosureLink']").each(function () {
+        var contentId = jQuery(this).attr("data-linkfor");
+        if (jQuery("#" + contentId).data("open")) {
+            jQuery(this).click();
+        }
+    });
 }
 
 /**
  * Uses jQuery DataTable plug-in to decorate a table with functionality like
  * sorting and page. The second argument is a Map of options that are available
- * for the plug-in. See <link>http://www.datatables.net/usage/</link> for
+ * for the plug-in. See <a href=http://www.datatables.net/usage/>datatables</a> for
  * documentation on these options
  *
- * @param tableId -
- *          id for the table that should be decorated
- * @param options -
- *          map of option settings (option name/value pairs) for the plugin
+ * @param tableId id for the table that should be decorated
+ * @param options map of option settings (option name/value pairs) for the plugin
+ * @param groupingOptions (optional) if supplied, the collection will use rowGrouping with these options
  */
-function createTable(tableId, options) {
-    jQuery(document).ready(function() {
-        var oTable = jQuery("#" + tableId).dataTable(options);
+function createTable(tableId, options, groupingOptions) {
+    jQuery(document).ready(function () {
+        options.bDestroy = true;
+        var table = jQuery("#" + tableId);
+        var detailsOpen = table.parent().data("detailsdefaultopen");
+        table.data("open", detailsOpen);
+
+        if (groupingOptions) {
+            table.attr("data-groups", "true");
+        }
+
+        var oTable = table.dataTable(options);
+
+        //handle row details related functionality setup
+        if(detailsOpen != undefined){
+            jQuery(oTable).on("dataTables.tableDraw", function(){
+                if(table.data("open")){
+                    openAllDetails(tableId);
+                }
+                else{
+                    closeAllDetails(tableId);
+                }
+            });
+
+            if(detailsOpen){
+                openAllDetails(tableId, false);
+            }
+        }
+
         // allow table column size recalculation on window resize
         jQuery(window).bind('resize', function () {
             oTable.fnAdjustColumnSizing();
-        } );
+        });
+
+        if (groupingOptions) {
+            oTable.rowGrouping(groupingOptions);
+        }
     });
 }
 
 /**
  * Expands a data table row by finding the row that matches the actionComponent passed in, in the
  * dataTable which matches tableId.  If useImages is true, images will be swapped out when the
- * action is clicked.
+ * action is clicked.  The row will be closed if already open.
+ *
  * @param actionComponent the actionComponent clicked
  * @param tableId the dataTable to expand the clicked row in
  * @param useImages if true, swap open/close images on click
  */
-function expandDataTableDetail(actionComponent, tableId, useImages) {
-    var oTable = null;
-    var tables = jQuery.fn.dataTable.fnTables();
-    jQuery(tables).each(function(){
-        var dataTable = jQuery(this).dataTable();
-        //ensure the dataTable is the one that contains the action that was clicked
-        if(jQuery(actionComponent).closest(dataTable).length){
-            oTable = dataTable;
-        }
-    });
+function rowDetailsActionHandler(actionComponent, tableId) {
+    var oTable = getDataTableHandle(tableId);
 
-    if(oTable != null){
-        var nTr = jQuery(actionComponent).parents('tr')[0];
-        if ( oTable.fnIsOpen(nTr) )
-        {
-            if(useImages && jQuery(actionComponent).find("img").length){
-                jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
-            }
-            jQuery(nTr).next().first().find(".uif-group").first().slideUp( function () {
-              oTable.fnClose( nTr );
-            } );
+    if (oTable != null) {
+        var row = jQuery(actionComponent).parents('tr')[0];
+        if (oTable.fnIsOpen(row)) {
+            closeDetails(oTable, jQuery(row), actionComponent, true);
         }
-        else
-        {
-            if(useImages && jQuery(actionComponent).find("img").length){
-                jQuery(actionComponent).find("img").replaceWith(detailsCloseImage.clone());
-            }
-            var newRow = oTable.fnOpen(nTr, fnFormatDetails(actionComponent), 'uif-rowDetails');
-            jQuery(newRow).find(".uif-group").first().slideDown();
+        else {
+            openDetails(oTable, jQuery(row), actionComponent, true);
         }
+        jQuery(row).data("det-interact", true);
     }
 }
 
 /**
- * Finds the hidden content generated by the framework for the the data table row which
- * contains the actionComponent passed in.  Returns the html as required by the fnOpen function
- * call.  Should not be called directly.
- * @param actionComponent the action that was clicked to open the row
+ * Open all row details in the table specified by id
+ *
+ * @param tableId id of the table to open all details for
+ * @param animate [optional] if true, animate during opening the rows
+ * @param forceOpen [optional] if true, force the each row details to open and reset interaction flag, otherwise if the
+ * row has been interacted with skip (used to retain state)
  */
-function fnFormatDetails(actionComponent) {
-    var hiddens = jQuery(actionComponent).parent().find(".uif-group");
-    var html = "";
-    jQuery(hiddens).each(function() {
-        html = jQuery(this).clone().wrap("<div>").parent().html();
-    });
+function openAllDetails(tableId, animate, forceOpen) {
+    var oTable = getDataTableHandle(tableId);
 
-    return html;
+    if (oTable != null) {
+        var rows = jQuery(oTable).find('tr').not(".detailsRow");
+        rows.each(function () {
+            var row = jQuery(this);
+            //Means the row is not open and the user has not interacted with it (or force if forceOpen is true)
+            //This is done to retain row details "state" between table draws for rows the user may have interacted with
+            if(!oTable.fnIsOpen(this) && (!row.data("det-interact") || forceOpen)){
+                var actionComponent = row.find("a[data-role='detailsLink']");
+                
+                openDetails(oTable, row, actionComponent, animate);
+
+                //reset user interaction flag
+                row.data("det-interact", false);
+            }
+        });
+    }
+}
+
+/**
+ * Open the row details. If the ajaxRetrieval option is set this will retrieve the detail content.
+ *
+ * @param oTable the dataTable object handle
+ * @param row the row to open details for
+ * @param actionComponent [optional] actionComponent used to invoke the action, required if using image swap
+ * or ajaxRetrieval
+ * @param animate if true, the open will have an animation effect
+ */
+function openDetails(oTable, row, actionComponent, animate){
+    var detailsGroup = row.find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+    var ajaxRetrieval = jQuery(detailsGroup).is("span[data-role='placeholder']");
+    var detailsId = jQuery(detailsGroup).attr("id");
+
+    if (actionComponent && jQuery(actionComponent).data("swap") && jQuery(actionComponent).find("img").length) {
+        jQuery(actionComponent).find("img").replaceWith(detailsCloseImage.clone());
+    }
+
+    var newRow = oTable.fnOpenCustom(row[0], detailsGroup, "uif-rowDetails");
+    detailsGroup = jQuery(newRow).find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+
+    if(animate && !ajaxRetrieval){
+        detailsGroup.slideDown();
+    }
+    else{
+        detailsGroup.show();
+    }
+
+    if(ajaxRetrieval){
+        var kradRequest = new KradRequest(jQuery(actionComponent));
+
+        if(!kradRequest.methodToCall){
+            kradRequest.methodToCall = kradVariables.REFRESH_METHOD_TO_CALL;
+        }
+
+        kradRequest.ajaxReturnType = kradVariables.RETURN_TYPE_UPDATE_COMPONENT;
+        kradRequest.refreshId = detailsId;
+
+        kradRequest.send();
+    }
+}
+
+/**
+ * Close all row details in the table specified by id
+ *
+ * @param tableId id of the table to close all details for
+ * @param animate [optional] if true, animate during closing the rows
+ * @param forceOpen [optional] if true, force the each row details to close and reset interaction flag, otherwise if the
+ * row has been interacted with skip (used to retain state)
+ */
+function closeAllDetails(tableId, animate, forceClose) {
+    var oTable = getDataTableHandle(tableId);
+
+    if (oTable != null) {
+        var rows = jQuery(oTable).find('tr').not(".detailsRow");
+        rows.each(function () {
+            var row = jQuery(this);
+            //Means the row is open and the user has not interacted with it (or force if forceClose is true)
+            //This is done to retain row details "state" between table draws for rows the user may have interacted with
+            if (oTable.fnIsOpen(this) && (!row.data("det-interact") || forceClose)) {
+                var actionComponent = row.find("a[data-role='detailsLink']");
+
+                closeDetails(oTable, row, actionComponent, animate);
+
+                //reset user interaction flag
+                row.data("det-interact", false);
+            }
+        });
+    }
+}
+
+/**
+ * Close the row details.
+ *
+ * @param oTable the dataTable object handle
+ * @param row the row to close details for
+ * @param actionComponent [optional] actionComponent used to invoke the action, required if using image swap
+ * @param animate if true, the close will have an animation effect
+ */
+function closeDetails(oTable, row, actionComponent, animate){
+    var fieldGroupWrapper = row.find("div[data-role='detailsFieldGroup'] fieldset div.uif-verticalBoxLayout");
+    var detailsContent = row.next().first().find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+
+    if (actionComponent && jQuery(actionComponent).data("swap") && jQuery(actionComponent).find("img").length) {
+        jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
+    }
+
+    if(animate){
+        detailsContent.slideUp(function () {
+            fieldGroupWrapper.append(detailsContent.detach());
+            oTable.fnClose(row[0]);
+        });
+    }
+    else{
+        detailsContent.hide();
+        fieldGroupWrapper.append(detailsContent.detach());
+        oTable.fnClose(row[0]);
+    }
+
+}
+
+/**
+ * Open or close all rows for the table specified by the actionComponent's "tableid" data attribute
+ *
+ * @param actionComponent the calling action component
+ */
+function toggleRowDetails(actionComponent){
+    var action = jQuery(actionComponent);
+    var tableId = action.data("tableid");
+    var open = action.data("open");
+    if(open){
+        closeAllDetails(tableId, true, true);
+        action.data("open", false);
+        jQuery("#" + tableId).data("open", false);
+    }
+    else{
+        openAllDetails(tableId, true, true);
+        action.data("open", true);
+        jQuery("#" + tableId).data("open", true);
+    }
 }
 
 /**
@@ -602,7 +863,7 @@ function deselectAllLines(collectionId) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createTree(divId, options) {
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function () {
         jQuery("#" + divId).jstree(options);
     });
 }
@@ -625,35 +886,45 @@ function createTabs(id, options) {
  * request to execute the associated attribute query
  * @param queryParameters -
  *         map of parameters that should be sent along with the query. map key gives
+ * @param localSource indicates whether the suggest options will be provided locally instead of by
+ * a query
+ * @param suggestOptions when localSource is set to true provides the suggest options
  * the name of the parameter to send, and the value gives the name of the field to pull the value from
  */
-function createSuggest(controlId, options, queryFieldId, queryParameters) {
-    options.source = function(request, response) {
-        var queryData = {};
-        queryData.methodToCall = 'performFieldSuggest';
-        queryData.skipViewInit = 'true';
-        queryData.formKey = jQuery("input#formKey").val();
-        queryData.queryTerm = request.term;
-        queryData.queryFieldId = queryFieldId;
+function createSuggest(controlId, options, queryFieldId, queryParameters, localSource, suggestOptions) {
+    if (localSource) {
+        options.source = suggestOptions;
+    }
+    else {
+        options.source = function (request, response) {
+            var queryData = {};
 
-        for (var parameter in queryParameters) {
-            queryData['queryParameter.' + parameter] = coerceValue(queryParameters[parameter]);
-        }
+            queryData.methodToCall = 'performFieldSuggest';
+            queryData.ajaxRequest = true;
+            queryData.ajaxReturnType = 'update-none';
+            queryData.formKey = jQuery("input#formKey").val();
+            queryData.queryTerm = request.term;
+            queryData.queryFieldId = queryFieldId;
 
-        jQuery.ajax({
-                    url: jQuery("form#kualiForm").attr("action"),
-                    dataType: "json",
-                    beforeSend: null,
-                    complete: null,
-                    error: null,
-                    data: queryData,
-                    success: function (data) {
-                        response(data.resultData);
-                    }
-                });
-    };
+            for (var parameter in queryParameters) {
+                queryData['queryParameter.' + parameter] = coerceValue(queryParameters[parameter]);
+            }
 
-    jQuery(document).ready(function() {
+            jQuery.ajax({
+                url:jQuery("form#kualiForm").attr("action"),
+                dataType:"json",
+                beforeSend:null,
+                complete:null,
+                error:null,
+                data:queryData,
+                success:function (data) {
+                    response(data.resultData);
+                }
+            });
+        };
+    }
+
+    jQuery(document).ready(function () {
         jQuery("#" + controlId).autocomplete(options);
     });
 }
@@ -694,23 +965,23 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
     options['manageMouseEvents'] = false;
     if (onFocusFlag) {
         // Add onfocus trigger
-        jQuery("#" + id).focus(function() {
+        jQuery("#" + id).focus(function () {
 //            if (!jQuery("#" + id).IsBubblePopupOpen()) {
-                // TODO : use data attribute to check if control
-                if (!isControlWithMessages(id)) {
-                    jQuery("#" + id).SetBubblePopupOptions(options, true);
-                    jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
-                    jQuery("#" + id).ShowBubblePopup();
-                }
+            // TODO : use data attribute to check if control
+            if (!isControlWithMessages(id)) {
+                jQuery("#" + id).SetBubblePopupOptions(options, true);
+                jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
+                jQuery("#" + id).ShowBubblePopup();
+            }
 //            }
         });
-        jQuery("#" + id).blur(function() {
+        jQuery("#" + id).blur(function () {
             jQuery("#" + id).HideBubblePopup();
         });
     }
     if (onMouseHoverFlag) {
         // Add mouse hover trigger
-        jQuery("#" + id).hover(function() {
+        jQuery("#" + id).hover(function () {
             if (!jQuery("#" + id).IsBubblePopupOpen()) {
                 if (!isControlWithMessages(id)) {
                     jQuery("#" + id).SetBubblePopupOptions(options, true);
@@ -718,7 +989,7 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
                     jQuery("#" + id).ShowBubblePopup();
                 }
             }
-        },function(event) {
+        }, function (event) {
             if (!onFocusFlag || !jQuery("#" + id).is(":focus")) {
                 var result = mouseInTooltipCheck(event, id, element, this, elementInfo.type);
                 if (result) {
@@ -904,7 +1175,8 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
     var queryData = {};
 
     queryData.methodToCall = 'performFieldQuery';
-    queryData.skipViewInit = 'true';
+    queryData.ajaxRequest = true;
+    queryData.ajaxReturnType = 'update-none';
     queryData.formKey = jQuery("input#formKey").val();
     queryData.queryFieldId = queryFieldId;
 
@@ -918,47 +1190,47 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
     }
 
     jQuery.ajax({
-                url: jQuery("form#kualiForm").attr("action"),
-                dataType: "json",
-                data: queryData,
-                beforeSend: null,
-                complete: null,
-                error: null,
-                success: function (data) {
-                    // write out return message (or blank)
-                    var returnMessageSpan = jQuery("#" + queryFieldId + "_info_message");
-                    if (returnMessageSpan.length > 0) {
-                        returnMessageSpan.html(data.resultMessage);
-                        if (data.resultMessageStyleClasses) {
-                            returnMessageSpan.addClass(data.resultMessageStyleClasses);
-                        }
-                    }
-
-                    // write out informational field values, note if data does not exist
-                    // this will clear the field values
-                    for (var returnField in returnFieldMapping) {
-                        var fieldValue = data.resultFieldData[returnField];
-                        if (!fieldValue) {
-                            fieldValue = "";
-                        }
-
-                        // check for regular fields
-                        var infoFieldSpan = jQuery("[name='" + escapeName(returnField) + "']");
-                        if (infoFieldSpan.length > 0) {
-                            infoFieldSpan.val(fieldValue);
-                            infoFieldSpan.change();
-                        }
-
-                        // check for info spans
-                        var returnFieldId = returnField.replace(/\./g, "_")
-                                .replace(/\[/g, "-lbrak-")
-                                .replace(/\]/g, "-rbrak-")
-                                .replace(/\'/g, "-quot-");
-                        infoFieldSpan = jQuery("#" + queryFieldId + "_info_" + returnFieldId);
-                        if (infoFieldSpan.length > 0) {
-                            infoFieldSpan.html(fieldValue);
-                        }
-                    }
+        url:jQuery("form#kualiForm").attr("action"),
+        dataType:"json",
+        data:queryData,
+        beforeSend:null,
+        complete:null,
+        error:null,
+        success:function (data) {
+            // write out return message (or blank)
+            var returnMessageSpan = jQuery("#" + queryFieldId + "_info_message");
+            if (returnMessageSpan.length > 0) {
+                returnMessageSpan.html(data.resultMessage);
+                if (data.resultMessageStyleClasses) {
+                    returnMessageSpan.addClass(data.resultMessageStyleClasses);
                 }
-            });
+            }
+
+            // write out informational field values, note if data does not exist
+            // this will clear the field values
+            for (var returnField in returnFieldMapping) {
+                var fieldValue = data.resultFieldData[returnField];
+                if (!fieldValue) {
+                    fieldValue = "";
+                }
+
+                // check for regular fields
+                var infoFieldSpan = jQuery("[name='" + escapeName(returnField) + "']");
+                if (infoFieldSpan.length > 0) {
+                    infoFieldSpan.val(fieldValue);
+                    infoFieldSpan.change();
+                }
+
+                // check for info spans
+                var returnFieldId = returnField.replace(/\./g, "_")
+                        .replace(/\[/g, "-lbrak-")
+                        .replace(/\]/g, "-rbrak-")
+                        .replace(/\'/g, "-quot-");
+                infoFieldSpan = jQuery("#" + queryFieldId + "_info_" + returnFieldId);
+                if (infoFieldSpan.length > 0) {
+                    infoFieldSpan.html(fieldValue);
+                }
+            }
+        }
+    });
 }

@@ -25,17 +25,17 @@ import org.kuali.rice.core.api.search.SearchExpressionUtils;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteriaContract;
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
+import org.kuali.rice.kew.impl.document.ApplicationDocumentStatusUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.lang.reflect.InvocationTargetException;
@@ -44,6 +44,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,12 +69,16 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
             "applicationDocumentId",
             "applicationDocumentStatus",
             "initiatorPrincipalName",
+            "initiatorPrincipalId",
             "viewerPrincipalName",
+            "viewerPrincipalId",
             "groupViewerId",
             "approverPrincipalName",
+            "approverPrincipalId",
             "routeNodeName",
             "documentTypeName",
             "saveName",
+            "title",
             "isAdvancedSearch"
     };
     private static final Set<String> DIRECT_TRANSLATE_FIELD_NAMES_SET =
@@ -131,6 +136,28 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
                 }
             }
         }
+
+        LinkedHashMap<String, List<String>> applicationDocumentStatusGroupings =
+                ApplicationDocumentStatusUtils.getApplicationDocumentStatusCategories(criteria.getDocumentTypeName());
+
+        String applicationDocumentStatusesValue = fieldValues.get(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS);
+        if (StringUtils.isNotBlank(applicationDocumentStatusesValue)) {
+            String[] applicationDocumentStatuses = applicationDocumentStatusesValue.split(",");
+            for (String applicationDocumentStatus : applicationDocumentStatuses) {
+                // KULRICE-7786: support for groups (categories) of application document statuses
+                if (applicationDocumentStatus.startsWith("category:")) {
+                    String categoryCode = StringUtils.remove(applicationDocumentStatus, "category:");
+                    if (applicationDocumentStatusGroupings.containsKey(categoryCode)) {
+                        criteria.getApplicationDocumentStatuses().addAll(applicationDocumentStatusGroupings.get(categoryCode));
+                    }
+                } else {
+                    criteria.getApplicationDocumentStatuses().add(applicationDocumentStatus);
+                }
+            }
+        }
+
+        // blank the deprecated field out, it's not needed.
+        criteria.setApplicationDocumentStatus(null);
 
         return criteria.build();
     }

@@ -17,6 +17,7 @@ package org.kuali.rice.kew.api.preferences;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +30,10 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
@@ -47,7 +50,47 @@ import org.w3c.dom.Element;
  */
 @XmlRootElement(name = Preferences.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Preferences.Constants.TYPE_NAME)
+@XmlType(name = Preferences.Constants.TYPE_NAME, propOrder = {
+        Preferences.Elements.REQUIRES_SAVE,
+        Preferences.Elements.EMAIL_NOTIFICATION,
+        Preferences.Elements.NOTIFY_PRIMARY_DELEGATION,
+        Preferences.Elements.NOTIFY_SECONDARY_DELEGATION,
+        Preferences.Elements.OPEN_NEW_WINDOW,
+        Preferences.Elements.SHOW_ACTION_REQUESTED,
+        Preferences.Elements.SHOW_DATE_CREATED,
+        Preferences.Elements.SHOW_DOCUMENT_STATUS,
+        Preferences.Elements.SHOW_APP_DOC_STATUS,
+        Preferences.Elements.SHOW_DOC_TYPE,
+        Preferences.Elements.SHOW_INITIATOR,
+        Preferences.Elements.SHOW_DOC_TITLE,
+        Preferences.Elements.SHOW_WORKGROUP_REQUEST,
+        Preferences.Elements.SHOW_DELEGATOR,
+        Preferences.Elements.SHOW_CLEAR_FYI,
+        Preferences.Elements.PAGE_SIZE,
+        Preferences.Elements.REFRESH_RATE,
+        Preferences.Elements.COLOR_SAVED,
+        Preferences.Elements.COLOR_INITIATED,
+        Preferences.Elements.COLOR_DISAPPROVED,
+        Preferences.Elements.COLOR_ENROUTE,
+        Preferences.Elements.COLOR_APPROVED,
+        Preferences.Elements.COLOR_FINAL,
+        Preferences.Elements.COLOR_DISAPPROVE_CANCEL,
+        Preferences.Elements.COLOR_PROCESSED,
+        Preferences.Elements.COLOR_EXCEPTION,
+        Preferences.Elements.COLOR_CANCELED,
+        Preferences.Elements.DELEGATOR_FILTER,
+        Preferences.Elements.USE_OUTBOX,
+        Preferences.Elements.SHOW_DATE_APPROVED,
+        Preferences.Elements.SHOW_CURRENT_NODE,
+        Preferences.Elements.PRIMARY_DELEGATE_FILTER,
+        Preferences.Elements.NOTIFY_ACKNOWLEDGE,
+        Preferences.Elements.NOTIFY_APPROVE,
+        Preferences.Elements.NOTIFY_COMPLETE,
+        Preferences.Elements.NOTIFY_FYI,
+        Preferences.Elements.DOCUMENT_TYPE_NOTIFICATION_PREFERENCES,
+        Preferences.Elements.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_MAP,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public final class Preferences extends AbstractDataTransferObject implements PreferencesContract {
 
     private static final long serialVersionUID = 642820621349964439L;
@@ -120,13 +163,24 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
     private final String notifyAcknowledge;
     @XmlElement(name = Elements.NOTIFY_APPROVE)
     private final String notifyApprove;
+
+    //TODO: fix this type in Rice 3.0
     @XmlElement(name = Elements.NOTIFY_COMPLETE)
-    private final String notifyComplete;
+    private final String notifyCompelte;
     @XmlElement(name = Elements.NOTIFY_FYI)
     private final String notifyFYI;
+
+    /*
+     * @Deprecated for 2.1.1.  Invalid @XmlJavaTypeAdapter.  Use documentTypeNotitificationPreferenceMap instead.
+     */
     @XmlElement(name = Elements.DOCUMENT_TYPE_NOTIFICATION_PREFERENCES)
     @XmlJavaTypeAdapter(MultiValuedStringMapAdapter.class)
+    @Deprecated
     private Map<String, String> documentTypeNotificationPreferences;
+
+    @XmlElement(name = Elements.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_MAP)
+    @XmlJavaTypeAdapter(MapStringStringAdapter.class)
+    private Map<String, String> documentTypeNotificationPreferenceMap;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -166,10 +220,11 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         this.primaryDelegateFilter = null;
         this.notifyAcknowledge = null;
         this.notifyApprove =  null;
-        this.notifyComplete = null;
+        this.notifyCompelte = null;
         this.notifyFYI = null;
-        this.documentTypeNotificationPreferences = new HashMap<String, String>();
-        
+        this.documentTypeNotificationPreferences = null;
+        this.documentTypeNotificationPreferenceMap = Collections.emptyMap();
+
         this.requiresSave = false;
     }
 
@@ -208,166 +263,204 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         this.requiresSave = builder.isRequiresSave();
         this.notifyAcknowledge = builder.getNotifyAcknowledge();
         this.notifyApprove = builder.getNotifyApprove();
-        this.notifyComplete = builder.getNotifyComplete();
+        this.notifyCompelte = builder.getNotifyComplete();
         this.notifyFYI = builder.getNotifyFYI();
-        this.documentTypeNotificationPreferences = builder.getDocumentTypeNotificationPreferences();
+        this.documentTypeNotificationPreferences = null;
+        this.documentTypeNotificationPreferenceMap = builder.getDocumentTypeNotificationPreferences();
     }
 
+    @Override
     public boolean isRequiresSave() {
         return requiresSave;
     }
 
+    @Override
     public String getEmailNotification() {
         return emailNotification;
     }
 
+    @Override
     public String getNotifyPrimaryDelegation() {
         return notifyPrimaryDelegation;
     }
 
+    @Override
     public String getNotifySecondaryDelegation() {
         return notifySecondaryDelegation;
     }
 
+    @Override
     public String getOpenNewWindow() {
         return openNewWindow;
     }
 
+    @Override
     public String getShowActionRequested() {
         return showActionRequested;
     }
 
+    @Override
     public String getShowDateCreated() {
         return showDateCreated;
     }
 
+    @Override
     public String getShowDocumentStatus() {
         return showDocumentStatus;
     }
 
+    @Override
     public String getShowAppDocStatus() {
         return showAppDocStatus;
     }
 
+    @Override
     public String getShowDocType() {
         return showDocType;
     }
 
+    @Override
     public String getShowInitiator() {
         return showInitiator;
     }
 
+    @Override
     public String getShowDocTitle() {
         return showDocTitle;
     }
 
+    @Override
     public String getShowWorkgroupRequest() {
         return showWorkgroupRequest;
     }
 
+    @Override
     public String getShowDelegator() {
         return showDelegator;
     }
 
+    @Override
     public String getShowClearFyi() {
         return showClearFyi;
     }
 
+    @Override
     public String getPageSize() {
         return pageSize;
     }
 
+    @Override
     public String getRefreshRate() {
         return refreshRate;
     }
 
+    @Override
     public String getColorSaved() {
         return colorSaved;
     }
 
+    @Override
     public String getColorInitiated() {
         return colorInitiated;
     }
 
+    @Override
     public String getColorDisapproved() {
         return colorDisapproved;
     }
 
+    @Override
     public String getColorEnroute() {
         return colorEnroute;
     }
 
+    @Override
     public String getColorApproved() {
         return colorApproved;
     }
 
+    @Override
     public String getColorFinal() {
         return colorFinal;
     }
 
+    @Override
     public String getColorDisapproveCancel() {
         return colorDisapproveCancel;
     }
 
+    @Override
     public String getColorProcessed() {
         return colorProcessed;
     }
 
+    @Override
     public String getColorException() {
         return colorException;
     }
 
+    @Override
     public String getColorCanceled() {
         return colorCanceled;
     }
 
+    @Override
     public String getDelegatorFilter() {
         return delegatorFilter;
     }
 
+    @Override
     public String getUseOutbox() {
         return useOutbox;
     }
 
+    @Override
     public String getShowDateApproved() {
         return showDateApproved;
     }
 
+    @Override
     public String getShowCurrentNode() {
         return showCurrentNode;
     }
 
+    @Override
     public String getPrimaryDelegateFilter() {
         return primaryDelegateFilter;
     }
 
+    @Override
     public String getNotifyComplete() {
-        return this.notifyComplete;
+        return this.notifyCompelte;
     }
 
+    @Override
     public String getNotifyApprove() {
         return this.notifyApprove;
     }
 
+    @Override
     public String getNotifyAcknowledge() {
         return this.notifyAcknowledge;
     }
 
+    @Override
     public String getNotifyFYI() {
         return this.notifyFYI;
     }
     
     public String getDocumentTypeNotificationPreference(String documentType) {
         String preferenceName = documentType.replace(KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_DELIMITER, ".");
-        String preferenceValue = this.documentTypeNotificationPreferences.get(preferenceName);
+        String preferenceValue = this.getDocumentTypeNotificationPreferences().get(preferenceName);
         if(StringUtils.isNotBlank(preferenceValue)) {
             return preferenceValue;
         }
         return null;
     }
-    
+
+    @Override
     public Map<String, String> getDocumentTypeNotificationPreferences() {
-        return this.documentTypeNotificationPreferences;
+        return this.documentTypeNotificationPreferenceMap == null ? this.documentTypeNotificationPreferences : this.documentTypeNotificationPreferenceMap ;
     }
 
     public boolean isUsingOutbox() {
@@ -896,6 +989,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         static final String NOTIFY_COMPLETE = "notifyCompelte";
         static final String NOTIFY_FYI = "notifyFYI";
         static final String DOCUMENT_TYPE_NOTIFICATION_PREFERENCES = "documentTypeNotificationPreferences";
+        static final String DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_MAP = "documentTypeNotificationPreferenceMap";
     }
 
     public static class KEYS {

@@ -15,38 +15,45 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 
 import java.io.Serializable;
 
 /**
- * This class represents an serializable property when generating workflow routing XML.  The path contained within this object
- * is relative to the basePath in the {@link WorkflowPropertyGroup} that contains this object.  The semantics of the path are determined
- * by the {@link PropertySerializabilityEvaluator} that evaluates whether a property is serializable. 
+ * This class represents an serializable property when generating workflow routing XML.  The path contained within this
+ * object
+ * is relative to the basePath in the {@link WorkflowPropertyGroup} that contains this object.  The semantics of the
+ * path are determined
+ * by the {@link PropertySerializabilityEvaluator} that evaluates whether a property is serializable.
  */
+@BeanTag(name = "workflowProperty")
 public class WorkflowProperty implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected String path = null;
-    
+
     /**
      * Default constructor, sets path to null
-     * 
      */
     public WorkflowProperty() {}
 
     /**
-     * Returns the path to the property that is serializable, relative to the {@link WorkflowPropertyGroup} that contains this object
-     * 
+     * Returns the path to the property that is serializable, relative to the {@link WorkflowPropertyGroup} that
+     * contains this object
+     *
      * @return
      */
+    @BeanTagAttribute(name = "path")
     public String getPath() {
         return this.path;
     }
 
     /**
-     * Sets the path to the property that is serializable, relative to the {@link WorkflowPropertyGroup} that contains this object
-     * 
+     * Sets the path to the property that is serializable, relative to the {@link WorkflowPropertyGroup} that contains
+     * this object
+     *
      * @param path
      */
     public void setPath(String path) {

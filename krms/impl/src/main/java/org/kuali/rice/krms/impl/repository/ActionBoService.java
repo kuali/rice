@@ -18,6 +18,9 @@ package org.kuali.rice.krms.impl.repository;
 import java.util.List;
 
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * This is the interface for accessing KRMS repository Action related
@@ -35,6 +38,7 @@ public interface ActionBoService {
      * @throws IllegalArgumentException if the action is null
      * @throws IllegalStateException if the action already exists in the system
      */
+    @CacheEvict(value={ActionDefinition.Cache.NAME}, allEntries = true)
 	public ActionDefinition createAction(ActionDefinition action);
 	
     /**
@@ -43,7 +47,8 @@ public interface ActionBoService {
      * @param action  The Action to update
      * @throws IllegalArgumentException if the Action is null
      * @throws IllegalStateException if the Action does not exists in the system
-     */	
+     */
+    @CacheEvict(value={ActionDefinition.Cache.NAME}, allEntries = true)
 	public void updateAction(ActionDefinition action);
 	
     /**
@@ -54,6 +59,7 @@ public interface ActionBoService {
      * A null reference is returned if an invalid or non-existent id is supplied.
      * @throws IllegalArgumentException if the actionId is null or blank.
      */
+    @Cacheable(value= ActionDefinition.Cache.NAME, key="'actionId=' + #p0")
 	public ActionDefinition getActionByActionId(String actionId);
 	
     /**
@@ -68,6 +74,7 @@ public interface ActionBoService {
      * @throws IllegalArgumentException if the either the name or the namespace
      * is null or blank.
      */
+    @Cacheable(value= ActionDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'namespace=' + #p1")
 	public ActionDefinition getActionByNameAndNamespace(String name, String namespace);
 
     /**
@@ -81,6 +88,7 @@ public interface ActionBoService {
      * A null reference is returned if an invalid or ruleId is supplied.
      * @throws IllegalArgumentException if the ruleId is null or blank.
      */
+    @Cacheable(value= ActionDefinition.Cache.NAME, key="'ruleId=' + #p0")
 	public List<ActionDefinition> getActionsByRuleId(String ruleId);
 
     /**
@@ -95,6 +103,7 @@ public interface ActionBoService {
      * @throws IllegalArgumentException if the ruleId is null or blank. Or 
      * if the sequenceNumber is null.
      */
+    @Cacheable(value= ActionDefinition.Cache.NAME, key="'ruleId=' + #p0 + '|' + 'sequenceNumber=' + #p1")
 	public ActionDefinition getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber);
 	
 //	public ActionAttribute createActionAttribute(ActionAttribute actionAttribute);

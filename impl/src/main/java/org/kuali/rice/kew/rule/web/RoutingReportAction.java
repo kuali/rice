@@ -30,7 +30,6 @@ import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.routeheader.AttributeDocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -38,13 +37,13 @@ import org.kuali.rice.kew.routelog.web.RouteLogAction;
 import org.kuali.rice.kew.routelog.web.RouteLogForm;
 import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttributeRows;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -360,9 +359,11 @@ public class RoutingReportAction extends KewKualiAction {
             if (routingReportForm.getRuleTemplateId() != null) {
                 RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingReportForm.getRuleTemplateId());
                 routingReportForm.getRuleTemplateAttributes().clear();
-                loadRuleTemplateOnForm(ruleTemplate, routingReportForm, request, false);
-                if (ruleTemplate.getDelegationTemplate() != null) {
-                    loadRuleTemplateOnForm(ruleTemplate.getDelegationTemplate(), routingReportForm, request, true);
+                if (ruleTemplate != null) {
+                    loadRuleTemplateOnForm(ruleTemplate, routingReportForm, request, false);
+                    if (ruleTemplate.getDelegationTemplate() != null) {
+                        loadRuleTemplateOnForm(ruleTemplate.getDelegationTemplate(), routingReportForm, request, true);
+                    }
                 }
             }
         }
@@ -381,13 +382,11 @@ public class RoutingReportAction extends KewKualiAction {
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
 			}
-			WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+			
+            WorkflowRuleAttributeRows workflowRuleAttributeRows =
+                    KEWServiceLocator.getWorkflowRuleAttributeMediator().getRoutingDataRows(fieldValues, ruleTemplateAttribute);
 
-			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-			if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
-			}
-			for (Row row : workflowAttribute.getRoutingDataRows()) {
+            for (Row row : workflowRuleAttributeRows.getRows()) {
 
 				List<Field> fields = new ArrayList<Field>();
 				for (Object element2 : row.getFields()) {
@@ -401,10 +400,8 @@ public class RoutingReportAction extends KewKualiAction {
 					fieldValues.put(field.getPropertyName(), field.getPropertyValue());
 				}
 			}
-
-			workflowAttribute.validateRuleData(fieldValues);// populate attribute
-			List<Row> rdRows = workflowAttribute.getRoutingDataRows();
-			for (Row row : rdRows)
+			            
+			for (Row row : workflowRuleAttributeRows.getRows())
 			{
 				List<Field> fields = new ArrayList<Field>();
 				List<Field> rowFields = row.getFields();

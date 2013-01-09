@@ -24,6 +24,7 @@ import org.kuali.rice.krms.impl.ui.AgendaEditor;
 import org.kuali.rice.krms.impl.util.KrmsRetriever;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +39,10 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
     public AgendaEditor retrieveDataObject(Map fieldValues) {
         AgendaEditor agendaEditor = null;
 
-        String agendaId = (String) fieldValues.get("id");
-        AgendaBo agenda = getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
+        Map<String, Object> primaryKeys = new HashMap<String, Object>();
+        primaryKeys.put("id", fieldValues.get("id"));
+//        String agendaId = (String) fieldValues.get("id");
+        AgendaBo agenda = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, primaryKeys);
         if (agenda != null) {
             agendaEditor = new AgendaEditor();
             agendaEditor.setAgenda(agenda);

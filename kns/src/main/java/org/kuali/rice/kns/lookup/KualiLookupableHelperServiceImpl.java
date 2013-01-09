@@ -244,7 +244,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     	}
 
         // If this class is an EBO, just call the module service to get the results
-        if ( ExternalizableBusinessObject.class.isAssignableFrom( getBusinessObjectClass() ) ) {
+        if ( ExternalizableBusinessObjectUtils.isExternalizableBusinessObject( getBusinessObjectClass() ) ) {
         	ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
         	BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(getBusinessObjectClass());
         	Map<String,String> filteredFieldValues = new HashMap<String, String>();

@@ -83,7 +83,7 @@
 	                        <c:param name="methodToCall" value="start"/>
 	                        <c:param name="docFormKey" value="88888888"/>
 	                        <c:param name="documentType.name" value="${documentType.name}"/>
-	                        <c:param name="template.name" value="${routeLevel.ruleTemplate.name}"/>
+	                        <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
 	                      </c:url>" target="_blank">Search</a>
 	                    <c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
 	                      &nbsp;
@@ -93,9 +93,9 @@
 	                          <c:param name="hideReturnLink" value="false"/>
 	                          <c:param name="methodToCall" value="addDelegationRule"/>
 	                          <c:param name="docFormKey" value="88888888"/>
-	                          <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
-	                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
-	                          <c:param name="delegationRuleBaseValues.ruleTemplate.id" value="${routeLevel.ruleTemplate.id}"/>
+	                          <c:param name="delegationRule.documentType.name" value="${documentType.name}"/>
+	                          <c:param name="delegationRule.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
+	                          <c:param name="delegationRule.ruleTemplate.id" value="${routeLevel.ruleTemplate.id}"/>
 	                        </c:url>" target="_blank">Add Delegation</a>&nbsp;
 	                      <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
 	                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
@@ -103,8 +103,8 @@
 	                          <c:param name="hideReturnLink" value="true"/>
 	                          <c:param name="methodToCall" value="start"/>
 	                          <c:param name="docFormKey" value="88888888"/>
-	                          <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
-	                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
+	                          <c:param name="delegationRule.documentType.name" value="${documentType.name}"/>
+	                          <c:param name="delegationRule.ruleTemplate.name" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
 	                        </c:url>" target="_blank">Search Delegations</a>
 	                    </c:if>
 	                  </td>
@@ -155,7 +155,7 @@
                         <c:param name="methodToCall" value="start"/>
                         <c:param name="docFormKey" value="88888888"/>
                         <c:param name="documentType.name" value="${documentType.name}"/>
-                        <c:param name="template.name" value="${routeLevel.ruleTemplate.name}"/>
+                        <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
                       </c:url>" target="_blank">Search</a>
                     <c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
                       &nbsp;
@@ -165,9 +165,9 @@
                           <c:param name="hideReturnLink" value="false"/>
                           <c:param name="methodToCall" value="addDelegationRule"/>
                           <c:param name="docFormKey" value="88888888"/>
-                          <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
-                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
-                          <c:param name="delegationRuleBaseValues.ruleTemplate.id" value="${routeLevel.ruleTemplate.id}"/>
+                          <c:param name="delegationRule.documentType.name" value="${documentType.name}"/>
+                          <c:param name="delegationRule.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
+                          <c:param name="delegationRule.ruleTemplate.id" value="${routeLevel.ruleTemplate.id}"/>
                         </c:url>" target="_blank">Add Delegation</a>&nbsp;
                       <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
                           <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
@@ -175,8 +175,8 @@
                           <c:param name="hideReturnLink" value="true"/>
                           <c:param name="methodToCall" value="start"/>
                           <c:param name="docFormKey" value="88888888"/>
-                          <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
-                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
+                          <c:param name="delegationRule.documentType.name" value="${documentType.name}"/>
+                          <c:param name="delegationRule.ruleTemplate.name" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
                         </c:url>" target="_blank">Search Delegations</a>
                     </c:if>
                   </td>

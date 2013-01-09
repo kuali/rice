@@ -39,8 +39,8 @@ public class RESTServiceExporter extends AbstractWebServiceExporter implements S
 
 	private static final Logger LOG = Logger.getLogger(RESTServiceExporter.class);
 
-	public RESTServiceExporter(RestServiceDefinition serviceDefinition, Bus cxfBus, ServerRegistry cxfServerRegistry) {
-		super(serviceDefinition, cxfBus, cxfServerRegistry);
+	public RESTServiceExporter(RestServiceDefinition serviceDefinition, Bus cxfBus) {
+		super(serviceDefinition, cxfBus);
 	}
 
 	/**

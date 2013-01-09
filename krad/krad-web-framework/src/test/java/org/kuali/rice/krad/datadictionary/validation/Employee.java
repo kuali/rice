@@ -17,8 +17,8 @@ package org.kuali.rice.krad.datadictionary.validation;
 
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Employee {
 	private String employeeId;
@@ -86,7 +86,7 @@ public class Employee {
 	public void setEmployeeDetails(Person employeeDetails) {
 		this.employeeDetails = employeeDetails;
 	}
-	
-	
-	
+
+
+
 }

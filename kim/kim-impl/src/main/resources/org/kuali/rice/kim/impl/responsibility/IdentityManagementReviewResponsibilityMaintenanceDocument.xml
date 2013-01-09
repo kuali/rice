@@ -73,7 +73,8 @@
   <bean id="ReviewResponsibilityMaintenanceDocument-Details-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="documentTypeName"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="documentTypeName"  p:overrideLookupClass="org.kuali.rice.kew.doctype.bo.DocumentType"
+              p:overrideFieldConversions="name:documentTypeName" />
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="routeNodeName"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="actionDetailsAtRoleMemberLevel"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="required"/>

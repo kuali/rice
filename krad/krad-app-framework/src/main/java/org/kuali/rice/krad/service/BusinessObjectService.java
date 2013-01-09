@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This interface defines methods that a BusinessObjectService must provide.
+ * Defines methods that a BusinessObjectService must provide
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface BusinessObjectService {
 
@@ -36,7 +36,6 @@ public interface BusinessObjectService {
      * BusinessObject.
      * 
      * @param bo A BusinessObject instance or descendent that you wish to be stored.
-     * 
      */
     public <T extends PersistableBusinessObject> T save(T bo);
 
@@ -47,7 +46,6 @@ public interface BusinessObjectService {
      * BusinessObject.
      * 
      * @param businessObjects A List<PersistableBusinessObject> of objects to persist.
-     * 
      */
     public List<? extends PersistableBusinessObject> save(List<? extends PersistableBusinessObject> businessObjects);
 
@@ -58,7 +56,6 @@ public interface BusinessObjectService {
      * BusinessObject.
      * 
      * @param bo A BusinessObject instance or descendent that you wish to be stored.
-     * 
      */
     public PersistableBusinessObject linkAndSave(PersistableBusinessObject bo);
 

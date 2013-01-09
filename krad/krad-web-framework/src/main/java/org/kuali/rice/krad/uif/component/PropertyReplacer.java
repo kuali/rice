@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,21 +43,22 @@ import java.util.Map;
  * <code>InputField</code>. You can define the field with a text control, then include a property replacer as
  * follows:
  * <pre>
-        <bean parent="PropertyReplacer" p:propertyName="control"
-              p:condition="field1 eq '10985'" p:replacement-ref="RadioControl"/>
+ * <bean parent="PropertyReplacer" p:propertyName="control"
+ * p:condition="field1 eq '10985'" p:replacement-ref="RadioControl"/>
  *
  * </pre>
  *
  * Note <code>Component</code> contains a <code>List</code> or property replacers which will be evaluated in the order
- * contained within the list. So in the above example if we wanted to now add a further condition which sets the control
+ * contained within the list. So in the above example if we wanted to now add a further condition which sets the
+ * control
  * to a checkbox, we would just add another property replacer bean.
  * <pre>
  *   <property name="propertyReplacers">
-       <list>
-        <bean parent="PropertyReplacer" p:propertyName="control"
-              p:condition="field1 eq '10985'" p:replacement-ref="RadioControl"/>
-        <bean parent="PropertyReplacer" p:propertyName="control"
-              p:condition="field1 eq '11456'" p:replacement-ref="CheckboxControl"/>
+ * <list>
+ * <bean parent="PropertyReplacer" p:propertyName="control"
+ * p:condition="field1 eq '10985'" p:replacement-ref="RadioControl"/>
+ * <bean parent="PropertyReplacer" p:propertyName="control"
+ * p:condition="field1 eq '11456'" p:replacement-ref="CheckboxControl"/>
  *     </list>
  *   </property>
  * </pre>
@@ -60,10 +68,14 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PropertyReplacer extends ConfigurableBase implements Serializable {
+@BeanTags({@BeanTag(name = "propertyReplacer", parent = "Uif-ConditionalBeanPropertyReplacer"),
+        @BeanTag(name = "conditionalBeanPropertyReplacer", parent = "Uif-ConditionalBeanPropertyReplacer")})
+public class PropertyReplacer extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -8405429643299461398L;
 
     private String propertyName;
+
+    @KeepExpression
     private String condition;
     private Object replacement;
 
@@ -84,6 +96,7 @@ public class PropertyReplacer extends ConfigurableBase implements Serializable {
      */
     public List<Component> getNestedComponents() {
         ArrayList<Component> nestedComponents = new ArrayList<Component>();
+
         if (replacement instanceof Component) {
             nestedComponents.add(((Component) replacement));
         } else if (replacement instanceof List) {
@@ -114,6 +127,7 @@ public class PropertyReplacer extends ConfigurableBase implements Serializable {
      *
      * @return String property name to set
      */
+    @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
         return this.propertyName;
     }
@@ -147,6 +161,7 @@ public class PropertyReplacer extends ConfigurableBase implements Serializable {
      * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService
      * @see org.kuali.rice.krad.uif.UifConstants.ContextVariableNames
      */
+    @BeanTagAttribute(name = "condition")
     public String getCondition() {
         return this.condition;
     }
@@ -171,6 +186,7 @@ public class PropertyReplacer extends ConfigurableBase implements Serializable {
      *
      * @return Object instance to set
      */
+    @BeanTagAttribute(name = "replacement", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Object getReplacement() {
         return this.replacement;
     }
@@ -184,4 +200,26 @@ public class PropertyReplacer extends ConfigurableBase implements Serializable {
         this.replacement = replacement;
     }
 
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     */
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean("PropertyReplacer", getPropertyName());
+
+        // Checking that required fields are set
+        if (getPropertyName() == null || getCondition() == null || getReplacement() == null) {
+            String currentValues[] = {"propertyName =" + getPropertyName(), "condition =" + getCondition(),
+                    "replacement =" + getReplacement()};
+            tracer.createWarning("PropertyName, condition and replacement should be set", currentValues);
+        }
+
+        // Validating Spring EL in condition
+        if (!Validator.validateSpringEL(getCondition())) {
+            String currentValues[] = {"condition =" + getCondition()};
+            tracer.createError("Invalid Spring Expression Language", currentValues);
+        }
+    }
 }

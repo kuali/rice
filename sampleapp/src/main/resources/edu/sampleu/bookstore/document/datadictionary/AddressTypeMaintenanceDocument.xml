@@ -32,6 +32,7 @@
     </property>
   </bean>
   <bean id="BSAddressType-MaintenanceView" parent="Uif-MaintenanceView">
+  <property name="headerText" value="Address Type Maintenance"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BSAddressType"/>
     <property name="items">
       <list merge="true">

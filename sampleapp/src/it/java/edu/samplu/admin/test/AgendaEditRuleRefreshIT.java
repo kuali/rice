@@ -16,57 +16,47 @@
 
 package edu.samplu.admin.test;
 
-import com.thoughtworks.selenium.*;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-import java.util.regex.Pattern;
+
+import static org.junit.Assert.fail;
 
 /**
  * test that repeated ajax refreshes work
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AgendaEditRuleRefreshIT extends SeleneseTestCase {
-	@Before
-	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-		selenium.start();
-	}
+public class AgendaEditRuleRefreshIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
+    }
 
 	@Test
     /**
      * test that repeated ajax refreshes work
      */
 	public void testAgendaEditRuleRefreshIT() throws Exception {
-		selenium.open("/kr-dev/portal.do");
-		selenium.type("name=__login_user", "admin");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=Agenda Lookup");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("id=32");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("id=194_line0");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("//li[@id='473_node_0_parent_root']/a");
-		selenium.click("id=472_node_0_parent_node_0_parent_node_0_parent_root_span");
-		selenium.click("id=361");
+		waitAndClick("link=Agenda Lookup");
+		waitForPageToLoad();
+		selectFrame("iframeportlet");
+		waitAndClick("css=button:contains(earch)"); //  waitAndClick("id=32");
+        Thread.sleep(3000);
+		waitAndClick("css=a[title='edit Agenda Definition withAgenda Id=T1000 ']", "Does user have edit permissions?");  // waitAndClick("id=194_line0");
+        checkForIncidentReport("");
+		waitAndClick("css=div.uif-message:contains(Rule1: stub rule lorem ipsum)"); // waitAndClick("//li[@id='473_node_0_parent_root']/a");
+        waitAndClick("css=//li/a/span.uif-message:contains('When TRUE')");
+		waitAndClick("link=[-] collapse all");
 
         // click refresh  several times
         for (int i=0; i<6; i++) {
             for (int second = 0;; second++) {
                 if (second >= 60) fail("timeout");
-                try { if (selenium.isElementPresent("id=440")) break; } catch (Exception e) {}
+                try { if (isElementPresent("css=button.kr-refresh-button")) break; } catch (Exception e) {}
                 Thread.sleep(1000);
             }
 
-            selenium.click("id=440");
+            waitAndClick("css=button.kr-refresh-button");
         }
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		selenium.stop();
 	}
 }

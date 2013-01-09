@@ -18,6 +18,9 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -37,7 +40,10 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TreeGroup extends Group implements DataBinding{
+@BeanTags({@BeanTag(name = "treeGroup", parent = "Uif-TreeGroup"),
+        @BeanTag(name = "treeSection", parent = "Uif-TreeSection"),
+        @BeanTag(name = "treeSubSection", parent = "Uif-TreeSubSection")})
+public class TreeGroup extends Group implements DataBinding {
     private static final long serialVersionUID = 5841343037089286740L;
 
     private String propertyName;
@@ -65,7 +71,6 @@ public class TreeGroup extends Group implements DataBinding{
      * <li>Set defaults for binding</li>
      * <li>Calls view helper service to initialize prototypes</li>
      * </ul>
-     *
      */
     @Override
     public void performInitialization(View view, Object model) {
@@ -78,39 +83,6 @@ public class TreeGroup extends Group implements DataBinding{
         }
 
         // TODO: set object path for prototypes equal to the tree group object path?
-
-        initializeNodePrototypeComponents(view, model);
-    }
-
-    protected void initializeNodePrototypeComponents(View view, Object model) {
-        view.getViewHelperService().performComponentInitialization(view, model,
-                defaultNodePrototype.getLabelPrototype());
-        view.getViewHelperService().performComponentInitialization(view, model,
-                defaultNodePrototype.getDataGroupPrototype());
-
-        if (nodePrototypeMap != null) {
-            for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodePrototypeMap.entrySet()) {
-                NodePrototype prototype = prototypeEntry.getValue();
-                if (prototype != null) {
-
-                    if (prototype.getLabelPrototype() != null) {
-                        view.getViewHelperService().performComponentInitialization(view, model,
-                                prototype.getLabelPrototype());
-                    } else {
-                        throw new IllegalStateException("encountered null NodePrototype.labelPrototype");
-                    }
-
-                    if (prototype.getDataGroupPrototype() != null) {
-                        view.getViewHelperService().performComponentInitialization(view, model,
-                                prototype.getDataGroupPrototype());
-                    } else {
-                        throw new IllegalStateException("encountered null NodePrototype.dataGroupPrototype");
-                    }
-                } else {
-                    throw new IllegalStateException("encountered null NodePrototype");
-                }
-            }
-        }
     }
 
     @Override
@@ -142,8 +114,8 @@ public class TreeGroup extends Group implements DataBinding{
         Tree<Group, Message> treeGroups = new Tree<Group, Message>();
 
         String bindingPrefix = getBindingInfo().getBindingPrefixForNested();
-        Node<Group, Message> rootNode =
-                buildTreeNode(treeData.getRootElement(), bindingPrefix + /* TODO: hack */ ".rootElement", "root");
+        Node<Group, Message> rootNode = buildTreeNode(treeData.getRootElement(),
+                bindingPrefix + /* TODO: hack */ ".rootElement", "root");
         treeGroups.setRootElement(rootNode);
 
         setTreeGroups(treeGroups);
@@ -278,6 +250,7 @@ public class TreeGroup extends Group implements DataBinding{
         }
     }
 
+    @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
         return propertyName;
     }
@@ -286,6 +259,7 @@ public class TreeGroup extends Group implements DataBinding{
         this.propertyName = propertyName;
     }
 
+    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return bindingInfo;
     }
@@ -297,6 +271,7 @@ public class TreeGroup extends Group implements DataBinding{
     /**
      * @return the defaultNodePrototype
      */
+    @BeanTagAttribute(name = "defaultNodePrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public NodePrototype getDefaultNodePrototype() {
         return this.defaultNodePrototype;
     }
@@ -311,6 +286,7 @@ public class TreeGroup extends Group implements DataBinding{
     /**
      * @return the nodePrototypeMap
      */
+    @BeanTagAttribute(name = "NodePrototypeMap", type = BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<Class<?>, NodePrototype> getNodePrototypeMap() {
         return this.nodePrototypeMap;
     }
@@ -322,6 +298,7 @@ public class TreeGroup extends Group implements DataBinding{
         this.nodePrototypeMap = nodePrototypeMap;
     }
 
+    @BeanTagAttribute(name = "treeGroups", type = BeanTagAttribute.AttributeType.MAP2BEAN)
     public Tree<Group, Message> getTreeGroups() {
         return treeGroups;
     }
@@ -330,6 +307,7 @@ public class TreeGroup extends Group implements DataBinding{
         this.treeGroups = treeGroups;
     }
 
+    @BeanTagAttribute(name = "tree", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public org.kuali.rice.krad.uif.widget.Tree getTree() {
         return tree;
     }

@@ -17,7 +17,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 /**
  * Constraint that restricts the length of a string to some predefined maximum and/or minimum
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
@@ -44,5 +44,5 @@ public interface LengthConstraint extends DataTypeConstraint {
      * @return Integer specifying minimum length of field
      */
     Integer getMinLength();
-	
+
 }

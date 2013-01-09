@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.core.api.cache;
 
-
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-
 import javax.jws.soap.SOAPBinding;
 import java.util.Collection;
 
@@ -49,5 +47,5 @@ public interface CacheAdminService {
      */
     @WebMethod(operationName = "flush")
     void flush(@WebParam(name = "cacheTargets") Collection<CacheTarget> cacheTargets) throws RiceIllegalArgumentException;
-    
+
 }

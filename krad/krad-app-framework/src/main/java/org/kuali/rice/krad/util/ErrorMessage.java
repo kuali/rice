@@ -29,15 +29,20 @@ import java.util.Arrays;
 public class ErrorMessage implements Serializable {
     private static final long serialVersionUID = 4397449554212875250L;
 
+    private String namespaceCode;
+    private String componentCode;
+
     private String errorKey;
     private String[] messageParameters;
+
     private String messagePrefixKey;
     private String[] messagePrefixParameters;
+
     private String messageSuffixKey;
     private String[] messageSuffixParameters;
 
     /**
-     * Default constructor, required by AutoPopulatingList
+     * Default constructor
      */
     public ErrorMessage() {
     }
@@ -45,16 +50,71 @@ public class ErrorMessage implements Serializable {
     /**
      * Convenience constructor which sets both fields
      *
-     * @param errorKey
-     * @param messageParameters
+     * @param errorKey - message key for the error
+     * @param messageParameters - zero or more parameters for the message text
      */
     public ErrorMessage(String errorKey, String... messageParameters) {
         if (StringUtils.isBlank(errorKey)) {
-            throw new IllegalArgumentException("invalid (blank) errorKey");
+            StringBuilder builder = null;
+            if (messageParameters != null && messageParameters.length > 0) {
+                builder = new StringBuilder("  Message parameters are: ");
+                for (String param: messageParameters) {
+                    builder.append(param).append("\n");
+                }
+            } else {
+                builder = new StringBuilder("  Message parameters were null or empty.");
+            }
+            throw new IllegalArgumentException("invalid (blank) errorKey." + builder.toString());
         }
 
         setErrorKey(errorKey);
         setMessageParameters((String[]) ArrayUtils.clone(messageParameters));
+    }
+
+    /**
+     * Namespace code (often an application or module code) the error message is associated with
+     *
+     * <p>
+     * Used with the component code and error key for retrieving the message text (and prefix, suffix). If null,
+     * the default namespace code will be used
+     * </p>
+     *
+     * @return String error namespace code
+     */
+    public String getNamespaceCode() {
+        return namespaceCode;
+    }
+
+    /**
+     * Setter for the error's associated namespace code
+     *
+     * @param namespaceCode
+     */
+    public void setNamespaceCode(String namespaceCode) {
+        this.namespaceCode = namespaceCode;
+    }
+
+    /**
+     * A code within the namespace that identifies a component or group the error message is associated with
+     *
+     * <p>
+     * Used with the namespace and error key for retrieving the message text (and prefix, suffix). If null,
+     * the default component code will be used
+     * </p>
+     *
+     * @return String component code
+     */
+    public String getComponentCode() {
+        return componentCode;
+    }
+
+    /**
+     * Setter for the error's associated component code
+     *
+     * @param componentCode
+     */
+    public void setComponentCode(String componentCode) {
+        this.componentCode = componentCode;
     }
 
     /**

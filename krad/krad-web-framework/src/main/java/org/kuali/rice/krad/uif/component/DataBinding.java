@@ -18,12 +18,12 @@ package org.kuali.rice.krad.uif.component;
 /**
  * Components that bind to a model (hold model data) should implement this
  * interface
- * 
+ *
  * <p>
  * Provides access to the <code>BindingInfo</code> object for the component that
  * contains binding configuration
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DataBinding {
@@ -31,7 +31,7 @@ public interface DataBinding {
 	/**
 	 * Returns the <code>BindingInfo</code> instance that is configured for the
 	 * component
-	 * 
+	 *
 	 * @return BindingInfo
 	 * @see org.kuali.rice.krad.uif.component.BindingInfo
 	 */
@@ -47,7 +47,7 @@ public interface DataBinding {
 	/**
 	 * Name of the property (relative to the parent object) the component binds
 	 * to
-	 * 
+	 *
 	 * @return String property name
 	 */
 	public String getPropertyName();

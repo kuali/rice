@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentViewAuthorizerBase;
 import org.kuali.rice.krad.document.DocumentViewPresentationControllerBase;
@@ -26,14 +28,15 @@ import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * View type for KRAD documents
- * 
+ *
  * <p>
  * Provides commons configuration and default behavior applicable to documents
  * in the KRAD module.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "documentView", parent = "Uif-DocumentView")
 public class DocumentView extends FormView {
 	private static final long serialVersionUID = 2251983409572774175L;
 
@@ -92,6 +95,8 @@ public class DocumentView extends FormView {
                         documentEntry.getDocumentPresentationControllerClass());
             }
         }
+
+        getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDocumentClass());
     }
 
     /**
@@ -116,6 +121,7 @@ public class DocumentView extends FormView {
      *
      * @return Class<? extends Document> the document class
      */
+    @BeanTagAttribute(name="documentClass")
 	public Class<? extends Document> getDocumentClass() {
 		return this.documentClass;
 	}
@@ -134,6 +140,7 @@ public class DocumentView extends FormView {
      *
      * @return boolean - true if the document view allows note attachments
      */
+    @BeanTagAttribute(name="allowsNoteAttachments")
 	public boolean isAllowsNoteAttachments() {
 		return this.allowsNoteAttachments;
 	}
@@ -152,6 +159,7 @@ public class DocumentView extends FormView {
      *
      * @return boolean - true if the document view allows note FYI
      */
+    @BeanTagAttribute(name="allowsNoteFYI")
 	public boolean isAllowsNoteFYI() {
 		return this.allowsNoteFYI;
 	}
@@ -170,6 +178,7 @@ public class DocumentView extends FormView {
      *
      * @return boolean - true if the document view displays the topic field in notes
      */
+    @BeanTagAttribute(name="displayTopicFieldInNotes")
 	public boolean isDisplayTopicFieldInNotes() {
 		return this.displayTopicFieldInNotes;
 	}
@@ -188,6 +197,7 @@ public class DocumentView extends FormView {
      *
      * @return Class<? extends KeyValuesFinder> attachment types values finder class
      */
+    @BeanTagAttribute(name="attachmentTypesValuesFinderClass",type = BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Class<? extends KeyValuesFinder> getAttachmentTypesValuesFinderClass() {
 		return this.attachmentTypesValuesFinderClass;
 	}

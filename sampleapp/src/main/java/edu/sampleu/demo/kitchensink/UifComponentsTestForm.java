@@ -17,6 +17,8 @@ package edu.sampleu.demo.kitchensink;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.kim.api.identity.Person;
@@ -25,8 +27,10 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -166,6 +170,12 @@ public class UifComponentsTestForm extends UifFormBase {
     private Integer field131;
     private String field132;
     private String field133;
+    private String field134 = "triggered by focus or and mouse over";
+
+    private String richMessageField = "[color=green][b]Message[/b][/color]";
+    private String richMessageField2 =
+            "Form Message with input specified by id-[id=Demo-SampleMessageInput3] and inlineComponent index number-[0]";
+    private String testValueField = "Sample Data";
 
     private String testPersonId;
     private Person testPerson;
@@ -177,6 +187,15 @@ public class UifComponentsTestForm extends UifFormBase {
     private String mField1 = "SecretInfo555";
     private String mField2 = "SecretInfo111";
     private String mField3 = "SecretInfo222";
+    private String fakeTotal = "123(server value)";
+
+    private List<String> stringList1;
+    private List<String> stringList2;
+    private List<String> stringList3 = new ArrayList<String>(Arrays.asList("String1", "String2", "String3", "String4"));
+    private List<String> stringList4 = new ArrayList<String>(Arrays.asList("String1", "String2", "String3", "String4"));
+    private List<Integer> intList = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
+    private List<Double> doubleList = new ArrayList<Double>(Arrays.asList(1.1, 2.2, 3.3, 4.4));
+    private List<Date> dateList;
 
     private MultipartFile fileUpload;
 
@@ -188,6 +207,10 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list4 = new ArrayList<UITestObject>();
     private List<UITestObject> list5 = new ArrayList<UITestObject>();
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
+    private List<UITestObject> groupedList1 = new ArrayList<UITestObject>();
+    private List<UITestObject> groupedList2 = new ArrayList<UITestObject>();
+    private List<UITestObject> groupedList3 = new ArrayList<UITestObject>();
+    private List<UITestObject> doubleGroupedList = new ArrayList<UITestObject>();
     private List<UITestObject> list1generated = new ArrayList<UITestObject>();
     private List<UITestObject> list2generated = new ArrayList<UITestObject>();
     private List<UITestObject> list3generated = new ArrayList<UITestObject>();
@@ -216,14 +239,22 @@ public class UifComponentsTestForm extends UifFormBase {
         super();
 
         uiTestObject = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
-        
 
-
-        list1.add(new UITestObject("A", "B", "C", "D"));
+        list1.add(new UITestObject("5", "6", "7", "8"));
+        UITestObject obj1 = new UITestObject("1", "2", "3", "4");
+        obj1.setStringList(null);
+        list1.add(obj1);
+        UITestObject obj2 = new UITestObject("9", "10", "11", "12");
+        obj2.setStringList(new ArrayList<String>());
+        list1.add(obj2);
+        list1.add(new UITestObject("13", "14", "15", "16"));
+        list1.add(new UITestObject("17", "18", "19", "20"));
+        list1.add(new UITestObject("5", "6", "7", "8"));
         list1.add(new UITestObject("1", "2", "3", "4"));
-        list1.add(new UITestObject("W", "X", "Y", "Z"));
-        list1.add(new UITestObject("a", "b", "c", "d"));
-        list1.add(new UITestObject("a", "s", "d", "f"));
+        list1.add(new UITestObject("9", "10", "11", "12"));
+        list1.add(new UITestObject("13", "14", "15", "16"));
+        list1.add(new UITestObject("213", "143", "151", "126"));
+        list1.add(new UITestObject("133", "144", "155", "156"));
 
         list2.add(new UITestObject("A", "B", "C", "D"));
         list2.add(new UITestObject("1", "2", "3", "4"));
@@ -232,8 +263,14 @@ public class UifComponentsTestForm extends UifFormBase {
         list2.add(new UITestObject("a", "s", "d", "f"));
 
         list3.add(new UITestObject("A", "B", "C", "D"));
+        list3.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        list3.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        list3.get(0).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
         list3.add(new UITestObject("1", "2", "3", "4"));
+        list3.get(1).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        list3.get(1).getSubList().add(new UITestObject("1", "2", "3", "4"));
         list3.add(new UITestObject("W", "X", "Y", "Z"));
+        list3.get(2).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
 
         list4.add(new UITestObject("A", "B", "C", "D"));
         list4.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
@@ -243,21 +280,95 @@ public class UifComponentsTestForm extends UifFormBase {
         list4.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
         list4.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
 
+        //triple nesting
         list5.add(new UITestObject("a", "a", "a", "a"));
         list5.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("a3", "3", "3", "3"));
+        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("a3", "3", "3", "3"));
         list5.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
         list5.add(new UITestObject("b", "b", "b", "b"));
         list5.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
+        list5.get(1).getSubList().get(0).getSubList().add(new UITestObject("a23", "3", "3", "3"));
+        list5.get(1).getSubList().get(0).getSubList().add(new UITestObject("a23", "3", "3", "3"));
         list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
+        list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
+        list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
+        
+        groupedList1.add(new UITestObject("A", "100", "200", "300"));
+        groupedList1.add(new UITestObject("A", "101", "200", "300"));
+        groupedList1.add(new UITestObject("A", "102", "200", "300"));
+        groupedList1.add(new UITestObject("A", "103", "200", "300"));
+        groupedList1.add(new UITestObject("A", "104", "200", "300"));
 
-        for (int i=0; i<50; i++) {
-            list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(1),
-                    RandomStringUtils.randomAlphanumeric(1),
-                    RandomStringUtils.randomAlphanumeric(1),
-                    RandomStringUtils.randomAlphanumeric(1)));
+        groupedList1.add(new UITestObject("B", "100", "200", "300"));
+        groupedList1.add(new UITestObject("B", "101", "200", "300"));
+        groupedList1.add(new UITestObject("B", "102", "200", "300"));
+
+        groupedList1.add(new UITestObject("C", "100", "200", "300"));
+        groupedList1.add(new UITestObject("C", "101", "200", "300"));
+        groupedList1.add(new UITestObject("C", "102", "200", "300"));
+        groupedList1.add(new UITestObject("C", "103", "200", "300"));
+
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        
+        groupedList2.addAll(groupedList1);
+        groupedList3.addAll(groupedList1);
+        
+        doubleGroupedList.add(new UITestObject("Fall", "2001", "AAA123", "2"));
+        doubleGroupedList.add(new UITestObject("Fall", "2001", "BBB123", "3"));
+        doubleGroupedList.add(new UITestObject("Fall", "2001", "CCC123", "4"));
+        doubleGroupedList.add(new UITestObject("Fall", "2001", "DDD123", "3"));
+
+        doubleGroupedList.add(new UITestObject("Fall", "2002", "AAA123", "3"));
+        doubleGroupedList.add(new UITestObject("Fall", "2002", "BBB123", "2"));
+        doubleGroupedList.add(new UITestObject("Fall", "2002", "CCC123", "3"));
+
+        doubleGroupedList.add(new UITestObject("Fall", "2003", "AAA123", "3"));
+        doubleGroupedList.add(new UITestObject("Fall", "2003", "CCC123", "3"));
+
+        doubleGroupedList.add(new UITestObject("Spring", "2001", "AAA123", "3"));
+        doubleGroupedList.add(new UITestObject("Spring", "2001", "BBB123", "3"));
+        doubleGroupedList.add(new UITestObject("Spring", "2001", "CCC123", "3"));
+
+        doubleGroupedList.add(new UITestObject("Spring", "2002", "AAA123", "4"));
+        doubleGroupedList.add(new UITestObject("Spring", "2002", "BBB123", "4"));
+        doubleGroupedList.add(new UITestObject("Spring", "2002", "CCC123", "2"));
+
+        doubleGroupedList.add(new UITestObject("Spring", "2003", "AAA123", "4"));
+        doubleGroupedList.add(new UITestObject("Spring", "2003", "BBB123", "3"));
+        doubleGroupedList.add(new UITestObject("Spring", "2003", "CCC123", "3"));
+        doubleGroupedList.add(new UITestObject("Spring", "2003", "DDD123", "2"));
+
+        for (int i = 0; i < 50; i++) {
+            list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(1), RandomStringUtils.randomAlphanumeric(1),
+                    RandomStringUtils.randomAlphanumeric(1), RandomStringUtils.randomAlphanumeric(1)));
         }
-        
-        
 
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
@@ -286,35 +397,44 @@ public class UifComponentsTestForm extends UifFormBase {
 
             tree1.setRootElement(root);
         }
-        
-        { // scope for name hiding purposes
-            Node<UITestObject, String> item1 = new Node<UITestObject, String>(new UITestObject("1-A", "1-B", "1-C", "1-D"), "Item 1");
-            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SA-A", "1SA-B", "1SA-C", "1SA-D"), "SubItem A"));
-            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SB-A", "1SB-B", "1SB-C", "1SB-D"), "SubItem B"));
 
-            Node<UITestObject, String> item2 = new Node<UITestObject, String>(new UITestObject("2-A", "2-B", "2-C", "2-D"), "Item 2");
-            item2.addChild(new Node<UITestObject, String>(new UITestObject("SA-a", "SA-b", "SA-c", "SA-d"), "SubItem A"));
-            Node<UITestObject, String> sub2B = new Node<UITestObject, String>(new UITestObject("SB-a", "SB-b", "SB-c", "SB-d"), "SubItem B");
+        { // scope for name hiding purposes
+            Node<UITestObject, String> item1 = new Node<UITestObject, String>(new UITestObject("1-A", "1-B", "1-C",
+                    "1-D"), "Item 1");
+            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SA-A", "1SA-B", "1SA-C", "1SA-D"),
+                    "SubItem A"));
+            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SB-A", "1SB-B", "1SB-C", "1SB-D"),
+                    "SubItem B"));
+
+            Node<UITestObject, String> item2 = new Node<UITestObject, String>(new UITestObject("2-A", "2-B", "2-C",
+                    "2-D"), "Item 2");
+            item2.addChild(new Node<UITestObject, String>(new UITestObject("SA-a", "SA-b", "SA-c", "SA-d"),
+                    "SubItem A"));
+            Node<UITestObject, String> sub2B = new Node<UITestObject, String>(new UITestObject("SB-a", "SB-b", "SB-c",
+                    "SB-d"), "SubItem B");
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("AA", "BB", "CC", "DD"), "Item B-1"));
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("Aa", "Bb", "Cc", "Dd"), "Item B-2"));
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("aA", "bB", "cC", "dD"), "Item B-3"));
             item2.addChild(sub2B);
-            item2.addChild(new Node<UITestObject, String>(new UITestObject("SC-a", "SC-b", "SC-c", "SC-d"), "SubItem C"));
+            item2.addChild(new Node<UITestObject, String>(new UITestObject("SC-a", "SC-b", "SC-c", "SC-d"),
+                    "SubItem C"));
 
-            Node<UITestObject, String> item3 = new Node<UITestObject, String>(new UITestObject("3-A", "3-B", "3-C", "3-D"), "Item 3");
+            Node<UITestObject, String> item3 = new Node<UITestObject, String>(new UITestObject("3-A", "3-B", "3-C",
+                    "3-D"), "Item 3");
             item3.addChild(new Node<UITestObject, String>(new UITestObject("A", "B", "C", "D"), "SubItem A"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("1", "2", "3", "4"), "SubItem B"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("w", "x", "y", "z"), "SubItem C"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("!", "@", "#", "$"), "SubItem D"));
 
-            Node<UITestObject, String> root = new Node<UITestObject, String>(new UITestObject("foo", "bar", "baz", "roo"), "Root");
+            Node<UITestObject, String> root = new Node<UITestObject, String>(new UITestObject("foo", "bar", "baz",
+                    "roo"), "Root");
             root.addChild(item1);
             root.addChild(item2);
             root.addChild(item3);
 
             tree2.setRootElement(root);
         }
-        
+
         remoteFieldValuesMap = new HashMap<String, Object>();
         remoteFieldValuesMap.put("remoteField1", "Apple");
         remoteFieldValuesMap.put("remoteField2", "Banana");
@@ -332,6 +452,18 @@ public class UifComponentsTestForm extends UifFormBase {
         field92 = "Value 92";
 
         field131 = new Integer(0);
+
+        DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
+        dateList = new ArrayList<Date>();
+        try{
+            dateList.add(dateFormat.parse("01/01/1990"));
+            dateList.add(dateFormat.parse("10/31/2001"));
+            dateList.add(dateFormat.parse("11/05/2005"));
+            dateList.add(dateFormat.parse("02/13/2011"));
+        }
+        catch(Exception e){
+
+        }
     }
 
     @Override
@@ -2117,6 +2249,14 @@ public class UifComponentsTestForm extends UifFormBase {
         this.field133 = field133;
     }
 
+    public String getField134() {
+        return field134;
+    }
+
+    public void setField134(String field134) {
+        this.field134 = field134;
+    }
+
     public MultipartFile getFileUpload() {
         return fileUpload;
     }
@@ -2219,5 +2359,130 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setList3generated(List<UITestObject> list3generated) {
         this.list3generated = list3generated;
+    }
+
+    public String getRichMessageField() {
+        return richMessageField;
+    }
+
+    public void setRichMessageField(String richMessageField) {
+        this.richMessageField = richMessageField;
+    }
+
+    public String getTestValueField() {
+        return testValueField;
+    }
+
+    public void setTestValueField(String testValueField) {
+        this.testValueField = testValueField;
+    }
+
+    public String getRichMessageField2() {
+        return richMessageField2;
+    }
+
+    public void setRichMessageField2(String richMessageField2) {
+        this.richMessageField2 = richMessageField2;
+    }
+
+    public String getCurrentTimestamp() {
+        DateTimeService dateTimeService = CoreApiServiceLocator.getDateTimeService();
+        return dateTimeService.getCurrentTimestamp().toString();
+    }
+
+    public List<UITestObject> getGroupedList1() {
+        return groupedList1;
+    }
+
+    public void setGroupedList1(List<UITestObject> groupedList1) {
+        this.groupedList1 = groupedList1;
+    }
+
+    public List<UITestObject> getGroupedList2() {
+        return groupedList2;
+    }
+
+    public void setGroupedList2(List<UITestObject> groupedList2) {
+        this.groupedList2 = groupedList2;
+    }
+
+    public List<UITestObject> getGroupedList3() {
+        return groupedList3;
+    }
+
+    public void setGroupedList3(List<UITestObject> groupedList3) {
+        this.groupedList3 = groupedList3;
+    }
+
+    public List<UITestObject> getDoubleGroupedList() {
+        return doubleGroupedList;
+    }
+
+    public void setDoubleGroupedList(List<UITestObject> doubleGroupedList) {
+        this.doubleGroupedList = doubleGroupedList;
+    }
+
+    public String getFakeTotal() {
+        return fakeTotal;
+    }
+
+    public void setFakeTotal(String fakeTotal) {
+        this.fakeTotal = fakeTotal;
+    }
+
+    public List<String> getStringList1() {
+        return stringList1;
+    }
+
+    public void setStringList1(List<String> stringList1) {
+        this.stringList1 = stringList1;
+    }
+
+    public List<String> getStringList2() {
+        return stringList2;
+    }
+
+    public void setStringList2(List<String> stringList2) {
+        this.stringList2 = stringList2;
+    }
+
+    public List<String> getStringList3() {
+        return stringList3;
+    }
+
+    public void setStringList3(List<String> stringList3) {
+        this.stringList3 = stringList3;
+    }
+
+    public List<String> getStringList4() {
+        return stringList4;
+    }
+
+    public void setStringList4(List<String> stringList4) {
+        this.stringList4 = stringList4;
+    }
+
+    public List<Integer> getIntList() {
+        return intList;
+    }
+
+    public void setIntList(List<Integer> intList) {
+        this.intList = intList;
+    }
+
+    public List<Double> getDoubleList() {
+        return doubleList;
+    }
+
+    public void setDoubleList(List<Double> doubleList) {
+        this.doubleList = doubleList;
+    }
+
+    public List<Date> getDateList() {
+        return dateList;
+    }
+
+    public void setDateList(List<Date> dateList) {
+        this.dateList = dateList;
     }
 }

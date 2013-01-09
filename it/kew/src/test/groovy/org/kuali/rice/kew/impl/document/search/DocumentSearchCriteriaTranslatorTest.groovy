@@ -16,33 +16,31 @@
 
 package org.kuali.rice.kew.impl.document.search
 
-import org.kuali.rice.kew.docsearch.DocumentSearchTestBase
+import com.google.common.collect.Maps
+import org.joda.time.DateTime
+import org.junit.Before
 import org.junit.Test
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils
+import org.kuali.rice.kew.api.KEWPropertyConstants
 import org.kuali.rice.kew.api.KewApiConstants
 import org.kuali.rice.kew.api.WorkflowDocument
 import org.kuali.rice.kew.api.WorkflowDocumentFactory
-import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime
-import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
-import java.sql.Timestamp
-import org.kuali.rice.krad.util.KRADConstants
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
-import org.joda.time.DateTime
-import static org.junit.Assert.assertNotNull
-import static junit.framework.Assert.assertEquals
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults
+import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
+import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
+import org.kuali.rice.kew.docsearch.DocumentSearchTestBase
+import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService
 import org.kuali.rice.kew.service.KEWServiceLocator
-import org.kuali.rice.kew.api.document.search.DocumentSearchResults
-import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils
-import org.junit.Before
-import com.google.common.collect.Iterables
-import org.apache.xpath.functions.Function
-import com.google.common.collect.Maps
-import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
-import org.kuali.rice.kew.api.KEWPropertyConstants
-import org.kuali.rice.core.api.config.property.ConfigContext
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.krad.util.KRADConstants
+
+import static junit.framework.Assert.assertEquals
+import static junit.framework.Assert.assertTrue
+import static org.junit.Assert.assertNotNull
 
 /**
  * 
@@ -75,7 +73,7 @@ class DocumentSearchCriteriaTranslatorTest extends DocumentSearchTestBase {
     void testTranslateFieldsToCriteria() {
         // form fields
         def fields = new HashMap<String, String>()
-        fields.put("documentTypeName", "whatever")
+        fields.put("documentTypeName", "SearchDocType")
         fields.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE,
                    [ DocumentStatus.INITIATED.code,
                      DocumentStatus.PROCESSED.code,
@@ -96,7 +94,7 @@ class DocumentSearchCriteriaTranslatorTest extends DocumentSearchTestBase {
         def crit = documentSearchCriteriaTranslator.translateFieldsToCriteria(fields)
         assertNotNull(crit)
 
-        assertEquals("whatever", crit.documentTypeName)
+        assertEquals("SearchDocType", crit.documentTypeName)
         assertEquals([ DocumentStatus.INITIATED, DocumentStatus.PROCESSED, DocumentStatus.FINAL ] as Set, crit.getDocumentStatuses() as Set)
         assertEquals([ DocumentStatusCategory.SUCCESSFUL, DocumentStatusCategory.UNSUCCESSFUL ] as Set, crit.getDocumentStatusCategories() as Set)
         assertEquals(new DateTime(2010, 1, 1, 0, 0), crit.dateCreatedFrom)
@@ -106,6 +104,17 @@ class DocumentSearchCriteriaTranslatorTest extends DocumentSearchTestBase {
         docattrs.each { k, v ->
             assertEquals(v as Set, crit.documentAttributeValues[k] as Set)
         }
+
+
+        // KULRICE-7786: support for groups (categories) of application document statuses
+        fields.put("applicationDocumentStatus", "category:TestCategory");
+        // TestCategory matches up with an app doc status category defined in the doc type xml that
+        // contains a couple of statuses
+        crit = documentSearchCriteriaTranslator.translateFieldsToCriteria(fields);
+
+        assertNotNull("documentSearchCriteriaTranslator.getApplicationDocumentStatuses is NULL! expecting Approval In Progress and Submitted", crit.getApplicationDocumentStatuses())
+        assertTrue( "https://jira.kuali.org/browse/KULRICE-8555", crit.getApplicationDocumentStatuses().contains("Approval In Progress"));
+        assertTrue(crit.getApplicationDocumentStatuses().contains("Submitted"));
     }
 
     /**

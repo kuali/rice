@@ -290,7 +290,8 @@ public class BlanketApproveTest extends KEWTestCase {
         }
         assertTrue("Should be at blanket approved node WD2B1.", isAtWD2B1);
         assertTrue("Should be at blanket approved node WD3B2.", isAtWD3B2);
-        assertTrue("Should be at blanket approved node WD4B3.", isAtWD4B3);
+        assertTrue("Should be at blanket approved node WD4B3.  https://jira.kuali.org/browse/KULRICE-8481 - "
+                + "BlanketApproveTest.testBlanketApproveToMultipleNodes fails in CI with Should be at blanket approved node WD4B3.", isAtWD4B3);
         assertFalse("Should not be at join node.", isAtJoin);
         
         document.blanketApprove("");

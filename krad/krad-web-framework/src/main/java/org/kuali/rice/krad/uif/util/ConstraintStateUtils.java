@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
@@ -53,7 +52,7 @@ public class ConstraintStateUtils {
             stateOrder = stateMapping.getStates();
         }
 
-        if (stateMapping == null || !(constraint instanceof BaseConstraint) || applicableState == null) {
+        if (stateMapping == null || !(constraint instanceof BaseConstraint) || StringUtils.isEmpty(applicableState)) {
             //process constraint because it is considered "stateless" if not a BaseConstraint
             //or no associated state mapping or no has no state to compare to
             return true;
@@ -127,16 +126,23 @@ public class ConstraintStateUtils {
      */
     public static <T extends Constraint> T getApplicableConstraint(T constraint, String validationState,
             StateMapping stateMapping) {
+
+        //is state information setup?
         if (constraint != null && constraint instanceof BaseConstraint && stateMapping != null &&
                 StringUtils.isNotBlank(validationState)) {
+
+            //Does the constraint have overrides?
             if (((BaseConstraint) constraint).getConstraintStateOverrides() != null && !((BaseConstraint) constraint)
                     .getConstraintStateOverrides().isEmpty()) {
-                for (BaseConstraint bc : ((BaseConstraint) constraint).getConstraintStateOverrides()) {
+                T override = null;
+                BaseConstraint theConstraint = ((BaseConstraint) constraint);
+                for (BaseConstraint bc : theConstraint.getConstraintStateOverrides()) {
+                    //does the override apply for this state?
                     if (!bc.getStates().isEmpty() && ConstraintStateUtils.constraintAppliesForState(validationState, bc,
                             stateMapping)) {
                         try {
-                            constraint = (T) bc;
-                            break;
+                            //Last on the list takes precedence
+                            override = (T) bc;
                         } catch (ClassCastException e) {
                             throw new RuntimeException("Replacement state constraint for this constraint is not an "
                                     + "appropriate type: "
@@ -146,11 +152,30 @@ public class ConstraintStateUtils {
                         }
                     }
                 }
-            } else if (!ConstraintStateUtils.constraintAppliesForState(validationState, constraint, stateMapping)) {
+
+                if(override != null){
+                    return override;
+                }
+                else if(override == null && ConstraintStateUtils.constraintAppliesForState(validationState, constraint, stateMapping)){
+                    //use base constraint if no overrides apply and it still applies for this state
+                    return constraint;
+                }
+                else{
+                    //the constaint AND its overrides do not apply
+                    return null;
+                }
+            } else if(ConstraintStateUtils.constraintAppliesForState(validationState, constraint, stateMapping)) {
+                //Constraint applies for this state
+                return constraint;
+            }
+            else{
+                //Constraint does not apply for this state
                 return null;
             }
         }
 
+        //state information either not setup or not setup correctly for this constraint/stateMapping,
+        //so constraint will apply by default
         return constraint;
     }
 

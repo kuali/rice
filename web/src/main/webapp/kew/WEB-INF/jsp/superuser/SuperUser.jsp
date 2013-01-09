@@ -84,7 +84,7 @@
     </td>
   </tr>
 
-<c:if test="${(! SuperUserForm.routeHeader.canceled) && (SuperUserForm.authorized)}">
+<c:if test="${(! SuperUserForm.routeHeader['canceled']) && (SuperUserForm.authorized)}">
       <%--<html-el:form method="post" action="/SuperUser.do">--%>
       <html-el:hidden property="methodToCall" value="" />
       <html-el:hidden property="documentId" value="${SuperUserForm.routeHeader.documentId}" />
@@ -123,7 +123,7 @@
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
        <tr>
 	     <td nowrap align="center">
-           <c:if test="${SuperUserForm.SUDocument && SuperUserForm.stateAllowsAction}">
+           <c:if test="${SuperUserForm.SUDocument && SuperUserForm.stateAllowsAction && SuperUserForm.superUserFinalApproveAllowed}">
              <html-el:image property="methodToCall.approve" src="images/buttonsmall_approvedoc.gif" style="border-style:none;" align="absmiddle" />
              <c:set var="futureNodeNames" value="${SuperUserForm.futureNodeNames}" />
 
@@ -148,16 +148,17 @@
                <html-el:image property="methodToCall.disapprove" src="images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />&nbsp;&nbsp;&nbsp;&nbsp;
        	     </c:if>
              <html-el:image property="methodToCall.cancel" src="images/buttonsmall_canceldoc.gif" style="border-style:none;" align="absmiddle" />
-       	   </c:if>
-           <c:set var="previousNodeNameCol" value="${SuperUserForm.previousNodes}" />
-           <c:if test="${not empty previousNodeNameCol}">
-	           <c:if test="${SuperUserForm.SUDocument}">
 
-		         &nbsp;&nbsp;&nbsp;&nbsp;Select a node name:&nbsp;
-			     <html-el:select property="returnDestNodeName">
-		           <html-el:options collection="previousNodeNameCol" labelProperty="value" property="key"/>
-		         </html-el:select>&nbsp;<html-el:image src="images/buttonsmall_retprevrtlevel.gif" align="absmiddle" property="methodToCall.returnToPreviousNode" style="border-style:none;" />&nbsp;&nbsp;&nbsp;&nbsp;
-	           </c:if>
+             <c:set var="previousNodeNameCol" value="${SuperUserForm.previousNodes}" />
+             <c:if test="${not empty previousNodeNameCol}">
+	             <c:if test="${SuperUserForm.SUDocument}">
+
+		           &nbsp;&nbsp;&nbsp;&nbsp;Select a node name:&nbsp;
+			       <html-el:select property="returnDestNodeName">
+		             <html-el:options collection="previousNodeNameCol" labelProperty="value" property="key"/>
+		           </html-el:select>&nbsp;<html-el:image src="images/buttonsmall_retprevrtlevel.gif" align="absmiddle" property="methodToCall.returnToPreviousNode" style="border-style:none;" />&nbsp;&nbsp;&nbsp;&nbsp;
+	             </c:if>
+              </c:if>
             </c:if>
          </td>
        </tr>
@@ -166,7 +167,7 @@
   </tr>
  </c:if>
 
-  <c:if test="${(! SuperUserForm.routeHeader.stateInitiated) && (! empty SuperUserForm.actionRequests)}">
+  <c:if test="${(! SuperUserForm.routeHeader.stateInitiated) && (! empty SuperUserForm.actionRequests) && SuperUserForm.superUserFinalApproveAllowedForActionRequest}">
     <tr>
       <td height="20"></td>
     </tr>

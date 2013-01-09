@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
@@ -42,6 +43,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 
 /**
  * 
@@ -167,7 +169,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 		String serviceName = typeInfo.getServiceName();
 		if ( StringUtils.isNotBlank(serviceName) ) {
 			try {
-				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
+				KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
 				if ( service != null && service instanceof RoleTypeService) {
 					return service;
 				} else {

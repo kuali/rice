@@ -16,19 +16,22 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -53,6 +56,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "stackedCollectionLayout", parent = "Uif-StackedCollectionLayoutBase"),
+        @BeanTag(name = "stackedCollectionLayout-withGridItems", parent = "Uif-StackedCollectionLayout-WithGridItems"),
+        @BeanTag(name = "stackedCollectionLayout-withBoxItems", parent = "Uif-StackedCollectionLayout-WithBoxItems"),
+        @BeanTag(name = "stackedCollectionLayout-list", parent = "Uif-StackedCollectionLayout-List")})
 public class StackedLayoutManager extends LayoutManagerBase implements CollectionLayoutManager {
     private static final long serialVersionUID = 4602368505430238846L;
 
@@ -90,13 +97,6 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         super.performInitialization(view, model, container);
 
         stackedGroups = new ArrayList<Group>();
-
-        if (addLineGroup != null) {
-            view.getViewHelperService().performComponentInitialization(view, model, addLineGroup);
-        }
-        view.getViewHelperService().performComponentInitialization(view, model, lineGroupPrototype);
-        view.getViewHelperService().performComponentInitialization(view, model, subCollectionFieldGroupPrototype);
-        view.getViewHelperService().performComponentInitialization(view, model, selectFieldPrototype);
     }
 
     /**
@@ -136,10 +136,6 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             Object currentLine, int lineIndex) {
         boolean isAddLine = lineIndex == -1;
 
-        if (isAddLine && collectionGroup.isRenderAddBlankLineButton()) {
-            return;
-        }
-
         // construct new group
         Group lineGroup = null;
         if (isAddLine) {
@@ -153,7 +149,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             }
 
             if (collectionGroup.isAddViaLightBox()) {
-                String actionScript = "showLightboxComponent('" + lineGroup.getId() +  "');";
+                String actionScript = "showLightboxComponent('" + lineGroup.getId() + "');";
                 if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getActionScript())) {
                     actionScript = collectionGroup.getAddViaLightBoxAction().getActionScript() + actionScript;
                 }
@@ -164,11 +160,11 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
         }
 
-        if (((UifFormBase)model).isAddedCollectionItem(currentLine)) {
+        if (((UifFormBase) model).isAddedCollectionItem(currentLine)) {
             lineGroup.addStyleClass(collectionGroup.getNewItemsCssClass());
         }
-        
-        ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex);
+
+        ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex, idSuffix);
 
         // build header text for group
         String headerText = "";
@@ -297,6 +293,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *
      * @return String summary title text
      */
+    @BeanTagAttribute(name = "summaryTitle")
     public String getSummaryTitle() {
         return this.summaryTitle;
     }
@@ -319,6 +316,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * @return List<String> summary field names
      * @see #buildLineHeaderText(Object, org.kuali.rice.krad.uif.container.Group)
      */
+    @BeanTagAttribute(name = "summaryFields", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getSummaryFields() {
         return this.summaryFields;
     }
@@ -345,6 +343,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * @return Group add line group instance
      * @see #getAddLineGroup()
      */
+    @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getAddLineGroup() {
         return this.addLineGroup;
     }
@@ -365,6 +364,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *
      * @return Group instance to use as prototype
      */
+    @BeanTagAttribute(name = "lineGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLineGroupPrototype() {
         return this.lineGroupPrototype;
     }
@@ -381,6 +381,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     /**
      * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
      */
+    @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
         return this.subCollectionFieldGroupPrototype;
     }
@@ -401,12 +402,14 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * <p>
      * This prototype can be used to set the control used for the select field (generally will be a checkbox control)
      * in addition to styling and other setting. The binding path will be formed with using the
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineSelectPropertyName()} or if not set the framework
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineSelectPropertyName()} or if not set the
+     * framework
      * will use {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
      * </p>
      *
      * @return Field select field prototype instance
      */
+    @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
         return selectFieldPrototype;
     }
@@ -435,6 +438,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * @return Group instance whose items list should be populated with the generated groups, or null to use the
      *         default layout
      */
+    @BeanTagAttribute(name = "wrapperGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getWrapperGroup() {
         return wrapperGroup;
     }
@@ -453,6 +457,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *
      * @return List<Group> collection groups
      */
+    @BeanTagAttribute(name = "stackedGroups", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Group> getStackedGroups() {
         return this.stackedGroups;
     }

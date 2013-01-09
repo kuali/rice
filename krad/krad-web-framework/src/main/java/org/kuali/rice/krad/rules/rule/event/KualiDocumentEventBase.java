@@ -34,10 +34,10 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
     protected Document document;
 
     /**
-     * 
+     *
      * As a general rule, business rule classes should not change the original object. This constructor was created so that
      * PreRulesCheckEvent, a UI level rule checker, can make changes.
-     * 
+     *
      * @param description
      * @param errorPathPrefix
      */
@@ -48,7 +48,7 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
 
     /**
      * Constructs a KualiEvent with the given description and errorPathPrefix for the given document.
-     * 
+     *
      * @param errorPathPrefix
      * @param document
      * @param description
@@ -117,7 +117,7 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
 
     /**
      * Provides null-safe access to the documentNumber of the given document.
-     * 
+     *
      * @param document
      * @return String containing the documentNumber of the given document, or some indication of why the documentNumber isn't
      *         accessible

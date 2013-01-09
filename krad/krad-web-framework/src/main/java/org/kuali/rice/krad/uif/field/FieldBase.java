@@ -17,9 +17,13 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
@@ -42,6 +46,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "fieldBase", parent = "Uif-FieldBase"),
+    @BeanTag(name = "fieldBase-withLabel", parent = "Uif-FieldBase-withLabel")})
 public class FieldBase extends ComponentBase implements Field {
     private static final long serialVersionUID = -5888414844802862760L;
 
@@ -108,14 +114,15 @@ public class FieldBase extends ComponentBase implements Field {
             if (labelPlacement.equals(Position.RIGHT)) {
                 fieldLabel.setRenderColon(false);
             }
-            
+
             if (labelPlacement.equals(Position.TOP) || labelPlacement.equals(Position.BOTTOM)){
                 fieldLabel.addStyleClass("uif-labelBlock");
             }
 
             fieldLabel.addDataAttribute("labelFor", this.getId());
             if(StringUtils.isNotBlank(this.getFieldLabel().getLabelText())){
-                this.addDataAttribute("label", this.getFieldLabel().getLabelText());
+                this.addDataAttribute("label",
+                        MessageStructureUtils.translateStringMessage(this.getFieldLabel().getLabelText()));
             }
         }
     }
@@ -182,6 +189,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabelStyleClasses
      */
+    @BeanTagAttribute(name="labelStyleClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getLabelStyleClasses() {
         if (fieldLabel != null) {
             return fieldLabel.getCssClasses();
@@ -206,6 +214,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabelColSpan
      */
+    @BeanTagAttribute(name="labelColSpan")
     public int getLabelColSpan() {
         if (fieldLabel != null) {
             return fieldLabel.getColSpan();
@@ -230,6 +239,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getShortLabel()
      */
+    @BeanTagAttribute(name="shortLabel")
     public String getShortLabel() {
         return this.shortLabel;
     }
@@ -261,6 +271,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabel
      */
+    @BeanTagAttribute(name="fieldLabel",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getFieldLabel() {
         return this.fieldLabel;
     }
@@ -278,6 +289,7 @@ public class FieldBase extends ComponentBase implements Field {
      *
      * @return Position position of label
      */
+    @BeanTagAttribute(name="labelPlacment",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Position getLabelPlacement() {
         return this.labelPlacement;
     }
@@ -294,6 +306,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#isLabelRendered()
      */
+    @BeanTagAttribute(name="labelRendered")
     public boolean isLabelRendered() {
         return this.labelRendered;
     }
@@ -304,14 +317,13 @@ public class FieldBase extends ComponentBase implements Field {
     public void setLabelRendered(boolean labelRendered) {
         this.labelRendered = labelRendered;
     }
-
+    
     /**
      * Field Security object that indicates what authorization (permissions) exist for the field
      *
      * @return FieldSecurity instance
      */
-    @Override
-    public FieldSecurity getComponentSecurity() {
+    public FieldSecurity getFieldSecurity() {
         return (FieldSecurity) super.getComponentSecurity();
     }
 
@@ -329,6 +341,9 @@ public class FieldBase extends ComponentBase implements Field {
         super.setComponentSecurity(componentSecurity);
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentSecurityClass()
+     */
     @Override
     protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
         return FieldSecurity.class;

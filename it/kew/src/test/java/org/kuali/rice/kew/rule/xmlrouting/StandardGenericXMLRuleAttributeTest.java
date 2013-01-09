@@ -23,6 +23,9 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
@@ -158,7 +161,11 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		        "</fieldDef>" +
             "</routingConfig>";
 
-		docContent = new StandardDocumentContent(documentcontent);
+        // stub the RouteContext - it is needed for xpath caching optimization
+        RouteContext ctx = new RouteContext();
+
+		docContent = new StandardDocumentContent(documentcontent, ctx);
+
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setXmlConfigData(routingConfig);
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
@@ -210,10 +217,10 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		paramMap.put("color", "green");
 		paramMap.put("totalDollar", "500");
 
-		List<WorkflowServiceError> errors = attribute.validateRuleData(paramMap);
+		List<RemotableAttributeError> errors = attribute.validateRuleData(paramMap);
         assertFalse("Error list should contain at least one error.", errors.isEmpty());
         for (Object e: errors) {
-            assertTrue(WorkflowServiceError.class.isAssignableFrom(e.getClass()));
+            assertTrue(RemotableAttributeError.class.isAssignableFrom(e.getClass()));
         }
     }
 

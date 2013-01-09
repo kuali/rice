@@ -27,7 +27,8 @@
   <bean id="Uif-GroupBase" abstract="true" parent="Uif-GroupBase-parentBean"/>
   <bean id="Uif-GroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype"
         parent="Uif-ComponentBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/group.ftl"/>
+    <property name="templateName" value="uif_group"/>
     <property name="cssClasses">
       <list>
         <value>uif-group</value>
@@ -43,9 +44,6 @@
               value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="disclosure.expandImageSrc"
               value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-    <property name="instructionalMessage">
-      <bean parent="Uif-InstructionalMessage"/>
-    </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
@@ -273,7 +271,8 @@
   <bean id="Uif-TabGroup" parent="Uif-TabGroup-parentBean"/>
   <bean id="Uif-TabGroup-parentBean" abstract="true" parent="Uif-GroupBase"
         class="org.kuali.rice.krad.uif.container.TabGroup" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/tabGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/tabGroup.ftl"/>
+    <property name="templateName" value="uif_tabGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-tabGroup</value>
@@ -320,7 +319,8 @@
   <bean id="Uif-NavigationGroupBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.NavigationGroup"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/navigationGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/navigationGroup.ftl"/>
+    <property name="templateName" value="uif_navigationGroup"/>
     <property name="cssClasses">
       <list>
         <value>uif-navigationGroup</value>
@@ -353,7 +353,8 @@
   <bean id="Uif-TreeGroup" parent="Uif-TreeGroup-parentBean"/>
   <bean id="Uif-TreeGroup-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.TreeGroup" parent="Uif-GroupBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/treeGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/treeGroup.ftl"/>
+    <property name="templateName" value="uif_treeGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-treeGroup</value>
@@ -417,7 +418,8 @@
   <bean id="Uif-ReorderGroup" parent="Uif-ReorderGroup-parentBean"/>
   <bean id="Uif-ReorderGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.ReorderingGroup"
         scope="prototype" parent="Uif-VerticalBoxGroup">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/reorderingGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/reorderingGroup.ftl"/>
+    <property name="templateName" value="uif_reorderingGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-reorderGroup</value>
@@ -430,7 +432,6 @@
 
   <bean id="Uif-ReorderSection" parent="Uif-ReorderSection-parentBean"/>
   <bean id="Uif-ReorderSection-parentBean" abstract="true" scope="prototype" parent="Uif-ReorderGroup">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/reorderingGroup.jsp"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-reorderSection</value>
@@ -449,12 +450,13 @@
   <bean id="Uif-LinkGroup" parent="Uif-LinkGroup-parentBean"/>
   <bean id="Uif-LinkGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.LinkGroup"
         parent="Uif-HorizontalBoxGroup">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/linkGroup.ftl"/>
+    <property name="templateName" value="uif_linkGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-linkGroup</value>
       </list>
     </property>
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/linkGroup.jsp"/>
     <property name="linkSeparator" value="&amp;nbsp;&amp;nbsp;"/>
     <property name="emptyLinkGroupString" value="&amp;nbsp;"/>
   </bean>
@@ -477,6 +479,8 @@
   <bean id="Uif-CollectionGroupBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.CollectionGroup"
         parent="Uif-GroupBase">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/collectionGroup.ftl"/>
+    <property name="templateName" value="uif_collectionGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionGroup</value>
@@ -487,7 +491,6 @@
     <property name="highlightAddItem" value="true"/>
     <property name="addItemCssClass" value="uif-collectionAddItem"/>
     <property name="renderAddBlankLineButton" value="false"/>
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/collectionGroup.jsp"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
@@ -499,53 +502,39 @@
     </property>
     <property name="addLineActions">
       <list>
-        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add"
-              p:actionEvent="addLine"/>
+        <bean parent="Uif-AddLineAction"/>
       </list>
     </property>
     <property name="lineActions">
       <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
-              p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
-              p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');" />
-      </list>
-    </property>
-    <property name="validatedLineActions">
-      <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
-              p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}">
-          <property name="cssClasses">
-            <list merge="true">
-              <value>uif-saveLineAction</value>
-            </list>
-          </property>
-        </bean>
+        <bean parent="Uif-DeleteLineAction"/>
+        <bean parent="Uif-SaveLineAction"/>
       </list>
     </property>
     <property name="addBlankLineAction">
-      <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine" p:actionLabel="Add Line"
-            p:actionEvent="addBlankLine" p:onMouseOverScript="addLineMouseOver(this, 'uif-collectionAddHighlight');"
-            p:onMouseOutScript="addLineMouseOut(this, 'uif-collectionAddHighlight');"/>
+      <bean parent="Uif-AddBlankLineAction"/>
     </property>
     <property name="addViaLightBoxAction">
-      <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"
-            p:onMouseOverScript="addLineMouseOver(this, 'uif-collectionAddHighlight');"
-            p:onMouseOutScript="addLineMouseOut(this, 'uif-collectionAddHighlight');"/>
+      <bean parent="Uif-AddViaLightBoxAction"/>
     </property>
     <property name="collectionLookup">
-      <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true">
-        <property name="quickfinderAction">
-          <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Lookup/Add Multiple Lines"
-                p:actionImagePlacement="RIGHT">
-            <property name="actionImage">
-              <bean parent="Uif-QuickLookupImage"/>
-            </property>
-            <property name="lightBoxLookup">
-              <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
-            </property>
-          </bean>
-        </property>
-      </bean>
+      <bean parent="Uif-CollectionQuickFinder"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CollectionQuickFinder" parent="Uif-QuickFinder" p:multipleValuesSelect="true">
+    <property name="lightBoxLookup">
+      <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
+    </property>
+    <property name="quickfinderAction">
+      <bean parent="Uif-CollectionQuickFinderAction"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CollectionQuickFinderAction" parent="Uif-ActionLink" p:methodToCall="performLookup"
+        p:actionLabel="Lookup/Add Multiple Lines" p:actionImagePlacement="RIGHT">
+    <property name="actionImage">
+      <bean parent="Uif-QuickLookupImage"/>
     </property>
   </bean>
 
@@ -860,8 +849,7 @@
 
   <bean id="Uif-ListCollectionGroup" parent="Uif-ListCollectionGroup-parentBean"/>
   <bean id="Uif-ListCollectionGroup-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.container.CollectionGroup"
-        parent="Uif-GroupBase">
+        class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Uif-GroupBase">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionGroup</value>
@@ -875,21 +863,7 @@
     <property name="renderLineActions" value="false"/>
     <property name="includeLineSelectionField" value="false"/>
     <property name="layoutManager">
-      <bean parent="Uif-StackedCollectionLayout-WithGridItems">
-        <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stackedList.jsp"/>
-        <property name="lineGroupPrototype">
-          <bean parent="Uif-VerticalBoxSection">
-            <property name="header">
-              <bean parent="Uif-HeaderFour"/>
-            </property>
-            <property name="disclosure.renderImage" value="false"/>
-            <property name="disclosure.defaultOpen" value="true"/>
-          </bean>
-        </property>
-        <property name="subCollectionFieldGroupPrototype">
-          <bean parent="Uif-VerticalFieldGroup" p:fieldLabel.render="false"/>
-        </property>
-      </bean>
+      <bean parent="Uif-StackedCollectionLayout-List"/>
     </property>
   </bean>
 
@@ -971,8 +945,11 @@
   <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
         parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Section 1 Title"/>
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/dialogGroup.jsp"/>
+    <property name="header">
+      <bean parent="Uif-HeaderThree"/>
+    </property>
+    <property name="header.cssClasses" value="uif-dialogHeader"/>
+    <property name="headerText" value=""/>
     <property name="hidden" value="true"/>
     <property name="promptText" value="Would You Like to Continue?"/>
     <property name="availableResponses">
@@ -984,27 +961,18 @@
     <property name="displayExplanation" value="false"/>
     <property name="reverseButtonOrder" value="false"/>
     <property name="prompt">
-      <bean parent="Uif-Message"/>
+      <bean parent="Uif-DialogPrompt"/>
     </property>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation"/>
     </property>
     <property name="responseInputField">
-      <bean parent="Uif-InputField" p:propertyName="dialogResponse">
-        <property name="control">
-          <bean parent="Uif-HorizontalCheckboxesControl"/>
-        </property>
-        <property name="onChangeScript" value="
-          writeHiddenToForm('methodToCall','returnFromLightbox');
-          writeHiddenToForm('dialogResponse',jQuery('.uif-dialogButtons').find(':checked').val());
-          writeHiddenToForm('dialogExplanation', coerceValue('dialogExplanation'));
-          jQuery.fancybox.close();
-          jQuery('#kualiForm').submit();"/>
-        <property name="cssClasses">
+      <bean parent="Uif-DialogResponse">
+        <!-- <property name="cssClasses">
           <list merge="true">
-            <value>uif-dialogButtons</value>
+            <value>uif-action uif-primaryActionButton uif-boxLayoutHorizontalItem</value>
           </list>
-        </property>
+        </property>-->
       </bean>
     </property>
     <property name="cssClasses">
@@ -1014,9 +982,17 @@
     </property>
   </bean>
 
+  <bean id="Uif-DialogPrompt" parent="Uif-MessageField">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-dialogPrompt</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-DialogExplanation" parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
     <property name="control">
-      <bean parent="Uif-TextAreaControl" />
+      <bean parent="Uif-TextAreaControl"/>
     </property>
     <property name="cssClasses">
       <list merge="true">
@@ -1025,33 +1001,48 @@
     </property>
   </bean>
 
-  <bean id="RUSure-Cancel-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Are you sure you want to cancel?"/>
+  <bean id="Uif-DialogResponse" parent="Uif-InputField" p:propertyName="dialogResponse">
+    <property name="control">
+      <bean parent="Uif-HorizontalCheckboxesControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
+            <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
+          </list>
+        </property>
+        <property name="cssClasses">
+          <list merge="true">
+            <value>uif-dialogButtons</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="onChangeScript" value="lightboxButtonScript();"/>
   </bean>
-  <bean id="RUSure-Delete-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Are you sure you want to delete?"/>
-  </bean>
-  <bean id="RUSure-Modify-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Are you sure you want to modify this document?"/>
-  </bean>
-  <bean id="RUSure-Disapprove-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Are you sure you want to disapprove this document?"/>
-  </bean>
-  <bean id="RUSure-Close-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Would you like to save this document before you close it?"/>
-  </bean>
-  <bean id="SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
+
+  <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup">
+    <property name="headerText" value="Warning: Sensitive Data"/>
+    <property name="items">
+      <list>
+        <bean id="imageWarning" parent="Uif-ImageField" p:width="75px" p:height="75px"
+              p:source="@{#ConfigProperties['krad.externalizable.images.url']}warning.png"/>
+      </list>
+    </property>
     <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
   </bean>
-  <bean id="OK-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+
+  <bean id="Uif-OK-Cancel-DialogGroup" parent="Uif-DialogGroup">
+    <property name="headerText" value="Please Confirm to Continue"/>
     <property name="availableResponses">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
-        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Cancel"/>
       </list>
     </property>
   </bean>
-  <bean id="Yes-No-DialogGroup" parent="Uif-DialogGroup" >
+
+  <bean id="Uif-Yes-No-DialogGroup" parent="Uif-DialogGroup">
+    <property name="headerText" value="Please Select"/>
     <property name="availableResponses">
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
@@ -1059,7 +1050,9 @@
       </list>
     </property>
   </bean>
-  <bean id="True-False-DialogGroup" parent="Uif-DialogGroup" >
+
+  <bean id="Uif-True-False-DialogGroup" parent="Uif-DialogGroup">
+    <property name="headerText" value="Please select from the values below"/>
     <property name="displayExplanation" value="true"/>
     <property name="availableResponses">
       <list>
@@ -1068,10 +1061,12 @@
       </list>
     </property>
   </bean>
-  <bean id="Checkbox-DialogGroup" parent="Uif-DialogGroup" >
+
+  <bean id="Uif-Checkbox-DialogGroup" parent="Uif-DialogGroup">
+    <property name="headerText" value="Please Select from the values below"/>
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
-      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+      <bean parent="Uif-DialogExplanation">
         <property name="control">
           <bean parent="Uif-VerticalCheckboxesControl">
             <property name="options">
@@ -1092,10 +1087,11 @@
       </list>
     </property>
   </bean>
-  <bean id="RadioButton-DialogGroup" parent="Uif-DialogGroup" >
+
+  <bean id="Uif-RadioButton-DialogGroup" parent="Uif-DialogGroup">
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
-      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+      <bean parent="Uif-DialogExplanation" p:render="true">
         <property name="control">
           <bean parent="Uif-VerticalRadioControl">
             <property name="options">
@@ -1116,4 +1112,3 @@
     </property>
   </bean>
 </beans>
-

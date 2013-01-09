@@ -21,12 +21,13 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
-import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.PrerequisiteConstrainable;
-import org.kuali.rice.krad.datadictionary.validation.capability.RangeConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
@@ -34,11 +35,14 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstra
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
+import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
 import org.kuali.rice.krad.uif.element.Label;
@@ -71,14 +75,27 @@ import java.util.List;
  * looking up values) and inquiry (for getting more information on the value).
  * {@code InputField} instances can have associated messages (errors)
  * due to invalid input or business rule failures. Security can also be
- * configured to restrict who may view the fields value.
+ * configured to restrict who may view the fields valnue.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable,
-                                                     MustOccurConstrainable, LengthConstrainable, RangeConstrainable,
-                                                     ValidCharactersConstrainable {
+@BeanTags({@BeanTag(name = "inputField", parent = "Uif-InputField"),
+        @BeanTag(name = "inputField-labelTop", parent = "Uif-InputField-LabelTop"),
+        @BeanTag(name = "inputField-labelRight", parent = "Uif-InputField-LabelRight"),
+        @BeanTag(name = "checkboxInputField", parent = "Uif-CheckboxInputField"),
+        @BeanTag(name = "dialogResponse", parent = "Uif-DialogResponse"),
+        @BeanTag(name = "dialogExplanation", parent = "Uif-DialogExplanation"),
+        @BeanTag(name = "documentNumber", parent = "Uif-DocumentNumber"),
+        @BeanTag(name = "documentStatus", parent = "Uif-DocumentStatus"),
+        @BeanTag(name = "documentInitiatorNetworkId", parent = "Uif-DocumentInitiatorNetworkId"),
+        @BeanTag(name = "documentCreateDate", parent = "Uif-DocumentCreateDate"),
+        @BeanTag(name = "documentTemplateNumber", parent = "Uif-DocumentTemplateNumber"),
+        @BeanTag(name = "documentDescription", parent = "Uif-DocumentDescription"),
+        @BeanTag(name = "documentExplaination", parent = "Uif-DocumentExplaination"),
+        @BeanTag(name = "organizationDocumentNumber", parent = "Uif-OrganizationDocumentNumber"),
+        @BeanTag(name = "selectCollectionItemField", parent = "Uif-SelectCollectionItemField")})
+public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -3703656713706343840L;
 
     // constraint variables
@@ -131,35 +148,39 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        if (StringUtils.isNotBlank(constraintText) && (constraintMessage == null)) {
+        if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
+                constraintMessage
+                        == null)) {
             constraintMessage = ComponentFactory.getConstraintMessage();
             view.assignComponentIds(constraintMessage);
         }
 
-        if (StringUtils.isNotBlank(instructionalText) && (instructionalMessage == null)) {
+        if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
+                instructionalMessage
+                        == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
             view.assignComponentIds(instructionalMessage);
         }
+
     }
 
     /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>Set the ids for the various attribute components</li>
-     * <li>Sets up the client side validation for constraints on this field. In
-     * addition, it sets up the messages applied to this field</li>
-     * </ul>
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
 
-        setupIds();
-        this.addDataAttribute("role", "InputField");
+        // Done in apply model so we have the message text for additional rich message processing in Message
+        // Sets message
+        if (StringUtils.isNotBlank(instructionalText) && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+            instructionalMessage.setMessageText(instructionalText);
+        }
+
+        // Sets constraints
+        if (StringUtils.isNotBlank(constraintText) && StringUtils.isBlank(constraintMessage.getMessageText())) {
+            constraintMessage.setMessageText(constraintText);
+        }
 
         // invoke options finder if options not configured on the control
         List<KeyValue> fieldOptions = new ArrayList<KeyValue>();
@@ -172,6 +193,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             }
         }
 
+        // set multiLineReadOnlyDisplay to true to preserve text formatting
+        if (control instanceof TextAreaControl) {
+            setMultiLineReadOnlyDisplay(true);
+        }
         // if options not configured on the control, invoke configured options finder
         if (fieldOptions.isEmpty() && (optionsFinder != null)) {
             if (optionsFinder instanceof UifKeyValuesFinder) {
@@ -203,27 +228,37 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             // TODO: can we translate Collections? (possibly combining output with delimiter
             if ((fieldValue != null) && (TypeUtils.isSimpleType(fieldValue.getClass()))) {
                 for (KeyValue keyValue : fieldOptions) {
-                    if (StringUtils.equals((String) fieldValue, keyValue.getKey())) {
+                    if (StringUtils.equals(fieldValue.toString(), keyValue.getKey())) {
                         setReadOnlyDisplayReplacement(keyValue.getValue());
                         break;
                     }
                 }
             }
         }
+    }
+
+    /**
+     * The following actions are performed:
+     *
+     * <ul>
+     * <li>Set the ids for the various attribute components</li>
+     * <li>Sets up the client side validation for constraints on this field. In
+     * addition, it sets up the messages applied to this field</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        setupIds();
+        this.addDataAttribute("role", "InputField");
 
         // if read only or the control is null no input can be given so no need to setup validation
         if (isReadOnly() || getControl() == null) {
             return;
-        }
-
-        // Sets message
-        if (StringUtils.isNotBlank(instructionalText)) {
-            instructionalMessage.setMessageText(instructionalText);
-        }
-
-        // Sets constraints
-        if (StringUtils.isNotBlank(constraintText)) {
-            constraintMessage.setMessageText(constraintText);
         }
 
         // adjust paths on PrerequisiteConstraint property names
@@ -240,8 +275,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         setupFieldQuery();
 
-        //special requiredness indicator handling, if this was previously not required reset its required
-        //message to be ** for indicating required in the next state
+        // special requiredness indicator handling, if this was previously not required reset its required
+        // message to be ** for indicating required in the next state
         String path = view.getStateObjectBindingPath();
         Object stateObject;
 
@@ -254,19 +289,54 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         if (stateMapping != null) {
             String validationState = ConstraintStateUtils.getClientViewValidationState(model, view);
-            SimpleConstraint appliedSimpleConstraint = ConstraintStateUtils.getApplicableConstraint(this.getSimpleConstraint(),
-                    validationState, stateMapping);
-            if(appliedSimpleConstraint != null && appliedSimpleConstraint.getRequired() != null && appliedSimpleConstraint.getRequired()){
-                SimpleConstraint prevConstraint = ConstraintStateUtils.getApplicableConstraint(this.getSimpleConstraint(),
-                        stateMapping.getCurrentState(stateObject), stateMapping);
+            SimpleConstraint appliedSimpleConstraint = ConstraintStateUtils.getApplicableConstraint(
+                    this.getSimpleConstraint(), validationState, stateMapping);
+
+            if (appliedSimpleConstraint != null
+                    && appliedSimpleConstraint.getRequired() != null
+                    && appliedSimpleConstraint.getRequired()) {
+                SimpleConstraint prevConstraint = ConstraintStateUtils.getApplicableConstraint(
+                        this.getSimpleConstraint(), stateMapping.getCurrentState(stateObject), stateMapping);
                 if (prevConstraint == null || prevConstraint.getRequired() == null || !prevConstraint.getRequired()) {
                     this.getFieldLabel().getRequiredMessage().setMessageText("**");
                 }
             }
         }
-        //end special requiredness indicator handling
 
         ClientValidationUtils.processAndApplyConstraints(this, view, model);
+    }
+
+    /**
+     * Overrides processReadOnlyListDisplay to handle MultiValueControls by creating the list of values from values
+     * instead of the keys of the options selected (makes the list "human-readable").  Otherwise it just passes the
+     * list ahead as normal if this InputField does not use a MultiValueControl.
+     *
+     * @param model the model
+     * @param originalList originalList of values
+     */
+    @Override
+    protected void processReadOnlyListDisplay(Object model, List<?> originalList) {
+        //Special handling for option based fields
+        if ((control != null) && control instanceof MultiValueControlBase) {
+            List<String> newList = new ArrayList<String>();
+            List<KeyValue> fieldOptions = ((MultiValueControlBase) control).getOptions();
+
+            if (fieldOptions == null || fieldOptions.isEmpty()) {
+                return;
+            }
+
+            for (Object fieldValue : originalList) {
+                for (KeyValue keyValue : fieldOptions) {
+                    if (fieldValue != null && StringUtils.equals(fieldValue.toString(), keyValue.getKey())) {
+                        newList.add(keyValue.getValue());
+                        break;
+                    }
+                }
+            }
+            super.generateReadOnlyListDisplayReplacement(newList);
+        } else {
+            super.generateReadOnlyListDisplayReplacement(originalList);
+        }
     }
 
     /**
@@ -338,10 +408,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         setNestedComponentIdAndSuffix(getConstraintMessage(), UifConstants.IdSuffixes.CONSTRAINT);
         setNestedComponentIdAndSuffix(getQuickfinder(), UifConstants.IdSuffixes.QUICK_FINDER);
         setNestedComponentIdAndSuffix(getSuggest(), UifConstants.IdSuffixes.SUGGEST);
-
-        if (this.getFieldLabel() != null) {
-            this.getFieldLabel().setLabelForComponentId(this.getControl().getId());
-        }
 
         if (this.getControl() != null) {
             this.getControl().addDataAttribute(UifConstants.DATA_ATTRIBUTE_CONTROL_FOR, this.getId());
@@ -433,6 +499,31 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         if (getOptionsFinder() == null) {
             setOptionsFinder(attributeDefinition.getOptionsFinder());
         }
+
+        // copy over simple constraint information because we cannot directly use simpleConstraint from
+        // attributeDefinition because the settings in InputField take precedence
+        if (this.getSimpleConstraint().getConstraintStateOverrides() == null) {
+            this.getSimpleConstraint().setConstraintStateOverrides(
+                    attributeDefinition.getSimpleConstraint().getConstraintStateOverrides());
+        }
+
+        if (this.getSimpleConstraint().getStates().isEmpty()) {
+            this.getSimpleConstraint().setStates(attributeDefinition.getSimpleConstraint().getStates());
+        }
+
+        if (this.getSimpleConstraint().getMessageKey() == null) {
+            this.getSimpleConstraint().setMessageKey(attributeDefinition.getSimpleConstraint().getMessageKey());
+        }
+
+        if (this.getSimpleConstraint().getApplyClientSide() == null) {
+            this.getSimpleConstraint().setApplyClientSide(
+                    attributeDefinition.getSimpleConstraint().getApplyClientSide());
+        }
+
+        if (this.getSimpleConstraint().getValidationMessageParams() == null) {
+            this.getSimpleConstraint().setValidationMessageParams(
+                    attributeDefinition.getSimpleConstraint().getValidationMessageParams());
+        }
     }
 
     /**
@@ -442,6 +533,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
+        components.add(instructionalMessage);
+        components.add(constraintMessage);
         components.add(control);
         components.add(validationMessages);
         components.add(quickfinder);
@@ -470,6 +563,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Control instance
      */
+    @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Control getControl() {
         return this.control;
     }
@@ -490,6 +584,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return ValidationMessages instance
      */
+    @BeanTagAttribute(name = "validationMessages", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidationMessages getValidationMessages() {
         return this.validationMessages;
     }
@@ -511,6 +606,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return KeyValuesFinder instance
      */
+    @BeanTagAttribute(name = "optionsFinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public KeyValuesFinder getOptionsFinder() {
         return this.optionsFinder;
     }
@@ -548,6 +644,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return QuickFinder lookup widget
      */
+    @BeanTagAttribute(name = "quickfinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public QuickFinder getQuickfinder() {
         return this.quickfinder;
     }
@@ -576,6 +673,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Suggest instance
      */
+    @BeanTagAttribute(name = "suggest", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Suggest getSuggest() {
         return suggest;
     }
@@ -599,6 +697,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return String instructional message
      */
+    @BeanTagAttribute(name = "instructionalText")
     public String getInstructionalText() {
         return this.instructionalText;
     }
@@ -622,6 +721,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Message instructional message field
      */
+    @BeanTagAttribute(name = "instructionalMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getInstructionalMessage() {
         return this.instructionalMessage;
     }
@@ -651,6 +751,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return String text to display for the constraint message
      */
+    @BeanTagAttribute(name = "constraintText")
     public String getConstraintText() {
         return this.constraintText;
     }
@@ -674,6 +775,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Message constraint message field
      */
+    @BeanTagAttribute(name = "constraintMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getConstraintMessage() {
         return this.constraintMessage;
     }
@@ -698,6 +800,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the valid characters constraint for this input field
      */
     @Override
+    @BeanTagAttribute(name = "validCharactersConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidCharactersConstraint getValidCharactersConstraint() {
         return this.validCharactersConstraint;
     }
@@ -717,6 +820,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the case constraint for this input field
      */
     @Override
+    @BeanTagAttribute(name = "caseConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CaseConstraint getCaseConstraint() {
         return this.caseConstraint;
     }
@@ -735,6 +839,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the dependency constraints for this input field
      */
+    @BeanTagAttribute(name = "dependencyConstraint", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PrerequisiteConstraint> getDependencyConstraints() {
         return this.dependencyConstraints;
     }
@@ -754,6 +859,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the must occur constraints for this input field
      */
     @Override
+    @BeanTagAttribute(name = "mustOccurConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
     }
@@ -778,6 +884,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the simple constraint of the input field
      */
     @Override
+    @BeanTagAttribute(name = "simpleConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public SimpleConstraint getSimpleConstraint() {
         return this.simpleConstraint;
     }
@@ -810,7 +917,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the maximum length of the input field
      */
-    @Override
+    @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
         return simpleConstraint.getMaxLength();
     }
@@ -836,7 +943,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the minimum length of the input field
      */
-    @Override
+    @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {
         return simpleConstraint.getMinLength();
     }
@@ -854,6 +961,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getRequired()
      */
     @Override
+    @BeanTagAttribute(name = "required")
     public Boolean getRequired() {
         return this.simpleConstraint.getRequired();
     }
@@ -880,7 +988,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the exclusive minimum numeric value of the input field
      */
-    @Override
+    @BeanTagAttribute(name = "exclusiveMin")
     public String getExclusiveMin() {
         return simpleConstraint.getExclusiveMin();
     }
@@ -908,7 +1016,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the inclusive maximum numeric value of the input field
      */
-    @Override
+    @BeanTagAttribute(name = "inclusiveMax")
     public String getInclusiveMax() {
         return simpleConstraint.getInclusiveMax();
     }
@@ -936,6 +1044,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return AttributeQuery instance
      */
+    @BeanTagAttribute(name = "attributeQuery", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public AttributeQuery getAttributeQuery() {
         return attributeQuery;
     }
@@ -959,6 +1068,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return performUppercase flag
      */
+    @BeanTagAttribute(name = "uppercaseValue")
     public boolean isUppercaseValue() {
         return uppercaseValue;
     }
@@ -1009,8 +1119,35 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return
      */
-    @Override
+    @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {
         return this.simpleConstraint.getDataType();
+    }
+
+    @Override
+    public boolean isRenderFieldset() {
+        return super.isRenderFieldset() || (this.isInputAllowed()
+                && quickfinder != null
+                && quickfinder.isRender()
+                && quickfinder.getQuickfinderAction() != null
+                && quickfinder.getQuickfinderAction().isRender());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that the control is set
+        if (getControl() == null) {
+            if (Validator.checkExpressions(this, "control")) {
+                String currentValues[] = {"control =" + getConstraintText()};
+                tracer.createWarning("Control should be set", currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

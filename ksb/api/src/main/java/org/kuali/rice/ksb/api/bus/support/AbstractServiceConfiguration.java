@@ -50,7 +50,8 @@ import java.util.Collection;
 		AbstractServiceConfiguration.Elements.MESSAGE_EXCEPTION_HANDLER,
 		AbstractServiceConfiguration.Elements.BUS_SECURITY,
 		AbstractServiceConfiguration.Elements.CREDENTIALS_TYPE,
-        CoreConstants.CommonElements.FUTURE_ELEMENTS
+		AbstractServiceConfiguration.Elements.BASIC_AUTHENTICATION,
+		 CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public abstract class AbstractServiceConfiguration extends AbstractDataTransferObject implements ServiceConfiguration {
 
@@ -97,9 +98,12 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 	@XmlElement(name = Elements.CREDENTIALS_TYPE, required = false)
 	private final String credentialsType;
 
+	@XmlElement(name = Elements.BASIC_AUTHENTICATION, required = false)
+	private final Boolean basicAuthentication;
+
 	@SuppressWarnings("unused")
-    @XmlAnyElement
-    private final Collection<Element> _futureElements = null;
+	@XmlAnyElement
+	private final Collection<Element> _futureElements = null;
 
 	/**
      * Constructor intended for use only by JAXB.
@@ -118,6 +122,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		this.messageExceptionHandler = null;
 		this.busSecurity = null;
 		this.credentialsType = null;
+		this.basicAuthentication = false;
 	}
 	
 	protected AbstractServiceConfiguration(Builder<?> builder) {
@@ -135,6 +140,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		this.busSecurity = builder.getBusSecurity();
 		CredentialsType cred = builder.getCredentialsType();
 		this.credentialsType = cred == null ? null : cred.name();
+		this.basicAuthentication = builder.isBasicAuthentication();
 	}
 	
 	public QName getServiceName() {
@@ -192,6 +198,11 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		return CredentialsType.valueOf(credentialsType);
 	}
 
+	@Override
+	public Boolean isBasicAuthentication() {
+		return basicAuthentication;
+	}
+
 	protected static abstract class Builder<T> implements Serializable {
 		
 		private static final long serialVersionUID = -3002495884401672488L;
@@ -209,6 +220,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		private String messageExceptionHandler;
 		private Boolean busSecurity;
 		private CredentialsType credentialsType;
+		private Boolean basicAuthentication = false;
 
 		public abstract T build();
 		
@@ -226,6 +238,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 			setMessageExceptionHandler(serviceDefinition.getMessageExceptionHandler());
 			setBusSecurity(serviceDefinition.getBusSecurity());
 			setCredentialsType(serviceDefinition.getCredentialsType());
+			setBasicAuthentication(serviceDefinition.isBasicAuthentication());
 		}
 		
 		public QName getServiceName() {
@@ -306,6 +319,12 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		public void setCredentialsType(CredentialsType credentialsType) {
 			this.credentialsType = credentialsType;
 		}
+		public Boolean isBasicAuthentication() {
+			return basicAuthentication;
+		}
+		public void setBasicAuthentication(Boolean basicAuthentication) {
+			this.basicAuthentication = basicAuthentication;
+		}
 
 	}
 	
@@ -334,6 +353,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
     	protected final static String MESSAGE_EXCEPTION_HANDLER = "messageExceptionHandler";
     	protected final static String BUS_SECURITY = "busSecurity";
     	protected final static String CREDENTIALS_TYPE = "credentialsType";
+    	protected final static String BASIC_AUTHENTICATION = "basicAuthentication";
     }
     
     static final class CredentialsTypeAdapter extends EnumStringAdapter<CredentialsType> {

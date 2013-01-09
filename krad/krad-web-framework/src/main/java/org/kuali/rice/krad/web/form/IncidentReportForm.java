@@ -24,11 +24,10 @@ import java.io.StringWriter;
 
 /**
  * Form class for incident reports
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IncidentReportForm extends UifFormBase {
-
     private static final long serialVersionUID = -6677581167041430694L;
 
     protected String errorMessage = "The system has encountered an error and is unable to complete your request at this time. Please provide more information regarding this error by completing this Incident Report.";
@@ -49,13 +48,13 @@ public class IncidentReportForm extends UifFormBase {
 
     public IncidentReportForm() {
         super();
-        this.setRenderFullView(true);
+
         setViewTypeName(ViewType.INCIDENT);
     }
 
     /**
      * Creates the email message from the exception, form and user data.
-     * 
+     *
      * @return the email message
      */
     public String createEmailMessage() {
@@ -73,20 +72,21 @@ public class IncidentReportForm extends UifFormBase {
 
     /**
      * Creates the email subject containing the mode, view id and the exception message.
-     * 
+     *
      * @return the email subject
      */
     public String createEmailSubject() {
+        String app = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("application.id");
         String env = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("environment");
-        String format = "%s:%s:%s";
-        String subject = String.format(format, env, (incidentViewId == null) ? "" : incidentViewId,
+        String format = "%s:%s:%s:%s";
+        String subject = String.format(format, app, env, (incidentViewId == null) ? "" : incidentViewId,
                 truncateString(exceptionMessage, 180));
         return subject;
     }
 
     /**
      * Truncate the string to specified length.
-     * 
+     *
      * @param str
      *            the string to truncate
      * @param maxLength
@@ -101,7 +101,7 @@ public class IncidentReportForm extends UifFormBase {
 
     /**
      * Gets the stack trace from an exception.
-     * 
+     *
      * @param t
      *            the throwable to get the stack trace from
      * @return the stack trace

@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -161,7 +162,7 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
 
         // verify that the outbox item was updated properly
         userPrincipalName = TemporaryDocumentType.FIRST_NODE_APPROVER_1;
-        Collection<ActionItem> outboxItems = KEWServiceLocator.getActionListService().getOutbox(getPrincipalIdForName(userPrincipalName), new ActionListFilter());
+        Collection<OutboxItemActionListExtension> outboxItems = KEWServiceLocator.getActionListService().getOutbox(getPrincipalIdForName(userPrincipalName), new ActionListFilter());
         assertEquals("There should be one outbox item", 1, outboxItems.size());
         ActionItem outboxItem = outboxItems.iterator().next();
         assertEquals("The label on the outbox item should have been changed", new_label, outboxItem.getDocLabel());

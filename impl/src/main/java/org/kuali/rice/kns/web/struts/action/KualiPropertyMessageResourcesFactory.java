@@ -23,20 +23,26 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * A custom MessageResourceFactory that delegates to the ConfigurationService's pre-loaded properties.
- * 
- * This factory can be used in struts-config.xml files by specifying a factory attribute in the <message-resources/> tag.  
- * Example: 
- *   <message-resources 
- *       factory="KualiPropertyMessageResourcesFactory"
- *       parameter="SampleApplicationResources" />
+ *
+ * <p>
+ * This factory can be used in struts-config.xml files by specifying a factory attribute in the <message-resources/>
+ * tag
+ *
+ * Example:
+ * <message-resources
+ * factory="KualiPropertyMessageResourcesFactory"
+ * parameter="SampleApplicationResources" />
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KualiPropertyMessageResourcesFactory extends PropertyMessageResourcesFactory {
-
     private static final long serialVersionUID = 9045578011738154255L;
 
     /**
-     * Uses KualiPropertyMessageResources, which allows multiple property files to be loaded into the defalt message set.
-     * 
+     * Uses KualiPropertyMessageResources, which allows multiple property files to be loaded into the default message
+     * set
+     *
      * @see org.apache.struts.util.MessageResourcesFactory#createResources(java.lang.String)
      */
     @Override
@@ -46,38 +52,40 @@ public class KualiPropertyMessageResourcesFactory extends PropertyMessageResourc
                     KRADConstants.MESSAGE_RESOURCES);
             config = removeSpacesAround(propertyConfig);
         }
+
         return new KualiPropertyMessageResources(this, config, this.returnNull);
     }
-    
+
     /**
-     * Removes the spaces around the elements on a csv list of elements.
+     * Removes the spaces around the elements on a csv list of elements
+     *
      * <p>
      * A null input will return a null output.
      * </p>
-     * 
+     *
      * @param csv a list of elements in csv format e.g. foo, bar, baz
      * @return a list of elements in csv format without spaces e.g. foo,bar,baz
      */
     private String removeSpacesAround(String csv) {
-    	if (csv == null) {
-    		return null;
-    	}
-    	
-    	final StringBuilder result = new StringBuilder();
-		for (final String value : csv.split(",")) {
-			if (!"".equals(value.trim())) {
-				result.append(value.trim());
-				result.append(",");
-			}
-		}
-		
-		//remove trailing comma
-		int i = result.lastIndexOf(",");
-		if (i != -1) {
-			result.deleteCharAt(i);
-		}
-		
-		return result.toString();
+        if (csv == null) {
+            return null;
+        }
+
+        final StringBuilder result = new StringBuilder();
+        for (final String value : csv.split(",")) {
+            if (!"".equals(value.trim())) {
+                result.append(value.trim());
+                result.append(",");
+            }
+        }
+
+        //remove trailing comma
+        int i = result.lastIndexOf(",");
+        if (i != -1) {
+            result.deleteCharAt(i);
+        }
+
+        return result.toString();
     }
-    
+
 }

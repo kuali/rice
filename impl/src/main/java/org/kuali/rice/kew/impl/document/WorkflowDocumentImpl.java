@@ -355,6 +355,13 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     @Override
+    public void recall(String annotation, boolean cancel) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().recall(
+                constructDocumentActionParameters(annotation), cancel);
+        resetStateAfterAction(result);
+    }
+
+    @Override
     public void blanketApprove(String annotation) {
         DocumentActionResult result = getWorkflowDocumentActionsService().blanketApprove(
                 constructDocumentActionParameters(annotation));
@@ -676,6 +683,16 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     /**
+     * Indicates if the document is in the recalled state or not.
+     *
+     * @return true if in the specified state
+     */
+    @Override
+    public boolean isRecalled() {
+        return checkStatus(DocumentStatus.RECALLED);
+    }
+
+    /**
      * Indicates if the document is in the disapproved state or not.
      * 
      * @return true if in the specified state
@@ -751,33 +768,25 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
 
     @Override
     public Set<String> getNodeNames() {
-        List<RouteNodeInstance> activeNodeInstances = getActiveRouteNodeInstances();
-        Set<String> nodeNames = new HashSet<String>(activeNodeInstances.size());
-        for (RouteNodeInstance routeNodeInstance : activeNodeInstances) {
-            nodeNames.add(routeNodeInstance.getName());
-        }
-        return Collections.unmodifiableSet(nodeNames);
+    	final List<String> names = getWorkflowDocumentService().getActiveRouteNodeNames(getDocumentId());
+        return Collections.unmodifiableSet(new HashSet<String>(names));
     }
 
     public Set<String> getCurrentNodeNames() {
-        List<RouteNodeInstance> currentNodeInstances = getCurrentRouteNodeInstances();
-        Set<String> nodeNames = new HashSet<String>(currentNodeInstances.size());
-        for (RouteNodeInstance routeNodeInstance : currentNodeInstances) {
-            nodeNames.add(routeNodeInstance.getName());
-        }
-        return Collections.unmodifiableSet(nodeNames);
+    	final List<String> names = getWorkflowDocumentService().getCurrentRouteNodeNames(getDocumentId());
+        return Collections.unmodifiableSet(new HashSet<String>(names));
     }
 
     @Override
-    public void returnToPreviousNode(String nodeName, String annotation) {
+    public void returnToPreviousNode(String annotation, String nodeName) {
         if (nodeName == null) {
             throw new IllegalArgumentException("nodeName was null");
         }
-        returnToPreviousNode(ReturnPoint.create(nodeName), annotation);
+        returnToPreviousNode(annotation, ReturnPoint.create(nodeName));
     }
 
     @Override
-    public void returnToPreviousNode(ReturnPoint returnPoint, String annotation) {
+    public void returnToPreviousNode(String annotation, ReturnPoint returnPoint) {
         if (returnPoint == null) {
             throw new IllegalArgumentException("returnPoint was null");
         }
@@ -1062,6 +1071,8 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
             Document.Builder documentBuilder = Document.Builder.create(originalDocument);
             documentBuilder.setApplicationDocumentId(builder.getApplicationDocumentId());
             documentBuilder.setTitle(builder.getTitle());
+            documentBuilder.setApplicationDocumentStatus(builder.getApplicationDocumentStatus());
+            documentBuilder.setVariables(builder.getVariables());
             return documentBuilder.build();
         }
 

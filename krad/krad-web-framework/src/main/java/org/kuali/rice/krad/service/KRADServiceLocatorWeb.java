@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.lookup.Lookupable;
+import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
@@ -51,6 +52,7 @@ public class KRADServiceLocatorWeb {
     public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";
     public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
     public static final String EXCEPTION_INCIDENT_REPORT_SERVICE = "kradExceptionIncidentService";
+    public static final String FEEDBACK_REPORT_SERVICE = "kradFeedbackService";
     public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
     public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
     public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
@@ -68,6 +70,7 @@ public class KRADServiceLocatorWeb {
     public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
     public static final String VIEW_VALIDATION_SERVICE = "viewValidationService";
     public static final String ATTRIBUTE_QUERY_SERVICE = "attributeQueryService";
+    public static final String MESSAGE_SERVICE = "messageService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -95,6 +98,10 @@ public class KRADServiceLocatorWeb {
 
     public static final KualiExceptionIncidentService getKualiExceptionIncidentService() {
         return getService(EXCEPTION_INCIDENT_REPORT_SERVICE);
+    }
+
+    public static final KualiFeedbackService getKualiFeedbackService() {
+        return getService(FEEDBACK_REPORT_SERVICE);
     }
 
     public static DataDictionaryService getDataDictionaryService() {
@@ -171,5 +178,9 @@ public class KRADServiceLocatorWeb {
 
     public static DataDictionaryRemoteFieldService getDataDictionaryRemoteFieldService() {
         return (DataDictionaryRemoteFieldService) getService(DATA_DICTIONARY_REMOTE_FIELD_SERVICE);
+    }
+
+    public static MessageService getMessageService() {
+        return getService(MESSAGE_SERVICE);
     }
 }

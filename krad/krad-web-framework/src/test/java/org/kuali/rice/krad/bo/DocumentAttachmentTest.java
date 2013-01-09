@@ -24,14 +24,14 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * tests DocumentAttachment getters and setters
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentAttachmentTest {
 
 	DocumentAttachment dummyDocumentAttachment;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		dummyDocumentAttachment = new DocumentAttachment();
@@ -41,7 +41,7 @@ public class DocumentAttachmentTest {
 	public void tearDown() throws Exception {
 		dummyDocumentAttachment = null;
 	}
-	
+
 	@Test
     /**
      * tests documentNumber getter and setter

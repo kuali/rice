@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2006-2012 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -68,11 +70,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="dataRoleAttribute" value="role"/>
-    <property name="dataMetaAttribute" value="meta"/>
-    <property name="dataTypeAttribute" value="type"/>
   </bean>
 
   <!--
@@ -146,11 +148,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
     <property name="fieldLabel.dataAttributes">
@@ -159,11 +161,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="fieldLabel.dataRoleAttribute" value="role"/>
-    <property name="fieldLabel.dataMetaAttribute" value="meta"/>
-    <property name="fieldLabel.dataTypeAttribute" value="type"/>
   </bean>
 
   <!-- text area -->
@@ -181,11 +183,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
        </bean>
     </property>
   </bean>
@@ -207,11 +209,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -239,11 +241,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -259,11 +261,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -285,11 +287,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -305,11 +307,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -327,11 +329,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -348,11 +350,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -368,13 +370,13 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
     <!-- to allow the selenium test to select the image - the default is that a generated value is set by krad -->
     <property name="image.id" value="imageField_image_attrs"/>
-    <property name="image.dataRoleAttribute" value="role"/>
-    <property name="image.dataMetaAttribute" value="meta"/>
-    <property name="image.dataTypeAttribute" value="type"/>
   </bean>
 
   <!-- action link base bean with data attributes -->
@@ -385,11 +387,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="dataRoleAttribute" value="role"/>
-    <property name="dataMetaAttribute" value="meta"/>
-    <property name="dataTypeAttribute" value="type"/>
   </bean>
 
   <!-- action link no image -->
@@ -421,11 +423,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="dataRoleAttribute" value="role"/>
-    <property name="dataMetaAttribute" value="meta"/>
-    <property name="dataTypeAttribute" value="type"/>
    </bean>
 
   <!-- action button - rendered as an image -->
@@ -481,11 +483,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="dataRoleAttribute" value="role"/>
-    <property name="dataMetaAttribute" value="meta"/>
-    <property name="dataTypeAttribute" value="type"/>
   </bean>
 
   <!-- message field -->
@@ -497,11 +499,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="dataRoleAttribute" value="role"/>
-    <property name="dataMetaAttribute" value="meta"/>
-    <property name="dataTypeAttribute" value="type"/>
    </bean>
 
   <bean id="hiddenControl_attrs" parent="Uif-InputField" p:propertyName="field6" p:showLabel="false" p:render="true">
@@ -513,11 +515,11 @@
             <entry key="transitions" value="3"/>
             <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+            <entry key="dataRoleAttribute" value="role"/>
+            <entry key="dataMetaAttribute" value="meta"/>
+            <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-        <property name="dataRoleAttribute" value="role"/>
-        <property name="dataMetaAttribute" value="meta"/>
-        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -529,11 +531,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="dataRoleAttribute" value="role"/>
-    <property name="dataMetaAttribute" value="meta"/>
-    <property name="dataTypeAttribute" value="type"/>
   </bean>
 
   <bean id="iframe_attrs" parent="Uif-Iframe" p:width="800px" p:height="550px" p:source="http://www.kuali.org">
@@ -543,11 +545,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="dataRoleAttribute" value="role"/>
-    <property name="dataMetaAttribute" value="meta"/>
-    <property name="dataTypeAttribute" value="type"/>
   </bean>
   
   <bean id="linkElement_attrs" parent="Uif-Link" p:href="http://wiki.kuali.org" p:target="_blank" p:linkText="Kuali Wiki"
@@ -558,11 +560,11 @@
         <entry key="transitions" value="3"/>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+        <entry key="dataRoleAttribute" value="role"/>
+        <entry key="dataMetaAttribute" value="meta"/>
+        <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-    <property name="dataRoleAttribute" value="role"/>
-    <property name="dataMetaAttribute" value="meta"/>
-    <property name="dataTypeAttribute" value="type"/>
   </bean>
 
 </beans>

@@ -17,7 +17,7 @@
 // global vars
 var jq = jQuery.noConflict();
 
-//clear out blockUI css, using css class overrides
+// clear out blockUI css, using css class overrides
 jQuery.blockUI.defaults.css = {};
 jQuery.blockUI.defaults.overlayCSS = {};
 
@@ -26,6 +26,8 @@ var pageValidatorReady = false;
 var validateClient = true;
 var messageSummariesShown = false;
 var pauseTooltipDisplay = false;
+var haltValidationMessaging = false;
+var gAutoFocus = false;
 
 var errorImage;
 var errorGreyImage;
@@ -33,42 +35,52 @@ var warningImage;
 var infoImage;
 var detailsOpenImage;
 var detailsCloseImage;
+var ajaxReturnHandlers = {};
+
+//delay function
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
+
+// map of componentIds and refreshTimers
+var refreshTimerComponentMap = {};
 
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
     setPageBreadcrumb();
 
     // buttons
-    jQuery("input:submit").button();
-    jQuery("input:button").button();
-    jQuery("a.button").button();
-    jQuery(".uif-dialogButtons").find(".uif-checkboxesControl").button();
+    jQuery("input:submit, input:button, a.button, .uif-dialogButtons").button();
+    jQuery(".uif-dialogButtons").next('label').addClass('uif-primaryDialogButton');
 
     // common ajax setup
     jQuery.ajaxSetup({
-        beforeSend:function () {
-            createLoading(true);
-        },
-        complete:function () {
-            createLoading(false);
-        },
         error:function (jqXHR, textStatus, errorThrown) {
-            createLoading(false);
-            showGrowl('Status: ' + textStatus + '<br/>' + errorThrown, 'Server Response Error', 'errorGrowl');
+            showGrowl(getMessage(kradVariables.MESSAGE_STATUS_ERROR, null, null, textStatus, errorThrown), getMessage(kradVariables.MESSAGE_SERVER_RESPONSE_ERROR), 'errorGrowl');
         }
     });
 
-    runHiddenScripts("");
-    jQuery("#" + kradVariables.APP_ID).show();
-    createLoading(false);
+    // stop previous loading message
+    hideLoading();
 
     // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
     jQuery(window).unload(function () {
-        createLoading(false);
+        hideLoading();
     });
 
-    //setup the various event handlers for fields - THIS IS IMPORTANT
+    runHiddenScripts("");
+
+    // show the page
+    jQuery("#" + kradVariables.APP_ID).show();
+
+    // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
+
+    performFocus("FIRST");
 });
 
 /**
@@ -85,27 +97,29 @@ function initFieldHandlers() {
         manageMouseEvents:false,
         themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
         alwaysVisible:false,
-        tail:{align:"left"}
+        tail:{align:"left"},
+        themeMargins:{total:"13px", difference:"2px"}
     };
 
     jQuery(document).on("mouseenter",
-            "[data-role='InputField'] input,"
-                    + "[data-role='InputField'] fieldset, "
-                    + "[data-role='InputField'] fieldset input, "
-                    + "[data-role='InputField'] fieldset label, "
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea",
+            "div[data-role='InputField'] input:not([type='image']),"
+                    + "div[data-role='InputField'] fieldset, "
+                    + "div[data-role='InputField'] fieldset > span > input:radio,"
+                    + "div[data-role='InputField'] fieldset > span > input:checkbox,"
+                    + "div[data-role='InputField'] fieldset > span > label, "
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea",
             function (event) {
-                var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
+                var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
                 var data = jQuery("#" + fieldId).data("validationMessages");
-                if(data && data.useTooltip){
+                if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
                     var tooltipElement = this;
                     var focus = jQuery(tooltipElement).is(":focus");
                     if (elementInfo.type == "fieldset") {
                         //for checkbox/radio fieldsets we put the tooltip on the label of the first input
-                        tooltipElement = jQuery(element).filter("label:first");
+                        tooltipElement = jQuery(element).filter(".uif-tooltip");
                         //if the fieldset or one of the inputs have focus then the fieldset is considered focused
                         focus = jQuery(element).filter("fieldset").is(":focus")
                                 || jQuery(element).filter("input").is(":focus");
@@ -118,35 +132,57 @@ function initFieldHandlers() {
                         if (elementInfo.themeMargins) {
                             validationTooltipOptions.themeMargins = elementInfo.themeMargins;
                         }
-                        var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-                        validationTooltipOptions.themeName = data.tooltipTheme;
-                        validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
-                        //set the margin to offset it from the left appropriately
-                        validationTooltipOptions.divStyle = {margin:getTooltipMargin(tooltipElement)};
-                        jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
-                        jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
-                        jQuery(tooltipElement).ShowBubblePopup();
+
+                        //special case check for input within a fieldset, hide other tooltips to avoid overlap
+                        if (jQuery(tooltipElement).is("select, input:text, textarea, input:file, input:password")
+                                && jQuery(tooltipElement).parents("fieldset[data-type='CheckboxSet'], "
+                                + "fieldset[data-type='RadioSet']").length) {
+                            hideBubblePopups();
+                        }
+                        var show = true;
+
+                        //special case check for if any internal inputs of a fieldset: if they are showing tooltips
+                        //do not show this fieldset's tooltip to avoid overlap
+                        if (elementInfo.type == "fieldset") {
+                            jQuery("select, input:text, textarea, input:file, input:password", "#" + fieldId).each(function () {
+                                if (jQuery(this).IsBubblePopupOpen()) {
+                                    show = false;
+                                }
+                            });
+                        }
+
+                        if (show) {
+                            var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+                            validationTooltipOptions.themeName = data.tooltipTheme;
+                            validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
+                            //set the margin to offset it from the left appropriately
+                            validationTooltipOptions.divStyle = {margin:getTooltipMargin(tooltipElement)};
+                            jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
+                            jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
+                            jQuery(tooltipElement).ShowBubblePopup();
+                        }
                     }
                 }
             });
 
     jQuery(document).on("mouseleave",
-            "[data-role='InputField'] input,"
-                    + "[data-role='InputField'] fieldset, "
-                    + "[data-role='InputField'] fieldset input, "
-                    + "[data-role='InputField'] fieldset label, "
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea",
+            "div[data-role='InputField'] input,"
+                    + "div[data-role='InputField'] fieldset, "
+                    + "div[data-role='InputField'] fieldset > span > input:radio,"
+                    + "div[data-role='InputField'] fieldset > span > input:checkbox,"
+                    + "div[data-role='InputField'] fieldset > span > label, "
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea",
             function (event) {
-                var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
+                var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
                 var data = jQuery("#" + fieldId).data("validationMessages");
-                if(data && data.useTooltip){
+                if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
                     //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
                     //above the field - so this is necessary) - also prevents non-displayed tooltips from hiding content
                     //when entered
-                    var result = mouseInBubblePopupCheck(event, fieldId, element, this, elementInfo.type);
+                    var result = mouseOutBubblePopupCheck(event, fieldId, element, this, elementInfo.type, data);
                     if (!result) {
                         return false;
                     }
@@ -157,20 +193,20 @@ function initFieldHandlers() {
 
     //when these fields are focus store what the current errors are if any and show the messageTooltip
     jQuery(document).on("focus",
-            "[data-role='InputField'] input:text, "
-                    + "[data-role='InputField'] input:password, "
-                    + "[data-role='InputField'] input:file, "
-                    + "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio,"
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea, "
-                    + "[data-role='InputField'] option",
+            "div[data-role='InputField'] input:text, "
+                    + "div[data-role='InputField'] input:password, "
+                    + "div[data-role='InputField'] input:file, "
+                    + "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio,"
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea, "
+                    + "div[data-role='InputField'] option",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
 
                 //keep track of what errors it had on initial focus
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                if(data && data.errors){
+                if (data && data.errors) {
                     data.focusedErrors = data.errors;
                 }
 
@@ -181,16 +217,16 @@ function initFieldHandlers() {
     //when these fields are focused out validate and if this field never had an error before, show and close, otherwise
     //immediately close the tooltip
     jQuery(document).on("focusout",
-            "[data-role='InputField'] input:text, "
-                    + "[data-role='InputField'] input:password, "
-                    + "[data-role='InputField'] input:file, "
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea",
-            function () {
+            "div[data-role='InputField'] input:text, "
+                    + "div[data-role='InputField'] input:password, "
+                    + "div[data-role='InputField'] input:file, "
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea",
+            function (event) {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
                 var hadError = false;
-                if (data && data.focusedErrors){
+                if (data && data.focusedErrors) {
                     hadError = data.focusedErrors.length;
                 }
                 var valid = true;
@@ -199,20 +235,26 @@ function initFieldHandlers() {
                     valid = validateFieldValue(this);
                 }
 
+                //mouse in tooltip check
+                var mouseInTooltip = false;
+                if (data && data.useTooltip && data.mouseInTooltip) {
+                    mouseInTooltip = data.mouseInTooltip;
+                }
+
                 if (!hadError && !valid) {
                     //never had a client error before, so pop-up and delay
                     showMessageTooltip(id, true, true);
                 }
-                else {
+                else if (!mouseInTooltip) {
                     hideMessageTooltip(id);
                 }
             });
 
     //when these fields are changed validate immediately
     jQuery(document).on("change",
-            "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio, "
-                    + "[data-role='InputField'] select",
+            "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio, "
+                    + "div[data-role='InputField'] select",
             function () {
                 if (validateClient) {
                     validateFieldValue(this);
@@ -221,17 +263,17 @@ function initFieldHandlers() {
 
     //Greying out functionality
     jQuery(document).on("change",
-            "[data-role='InputField'] input:text, "
-                    + "[data-role='InputField'] input:password, "
-                    + "[data-role='InputField'] input:file, "
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea, "
-                    + "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio",
+            "div[data-role='InputField'] input:text, "
+                    + "div[data-role='InputField'] input:password, "
+                    + "div[data-role='InputField'] input:file, "
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea, "
+                    + "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                if(data){
+                if (data) {
                     data.fieldModified = true;
                     jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
                 }
@@ -239,10 +281,10 @@ function initFieldHandlers() {
 
     //special radio and checkbox control handling for click events
     jQuery(document).on("click",
-            "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio,"
-                    + "fieldset[data-type='CheckboxSet'] label,"
-                    + "fieldset[data-type='RadioSet'] label",
+            "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio,"
+                    + "fieldset[data-type='CheckboxSet'] span > label,"
+                    + "fieldset[data-type='RadioSet'] span > label",
             function () {
                 var event = jQuery.Event("handleFieldsetMessages");
                 event.element = this;
@@ -252,8 +294,8 @@ function initFieldHandlers() {
 
     //special radio and checkbox control handling for focus events
     jQuery(document).on("focus",
-            "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio",
+            "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio",
             function () {
                 var event = jQuery.Event("handleFieldsetMessages");
                 event.element = this;
@@ -267,11 +309,17 @@ function initFieldHandlers() {
     //in both cases, validation occurs when the field is considered to have lost focus (fieldset case - no control
     //in the fieldset has focus)
     jQuery(document).on("focusout",
-            "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio",
+            "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio",
             function () {
                 var parent = jQuery(this).parent();
                 var id = getAttributeId(jQuery(this).attr('id'));
+                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                //mouse in tooltip check
+                var mouseInTooltip = false;
+                if (data && data.useTooltip && data.mouseInTooltip) {
+                    mouseInTooltip = data.mouseInTooltip;
+                }
 
                 //radio/checkbox is in fieldset case
                 if (parent.parent().is("fieldset")) {
@@ -298,7 +346,7 @@ function initFieldHandlers() {
                                 //never had a client error before, so pop-up and delay close
                                 showMessageTooltip(id, true, true);
                             }
-                            else {
+                            else if (!mouseInTooltip){
                                 hideMessageTooltip(id);
                             }
                         }
@@ -326,34 +374,54 @@ function initFieldHandlers() {
                         //never had a client error before, so pop-up and delay
                         showMessageTooltip(id, true, true);
                     }
-                    else {
+                    else if (!mouseInTooltip){
                         hideMessageTooltip(id);
                     }
                 }
             });
+
+    jQuery(document).on("change", "table.dataTable div[data-role='InputField'][data-total='change'] :input", function(){
+        refreshDatatableCellRedraw(this);
+    });
+
+    jQuery(document).on("keyup", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function(){
+        var input = this;
+        delay(function(){refreshDatatableCellRedraw(input)}, 300);
+    });
+
 }
 
+/**
+ * Calls the create call to initialize the bubblepopup plugin to take into account any content that may have
+ * bubblepopups
+ *
+ * @param selector (optional) if specified used as the selection string to select an element to check to see if it has
+ * elements that could have tooltips, if the content does not contain these elements, does not reinitialize the create
+ * call
+ */
 function initBubblePopups() {
-    //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup
-    //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
-    //will cause a severe loss of functionality and buggy behavior
-    //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
-    jQuery("input, select, textarea, "
-            + " label, .uif-tooltip").CreateBubblePopup(
-            {   manageMouseEvents:false,
-                themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
-            } );
+    //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
+    jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
+                    + "select, textarea, .uif-tooltip", {   manageMouseEvents:false,
+                                        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
+
 }
 
-function hideBubblePopups() {
-    jQuery("input, select, textarea, "
-            + " label, .uif-tooltip").HideAllBubblePopups();
+function hideBubblePopups(element) {
+    if (element != undefined && element.length) {
+        jQuery(element).find("input:not(input[type='image']), input[data-role='help'], select, textarea, "
+                + ".uif-tooltip").not("input[type='hidden']").HideAllBubblePopups()
+    }
+    else {
+        jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea,"
+                + ".uif-tooltip").not("input[type='hidden']").HideAllBubblePopups();
+    }
 }
 
 /**
  * Sets up the validator and the dirty check and other page scripts
  */
-function setupPage(validate, focusFirstField) {
+function setupPage(validate) {
     jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
     setupImages();
@@ -366,37 +434,41 @@ function setupPage(validate, focusFirstField) {
     validateClient = validate;
 
     //select current page
-    var pageId = jQuery("[name='pageId']").val();
-    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage : pageId});
-    jQuery("ul.uif-tabMenu").selectTab({selectPage : pageId});
+    var pageId = jQuery("[name='view.currentPageId']").val();
+    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage:pageId});
+    jQuery("ul.uif-tabMenu").selectTab({selectPage:pageId});
 
     //skip input field iteration and validation message writing, if no server messages
     var hasServerMessagesData = jQuery("[data-type='Page']").data("server-messages");
-    if(hasServerMessagesData){
+    if (hasServerMessagesData) {
         //Handle messages at field, if any
-        jQuery("[data-role='InputField']").each(function () {
+        jQuery("div[data-role='InputField']").each(function () {
             var id = jQuery(this).attr('id');
             handleMessagesAtField(id, true);
         });
+
         //Write the result of the validation messages
         writeMessagesForPage();
         messageSummariesShown = true;
     }
 
     //focus on pageValidation header if there are messages on this page
-    if(jQuery(".uif-pageValidationHeader").length){
+    if (jQuery(".uif-pageValidationHeader").length) {
         jQuery(".uif-pageValidationHeader").focus();
     }
 
-    //Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
-    jQuery(window).bind('beforeunload', function (evt) {
-        var validateDirty = jQuery("[name='validateDirty']").val();
-        if (validateDirty == "true") {
-            var dirty = jQuery(".uif-field").find("input.dirty");
-            //methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
-            var methodToCall = jQuery("[name='methodToCall']").val();
-            if (dirty.length > 0 && methodToCall == null) {
-                return "Form has unsaved data. Do you want to leave anyway?";
+    // make sure form doesn't have any unsaved data when user clicks on any other portal links,
+    // closes browser or presses fwd/back browser button
+    jQuery(window).bind('beforeunload', function (event) {
+        // methodToCall check is needed to skip form posts
+        var methodToCall = jQuery("[name='methodToCall']").val();
+        if (!methodToCall) {
+            var dirty = checkDirty(event);
+
+            // prompt does not come through in checkDirty since we are unloaded, so we
+            // need to return the question
+            if (dirty) {
+                return getMessage(kradVariables.MESSAGE_KEY_DIRTY_FIELDS);
             }
         }
     });
@@ -411,9 +483,6 @@ function setupPage(validate, focusFirstField) {
     pageValidatorReady = true;
 
     jQuery.watermark.showAll();
-    if(focusFirstField){
-        performFocus();
-    }
 }
 
 /**
@@ -540,12 +609,12 @@ function setupValidator(form) {
  * Initializes all of the image variables
  */
 function setupImages() {
-    errorImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error.png' alt='Error' /> ";
-    errorGreyImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
-    warningImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/warning.png' alt='Warning' /> ";
-    infoImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/info.png' alt='Information' /> ";
-    detailsOpenImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_open.png' alt='Details' /> ");
-    detailsCloseImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_close.png' alt='Close Details' /> ");
+    errorImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error.png' alt='" + getMessage(kradVariables.MESSAGE_ERROR) + "' /> ";
+    errorGreyImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error-grey.png' alt='" + getMessage(kradVariables.MESSAGE_ERROR_FIELD_MODIFIED) + "' /> ";
+    warningImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/warning.png' alt='" + getMessage(kradVariables.MESSAGE_WARNING) + "' /> ";
+    infoImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/info.png' alt='" + getMessage(kradVariables.MESSAGE_INFORMATION) + "' /> ";
+    detailsOpenImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_open.png' alt='" + getMessage(kradVariables.MESSAGE_DETAILS) + "' /> ");
+    detailsCloseImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_close.png' alt='" + getMessage(kradVariables.MESSAGE_CLOSE_DETAILS) + "' /> ");
 }
 
 /**
@@ -733,20 +802,21 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function (a, b) {
  * @param iColumn - the column whose values are to be retrieved
  * @return an array of column values - extracted from any surrounding markup
  */
-jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
+jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var input = jQuery(this).find('input:text');
+    jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var input = jQuery(td).find('input:text');
         if (input.length != 0) {
             aData.push(input.val());
         } else {
             // find span for the data or input field and get its text
-            var input1 = jQuery(this).find('.uif-field');
+            var input1 = jQuery(td).find('.uif-field');
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.find("span:first").text()));
             } else {
                 // just use the text within the cell
-                aData.push(jQuery(this).text());
+                aData.push(jQuery(td).text());
             }
         }
 
@@ -764,14 +834,15 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
  * @param iColumn - the column whose values are to be retrieved
  * @return an array of column values - extracted from any surrounding markup
  */
-jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn) {
+jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var selected = jQuery(this).find('select option:selected:first');
+    jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var selected = jQuery(td).find('select option:selected:first');
         if (selected.length != 0) {
             aData.push(selected.text());
         } else {
-            var input1 = jQuery(this).find('.uif-inputField');
+            var input1 = jQuery(td).find('.uif-inputField');
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {
@@ -793,10 +864,11 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn)
  * @param iColumn - the column whose values are to be retrieved
  * @return an array of column values - extracted from any surrounding markup
  */
-jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn) {
+jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var checkboxes = jQuery(this).find('input:checkbox');
+    jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var checkboxes = jQuery(td).find('input:checkbox');
         if (checkboxes.length != 0) {
             var str = "";
             for (i = 0; i < checkboxes.length; i++) {
@@ -807,7 +879,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
             }
             aData.push(str);
         } else {
-            var input1 = jQuery(this).find('.uif-inputField');
+            var input1 = jQuery(td).find('.uif-inputField');
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {
@@ -829,10 +901,11 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
  * @param iColumn - the column whose values are to be retrieved
  * @return an array of column values - extracted from any surrounding markup
  */
-jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) {
+jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var radioButtons = jQuery(this).find('input:radio');
+    jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var radioButtons = jQuery(td).find('input:radio');
         if (radioButtons.length != 0) {
             var value = "";
             for (i = 0; i < radioButtons.length; i++) {
@@ -844,7 +917,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) 
             }
             aData.push(value);
         } else {
-            var input1 = jQuery(this).find('.uif-inputField');
+            var input1 = jQuery(td).find('.uif-inputField');
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {

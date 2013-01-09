@@ -31,6 +31,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.AddCollectionLineRule;
+import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.rules.MaintenanceDocumentRule;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
@@ -39,6 +40,7 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.RouteToCompletionUtil;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -46,7 +48,6 @@ import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
-import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
@@ -128,7 +129,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setBusinessObjectMetaDataService(KNSServiceLocator.getBusinessObjectMetaDataService());
             this.setBoService(KRADServiceLocator.getBusinessObjectService());
             this.setBoDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
-            this.setDictionaryValidationService(KNSServiceLocator.getKNSDictionaryValidationService());
+            this.setDictionaryValidationService(super.getDictionaryValidationService());
             this.setConfigService(KRADServiceLocator.getKualiConfigurationService());
             this.setDocumentHelperService(KNSServiceLocator.getDocumentHelperService());
             this.setMaintDocDictionaryService(KNSServiceLocator.getMaintenanceDocumentDictionaryService());
@@ -141,7 +142,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
 
     /**
-     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRule#processSaveDocument(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.krad.rules.MaintenanceDocumentRule#processSaveDocument(org.kuali.rice.krad.document.Document)
      */
     @Override
     public boolean processSaveDocument(Document document) {
@@ -178,7 +179,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
 
     /**
-     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRule#processRouteDocument(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.krad.rules.MaintenanceDocumentRule#processRouteDocument(org.kuali.rice.krad.document.Document)
      */
     @Override
     public boolean processRouteDocument(Document document) {
@@ -186,6 +187,13 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
 
+        boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(maintenanceDocument);
+
+        // Validate the document if the header is valid and no pending completion requests
+        if (completeRequestPending) {
+            return true;
+        }
+        
         // get the documentAuthorizer for this document
         MaintenanceDocumentAuthorizer documentAuthorizer =
                 (MaintenanceDocumentAuthorizer) getDocumentHelperService().getDocumentAuthorizer(document);
@@ -380,7 +388,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
 
     /**
-     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRule#processApproveDocument(org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent)
+     * @see org.kuali.rice.krad.rules.MaintenanceDocumentRule#processApproveDocument(org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent)
      */
     @Override
     public boolean processApproveDocument(ApproveDocumentEvent approveEvent) {
@@ -1161,7 +1169,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
 
     /**
-     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRule#setupBaseConvenienceObjects(org.kuali.rice.krad.maintenance.MaintenanceDocument)
+     * @see org.kuali.rice.krad.rules.MaintenanceDocumentRule#setupBaseConvenienceObjects(org.kuali.rice.krad.maintenance.MaintenanceDocument)
      */
     public void setupBaseConvenienceObjects(MaintenanceDocument document) {
 

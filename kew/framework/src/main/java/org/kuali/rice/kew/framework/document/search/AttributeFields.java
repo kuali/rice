@@ -84,7 +84,7 @@ public final class AttributeFields extends AbstractDataTransferObject {
     }
 
     /**
-     * Constract a new instance of {@code AttributeFields} with the given attribute name and list of remotable attribute
+     * Construct a new instance of {@code AttributeFields} with the given attribute name and list of remotable attribute
      * fields.
      *
      * @param attributeName the name of the attribute, must not be a null or blank value

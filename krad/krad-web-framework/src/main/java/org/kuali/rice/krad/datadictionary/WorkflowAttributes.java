@@ -15,67 +15,71 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * A container that holds all of the {@link WorkflowAttributeDefinition} for a document for both document searches
  * and routing that depends on the values that exist on the document.
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkflowAttributes extends DataDictionaryDefinitionBase {
+@BeanTag(name = "workflowAttributes")
+public class WorkflowAttributes extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 6435015497886060280L;
-    
-	private List<SearchingTypeDefinition> searchingTypeDefinitions;
+
+    private List<SearchingTypeDefinition> searchingTypeDefinitions;
     private Map<String, RoutingTypeDefinition> routingTypeDefinitions;
-    
+
     public WorkflowAttributes() {
-    	searchingTypeDefinitions = new ArrayList<SearchingTypeDefinition>();;
-    	routingTypeDefinitions = new HashMap<String, RoutingTypeDefinition>();
+        searchingTypeDefinitions = new ArrayList<SearchingTypeDefinition>();
+        ;
+        routingTypeDefinitions = new HashMap<String, RoutingTypeDefinition>();
     }
-    
-	/**
-	 * @return the searchingTypeDefinitions
-	 */
-	public List<SearchingTypeDefinition> getSearchingTypeDefinitions() {
-		return this.searchingTypeDefinitions;
-	}
 
-	/**
-	 * @param searchingTypeDefinitions the searchingTypeDefinitions to set
-	 */
-	public void setSearchingTypeDefinitions(
-			List<SearchingTypeDefinition> searchingTypeDefinitions) {
-		this.searchingTypeDefinitions = searchingTypeDefinitions;
-	}
+    /**
+     * @return the searchingTypeDefinitions
+     */
+    @BeanTagAttribute(name = "searchingTypeDefinitions", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    public List<SearchingTypeDefinition> getSearchingTypeDefinitions() {
+        return this.searchingTypeDefinitions;
+    }
 
-	public Map<String, RoutingTypeDefinition> getRoutingTypeDefinitions() {
-		return this.routingTypeDefinitions;
-	}
+    /**
+     * @param searchingTypeDefinitions the searchingTypeDefinitions to set
+     */
+    public void setSearchingTypeDefinitions(List<SearchingTypeDefinition> searchingTypeDefinitions) {
+        this.searchingTypeDefinitions = searchingTypeDefinitions;
+    }
 
-	public void setRoutingTypeDefinitions(
-			Map<String, RoutingTypeDefinition> routingTypeDefinitions) {
-		this.routingTypeDefinitions = routingTypeDefinitions;
-	}
+    @BeanTagAttribute(name = "routingTypeDefinitions", type = BeanTagAttribute.AttributeType.MAPBEAN)
+    public Map<String, RoutingTypeDefinition> getRoutingTypeDefinitions() {
+        return this.routingTypeDefinitions;
+    }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
-	 */
-	public void completeValidation(Class rootBusinessObjectClass,
-			Class otherBusinessObjectClass) {
-		for (SearchingTypeDefinition definition : searchingTypeDefinitions) { 
-			definition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
-		}
-		for (RoutingTypeDefinition definitions : routingTypeDefinitions.values()) {
-			definitions.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
-		}
-	}
+    public void setRoutingTypeDefinitions(Map<String, RoutingTypeDefinition> routingTypeDefinitions) {
+        this.routingTypeDefinitions = routingTypeDefinitions;
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
+     *      java.lang.Class)
+     */
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        for (SearchingTypeDefinition definition : searchingTypeDefinitions) {
+            definition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
+        }
+        for (RoutingTypeDefinition definitions : routingTypeDefinitions.values()) {
+            definitions.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
+        }
+    }
 
 }

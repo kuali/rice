@@ -25,6 +25,9 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.document.authorization.PessimisticLock;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.PessimisticLockService;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.List;
@@ -215,5 +218,46 @@ public class EDLFunctions {
             }
         }
         return false;
-    }  
+    }
+
+    public static String createDocumentLock(String documentId) {
+        PessimisticLockService lockService = KRADServiceLocatorWeb.getPessimisticLockService();
+        PessimisticLock lock = lockService.generateNewLock(documentId);
+        Long lockLong = lock.getId();
+
+        return lockLong.toString();
+    }
+
+    public static void removeDocumentLocksByUser(String documentId) {
+        try {
+            PessimisticLockService lockService = KRADServiceLocatorWeb.getPessimisticLockService();
+            List<PessimisticLock> pessimisticLocks =  lockService.getPessimisticLocksForDocument(documentId);
+            lockService.releaseAllLocksForUser(pessimisticLocks, getAuthenticatedPerson());
+        } catch (Exception e) {
+            LOG.error("Exception encountered trying to delete document locks:" + e );
+        }
+    }
+
+    public static Boolean isDocumentLocked(String documentId) {
+        List<PessimisticLock> pessimisticLocks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForDocument(documentId);
+        if (pessimisticLocks.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static String getDocumentLockOwner(String documentId) {
+        List<PessimisticLock> pessimisticLocks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForDocument(documentId);
+        if (pessimisticLocks.isEmpty()) {
+            return "NoLockOnDoc";
+        } else {
+            if (pessimisticLocks.size() == (1)) {
+                PessimisticLock lock = pessimisticLocks.get(0);
+                return lock.getOwnedByUser().getPrincipalName();
+            } else {
+                return "MoreThanOneLockOnDoc";
+            }
+        }
+    }
 }

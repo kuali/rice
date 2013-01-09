@@ -20,6 +20,7 @@
   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
     <documentType overwriteMode="true">
       <name>LoadRoutePathOnlyAdjustsDocument</name>
+      <label>LoadRoutePathOnlyAdjustsDocument</label>
       <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
       <routePaths>
         <routePath>

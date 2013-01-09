@@ -51,20 +51,6 @@ public final class EDLXmlUtils {
 	public static final String VERSION_E = "version";
 	public static final String DOCID_E = "docId";
 
-    private static ThreadLocal DOCUMENT_BUILDER = new ThreadLocal() {
-        protected Object initialValue() {
-            try {
-                return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            } catch (ParserConfigurationException pce) {
-                // well folks, there is not much we can do if we get a ParserConfigurationException
-                // so might as well isolate the evilness here, and just balk if this occurs
-                String message = "Error obtaining document builder";
-                LOG.error(message, pce);
-                return new RuntimeException(message, pce);
-            }
-        }
-    };
-    
 	private EDLXmlUtils() {
 		throw new UnsupportedOperationException("do not call");
 	}
@@ -74,7 +60,15 @@ public final class EDLXmlUtils {
      * @return a valid DocumentBuilder
      */
     public static DocumentBuilder getDocumentBuilder() {
-        return (DocumentBuilder) DOCUMENT_BUILDER.get();
+        try {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        } catch (ParserConfigurationException pce) {
+            // well folks, there is not much we can do if we get a ParserConfigurationException
+            // so might as well isolate the evilness here, and just balk if this occurs
+            String message = "Error obtaining document builder";
+            LOG.error(message, pce);
+            throw new RuntimeException(message, pce);
+        }
     }
 
 

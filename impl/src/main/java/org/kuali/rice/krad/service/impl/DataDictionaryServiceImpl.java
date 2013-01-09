@@ -73,13 +73,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private volatile DocumentTypeService documentTypeService;
 
     /**
-     * @see org.kuali.rice.krad.service.DataDictionaryService#setBaselinePackages(java.lang.String)
-     */
-    public void setBaselinePackages(List baselinePackages) throws IOException {
-        this.addDataDictionaryLocations(baselinePackages);
-    }
-
-    /**
      * Default constructor.
      */
     public DataDictionaryServiceImpl() {
@@ -88,6 +81,26 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     public DataDictionaryServiceImpl(DataDictionary dataDictionary) {
         this.dataDictionary = dataDictionary;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#setAdditionalDictionaryFiles(
+     * java.util.Map<java.lang.String,java.util.List<java.lang.String>>)
+     */
+    public void setAdditionalDictionaryFiles(Map<String, List<String>> additionalDictionaryFiles) throws IOException {
+        for (Map.Entry<String, List<String>> entry : additionalDictionaryFiles.entrySet()) {
+            addDataDictionaryLocations(entry.getKey(), entry.getValue());
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#addDataDictionaryLocations(
+     * java.lang.String, java.util.List<java.lang.String>)
+     */
+    public void addDataDictionaryLocations(String namespaceCode, List<String> locations) throws IOException {
+        for (String location : locations) {
+            dataDictionary.addConfigFileLocation(namespaceCode, location);
+        }
     }
 
     /**
@@ -179,13 +192,11 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         Pattern regex = null;
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
-        if (attributeDefinition != null) {
-            if (attributeDefinition.hasValidationPattern()) {
-                regex = attributeDefinition.getValidationPattern().getRegexPattern();
-            } else {
-                // workaround for existing calls which don't bother checking for null return values
-                regex = Pattern.compile(".*");
-            }
+        if (attributeDefinition != null && (attributeDefinition.getValidationPattern() != null)) {
+            regex = attributeDefinition.getValidationPattern().getRegexPattern();
+        } else {
+            // workaround for existing calls which don't bother checking for null return values
+            regex = Pattern.compile(".*");
         }
 
         return regex;
@@ -706,10 +717,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public String getAttributeValidatingErrorMessageKey(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            if (attributeDefinition.hasValidationPattern()) {
-                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
-                return validationPattern.getValidationErrorMessageKey();
-            }
+//            if (attributeDefinition.hasValidationPattern()) {
+//                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
+//                return validationPattern.getValidationErrorMessageKey();
+//            }
         }
         return null;
     }
@@ -720,11 +731,11 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public String[] getAttributeValidatingErrorMessageParameters(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            if (attributeDefinition.hasValidationPattern()) {
-                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
-                String attributeLabel = getAttributeErrorLabel(entryName, attributeName);
-                return validationPattern.getValidationErrorMessageParameters(attributeLabel);
-            }
+//            if (attributeDefinition.hasValidationPattern()) {
+//                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
+//                String attributeLabel = getAttributeErrorLabel(entryName, attributeName);
+//                return validationPattern.getValidationErrorMessageParameters(attributeLabel);
+//            }
         }
         return null;
     }
@@ -878,16 +889,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      */
     public View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey) {
         return dataDictionary.getViewByTypeIndex(viewTypeName, indexKey);
-    }
-
-    public void addDataDictionaryLocation(String location) throws IOException {
-        dataDictionary.addConfigFileLocation(location);
-    }
-
-    public void addDataDictionaryLocations(List<String> locations) throws IOException {
-        for (String location : locations) {
-            addDataDictionaryLocation(location);
-        }
     }
 
     /**

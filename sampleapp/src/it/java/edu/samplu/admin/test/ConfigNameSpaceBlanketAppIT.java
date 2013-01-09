@@ -15,76 +15,32 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.ITUtil;
 
 /**
  * tests that a blanket approval by user admin of a Namespace maintenance document results in a document in state FINAL
  * 
+ * To Keep the BlanketAppIT tests separate MenuItBase is extended rather than AdminMenuITBase this only requires the implementation of the getMenuLinkLocator() and getCreateNewLinkLocator so there should probably be another abstract class....
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigNameSpaceBlanketAppIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class ConfigNameSpaceBlanketAppIT extends AdminMenuBlanketAppITBase {
+
+    @Override
+    protected String getLinkLocator() {
+        return "link=Namespace";
     }
 
-    @Test
-    public void testNameSpace() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Namespace");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace");
-        selenium.type("//input[@id='document.newMaintainableObject.code']", "VTN");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test NameSpace");
-        selenium.type("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
-        selenium.click("//input[@id='document.newMaintainableObject.active']");        
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000"); 
-        docId= "link=" + docId;
-        
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+    @Override
+    public String blanketApprove() throws Exception {
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace " + ITUtil.DTS_TWO);
+        assertElementPresent("methodToCall.cancel");
+        waitAndType("//input[@id='document.newMaintainableObject.code']", "VTN " + ITUtil.DTS_TWO);
+        waitAndType("//input[@id='document.newMaintainableObject.name']", "Validation Test NameSpace " + ITUtil.DTS_TWO);
+        waitAndType("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
+        waitAndClick("//input[@id='document.newMaintainableObject.active']");
+        return docId;
     }
 }

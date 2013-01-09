@@ -37,11 +37,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * ComponentUtils is a utility class providing methods to help create and modify <code>Component</code> instances
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtils {
@@ -192,7 +193,7 @@ public class ComponentUtils {
 
         return typeComponents;
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <T extends Component> List<T> getComponentsOfTypeDeep(Component component, Class<T> componentType) {
         List<T> typeComponents = new ArrayList<T>();
@@ -230,8 +231,28 @@ public class ComponentUtils {
     }
 
     /**
+     * Searches for the component with the given id within the given list of components
+     *
+     * @param components list of components to search through
+     * @param componentId id for the component to find
+     * @return Component component found in the list or null
+     */
+    public static Component findComponentInList(List<Component> components, String componentId) {
+        Component foundComponent = null;
+
+        for (Component component : components) {
+            if (component != null && component.getId() != null && component.getId().equals(componentId)) {
+                foundComponent = component;
+                break;
+            }
+        }
+
+        return foundComponent;
+    }
+
+    /**
      * Finds the child component of the given parent component that has the required id
-     * 
+     *
      * @param parent - parent component for component to find
      * @param nestedId - id of the component to find
      * @return Component instance for child (if found) or null
@@ -293,8 +314,11 @@ public class ComponentUtils {
 
     public static void updateIdsWithSuffixNested(Component component, String idSuffix) {
         updateIdWithSuffix(component, idSuffix);
-       // updateFactoryIdWithSuffix(component, idSuffix);
 
+        updateChildIdsWithSuffixNested(component, idSuffix);
+    }
+
+    public static void updateChildIdsWithSuffixNested(Component component, String idSuffix) {
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
             layoutManager.setId(layoutManager.getId() + idSuffix);
@@ -305,12 +329,12 @@ public class ComponentUtils {
                 updateIdsWithSuffixNested(nested, idSuffix);
             }
         }
-        
+
         for (Component nested : component.getPropertyReplacerComponents()) {
             if (nested != null) {
                 updateIdsWithSuffixNested(nested, idSuffix);
             }
-        }        
+        }
     }
 
     /**
@@ -409,16 +433,18 @@ public class ComponentUtils {
     /**
      * update the contexts of the given components
      *
-     * <p>calls {@link #updateContextForLine(org.kuali.rice.krad.uif.component.Component, Object, int)} for each component</p>
+     * <p>calls {@link #updateContextForLine(org.kuali.rice.krad.uif.component.Component, Object, int, String)}
+     * for each component</p>
      *
      * @param components - the components whose components to update
      * @param collectionLine - an instance of the data object for the line
      * @param lineIndex - the line index
+     * @param lineSuffix id suffix for components in the line to make them unique
      */
     public static void updateContextsForLine(List<? extends Component> components, Object collectionLine,
-            int lineIndex) {
+            int lineIndex, String lineSuffix) {
         for (Component component : components) {
-            updateContextForLine(component, collectionLine, lineIndex);
+            updateContextForLine(component, collectionLine, lineIndex, lineSuffix);
         }
     }
 
@@ -431,11 +457,14 @@ public class ComponentUtils {
      * @param component - the component whose context is to be updated
      * @param collectionLine - an instance of the data object for the line
      * @param lineIndex - the line index
+     * @param lineSuffix id suffix for components in the line to make them unique
      */
-    public static void updateContextForLine(Component component, Object collectionLine, int lineIndex) {
+    public static void updateContextForLine(Component component, Object collectionLine, int lineIndex,
+            String lineSuffix) {
         pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
         pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
-        
+        pushObjectToContext(component, UifConstants.ContextVariableNames.LINE_SUFFIX, lineSuffix);
+
         boolean isAddLine = (lineIndex == -1);
         pushObjectToContext(component, UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
     }
@@ -452,7 +481,7 @@ public class ComponentUtils {
      * items share the same order value, all but the last item found in the list
      * will be removed.
      * </p>
-     * 
+     *
      * @param items
      * @param defaultOrderSequence
      * @return List<Ordered> sorted items
@@ -526,6 +555,34 @@ public class ComponentUtils {
         }
 
         return inputFields;
+    }
+
+    /**
+     * Determines whether the given component contains an expression for the given property name
+     *
+     * @param component component instance to check for expressions
+     * @param propertyName name of the property to determine if there is an expression for
+     * @param collectionMatch if set to true will find an expressions for properties that start with the given
+     * property name (for matching expressions on collections like prop[index] or prop['key'])
+     * @return boolean true if the component has an expression for the property name, false if not
+     */
+    public static boolean containsPropertyExpression(Component component, String propertyName,
+            boolean collectionMatch) {
+        boolean hasExpression = false;
+
+        Map<String, String> propertyExpressions = component.getPropertyExpressions();
+
+        if (collectionMatch) {
+            for (String expressionPropertyName : propertyExpressions.keySet()) {
+                if (expressionPropertyName.startsWith(propertyName)) {
+                    hasExpression = true;
+                }
+            }
+        } else if (propertyExpressions.containsKey(propertyName)) {
+            hasExpression = true;
+        }
+
+        return hasExpression;
     }
 
 }

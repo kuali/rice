@@ -1,19 +1,20 @@
 <#--
-    ~ Copyright 2006-2012 The Kuali Foundation
-    ~
-    ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-    ~ you may not use this file except in compliance with the License.
-    ~ You may obtain a copy of the License at
-    ~
-    ~ http://www.opensource.org/licenses/ecl2.php
-    ~
-    ~ Unless required by applicable law or agreed to in writing, software
-    ~ distributed under the License is distributed on an "AS IS" BASIS,
-    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    ~ See the License for the specific language governing permissions and
-    ~ limitations under the License.
-    -->
 
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <#--
     Table Layout Manager:
 
@@ -36,27 +37,46 @@
 
     <#if manager.dataFields?? && (manager.dataFields?size gt 0)>
 
-        <table id="${manager.id}" ${style!} ${styleClass!}>
+    <#-- action button for opening and closing all details -->
+    <#if manager.showToggleAllDetails>
+        <@krad.template component=manager.toggleAllDetailsAction/>
+    </#if>
 
-            <#if manager.headerLabels?? && (manager.headerLabels?size gt 0)>
-                <thead>
-                    <@krad.grid items=manager.headerLabels numberOfColumns=manager.numberOfColumns
-                    renderHeaderRow=true renderAlternatingHeaderColumns=false
-                    applyDefaultCellWidths=manager.applyDefaultCellWidths/>
-                </thead>
-            </#if>
+    <table id="${manager.id}" ${style!} ${styleClass!}>
 
-            <tbody>
-                <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumns
-                    applyAlternatingRowStyles=manager.applyAlternatingRowStyles
-                    applyDefaultCellWidths=manager.applyDefaultCellWidths
-                    renderAlternatingHeaderColumns=false
-                    rowCssClasses=manager.rowCssClasses/>
-            </tbody>
-        </table>
+        <#if manager.headerLabels?? && (manager.headerLabels?size gt 0)>
+            <thead>
+                <@krad.grid items=manager.headerLabels numberOfColumns=manager.numberOfColumns
+                renderHeaderRow=true renderAlternatingHeaderColumns=false
+                applyDefaultCellWidths=manager.applyDefaultCellWidths/>
+            </thead>
+        </#if>
 
-        <#-- invoke table tools widget -->
-        <@krad.template component=manager.richTable componentId="${manager.id}"/>
+        <tbody>
+            <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumns
+            applyAlternatingRowStyles=manager.applyAlternatingRowStyles
+            applyDefaultCellWidths=manager.applyDefaultCellWidths
+            renderAlternatingHeaderColumns=false
+            rowCssClasses=manager.rowCssClasses/>
+        </tbody>
+
+        <#if manager.footerCalculationComponents?has_content>
+            <tfoot>
+            <tr>
+                <#list manager.footerCalculationComponents as component>
+                    <th rowspan="1" colspan="1">
+                        <#if component??>
+                            <@krad.template component=component/>
+                        </#if>
+                    </th>
+                </#list>
+            </tr>
+            </tfoot>
+        </#if>
+    </table>
+
+    <#-- invoke table tools widget -->
+    <@krad.template component=manager.richTable componentId="${manager.id}"/>
 
     </#if>
 

@@ -22,6 +22,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
+import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -30,8 +31,8 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
@@ -65,6 +66,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Widget;
+import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -72,6 +74,7 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.MethodInvoker;
 
 import java.io.Serializable;
@@ -178,7 +181,19 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void performInitialization(View view, Object model) {
         view.assignComponentIds(view);
+
+        // increment the id sequence so components added later to the static view components
+        // will not conflict with components on the page when navigation happens
+        view.setIdSequence(100000);
         performComponentInitialization(view, model, view);
+
+        // Check to see if the component is part of dialog. If yes and not a DialogGroup
+        // then set the refreshedByAction on the group to true. This will leave the
+        // component in the viewIndex to be updated using an AJAX call
+        // TODO: Figure out a better way to store dialogs only if it is rendered using an ajax request
+        for(Component dialog : view.getDialogs()) {
+                dialog.setRefreshedByAction(true);
+        }
     }
 
     /**
@@ -211,9 +226,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // on existing components
         view.setIdSequence(currentSequenceVal);
 
-        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
         String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
-        ComponentUtils.updateIdWithSuffix(component, suffix);
+        if (StringUtils.isNotBlank(suffix)) {
+            ComponentUtils.updateIdWithSuffix(component, suffix);
+        }
 
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
 
@@ -224,7 +240,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             nestedComponent.pushAllToContext(origComponent.getContext());
         }
 
-        // the expression graph for refreshed components is captured in the view index (initially it might expressoins
+        // the expression graph for refreshed components is captured in the view index (initially it might expressions
         // might have come from a parent), after getting the expression graph then we need to populate the expressions
         // on the configurable for which they apply
         Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
@@ -243,8 +259,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (component instanceof Field) {
             ((Field) component).setLabelRendered(((Field) origComponent).isLabelRendered());
         } else if (component instanceof CollectionGroup) {
-            ((CollectionGroup) component).setSubCollectionSuffix(
-                    ((CollectionGroup) origComponent).getSubCollectionSuffix());
+            String subCollectionSuffix = ((CollectionGroup) origComponent).getSubCollectionSuffix();
+            ((CollectionGroup) component).setSubCollectionSuffix(subCollectionSuffix);
+
+            suffix = StringUtils.removeStart(suffix, subCollectionSuffix);
         }
 
         if (origComponent.isRefreshedByAction()) {
@@ -266,14 +284,33 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         performComponentInitialization(view, model, component);
         view.getViewIndex().indexComponent(component);
 
-        performComponentApplyModel(view, component, model);
+        Map<String, Integer> visitedIds = new HashMap<String, Integer>();
+        performComponentApplyModel(view, component, model, visitedIds);
         view.getViewIndex().indexComponent(component);
+
+        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
+        if (StringUtils.isNotBlank(suffix)) {
+            ComponentUtils.updateChildIdsWithSuffixNested(component, suffix);
+        }
+
+        // if disclosed by action and request was made, make sure the component will display
+        if (component.isDisclosedByAction()) {
+            component.setRender(true);
+            component.setHidden(false);
+        }
+
+        // TODO: need to handle updating client state for component refresh
+        Map<String, Object> clientState = new HashMap<String, Object>();
+        performComponentFinalize(view, component, model, parent, clientState);
 
         // make sure id, binding, and label settings stay the same as initial
         if (component instanceof Group || component instanceof FieldGroup) {
             List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(component);
+            List<Component> originalNestedGroupComponents = ComponentUtils.getAllNestedComponents(origComponent);
+
             for (Component nestedComponent : nestedGroupComponents) {
-                Component origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
+                Component origNestedComponent = ComponentUtils.findComponentInList(originalNestedGroupComponents,
+                        nestedComponent.getId());
 
                 if (origNestedComponent != null) {
                     // update binding
@@ -292,16 +329,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     if (origNestedComponent.isRefreshedByAction()) {
                         nestedComponent.setRefreshedByAction(true);
                     }
-
-                    // update id
-                    ComponentUtils.updateIdWithSuffix(nestedComponent, suffix);
                 }
             }
         }
-
-        // TODO: need to handle updating client state for component refresh
-        Map<String, Object> clientState = new HashMap<String, Object>();
-        performComponentFinalize(view, component, model, parent, clientState);
 
         // get client state for component and build update script for on load
         String clientStateScript = buildClientSideStateScript(view, clientState, true);
@@ -310,6 +340,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             clientStateScript = onLoadScript + clientStateScript;
         }
         component.setOnLoadScript(clientStateScript);
+
+        // get script for generating growl messages
+        String growlScript = buildGrowlScript(view);
+        ((ViewModel) model).setGrowlScript(growlScript);
 
         view.getViewIndex().indexComponent(component);
     }
@@ -364,6 +398,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // invoke component to initialize itself after properties have been set
         component.performInitialization(view, model);
 
+        // move expressions on property replacers and component modifiers
+        for (PropertyReplacer replacer : component.getPropertyReplacers()) {
+            ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, true);
+        }
+
+        for (ComponentModifier modifier : component.getComponentModifiers()) {
+            ExpressionUtils.populatePropertyExpressionsFromGraph(modifier, true);
+        }
+
         // for attribute fields, set defaults from dictionary entry
         if (component instanceof DataField) {
             initializeDataFieldFromDataDictionary(view, (DataField) component);
@@ -387,6 +430,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: initialize from dictionary
         }
 
+        // invoke initialize service hook
+        performCustomInitialization(view, component);
+
         // invoke component modifiers setup to run in the initialize phase
         runComponentModifiers(view, component, null, UifConstants.ViewPhases.INITIALIZE);
 
@@ -395,15 +441,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             performComponentInitialization(view, model, nestedComponent);
         }
 
-        // initialize nested components in property replacements
-        for (PropertyReplacer replacer : component.getPropertyReplacers()) {
-            for (Component replacerComponent : replacer.getNestedComponents()) {
-                performComponentInitialization(view, model, replacerComponent);
-            }
+        // initialize component prototypes
+        for (Component nestedComponent : component.getComponentPrototypes()) {
+            performComponentInitialization(view, model, nestedComponent);
         }
-
-        // invoke initialize service hook
-        performCustomInitialization(view, component);
     }
 
     /**
@@ -483,8 +524,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             InputField inputField = (InputField) field;
             if (inputField.getControl() == null) {
                 Control control = ComponentFactory.getTextControl();
-                control.setId(view.getNextId());
-                control.setBaseId(control.getId());
+                view.assignComponentIds(control);
 
                 inputField.setControl(control);
             }
@@ -584,7 +624,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // set view context for conditional expressions
         setViewContext(view, model);
 
-        performComponentApplyModel(view, view, model);
+        Map<String, Integer> visitedIds = new HashMap<String, Integer>();
+        performComponentApplyModel(view, view, model, visitedIds);
     }
 
     /**
@@ -663,17 +704,29 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * the component children
      * </p>
      *
-     * @param view - view instance the component belongs to
-     * @param component - the component instance the model should be applied to
-     * @param model - top level object containing the data
+     * @param view view instance the component belongs to
+     * @param component the component instance the model should be applied to
+     * @param model top level object containing the data
+     * @param visitedIds tracks components ids that have been seen for adjusting duplicates
      */
-    protected void performComponentApplyModel(View view, Component component, Object model) {
+    protected void performComponentApplyModel(View view, Component component, Object model,
+            Map<String, Integer> visitedIds) {
         if (component == null) {
             return;
         }
 
         // set context on component for evaluating expressions
         component.pushAllToContext(getCommonContext(view, component));
+
+        for (PropertyReplacer replacer : component.getPropertyReplacers()) {
+            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, replacer, model,
+                    component.getContext());
+        }
+
+        for (ComponentModifier modifier : component.getComponentModifiers()) {
+            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, modifier, model,
+                    component.getContext());
+        }
 
         getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, component, model,
                 component.getContext());
@@ -701,6 +754,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
                 getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, layoutManager, model,
                         layoutManager.getContext());
+
+                layoutManager.setId(adjustIdIfNecessary(layoutManager.getId(), visitedIds));
             }
         }
 
@@ -709,6 +764,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // invoke authorizer and presentation controller to set component state
         applyAuthorizationAndPresentationLogic(view, component, (ViewModel) model);
+
+        // adjust ids for duplicates if necessary
+        //component.setId(adjustIdIfNecessary(component.getId(), visitedIds));
 
         // invoke component to perform its conditional logic
         Component parent = (Component) component.getContext().get(UifConstants.ContextVariableNames.PARENT);
@@ -724,9 +782,41 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
                 nestedComponent.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
-                performComponentApplyModel(view, nestedComponent, model);
+                performComponentApplyModel(view, nestedComponent, model, visitedIds);
             }
         }
+    }
+
+    /**
+     * Checks against the visited ids to see if the id is duplicate, if so it is adjusted to make
+     * an unique id by appending an unique sequence number
+     *
+     * @param id id to adjust if necessary
+     * @param visitedIds tracks components ids that have been seen for adjusting duplicates
+     * @return String original or adjusted id
+     */
+    protected String adjustIdIfNecessary(String id, Map<String, Integer> visitedIds) {
+        String adjustedId = id;
+
+        if (visitedIds.containsKey(id)) {
+            Integer nextAdjustSeq = visitedIds.get(id);
+            adjustedId = id + nextAdjustSeq;
+
+            // verify the adjustedId does not already exist
+            while (visitedIds.containsKey(adjustedId)) {
+                nextAdjustSeq = nextAdjustSeq + 1;
+                adjustedId = id + nextAdjustSeq;
+            }
+
+            visitedIds.put(adjustedId, new Integer(1));
+
+            nextAdjustSeq = nextAdjustSeq + 1;
+            visitedIds.put(id, nextAdjustSeq);
+        } else {
+            visitedIds.put(id, new Integer(1));
+        }
+
+        return adjustedId;
     }
 
     /**
@@ -797,7 +887,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         // perform field authorization and presentation logic
-        else if (component instanceof Field) {
+        else if (component instanceof Field && !(component instanceof ActionField)) {
             Field field = (Field) component;
 
             String propertyName = null;
@@ -838,7 +928,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                         user);
                 if (!canUnmaskValue) {
                     dataField.setApplyMask(true);
-                    dataField.setMaskFormatter(dataField.getComponentSecurity().getAttributeSecurity().
+                    dataField.setMaskFormatter(dataField.getDataFieldSecurity().getAttributeSecurity().
                             getMaskFormatter());
                 } else {
                     // check partial mask authorization
@@ -847,23 +937,28 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     if (!canPartiallyUnmaskValue) {
                         dataField.setApplyMask(true);
                         dataField.setMaskFormatter(
-                                dataField.getComponentSecurity().getAttributeSecurity().getPartialMaskFormatter());
+                                dataField.getDataFieldSecurity().getAttributeSecurity().getPartialMaskFormatter());
                     }
                 }
             }
+        }
 
-            // check authorization for actions
-            if (field instanceof Action) {
-                Action action = (Action) field;
-
-                boolean canTakeAction = authorizer.canPerformAction(view, model, action, action.getActionEvent(),
-                        action.getId(), user);
-                if (canTakeAction) {
-                    canTakeAction = presentationController.canPerformAction(view, model, action,
-                            action.getActionEvent(), action.getId());
-                }
-                action.setRender(canTakeAction);
+        // perform action authorization and presentation logic
+        else if (component instanceof ActionField || component instanceof Action) {
+            Action action = null;
+            if (component instanceof ActionField) {
+                action = ((ActionField) component).getAction();
+            } else {
+                action = (Action) component;
             }
+
+            boolean canTakeAction = authorizer.canPerformAction(view, model, action, action.getActionEvent(),
+                    action.getId(), user);
+            if (canTakeAction) {
+                canTakeAction = presentationController.canPerformAction(view, model, action, action.getActionEvent(),
+                        action.getId());
+            }
+            action.setRender(canTakeAction);
         }
 
         // perform widget authorization and presentation logic
@@ -945,6 +1040,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         Map<String, Object> context = new HashMap<String, Object>();
 
         context.putAll(view.getContext());
+        context.put(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
         return context;
@@ -1061,12 +1157,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     protected String buildGrowlScript(View view) {
         String growlScript = "";
 
-        ConfigurationService configService = getConfigurationService();
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
         MessageMap messageMap = GlobalVariables.getMessageMap();
         for (GrowlMessage growl : messageMap.getGrowlMessages()) {
             if (view.isGrowlMessagingEnabled()) {
-                String message = configService.getPropertyValueAsString(growl.getMessageKey());
+                String message = messageService.getMessageText(growl.getNamespaceCode(), growl.getComponentCode(),
+                        growl.getMessageKey());
 
                 if (StringUtils.isNotBlank(message)) {
                     if (growl.getMessageParameters() != null) {
@@ -1078,14 +1175,21 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     message = message.replace("'", "\\'");
 
                     String title = growl.getTitle();
+                    if (StringUtils.isNotBlank(growl.getTitleKey())) {
+                        title = messageService.getMessageText(growl.getNamespaceCode(), growl.getComponentCode(),
+                                growl.getTitleKey());
+                    }
                     title = title.replace("'", "\\'");
 
                     growlScript =
                             growlScript + "showGrowl('" + message + "', '" + title + "', '" + growl.getTheme() + "');";
                 }
             } else {
-                messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, growl.getMessageKey(),
-                        growl.getMessageParameters());
+                ErrorMessage infoMessage = new ErrorMessage(growl.getMessageKey(), growl.getMessageParameters());
+                infoMessage.setNamespaceCode(growl.getNamespaceCode());
+                infoMessage.setComponentCode(growl.getComponentCode());
+
+                messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, infoMessage);
             }
         }
 
@@ -1132,6 +1236,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // invoke component modifiers setup to run in the finalize phase
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
+        
+        // add the components template to the views list of components
+        if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate()) &&
+                !view.getViewTemplates().contains(component.getTemplate())) {
+            view.getViewTemplates().add(component.getTemplate());
+        }
 
         // get components children and recursively update state
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
@@ -1336,7 +1446,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: should check to see if there is an add line method on the
             // collection parent and if so call that instead of just adding to
             // the collection (so that sequence can be set)
-            addLine(collection, addLine, true);
+            addLine(collection, addLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
             // make a new instance for the add line
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
@@ -1402,11 +1512,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Object newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
         applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
-        boolean insertFirst = collectionGroup.getAddLinePlacement().equals("TOP");
         addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
         ((UifFormBase) model).getAddedCollectionItems().add(newLine);
-
     }
 
     /**
@@ -1681,7 +1789,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 }
 
                 // TODO: this should go through our formatters
-                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+                // Skip nullable non-null non-empty objects when setting default
+                Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
+                Class currentClazz = ObjectPropertyUtils.getPropertyType(object, bindingPath);
+                if(currentValue == null || StringUtils.isBlank(currentValue.toString()) ||
+                        ClassUtils.isPrimitiveOrWrapper(currentClazz)) {
+                    ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+                }
             }
         }
     }

@@ -27,18 +27,20 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -86,8 +88,14 @@ public class CollectionGroupBuilder implements Serializable {
      */
     public void build(View view, Object model, CollectionGroup collectionGroup) {
         // create add line
-        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
+        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly() &&
+                !collectionGroup.isRenderAddBlankLineButton()) {
             buildAddLine(view, model, collectionGroup);
+        }
+
+        // if add line button enabled setup to refresh the collection group
+        if (collectionGroup.isRenderAddBlankLineButton() && (collectionGroup.getAddBlankLineAction() != null)) {
+            collectionGroup.getAddBlankLineAction().setRefreshId(collectionGroup.getId());
         }
 
         // get the collection for this group from the model
@@ -129,18 +137,8 @@ public class CollectionGroupBuilder implements Serializable {
 
                     Object currentLine = modelCollection.get(index);
 
-                    // Default line actions - no client side validation
-                    String actionScript = "performCollectionAction('" + collectionGroup.getId() + "');";
-                    List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view,
-                            model, collectionGroup, currentLine, index, actionScript);
-
-                    // Line actions with client side validation
-                    String actionScriptValidatedLine = "validateAndPerformCollectionAction('" + collectionGroup.getId() + "', '"
-                            + collectionGroup.getPropertyName() + "');";
-                    List<Action> validatedLineActions = initializeLineActions(collectionGroup.getValidatedLineActions(),
-                            view, model, collectionGroup, currentLine, index, actionScriptValidatedLine);
-
-                    lineActions.addAll(validatedLineActions);
+                    List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
+                            collectionGroup, currentLine, index);
 
                     buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine, index);
                 }
@@ -237,10 +235,6 @@ public class CollectionGroupBuilder implements Serializable {
     @SuppressWarnings("unchecked")
     protected void buildLine(View view, Object model, CollectionGroup collectionGroup, String bindingPath,
             List<Action> actions, boolean bindToForm, Object currentLine, int lineIndex) {
-        if (lineIndex == -1 && collectionGroup.isRenderAddBlankLineButton()) {
-            return;
-        }
-
         CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
         // copy group items for new line
@@ -264,32 +258,32 @@ public class CollectionGroupBuilder implements Serializable {
         // copy fields for line and adjust binding to match collection line path
         lineFields = (List<Field>) ComponentUtils.copyFieldList(lineFields, bindingPath, lineSuffix);
 
+        // If the fields contain any collections themselves (details case) adjust their binding path
+        // TODO: does the copyFieldList method above not take care of this?
+        for (Field field : lineFields) {
+            List<CollectionGroup> components = ComponentUtils.getComponentsOfTypeDeep(field, CollectionGroup.class);
+            for (CollectionGroup fieldCollectionGroup : components) {
+                ComponentUtils.prefixBindingPath(fieldCollectionGroup, bindingPath);
+                fieldCollectionGroup.setSubCollectionSuffix(lineSuffix);
+            }
+        }
+
         boolean readOnlyLine = collectionGroup.isReadOnly();
 
         // update contexts before add line fields are added to the index below
-        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
+        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
+
+        for (Action action : actions) {
+            if(action !=null && StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
+                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString())
+                    && (lineFields.size() > 0)){
+                action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
+            }
+        }
 
         // add special css styles to identify the add line client side
         if (lineIndex == -1) {
-            for (Field f : lineFields) {
-                if (f instanceof InputField) {
-                    // sets up - skipping these fields in add area during standard form validation calls
-                    // custom addLineToCollection js call will validate these fields manually on an add
-                    Control control = ((InputField) f).getControl();
-                    if (control != null) {
-                        control.addStyleClass(collectionGroup.getBaseId() + "-addField");
-                        control.addStyleClass("ignoreValid");
-                    }
-                }
-            }
-
-            // set focus on after the add line submit to first field of add line
-            for (Action action : actions) {
-                if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE) && (lineFields
-                        .size() > 0)) {
-                    action.setFocusOnIdAfterSubmit(lineFields.get(0).getId());
-                }
-            }
+            // do nothing
         } else {
             // for existing lines, check view line auth
             boolean canViewLine = checkViewLineAuthorizationAndPresentationLogic(view, (ViewModel) model,
@@ -306,12 +300,15 @@ public class CollectionGroupBuilder implements Serializable {
                         currentLine);
 
                 // Add script to fields to activate save button on any change
-                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) &&
+                if (!readOnlyLine && !((UifFormBase) model).isAddedCollectionItem(currentLine) &&
                         collectionGroup.isRenderSaveLineActions()) {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {
-                            ((ControlBase)((InputField) f).getControl()).setOnChangeScript(
-                                    "collectionLineChanged(this, 'uif-newCollectionItem');");
+                            ControlBase control = (ControlBase) ((InputField) f).getControl();
+                            control.setOnChangeScript(control.getOnChangeScript() == null ?
+                                    ";collectionLineChanged(this, 'uif-newCollectionItem');" :
+                                    control.getOnChangeScript() +
+                                    ";collectionLineChanged(this, 'uif-newCollectionItem');");
                         }
                     }
                 }
@@ -365,7 +362,8 @@ public class CollectionGroupBuilder implements Serializable {
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 subCollectionFieldGroup.setGroup(subCollectionGroup);
 
-                ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex);
+                ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex,
+                        lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
 
                 subCollectionFields.add(subCollectionFieldGroup);
             }
@@ -376,6 +374,34 @@ public class CollectionGroupBuilder implements Serializable {
         // invoke layout manager to build the complete line
         layoutManager.buildLine(view, model, collectionGroup, lineFields, subCollectionFields, bindingPath, actions,
                 lineSuffix, currentLine, lineIndex);
+
+        //add additional information to the group and fields to allow for correct add control selection
+        String selector = "";
+        if (lineIndex == -1) {
+            List<String> addIds = new ArrayList<String>();
+            for (Field f : lineFields) {
+                if (f instanceof InputField) {
+                    // sets up - skipping these fields in add area during standard form validation calls
+                    // custom addLineToCollection js call will validate these fields manually on an add
+                    Control control = ((InputField) f).getControl();
+                    if (control != null) {
+                        control.addStyleClass("ignoreValid");
+                        selector = selector + ",#" + f.getId() + UifConstants.IdSuffixes.CONTROL;
+                    }
+                } else if (f instanceof FieldGroup) {
+                    List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(((FieldGroup) f).getGroup(),
+                            InputField.class);
+                    for (InputField nestedField : fields) {
+                        Control control = nestedField.getControl();
+                        if (control != null) {
+                            control.addStyleClass("ignoreValid");
+                            selector = selector + ",#" + nestedField.getId() + UifConstants.IdSuffixes.CONTROL;
+                        }
+                    }
+                }
+            }
+            collectionGroup.addDataAttribute("addControls", selector.replaceFirst(",", ""));
+        }
     }
 
     /**
@@ -585,6 +611,8 @@ public class CollectionGroupBuilder implements Serializable {
                     if (lineField.getPropertyExpressions().containsKey("readOnly")) {
                         lineField.getPropertyExpressions().remove("readOnly");
                     }
+                } else if(lineField instanceof InputField){
+                    lineField.setReadOnly(false);
                 }
             }
         }
@@ -658,7 +686,7 @@ public class CollectionGroupBuilder implements Serializable {
      * @param lineIndex - index of the line the actions should apply to
      */
     protected List<Action> initializeLineActions(List<Action> lineActions, View view, Object model,
-            CollectionGroup collectionGroup, Object collectionLine, int lineIndex, String actionScript) {
+            CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
@@ -666,19 +694,46 @@ public class CollectionGroupBuilder implements Serializable {
         List<Action> actions = ComponentUtils.copyComponentList(lineActions, lineSuffix);
 
         for (Action action : actions) {
-
-            action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
-                    collectionGroup.getBindingInfo().getBindingPath());
-            action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
-            action.setJumpToIdAfterSubmit(collectionGroup.getId());
-
-            if (StringUtils.isNotBlank(action.getActionScript())) {
-                actionScript = action.getActionScript() + actionScript;
+            if (ComponentUtils.containsPropertyExpression(action, UifPropertyPaths.ACTION_PARAMETERS, true)) {
+                // need to update the actions expressions so our settings do not get overridden
+                action.getPropertyExpressions().put(
+                        UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELLECTED_COLLECTION_PATH + "']",
+                        UifConstants.EL_PLACEHOLDER_PREFIX + "'" + collectionGroup.getBindingInfo().getBindingPath() +
+                                "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
+                action.getPropertyExpressions().put(
+                        UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELECTED_LINE_INDEX + "']",
+                        UifConstants.EL_PLACEHOLDER_PREFIX + "'" + Integer.toString(lineIndex) +
+                                "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
+            } else {
+                action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
+                        collectionGroup.getBindingInfo().getBindingPath());
+                action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
             }
-            action.setActionScript(actionScript);
+            
+            action.setJumpToIdAfterSubmit(collectionGroup.getId());
+            action.setRefreshId(collectionGroup.getId());
+
+            // if marked for validation, add call to validate the line and set validation flag to false
+            // so the entire form will not be validated
+            if (action.isPerformClientSideValidation()) {
+                String preSubmitScript = "valid=valid && validateLine('" +
+                        collectionGroup.getBindingInfo().getBindingPath() + "'," + Integer.toString(lineIndex) +
+                        ");return valid;";
+
+                // prepend custom presubmit script which should evaluate to a boolean
+                if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
+                    preSubmitScript = ScriptUtils.appendScript("var valid=true;valid=" + action.getPreSubmitCall(),
+                            preSubmitScript);
+                } else {
+                    preSubmitScript = "var valid=true;" + preSubmitScript;
+                }
+
+                action.setPreSubmitCall(preSubmitScript);
+                action.setPerformClientSideValidation(false);
+            }
         }
 
-        ComponentUtils.updateContextsForLine(actions, collectionLine, lineIndex);
+        ComponentUtils.updateContextsForLine(actions, collectionLine, lineIndex, lineSuffix);
 
         return actions;
     }
@@ -707,25 +762,37 @@ public class CollectionGroupBuilder implements Serializable {
                     collectionGroup.getBindingInfo().getBindingPath());
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
+            action.setRefreshId(collectionGroup.getId());
 
             String baseId = collectionGroup.getBaseId();
             if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }
 
-            String actionScript = "addLineToCollection('" + collectionGroup.getId() + "', '" + baseId + "');";
+            String preSubmitScript = "valid=valid && ";
             if (collectionGroup.isAddViaLightBox()) {
-                actionScript = "closeLightbox();" + actionScript;
+                preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "', true); if (valid) {closeLightbox();}";
+            }  else {
+                preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "');";
             }
-            action.setActionScript(actionScript);
-            
+            preSubmitScript += "return valid;";
+
+            // prepend custom presubmit script which should evaluate to a boolean
+            if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
+                preSubmitScript = ScriptUtils.appendScript("var valid=true;valid=" + action.getPreSubmitCall(),
+                        preSubmitScript);
+            } else {
+                preSubmitScript = "var valid=true;" + preSubmitScript;
+            }
+
+            action.setPreSubmitCall(preSubmitScript);
         }
 
         // get add line for context
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
 
-        ComponentUtils.updateContextsForLine(lineActions, addLine, -1);
+        ComponentUtils.updateContextsForLine(lineActions, addLine, -1, lineSuffix);
 
         return lineActions;
     }

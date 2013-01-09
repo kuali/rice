@@ -20,8 +20,8 @@ import java.util.Map;
 /**
  * This class contains the exception incident information, exception, form and
  * session user. It is constructed and saved into the HTTP Request for passing to the
- * jsp when an exception occurs. 
- * 
+ * jsp when an exception occurs.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -31,7 +31,7 @@ public interface KualiExceptionIncident {
      * <p>Value is exceptionReportSubject
      */
      public static final String EXCEPTION_REPORT_SUBJECT="exceptionReportSubject";
-     
+
      /**
       * Boolean value for incident report display
       */
@@ -60,7 +60,7 @@ public interface KualiExceptionIncident {
       * Document id. it's blank if not a document process
       * <p>Value is documentId
       */
-     public static final String DOCUMENT_ID="documentId"; 
+     public static final String DOCUMENT_ID="documentId";
      /**
       * Session user email address
       * <p>Value is userEmail
@@ -90,7 +90,7 @@ public interface KualiExceptionIncident {
     /**
      * This method return list of {key,value} pairs that each key is the constants
      * defined in this interface.
-     * 
+     *
      * @return
      * <p>Example:
      * <code>
@@ -102,15 +102,15 @@ public interface KualiExceptionIncident {
      * displayMessage, Either exception error message or generic exception error message
      * stackTrace, Exception stack trace here
      * </code>
-     * 
+     *
      */
     public Map<String, String> toProperties();
-    
+
     /**
      * This method checks the exception (set during construction) and return errror
      * message if it's Kuali type of exception (defined by the list of exception names).
      * Otherwise, it returns a generic message.
-     * 
+     *
      * @param The caught exception
      * @return
      */
@@ -118,10 +118,10 @@ public interface KualiExceptionIncident {
 
     /**
      * This method get the specified key value from the implementing class.
-     * 
+     *
      * @param key
      * @return null is return if not found
      */
     public String getProperty(String key);
-    
+
 }

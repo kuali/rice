@@ -15,21 +15,16 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
-public class MaintenanceLookupAddMultipleLinesIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class MaintenanceLookupAddMultipleLinesIT extends KradMenuITBase {
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -37,20 +32,7 @@ public class MaintenanceLookupAddMultipleLinesIT {
      * Verify Lookup/Add Multiple Lines link appears
      */
     public void testVerifyLookupAddMultipleLines() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-        assertTrue(selenium.isElementPresent("//a[contains(text(),'Lookup/Add Multiple Lines')]"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        gotoMenuLinkLocator();
+        assertElementPresent("//a[contains(text(),'Lookup/Add Multiple Lines')]");
     }
 }

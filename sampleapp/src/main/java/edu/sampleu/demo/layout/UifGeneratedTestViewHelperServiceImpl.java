@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.sampleu.demo.layout;
 
 import org.kuali.rice.krad.uif.component.Component;
@@ -28,11 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: brian
- * Date: 5/23/12
- * Time: 3:47 PM
- * To change this template use File | Settings | File Templates.
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifGeneratedTestViewHelperServiceImpl extends ViewHelperServiceImpl {
 
@@ -43,9 +38,9 @@ public class UifGeneratedTestViewHelperServiceImpl extends ViewHelperServiceImpl
         if(component instanceof PageGroup && component.getId().equals("UifGeneratedFields-Page1")){
             for(int i=0; i < 400; i++){
                 InputField field = ComponentFactory.getInputField();
-                field.setId(view.getNextId());
-                field.setBaseId(field.getId());
+                view.assignComponentIds(field);
                 Control control = ComponentFactory.getTextControl();
+                view.assignComponentIds(control);
                 field.setControl(control);
                 field.setPropertyName("field1");
                 field.setLabel("Field");

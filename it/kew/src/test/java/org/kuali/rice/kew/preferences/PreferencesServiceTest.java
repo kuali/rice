@@ -20,10 +20,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import junit.framework.Assert;
 import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.preferences.Preferences;
@@ -37,7 +42,9 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 public class PreferencesServiceTest extends KEWTestCase {
 
@@ -92,6 +99,70 @@ public class PreferencesServiceTest extends KEWTestCase {
        });
        preferences = preferencesService.getPreferences(principal.getPrincipalId());
        assertFalse("Preferences should no longer require a save.", preferences.isRequiresSave());
+    }
+
+    @Test
+    public void testPreferencesMarshallingWithInvalidJson() {
+        final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
+        Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("ewestfal");
+        Collection<UserOptions> userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
+        assertTrue("UserOptions should be empty", userOptions.isEmpty());
+
+        PreferencesService preferencesService = KewApiServiceLocator.getPreferencesService();
+        Preferences preferences = preferencesService.getPreferences(principal.getPrincipalId());
+        assertTrue("Preferences should require a save.", preferences.isRequiresSave());
+        preferencesService.savePreferences(principal.getPrincipalId(), preferences);
+        userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
+
+        UserOptions docSearchOrder = new UserOptions();
+        docSearchOrder.setOptionId("DocSearch.LastSearch.Order");
+        docSearchOrder.setWorkflowId(principal.getPrincipalId());
+        docSearchOrder.setOptionVal("DocSearch.LastSearch.Holding0");
+
+        UserOptions badJsonOption = new UserOptions();
+        badJsonOption.setOptionId("DocSearch.LastSearch.Holding0");
+        badJsonOption.setWorkflowId(principal.getPrincipalId());
+
+        //this be invalid
+        badJsonOption.setOptionVal("{isAdvancedSearch\":\"NO\",\"dateCreatedFrom\":1339168393063,\"documentStatuses\":[],\"documentStatusCategories\":[],\"documentAttributeValues\":{},\"additionalDocumentTypeNames\":[]}");
+
+        userOptionsService.save(docSearchOrder);
+        userOptionsService.save(badJsonOption);
+
+
+        userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
+        assertTrue("UserOptions should not empty", !userOptions.isEmpty());
+
+        //UserOptions previousDocSearch0 = userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", principal.getPrincipalId());
+        preferences = preferencesService.getPreferences(principal.getPrincipalId());
+        Preferences.Builder pBuilder = Preferences.Builder.create(preferences);
+        Map<String, String> docTypeNotification = new HashMap<String, String>();
+
+        docTypeNotification.put("hello", "world");
+        docTypeNotification.put("does_this_thing_have_a", "bookstore example");
+        pBuilder.setDocumentTypeNotificationPreferences(docTypeNotification);
+
+        String marshaledXml = null;
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Preferences.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+
+            StringWriter stringWriter = new StringWriter();
+
+            marshaller.marshal(pBuilder.build(), stringWriter);
+
+            marshaledXml = stringWriter.toString();
+
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            Preferences actual = (Preferences)unmarshaller.unmarshal(new StringReader(marshaledXml));
+            //Object expected = unmarshaller.unmarshal(new StringReader(XML))
+            Assert.assertEquals(pBuilder.build(), actual);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 

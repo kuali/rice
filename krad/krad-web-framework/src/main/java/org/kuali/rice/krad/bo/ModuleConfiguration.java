@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.kuali.rice.krad.datadictionary.DataDictionaryLocationConfigurer;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceService;
@@ -58,8 +57,6 @@ import java.util.Map;
  */
 public class ModuleConfiguration implements InitializingBean, ApplicationContextAware {
 
-	//protected static Logger LOG = Logger.getLogger(ModuleConfiguration.class);
-
     /**
      * the module's namespace.
      */
@@ -91,6 +88,8 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 
 	protected List<String> triggerNames;
 
+    protected List<String> resourceBundleNames;
+
 	//optional
 	protected String dataSourceName;
 
@@ -121,7 +120,52 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		scriptConfigurationFilePaths = new ArrayList<String>();
 		jobNames = new ArrayList<String>();
 		triggerNames = new ArrayList<String>();
+        resourceBundleNames = new ArrayList<String>();
 	}
+
+    /**
+     * Performs additional custom initialization after the bean is created and it's properties are set by the
+     * Spring framework.
+     *
+     * <p>
+     * Loads the data dictionary packages configured for this module.
+     * Also loads any OJB database repository files configured.
+     * </p>
+     *
+     * @throws Exception
+     */
+	@Override
+    public void afterPropertiesSet() throws Exception {
+        if (isInitializeDataDictionary() && getDataDictionaryPackages() != null &&
+                !getDataDictionaryPackages().isEmpty()) {
+            if (getDataDictionaryService() == null) {
+                setDataDictionaryService(KRADServiceLocatorWeb.getDataDictionaryService());
+            }
+
+            if (getDataDictionaryService() == null) {
+                setDataDictionaryService((DataDictionaryService) applicationContext.getBean(
+                        KRADServiceLocatorWeb.DATA_DICTIONARY_SERVICE));
+            }
+
+            if (dataDictionaryService != null) {
+                dataDictionaryService.addDataDictionaryLocations(getNamespaceCode(), getDataDictionaryPackages());
+            }
+        }
+
+        if (getDatabaseRepositoryFilePaths() != null) {
+            for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
+                // Need the OJB persistence service because it is the only one ever using the database repository files
+                if (getPersistenceService() == null) {
+                    setPersistenceService(KRADServiceLocatorWeb.getPersistenceServiceOjb());
+                }
+                if (persistenceService == null) {
+                    setPersistenceService((PersistenceService) applicationContext.getBean(
+                            KRADServiceLocatorWeb.PERSISTENCE_SERVICE_OJB));
+                }
+                getPersistenceService().loadRepositoryDescriptor(repositoryLocation);
+            }
+        }
+    }
 
 	/**
      * Retrieves the database repository file paths to be used by the persistence service configured for this module.
@@ -150,7 +194,7 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	 */
 	public void setDatabaseRepositoryFilePaths(
 			List<String> databaseRepositoryFilePaths) {
-		this.trimList(databaseRepositoryFilePaths);	
+		this.trimList(databaseRepositoryFilePaths);
 		this.databaseRepositoryFilePaths = databaseRepositoryFilePaths;
 	}
 
@@ -179,10 +223,10 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	 * @param dataDictionaryPackages a List of Strings containing the dataDictionaryPackages.
 	 */
 	public void setDataDictionaryPackages(List<String> dataDictionaryPackages) {
-		this.trimList(dataDictionaryPackages);			
-		this.dataDictionaryPackages = dataDictionaryPackages;		
-	}	
-	
+		this.trimList(dataDictionaryPackages);
+		this.dataDictionaryPackages = dataDictionaryPackages;
+	}
+
 	/**
 	 * @return the externalizableBusinessObjectImplementations
 	 */
@@ -240,7 +284,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		this.jobNames = jobNames;
 	}
 
-
 	/**
 	 * @return the triggerNames
 	 */
@@ -255,7 +298,32 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		this.triggerNames = triggerNames;
 	}
 
-	/**
+    /**
+     * List of resource bundle names that will provides messages for this module
+     *
+     * <p>
+     * Each bundle will point to a resource property file that contain key/value message pairs. The properties
+     * file should be on the classpath and the name is given by specifying the fully qualified class name
+     * (dot notation).
+     * </p>
+     *
+     * @return List<String> resource bundle names
+     * @see java.util.ResourceBundle
+     */
+    public List<String> getResourceBundleNames() {
+        return resourceBundleNames;
+    }
+
+    /**
+     * Setter for the list of resource bundle names that provides messages for the module
+     *
+     * @param resourceBundleNames
+     */
+    public void setResourceBundleNames(List<String> resourceBundleNames) {
+        this.resourceBundleNames = resourceBundleNames;
+    }
+
+    /**
 	 * @return the initializeDataDictionary
 	 */
 	public boolean isInitializeDataDictionary() {
@@ -268,44 +336,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	public void setScriptConfigurationFilePaths(
 			List<String> scriptConfigurationFilePaths) {
 		this.scriptConfigurationFilePaths = scriptConfigurationFilePaths;
-	}
-
-    /**
-     * Performs additional custom initialization after the bean is created and it's properties are set by the
-     * Spring framework.
-     *
-     * <p>
-     * Loads the data dictionary packages configured for this module.
-     * Also loads any OJB database repository files configured.
-     * </p>
-     *
-     * @throws Exception
-     */
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (isInitializeDataDictionary() && getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty() ) {
-			if ( getDataDictionaryService() == null ) {
-				setDataDictionaryService(KRADServiceLocatorWeb.getDataDictionaryService());
-			}
-			if ( getDataDictionaryService() == null ) {
-				setDataDictionaryService((DataDictionaryService)applicationContext.getBean( KRADServiceLocatorWeb.DATA_DICTIONARY_SERVICE ));
-			}
-			DataDictionaryLocationConfigurer ddl = new DataDictionaryLocationConfigurer( getDataDictionaryService() );
-			ddl.setDataDictionaryPackages(getDataDictionaryPackages());
-			ddl.afterPropertiesSet();
-		}
-		if (getDatabaseRepositoryFilePaths() != null) {
-		    for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
-				// Need the OJB persistence service because it is the only one ever using the database repository files
-		    	if (getPersistenceService() == null) {
-		    		setPersistenceService(KRADServiceLocatorWeb.getPersistenceServiceOjb());
-		    	}
-		    	if ( persistenceService == null ) {
-		    		setPersistenceService((PersistenceService)applicationContext.getBean( KRADServiceLocatorWeb.PERSISTENCE_SERVICE_OJB  ));
-		    	}
-		    	getPersistenceService().loadRepositoryDescriptor( repositoryLocation );
-			}
-		}
 	}
 
 	/**
@@ -370,22 +400,22 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-    
+
     /**
-	 * 
+	 *
 	 * This method passes by reference. It will alter the list passed in.
-	 * 
+	 *
 	 * @param stringList
 	 */
 	protected void trimList(List<String> stringList){
 		if(stringList != null){
-			// we need to trim whitespace from the stringList. Because trim() creates a new string 
+			// we need to trim whitespace from the stringList. Because trim() creates a new string
 			// we have to explicitly put the new string back into the list
 			for(int i=0; i<stringList.size(); i++){
-				String elmt = stringList.get(i);				
+				String elmt = stringList.get(i);
 				elmt = elmt.trim();
 				stringList.set(i, elmt);
-			}			
+			}
 		}
 	}
 

@@ -251,7 +251,8 @@ public class KewRoutingKualiForm extends KualiForm {
                 boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(workflowDocument.getPrincipalId(), documentType);
                 if (isSuperUser){
                 	if (workflowDocument.isInitiated() || workflowDocument.isSaved() || workflowDocument.isEnroute()) {
-                		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
+                        appSpecificRouteActionRequestCds.clear();
+                        appSpecificRouteActionRequestCds.putAll(CodeTranslator.arLabels);
                 	}
                 	else if (workflowDocument.isProcessed() || workflowDocument.isApproved() || workflowDocument.isDisapproved()) {
                         appSpecificRouteActionRequestCds.clear();
@@ -270,7 +271,8 @@ public class KewRoutingKualiForm extends KualiForm {
                     appSpecificRouteActionRequestCds.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
                     appSpecificRouteActionRequestCds.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
                 } else if(workflowDocument.isApprovalRequested() || workflowDocument.isCompletionRequested() || workflowDocument.isInitiated()){
-                    appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
+                    appSpecificRouteActionRequestCds.clear();
+                    appSpecificRouteActionRequestCds.putAll(CodeTranslator.arLabels);
                 }
             }
         } catch (Exception e) {

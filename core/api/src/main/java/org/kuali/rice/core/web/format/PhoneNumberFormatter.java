@@ -70,7 +70,8 @@ public class PhoneNumberFormatter extends Formatter {
             // end Kuali Foundation modification
 
 		// begin Kuali Foundation modification
-        String digits = (String) value;
+        String digits = ((String) value).replaceAll("[^0-9]", "");
+
         if (digits.length() != NUM_DIGITS)
             throw new FormatException("formatting", RiceKeyConstants.ERROR_PHONE_NUMBER, value.toString());
         // end Kuali Foundation modification
@@ -83,5 +84,22 @@ public class PhoneNumberFormatter extends Formatter {
         buf.append(digits.substring(6));
 
         return buf.toString();
+    }
+
+    /**
+     * Validates a phone number string by passing it into the convertToObject method and determining if conversion succeeded.
+     *
+     * @param phoneNumberString The string to attempt to format.
+     * @return True if no exceptions occurred when parsing and the conversion returned a non-null value; false otherwise.
+     * @see org.kuali.rice.core.web.format.PhoneNumberFormatter#convertToObject(java.lang.String)
+     */
+    public boolean validate(String phoneNumberString) {
+        Object phoneNumberObject = null;
+        try {
+            phoneNumberObject = convertToObject(phoneNumberString);
+        } catch (Exception e) {
+            phoneNumberObject = null;
+        }
+        return (phoneNumberObject != null);
     }
 }

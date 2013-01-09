@@ -27,7 +27,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermResolverBo;
 import org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo;
@@ -64,7 +64,7 @@ public class TermMaintainable extends MaintainableImpl {
 
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
 
-        String termSpecId = ((TermBo)((MaintenanceForm)model).getDocument().getNewMaintainableObject().getDataObject()).getSpecificationId();
+        String termSpecId = ((TermBo)((MaintenanceDocumentForm)model).getDocument().getNewMaintainableObject().getDataObject()).getSpecificationId();
 
         Collection<TermResolverBo> termResolvers = getBoService().findMatching(TermResolverBo.class,
                 Collections.singletonMap("outputId", termSpecId)

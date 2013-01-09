@@ -15,21 +15,16 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-public class MaintenanceRouteLogIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class MaintenanceRouteLogIT extends KradMenuITBase {
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -37,32 +32,9 @@ public class MaintenanceRouteLogIT {
      * Verify the Route Log section exists and contains an IFrame
      */
     public void testVerifyRouteLog() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-        selenium.click("css=#u755_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isElementPresent("//*[@id=\"routeLogIFrame\"]")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        gotoMenuLinkLocator();
+        waitAndClick("css=span:contains('Route Log')");
+        
+        waitForElementPresent("//iframe[contains(@src,'RouteLog.do')]");
     }
 }

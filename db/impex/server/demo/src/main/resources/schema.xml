@@ -96,6 +96,19 @@
             <reference foreign="BOOK_ID" local="BOOK_ID"/>
         </foreign-key>
     </table>
+    <table name="KRAD_MSG_T">
+        <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
+        <column name="CMPNT_CD" primaryKey="true" size="100" type="VARCHAR"/>
+        <column name="MSG_KEY" primaryKey="true" size="100" type="VARCHAR"/>
+        <column name="LOC" primaryKey="true" size="255" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="MSG_DESC" size="255" type="VARCHAR"/>
+        <column name="TXT" size="4000" type="VARCHAR"/>
+        <unique name="KRAD_MSG_TC2">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
     <table name="KRCR_CMPNT_SET_T">
         <column name="CMPNT_SET_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="LAST_UPDT_TS" required="true" type="DATE"/>
@@ -130,7 +143,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" required="true" size="1" type="CHAR"/>
-        <column name="APPL_ID" size="20" type="VARCHAR"/>
+        <column name="APPL_ID" size="255" type="VARCHAR"/>
         <unique name="KRNS_NMSPC_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -147,7 +160,7 @@
         <column name="PARM_DESC_TXT" size="4000" type="VARCHAR"/>
         <column name="EVAL_OPRTR_CD" size="1" type="VARCHAR"/>
         <column default="KUALI" name="APPL_ID" primaryKey="true"
-            size="20" type="VARCHAR"/>
+            size="255" type="VARCHAR"/>
         <foreign-key foreignTable="KRCR_PARM_TYP_T" name="KRNS_PARM_TR2">
             <reference foreign="PARM_TYP_CD" local="PARM_TYP_CD"/>
         </foreign-key>
@@ -786,12 +799,34 @@
         <column name="DOC_STAT_NM" primaryKey="true" size="64" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column name="CAT_NM" size="64" type="VARCHAR"/>
+        <column name="SEQ_NO" size="5" type="DECIMAL"/>
+        <foreign-key foreignTable="KREW_DOC_TYP_APP_STAT_CAT_T" name="KREW_DOC_TYP_APP_DOC_STAT_FK1">
+            <reference foreign="DOC_TYP_ID" local="DOC_TYP_ID"/>
+            <reference foreign="CAT_NM" local="CAT_NM"/>
+        </foreign-key>
         <unique name="KREW_DOC_TYP_APP_DOC_STAT_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
         <index name="KREW_DOC_TYP_APP_DOC_STAT_T1">
             <index-column name="DOC_TYP_ID"/>
         </index>
+        <index name="KREW_DOC_TYP_APP_DOC_STAT_T2">
+            <index-column name="DOC_TYP_ID"/>
+            <index-column name="CAT_NM"/>
+        </index>
+    </table>
+    <table name="KREW_DOC_TYP_APP_STAT_CAT_T">
+        <column name="DOC_TYP_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="CAT_NM" primaryKey="true" size="64" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <foreign-key foreignTable="KREW_DOC_TYP_T" name="KREW_DOC_TYP_APP_STAT_CAT_FK1">
+            <reference foreign="DOC_TYP_ID" local="DOC_TYP_ID"/>
+        </foreign-key>
+        <unique name="KREW_DOC_TYP_APP_STAT_CAT_TC1">
+            <unique-column name="OBJ_ID"/>
+        </unique>
     </table>
     <table name="KREW_DOC_TYP_ATTR_T">
         <column name="DOC_TYP_ATTRIB_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -808,7 +843,7 @@
         <column name="PLCY_NM" required="true" size="1" type="DECIMAL"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-        <column name="PLCY_VAL" size="64" type="VARCHAR"/>
+        <column name="PLCY_VAL" size="1024" type="VARCHAR"/>
         <unique name="KREW_DOC_TYP_PLCY_RELN_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -816,7 +851,7 @@
     <table name="KREW_DOC_TYP_PROC_T">
         <column name="DOC_TYP_PROC_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_TYP_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="INIT_RTE_NODE_ID" size="22" type="DECIMAL"/>
+        <column name="INIT_RTE_NODE_ID" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
         <column default="0" name="INIT_IND" required="true" size="1" type="DECIMAL"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
@@ -926,16 +961,6 @@
         <column name="FLD_NM" required="true" size="255" type="VARCHAR"/>
         <column name="FLD_VAL" size="4000" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
-    </table>
-    <table name="KREW_HLP_T">
-        <column name="HLP_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="NM" required="true" size="500" type="VARCHAR"/>
-        <column name="KEY_CD" required="true" size="500" type="VARCHAR"/>
-        <column name="HLP_TXT" required="true" size="4000" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
-        <index name="KREW_HLP_TI1">
-            <index-column name="KEY_CD"/>
-        </index>
     </table>
     <table name="KREW_INIT_RTE_NODE_INSTN_T">
         <column name="DOC_HDR_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -1105,9 +1130,6 @@
         <column name="RTE_NODE_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="255" type="VARCHAR"/>
         <column name="VAL" size="4000" type="VARCHAR"/>
-        <foreign-key foreignTable="KREW_RTE_NODE_T" name="EN_RTE_NODE_CFG_PARM_TR1">
-            <reference foreign="RTE_NODE_ID" local="RTE_NODE_ID"/>
-        </foreign-key>
         <index name="KREW_RTE_NODE_CFG_PARM_TI1">
             <index-column name="RTE_NODE_ID"/>
         </index>
@@ -1178,14 +1200,14 @@
     </table>
     <table name="KREW_RTE_NODE_T">
         <column name="RTE_NODE_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="DOC_TYP_ID" size="19" type="DECIMAL"/>
+        <column name="DOC_TYP_ID" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
         <column name="TYP" required="true" size="255" type="VARCHAR"/>
         <column name="RTE_MTHD_NM" size="255" type="VARCHAR"/>
         <column name="RTE_MTHD_CD" size="2" type="VARCHAR"/>
         <column name="FNL_APRVR_IND" size="1" type="DECIMAL"/>
         <column name="MNDTRY_RTE_IND" size="1" type="DECIMAL"/>
-        <column name="ACTVN_TYP" size="250" type="VARCHAR"/>
+        <column name="ACTVN_TYP" size="1" type="VARCHAR"/>
         <column name="BRCH_PROTO_ID" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="CONTENT_FRAGMENT" size="4000" type="VARCHAR"/>
@@ -1219,6 +1241,9 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <unique name="KREW_RULE_ATTR_TC0">
             <unique-column name="OBJ_ID"/>
+        </unique>
+        <unique name="KREW_RULE_ATTR_TC1">
+            <unique-column name="NM"/>
         </unique>
     </table>
     <table name="KREW_RULE_EXPR_T">
@@ -1635,7 +1660,7 @@
         <column name="FIRST_NM" size="40" type="VARCHAR"/>
         <column name="MIDDLE_NM" size="40" type="VARCHAR"/>
         <column name="LAST_NM" size="40" type="VARCHAR"/>
-        <column name="PRSN_NM" size="40" type="VARCHAR"/>
+        <column name="PRSN_NM" size="255" type="VARCHAR"/>
         <column name="CAMPUS_CD" size="40" type="VARCHAR"/>
         <column name="PRMRY_DEPT_CD" size="40" type="VARCHAR"/>
         <column name="EMP_ID" size="40" type="VARCHAR"/>
@@ -2626,6 +2651,12 @@
         <unique name="KRIM_TYP_ATTR_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
+        <unique name="KRIM_TYP_ATTR_TC1">
+            <unique-column name="SORT_CD"/>
+            <unique-column name="KIM_TYP_ID"/>
+            <unique-column name="KIM_ATTR_DEFN_ID"/>
+            <unique-column name="ACTV_IND"/>
+        </unique>
         <index name="KRIM_TYP_ATTRIBUTE_TI1">
             <index-column name="KIM_TYP_ID"/>
         </index>
@@ -2690,6 +2721,10 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="COUNTY_NM" size="100" type="VARCHAR"/>
         <column name="ACTV_IND" size="1" type="VARCHAR"/>
+        <foreign-key foreignTable="KRLC_ST_T" name="KRLC_CNTY_TR1">
+            <reference foreign="POSTAL_STATE_CD" local="STATE_CD"/>
+            <reference foreign="POSTAL_CNTRY_CD" local="POSTAL_CNTRY_CD"/>
+        </foreign-key>
         <unique name="KR_COUNTY_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -3043,6 +3078,71 @@
             <index-column name="TYP_ID"/>
         </index>
     </table>
+    <table name="KRMS_NL_TMPL_ATTR_T">
+        <column name="NL_TMPL_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NL_TMPL_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_DEFN_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_VAL" size="400" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRMS_NL_TMPL_T" name="KRMS_NL_TMPL_ATTR_FK1">
+            <reference foreign="NL_TMPL_ID" local="NL_TMPL_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_ATTR_DEFN_T" name="KRMS_NL_TMPL_ATTR_FK2">
+            <reference foreign="ATTR_DEFN_ID" local="ATTR_DEFN_ID"/>
+        </foreign-key>
+        <unique name="KRMS_NL_TMPL_ATTR_TC1">
+            <unique-column name="NL_TMPL_ID"/>
+            <unique-column name="ATTR_DEFN_ID"/>
+        </unique>
+    </table>
+    <table name="KRMS_NL_TMPL_T">
+        <column name="NL_TMPL_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="LANG_CD" required="true" size="2" type="VARCHAR"/>
+        <column name="NL_USAGE_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="TMPL" required="true" size="4000" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_TYP_T">
+            <reference foreign="TYP_ID" local="TYP_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_NL_USAGE_T" name="KRMS_NL_TMPL_FK1">
+            <reference foreign="NL_USAGE_ID" local="NL_USAGE_ID"/>
+        </foreign-key>
+        <unique name="KRMS_NL_TMPL_TC1">
+            <unique-column name="LANG_CD"/>
+            <unique-column name="NL_USAGE_ID"/>
+            <unique-column name="TYP_ID"/>
+        </unique>
+    </table>
+    <table name="KRMS_NL_USAGE_ATTR_T">
+        <column name="NL_USAGE_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NL_USAGE_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_DEFN_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_VAL" size="400" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRMS_NL_USAGE_T" name="KRMS_NL_USAGE_ATTR_FK1">
+            <reference foreign="NL_USAGE_ID" local="NL_USAGE_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_ATTR_DEFN_T" name="KRMS_NL_USAGE_ATTR_FK2">
+            <reference foreign="ATTR_DEFN_ID" local="ATTR_DEFN_ID"/>
+        </foreign-key>
+        <unique name="KRMS_NL_USAGE_ATTR_TC1">
+            <unique-column name="NL_USAGE_ID"/>
+            <unique-column name="ATTR_DEFN_ID"/>
+        </unique>
+    </table>
+    <table name="KRMS_NL_USAGE_T">
+        <column name="NL_USAGE_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NM" required="true" size="255" type="VARCHAR"/>
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="DESC_TXT" size="255" type="VARCHAR"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <unique name="KRMS_NL_USAGE_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
+    </table>
     <table name="KRMS_PROP_PARM_T">
         <column name="PROP_PARM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PROP_ID" required="true" size="40" type="VARCHAR"/>
@@ -3075,6 +3175,25 @@
         <index name="KRMS_PROP_TI1">
             <index-column name="RULE_ID"/>
         </index>
+    </table>
+    <table name="KRMS_REF_OBJ_KRMS_OBJ_T">
+        <column name="REF_OBJ_KRMS_OBJ_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="COLLECTION_NM" size="40" type="VARCHAR"/>
+        <column name="KRMS_OBJ_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="KRMS_DSCR_TYP" required="true" size="40" type="VARCHAR"/>
+        <column name="REF_OBJ_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="REF_DSCR_TYP" required="true" size="255" type="VARCHAR"/>
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <unique name="KRMS_REF_OBJ_KRMS_OBJ_TC1">
+            <unique-column name="COLLECTION_NM"/>
+            <unique-column name="KRMS_OBJ_ID"/>
+            <unique-column name="KRMS_DSCR_TYP"/>
+            <unique-column name="REF_OBJ_ID"/>
+            <unique-column name="REF_DSCR_TYP"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
     </table>
     <table name="KRMS_RULE_ATTR_T">
         <column name="RULE_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -3257,6 +3376,26 @@
             <index-column name="TYP_ID"/>
         </index>
     </table>
+    <table name="KRMS_TYP_RELN_T">
+        <column name="TYP_RELN_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="FROM_TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="TO_TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="RELN_TYP" required="true" size="40" type="VARCHAR"/>
+        <column name="SEQ_NO" required="true" size="5" type="DECIMAL"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_TYP_RELN_FK1">
+            <reference foreign="TYP_ID" local="FROM_TYP_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_TYP_RELN_FK2">
+            <reference foreign="TYP_ID" local="TO_TYP_ID"/>
+        </foreign-key>
+        <unique name="KRMS_TYP_RELN_TC1">
+            <unique-column name="FROM_TYP_ID"/>
+            <unique-column name="TO_TYP_ID"/>
+            <unique-column name="RELN_TYP"/>
+        </unique>
+    </table>
     <table name="KRMS_TYP_T">
         <column name="TYP_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="100" type="VARCHAR"/>
@@ -3341,6 +3480,24 @@
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
+    <table name="KRNS_MAINT_DOC_ATT_LST_T">
+        <column name="ATT_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="DOC_HDR_ID" required="true" size="14" type="VARCHAR"/>
+        <column name="ATT_CNTNT" required="true" type="BLOB"/>
+        <column name="FILE_NM" size="150" type="VARCHAR"/>
+        <column name="CNTNT_TYP" size="255" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRNS_MAINT_DOC_T" name="KRNS_MAINT_DOC_ATT_LST_FK1">
+            <reference foreign="DOC_HDR_ID" local="DOC_HDR_ID"/>
+        </foreign-key>
+        <unique name="KRNS_MAINT_DOC_ATT_LST_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+        <index name="KRNS_MAINT_DOC_ATT_LST_TI1">
+            <index-column name="DOC_HDR_ID"/>
+        </index>
+    </table>
     <table name="KRNS_MAINT_DOC_ATT_T">
         <column name="DOC_HDR_ID" primaryKey="true" size="14" type="VARCHAR"/>
         <column name="ATT_CNTNT" required="true" type="BLOB"/>
@@ -3398,6 +3555,9 @@
         <unique name="KRNS_NTE_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
+        <index name="KRNS_NTE_TI1">
+            <index-column name="RMT_OBJ_ID"/>
+        </index>
     </table>
     <table name="KRNS_NTE_TYP_T">
         <column name="NTE_TYP_CD" primaryKey="true" size="4" type="VARCHAR"/>
@@ -3689,8 +3849,72 @@
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
     </table>
+    <table name="TRVL_AUTH_DOC_T">
+        <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
+        <column name="TRVL_ID" size="19" type="VARCHAR"/>
+        <column name="TRAVELER_DTL_ID" size="19" type="DECIMAL"/>
+        <column name="TEM_PROFILE_ID" size="19" type="DECIMAL"/>
+        <column name="TRIP_TYP_CD" size="3" type="VARCHAR"/>
+        <column name="TRIP_BGN_DT" type="DATE"/>
+        <column name="TRIP_END_DT" type="DATE"/>
+        <column name="PRIMARY_DEST_ID" size="19" type="DECIMAL"/>
+        <column name="PRIMARY_DEST_NAME" size="100" type="VARCHAR"/>
+        <column name="PRIMARY_DEST_CNTRY_ST" size="100" type="VARCHAR"/>
+        <column name="PRIMARY_DEST_CNTY" size="100" type="VARCHAR"/>
+        <column default="0" name="EXP_LMT" scale="2" size="19" type="DECIMAL"/>
+        <column name="MEAL_WITHOUT_LODGING" size="255" type="VARCHAR"/>
+        <column name="TRIP_DESC" size="255" type="VARCHAR"/>
+        <column name="DELINQUENT_TR_EXCEPTION" size="1" type="VARCHAR"/>
+        <column default="0" name="PER_DIEM_ADJ" scale="2" size="19" type="DECIMAL"/>
+        <column name="AR_CUST_ID" size="255" type="VARCHAR"/>
+        <column name="AR_INV_DOC_NBR" size="255" type="VARCHAR"/>
+        <column name="CELL_PH_NUM" size="20" type="VARCHAR"/>
+        <column name="RGN_FAMIL" size="255" type="VARCHAR"/>
+        <column name="CTZN_CNTRY_CD" size="255" type="VARCHAR"/>
+        <column name="FDOC_NXT_EXP_NBR" size="7" type="DECIMAL"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+    </table>
+    <table name="TRVL_PER_DIEM_T">
+        <column name="ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="TRIP_TYP_CD" required="true" size="3" type="VARCHAR"/>
+        <column name="COUNTRY" size="100" type="VARCHAR"/>
+        <column name="COUNTRY_NM" size="100" type="VARCHAR"/>
+        <column name="COUNTY_CD" size="100" type="VARCHAR"/>
+        <column name="PRI_DEST" size="100" type="VARCHAR"/>
+        <column name="SSN_BGN_DT" type="DATE"/>
+        <column name="EFFECT_FROM_DT" type="DATE"/>
+        <column name="EFFECT_TO_DT" type="DATE"/>
+        <column name="LOAD_DT" type="DATE"/>
+        <column name="SSN_BGN_MONTH_DAY" size="5" type="VARCHAR"/>
+        <column name="BKFST" size="19" type="DECIMAL"/>
+        <column name="LUNCH" size="19" type="DECIMAL"/>
+        <column name="DIN" size="19" type="DECIMAL"/>
+        <column default="0" name="LODGING" scale="2" size="19" type="DECIMAL"/>
+        <column default="0" name="INC" scale="2" size="19" type="DECIMAL"/>
+        <column default="0" name="MEALS_INC" scale="2" size="19" type="DECIMAL"/>
+        <column name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+    </table>
+    <table name="TRVL_TRIP_TYP_T">
+        <column name="CODE" primaryKey="true" size="3" type="VARCHAR"/>
+        <column name="NM" required="true" size="40" type="VARCHAR"/>
+        <column name="GEN_ENC_IND" required="true" size="1" type="VARCHAR"/>
+        <column name="ENC_BAL_TYP" size="2" type="VARCHAR"/>
+        <column name="ENC_OBJ_CD" size="4" type="VARCHAR"/>
+        <column name="CONT_INFO_REQ_IND" required="true" size="1" type="VARCHAR"/>
+        <column name="BLANKET_IND" required="true" size="1" type="VARCHAR"/>
+        <column name="AUTO_TR_LIMIT" required="true" scale="2" size="19" type="DECIMAL"/>
+        <column name="USE_PER_DIEM" required="true" size="1" type="VARCHAR"/>
+        <column name="TA_REQUIRED" required="true" size="1" type="VARCHAR"/>
+        <column name="PER_DIEM_CALC_METHOD" required="true" size="1" type="VARCHAR"/>
+        <column name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+    </table>
     <table name="TRV_ACCT">
-        <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="ACCT_NUM" required="true" size="10" type="VARCHAR"/>
         <column name="ACCT_NAME" size="50" type="VARCHAR"/>
         <column name="ACCT_TYPE" size="100" type="VARCHAR"/>
         <column name="ACCT_FO_ID" size="14" type="DECIMAL"/>
@@ -3700,9 +3924,6 @@
         <column name="SUB_ACCT_NAME" size="50" type="VARCHAR"/>
         <column name="CREATE_DT" type="DATE"/>
         <column name="SUBSIDIZED_PCT" type="FLOAT"/>
-        <foreign-key foreignTable="TRV_ACCT_FO" name="TRV_ACCT_FK1">
-            <reference foreign="ACCT_FO_ID" local="ACCT_FO_ID"/>
-        </foreign-key>
     </table>
     <table name="TRV_ACCT_EXT">
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
@@ -3729,6 +3950,15 @@
         <column name="ACTV_FRM_DT" type="DATE"/>
         <column name="ACTV_TO_DT" type="DATE"/>
     </table>
+    <table name="TRV_ATT_SAMPLE">
+        <column name="ATTACHMENT_ID" primaryKey="true" size="30" type="VARCHAR"/>
+        <column name="DESCRIPTION" size="4000" type="VARCHAR"/>
+        <column name="ATTACHMENT_FILENAME" size="300" type="VARCHAR"/>
+        <column name="ATTACHMENT_FILE_CONTENT_TYPE" size="255" type="VARCHAR"/>
+        <column name="ATTACHMENT_FILE" type="BLOB"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    </table>
     <table name="TRV_DOC_2">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
@@ -3743,6 +3973,19 @@
     <table name="TRV_DOC_ACCT">
         <column name="DOC_HDR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
+    </table>
+    <table name="TRV_MULTI_ATT_SAMPLE">
+        <column name="GEN_ID" primaryKey="true" size="14" type="DECIMAL"/>
+        <column name="ATTACHMENT_ID" size="30" type="VARCHAR"/>
+        <column name="DESCRIPTION" size="4000" type="VARCHAR"/>
+        <column name="ATTACHMENT_FILENAME" size="300" type="VARCHAR"/>
+        <column name="ATTACHMENT_FILE_CONTENT_TYPE" size="255" type="VARCHAR"/>
+        <column name="ATTACHMENT_FILE" type="BLOB"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="TRV_ATT_SAMPLE" name="SYS_C003453453">
+            <reference foreign="ATTACHMENT_ID" local="ATTACHMENT_ID"/>
+        </foreign-key>
     </table>
     <table name="TST_SEARCH_ATTR_INDX_TST_DOC_T">
         <column name="DOC_HDR_ID" primaryKey="true" size="14" type="VARCHAR"/>
@@ -3791,21 +4034,20 @@
     <sequence name="KREW_ACTN_RQST_S" nextval="2369"/>
     <sequence name="KREW_ACTN_TKN_S" nextval="2329"/>
     <sequence name="KREW_ATTR_DEFN_S" nextval="10000"/>
-    <sequence name="KREW_DOC_HDR_S" nextval="3008"/>
+    <sequence name="KREW_DOC_HDR_S" nextval="3010"/>
     <sequence name="KREW_DOC_LNK_S" nextval="2000"/>
     <sequence name="KREW_DOC_NTE_S" nextval="2020"/>
     <sequence name="KREW_DOC_TYP_ATTR_S" nextval="2010"/>
     <sequence name="KREW_EDL_FLD_DMP_S" nextval="5000"/>
     <sequence name="KREW_EDL_S" nextval="2022"/>
-    <sequence name="KREW_HLP_S" nextval="100"/>
     <sequence name="KREW_OUT_BOX_ITM_S" nextval="10043"/>
     <sequence name="KREW_PPL_FLW_ATTR_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_DLGT_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_MBR_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_S" nextval="10000"/>
     <sequence name="KREW_RSP_S" nextval="2065"/>
-    <sequence name="KREW_RTE_NODE_CFG_PARM_S" nextval="2475"/>
-    <sequence name="KREW_RTE_NODE_S" nextval="2919"/>
+    <sequence name="KREW_RTE_NODE_CFG_PARM_S" nextval="2485"/>
+    <sequence name="KREW_RTE_NODE_S" nextval="2923"/>
     <sequence name="KREW_RTE_TMPL_S" nextval="1645"/>
     <sequence name="KREW_RULE_EXPR_S" nextval="2002"/>
     <sequence name="KREW_RULE_TMPL_OPTN_S" nextval="2020"/>
@@ -3838,7 +4080,7 @@
     <sequence name="KRIM_PRNCPL_ID_S" nextval="10000"/>
     <sequence name="KRIM_ROLE_ID_S" nextval="10003"/>
     <sequence name="KRIM_ROLE_MBR_ID_S" nextval="10003"/>
-    <sequence name="KRIM_ROLE_PERM_ID_S" nextval="1003"/>
+    <sequence name="KRIM_ROLE_PERM_ID_S" nextval="10000"/>
     <sequence name="KRIM_ROLE_RSP_ACTN_ID_S" nextval="10000"/>
     <sequence name="KRIM_ROLE_RSP_ID_S" nextval="10000"/>
     <sequence name="KRIM_RSP_ID_S" nextval="10000"/>
@@ -3855,7 +4097,6 @@
     <sequence name="KRMS_CMPND_PROP_PROPS_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_ATTR_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_TERM_SPEC_PREREQ_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_ACTN_TYP_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_AGENDA_TYP_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_FUNC_S" nextval="10000"/>
@@ -3864,8 +4105,13 @@
     <sequence name="KRMS_CTGRY_S" nextval="1"/>
     <sequence name="KRMS_FUNC_PARM_S" nextval="10000"/>
     <sequence name="KRMS_FUNC_S" nextval="10000"/>
+    <sequence name="KRMS_NL_TMPL_ATTR_S" nextval="10000"/>
+    <sequence name="KRMS_NL_TMPL_S" nextval="10000"/>
+    <sequence name="KRMS_NL_USAGE_ATTR_S" nextval="10000"/>
+    <sequence name="KRMS_NL_USAGE_S" nextval="10000"/>
     <sequence name="KRMS_PROP_PARM_S" nextval="10000"/>
     <sequence name="KRMS_PROP_S" nextval="10000"/>
+    <sequence name="KRMS_REF_OBJ_KRMS_OBJ_S" nextval="10000"/>
     <sequence name="KRMS_RULE_ATTR_S" nextval="10000"/>
     <sequence name="KRMS_RULE_S" nextval="10000"/>
     <sequence name="KRMS_TERM_PARM_S" nextval="10000"/>
@@ -3876,16 +4122,20 @@
     <sequence name="KRMS_TERM_S" nextval="10000"/>
     <sequence name="KRMS_TERM_SPEC_S" nextval="10000"/>
     <sequence name="KRMS_TYP_ATTR_S" nextval="10000"/>
+    <sequence name="KRMS_TYP_RELN_S" nextval="10000"/>
     <sequence name="KRMS_TYP_S" nextval="10000"/>
     <sequence name="KRNS_DOC_TYP_ATTR_S" nextval="1000"/>
     <sequence name="KRNS_LOCK_S" nextval="2000"/>
     <sequence name="KRNS_LOOKUP_RSLT_S" nextval="2000"/>
+    <sequence name="KRNS_MAINT_DOC_ATT_S" nextval="10000"/>
     <sequence name="KRNS_MAINT_LOCK_S" nextval="2020"/>
     <sequence name="KRNS_NTE_S" nextval="2020"/>
     <sequence name="KRSB_BAM_PARM_S" nextval="2000"/>
     <sequence name="KRSB_BAM_S" nextval="2000"/>
-    <sequence name="KRSB_MSG_QUE_S" nextval="466"/>
+    <sequence name="KRSB_MSG_QUE_S" nextval="467"/>
     <sequence name="KRSB_SVC_DEF_S" nextval="10105"/>
     <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10105"/>
+    <sequence name="TRVL_ID_SEQ" nextval="1"/>
+    <sequence name="TRVL_PER_DIEM_ID_SEQ" nextval="1"/>
     <sequence name="TRV_FO_ID_S" nextval="1000"/>
 </database>

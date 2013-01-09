@@ -18,25 +18,19 @@ package edu.samplu.mainmenu.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests creating and cancelling new and edit Routing Rule Delegation maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesDelegationIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
     }
 
     @Test
@@ -44,65 +38,75 @@ public class WorkFlowRouteRulesDelegationIT {
      * tests that a new Routing Rule Delegation maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules Delegation");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");        
-        selenium.selectFrame("relative=up");        
-        selenium.waitForPageToLoad("30000");
-        selenium.click("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("css=td.infoline > input[name=\"methodToCall.search\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("css=a[title=\"return valueRule Id=1046 \"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("name=parentResponsibilityId");
-        selenium.click("name=methodToCall.createDelegateRule");
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Routing Rules Delegation");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClick("//img[@alt='create new']");
+//        selectFrame("relative=up");
+        waitForPageToLoad();
+        waitAndClick("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        waitAndClick("css=td.infoline > input[name=\"methodToCall.search\"]");
+        waitForPageToLoad();
+        waitAndClick("css=a[title=\"return valueRule Id=1046 \"]");
+        waitForPageToLoad();
+        waitAndClick("name=parentResponsibilityId");
+        waitAndClick("name=methodToCall.createDelegateRule");
+        waitForPageToLoad();
+        assertTrue(isElementPresent("methodToCall.cancel"));
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
     }
 
-    @Test
+//    @Test // There are no results from the search so no edit link to click on
     /**
      * tests that a Routing Rule Delegation maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditRouteRulesDelegation() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules Delegation");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.setSpeed("2000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Routing Rules Delegation");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        setSpeed("2000");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClick("link=edit");
+        waitForPageToLoad();
+        assertTrue(isElementPresent("methodToCall.cancel"));
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
               
     }
     
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+    @Test
+    public void testCreateNewRRDTravelRequestDestRouting() throws Exception {
+        waitAndClick("link=Routing Rules Delegation");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClick("css=img[alt=\"create new\"]");
+        waitForPageToLoad();
+        waitAndClick("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        waitAndClick("css=td.infoline > input[name=\"methodToCall.search\"]");
+        waitForPageToLoad();
+        waitAndClick("css=a[title=\"return valueRule Id=1046 \"]");
+        waitForPageToLoad();
+        waitAndClick("name=parentResponsibilityId");
+        waitAndClick("name=methodToCall.createDelegateRule");
+        waitForPageToLoad();
+        waitAndClick("name=methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("name=methodToCall.processAnswer.button0");
+        waitForPageToLoad();
+        selectWindow("null");
+        waitAndClick("xpath=(//input[@name='imageField'])[2]");
+        waitForPageToLoad();
     }
 }

@@ -15,103 +15,104 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * tests that user 'admin', on blanket approving a new Routing Rule maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesBlanketAppIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
     }
-
     @Test
-    public void testUntitled() throws Exception {
-        String remotePublicUrl = System.getProperty("remote.public.url");
-        // remove the trailing slash to allow for correction concatenation in locating the lookup buttons below
-        if (StringUtils.endsWith(remotePublicUrl, "/")) {
-            remotePublicUrl = StringUtils.removeEnd(remotePublicUrl, "/");
-        }
-        selenium.open(remotePublicUrl);
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-        selenium.waitForPageToLoad("30000");
-        selenium.type("name", "RoutingRuleDocument");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-        selenium.waitForPageToLoad("30000");
-        selenium.type("name", "RuleRoutingTemplate");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.createRule");
-        selenium.waitForPageToLoad("30000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
-        selenium.click("//input[@id='document.newMaintainableObject.forceAction']");
-        selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
-        selenium.type("//input[@id='document.newMaintainableObject.fieldValues(1321:docTypeFullName)']", "DocumentTypeDocument");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;" + remotePublicUrl + "/kr/lookup.do;::::).anchor15");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        selenium.waitForPageToLoad("30000");
-        selenium.select("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']", "label=ACKNOWLEDGE");
-        selenium.type("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
-        selenium.click("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!)");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
+    public void testUntitled() throws Exception {    
+        assertEquals("Kuali Portal Index", getTitle());
+        // click on the main menu Routing Rules link
+        waitAndClick("link=Routing Rules");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        // click on the create new button
+        waitAndClick("//img[@alt='create new']");
+        waitForPageToLoad();
+        // lookup on the Document Type Name
+        waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        // type in the name field the text RoutingRuleDocument
+        waitAndType("name", "RoutingRuleDocument");
+        // click the search button
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        // click the return value link
+        waitAndClick("link=return value");
+        waitForPageToLoad();
+        // lookup on the Rule Template Name
+        waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        // type in the name field the text RuleRoutingTemplate
+        waitAndType("name", "RuleRoutingTemplate");
+        // click the search button
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        // click the return value link
+        waitAndClick("link=return value");
+        waitForPageToLoad();
+        // click the create new button
+        waitAndClick("methodToCall.createRule");
+        waitForPageToLoad();
+        String docId = getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        assertTrue(isElementPresent("methodToCall.cancel"));
+        // type in the Document Overview Description the text Test Routing Rule
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
+        // click the Force Action checkbox
+        waitAndClick("//input[@id='document.newMaintainableObject.forceAction']");
+        // type in the Description text area the text Test Routing Rule1
+        waitAndType("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
+        // type in the Document type name field the text DocumentTypeDocument
+        waitAndType("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']", "DocumentTypeDocument");
+        // lookup on Person
+        waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
+        waitForPageToLoad();
+        // click the search button
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        // click the return value
+        waitAndClick("link=return value");
+        waitForPageToLoad();
+        // select from the Action Request ACKNOWLEDGE
+        select("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']", "label=ACKNOWLEDGE");
+        // type in the Priority field the text 1
+        waitAndType("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
+        // click the add button
+        waitAndClick("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!)");
+        waitForPageToLoad();
+        checkForIncidentReport("methodToCall.blanketApprove");
+        waitAndClick("methodToCall.blanketApprove");
+        waitForPageToLoad();
+        selectWindow("null");
+        Thread.sleep(2000);
+        waitAndClick("//img[@alt='doc search']");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
        
         docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+        assertTrue(isElementPresent(docId));
+        if(isElementPresent(docId)){
+            assertEquals("FINAL", getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+            assertEquals(docId, getText("//table[@id='row']/tbody/tr[1]/td[1]"));
+            assertEquals("FINAL", getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

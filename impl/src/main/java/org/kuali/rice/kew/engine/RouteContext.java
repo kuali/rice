@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.framework.util.ApplicationThreadLocal;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -59,7 +60,7 @@ public class RouteContext implements Serializable {
 	public RouteContext() {
 	}
 
-	private static ThreadLocal<List<RouteContext>> ROUTE_CONTEXT_STACK = new ThreadLocal<List<RouteContext>>() {
+	private static ThreadLocal<List<RouteContext>> ROUTE_CONTEXT_STACK = new ApplicationThreadLocal<List<RouteContext>>() {
 		protected List<RouteContext> initialValue() {
 			List<RouteContext> contextStack = new LinkedList<RouteContext>();
 			contextStack.add(0, new RouteContext());

@@ -155,7 +155,7 @@
         <bean parent="GenericGroup" p:headerText="Meeting Times + Contact Hours">
           <property name="items">
             <list>
-              <bean parent="Uif-HorizontalFieldGroup">
+              <bean id="CourseDemoView-TermDate" parent="Uif-HorizontalFieldGroup">
                 <property name="items">
                   <list>
                     <bean parent="GenericSelection" p:propertyName="term" p:label="Term"

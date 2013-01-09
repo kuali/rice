@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.ken.dao;
 
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 
@@ -31,10 +31,10 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationProducerDaoTest extends BusinessObjectPersistenceTestCaseBase {
-    NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
-    NotificationChannel mockChannel2 = MockObjectsUtil.getTestChannel2();
+    NotificationChannelBo mockChannel1 = MockObjectsUtil.getTestChannel1();
+    NotificationChannelBo mockChannel2 = MockObjectsUtil.getTestChannel2();
     
-    NotificationProducer mockProducer1 = MockObjectsUtil.getTestProducer1();
+    NotificationProducerBo mockProducer1 = MockObjectsUtil.getTestProducer1();
     
     private String[] updatedDescriptions = {"Test 1 - updated description", "Test 2 - updated description"};
     
@@ -55,16 +55,16 @@ public class NotificationProducerDaoTest extends BusinessObjectPersistenceTestCa
     protected boolean delete() {
 	HashMap criteria = new HashMap();
 	
-	NotificationProducer producer4 = new NotificationProducer();
+	NotificationProducerBo producer4 = new NotificationProducerBo();
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockProducer1.getName());
-	producer4 = (NotificationProducer) businessObjectDao.findByUniqueKey(NotificationProducer.class, criteria);
+	producer4 = (NotificationProducerBo) businessObjectDao.findByUniqueKey(NotificationProducerBo.class, criteria);
 	
 	assertEquals(1, producer4.getChannels().size());
 	
 	criteria.clear();
-	NotificationProducer producer5 = new NotificationProducer();
+	NotificationProducerBo producer5 = new NotificationProducerBo();
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockProducer1.getName());
-	producer5 = (NotificationProducer) businessObjectDao.findByUniqueKey(NotificationProducer.class, criteria);
+	producer5 = (NotificationProducerBo) businessObjectDao.findByUniqueKey(NotificationProducerBo.class, criteria);
 		
 	try {
 	    businessObjectDao.delete(producer5);
@@ -79,12 +79,12 @@ public class NotificationProducerDaoTest extends BusinessObjectPersistenceTestCa
      */
     @Override
     protected boolean retrieve() {
-	NotificationProducer producer2 = new NotificationProducer();
+	NotificationProducerBo producer2 = new NotificationProducerBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockProducer1.getName());
-	producer2 = (NotificationProducer) businessObjectDao.findByUniqueKey(NotificationProducer.class, criteria);
+	producer2 = (NotificationProducerBo) businessObjectDao.findByUniqueKey(NotificationProducerBo.class, criteria);
 	
 	boolean success = true;
 	
@@ -100,7 +100,7 @@ public class NotificationProducerDaoTest extends BusinessObjectPersistenceTestCa
      */
     @Override
     protected boolean insert() {
-	NotificationProducer producer1 = MockObjectsUtil.getTestProducer1();
+	NotificationProducerBo producer1 = MockObjectsUtil.getTestProducer1();
 	
 	//set up the channels
 	producer1.getChannels().add(mockChannel1);
@@ -119,12 +119,12 @@ public class NotificationProducerDaoTest extends BusinessObjectPersistenceTestCa
      */
     @Override
     protected boolean update() {
-	NotificationProducer producer2 = new NotificationProducer();
+	NotificationProducerBo producer2 = new NotificationProducerBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockProducer1.getName());
-	producer2 = (NotificationProducer) businessObjectDao.findByUniqueKey(NotificationProducer.class, criteria);
+	producer2 = (NotificationProducerBo) businessObjectDao.findByUniqueKey(NotificationProducerBo.class, criteria);
 	
 	producer2.setDescription(updatedDescriptions[0]);
 	producer2.getChannels().remove(0);
@@ -142,12 +142,12 @@ public class NotificationProducerDaoTest extends BusinessObjectPersistenceTestCa
      */
     @Override
     protected boolean validateChanges() {
-	NotificationProducer producer2 = new NotificationProducer();
+	NotificationProducerBo producer2 = new NotificationProducerBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockProducer1.getName());
-	producer2 = (NotificationProducer) businessObjectDao.findByUniqueKey(NotificationProducer.class, criteria);
+	producer2 = (NotificationProducerBo) businessObjectDao.findByUniqueKey(NotificationProducerBo.class, criteria);
 	
 	boolean success = true;
 	

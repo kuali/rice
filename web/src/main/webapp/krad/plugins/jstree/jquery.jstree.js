@@ -1461,6 +1461,10 @@
 					$.jstree._themes = this.src.toString().replace(/jquery\.jstree[^\/]*?\.js(\?.*)?$/, "") + 'themes/'; 
 					return false; 
 				}
+                else if(this.src.toString().match(/krad_.*\.min\.js(\?.*)?$/)) {
+                    $.jstree._themes = this.src.toString().replace(/krad_.*\.min\.js(\?.*)?$/, "") + 'themes/';
+                    return false;
+                }
 			});
 		}
 		if($.jstree._themes === false) { $.jstree._themes = "themes/"; }

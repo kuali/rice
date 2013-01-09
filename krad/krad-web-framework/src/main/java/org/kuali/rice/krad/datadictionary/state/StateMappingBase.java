@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.krad.datadictionary.state;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,8 @@ import java.util.Map;
  * @see StateMapping
  * @since 2.2
  */
+@BeanTags({@BeanTag(name = "stateMapping", parent = "StateMapping"),
+        @BeanTag(name = "workflowStateMapping", parent = "workflowStateMapping")})
 public class StateMappingBase implements StateMapping {
 
     private Map<String, String> stateNameMessageKeyMap;
@@ -73,11 +77,16 @@ public class StateMappingBase implements StateMapping {
      */
     @Override
     public String getNextState(Object object) {
-        int index = this.getStates().indexOf(this.getCurrentState(object)) + 1;
-        if (index == this.getStates().size()) {
-            return this.getCurrentState(object);
+        int currentStateIndex = this.getStates().indexOf(this.getCurrentState(object));
+        if (currentStateIndex != -1) {
+            int index = currentStateIndex + 1;
+            if (index == this.getStates().size()) {
+                return this.getCurrentState(object);
+            } else {
+                return this.getStates().get(index);
+            }
         } else {
-            return this.getStates().get(index);
+            return this.getCurrentState(object);
         }
     }
 
@@ -85,6 +94,7 @@ public class StateMappingBase implements StateMapping {
      * @see org.kuali.rice.krad.datadictionary.state.StateMapping#getStateNameMessageKeyMap()
      */
     @Override
+    @BeanTagAttribute(name = "stateNameMessageKeyMap", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getStateNameMessageKeyMap() {
         return stateNameMessageKeyMap;
     }
@@ -101,6 +111,7 @@ public class StateMappingBase implements StateMapping {
      * @see org.kuali.rice.krad.datadictionary.state.StateMapping#getStates()
      */
     @Override
+    @BeanTagAttribute(name = "states", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getStates() {
         if (states == null) {
             states = new ArrayList<String>();
@@ -120,6 +131,7 @@ public class StateMappingBase implements StateMapping {
      * @see org.kuali.rice.krad.datadictionary.state.StateMapping#getStatePropertyName()
      */
     @Override
+    @BeanTagAttribute(name = "statePropertyName")
     public String getStatePropertyName() {
         return statePropertyName;
     }
@@ -135,6 +147,7 @@ public class StateMappingBase implements StateMapping {
     /**
      * @see org.kuali.rice.krad.datadictionary.state.StateMapping#getCustomClientSideValidationStates()
      */
+    @BeanTagAttribute(name = "customClientSideValidationStates", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getCustomClientSideValidationStates() {
         return customClientSideValidationStates;
     }
@@ -144,5 +157,24 @@ public class StateMappingBase implements StateMapping {
      */
     public void setCustomClientSideValidationStates(Map<String, String> customClientSideValidationStates) {
         this.customClientSideValidationStates = customClientSideValidationStates;
+    }
+
+    /**
+     * @see StateMapping#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
+     */
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean("StateMappingBase", getStatePropertyName());
+
+        // Checking that propertyName is set
+        if (getStatePropertyName() == null) {
+            String currentValues[] = {"statePropertyName = null"};
+            tracer.createWarning("The State Property Name must be set", currentValues);
+        }
+
+        // Checking that states are set
+        if (getStates() == null) {
+            String currentValues[] = {"states = null"};
+            tracer.createWarning("States should be set", currentValues);
+        }
     }
 }

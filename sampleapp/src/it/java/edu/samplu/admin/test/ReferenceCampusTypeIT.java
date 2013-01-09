@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 package edu.samplu.admin.test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests creating and cancelling the new Campus Type maintenance screen 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeIT {
-    private Selenium selenium;    
-    
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class ReferenceCampusTypeIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
     }
 
     @Test
@@ -44,32 +38,18 @@ public class ReferenceCampusTypeIT {
      * tests that a new Campus Type maintenance document can be cancelled
      */
     public void testEditCampusType() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Campus Type");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Administration");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Campus Type");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=edit");
+        assertTrue(isElementPresent("methodToCall.cancel"));
+        waitAndClick("methodToCall.cancel");
+        waitAndClick("methodToCall.processAnswer.button0");
     }
 }

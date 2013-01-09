@@ -65,6 +65,7 @@
         <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerInfo.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/PrimaryDestination.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountInfo.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml</value>
@@ -73,6 +74,10 @@
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelRequestDocument.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/SampleAppAttributes.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSample.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSampleMaintenanceDocument.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSample.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSampleMaintenanceDocument.xml</value>
         <value>classpath:edu/sampleu/travel/uif/TravelAccountInquiry.xml</value>
         <value>classpath:edu/sampleu/travel/uif/TestKNSInquiries.xml</value>
         <value>classpath:edu/sampleu/travel/uif/TravelAccountLookup.xml</value>
@@ -125,6 +130,15 @@
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Collections.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/CollectionsM2Test.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Quickfinder.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/RichMessagesView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/ClientDisableView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifReadOnlyTestView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifCollectionGrouping.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifCollectionTotaling.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifGuestUserView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/TrainingApplicationView.xml</value>
+        <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationDocument.xml</value>
+        <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationView.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
@@ -156,6 +170,23 @@
         <value>edu.sampleu.kew.krad</value>
       </list>
     </property>
+    <property name="resourceBundleNames">
+      <list>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewResources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP2Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP3Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP4Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP5Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP6Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP7Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP8Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP9Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewPx10Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewPx11Resources</value>
+        <value>edu.sampleu.demo.course.UifStudentDefinitionsResources</value>
+        <value>edu.sampleu.travel.approval.TravelAuthorizationView</value>
+      </list>
+    </property>
   </bean>
 
   <bean id="sampleAppModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
@@ -178,7 +209,6 @@
       </bean>
     </property>
   </bean>
-
 
   <bean id="fiscalOfficerInfoLookupViewHelperService"
         class="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl"
@@ -224,21 +254,25 @@
         p:callbackService-ref="sampleAppPeopleFlowTypeService"
         p:localServiceName="sampleAppPeopleFlowTypeService"
         p:serviceInterface="org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService"/>
-  
+
   <bean id="dataTableRestServiceTest" class="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl"/>
 
   <bean id="DataTableRestServiceTest" class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">
-    <property name="serviceNameSpaceURI" value="KR-SAP" />
-    <property name="service" ref="dataTableRestServiceTest" />
+    <property name="serviceNameSpaceURI" value="KR-SAP"/>
+    <property name="service" ref="dataTableRestServiceTest"/>
     <property name="resourceClass"
-      value="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl" />
-    <property name="localServiceName" value="dataTableRestServiceTest" />
+              value="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl"/>
+    <property name="localServiceName" value="dataTableRestServiceTest"/>
   </bean>
 
   <bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus" />
-    <property name="serviceDefinition" ref="DataTableRestServiceTest" />
-   </bean>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition" ref="DataTableRestServiceTest"/>
+  </bean>
+
+  <bean id="testSuggestService" class="edu.sampleu.demo.kitchensink.TestSuggestServiceImpl"/>
+
+  <bean id="testAttributeQueryService" class="edu.sampleu.demo.kitchensink.TestAttributeQueryServiceImpl"/>
 
 </beans>
 

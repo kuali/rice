@@ -17,8 +17,8 @@ package org.kuali.rice.ken.dao;
 
 import java.util.HashMap;
 
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationRecipientList;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationRecipientListBo;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 
@@ -29,11 +29,11 @@ import org.kuali.rice.ken.util.NotificationConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationRecipientListDaoTest extends BusinessObjectPersistenceTestCaseBase {
-    NotificationChannel channel1 = MockObjectsUtil.getTestChannel1();
-    NotificationChannel channel2 = MockObjectsUtil.getTestChannel2();
+    NotificationChannelBo channel1 = MockObjectsUtil.getTestChannel1();
+    NotificationChannelBo channel2 = MockObjectsUtil.getTestChannel2();
     
-    NotificationRecipientList recipientList1 = new NotificationRecipientList();
-    NotificationRecipientList recipientList2 = new NotificationRecipientList();
+    NotificationRecipientListBo recipientList1 = new NotificationRecipientListBo();
+    NotificationRecipientListBo recipientList2 = new NotificationRecipientListBo();
     
     private String[] recipientTypes = {"Type 1", "Type 2"};
     private String[] recipientIds = {"ag266", "jaf30"};
@@ -67,22 +67,22 @@ public class NotificationRecipientListDaoTest extends BusinessObjectPersistenceT
      */
     @Override
     protected boolean retrieve() {
-	recipientList1 = new NotificationRecipientList();
-	recipientList2 = new NotificationRecipientList();
+	recipientList1 = new NotificationRecipientListBo();
+	recipientList2 = new NotificationRecipientListBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channel1.getId());
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_TYPE, recipientTypes[0]);
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_ID, recipientIds[0]);
-	recipientList1 = (NotificationRecipientList) (businessObjectDao.findMatching(NotificationRecipientList.class, criteria)).iterator().next();
+	recipientList1 = (NotificationRecipientListBo) (businessObjectDao.findMatching(NotificationRecipientListBo.class, criteria)).iterator().next();
 	
 	criteria.clear();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channel2.getId());
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_TYPE, recipientTypes[1]);
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_ID, recipientIds[1]);
-	recipientList2 = (NotificationRecipientList) (businessObjectDao.findMatching(NotificationRecipientList.class, criteria)).iterator().next();
+	recipientList2 = (NotificationRecipientListBo) (businessObjectDao.findMatching(NotificationRecipientListBo.class, criteria)).iterator().next();
 	
 	boolean success = true;
 	
@@ -141,22 +141,22 @@ public class NotificationRecipientListDaoTest extends BusinessObjectPersistenceT
      */
     @Override
     protected boolean validateChanges() {
-	recipientList1 = new NotificationRecipientList();
-	recipientList2 = new NotificationRecipientList();
+	recipientList1 = new NotificationRecipientListBo();
+	recipientList2 = new NotificationRecipientListBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channel1.getId());
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_TYPE, recipientTypes[0]);
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_ID, updatedRecipientIds[0]);
-	recipientList1 = (NotificationRecipientList) (businessObjectDao.findMatching(NotificationRecipientList.class, criteria)).iterator().next();
+	recipientList1 = (NotificationRecipientListBo) (businessObjectDao.findMatching(NotificationRecipientListBo.class, criteria)).iterator().next();
 	
 	criteria.clear();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channel2.getId());
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_TYPE, recipientTypes[1]);
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_ID, updatedRecipientIds[1]);
-	recipientList2 = (NotificationRecipientList) (businessObjectDao.findMatching(NotificationRecipientList.class, criteria)).iterator().next();
+	recipientList2 = (NotificationRecipientListBo) (businessObjectDao.findMatching(NotificationRecipientListBo.class, criteria)).iterator().next();
 	
 	boolean success = true;
 	

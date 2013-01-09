@@ -56,6 +56,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -914,7 +915,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * @see org.kuali.core.lookup.LookupableHelperService#setFieldConversions(java.util.Map)
+     * @see LookupableHelperService#setFieldConversions(java.util.Map)
      */
     public void setFieldConversions(Map fieldConversions) {
         this.fieldConversions = fieldConversions;
@@ -950,7 +951,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     /**
      * Checks that any required search fields have value.
      *
-     * @see org.kuali.core.lookup.LookupableHelperService#validateSearchParameters(java.util.Map)
+     * @see LookupableHelperService#validateSearchParameters(java.util.Map)
      */
     public void validateSearchParameters(Map<String, String> fieldValues) {
         List<String> lookupFieldAttributeList = null;
@@ -1071,7 +1072,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * may actually want to use this operation.  Subclasses desiring other behaviors
      * will need to override this.
      *
-     * @see org.kuali.core.lookup.LookupableHelperService#getSearchResultsUnbounded(java.util.Map)
+     * @see LookupableHelperService#getSearchResultsUnbounded(java.util.Map)
      */
     public List<? extends BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues) {
         throw new UnsupportedOperationException("Lookupable helper services do not always support getSearchResultsUnbounded");
@@ -1088,32 +1089,46 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public Collection<? extends BusinessObject> performLookup(LookupForm lookupForm, Collection<ResultRow> resultTable, boolean bounded) {
         Map lookupFormFields = lookupForm.getFieldsForLookup();
 
-        setBackLocation((String) lookupForm.getFieldsForLookup().get(KRADConstants.BACK_LOCATION));
-        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
+        setBackLocation((String) lookupFormFields.get(KRADConstants.BACK_LOCATION));
+        setDocFormKey((String) lookupFormFields.get(KRADConstants.DOC_FORM_KEY));
         Collection<? extends BusinessObject> displayList;
 
         LookupUtils.preProcessRangeFields(lookupFormFields);
 
-        Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
         // call search method to get results
         if (bounded) {
-            displayList = getSearchResults(lookupForm.getFieldsForLookup());
+            displayList = getSearchResults(lookupFormFields);
         } else {
-            displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
+            displayList = getSearchResultsUnbounded(lookupFormFields);
         }
 
         boolean hasReturnableRow = false;
 
-        List returnKeys = getReturnKeys();
-        List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        List<String> returnKeys = getReturnKeys();
+        List<String> pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
 
         // iterate through result list and wrap rows with return url and action
         // urls
-        for (Iterator iter = displayList.iterator(); iter.hasNext();) {
-            BusinessObject element = (BusinessObject) iter.next();
+        for (BusinessObject element : displayList) {
+            BusinessObject baseElement = element;
+            //if ebo, then use base BO to get lookupId and find restrictions
+            //we don't need to do this anymore as the BO is required to implement the EBO interface as of this time
+            //if this needs reimplemented in the future, one should consider what happens/needs to happen
+            //with the base BO fields (OBJ ID in particular) as they are all null/empty on new instantiation
+            //which will fail if we try to depend on any values within it.
+            //KULRICE-7223
+//            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(element.getClass())) {
+//                try {
+//                    baseElement = (BusinessObject)this.getBusinessObjectClass().newInstance();
+//                } catch (InstantiationException e) {
+//                    e.printStackTrace();
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+//                }
+//            }
 
-            final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
+            final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(baseElement);
             if (lookupId != null) {
                 lookupForm.setLookupObjectId(lookupId);
             }
@@ -1270,7 +1285,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     /**
      * @return false always, subclasses should override to do something smarter
-     * @see org.kuali.core.lookup.LookupableHelperService#isSearchUsingOnlyPrimaryKeyValues()
+     * @see LookupableHelperService#isSearchUsingOnlyPrimaryKeyValues()
      */
     public boolean isSearchUsingOnlyPrimaryKeyValues() {
         // by default, this implementation returns false, as lookups may not necessarily support this
@@ -1281,14 +1296,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * Returns "N/A"
      *
      * @return "N/A"
-     * @see org.kuali.core.lookup.LookupableHelperService#getPrimaryKeyFieldLabels()
+     * @see LookupableHelperService#getPrimaryKeyFieldLabels()
      */
     public String getPrimaryKeyFieldLabels() {
         return KRADConstants.NOT_AVAILABLE_STRING;
     }
 
     /**
-     * @see org.kuali.core.lookup.LookupableHelperService#isResultReturnable(org.kuali.core.bo.BusinessObject)
+     * @see LookupableHelperService#isResultReturnable(org.kuali.core.bo.BusinessObject)
      */
     public boolean isResultReturnable(BusinessObject object) {
         return true;
@@ -1312,6 +1327,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
                 if (!field.getFieldType().equals(Field.RADIO)) {
                     field.setPropertyValue(field.getDefaultValue());
+                    if (field.getFieldType().equals(Field.MULTISELECT)) {
+                        field.setPropertyValues(null);
+                    }
                 }
             }
         }

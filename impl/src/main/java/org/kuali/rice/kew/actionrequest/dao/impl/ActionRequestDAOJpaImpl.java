@@ -277,5 +277,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         
         return query.getResultList();
 	}
-    
+
+    @Override
+    public ActionRequestValue getRoleActionRequestByActionTakenId(String actionTakenId) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.modifier;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -29,9 +30,10 @@ import java.util.Set;
 /**
  * Pulls <code>Label</code> instances out of a contained field so they will
  * be placed separately in the <code>LayoutManager</code>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "labelSeparator-modifier", parent = "Uif-LabelSeparator-Modifier")
 public class LabelSeparateModifier extends ComponentModifierBase {
 	private static final long serialVersionUID = -4304947796868636298L;
 
@@ -44,7 +46,7 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 	 * not null and should be rendered, adds it to the new field list
 	 * immediately before the <code>Field</code> item the label applies to.
 	 * Finally the new list of components is set on the group
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */

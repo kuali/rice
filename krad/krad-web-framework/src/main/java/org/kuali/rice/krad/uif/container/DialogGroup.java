@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,13 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
-import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
@@ -34,16 +37,18 @@ import java.util.List;
  * content inside the LightBox widget when the modal dialog is displayed.
  * For convenience, this group contains a standard set of components for commonly used modal dialogs
  * <ul>
- *     <li>a prompt to display in the lightbox</li>
- *     <li>an optional explanation <code>InputField</code> for holding the user's textual response</li>
- *     <li>a set of response options for the user to choose from</li>
+ * <li>a prompt to display in the lightbox</li>
+ * <li>an optional explanation <code>InputField</code> for holding the user's textual response</li>
+ * <li>a set of response options for the user to choose from</li>
  * </ul>
+ *
  * <p>
  * The DialogGroup may also serve as a base class for more complex dialogs.
  * The default settings for this DialogGroup is to display a prompt message
  * with two buttons labeled OK and Cancel.
  * The optional explanation <code>TextAreaControl</code> is hidden by default.
  * </p>
+ *
  * <p>
  * The prompt text, number of user options and their corresponding label are configurable.
  * The <code>InputField</code> for the explanation is <code>TextAreaControl</code> by default.
@@ -55,23 +60,30 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "dialogGroup", parent = "Uif-DialogGroup"),
+        @BeanTag(name = "sensitiveData-dialogGroup", parent = "Uif-SensitiveData-DialogGroup"),
+        @BeanTag(name = "ok-cancel-dialogGroup", parent = "Uif-OK-Cancel-DialogGroup"),
+        @BeanTag(name = "yes-no-dialogGroup", parent = "Uif-Yes-No-DialogGroup"),
+        @BeanTag(name = "true-false-dialogGroup", parent = "Uif-True-False-DialogGroup"),
+        @BeanTag(name = "checkbox-dialogGroup", parent = "Uif-Checkbox-DialogGroup"),
+        @BeanTag(name = "radioButton-dialogGroup", parent = "Uif-RadioButton-DialogGroup")})
 public class DialogGroup extends Group {
     private static final long serialVersionUID = 1L;
 
     private String promptText;
     private List<KeyValue> availableResponses;
 
-    private Message prompt;
+    private MessageField prompt;
     private InputField explanation;
     private InputField responseInputField;
 
     private boolean reverseButtonOrder = false;
     private boolean displayExplanation = false;
+    private boolean useAjaxCallForContent = false;
 
     public DialogGroup() {
         super();
     }
-
 
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
@@ -88,15 +100,53 @@ public class DialogGroup extends Group {
     }
 
     /**
+     * The following actions are performed:
+     *
+     * <ul>
+     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+            // move dialogGroup custom properties into the items property.
+            // where they will be rendered by group.jsp
+            List<Component> myItems = new ArrayList<Component>();
+            List<? extends Component> items = getItems();
+
+            // do not add the custom properties if they are already present
+            if(!(items.contains(prompt))){
+                myItems.add(prompt);
+            }
+
+            if(!(items.contains(explanation))){
+                myItems.add(explanation);
+            }
+
+            myItems.addAll(getItems());
+
+            if(!(items.contains(responseInputField))){
+                myItems.add(responseInputField);
+            }
+
+            this.setItems(myItems);
+
+    }
+
+    /**
      * Performs the final phase of the component lifecycle.
      *
      * <p>For this DialogGroup component, perform the following:
      * <ul>
-     *     <li>set the promptText in the message</li>
-     *     <li>sets whether to render explanation field</li>
-     *     <li>set the options for the checkbox control to the availableResponses KeyValue property of
-     *     this dialogGroup</li>
-     *     <li>orders response buttons</li>
+     * <li>set the promptText in the message</li>
+     * <li>sets whether to render explanation field</li>
+     * <li>set the options for the checkbox control to the availableResponses KeyValue property of
+     * this dialogGroup</li>
+     * <li>orders response buttons</li>
      * </ul>
      * </p>
      *
@@ -108,6 +158,12 @@ public class DialogGroup extends Group {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
+        // if ajax, just render a placeholder
+        if (useAjaxCallForContent) {
+            setProgressiveRenderViaAJAX(useAjaxCallForContent);
+            setProgressiveRender("");
+            setRender(false);
+        }
         // set the messageTest to the promptText
         prompt.setMessageText(promptText);
 
@@ -122,7 +178,7 @@ public class DialogGroup extends Group {
                 List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
                 Collections.reverse(buttonList);
                 multiValueControl.setOptions(buttonList);
-            }else{
+            } else {
                 multiValueControl.setOptions(availableResponses);
             }
         }
@@ -135,6 +191,8 @@ public class DialogGroup extends Group {
      *
      * @return String containing the prompt text
      */
+
+    @BeanTagAttribute(name = "promptText")
     public String getPromptText() {
         return promptText;
     }
@@ -153,7 +211,8 @@ public class DialogGroup extends Group {
      *
      * @return Message - the text element containing the message string
      */
-    public Message getPrompt() {
+    @BeanTagAttribute(name = "prompt", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public MessageField getPrompt() {
         return prompt;
     }
 
@@ -162,10 +221,9 @@ public class DialogGroup extends Group {
      *
      * @param prompt - The Message element for this dialog
      */
-    public void setPrompt(Message prompt) {
+    public void setPrompt(MessageField prompt) {
         this.prompt = prompt;
     }
-
 
     /**
      * Retrieves the explanation InputField used to gather user input text from the dialog
@@ -177,6 +235,7 @@ public class DialogGroup extends Group {
      *
      * @return InputField component
      */
+    @BeanTagAttribute(name = "explanation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public InputField getExplanation() {
         return explanation;
     }
@@ -194,10 +253,12 @@ public class DialogGroup extends Group {
      * determines if the explanation InputField is to be displayed in this dialog
      *
      * <p>
-     *     False by default.
+     * False by default.
      * </p>
+     *
      * @return boolean - true if this user input is to be rendered, false if not.
      */
+    @BeanTagAttribute(name = "displayExplanation")
     public boolean isDisplayExplanation() {
         return displayExplanation;
     }
@@ -215,11 +276,12 @@ public class DialogGroup extends Group {
      * Gets the choices provided for user response.
      *
      * <p>
-     *     A List of KeyValue pairs for each of the choices provided on this dialog.
+     * A List of KeyValue pairs for each of the choices provided on this dialog.
      * </p>
      *
      * @return the List of response actions to provide the user.
      */
+    @BeanTagAttribute(name = "availableResponses", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<KeyValue> getAvailableResponses() {
         return availableResponses;
     }
@@ -237,13 +299,14 @@ public class DialogGroup extends Group {
      * Retrieves the InputField containing the choices displayed in this dialog
      *
      * <p>
-     *     By default, this InputField is configured to be a HorizontalCheckboxControl.
-     *     Styling is then used to make the checkboxes appear to be buttons.
-     *     The values of the availableResponses List are used as labels for the "buttons".
+     * By default, this InputField is configured to be a HorizontalCheckboxControl.
+     * Styling is then used to make the checkboxes appear to be buttons.
+     * The values of the availableResponses List are used as labels for the "buttons".
      * </p>
      *
      * @return InputField component within this dialog
      */
+    @BeanTagAttribute(name = "responseInputField", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public InputField getResponseInputField() {
         return responseInputField;
     }
@@ -261,13 +324,14 @@ public class DialogGroup extends Group {
      * Determines the positioning order of the choices displayed on this dialog
      *
      * <p>
-     *     Some page designers like the positive choice on the left and the negative choice on the right.
-     *     Others, prefer just the opposite. This allows the order to easily be switched.
+     * Some page designers like the positive choice on the left and the negative choice on the right.
+     * Others, prefer just the opposite. This allows the order to easily be switched.
      * </p>
      *
      * @return - true if choices left to right
-     *           false if choices right to left
+     *         false if choices right to left
      */
+    @BeanTagAttribute(name = "reverseButtonOrder")
     public boolean isReverseButtonOrder() {
         return reverseButtonOrder;
     }
@@ -276,7 +340,7 @@ public class DialogGroup extends Group {
      * Sets the display order of the choices displayed on this dialog
      *
      * <p>
-     *     By default, the choices are displayed left to right
+     * By default, the choices are displayed left to right
      * </p>
      *
      * @param reverseButtonOrder - true if buttons displayed left to right, false if right to left
@@ -284,4 +348,34 @@ public class DialogGroup extends Group {
     public void setReverseButtonOrder(boolean reverseButtonOrder) {
         this.reverseButtonOrder = reverseButtonOrder;
     }
+
+    /**
+     * indicates which approach is used to fill the lightbox content for this dialog.
+     *
+     * <p>
+     * Two techniques are used for filling the content of the lightbox when displaying this dialog.
+     * <ul>
+     * <li>a hidden group on the page is used as content</li>
+     * <li>an ajax call is made to the server to get the content</li>
+     * </ul>
+     * The default approach is to use a hidden form.
+     * </p>
+     *
+     * @return
+     */
+    @BeanTagAttribute(name = "useAjaxCallForContent")
+    public boolean isUseAjaxCallForContent() {
+        return useAjaxCallForContent;
+    }
+
+    /**
+     * Sets whether the content for the dialog will be filled via ajax call or hidden group
+     *
+     * @param useAjaxCallForContent - boolean set to true if ajax call is used to get content,
+     * false if hidden group is used for content.
+     */
+    public void setUseAjaxCallForContent(boolean useAjaxCallForContent) {
+        this.useAjaxCallForContent = useAjaxCallForContent;
+    }
+
 }

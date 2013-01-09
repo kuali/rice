@@ -23,19 +23,19 @@ import javax.persistence.IdClass
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
-import org.hibernate.annotations.Type
 
+import org.hibernate.annotations.Type
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.county.County
-import org.kuali.rice.location.api.county.CountyContract
+import org.kuali.rice.location.framework.county.CountyEbo
 import org.kuali.rice.location.impl.country.CountryBo
 import org.kuali.rice.location.impl.state.StateBo
-import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
+import javax.persistence.JoinColumns
 
 @IdClass(CountyId.class)
 @Entity
 @Table(name = "KRLC_CNTY_T")
-class CountyBo extends PersistableBusinessObjectBase implements CountyContract, MutableInactivatable {
+class CountyBo extends PersistableBusinessObjectBase implements CountyEbo {
 
     @Id
     @Column(name = "COUNTY_CD")
@@ -61,7 +61,7 @@ class CountyBo extends PersistableBusinessObjectBase implements CountyContract, 
     def CountryBo country;
 
     @ManyToOne(targetEntity = StateBo.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "STATE_CD", insertable = false, updatable = false)
+    @JoinColumns(value = [ @JoinColumn(name = "STATE_CD", insertable = false, updatable = false), @JoinColumn(name = "POSTAL_CNTRY_CD", insertable = false, updatable = false) ])
     def StateBo state;
 
     /**

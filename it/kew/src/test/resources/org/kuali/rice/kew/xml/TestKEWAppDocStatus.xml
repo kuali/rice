@@ -187,5 +187,64 @@
                 </requests>
             </routeNodes>
         </documentType>
-</documentTypes>
+
+        <documentType>
+          <name>TestAppDocStatusDoc4</name>
+          <description>Create a test document</description>
+          <label>Test Status Doc 4</label>
+          <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+          <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+          <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+          <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+          <docHandler>_blank</docHandler>
+          <validApplicationStatuses>
+            <status>bogus1</status>
+            <category name="IN PROGRESS">
+              <status>Approval In Progress</status>
+              <status>Submitted</status>
+              <status>Pending</status>
+            </category>
+            <status>bogus2</status>
+            <category name="PROCESSED">
+              <status>Completed</status>
+              <status>Approved</status>
+              <status>Rejected</status>
+            </category>
+            <status>bogus3</status>
+          </validApplicationStatuses>
+          <policies>
+            <policy>
+              <name>DOCUMENT_STATUS_POLICY</name>
+              <stringValue>app</stringValue>
+            </policy>
+          </policies>
+          <routePaths>
+            <routePath>
+              <start name="Initiated" nextNode="DestinationApproval" nextAppDocStatus="Approval in Progress"/>
+              <requests name="DestinationApproval" nextNode="TravelerApproval" nextAppDocStatus="Submitted"/>
+              <requests name="TravelerApproval" nextNode="SupervisorApproval" />
+              <requests name="SupervisorApproval" nextNode="AccountApproval" />
+              <requests name="AccountApproval" />
+            </routePath>
+          </routePaths>
+          <routeNodes>
+            <start name="Initiated">
+              <activationType>P</activationType>
+            </start>
+            <requests name="DestinationApproval">
+              <ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate>
+            </requests>
+            <requests name="TravelerApproval">
+              <ruleTemplate>TravelRequest-TravelerRouting</ruleTemplate>
+            </requests>
+            <requests name="SupervisorApproval">
+              <ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate>
+            </requests>
+            <requests name="AccountApproval">
+              <ruleTemplate>TravelRequest-AccountRouting</ruleTemplate>
+            </requests>
+          </routeNodes>
+        </documentType>
+
+    </documentTypes>
 </data>

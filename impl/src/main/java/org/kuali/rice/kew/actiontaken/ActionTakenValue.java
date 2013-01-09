@@ -35,6 +35,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.persistence.Column;
@@ -141,21 +142,30 @@ public class ActionTakenValue implements Serializable {
     }
 
     public boolean isForDelegator() {
-        return getDelegatorPrincipalId() != null || getDelegatorGroupId() != null;
+        return getDelegatorPrincipalId() != null || getDelegatorGroupId() != null || getDelegatorRoleId() != null;
     }
 
     public String getDelegatorDisplayName() {
-        if (! isForDelegator()) {
-            return "";
-        }
         if (getDelegatorPrincipalId() != null) {
         	// TODO this stinks to have to have a dependency on UserSession here
         	return KEWServiceLocator.getIdentityHelperService().getPerson(this.getDelegatorPrincipalId()).getName();
-        } else {
+        } else if (getDelegatorGroupId() != null) {
             return getDelegatorGroup().getName();
-      }
+        } else {
+            String delegatorRoleId = getDelegatorRoleId();
+            if (delegatorRoleId != null) {
+                Role role = KimApiServiceLocator.getRoleService().getRole(delegatorRoleId);
+                if(role != null) {
+                    return role.getName();
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        }
     }
-    
+
     private Principal getPrincipalForId(String principalId) {
     	Principal principal = null;
     	
@@ -236,9 +246,20 @@ public class ActionTakenValue implements Serializable {
     public String getDelegatorGroupId() {
         return delegatorGroupId;
     }
+
     public void setDelegatorGroupId(String delegatorGroupId) {
         this.delegatorGroupId = delegatorGroupId;
     }
+
+    public String getDelegatorRoleId() {
+        ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().getActionRequestForRole(actionTakenId);
+        if (actionRequest != null) {
+            return actionRequest.getRoleName();
+        } else {
+            return null;
+        }
+    }
+
     public Integer getDocVersion() {
         return docVersion;
     }
@@ -323,5 +344,21 @@ public class ActionTakenValue implements Serializable {
     	builder.setDelegatorPrincipalId(actionTakenBo.getDelegatorPrincipalId());
     	return builder.build();
     }
-    
+
+    public boolean isSuperUserAction() {
+        if ( KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_DISAPPROVED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD.equals(actionTaken)
+                ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

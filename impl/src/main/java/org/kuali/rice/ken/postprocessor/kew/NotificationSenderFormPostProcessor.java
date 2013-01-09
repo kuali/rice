@@ -17,7 +17,7 @@ package org.kuali.rice.ken.postprocessor.kew;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
 import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
@@ -25,6 +25,7 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
@@ -78,6 +79,14 @@ public class NotificationSenderFormPostProcessor implements PostProcessor {
     }
 
     /**
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#afterActionTaken(org.kuali.rice.kew.api.action.ActionType, org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
+     */
+    @Override
+    public ProcessDocReport afterActionTaken(ActionType performed, ActionTakenEvent event) throws Exception {
+        return new ProcessDocReport(true, "");
+    }
+
+    /**
      * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doDeleteRouteHeader(org.kuali.rice.kew.framework.postprocessor.DeleteEvent)
      */
     @Override
@@ -118,7 +127,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessor {
             LOG.debug("XML:" + document.getApplicationContent());
 
             //parse out the application content into a Notification BO
-                    Notification notification = messageContentService.parseSerializedNotificationXml(document.getApplicationContent().getBytes());
+                    NotificationBo notification = messageContentService.parseSerializedNotificationXml(document.getApplicationContent().getBytes());
 
                     LOG.debug("Notification Content: " + notification.getContent());
 

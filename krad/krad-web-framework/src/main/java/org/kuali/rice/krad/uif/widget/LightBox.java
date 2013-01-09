@@ -15,22 +15,29 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Used for rendering a lightbox in the UI to display action links in dialog
  * popups
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "lightBox", parent = "Uif-LightBox"),
+        @BeanTag(name = "lightBoxPost", parent = "Uif-LightBoxPost")})
 public class LightBox extends WidgetBase {
     private static final long serialVersionUID = -4004284762546700975L;
-
-    private String actionParameterMapString;
 
     private String height;
     private String width;
 
+    private boolean addAppParms;
     private boolean lookupReturnByScript;
 
     public LightBox() {
@@ -38,30 +45,33 @@ public class LightBox extends WidgetBase {
     }
 
     /**
-     * Setter for the action parameter map javascript string
+     * Override to add property values to the template options
      *
-     * @param actionParameterMapString the action parameter map javascript string
+     * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
      */
-    public void setActionParameterMapString(String actionParameterMapString) {
-        this.actionParameterMapString = actionParameterMapString;
-    }
+    @Override
+    public Map<String, String> getTemplateOptions() {
+        Map<String, String> templateOptions = super.getTemplateOptions();
 
-    /**
-     * Action parameter map javascript string
-     * <p>
-     * The action parameter map string will be used to write these parameters to
-     * the form.
-     * </p>
-     *
-     * @return the action parameter map javascript string
-     */
-    public String getActionParameterMapString() {
-        return actionParameterMapString;
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
+        }
+
+        if (StringUtils.isNotBlank(width) && !templateOptions.containsKey("width")) {
+            templateOptions.put("width", width);
+        }
+
+        if (StringUtils.isNotBlank(height) && !templateOptions.containsKey("height")) {
+            templateOptions.put("height", height);
+        }
+
+        return templateOptions;
     }
 
     /**
      * @return height of light box
      */
+    @BeanTagAttribute(name = "height")
     public String getHeight() {
         return height;
     }
@@ -79,11 +89,12 @@ public class LightBox extends WidgetBase {
     /**
      * @return width of light box
      */
+    @BeanTagAttribute(name = "width")
     public String getWidth() {
         return width;
     }
 
-     /**
+    /**
      * Setter for the width of the light box
      * Can be percentage. ie. 75%
      *
@@ -93,34 +104,34 @@ public class LightBox extends WidgetBase {
         this.width = width;
     }
 
-     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getTemplateOptionsJSString()
+    /**
+     * Indicates that the light box link should have application parameters added to it.
+     *
+     * @return true if the link should have application parameters added, false otherwise
      */
-    @Override
-    public String getTemplateOptionsJSString() {
-        if (getTemplateOptions() == null) {
-            setTemplateOptions(new HashMap<String, String>());
-        }
+    @BeanTagAttribute(name = "addAppParms")
+    public boolean isAddAppParms() {
+        return addAppParms;
+    }
 
-        // Add the width and height properties to the ComponentOptions
-        // before the JS String gets generated.
-        if (width != null) {
-            getTemplateOptions().put("width", width);
-        }
-        if (height != null) {
-            getTemplateOptions().put("height", height);
-        }
-        return super.getTemplateOptionsJSString();
+    /**
+     * Setter for the addAppParms.
+     *
+     * @param addAppParms
+     */
+    public void setAddAppParms(boolean addAppParms) {
+        this.addAppParms = addAppParms;
     }
 
     /**
      * @return the lookupReturnByScript flag
      */
+    @BeanTagAttribute(name = "lookupReturnByScript")
     public boolean isLookupReturnByScript() {
         return lookupReturnByScript;
     }
 
-/**
+    /**
      * Setter for the flag to indicate that lookups will return the value
      * by script and not a post
      *

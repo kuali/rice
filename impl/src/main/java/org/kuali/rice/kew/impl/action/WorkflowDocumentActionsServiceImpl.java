@@ -36,7 +36,9 @@ import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
+import org.kuali.rice.kew.api.action.AdHocToGroup_v2_1_2;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
+import org.kuali.rice.kew.api.action.AdHocToPrincipal_v2_1_2;
 import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
@@ -332,7 +334,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     protected ValidActions determineValidActionsInternal(DocumentRouteHeaderValue documentBo, String principalId) {
         Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
-        return KEWServiceLocator.getActionRegistry().getNewValidActions(principal, documentBo);
+        return KEWServiceLocator.getActionRegistry().getValidActions(principal, documentBo);
     }
 
     @Override
@@ -436,6 +438,11 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     @Override
+    public DocumentActionResult adHocToPrincipal(DocumentActionParameters parameters, AdHocToPrincipal_v2_1_2 adHocToPrincipal) {
+        return adHocToPrincipal(parameters, AdHocToPrincipal_v2_1_2.to(adHocToPrincipal));
+    }
+
+    @Override
     public DocumentActionResult adHocToGroup(DocumentActionParameters parameters,
             final AdHocToGroup adHocToGroup) {
         incomingParamCheck(parameters, "parameters");
@@ -469,6 +476,11 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
                                     adHocToGroup.getRequestLabel());
                     }
                 });
+    }
+
+    @Override
+    public DocumentActionResult adHocToGroup(DocumentActionParameters parameters, AdHocToGroup_v2_1_2 adHocToGroup) {
+        return adHocToGroup(parameters, AdHocToGroup_v2_1_2.to(adHocToGroup));
     }
 
     @Override
@@ -544,6 +556,21 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     public DocumentActionResult cancel(DocumentActionParameters parameters) {
         incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, CANCEL_CALLBACK);
+    }
+
+    @Override
+    public DocumentActionResult recall(DocumentActionParameters parameters, final boolean cancel) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(cancel, "cancel");
+        return executeActionInternal(parameters, new StandardDocumentActionCallback() {
+            public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId,
+                    String annotation) throws WorkflowException {
+                return KEWServiceLocator.getWorkflowDocumentService().recallDocument(principalId, documentBo, annotation, cancel);
+            }
+            public String getActionName() {
+                return ActionType.RECALL.getLabel();
+            }
+        });
     }
 
     @Override
@@ -1073,9 +1100,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         routeHeader.setDocRouteLevel(routeLevel);
         routeHeader.setDocVersion(new Integer(KewApiConstants.DocumentContentVersions.CURRENT));*/
 
-        //TODO THIS NEEDS TESTING!!!!! IT WAS A GUESS ON HOW THIS WORKS
         RoutingReportCriteria.Builder builder = RoutingReportCriteria.Builder.createByDocumentTypeName(documentType.getName());
-        builder.setTargetNodeName(node.getName());
+        builder.setNodeNames(Collections.singletonList(node.getName()));
         builder.setXmlContent(docContent);
         DocumentDetail docDetail = executeSimulation(builder.build());
         if (docDetail != null) {

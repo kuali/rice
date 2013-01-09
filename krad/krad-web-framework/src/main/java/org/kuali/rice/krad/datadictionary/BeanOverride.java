@@ -18,24 +18,25 @@ package org.kuali.rice.krad.datadictionary;
 import java.util.List;
 
 /**
- * Performs overrides on the fields of a Data Dictionary bean. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * Performs overrides on the fields of a Data Dictionary bean.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface BeanOverride {
-	 /**
+    /**
      * Return the name of the bean to perform the override.
+     *
      * @return
      */
-    public String getBeanName();   
+    public String getBeanName();
+
     /**
      * Returns the list of fields to perform the override.
      */
     public List<FieldOverride> getFieldOverrides();
-    
+
     /**
      * Perform the override logic on the specific bean.
      */
-    public void performOverride(Object bean); 
+    public void performOverride(Object bean);
 }

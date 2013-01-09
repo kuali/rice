@@ -20,6 +20,10 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -52,6 +56,12 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
+import org.kuali.rice.krad.util.RouteToCompletionUtil;
+import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Contains all of the business rules that are common to all documents
@@ -68,6 +78,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static ConfigurationService kualiConfigurationService;
     private static GroupService groupService;
     private static PermissionService permissionService;
+    private static DocumentTypeService documentTypeService;
     private static DataDictionaryService dataDictionaryService;
 
     // just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
@@ -132,12 +143,17 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      */
     public boolean processSaveDocument(Document document) {
         boolean isValid = true;
+
         isValid = isDocumentOverviewValid(document);
+
         GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
+
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document,
                 getMaxDictionaryValidationDepth(), false);
         getDictionaryValidationService().validateDefaultExistenceChecksForTransDoc((TransactionalDocument) document);
+
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
+
         isValid &= GlobalVariables.getMessageMap().hasNoErrors();
         isValid &= processCustomSaveDocumentBusinessRules(document);
 
@@ -170,10 +186,13 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
         isValid = isDocumentAttributesValid(document, true);
 
-        // don't validate the document if the header is invalid
-        if (isValid) {
+        boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(document);
+
+        // Validate the document if the header is valid and no pending completion requests
+        if (isValid && !completeRequestPending) {
             isValid &= processCustomRouteDocumentBusinessRules(document);
         }
+
         return isValid;
     }
 
@@ -394,7 +413,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     public boolean processAddAdHocRouteWorkgroup(Document document, AdHocRouteWorkgroup adHocRouteWorkgroup) {
         boolean isValid = true;
 
-        isValid &= isAddHocRouteWorkgroupValid(adHocRouteWorkgroup);
+        isValid &= isAddHocRouteWorkgroupValid(document, adHocRouteWorkgroup);
 
         isValid &= processCustomAddAdHocRouteWorkgroupBusinessRules(document, adHocRouteWorkgroup);
         return isValid;
@@ -406,7 +425,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      * @param workgroup
      * @return boolean True if valid, false otherwise.
      */
-    public boolean isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup workgroup) {
+    public boolean isAddHocRouteWorkgroupValid(Document document, AdHocRouteWorkgroup workgroup) {
         MessageMap errorMap = GlobalVariables.getMessageMap();
 
         // new recipients are not embedded in the error path; existing lines should be
@@ -423,6 +442,26 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
                 if (group == null || !group.isActive()) {
                     GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
                             RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+                } else {
+                    org.kuali.rice.kew.api.document.WorkflowDocumentService
+                            wds = KewApiServiceLocator.getWorkflowDocumentService();
+                    DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(
+                            wds.getDocument(document.getDocumentNumber()).getDocumentTypeName());
+                    Map<String, String> permissionDetails = buildDocumentTypeActionRequestPermissionDetails(
+                            documentType, workgroup.getActionRequested());
+                    if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails) ){
+                        List<String> principalIds = getGroupService().getMemberPrincipalIds(group.getId());
+                        // if any member of the group is not allowed to receive the request, then the group may not receive it
+                        for (String principalId : principalIds) {
+                            if (!getPermissionService().isAuthorizedByTemplate(principalId,
+                                    KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION,
+                                    permissionDetails, new HashMap<String, String>())) {
+                                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                                        RiceKeyConstants.ERROR_UNAUTHORIZED_ADHOC_WORKGROUP_ID);
+                                break;
+                            }
+                        }
+                    }
                 }
             } catch (Exception e) {
                 LOG.error("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup)", e);
@@ -440,7 +479,6 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
         return GlobalVariables.getMessageMap().hasNoErrors();
     }
-
     /**
      * This method should be overridden by children rule classes as a hook to implement document specific business rule
      * checks for
@@ -495,6 +533,51 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
         return dataValid;
     }
+
+    /**
+     * Business rules check will include all save action rules and any custom rules required by the document specific rule implementation
+     *
+     * @param document Document
+     * @return true if all validations are passed
+     */
+    public boolean processCompleteDocument(Document document) {
+        boolean isValid = true;
+        isValid &= processSaveDocument(document);
+        isValid &= processCustomCompleteDocumentBusinessRules(document);
+        return isValid;
+    }
+
+    /**
+     * Hook method for deriving business rule classes to provide custom validations required during completion action
+     *
+     * @param document
+     * @return default is true
+     */
+    protected boolean processCustomCompleteDocumentBusinessRules(Document document) {
+        return true;
+    }
+
+    protected boolean useKimPermission(String namespace, String permissionTemplateName, Map<String, String> permissionDetails) {
+		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		if (b == null || b) {
+			return getPermissionService().isPermissionDefinedByTemplate(namespace, permissionTemplateName,
+                    permissionDetails);
+		}
+		return false;
+	}
+    protected Map<String, String> buildDocumentTypeActionRequestPermissionDetails(DocumentType documentType, String actionRequestCode) {
+		Map<String, String> details = buildDocumentTypePermissionDetails(documentType);
+		if (!StringUtils.isBlank(actionRequestCode)) {
+			details.put(KewApiConstants.ACTION_REQUEST_CD_DETAIL, actionRequestCode);
+		}
+		return details;
+	}
+
+    protected Map<String, String> buildDocumentTypePermissionDetails(DocumentType documentType) {
+		Map<String, String> details = new HashMap<String, String>();
+		details.put(KewApiConstants.DOCUMENT_TYPE_NAME_DETAIL, documentType.getName());
+		return details;
+	}
 
     protected DataDictionaryService getDataDictionaryService() {
         if (dataDictionaryService == null) {

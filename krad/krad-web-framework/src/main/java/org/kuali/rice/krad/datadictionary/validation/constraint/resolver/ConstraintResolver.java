@@ -25,11 +25,11 @@ import java.util.List;
  *
  * <p>Implemented by constraint
  * providers as a mechanism to store functional lookups in a map, keyed by constraint type, for example.</p>
- * 
- * {@see AttributeDefinitionConstraintProvider} for a number of examples. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * {@see AttributeDefinitionConstraintProvider} for a number of examples.
+ *
  * @param <T>
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public interface ConstraintResolver<T extends Constrainable> {
@@ -41,6 +41,6 @@ public interface ConstraintResolver<T extends Constrainable> {
      * @param <C> - the java type of the constraint
      * @return - a list of constraints
      */
-	public <C extends Constraint> List<C> resolve(T definition);
-	
+    public <C extends Constraint> List<C> resolve(T definition);
+
 }

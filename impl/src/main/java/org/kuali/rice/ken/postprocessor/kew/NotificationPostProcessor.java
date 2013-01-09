@@ -26,6 +26,7 @@ import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
@@ -129,6 +130,14 @@ public class NotificationPostProcessor implements PostProcessor {
 
         LOG.debug("LEAVING NotificationPostProcessor.doActionTaken() for Notification action item with document ID: " + event.getDocumentId());
         return new ProcessDocReport(true);
+    }
+
+    /**
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#afterActionTaken(org.kuali.rice.kew.api.action.ActionType, org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent) 
+     */
+    @Override
+    public ProcessDocReport afterActionTaken(ActionType performed, ActionTakenEvent event) throws Exception {
+        return new ProcessDocReport(true, "");
     }
 
     /**

@@ -21,7 +21,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-
   <!-- Base Fields -->
 
   <bean id="Uif-FieldBase" abstract="true" parent="Uif-FieldBase-parentBean"/>
@@ -45,7 +44,8 @@
   <bean id="Uif-DataField" parent="Uif-DataField-parentBean"/>
   <bean id="Uif-DataField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
         parent="Uif-FieldBase-withLabel">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/dataInputField.ftl"/>
+    <property name="templateName" value="uif_dataInputField"/>
     <property name="readOnly" value="true"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
@@ -88,9 +88,9 @@
 
   <bean id="Uif-InputField" parent="Uif-InputField-parentBean"/>
   <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField"
-        parent="Uif-DataField"
-        scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
+        parent="Uif-DataField" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/dataInputField.ftl"/>
+    <property name="templateName" value="uif_dataInputField"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-inputField</value>
@@ -102,15 +102,6 @@
     </property>
     <property name="quickfinder">
       <bean parent="Uif-QuickFinder"/>
-    </property>
-    <property name="suggest">
-      <bean parent="Uif-Suggest"/>
-    </property>
-    <property name="instructionalMessage">
-      <bean parent="Uif-InstructionalMessage"/>
-    </property>
-    <property name="constraintMessage">
-      <bean parent="Uif-ConstraintMessage"/>
     </property>
   </bean>
 
@@ -159,7 +150,8 @@
   <bean id="Uif-ActionField" parent="Uif-ActionField-parentBean"/>
   <bean id="Uif-ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/actionField.ftl"/>
+    <property name="templateName" value="uif_actionField"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-actionField</value>
@@ -173,7 +165,8 @@
   <bean id="Uif-MessageField" parent="Uif-MessageField-parentBean"/>
   <bean id="Uif-MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/messageField.ftl"/>
+    <property name="templateName" value="uif_messageField"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-messageField</value>
@@ -184,10 +177,24 @@
     </property>
   </bean>
 
+  <bean id="Uif-ColGroupingField" parent="Uif-ColGroupingField-parentBean"/>
+  <bean id="Uif-ColGroupingField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
+        parent="Uif-MessageField" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/colGroupingField.ftl"/>
+    <property name="templateName" value="uif_colGroupingField"/>
+    <property name="message.generateSpan" value="false"/>
+    <property name="dataAttributes">
+      <map>
+        <entry key="role" value="grouping"/>
+      </map>
+    </property>
+  </bean>
+
   <bean id="Uif-LinkField" parent="Uif-LinkField-parentBean"/>
   <bean id="Uif-LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/linkField.ftl"/>
+    <property name="templateName" value="uif_linkField"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-linkField</value>
@@ -201,7 +208,8 @@
   <bean id="Uif-ImageField" parent="Uif-ImageField-parentBean"/>
   <bean id="Uif-ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/imageField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/imageField.ftl"/>
+    <property name="templateName" value="uif_imageField"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-imageField</value>
@@ -215,11 +223,23 @@
   <bean id="Uif-SpaceField" parent="Uif-SpaceField-parentBean"/>
   <bean id="Uif-SpaceField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.SpaceField"
         parent="Uif-FieldBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/spaceField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/spaceField.ftl"/>
+    <property name="templateName" value="uif_spaceField"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-spaceField</value>
       </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-CheckboxInputField" parent="Uif-InputField" p:labelPlacement="RIGHT">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-checkboxInputField</value>
+      </list>
+    </property>
+    <property name="control">
+      <bean parent="Uif-CheckboxControl"/>
     </property>
   </bean>
 
@@ -236,7 +256,8 @@
   <bean id="Uif-FieldGroupBase" parent="Uif-FieldGroupBase-parentBean"/>
   <bean id="Uif-FieldGroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldGroup"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/fieldGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/fieldGroup.ftl"/>
+    <property name="templateName" value="uif_fieldGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-fieldGroup</value>
@@ -269,90 +290,5 @@
       <bean parent="Uif-HorizontalBoxGroup"/>
     </property>
   </bean>
-
-  <!-- Common Fields -->
-
-  <bean id="Uif-RequiredInstructionsMessage" parent="Uif-Message" p:messageText="* indicates required field">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-requiredInstructionsMessage</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-JumpToTopLink" parent="Uif-ActionLink" p:actionScript="jumpToTop();"
-        p:actionLabel="Top">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-jumpToTopLink</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-JumpToBottomLink" parent="Uif-ActionLink" p:actionScript="jumpToBottom();"
-        p:actionLabel="Bottom">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-jumpToBottomLink</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:actionScript="expandDisclosures();"
-        p:actionLabel="Expand All">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-expandDisclosuresButton</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
-        p:actionScript="collapseDisclosures();"
-        p:actionLabel="Collapse All">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-collapseDisclosuresButton</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
-        p:methodToCall="toggleInactiveRecordDisplay"
-        p:actionLabel="show inactive"
-        p:actionScript="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-showInactiveCollectionItemsButton</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
-        p:methodToCall="toggleInactiveRecordDisplay"
-        p:actionLabel="hide inactive"
-        p:actionScript="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', false);">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-hideInactiveCollectionItemsButton</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-CheckboxInputField" parent="Uif-InputField" p:labelPlacement="RIGHT">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-checkboxInputField</value>
-      </list>
-    </property>
-    <property name="control">
-      <bean parent="Uif-CheckboxControl"/>
-    </property>
-  </bean>
-  
-  <bean id="Uif-CheckForm-Button" parent="Uif-SecondaryActionButton" p:methodToCall="checkForm"
-        p:actionLabel="Check Form"/>
-
-
 
 </beans>

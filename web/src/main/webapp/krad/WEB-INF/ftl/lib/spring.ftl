@@ -1,4 +1,21 @@
-<#ftl strip_whitespace=true>
+<#--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
 <#--
  * spring.ftl
  *
@@ -19,22 +36,6 @@
  * @author Juergen Hoeller
  * @since 1.1
  -->
-
-<#--
-    ~ Copyright 2006-2012 The Kuali Foundation
-    ~
-    ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-    ~ you may not use this file except in compliance with the License.
-    ~ You may obtain a copy of the License at
-    ~
-    ~ http://www.opensource.org/licenses/ecl2.php
-    ~
-    ~ Unless required by applicable law or agreed to in writing, software
-    ~ distributed under the License is distributed on an "AS IS" BASIS,
-    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    ~ See the License for the specific language governing permissions and
-    ~ limitations under the License.
-    -->
 
 <#--
  * message
@@ -171,9 +172,12 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
-<#macro formInput path attributes="" fieldType="text">
+<#macro formInput path id="" attributes="" fieldType="text">
     <@bind path/>
-    <input type="${fieldType}" name="${status.expression}" value="<#if fieldType!="password">${stringStatusValue}</#if>" ${attributes}<@closeTag/>
+    <#if fieldType != "file" && fieldType != "password">
+        <#local value='value="${stringStatusValue}"'/>
+    </#if>
+    <input id="${id!}" type="${fieldType}" name="${status.expression}" ${value!} ${attributes}<@closeTag/>
 </#macro>
 
 <#--
@@ -188,8 +192,8 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
-<#macro formPasswordInput path attributes="">
-    <@formInput path, attributes, "password"/>
+<#macro formPasswordInput path id="" attributes="">
+    <@formInput path, id, attributes, "password"/>
 </#macro>
 
 <#--
@@ -203,8 +207,8 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
-<#macro formHiddenInput path attributes="">
-    <@formInput path, attributes, "hidden"/>
+<#macro formHiddenInput path id="" attributes="">
+    <@formInput path, id, attributes, "hidden"/>
 </#macro>
 
 <#--
@@ -216,9 +220,9 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
-<#macro formTextarea path attributes="">
+<#macro formTextarea path id="" attributes="">
     <@bind path/>
-    <textarea name="${status.expression}" ${attributes}>${stringStatusValue}</textarea>
+    <textarea id="${id!}" name="${status.expression}" ${attributes}>${stringStatusValue?replace(" ","&nbsp;")}</textarea>
 </#macro>
 
 <#--
@@ -232,9 +236,9 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formSingleSelect path options attributes="">
+<#macro formSingleSelect path options id="" attributes="">
     <@bind path/>
-    <select name="${status.expression}" ${attributes}>
+    <select id="${id!}" name="${status.expression}" ${attributes}>
        <#list options as option>
           <option value="${option.key?html}"<@checkSelected option.key/>>${option.value?html}</option>
        </#list>
@@ -252,9 +256,9 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formMultiSelect path options attributes="">
+<#macro formMultiSelect path options id="" attributes="">
     <@bind path/>
-    <select multiple="multiple" name="${status.expression}" ${attributes}>
+    <select multiple="multiple" id="${id!}" name="${status.expression}" ${attributes}>
         <#list options as option>
         <#assign isSelected = contains(status.actualValue?default([""]), option.key)>
         <option value="${option.key?html}"<#if isSelected> selected="selected"</#if>>${option.value?html}</option>
@@ -267,6 +271,7 @@
  *
  * Show radio buttons.
  *
+ * @param id the id for generated inputs, index is appended with underscore
  * @param path the name of the field to bind to
  * @param options a list of key value pairs of all the available options
  * @param separator the html tag or other character list that should be used to
@@ -274,16 +279,19 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formRadioButtons path options separator attributes="">
-    <@bind path/>
+<#macro formRadioButtons id path options separator attributes="">
+    <#-- Start Kuali enhancements and changes -->
+    <span class="uif-tooltip" style="width:100%;height:0px;"></span>
     <#list options as option>
-    <#assign id="${status.expression}${option_index}">
+    <@bind path/>
+    <#local controlId="${id}_${option_index}">
     <span>
-    <input type="radio" id="${id}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${id}">${option.value?html}</label>
+    <input type="radio" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
+    <label for="${controlId}" onclick="handleRadioLabelClick('${controlId}',event); return false;"><@krad.template component=option.message/></label>
     </span>
     ${separator}
     </#list>
+    <#-- End Kuali enhancements and changes -->
 </#macro>
 
 <#--
@@ -291,6 +299,7 @@
  *
  * Show checkboxes.
  *
+ * @param id the id for generated inputs, index is appended with underscore
  * @param path the name of the field to bind to
  * @param options a list of KeyValue pairs of all the available options
  * @param separator the html tag or other character list that should be used to
@@ -298,18 +307,21 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formCheckboxes path options separator attributes="">
-    <@bind path/>
+<#macro formCheckboxes id path options separator attributes="">
+    <#-- Start Kuali enhancements and changes -->
+    <span class="uif-tooltip" style="width:100%;height:0px;"></span>
     <#list options as option>
-    <#assign id="${status.expression}${option_index}">
-    <#assign isSelected = contains(status.actualValue?default([""]), option.key)>
+    <@bind path/>
+    <#local controlId="${id}_${option_index}">
+    <#local isSelected = contains(status.actualValue?default([""]), option.key)>
     <span>
-    <input type="checkbox" id="${id}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${id}">${option.value?html}</label>
+    <input type="checkbox" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
+    <label onclick="handleCheckboxLabelClick('${controlId}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
     </span>
     ${separator}
     </#list>
     <input type="hidden" name="_${status.expression}" value="on"/>
+    <#-- End Kuali enhancements and changes -->
 </#macro>
 
 <#--
@@ -321,12 +333,19 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formCheckbox path attributes="">
+<#macro formCheckbox path label id="" attributes="">
+    <#-- Start Kuali enhancements and changes -->
 	<@bind path />
-    <#assign id="${status.expression}">
-    <#assign isSelected = status.value?? && status.value?string=="true">
-	<input type="hidden" name="_${id}" value="on"/>
-	<input type="checkbox" name="${id}"<#if isSelected> checked="checked"</#if> ${attributes}/>
+    <#local name="${status.expression}">
+    <#local isSelected = status.value?? && status.value?string=="true">
+	<input type="hidden" name="_${name}" value="on"/>
+	<input type="checkbox" id="${id!}" name="${name}"<#if isSelected> checked="checked"</#if> ${attributes}/>
+    <#if label?has_content>
+        <label onclick="handleCheckboxLabelClick('${id}',event); return false;" for="${id}">
+            <@krad.template component=label/>
+        </label>
+    </#if>
+    <#-- End Kuali enhancements and changes -->
 </#macro>
 
 <#--

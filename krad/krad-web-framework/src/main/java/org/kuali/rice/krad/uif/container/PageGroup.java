@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
@@ -22,6 +26,12 @@ import org.kuali.rice.krad.uif.view.View;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "page", parent = "Uif-Page"),
+        @BeanTag(name = "disclosure-page", parent = "Uif-Disclosure-Page"),
+        @BeanTag(name = "documentPage", parent = "Uif-DocumentPage"),
+        @BeanTag(name = "inquiryPage", parent = "Uif-InquiryPage"),
+        @BeanTag(name = "lookupPage", parent = "Uif-LookupPage"),
+        @BeanTag(name = "maintenancePage", parent = "Uif-MaintenancePage")})
 public class PageGroup extends Group {
     private static final long serialVersionUID = 7571981300587270274L;
 
@@ -37,7 +47,7 @@ public class PageGroup extends Group {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-        
+
         this.addDataAttribute("type", "Page");
 
         String prefixScript = "";
@@ -46,10 +56,9 @@ public class PageGroup extends Group {
         }
 
         if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
-            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true," + this.autoFocus +");");
-        }
-        else{
-            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false,"+ this.autoFocus +");");
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true);");
+        } else {
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
         }
     }
 
@@ -61,6 +70,7 @@ public class PageGroup extends Group {
      *
      * @return the autoFocus
      */
+    @BeanTagAttribute(name = "autoFocus")
     public boolean isAutoFocus() {
         return this.autoFocus;
     }
@@ -72,4 +82,22 @@ public class PageGroup extends Group {
         this.autoFocus = autoFocus;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that no invalid items are present
+        for (int i = 0; i < getItems().size(); i++) {
+            if (getItems().get(i).getClass() == PageGroup.class || getItems().get(i).getClass()
+                    == NavigationGroup.class) {
+                String currentValues[] = {"item(" + i + ").class =" + getItems().get(i).getClass()};
+                tracer.createError("Items in PageGroup cannot be PageGroup or NaviagtionGroup", currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
+    }
 }

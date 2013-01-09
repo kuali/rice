@@ -225,6 +225,9 @@ public abstract class MockWorkflowDocument implements WorkflowDocument {
     public void cancel(String annotation) {}
 
     @Override
+    public void recall(String annotation, boolean cancel) {}
+
+    @Override
     public void blanketApprove(String annotation) {}
 
     @Override
@@ -389,6 +392,11 @@ public abstract class MockWorkflowDocument implements WorkflowDocument {
     }
 
     @Override
+    public boolean isRecalled() {
+        return false;
+    }
+
+    @Override
     public boolean isDisapproved() {
         return false;
     }
@@ -431,7 +439,7 @@ public abstract class MockWorkflowDocument implements WorkflowDocument {
     public void returnToPreviousNode(String nodeName, String annotation) {}
 
     @Override
-    public void returnToPreviousNode(ReturnPoint returnPoint, String annotation) {}
+    public void returnToPreviousNode(String annotation, ReturnPoint returnPoint) {}
 
     @Override
     public void move(MovePoint movePoint, String annotation) {}

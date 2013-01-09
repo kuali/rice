@@ -24,8 +24,11 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.rule.Rule;
 import org.springframework.cache.annotation.Cacheable;
+
+import java.util.List;
 
 /**
  * TODO ...
@@ -62,6 +65,12 @@ public interface DocumentTypeService {
     DocumentType getDocumentTypeByName(@WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
 
+    @WebMethod(operationName = "findAllDocumentTypes")
+    @WebResult(name = "documentTypes")
+    @XmlElement(name = "documentTypes", required = false)
+    @Cacheable(value= DocumentType.Cache.NAME, key="'all'")
+    List<DocumentType> findAllDocumentTypes();
+
     @WebMethod(operationName = "isSuperUserForDocumentTypeId")
     @WebResult(name = "isSuperUser")
     @XmlElement(name = "isSuperUser", required = true)
@@ -76,6 +85,36 @@ public interface DocumentTypeService {
     boolean isSuperUserForDocumentTypeName(
             @WebParam(name = "principalId") String principalId,
             @WebParam(name = "documentTypeName") String documentTypeName)
+            throws RiceIllegalArgumentException;
+    
+    @WebMethod(operationName = "canSuperUserApproveSingleActionRequest")
+    @WebResult(name = "isSuperUser")
+    @XmlElement(name = "isSuperUser", required = true)
+    boolean canSuperUserApproveSingleActionRequest(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "routeNodeInstances") List<RouteNodeInstance> routeNodeInstances,
+            @WebParam(name = "routeStatusCode") String routeStatusCode)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "canSuperUserApproveDocument")
+    @WebResult(name = "isSuperUser")
+    @XmlElement(name = "isSuperUser", required = true)
+    boolean canSuperUserApproveDocument(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "routeNodeInstances") List<RouteNodeInstance> routeNodeInstances,
+            @WebParam(name = "routeStatusCode") String routeStatusCode)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "canSuperUserDisapproveDocument")
+    @WebResult(name = "isSuperUser")
+    @XmlElement(name = "isSuperUser", required = true)
+    boolean canSuperUserDisapproveDocument(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "routeNodeInstances") List<RouteNodeInstance> routeNodeInstances,
+            @WebParam(name = "routeStatusCode") String routeStatusCode)
             throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "hasRouteNodeForDocumentTypeName")

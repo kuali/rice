@@ -17,15 +17,18 @@ package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.HashMap;
@@ -37,6 +40,9 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "quickFinder", parent = "Uif-QuickFinder"),
+        @BeanTag(name = "quickFinderByScript", parent = "Uif-QuickFinderByScript"),
+        @BeanTag(name = "collectionQuickFinder", parent = "Uif-CollectionQuickFinder")})
 public class QuickFinder extends WidgetBase {
     private static final long serialVersionUID = 3302390972815386785L;
 
@@ -66,12 +72,32 @@ public class QuickFinder extends WidgetBase {
     private String lookupCollectionName;
 
     private Action quickfinderAction;
+    private LightBox lightBoxLookup;
 
     public QuickFinder() {
         super();
 
         fieldConversions = new HashMap<String, String>();
         lookupParameters = new HashMap<String, String>();
+    }
+
+    /**
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>Set defaults for binding</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        if (quickfinderAction != null) {
+            quickfinderAction.setActionScript("voidAction");
+        }
     }
 
     /**
@@ -168,13 +194,13 @@ public class QuickFinder extends WidgetBase {
         quickfinderAction.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
         if (!fieldConversions.isEmpty()) {
-            quickfinderAction.addActionParameter(UifParameters.CONVERSION_FIELDS,
-                    KRADUtils.buildMapParameterString(fieldConversions));
+            quickfinderAction.addActionParameter(UifParameters.CONVERSION_FIELDS, KRADUtils.buildMapParameterString(
+                    fieldConversions));
         }
 
         if (!lookupParameters.isEmpty()) {
-            quickfinderAction.addActionParameter(UifParameters.LOOKUP_PARAMETERS,
-                    KRADUtils.buildMapParameterString(lookupParameters));
+            quickfinderAction.addActionParameter(UifParameters.LOOKUP_PARAMETERS, KRADUtils.buildMapParameterString(
+                    lookupParameters));
         }
 
         addActionParameterIfNotNull(UifParameters.VIEW_NAME, viewName);
@@ -292,6 +318,7 @@ public class QuickFinder extends WidgetBase {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(quickfinderAction);
+        components.add(lightBoxLookup);
 
         return components;
     }
@@ -308,6 +335,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return String lookup base URL
      */
+    @BeanTagAttribute(name = "baseLookupUrl")
     public String getBaseLookupUrl() {
         return this.baseLookupUrl;
     }
@@ -323,22 +351,23 @@ public class QuickFinder extends WidgetBase {
 
     /**
      * Full class name the lookup should be provided for
-     * 
+     *
      * <p>
-     * This is passed on to the lookup request for the data object the lookup should be rendered for. This is then 
+     * This is passed on to the lookup request for the data object the lookup should be rendered for. This is then
      * used by the lookup framework to select the lookup view (if more than one lookup view exists for the same
      * data object class name, the {@link #getViewName()} property should be specified to select the view to render).
      * </p>
-     * 
+     *
      * @return String lookup class name
      */
+    @BeanTagAttribute(name = "dataOjbectClassName")
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }
 
     /**
      * Setter for the class name that lookup should be provided for
-     * 
+     *
      * @param dataObjectClassName
      */
     public void setDataObjectClassName(String dataObjectClassName) {
@@ -356,6 +385,7 @@ public class QuickFinder extends WidgetBase {
      * identify the lookup view
      * </p>
      */
+    @BeanTagAttribute(name = "viewName")
     public String getViewName() {
         return this.viewName;
     }
@@ -384,8 +414,9 @@ public class QuickFinder extends WidgetBase {
      * </p>
      *
      * @return String list of property names to refresh
-     * TODO: refactor this to be a List type
+     *         TODO: refactor this to be a List type
      */
+    @BeanTagAttribute(name = "referencesToRefresh")
     public String getReferencesToRefresh() {
         return this.referencesToRefresh;
     }
@@ -421,6 +452,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return Map<String, String> mapping of lookup data object property names to view property names
      */
+    @BeanTagAttribute(name = "fieldConversions", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getFieldConversions() {
         return this.fieldConversions;
     }
@@ -449,6 +481,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return Map<String, String> mapping of calling view properties to lookup view search fields
      */
+    @BeanTagAttribute(name = "lookupParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getLookupParameters() {
         return this.lookupParameters;
     }
@@ -473,8 +506,9 @@ public class QuickFinder extends WidgetBase {
      * </p>
      *
      * @return String property names (delimited by a comma) whose criteria fields should be read-only on the
-     * lookup view
+     *         lookup view
      */
+    @BeanTagAttribute(name = "readOnlySearchFields")
     public String getReadOnlySearchFields() {
         return this.readOnlySearchFields;
     }
@@ -500,6 +534,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return boolean true if the return link should not be shown, false if it should be
      */
+    @BeanTagAttribute(name = "hideReturnLink")
     public Boolean getHideReturnLink() {
         return this.hideReturnLink;
     }
@@ -530,6 +565,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return boolean true if actions should be rendered, false if not
      */
+    @BeanTagAttribute(name = "supressActions")
     public Boolean getSuppressActions() {
         return suppressActions;
     }
@@ -554,6 +590,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return boolean true if the search should be performed initially, false if not
      */
+    @BeanTagAttribute(name = "autoSearch")
     public Boolean getAutoSearch() {
         return this.autoSearch;
     }
@@ -569,7 +606,7 @@ public class QuickFinder extends WidgetBase {
 
     /**
      * Indicates whether the lookup criteria (search group) should be enabled on the invoked lookup view
-     * 
+     *
      * <p>
      * Setting the this to false will not display the lookup criteria but only the results. Therefore this is only
      * useful when setting {@link #getAutoSearch()} to true and passing in criteria
@@ -577,6 +614,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return true if lookup criteria should be displayed, false if not
      */
+    @BeanTagAttribute(name = "lookupCriteriaEnabled")
     public Boolean getLookupCriteriaEnabled() {
         return this.lookupCriteriaEnabled;
     }
@@ -595,6 +633,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return
      */
+    @BeanTagAttribute(name = "supplementalActionsEnabled")
     public Boolean getSupplementalActionsEnabled() {
         return this.supplementalActionsEnabled;
     }
@@ -608,6 +647,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return
      */
+    @BeanTagAttribute(name = "disabledSearchButtons")
     public Boolean getDisableSearchButtons() {
         return this.disableSearchButtons;
     }
@@ -621,6 +661,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return
      */
+    @BeanTagAttribute(name = "headerBarEnabled")
     public Boolean getHeaderBarEnabled() {
         return this.headerBarEnabled;
     }
@@ -644,6 +685,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return boolean true if maintenance links should be shown on the lookup view, false if not
      */
+    @BeanTagAttribute(name = "showMaintenanceLinks")
     public Boolean getShowMaintenanceLinks() {
         return this.showMaintenanceLinks;
     }
@@ -668,6 +710,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return Action instance rendered for quickfinder
      */
+    @BeanTagAttribute(name = "quickfinderAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getQuickfinderAction() {
         return this.quickfinderAction;
     }
@@ -682,10 +725,35 @@ public class QuickFinder extends WidgetBase {
     }
 
     /**
+     * Setter for the light box lookup widget
+     *
+     * @param lightBoxLookup <code>LightBoxLookup</code> widget to set
+     */
+    public void setLightBoxLookup(LightBox lightBoxLookup) {
+        this.lightBoxLookup = lightBoxLookup;
+    }
+
+    /**
+     * LightBoxLookup widget for the field
+     *
+     * <p>
+     * The light box lookup widget will change the lookup behaviour to open the
+     * lookup in a light box.
+     * </p>
+     *
+     * @return the <code>DirectInquiry</code> field DirectInquiry
+     */
+    @BeanTagAttribute(name = "lightBoxLookup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public LightBox getLightBoxLookup() {
+        return lightBoxLookup;
+    }
+
+    /**
      * Indicates whether a multi-values lookup should be requested
      *
      * @return boolean true if multi-value lookup should be requested, false for normal lookup
      */
+    @BeanTagAttribute(name = "MultipleValuesSelect")
     public Boolean getMultipleValuesSelect() {
         return multipleValuesSelect;
     }
@@ -710,6 +778,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return String collection name (must be full binding path)
      */
+    @BeanTagAttribute(name = "lookupCollectionName")
     public String getLookupCollectionName() {
         return lookupCollectionName;
     }

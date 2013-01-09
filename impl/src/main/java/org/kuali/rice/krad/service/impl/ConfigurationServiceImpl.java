@@ -36,14 +36,16 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * ConfigurationService implementation which is a thin wrapper over the core Config object, and which
- * merges in Kuali message resource properties.
+ * Implementation of the {@link ConfigurationService} that loads messages from the configured rice resource
+ * files and stores them in an internal property holder
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigurationServiceImpl implements ConfigurationService {
     private final PropertyHolder propertyHolder = new PropertyHolder();
 
     /**
-     * Harcoding the configFileName, by request.
+     * Default constructor
      */
     public ConfigurationServiceImpl() {
         this.propertyHolder.getHeldProperties().putAll(ConfigContext.getCurrentContextConfig().getProperties());
@@ -78,11 +80,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         if (key == null) {
             throw new IllegalArgumentException("invalid (null) key");
         }
+
         String property = this.propertyHolder.getProperty(key);
         Boolean b = Truth.strToBooleanIgnoreCase(property);
         if (b == null) {
             return false;
         }
+
         return b;
     }
 
@@ -95,11 +99,10 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     /**
-     * This is an interface for a source for properties
-     *
-     *
+     * Interface for a source for properties
      */
-    static interface PropertySource {
+    protected static interface PropertySource {
+
         /**
          * @return Properties loaded from this PropertySource
          * @throws org.kuali.rice.krad.exception.PropertiesException if there's a problem loading the properties
@@ -109,10 +112,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     /**
      * This class is a Property container. It is able to load properties from various property-sources.
-     *
-     *
      */
-    static class PropertyHolder {
+    protected static class PropertyHolder {
         private static Logger LOG = Logger.getLogger(PropertyHolder.class);
 
         Properties heldProperties;
@@ -123,7 +124,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         public PropertyHolder() {
             this.heldProperties = new Properties();
         }
-
 
         /**
          * @return true if this container currently has no properties
@@ -154,7 +154,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             return this.heldProperties.getProperty(key);
         }
 
-
         /**
          * Associates the given value with the given key
          *
@@ -165,7 +164,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
          * @throws org.kuali.rice.krad.exception.DuplicateKeyException if a property with the given key already exists
          */
         public void setProperty(String key, String value) {
-        setProperty(null, key, value);
+            setProperty(null, key, value);
         }
 
         /**
@@ -183,8 +182,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             validateValue(value);
 
             if (containsKey(key)) {
-                if (source != null && source instanceof FilePropertySource && ((FilePropertySource)source).isAllowOverrides()) {
-                    LOG.info("Duplicate Key: Override is enabled [key=" + key + ", new value=" + value + ", old value=" + this.heldProperties.getProperty(key) + "]");
+                if (source != null && source instanceof FilePropertySource && ((FilePropertySource) source)
+                        .isAllowOverrides()) {
+                    LOG.info("Duplicate Key: Override is enabled [key="
+                            + key
+                            + ", new value="
+                            + value
+                            + ", old value="
+                            + this.heldProperties.getProperty(key)
+                            + "]");
                 } else {
                     throw new DuplicateKeyException("duplicate key '" + key + "'");
                 }
@@ -204,13 +210,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             this.heldProperties.remove(key);
         }
 
-
         /**
          * Copies all name,value pairs from the given PropertySource instance into this container.
          *
          * @param source
          * @throws IllegalStateException if the source is invalid (improperly initialized)
-         * @throws org.kuali.rice.krad.exception.DuplicateKeyException the first time a given property has the same key as an existing property
+         * @throws org.kuali.rice.krad.exception.DuplicateKeyException the first time a given property has the same key
+         * as an existing property
          * @throws org.kuali.rice.krad.exception.PropertiesException if unable to load properties from the given source
          */
         public void loadProperties(PropertySource source) {
@@ -220,7 +226,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
             Properties newProperties = source.loadProperties();
 
-            for (Iterator i = newProperties.keySet().iterator(); i.hasNext();) {
+            for (Iterator i = newProperties.keySet().iterator(); i.hasNext(); ) {
                 String key = (String) i.next();
                 setProperty(source, key, newProperties.getProperty(key));
             }
@@ -233,14 +239,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             this.heldProperties.clear();
         }
 
-
         /**
          * @return iterator over the keys of all properties in this container
          */
         public Iterator getKeys() {
             return this.heldProperties.keySet().iterator();
         }
-
 
         /**
          * @param key
@@ -253,7 +257,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
 
         /**
-         * @param value
          * @throws IllegalArgumentException if the given value is null
          */
         private void validateValue(String value) {
@@ -262,11 +265,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             }
         }
 
-
         public Properties getHeldProperties() {
             return heldProperties;
         }
-
 
         public void setHeldProperties(Properties heldProperties) {
             this.heldProperties = heldProperties;
@@ -274,29 +275,18 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     /**
-     * This class is used to obtain properties from a properites file.
-     *
-     *
+     * Used to obtain properties from a properties file
      */
-    static class FilePropertySource implements PropertySource {
+    protected static class FilePropertySource implements PropertySource {
         private static Log log = LogFactory.getLog(FilePropertySource.class);
-
 
         private String fileName;
         private boolean allowOverrides;
 
-        /**
-         * Set source fileName.
-         *
-         * @param fileName
-         */
         public void setFileName(String fileName) {
             this.fileName = fileName;
         }
 
-        /**
-         * @return source fileName
-         */
         public String getFileName() {
             return this.fileName;
         }
@@ -310,10 +300,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
 
         /**
-         * Attempts to load properties from a properties file which has the current fileName and is located on the classpath.
+         * Attempts to load properties from a properties file which has the current fileName and is located on the
+         * classpath
          *
-         * @see org.kuali.rice.krad.service.impl.ConfigurationServiceImpl.PropertySource#loadProperties()
          * @throws IllegalStateException if the fileName is null or empty
+         * @see org.kuali.rice.krad.service.impl.ConfigurationServiceImpl.PropertySource#loadProperties()
          */
         public Properties loadProperties() {
             if (StringUtils.isBlank(getFileName())) {
@@ -333,16 +324,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             try {
                 in = url.openStream();
                 properties.load(in);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 throw new PropertiesException("error loading from properties file '" + getFileName() + "'", e);
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         log.error("caught exception closing InputStream: " + e);
                     }
 
@@ -351,6 +339,5 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
             return properties;
         }
-
     }
 }

@@ -161,6 +161,11 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 	
 	@Override
 	public List<Endpoint> getEndpoints(QName serviceName) {
+		return getEndpoints(serviceName, null);
+	}
+	
+	@Override
+	public List<Endpoint> getEndpoints(QName serviceName, String applicationId) {
 		if (serviceName == null) {
 			throw new IllegalArgumentException("serviceName cannot be null");
 		}
@@ -176,8 +181,18 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 						break;
 					}
 				}
-				// add at first position, just because we like the local endpoint the best, it's our friend ;)
-				endpoints.add(0, localEndpoint);
+				if(StringUtils.isBlank(applicationId) || StringUtils.equals(localEndpoint.getServiceConfiguration().getApplicationId(), applicationId)) {
+					// add at first position, just because we like the local endpoint the best, it's our friend ;)
+					endpoints.add(0, localEndpoint);
+				}
+			}
+			if(StringUtils.isNotBlank(applicationId)) {
+				for (Iterator<Endpoint> iterator = endpoints.iterator(); iterator.hasNext();) {
+					Endpoint endpoint = (Endpoint) iterator.next();
+					if(!StringUtils.equals(endpoint.getServiceConfiguration().getApplicationId(), applicationId)) {
+						iterator.remove();
+					}
+				}
 			}
 		}
 		return Collections.unmodifiableList(endpoints);

@@ -20,6 +20,7 @@
   <param name="appserver.url">${public.url}</param>
   <param name="application.url">${appserver.url}</param>
   <param name="app.context.name" />
+  <param name="context.names" />
   <param name="app.code" />
   <param name="externalizable.help.url">/kr/static/help/</param>
   <param name="externalizable.images.url">/kr/static/images/</param>

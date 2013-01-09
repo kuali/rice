@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.OptimisticLockException;
@@ -22,6 +23,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
@@ -30,7 +33,13 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.DocumentActionParameters;
+import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -43,6 +52,8 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
+import org.kuali.rice.kns.question.ConfirmationQuestion;
+import org.kuali.rice.kns.question.RecallQuestion;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -70,10 +81,10 @@ import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
-import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
+import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SendAdHocRequestsEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -91,11 +102,14 @@ import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.springmodules.orm.ojb.OjbOperationException;
 
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -256,8 +270,13 @@ public class KualiDocumentActionBase extends KualiAction {
                     request.setAttribute(KRADConstants.SESSION_TIMEOUT_WARNING_MILLISECONDS, (request.getSession().getMaxInactiveInterval() - (Integer.valueOf(warningMinutes) * 60)) * 1000);
                 }
             }
+            // Pull in the pending action requests for the document and attach them to the form
+            List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getPendingActionRequests(formBase.getDocId());
+            formBase.setActionRequests(actionRequests);
         }
 
+
+        
         return returnForward;
     }
 
@@ -275,7 +294,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if ((document != null) && (!document.getPessimisticLocks().isEmpty())) {
             releaseLocks(document, methodToCall);
             // refresh pessimistic locks in case custom add/remove changes were made
-            //document.refreshPessimisticLocks();
+            document.refreshPessimisticLocks();
         }
     }
 
@@ -327,6 +346,14 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         String command = kualiDocumentFormBase.getCommand();
 
+        if (kualiDocumentFormBase.getDocId()!= null && getDocumentService().getByDocumentHeaderId(kualiDocumentFormBase.getDocId()) == null) {
+            ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+            StringBuffer sb = new StringBuffer();
+            sb.append(kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_URL_KEY));
+            sb.append(kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_INITIATED_DOCUMENT_URL_KEY));
+            response.sendRedirect(sb.toString());
+            return new ActionForward(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME, sb.toString() ,true);
+        }
         // in all of the following cases we want to load the document
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && kualiDocumentFormBase.getDocId() != null) {
             loadDocument(kualiDocumentFormBase);
@@ -868,89 +895,17 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                     HttpServletResponse response) throws Exception {
-        Object question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
-        String reason = request.getParameter(KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME);
 
-        if (StringUtils.isBlank(reason)) {
-            String context = request.getParameter(KRADConstants.QUESTION_CONTEXT);
-            if (context != null && StringUtils.contains(context, KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=")) {
-                reason = StringUtils.substringAfter(context, KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=");
-            }
-        }
+        ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_DISAPPROVE_QUESTION, RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT, KRADConstants.CONFIRMATION_QUESTION, RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED, KRADConstants.MAPPING_DISAPPROVE, ConfirmationQuestion.NO, RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO);
+        ReasonPrompt.Response resp = prompt.ask(mapping, form, request, response);
 
-        String disapprovalNoteText = "";
-
-        // start in logic for confirming the disapproval
-        if (question == null) {
-            // ask question if not already asked
-            return this.performQuestionWithInput(mapping, form, request, response,
-                    KRADConstants.DOCUMENT_DISAPPROVE_QUESTION,
-                    getKualiConfigurationService().getPropertyValueAsString(
-                            RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
-                    KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "");
-        }
-        Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
-        if ((KRADConstants.DOCUMENT_DISAPPROVE_QUESTION.equals(question))
-                && ConfirmationQuestion.NO.equals(buttonClicked)) {
-            // if no button clicked just reload the doc
-            return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        }
-
-        // have to check length on value entered
-        String introNoteMessage = getKualiConfigurationService().getPropertyValueAsString(
-                RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO)
-                + KRADConstants.BLANK_SPACE;
-
-        // build out full message
-        disapprovalNoteText = introNoteMessage + reason;
-
-        // check for sensitive data in note
-        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
-                KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
-        if (warnForSensitiveData) {
-            String context = KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=" + reason;
-            ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response,
-                    KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, disapprovalNoteText, "disapprove", context);
-            if (forward != null) {
-                return forward;
-            }
-        } else {
-            if (KRADUtils.containsSensitiveDataPatternMatch(disapprovalNoteText)) {
-                return this
-                        .performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
-                                KRADConstants.DOCUMENT_DISAPPROVE_QUESTION, getKualiConfigurationService()
-                                .getPropertyValueAsString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
-                                KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "", reason,
-                                RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA,
-                                KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, "reason");
-            }
-        }
-
-        int disapprovalNoteTextLength = disapprovalNoteText.length();
-
-        // get note text max length from DD
-        int noteTextMaxLength = getDataDictionaryService().getAttributeMaxLength(Note.class,
-                KRADConstants.NOTE_TEXT_PROPERTY_NAME);
-
-        if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
-
-            if (reason == null) {
-                // prevent a NPE by setting the reason to a blank string
-                reason = "";
-            }
-            return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
-                    KRADConstants.DOCUMENT_DISAPPROVE_QUESTION,
-                    getKualiConfigurationService().getPropertyValueAsString(
-                            RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
-                    KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "", reason,
-                    RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED,
-                    KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(noteTextMaxLength));
+        if (resp.forward != null) {
+            return resp.forward;
         }
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
-        getDocumentService().disapproveDocument(kualiDocumentFormBase.getDocument(), disapprovalNoteText);
+        getDocumentService().disapproveDocument(kualiDocumentFormBase.getDocument(), resp.reason);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED);
         kualiDocumentFormBase.setAnnotation("");
 
@@ -995,6 +950,36 @@ public class KualiDocumentActionBase extends KualiAction {
     }
 
     /**
+     * Calls the document service to disapprove the document
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return ActionForward
+     * @throws Exception
+     */
+    public ActionForward recall(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        
+        ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_RECALL_QUESTION, RiceKeyConstants.QUESTION_RECALL_DOCUMENT, KRADConstants.RECALL_QUESTION, RiceKeyConstants.ERROR_DOCUMENT_RECALL_REASON_REQUIRED, KRADConstants.MAPPING_RECALL, null, RiceKeyConstants.MESSAGE_RECALL_NOTE_TEXT_INTRO);
+        ReasonPrompt.Response resp = prompt.ask(mapping, form, request, response);
+
+        if (resp.forward != null) {
+            return resp.forward;
+        }
+        
+        boolean cancel = !((KRADConstants.DOCUMENT_RECALL_QUESTION.equals(resp.question)) && RecallQuestion.RECALL_TO_ACTIONLIST.equals(resp.button));
+
+        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost(kualiDocumentFormBase, request);
+        getDocumentService().recallDocument(kualiDocumentFormBase.getDocument(), resp.reason, cancel);
+
+        // just return to doc view
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    /**
      * Close the document and take the user back to the index; only after asking the user if they want to save the document first.
      * Only users who have the "canSave()" permission are given this option.
      *
@@ -1011,16 +996,34 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = docForm.getDocument();
         // only want to prompt them to save if they already can save
         if (canSave(docForm)) {
+
             Object question = getQuestion(request);
             // logic for close question
             if (question == null) {
+                // KULRICE-7306: Unconverted Values not carried through during a saveOnClose action.
+                // Stash the unconverted values to populate errors if the user elects to save
+                saveUnconvertedValuesToSession(request, docForm);
+
                 // ask question if not already asked
                 return this.performQuestionWithoutInput(mapping, form, request, response, KRADConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION, getKualiConfigurationService().getPropertyValueAsString(
                         RiceKeyConstants.QUESTION_SAVE_BEFORE_CLOSE), KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_CLOSE, "");
             } else {
                 Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
+
+                // KULRICE-7306: Unconverted Values not carried through during a saveOnClose action.
+                // Side effecting in that it clears the session attribute that holds the unconverted values.
+                Map<String, Object> unconvertedValues = restoreUnconvertedValuesFromSession(request, docForm);
+
                 if ((KRADConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION.equals(question)) && ConfirmationQuestion.YES.equals(buttonClicked)) {
                     // if yes button clicked - save the doc
+
+                    // KULRICE-7306: Unconverted Values not carried through during a saveOnClose action.
+                    // If there were values that couldn't be converted, we attempt to populate them so that the
+                    // the appropriate errors get set on those fields
+                    if (MapUtils.isNotEmpty(unconvertedValues)) for (Map.Entry<String, Object> entry : unconvertedValues.entrySet()) {
+                        docForm.populateForProperty(entry.getKey(), entry.getValue(), unconvertedValues);
+                    }
+
                     ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KRADPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "save", "");
                     if (forward != null) {
                         return forward;
@@ -1033,6 +1036,30 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         return returnToSender(request, mapping, docForm);
+    }
+
+    // stash unconvertedValues in the session
+    private void saveUnconvertedValuesToSession(HttpServletRequest request, KualiDocumentFormBase docForm) {
+        if (MapUtils.isNotEmpty(docForm.getUnconvertedValues())) {
+            request.getSession().setAttribute(getUnconvertedValuesSessionAttributeKey(docForm), new HashMap(docForm.getUnconvertedValues()));
+        }
+    }
+
+    // SIDE EFFECTING: clears out unconverted values from the Session and restores them to the form
+    private Map<String, Object> restoreUnconvertedValuesFromSession(HttpServletRequest request,
+            KualiDocumentFormBase docForm) {// first restore unconvertedValues and clear out of session
+        Map<String, Object> unconvertedValues =
+                (Map<String, Object>)request.getSession().getAttribute(getUnconvertedValuesSessionAttributeKey(docForm));
+        if (MapUtils.isNotEmpty(unconvertedValues)) {
+            request.getSession().removeAttribute(getUnconvertedValuesSessionAttributeKey(docForm));
+            docForm.setUnconvertedValues(unconvertedValues); // setting them here just for good measure
+        }
+        return unconvertedValues;
+    }
+
+    // create the key based on docId for stashing/retrieving unconvertedValues in the session
+    private String getUnconvertedValuesSessionAttributeKey(KualiDocumentFormBase docForm) {
+        return "preCloseUnconvertedValues." + docForm.getDocId();
     }
 
     protected boolean canSave(ActionForm form) {
@@ -1148,7 +1175,7 @@ public class KualiDocumentActionBase extends KualiAction {
             if (parameterName.equals("newAdHocRouteWorkgroup.recipientName") && !"".equals(request.getParameter(parameterName))) {
                 //check for namespace
                 String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
-                if (request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode") != null && !"".equals(request.getParameter("newAdHocRouteWorkgroup.recipientName").trim())) {
+                if (request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode") != null && !"".equals(request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode").trim())) {
                     namespace = request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode").trim();
                 }
                 Group group = getGroupService().getGroupByNamespaceCodeAndName(namespace, request.getParameter(
@@ -1158,7 +1185,8 @@ public class KualiDocumentActionBase extends KualiAction {
                     kualiForm.getNewAdHocRouteWorkgroup().setRecipientName(group.getName());
                     kualiForm.getNewAdHocRouteWorkgroup().setRecipientNamespaceCode(group.getNamespaceCode());
                 } else {
-                    throw new RuntimeException("Invalid workgroup id passed as parameter.");
+                    GlobalVariables.getMessageMap().putError("newAdHocRouteWorkgroup.recipientNamespaceCode", RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE);
+                    return;
                 }
             }
             if (parameterName.startsWith("adHocRouteWorkgroup[") && !"".equals(request.getParameter(parameterName))) {
@@ -1177,7 +1205,8 @@ public class KualiDocumentActionBase extends KualiAction {
                         kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientName(group.getName());
                         kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientNamespaceCode(group.getNamespaceCode());
                     } else {
-                        throw new RuntimeException("Invalid workgroup id passed as parameter.");
+                        GlobalVariables.getMessageMap().putError(namespaceParam, RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE);
+                        return;
                     }
                 }
             }
@@ -1724,6 +1753,11 @@ public class KualiDocumentActionBase extends KualiAction {
             adHocActionRequestCodes.put(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         }
 
+        if ((document.getDocumentHeader().getWorkflowDocument().isInitiated() || document.getDocumentHeader().getWorkflowDocument().isSaved())
+                && documentAuthorizer.canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, GlobalVariables.getUserSession().getPerson())) {
+            // Check if there is already a request for completion pending for the document.
+            adHocActionRequestCodes.put(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL);
+        }
         formBase.setAdHocActionRequestCodes(adHocActionRequestCodes);
 
     }
@@ -1890,5 +1924,281 @@ public class KualiDocumentActionBase extends KualiAction {
             getBusinessObjectService().linkUserFields(document);
         }
     }
+
+    /**
+     * Class that encapsulates the workflow for obtaining an reason from an action prompt.
+     */
+    private class ReasonPrompt {
+        final String questionId;
+        final String questionTextKey;
+        final String questionType;
+        final String missingReasonKey;
+        final String questionCallerMapping;
+        final String abortButton;
+        final String noteIntroKey;
+
+        private class Response {
+            final String question;
+            final ActionForward forward;
+            final String reason;
+            final String button;
+            Response(String question, ActionForward forward) {
+                this(question, forward, null, null);
+            }
+            Response(String question, String reason, String button) {
+                this(question, null, reason, button);
+            }
+            private Response(String question, ActionForward forward, String reason, String button) {
+                this.question = question;
+                this.forward = forward;
+                this.reason = reason;
+                this.button = button;
+            }
+        }
+
+        /**
+         * @param questionId the question id/instance, 
+         * @param questionTextKey application resources key for question text
+         * @param questionType the {@link org.kuali.rice.kns.question.Question} question type
+         * @param questionCallerMapping mapping of original action
+         * @param abortButton button value considered to abort the prompt and return (optional, may be null)
+         * @param noteIntroKey application resources key for quesiton text prefix (optional, may be null)
+         */
+        private ReasonPrompt(String questionId, String questionTextKey, String questionType, String missingReasonKey, String questionCallerMapping, String abortButton, String noteIntroKey) {
+            this.questionId = questionId;
+            this.questionTextKey = questionTextKey;
+            this.questionType = questionType;
+            this.questionCallerMapping = questionCallerMapping;
+            this.abortButton = abortButton;
+            this.noteIntroKey = noteIntroKey;
+            this.missingReasonKey = missingReasonKey;
+        }
+
+        /**
+         * Obtain a validated reason and button value via a Question prompt.  Reason is validated against
+         * sensitive data patterns, and max Note text length
+         * @param mapping Struts mapping
+         * @param form Struts form
+         * @param request http request
+         * @param response http response
+         * @return Response object representing *either*: 1) an ActionForward due to error or abort 2) a reason and button clicked
+         * @throws Exception
+         */
+        public Response ask(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+            String question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
+            String reason = request.getParameter(KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME);
+
+            if (StringUtils.isBlank(reason)) {
+                String context = request.getParameter(KRADConstants.QUESTION_CONTEXT);
+                if (context != null && StringUtils.contains(context, KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=")) {
+                    reason = StringUtils.substringAfter(context, KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=");
+                }
+            }
+
+            String disapprovalNoteText = "";
+
+            // start in logic for confirming the disapproval
+            if (question == null) {
+                // ask question if not already asked
+                return new Response(question, performQuestionWithInput(mapping, form, request, response,
+                        this.questionId,
+                        getKualiConfigurationService().getPropertyValueAsString(this.questionTextKey),
+                        this.questionType, this.questionCallerMapping, ""));
+            }
+
+            String buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
+            if (this.questionId.equals(question) && abortButton != null && abortButton.equals(buttonClicked)) {
+                // if no button clicked just reload the doc
+                return new Response(question, mapping.findForward(RiceConstants.MAPPING_BASIC));
+            }
+
+            // have to check length on value entered
+            String introNoteMessage = "";
+            if (noteIntroKey != null) {
+                introNoteMessage = getKualiConfigurationService().getPropertyValueAsString(this.noteIntroKey) + KRADConstants.BLANK_SPACE;
+            }
+
+            // build out full message
+            disapprovalNoteText = introNoteMessage + reason;
+
+            // check for sensitive data in note
+            boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+                    KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                    KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
+            if (warnForSensitiveData) {
+                String context = KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=" + reason;
+                ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response,
+                        KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, disapprovalNoteText, this.questionCallerMapping, context);
+                if (forward != null) {
+                    return new Response(question, forward);
+                }
+            } else {
+                if (KRADUtils.containsSensitiveDataPatternMatch(disapprovalNoteText)) {
+                    return new Response(question, performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
+                            this.questionId, getKualiConfigurationService().getPropertyValueAsString(this.questionTextKey),
+                            this.questionType, this.questionCallerMapping, "", reason,
+                            RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA,
+                            KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, "reason"));
+                }
+            }
+
+            int disapprovalNoteTextLength = disapprovalNoteText.length();
+
+            // get note text max length from DD
+            int noteTextMaxLength = getDataDictionaryService().getAttributeMaxLength(Note.class, KRADConstants.NOTE_TEXT_PROPERTY_NAME);
+
+            if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
+
+                if (reason == null) {
+                    // prevent a NPE by setting the reason to a blank string
+                    reason = "";
+                }
+                return new Response(question, performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
+                        this.questionId,
+                        getKualiConfigurationService().getPropertyValueAsString(this.questionTextKey),
+                        this.questionType, this.questionCallerMapping, "", reason,
+                        this.missingReasonKey,
+                        KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(noteTextMaxLength)));
+            }
+
+            return new Response(question, disapprovalNoteText, buttonClicked);
+        }
+    }
+
+    public ActionForward takeSuperUserActions(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
+        if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.annotation.missing", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        } else if(documentForm.getSelectedActionRequests().isEmpty()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.none.selected", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }  else if (!documentForm.isStateAllowsApproveSingleActionRequest()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.not.allowed", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+
+        for(String actionRequestId : documentForm.getSelectedActionRequests()) {
+            ActionRequest actionRequest = null;
+            for(ActionRequest pendingActionRequest : documentForm.getActionRequests()) {
+                if(StringUtils.equals(pendingActionRequest.getId(), actionRequestId)) {
+                    actionRequest = pendingActionRequest;
+                    break;
+                }
+            }
+            if(actionRequest == null) {
+                // If the action request isn't pending then skip it
+                continue;
+            }
+            if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()) ||
+                StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
+                    getDocumentService().validateAndPersistDocument(documentForm.getDocument(), new RouteDocumentEvent(documentForm.getDocument()));
+            }
+
+            WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
+            DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
+            documentActions.superUserTakeRequestedAction(parameters, true, actionRequestId);
+            String messageString;
+            if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.ACKNOWLEDGE.getCode())) {
+                messageString = "general.routing.superuser.actionRequestAcknowledged";
+            } else if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.FYI.getCode())) {
+                messageString = "general.routing.superuser.actionRequestFYI";
+            } else if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode())) {
+                messageString = "general.routing.superuser.actionRequestCompleted";
+            } else if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
+                messageString = "general.routing.superuser.actionRequestApproved";
+            } else {
+                messageString = "general.routing.superuser.actionRequestApproved";
+            }
+            GlobalVariables.getMessageMap().putInfo("document", messageString, documentForm.getDocId(), actionRequestId);
+        }
+        documentForm.setSuperUserAnnotation("");
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward superUserDisapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    	KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
+    	if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
+    		GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.annotation.missing", "");
+    		return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    	} else if (!documentForm.getSelectedActionRequests().isEmpty()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.when.actions.checked", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        } else if (!documentForm.isStateAllowsApproveOrDisapprove()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.not.allowed", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
+        documentActions.superUserDisapprove(parameters, true);
+        GlobalVariables.getMessageMap().putInfo("document", "general.routing.superuser.disapproved", documentForm.getDocId());
+        documentForm.setSuperUserAnnotation("");
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward superUserApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
+        if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.annotation.missing", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        } else if (!documentForm.getSelectedActionRequests().isEmpty()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.when.actions.checked", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        } else if (!documentForm.isStateAllowsApproveOrDisapprove()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.not.allowed", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
+        documentActions.superUserBlanketApprove(parameters, true);
+        GlobalVariables.getMessageMap().putInfo("document", "general.routing.superuser.approved", documentForm.getDocId());
+        documentForm.setSuperUserAnnotation("");
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    private WorkflowDocumentActionsService getWorkflowDocumentActionsService(String documentTypeId) {
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(documentTypeId);
+        String applicationId = documentType.getApplicationId();
+        QName serviceName = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0,
+                KewApiConstants.ServiceNames.WORKFLOW_DOCUMENT_ACTIONS_SERVICE_SOAP);
+        WorkflowDocumentActionsService service = (WorkflowDocumentActionsService) KsbApiServiceLocator.getServiceBus()
+                .getService(serviceName, applicationId);
+        if (service == null) {
+            service = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        }
+        return service;
+    }
+    
+    /**
+     * Complete document action
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public ActionForward complete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost(kualiDocumentFormBase, request);
+
+        kualiDocumentFormBase.setDerivedValuesOnForm(request);
+        ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
+        if (preRulesForward != null) {
+            return preRulesForward;
+        }
+
+        Document document = kualiDocumentFormBase.getDocument();
+
+        getDocumentService().completeDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
+        kualiDocumentFormBase.setAnnotation("");
+
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
 }
 

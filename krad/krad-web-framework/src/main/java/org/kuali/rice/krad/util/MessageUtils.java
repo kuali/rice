@@ -22,7 +22,7 @@ import java.util.Set;
 public class MessageUtils {
     /**
      * Interpolates a message based on values contained in the data map, assuming message is formatted using a ${key} syntax.
-     * 
+     *
      * @param message
      *            the message to be interpolated
      * @param data
@@ -40,7 +40,7 @@ public class MessageUtils {
 
     /**
      * Interpolates a message based on parameter index, assuming message is formatted using a ${0}..${n} syntax
-     * 
+     *
      * @param message
      *            the message to be interpolated
      * @param data
@@ -58,10 +58,10 @@ public class MessageUtils {
         }
         return message;
     }
-    
+
     /**
      * Interpolates a message which requires only a single property replacement.
-     * 
+     *
      * @param message
      * @param parameter
      * @param value
@@ -71,10 +71,10 @@ public class MessageUtils {
     	message = message.replaceAll("\\$\\{" + parameter + "\\}", "" + escape(value.toString()));
     	return message;
     }
-    
+
     /**
      * Adds an escape to all characters requiring an escape.
-     * 
+     *
      * @param input
      * @return the input string with characters escaped.
      */
@@ -85,10 +85,10 @@ public class MessageUtils {
         }
         return input;
     }
-    
+
     /**
      * Returns a Set<String> of all interpolation targets (fields) within a String.
-     * 
+     *
      * @param input
      *            the String from which to extract the interpolation targets
      * @return Set<String> containing the field names of the interpolation targets

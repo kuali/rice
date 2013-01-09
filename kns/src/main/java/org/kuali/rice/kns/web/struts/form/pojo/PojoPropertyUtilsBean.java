@@ -16,21 +16,37 @@
 // begin Kuali Foundation modification
 package org.kuali.rice.kns.web.struts.form.pojo;
 
+import org.apache.commons.beanutils.DynaBean;
+import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.MappedPropertyDescriptor;
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
+import org.apache.ojb.broker.metadata.ClassDescriptor;
+import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
+import org.apache.ojb.broker.metadata.CollectionDescriptor;
+import org.apache.ojb.broker.metadata.DescriptorRepository;
+import org.apache.ojb.broker.metadata.MetadataManager;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.beans.IndexedPropertyDescriptor;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 
 /**
  * begin Kuali Foundation modification
@@ -42,6 +58,35 @@ import java.util.Map;
 public class PojoPropertyUtilsBean extends PropertyUtilsBean {
 
     public static final Logger LOG = Logger.getLogger(PojoPropertyUtilsBean.class.getName());
+
+    /**
+     * Thin interface for determining the appropriate item class for a collection property
+     */
+    public static interface CollectionItemClassProvider {
+        public Class getCollectionItemClass(Object bean, String property);
+    }
+
+    /**
+     * CollectionItemClassProvider backed by OJB metadata
+     */
+    public static class PersistenceStructureServiceProvider implements CollectionItemClassProvider {
+        protected static PersistenceStructureService persistenceStructureService = null;
+        protected static PersistenceStructureService getPersistenceStructureService() {
+            if (persistenceStructureService == null) {
+                persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
+            }
+            return persistenceStructureService;
+        }
+
+        @Override
+        public Class getCollectionItemClass(Object bean, String property) {
+            Map<String, Class> collectionObjectTypes = getPersistenceStructureService().listCollectionObjectTypes(bean.getClass());
+            return collectionObjectTypes.get(property);
+        }
+    }
+
+    // default is to consult OJB
+    protected static CollectionItemClassProvider collectionItemClassProvider = new PersistenceStructureServiceProvider();
 
 	// begin Kuali Foundation modification
     public PojoPropertyUtilsBean() {
@@ -74,6 +119,118 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         // end Kuali Foundation modification
     }
 
+    	// begin Kuali Foundation modification
+    private Map<String,List<Method>> cache = new HashMap<String, List<Method>>();
+    private static Map<String,Method> readMethodCache = new HashMap<String, Method>();
+    private IntrospectionException introspectionException = new IntrospectionException( "" );
+
+    public Object fastGetNestedProperty(Object obj, String propertyName) throws IntrospectionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+        //logger.debug("entering fastGetNestedProperty");
+
+        List<Method> methods = (List<Method>) cache.get(propertyName + obj.getClass().getName());
+        if (methods == null) {
+            methods = new ArrayList<Method>();
+            Object currentObj = obj;
+            Class<?> currentObjClass = currentObj.getClass();
+
+            for (String currentPropertyName : propertyName.split("\\.") ) {
+                String cacheKey = currentObjClass.getName() + currentPropertyName;
+                Method readMethod = readMethodCache.get( cacheKey );
+                if ( readMethod == null ) {
+                	synchronized (readMethodCache) {
+	                    // if the read method was resolved to an error, repeat the exception
+	                    // rather than performing the reflection calls below
+	                    if ( readMethodCache.containsKey(cacheKey) ) {
+	                        throw introspectionException;
+	                    }
+	                    try {
+	                        try {
+	                            readMethod = currentObjClass.getMethod("get" + currentPropertyName.substring(0, 1).toUpperCase() + currentPropertyName.substring(1), (Class[])null);
+	                        } catch (NoSuchMethodException e) {
+	                            readMethod = currentObjClass.getMethod("is" + currentPropertyName.substring(0, 1).toUpperCase() + currentPropertyName.substring(1), (Class[])null);
+	                        }
+	                    } catch ( NoSuchMethodException ex ) {
+	                        // cache failures to prevent re-checking of the parameter
+	                        readMethodCache.put( cacheKey, null );
+	                        throw introspectionException;
+	                    }
+	                    readMethodCache.put(cacheKey, readMethod );
+					}
+                }
+                methods.add(readMethod);
+                currentObjClass = readMethod.getReturnType();
+            }
+            synchronized (cache) {
+                cache.put(propertyName + obj.getClass().getName(), methods);
+			}
+        }
+
+        for ( Method method : methods ) {
+            obj = method.invoke(obj, (Object[])null);
+        }
+
+        //logger.debug("exiting fastGetNestedProperty");
+
+        return obj;
+    }
+	// end Kuali Foundation modification
+
+    /*
+     *  Kuali modification to make isWriteable work like it did in beanUtils 1.7.
+     *  Checking for nested nulls caused exceptions in rice 2.0.
+     */
+    @Override
+    public boolean isWriteable(Object bean, String name) {
+        // Validate method parameters
+        if (bean == null) {
+            throw new IllegalArgumentException("No bean specified");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("No name specified for bean class '" +
+                    bean.getClass() + "'");
+        }
+
+        // Remove any subscript from the final name value
+        name = getResolver().getProperty(name);
+
+        // Treat WrapDynaBean as special case - may be a read-only property
+        // (see Jira issue# BEANUTILS-61)
+        if (bean instanceof WrapDynaBean) {
+            bean = ((WrapDynaBean)bean).getInstance();
+        }
+
+        // Return the requested result
+        if (bean instanceof DynaBean) {
+            // All DynaBean properties are writeable
+            return (((DynaBean) bean).getDynaClass().getDynaProperty(name) != null);
+        } else {
+            try {
+                PropertyDescriptor desc =
+                        getPropertyDescriptor(bean, name);
+                if (desc != null) {
+                    Method writeMethod = desc.getWriteMethod();
+                    if (writeMethod == null) {
+                        if (desc instanceof IndexedPropertyDescriptor) {
+                            writeMethod = ((IndexedPropertyDescriptor) desc).getIndexedWriteMethod();
+                        } else if (desc instanceof MappedPropertyDescriptor) {
+                            writeMethod = ((MappedPropertyDescriptor) desc).getMappedWriteMethod();
+                        }
+                        writeMethod = MethodUtils.getAccessibleMethod(bean.getClass(), writeMethod);
+                    }
+                    return (writeMethod != null);
+                } else {
+                    return (false);
+                }
+            } catch (IllegalAccessException e) {
+                return (false);
+            } catch (InvocationTargetException e) {
+                return (false);
+            } catch (NoSuchMethodException e) {
+                return (false);
+            }
+        }
+
+    }
 
     /**
      * begin Kuali Foundation modification
@@ -84,17 +241,88 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
     public Object getNestedProperty(Object arg0, String arg1) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		// begin Kuali Foundation modification
         try {
-            return super.getNestedProperty(arg0, arg1);
+            try {
+                return fastGetNestedProperty(arg0, arg1);
+            }
+            catch (Exception e) {
+                return super.getNestedProperty(arg0, arg1);
+            }
         }
         catch (NestedNullException e) {
-            return "";
+            return getUnreachableNestedProperty(arg0, arg1);
         }
         catch (InvocationTargetException e1) {
-            return "";
+            return getUnreachableNestedProperty(arg0, arg1);
         }
         // removed commented code
         // end Kuali Foundation modification
     }
+
+    /**
+     * Customization of superclass getNestedProperty which transparently creates indexed property items
+     * {@inheritDoc}
+     */
+    public Object getIndexedProperty(Object bean, String name, int index) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        try {
+            return super.getIndexedProperty(bean, name, index);
+        } catch (IndexOutOfBoundsException ioobe) {
+            return generateIndexedProperty(bean, name, index, ioobe);
+        }
+    }
+
+    protected Object generateIndexedProperty(Object nestedBean, String property, int index, IndexOutOfBoundsException ioobe)  throws IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
+
+        if (!(nestedBean instanceof PersistableBusinessObject)) throw ioobe;
+
+        // we can only grow lists
+        if (!List.class.isAssignableFrom(getPropertyType(nestedBean, property))) throw ioobe;
+
+        List list= (List) getProperty(nestedBean, property);
+
+        Class c = collectionItemClassProvider.getCollectionItemClass(nestedBean, property);
+
+        if (c == null) {
+            throw new RuntimeException("Unable to determined item class for collection '" + property + "' on bean of type '" + nestedBean.getClass() + "'");
+        }
+
+        Object value;
+        try {
+            value = c.newInstance();
+        } catch (InstantiationException ie) {
+            throw new RuntimeException("Error instantiating item class: " + c);
+        }
+
+        // fill any missing indices
+        while (list.size() <= index) {
+            list.add(null);
+        }
+        list.set(index, value);
+
+        return super.getIndexedProperty(nestedBean, property, index);
+    }
+
+    // begin Kuali Foundation modification
+    /**
+     * helper method makes sure we don't return "" for collections
+     */
+    private Object getUnreachableNestedProperty(Object arg0, String arg1) {
+        try {
+            PropertyDescriptor propertyDescriptor  = getPropertyDescriptor(arg0, arg1);
+            if (propertyDescriptor == null || Collection.class.isAssignableFrom(propertyDescriptor.getPropertyType())) {
+                return null;
+            }
+        } catch (IllegalAccessException e) {
+            // ignore
+        } catch (InvocationTargetException e) {
+            // ignore
+        } catch (NoSuchMethodException e) {
+            // ignore
+        }
+
+        return "";
+    }
+    // end Kuali Foundation modification
 
 
     // begin Kuali Foundation modification 
@@ -428,5 +656,78 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             
         }
     }
+    
+    public Class getPropertyType(Object bean, String name)
+            throws IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
 
+        if (bean == null) {
+            throw new IllegalArgumentException("No bean specified");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("No name specified for bean class '" +
+                    bean.getClass() + "'");
+        }
+
+        // Resolve nested references
+        while (getResolver().hasNested(name)) {
+            String next = getResolver().next(name);
+            Object nestedBean = getProperty(bean, next);
+            if (nestedBean == null) {
+            	Class<?>[] paramTypes = {};
+            	Method method = null;
+            	try {
+                    method = bean.getClass().getMethod("get" + next.substring(0, 1).toUpperCase() + next.substring(1), (Class[])null);
+                } catch (NoSuchMethodException e) {
+                    method = bean.getClass().getMethod("is" + next.substring(0, 1).toUpperCase() + next.substring(1), (Class[])null);
+                }
+            	try {
+                    nestedBean = ObjectUtils.createNewObjectFromClass(method.getReturnType());
+				} catch (RuntimeException e) {
+					NestedNullException nne = new NestedNullException
+                    ("Null property value for '" + next +
+                    "' on bean class '" + bean.getClass() + "'");
+                    nne.initCause(e);
+                    throw nne;
+				}
+            }
+            bean = nestedBean;
+            name = getResolver().remove(name);
+        }
+
+        // Remove any subscript from the final name value
+        name = getResolver().getProperty(name);
+
+        // Special handling for DynaBeans
+        if (bean instanceof DynaBean) {
+            DynaProperty descriptor =
+                    ((DynaBean) bean).getDynaClass().getDynaProperty(name);
+            if (descriptor == null) {
+                return (null);
+            }
+            Class type = descriptor.getType();
+            if (type == null) {
+                return (null);
+            } else if (type.isArray()) {
+                return (type.getComponentType());
+            } else {
+                return (type);
+            }
+        }
+
+        PropertyDescriptor descriptor =
+                getPropertyDescriptor(bean, name);
+        if (descriptor == null) {
+            return (null);
+        } else if (descriptor instanceof IndexedPropertyDescriptor) {
+            return (((IndexedPropertyDescriptor) descriptor).
+                    getIndexedPropertyType());
+        } else if (descriptor instanceof MappedPropertyDescriptor) {
+            return (((MappedPropertyDescriptor) descriptor).
+                    getMappedPropertyType());
+        } else {
+            return (descriptor.getPropertyType());
+        }
+
+    }
 }

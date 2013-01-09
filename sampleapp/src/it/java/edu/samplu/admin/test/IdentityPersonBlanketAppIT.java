@@ -15,85 +15,41 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
+import org.apache.commons.lang.RandomStringUtils;
 
 /**
  * tests that user 'admin', on blanket approving a new Person maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonBlanketAppIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
-    }
+public class IdentityPersonBlanketAppIT extends AdminMenuBlanketAppITBase {
+      @Override
+     protected String getLinkLocator() {
+         return "link=Person";
+     }
 
-    @Test
-    public void testPerson() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Person");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
-        selenium.type("//input[@id='document.principalName']", "Principal");
-        selenium.select("newAffln.affiliationTypeCode", "label=Affiliate");
-        selenium.select("newAffln.campusCode", "label=BX - BLGTN OFF CAMPUS");
-        selenium.select("newAffln.campusCode", "label=BL - BLOOMINGTON");
-        selenium.click("newAffln.dflt");
-        selenium.click("methodToCall.addAffln.anchor");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("tab-Contact-imageToggle");
-        selenium.select("newName.namePrefix", "label=Mr");
-        selenium.type("newName.firstName", "First");
-        selenium.type("newName.lastName", "Last");
-        selenium.select("newName.nameSuffix", "label=Mr");
-        selenium.click("newName.dflt");
-        selenium.click("methodToCall.addName.anchor");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-      
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+     @Override
+    public String blanketApprove() throws Exception {
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
+        waitAndType("//input[@id='document.principalName']", "principal "+ RandomStringUtils.randomAlphabetic(3).toLowerCase());
+        select("newAffln.affiliationTypeCode", "label=Affiliate");
+        select("newAffln.campusCode", "label=BX - BLGTN OFF CAMPUS");
+        select("newAffln.campusCode", "label=BL - BLOOMINGTON");
+        waitAndClick("newAffln.dflt");
+        waitAndClick("methodToCall.addAffln.anchor");
+        waitAndClick("tab-Contact-imageToggle");
+        select("newName.namePrefix", "label=Mr");
+        waitAndType("newName.firstName", "First");
+        waitAndType("newName.lastName", "Last");
+        select("newName.nameSuffix", "label=Mr");
+        waitAndClick("newName.dflt");
+        waitAndClick("methodToCall.addName.anchor");
+        waitForPageToLoad();
+        return docId;
     }
 }
+ 

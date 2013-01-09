@@ -25,10 +25,10 @@ import org.kuali.rice.krad.document.Document;
 public interface DocumentSerializerService extends SerializerService  {
     /**
      * Serializes a document into XML for the workflow engine
-     * 
+     *
      * @param document the document
      * @return a XML representation of the document
      */
     public String serializeDocumentToXmlForRouting(Document document);
-    
+
 }

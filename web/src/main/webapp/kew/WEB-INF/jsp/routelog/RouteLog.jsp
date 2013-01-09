@@ -141,7 +141,7 @@
                                 <kul:htmlAttributeHeaderCell scope="col" align="left">
                                     <c:if test="${! empty actionTaken.actionRequests}">
                                     <a id="A<c:out value="${atStatus.count}" />" onclick="rend(this, false)">
-                                      <img src="images/tinybutton-show.gif" alt="show" width="45" height="15" border="0"
+                                      <img src="images/tinybutton-show.gif" title="show" alt="show" width="45" height="15" border="0"
                                       align="absmiddle" id="F<c:out value="${atStatus.count}" />"></a>
                                     </c:if>&nbsp;
                                 </kul:htmlAttributeHeaderCell>
@@ -154,9 +154,17 @@
                                     &nbsp;
                                 </td>
                                 <td align="left" class="headercell4">
-                                    <c:if test="${actionTaken.forDelegator}">
+                                  <c:choose>
+                                    <c:when test="${not empty actionTaken.delegatorPrincipalId}">
                                         <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person" keyValues="principalId=${actionTaken.delegatorPrincipalId}" render="true"><c:out value="${actionTaken.delegatorDisplayName}" /></kul:inquiry>
-                                     </c:if>&nbsp;
+                                    </c:when>
+                                    <c:when test="${not empty actionTaken.delegatorGroupId}">
+                                        <kul:inquiry boClassName="org.kuali.rice.kim.framework.group.GroupEbo" keyValues="id=${actionTaken.delegatorGroupId}" render="true"><c:out value="${actionTaken.delegatorDisplayName}" /></kul:inquiry>
+                                    </c:when>
+                                    <c:when test="${not empty actionTaken.delegatorRoleId}">
+                                        <kul:inquiry boClassName="org.kuali.rice.kim.framework.role.RoleEbo" keyValues="id=${actionTaken.delegatorRoleId}" render="true"><c:out value="${actionTaken.delegatorDisplayName}" /></kul:inquiry>
+                                    </c:when>
+                                  </c:choose>&nbsp;
                                  </td>
                                  <td align="center" class="headercell4">
                                      <b><fmt:formatDate type="date" value="${actionTaken.actionDate}" pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" /></b>
@@ -238,10 +246,10 @@
                                     <c:param name="documentId" value="${KualiForm.documentId}" />
                                 </c:url>">
                                     <c:if test="${KualiForm.showFuture}">
-                                        <img src="images/tinybutton-hide1.gif">
+                                        <img src="images/tinybutton-hide1.gif" title="hide">
                                     </c:if>
                                     <c:if test="${!KualiForm.showFuture}">
-                                        <img src="images/tinybutton-show.gif">
+                                        <img src="images/tinybutton-show.gif" title="show">
                                     </c:if>
                                 </a>
                                       </bean:define>

@@ -16,17 +16,20 @@
 package org.kuali.rice.krad.datadictionary.mask;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * The maskTo element is to used hide the beginning part of the value for
  * unauthorized users. The number of leading characters to hide and the
  * replacement character can be specified.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "maskFormatteSubString")
 public class MaskFormatterSubString implements MaskFormatter {
     private static final long serialVersionUID = -876112522775686636L;
-    
+
     protected String maskCharacter = "*";
     protected int maskLength;
 
@@ -42,20 +45,21 @@ public class MaskFormatterSubString implements MaskFormatter {
 
         String strValue = value.toString();
         if (strValue.length() < maskLength) {
-        	return StringUtils.repeat(maskCharacter, maskLength);
+            return StringUtils.repeat(maskCharacter, maskLength);
         }
-        if(maskLength >0){
-        	return StringUtils.repeat(maskCharacter, maskLength) + strValue.substring(maskLength);
-        }else{
-        	return strValue;
+        if (maskLength > 0) {
+            return StringUtils.repeat(maskCharacter, maskLength) + strValue.substring(maskLength);
+        } else {
+            return strValue;
         }
     }
 
     /**
      * Gets the maskCharacter attribute.
-     * 
+     *
      * @return Returns the maskCharacter.
      */
+    @BeanTagAttribute(name = "maskCharacter")
     public String getMaskCharacter() {
         return maskCharacter;
     }
@@ -71,21 +75,21 @@ public class MaskFormatterSubString implements MaskFormatter {
 
     /**
      * Gets the maskLength attribute.
-     * 
+     *
      * @return Returns the maskLength.
      */
+    @BeanTagAttribute(name = "maskLength")
     public int getMaskLength() {
         return maskLength;
     }
 
     /**
      * Set the number of characters to mask at the beginning of the string.
-     * 
+     *
      * @param maskLength The maskLength to set.
      */
     public void setMaskLength(int maskLength) {
         this.maskLength = maskLength;
     }
-
 
 }

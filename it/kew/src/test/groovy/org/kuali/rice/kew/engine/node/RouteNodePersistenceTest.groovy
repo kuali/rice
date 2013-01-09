@@ -69,8 +69,7 @@ class RouteNodePersistenceTest extends KEWTestCase {
             BRCH_PROTO_ID: null,
             NM: 'name',
             MNDTRY_RTE_IND: new BigDecimal(0),
-            DOC_TYP_ID: new BigDecimal(1), // but DB type is DECIMAL...
-            RTE_NODE_ID: 'id',
+            DOC_TYP_ID: "1",
             NEXT_DOC_STAT: 'nextDocStatus'
         ],
         "KREW_RTE_NODE_T", "RTE_NODE_ID")

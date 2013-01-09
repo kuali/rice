@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.framework.postprocessor;
 
+import org.kuali.rice.kew.api.action.ActionType;
+
 import java.util.List;
 
 
@@ -53,6 +55,14 @@ public interface PostProcessor {
      * @return ProcessDocReport indicating whether or not the action should succeed
      */
     public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception;
+
+    /**
+     * Executed after an action is taken against the document.
+     *
+     * @return ProcessDocReport indicating whether or not the action was successful
+     * @since 2.1
+     */
+    public ProcessDocReport afterActionTaken(ActionType actionPerformed, ActionTakenEvent event) throws Exception;
     
     /**
      * Executed prior to processing by the workflow engine.

@@ -22,9 +22,15 @@ import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kns.kim.role.DerivedRoleTypeServiceBase;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertFalse;
@@ -110,5 +116,37 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		assertFalse("ewestfal should not have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("ewestfal"), null, null, NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		
 	}
+
+    @Test
+    public void testDynamicRoleCacheability() {
+        RoleService roleService = KimApiServiceLocator.getRoleService();
+        Role r = roleService.getRoleByNamespaceCodeAndName("KR-WKFLW", "Approve Request Recipient");
+        assertTrue(roleService.isDynamicRoleMembership(r.getId()));
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
+
+        // let's send an adhoc request to rkirkend
+        String rkirkend = getPrincipalIdForName("rkirkend");
+        document.adHocToPrincipal(ActionRequestType.APPROVE, "ad-hoc-ing will result in request to member of derive role",
+                rkirkend, "approve this ad-hoc'd doc responsibility", true);
+        document.route("");
+
+        RoleTypeService roleTypeService = new ActionRequestDerivedRoleTypeServiceImpl();
+
+        Map<String, String> qualifications = Collections.singletonMap(KimConstants.AttributeConstants.DOCUMENT_NUMBER, document.getDocumentId());
+
+        // rkirkend should have role as an approver
+        assertTrue("rkirkend should have role.", roleTypeService.hasDerivedRole(rkirkend, null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+
+        boolean firstResult = roleService.principalHasRole(rkirkend, Arrays.asList(new String[]{r.getId()}), qualifications);
+        assertTrue(firstResult);
+
+        document = WorkflowDocumentFactory.loadDocument(rkirkend, document.getDocumentId());
+        document.approve("approved ad-hoc request. rkirkend is no longer a derived approver!");
+
+        // rkirkend should no longer have role as an approver
+        assertFalse("rkirkend should have NO LONGER have derived approver role.", roleTypeService.hasDerivedRole(rkirkend, null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+        boolean afterApprove = roleService.principalHasRole(rkirkend, Arrays.asList(new String[]{r.getId()}), qualifications);
+        assertFalse(afterApprove);
+    }
 	
 }

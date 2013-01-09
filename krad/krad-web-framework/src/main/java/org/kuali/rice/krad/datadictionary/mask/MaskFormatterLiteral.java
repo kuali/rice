@@ -15,16 +15,20 @@
  */
 package org.kuali.rice.krad.datadictionary.mask;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 /**
  * The maskLiteral element is used to completely hide the field value for
  * unauthorized users. The specified literal will be shown instead of the field
  * value.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "maskFormatterLiteral")
 public class MaskFormatterLiteral implements MaskFormatter {
     private static final long serialVersionUID = 3368293409242411693L;
-    
+
     protected String literal;
 
     public String maskValue(Object value) {
@@ -33,9 +37,10 @@ public class MaskFormatterLiteral implements MaskFormatter {
 
     /**
      * Gets the literalString attribute.
-     * 
+     *
      * @return Returns the literal String.
      */
+    @BeanTagAttribute(name = "literal")
     public String getLiteral() {
         return literal;
     }

@@ -15,16 +15,10 @@
  */
 package edu.samplu.admin.test;
 
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.ITUtil;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests that user admin's blanket approve of the Parameter maintenance document results in a final document
@@ -32,68 +26,34 @@ import com.thoughtworks.selenium.Selenium;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterBlanketAppIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
-        //selenium.setSpeed("1000");
+
+public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
+    @Override
+    protected String getLinkLocator() {
+        return "link=Parameter";
     }
 
-    @Test
-    public void testParameter() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Parameter");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        assertEquals("", selenium.getText("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter");          
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=Kuali Nervous System");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "/kr/lookup.do;::::).anchor4");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("//table[@id='row']/tbody/tr[3]/td[1]/a");
-        selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Parameter1");
-        selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Validation Test Parameter Description");
-        selenium.select("//select[@id='document.newMaintainableObject.parameterTypeCode']", "label=Document Validation");
-        selenium.click("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        docId= "link=" + docId;
+    @Override
+    public String blanketApprove() throws Exception {
+ 
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter " + ITUtil.DTS_TWO);
+        assertEquals("", getText("methodToCall.cancel"));
+        select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KR-NS - Kuali Nervous System");
         
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
-    }
+        String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
+        waitAndClick(componentLookUp);
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=return value");
 
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        String parameterName = "Validation Test Parameter "+ ITUtil.DTS_TWO;
+        waitAndType("//input[@id='document.newMaintainableObject.name']", parameterName);
+        waitAndType("//textarea[@id='document.newMaintainableObject.description']",
+                "Validation Test Parameter Description " + ITUtil.DTS_TWO);
+        select("//select[@id='document.newMaintainableObject.parameterTypeCode']", "label=Document Validation");
+        waitAndClick("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
+
+        waitForPageToLoad();
+        return docId;
     }
 }

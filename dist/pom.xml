@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
-    <version>2.2.0-M2-SNAPSHOT</version>
+    <version>2.2.0</version>
   </parent>
   <artifactId>rice-dist</artifactId>
   <packaging>pom</packaging>
@@ -36,6 +36,7 @@
     <bin.phase>package</bin.phase>
     <src.phase>package</src.phase>
     <server.phase>package</server.phase>
+    <wsdl.phase>package</wsdl.phase>
   </properties>
   <profiles>
     <!-- Profile for generating versioned builds. Don't need the distributions as those get generated each night as a SNAPSHOT -->
@@ -69,10 +70,31 @@
             </executions>
           </plugin>
           <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>process-resources</phase>
+                <configuration>
+                  <target>
+                    <copy todir="${project.build.directory}/wsdls">
+                      <fileset dir="${project.basedir}/..">
+                        <include name="**/target/wsdl/*.wsdl" />
+                      </fileset>
+                      <flattenmapper />
+                    </copy>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
-                <id>create-binary-distro</id>
+                <id>bin</id>
                 <phase>${bin.phase}</phase>
                 <goals>
                   <goal>single</goal>
@@ -84,7 +106,7 @@
                 </configuration>
               </execution>
               <execution>
-                <id>create-source-distro</id>
+                <id>src</id>
                 <phase>${src.phase}</phase>
                 <goals>
                   <goal>single</goal>
@@ -96,7 +118,7 @@
                 </configuration>
               </execution>
               <execution>
-                <id>create-server-distro</id>
+                <id>server</id>
                 <phase>${server.phase}</phase>
                 <goals>
                   <goal>single</goal>
@@ -104,6 +126,18 @@
                 <configuration>
                   <descriptors>
                     <descriptor>src/main/resources/assemblies/server.xml</descriptor>
+                  </descriptors>
+                </configuration>
+              </execution>
+              <execution>
+                <id>wsdl</id>
+                <phase>${wsdl.phase}</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/resources/assemblies/wsdl.xml</descriptor>
                   </descriptors>
                 </configuration>
               </execution>

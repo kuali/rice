@@ -18,8 +18,10 @@ package org.kuali.rice.kew.rule;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
@@ -57,7 +59,7 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
     private static final String DOC_TYPE_NAME_LABEL = "Document type name";
 
     private static final String DOC_TYPE_NAME_XPATH = "//newMaintainableObject/businessObject/docTypeName";
-    private static final String DOC_TYPE_NAME_DEL_XPATH = "//newMaintainableObject/businessObject/delegationRuleBaseValues/docTypeName";
+    private static final String DOC_TYPE_NAME_DEL_XPATH = "//newMaintainableObject/businessObject/delegationRule/docTypeName";
 
     private String doctypeName;
     private List<Row> rows;
@@ -81,7 +83,8 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
         rows.add(new Row(fields));
     }
 
-    public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
+    @Override
+    public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
 	setDoctypeName(getRuleDocumentTypeFromRuleExtensions(ruleExtensions));
         DocumentTypeService service = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
         
@@ -108,12 +111,10 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
         return false;
     }
 
-    protected String getRuleDocumentTypeFromRuleExtensions(List ruleExtensions) {
-	for (Iterator extensionsIterator = ruleExtensions.iterator(); extensionsIterator.hasNext();) {
-            RuleExtensionBo extension = (RuleExtensionBo) extensionsIterator.next();
+    protected String getRuleDocumentTypeFromRuleExtensions(List<RuleExtension> ruleExtensions) {
+	    for (RuleExtension extension : ruleExtensions) {
             if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(getClass().getName())) {
-                for (Iterator valuesIterator = extension.getExtensionValues().iterator(); valuesIterator.hasNext();) {
-                    RuleExtensionValue extensionValue = (RuleExtensionValue) valuesIterator.next();
+                for (Map.Entry<String, String> extensionValue : extension.getExtensionValuesMap().entrySet()) {
                     String key = extensionValue.getKey();
                     String value = extensionValue.getValue();
                     if (key.equals(DOC_TYPE_NAME_KEY)) {
@@ -122,17 +123,20 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
                 }
             }
         }
-	return null;
+	    return null;
     }
 
+    @Override
     public List getRuleRows() {
         return rows;
     }
 
+    @Override
     public List getRoutingDataRows() {
         return rows;
     }
 
+    @Override
     public String getDocContent() {
         if (!org.apache.commons.lang.StringUtils.isEmpty(getDoctypeName())) {
             return "<ruleRouting><doctype>" + getDoctypeName() + "</doctype></ruleRouting>";
@@ -183,6 +187,7 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
         }
     }
 
+    @Override
     public List getRuleExtensionValues() {
         List extensions = new ArrayList();
 
@@ -196,24 +201,26 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
         return extensions;
     }
 
-    public List<WorkflowServiceError> validateRoutingData(Map paramMap) {
-        List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
+    @Override
+    public List<RemotableAttributeError> validateRoutingData(Map paramMap) {
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         setDoctypeName((String) paramMap.get(DOC_TYPE_NAME_PROPERTY));
         if (isRequired() && org.apache.commons.lang.StringUtils.isEmpty(getDoctypeName())) {
-            errors.add(new WorkflowServiceErrorImpl("doc type is not valid.", "routetemplate.ruleroutingattribute.doctype.invalid"));
+            errors.add(RemotableAttributeError.Builder.create("routetemplate.ruleroutingattribute.doctype.invalid", "doc type is not valid.").build());
         }
 
         if (!org.apache.commons.lang.StringUtils.isEmpty(getDoctypeName())) {
             DocumentTypeService service = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
             DocumentType documentType = service.findByName(getDoctypeName());
             if (documentType == null) {
-                errors.add(new WorkflowServiceErrorImpl("doc type is not valid", "routetemplate.ruleroutingattribute.doctype.invalid"));
+                errors.add(RemotableAttributeError.Builder.create("routetemplate.ruleroutingattribute.doctype.invalid", "doc type is not valid").build());
             }
         }
         return errors;
     }
 
-    public List<WorkflowServiceError> validateRuleData(Map paramMap) {
+    @Override
+    public List<RemotableAttributeError> validateRuleData(Map paramMap) {
         return validateRoutingData(paramMap);
     }
 

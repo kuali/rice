@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;
+import org.kuali.rice.krms.api.KrmsConstants;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -229,8 +230,12 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 		 *
 		 * @param id the id value to set; can be null; a null id is an indicator
          * the this has not yet been persisted to the database.
+         * @throws IllegalArgumentException if the id is blank
 		 */
         public void setId(String id) {
+            if (id != null && StringUtils.isBlank(id)) {
+                throw new IllegalArgumentException("ID must be non-blank");
+            }
             this.id = id;
         }
 
@@ -362,4 +367,8 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 		final static String ATTRIBUTE = "attribute";
 		final static String ATTRIBUTES = "attributes";
 	}
+
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + KrmsTypeDefinition.Constants.TYPE_NAME;
+    }
 }

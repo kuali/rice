@@ -61,7 +61,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         assertTrue("pmckown should have approve.", document.isApprovalRequested());
         
         // now return the document to the AdHoc node
-        document.returnToPreviousNode(SequentialSetup.ADHOC_NODE, "");
+        document.returnToPreviousNode("", SequentialSetup.ADHOC_NODE);
         
         // there should now be 1 requests, an APPROVE to the initiator, since pmckown took the "return" action, he will not get
         // an FYI generated to him
@@ -87,7 +87,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         // now return to the current node we are on, effectively refreshing it, initiate this action as rkirkend so that bmcgough gets an FYI
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("rkirkend"), document.getDocumentId());
         RouteNodeInstance preReturnNodeInstance = (RouteNodeInstance)KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId()).iterator().next();
-        document.returnToPreviousNode(SequentialSetup.WORKFLOW_DOCUMENT_NODE, "");
+        document.returnToPreviousNode("", SequentialSetup.WORKFLOW_DOCUMENT_NODE);
         preReturnNodeInstance = KEWServiceLocator.getRouteNodeService().findRouteNodeInstanceById(preReturnNodeInstance.getRouteNodeInstanceId());
         RouteNodeInstance postReturnNodeInstance = (RouteNodeInstance)KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId()).iterator().next();
         
@@ -247,7 +247,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         //rollback from B2.1 to B2
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("jitrue"), document.getDocumentId());
         assertTrue(document.isApprovalRequested());
-        document.returnToPreviousNode(ParallelSetup.WORKFLOW_DOCUMENT_2_B1_NODE, "");
+        document.returnToPreviousNode("", ParallelSetup.WORKFLOW_DOCUMENT_2_B1_NODE);
         
         // now pmckown shold have the document again
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("pmckown"), document.getDocumentId());
@@ -330,7 +330,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     	assertTrue("Active node instance should be a final approval node.", nodeInstance.getRouteNode().getFinalApprovalInd().booleanValue());
     	
     	// return back to initial node, ewestfal should end up with a complete request
-    	document.returnToPreviousNode("AdHoc", "");
+    	document.returnToPreviousNode("", "AdHoc");
     	assertTrue("Document should be enroute.", document.isEnroute());
     	TestUtilities.assertAtNodeNew("We should be at the AdHoc node.", document, "AdHoc");
     	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("ewestfal"), document.getDocumentId());
@@ -343,7 +343,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     	assertTrue("Document should be to pmckown.", document.isApprovalRequested());
     	
     	// now return it back one node to WorkflowDocument, this should send approve requests to bmcgough and rkirkend
-    	document.returnToPreviousNode("WorkflowDocument", "");
+    	document.returnToPreviousNode("", "WorkflowDocument");
     	assertTrue("Document should be enroute.", document.isEnroute());
     	TestUtilities.assertAtNodeNew("Should be at ye old WorkflowDocument node.", document, "WorkflowDocument");
     	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("bmcgough"), document.getDocumentId());

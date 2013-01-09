@@ -16,60 +16,71 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "configurationBasedRegexPatternConstraint"),
+        @BeanTag(name = "phoneNumberPatternConstraint", parent = "phoneNumberPatternConstraint"),
+        @BeanTag(name = "timePatternConstraint", parent = "TimePatternConstraint"),
+        @BeanTag(name = "time24HPatternConstraint", parent = "Time24HPatternConstraint"),
+        @BeanTag(name = "urlPatternConstraint", parent = "UrlPatternConstraint"),
+        @BeanTag(name = "noWhitespacePatternConstraint", parent = "NoWhitespacePatternConstraint"),
+        @BeanTag(name = "javaClassPatternConstraint", parent = "JavaClassPatternConstraint"),
+        @BeanTag(name = "emailAddressPatternConstraint", parent = "EmailAddressPatternConstraint"),
+        @BeanTag(name = "timestampPatternConstraint", parent = "TimestampPatternConstraint"),
+        @BeanTag(name = "yearPatternConstraint", parent = "YearPatternConstraint"),
+        @BeanTag(name = "monthPatternConstraint", parent = "MonthPatternConstraint"),
+        @BeanTag(name = "zipcodePatternConstraint", parent = "ZipcodePatternConstraint")})
 public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternConstraint {
-    /**
-     * the key used to identify the validation pattern
-     */
     protected String patternTypeKey;
-    
+
     /**
-     * the key used to identify the validation pattern
-     * 
+     * Message key used to identify the validation pattern
+     *
      * @return the patternTypeKey
      */
+    @BeanTagAttribute(name = "patternTypeKey")
     public String getPatternTypeKey() {
         return this.patternTypeKey;
     }
 
     /**
-     * the key used to identify the validation pattern
-     * 
+     * Setter for the pattern message key
+     *
      * @param patternTypeKey the patternTypeKey to set
      */
     public void setPatternTypeKey(String patternTypeKey) {
         this.patternTypeKey = patternTypeKey;
     }
-    
+
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override
-    public String getLabelKey() {
-        if(StringUtils.isNotEmpty(labelKey)){
-            return labelKey;
+    public String getMessageKey() {
+        if (StringUtils.isNotEmpty(messageKey)) {
+            return messageKey;
         }
-        else{
-            StringBuilder buf = new StringBuilder();
-            buf.append(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX).append(getPatternTypeKey());
-            return buf.toString();
-        }
+
+        StringBuilder buf = new StringBuilder();
+        buf.append(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX).append(getPatternTypeKey());
+        return buf.toString();
     }
-    
-	/**
-	 * This method implementation uses the key returned by {@link #getPatternTypePropertyString()} to fetch the 
-	 * validationPattern's regex string from the ConfigurationService which should not include the start(^) and end($) symbols
-	 */
+
+    /**
+     * Uses the key returned by {@link #getPatternTypeKey()} to fetch the
+     * validationPattern's regex string from the ConfigurationService which should not include
+     * the start(^) and end($) symbols
+     *
+     * @return String regex validation string
+     */
     protected String getRegexString() {
-//        return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("validationPatternRegex." + getPatternTypeName());
         return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(getPatternTypeKey());
     }
 

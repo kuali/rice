@@ -78,7 +78,11 @@ public class AttributesMapBuilder {
             attributeMap.set("exclusiveMax", exclusiveMax/*.toString()*/);
         }
 
-        attributeMap.set("required", attribute.isRequired().toString());
+        if (attribute.isRequired() != null) {
+            attributeMap.set("required", attribute.isRequired().toString());
+        } else {
+            attributeMap.set("required", "false");
+        }
         if (attribute.getSummary() != null) {
             attributeMap.set("summary", attribute.getSummary());
         }
@@ -88,7 +92,7 @@ public class AttributesMapBuilder {
         if (attribute.hasFormatterClass()) {
             attributeMap.set("formatterClass", attribute.getFormatterClass());
         }
-
+/**
         // complex properties
         if (attribute.hasValidationPattern()) {
             attributeMap.set(attribute.getValidationPattern().buildExportMap("validationPattern"));
@@ -102,7 +106,7 @@ public class AttributesMapBuilder {
   	
         	// TODO: consider whether to export class names from the attribute security
         }
-
+*/
         attributeMap.set(buildControlMap(attribute));
         if (attribute.getOptionsFinder() != null) {
             attributeMap.set(buildKeyLabelMap(attribute));
@@ -206,7 +210,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isText()) {
             controlMap.set("text", "true");
-            controlMap.set("size", control.getSize().toString());
+            if (control.getSize() != null) {
+                controlMap.set("size", control.getSize().toString());
+            }
             controlMap.set("datePicker", Boolean.valueOf(control.isDatePicker()).toString());
             controlMap.set("ranged", Boolean.valueOf(control.isRanged()).toString());
         }
@@ -218,7 +224,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isCurrency()) {
             controlMap.set("currency", "true");
-            controlMap.set("size", control.getSize().toString());
+            if (control.getSize() != null) {
+                controlMap.set("size", control.getSize().toString());
+            }
             controlMap.set("formattedMaxLength", ((CurrencyControlDefinition) control).getFormattedMaxLength().toString());
         }
         else if (control.isLookupHidden()) {

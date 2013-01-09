@@ -17,6 +17,9 @@ package org.kuali.rice.krad.uif.modifier;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -26,6 +29,7 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.SpaceField;
+import org.kuali.rice.krad.uif.layout.GridLayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -53,6 +57,8 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "compareFieldCreate-modifier", parent = "Uif-CompareFieldCreate-Modifier"),
+        @BeanTag(name = "maintenanceCompare-modifier", parent = "Uif-MaintenanceCompare-Modifier")})
 public class CompareFieldCreateModifier extends ComponentModifierBase {
     private static final Logger LOG = Logger.getLogger(CompareFieldCreateModifier.class);
 
@@ -114,6 +120,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         if (component == null) {
             return;
         }
+        
+        Group group = (Group) component;
 
         // list to hold the generated compare items
         List<Component> comparisonItems = new ArrayList<Component>();
@@ -144,6 +152,11 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
                 comparisonItems.add(compareHeaderField);
             }
+            
+            // if group is using grid layout, make first row a header
+            if (group.getLayoutManager() instanceof GridLayoutManager) {
+                ((GridLayoutManager) group.getLayoutManager()).setRenderFirstRowHeader(true);
+            }
         }
 
         // find the comparable to use for comparing value changes (if
@@ -158,7 +171,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         }
 
         // generate the compare items from the configured group
-        Group group = (Group) component;
         boolean changeIconShowedOnHeader = false;
         for (Component item : group.getItems()) {
             int defaultSuffix = 0;
@@ -183,7 +195,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
                 // label will be enabled for first comparable only
                 if (suppressLabel && (compareItem instanceof Field)) {
-                   ((Field) compareItem).getFieldLabel().setRender(false);
+                    ((Field) compareItem).getFieldLabel().setRender(false);
                 }
 
                 // do value comparison
@@ -321,6 +333,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return int default sequence starting value
      */
+    @BeanTagAttribute(name = "defaultOrderSequence")
     public int getDefaultOrderSequence() {
         return this.defaultOrderSequence;
     }
@@ -347,6 +360,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * @return boolean true if the headers should be created, false if no
      *         headers should be created
      */
+    @BeanTagAttribute(name = "generateCompareHeaders")
     public boolean isGenerateCompareHeaders() {
         return this.generateCompareHeaders;
     }
@@ -366,6 +380,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return HeaderField header field prototype
      */
+    @BeanTagAttribute(name = "headerFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Header getHeaderFieldPrototype() {
         return this.headerFieldPrototype;
     }
@@ -390,6 +405,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return List<ComparableInfo> comparables to generate fields for
      */
+    @BeanTagAttribute(name = "comparables", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ComparableInfo> getComparables() {
         return this.comparables;
     }

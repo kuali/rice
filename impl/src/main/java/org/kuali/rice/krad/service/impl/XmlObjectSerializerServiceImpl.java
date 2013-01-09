@@ -17,6 +17,7 @@ package org.kuali.rice.krad.service.impl;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.SingleValueConverter;
 import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -26,9 +27,12 @@ import com.thoughtworks.xstream.mapper.Mapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
+import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.XmlObjectSerializerService;
+import org.kuali.rice.krad.util.DateTimeConverter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -68,6 +72,7 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 
 		xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
 		xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
+        xstream.registerConverter(new DateTimeConverter());
 	}
 	
     /**
@@ -157,5 +162,5 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 		}
 		return persistenceService;
 	}
-    
+
 }

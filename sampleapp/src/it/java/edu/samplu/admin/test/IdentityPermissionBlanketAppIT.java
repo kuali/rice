@@ -15,74 +15,31 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
 
 /**
  * tests that user 'admin', on blanket approving a new Permission maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPermissionBlanketAppIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class IdentityPermissionBlanketAppIT extends AdminMenuBlanketAppITBase {
+
+    @Override
+    protected String getLinkLocator() {
+        return "link=Permission";
     }
 
-    @Test
-    public void testPermission() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Permission");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        // selenium.setSpeed("2000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Permission");
-        selenium.type("//input[@id='document.newMaintainableObject.templateId']", "10012");
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=Kuali Systems");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Permission1");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+    @Override
+    public String blanketApprove() throws Exception {
+        String docId = waitForDocId();
+        waitAndType("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission");
+        waitAndType("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
+        select("//select[@name='document.newMaintainableObject.namespaceCode']", AdminMenuITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        select("//select[@name='document.newMaintainableObject.templateId']", AdminMenuITBase.LABEL_KUALI_DEFAULT);
+        waitAndType("//input[@name='document.newMaintainableObject.name']","Validation Test Responsibility " + ITUtil.DTS);
+        return docId;
     }
 }
+ 

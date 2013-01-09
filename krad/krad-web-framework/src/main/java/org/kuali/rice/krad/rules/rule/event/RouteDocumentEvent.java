@@ -25,13 +25,13 @@ import java.util.List;
 /**
  * This class represents the route event that is part of an eDoc in Kuali. This could be triggered when a user presses the route
  * button for a given document or it could happen when another piece of code calls the route method in the document service.
- * 
- * 
+ *
+ *
  */
 public final class RouteDocumentEvent extends KualiDocumentEventBase {
     /**
      * Constructs a RouteDocumentEvent with the specified errorPathPrefix and document
-     * 
+     *
      * @param errorPathPrefix
      * @param document
      */
@@ -41,7 +41,7 @@ public final class RouteDocumentEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs a RouteDocumentEvent with the given document
-     * 
+     *
      * @param document
      */
     public RouteDocumentEvent(Document document) {

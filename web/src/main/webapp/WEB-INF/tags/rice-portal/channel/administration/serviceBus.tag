@@ -31,6 +31,10 @@
 		<portal:portalLink displayTitle="true" title="Service Registry"
 			url="${ConfigProperties.ksb.url}/ServiceRegistry.do" />
 		</li>
+    <li>
+    <portal:portalLink displayTitle="true" title="Service Bus"
+      url="${ConfigProperties.ksb.url}/ServiceBus.do" />
+    </li>
 		<li>
 		<portal:portalLink displayTitle="true" title="Quartz"
 			url="${ConfigProperties.ksb.url}/Quartz.do" />

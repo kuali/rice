@@ -42,8 +42,10 @@ import java.util.Map;
  */
 public class AttributeValidationHelper {
 	private static final Logger LOG = Logger.getLogger(AttributeValidationHelper.class);
-	
-	protected BusinessObjectService businessObjectService;
+
+    private static final String DOCUMENT_PROPERTY_PREFIX = KRADConstants.DOCUMENT_PROPERTY_NAME + ".";
+
+    protected BusinessObjectService businessObjectService;
     protected Map<String,KimAttributeBo> attributeDefinitionMap = new HashMap<String,KimAttributeBo>();
     
     protected KimAttributeBo getAttributeDefinition( String id ) {
@@ -87,7 +89,7 @@ public class AttributeValidationHelper {
 	public Map<String, String> getBlankValueQualifiersMap(List<KimTypeAttribute> attributes) {
 		Map<String, String> m = new HashMap<String, String>();
 		for(KimTypeAttribute attribute: attributes){
-			KimAttributeBo attrib = getAttributeDefinition(attribute.getId());
+   			KimAttributeBo attrib = getAttributeDefinition(attribute.getKimAttribute().getId());
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), "" );
 			} else {
@@ -120,12 +122,17 @@ public class AttributeValidationHelper {
 	}
 	
     public void moveValidationErrorsToErrorMap(List<RemotableAttributeError> validationErrors) {
-		// FIXME: This does not use the correct error path yet - may need to be moved up so that the error path is known
-		// Also, the above code would overwrite messages on the same attributes (namespaceCode) but on different rows
+		// FIXME: the above code would overwrite messages on the same attributes (namespaceCode) but on different rows
 		for ( RemotableAttributeError error : validationErrors) {
     		for (String errMsg : error.getErrors()) {
                 String[] splitMsg = StringUtils.split(errMsg, ":");
-			    GlobalVariables.getMessageMap().putError( error.getAttributeName(), splitMsg[0], splitMsg.length > 1 ? StringUtils.split(splitMsg[1], ";") : new String[] {} );
+
+                // if the property name starts with "document." then don't prefix with the error path
+                if (error.getAttributeName().startsWith(DOCUMENT_PROPERTY_PREFIX)) {
+                    GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath( error.getAttributeName(), splitMsg[0], splitMsg.length > 1 ? StringUtils.split(splitMsg[1], ";") : new String[] {} );
+                } else {
+                    GlobalVariables.getMessageMap().putError( error.getAttributeName(), splitMsg[0], splitMsg.length > 1 ? StringUtils.split(splitMsg[1], ";") : new String[] {} );
+                }
             }
 		}
     }

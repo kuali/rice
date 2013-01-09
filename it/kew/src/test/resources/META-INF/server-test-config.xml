@@ -33,6 +33,7 @@
 
 	<!-- Override the application id for the server -->
 	<param name="application.id">KUALI</param>
+	<param name="standalone.application.id">${application.id}</param>
 
     <param name="config.location">${alt.config.location}</param>
     

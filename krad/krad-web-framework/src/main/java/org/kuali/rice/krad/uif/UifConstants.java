@@ -29,7 +29,6 @@ public class UifConstants {
 
     // uncomment for freemarker testing
     public static final String SPRING_VIEW_ID = "/krad/WEB-INF/ftl/uifRender";
-    //public static final String SPRING_VIEW_ID = "UifTemplateRender";
     public static final String SPRING_REDIRECT_ID = "/krad/WEB-INF/ftl/redirect";
     public static final String REDIRECT_PREFIX = "redirect:";
 
@@ -44,12 +43,23 @@ public class UifConstants {
     public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
     public static final String REQUEST_FORM = "requestForm";
 
+    public static final String BLOCKUI_NAVOPTS = "navigation";
+    public static final String BLOCKUI_REFRESHOPTS = "refresh";
+
+    public static final String VALIDATE_VIEWS_ONBUILD = "validate.views.onbuild";
+
+    public static final String MESSAGE_VIEW_ID = "Uif-MessageView";
+
+    public static enum ReadOnlyListTypes {
+        DELIMITED, BREAK, OL, UL
+    }
+
     public static enum Position {
         BOTTOM, LEFT, RIGHT, TOP
     }
 
     public static enum Order {
-        FIRST
+        FIRST, LINE_FIRST, NEXT_INPUT, SELF
     }
 
     public static enum NavigationType {
@@ -61,7 +71,7 @@ public class UifConstants {
     }
 
     public static enum ViewType {
-        DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT;
+        DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT, TRANSACTIONAL;
     }
 
     public static enum ControlType {
@@ -70,7 +80,31 @@ public class UifConstants {
     }
 
     public static enum WorkflowAction {
-        SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE
+        SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE, COMPLETE
+    }
+
+    /**
+     * Enum of return types. Used to return the type of response being sent by the server to the client.
+     */
+    public enum AjaxReturnTypes {
+        UPDATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"),
+        UPDATEVIEW("update-view"), UPDATECOLLECTION("update-collection"),
+        UPDATENONE("update-none"), DISPLAYLIGHTBOX("display-lightbox"),
+        UPDATEDIALOG("update-dialog");
+
+        private String key;
+
+        AjaxReturnTypes(String key) {
+            this.key = key;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
     }
 
     public static class MethodToCallNames {
@@ -83,7 +117,6 @@ public class UifConstants {
         public static final String DELETE_LINE = "deleteLine";
         public static final String REFRESH = "refresh";
         public static final String CANCEL = "cancel";
-        public static final String TOGGLE_INACTIVE = "toggleInactiveRecordDisplay";
     }
 
     public static class ActionEvents {
@@ -111,6 +144,7 @@ public class UifConstants {
         public static final String SUB = "_sub";
         public static final String SUGGEST = "_suggest";
         public static final String QUICK_FINDER = "_quickfinder";
+        public static final String SPAN = "_span";
     }
 
     public static class ViewPhases {
@@ -134,11 +168,13 @@ public class UifConstants {
         public static final String INDEX = "index";
         public static final String IS_ADD_LINE = "isAddLine";
         public static final String LINE = "line";
+        public static final String LINE_SUFFIX = "lineSuffix";
         public static final String READONLY_LINE = "readOnlyLine";
         public static final String MANAGER = "manager";
         public static final String NODE = "node";
         public static final String NODE_PATH = "nodePath";
         public static final String PARENT = "parent";
+        public static final String THEME_IMAGES = "ThemeImages";
         public static final String UIF_CONSTANTS = "UifConstants";
         public static final String VIEW = "view";
         public static final String VIEW_HELPER = "ViewHelper";
@@ -152,13 +188,16 @@ public class UifConstants {
         public static final String LANGUAGE = "oLanguage";
         public static final String EMPTY_TABLE = "sEmptyTable";
         public static final String AO_COLUMNS = "aoColumns";
+        public static final String AO_COLUMN_DEFS = "aoColumnDefs";
         public static final String SORT_SKIP_ROWS = "aiSortingSkipRows";
         public static final String SORT_DATA_TYPE = "sSortDataType";
         public static final String SORTABLE = "bSortable";
+        public static final String TARGETS = "aTargets";
         public static final String VISIBLE = "bVisible";
         public static final String SORT_TYPE = "sType";
         public static final String TABLE_SORT = "bSort";
         public static final String SAJAX_SOURCE = "sAjaxSource";
+        public static final String FOOTER_CALLBACK = "fnFooterCallback";
     }
 
     public static class TableToolsValues {
@@ -172,7 +211,7 @@ public class UifConstants {
         public static final String PERCENT = "kuali_percent";
         public static final String CURRENCY = "kuali_currency";
         public static final String TIMESTAMP = "kuali_timestamp";
-         public static final String FALSE = "false";
+        public static final String FALSE = "false";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
     }

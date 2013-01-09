@@ -18,6 +18,10 @@ package org.kuali.rice.kim.impl.type;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -29,6 +33,7 @@ import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.remoting.RemoteAccessException;
@@ -38,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/**
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -51,6 +57,12 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
 		List<KimTypeBo> searchResults = (List<KimTypeBo>)super.getSearchResultsHelper(fieldValues, unbounded);
 		List<KimTypeBo> filteredSearchResults = new ArrayList<KimTypeBo>();
+        DocumentTypeService dts = KEWServiceLocator.getDocumentTypeService();
+        DocumentType st = dts.findByDocumentId(fieldValues.get(KRADConstants.DOC_NUM));
+        String docName = "";
+        if (st!=null) {
+            docName = st.getName();
+        }
 		if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KRADConstants.DOC_FORM_KEY))) {
 			for(KimTypeBo kimTypeBo: searchResults){
 				if(hasRoleTypeService(KimTypeBo.to(kimTypeBo))) {
@@ -59,8 +71,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 			}
 			return filteredSearchResults;
 		}
-		
-		if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KRADConstants.DOC_FORM_KEY))) {
+        if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME.equals(docName)) {
 			for(KimTypeBo kimTypeBo: searchResults){
 				if(hasGroupTypeService(KimTypeBo.to(kimTypeBo))) {
 					filteredSearchResults.add(kimTypeBo);

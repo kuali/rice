@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
+import org.kuali.rice.krms.api.KrmsConstants;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -395,4 +395,7 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 		final static String ATTRIBUTE = "attribute";
 	}
 
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + AgendaDefinition.Constants.TYPE_NAME;
+    }
 }

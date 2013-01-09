@@ -22,32 +22,12 @@ function getRuleIdFromParentLi(parentLiNode) {
 }
 
 function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
-
-    var collectionGroupDivLocator = '#' + collectionGroupId;
-
-    var elementToBlock = jq(collectionGroupDivLocator);
     var selectedItemInput = getSelectedItemInput();
     var selectedItemId = selectedItemInput.val();
     var selectedItemInputName = selectedItemInput.attr('name');
 
     if (!requireSelected || selectedItemId) {
-        var updateCollectionCallback = function(htmlContent){
-            var component = jq(collectionGroupDivLocator, htmlContent);
-
-            elementToBlock.unblock({onUnblock: function(){
-                //replace component
-                if(jq(collectionGroupDivLocator).length){
-                    jq(collectionGroupDivLocator).replaceWith(component);
-                }
-                runHiddenScripts(collectionGroupId);
-            }
-            });
-
-        };
-
-        ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-                {updateComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
-                elementToBlock, null);
+        retrieveComponent(collectionGroupId, controllerMethod, null, {selectedItemInputName: selectedItemId});
     } else {
         // TODO: refactor to disabled buttons, or externalize
         alert('Please select an agenda item first.');
@@ -74,17 +54,22 @@ function initAgendaTree(componentId) {
                 jq(this).removeClass('ruleBlockSelected');
             });
 
-            if (selectedItemTracker.val() == agendaItemId) {
-                // if this item is already selected, deselect it
-                selectedItemTracker.val('');
-                disableTreeButtons(); // disableButtons.js
-                enableAddButton(); // disableButtons.js
-                enableRefreshButton(); // disableButtons.js
-            } else { // select it, both with the custom class and with the selectedItemTracker
-                selectedItemTracker.val(agendaItemId);
-                jq(this.parentNode).addClass('ruleBlockSelected');
-                enableTreeButtons(); // disableButtons.js
-            }
+                if (selectedItemTracker.val() == agendaItemId) {
+                    // if this item is already selected, deselect it
+                    selectedItemTracker.val('');
+                    disableTreeButtons(); // disableButtons.js
+                    enableAddButton(); // disableButtons.js
+                    enableRefreshButton(); // disableButtons.js
+                } else { // select it, both with the custom class and with the selectedItemTracker
+                    selectedItemTracker.val(agendaItemId);
+                    jq(this.parentNode).addClass('ruleBlockSelected');
+                    var disableButtons = jq('input.disableButtons').val();
+                    if (disableButtons == 'false' || disableButtons == undefined) {
+                        enableTreeButtons(); // disableButtons.js
+                    }else{
+                        disableTreeButtons();
+                    }
+              }
         });
 
         // set type to 'logic' on logic nodes -- this prevents them from being selected

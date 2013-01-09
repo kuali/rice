@@ -61,6 +61,8 @@ public final class RiceKeyConstants {
     public static final String ERROR_INACTIVE_ADHOC_PERSON_ID = "error.adhoc.inactive.person";
     public static final String ERROR_INVALID_ADHOC_WORKGROUP_ID = "error.adhoc.invalid.workgroup";
     public static final String ERROR_MISSING_ADHOC_WORKGROUP_ID = "error.adhoc.missing.workgroup";
+    public static final String ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE = "error.adhoc.invalid.workgroupNamespaceCode";
+    public static final String ERROR_UNAUTHORIZED_ADHOC_WORKGROUP_ID = "error.adhoc.unauthorized.workgroup";
     public static final String MESSAGE_ADHOC_ANNOTATION = "message.adhoc.annotation";
 
     public static final String ERROR_SECURE_FIELD = "error.secureField";
@@ -87,6 +89,7 @@ public final class RiceKeyConstants {
     // Document-specific errors
     public static final String ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED = "error.document.annotation.maxLength.exceeded";
     public static final String ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED = "error.document.disapprove.reasonRequired";
+    public static final String ERROR_DOCUMENT_RECALL_REASON_REQUIRED = "error.document.recall.reasonRequired";
     public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
     public static final String ERROR_UPLOADFILE_NULL = "error.uploadFile.null";
     public static final String ERROR_UPLOADFILE_EMPTY = "error.uploadFile.empty";
@@ -131,18 +134,21 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_ROUTE_APPROVED = "message.route.approved";
     public static final String MESSAGE_ROUTE_DISAPPROVED = "message.route.disapproved";
     public static final String MESSAGE_ROUTE_CANCELED = "message.route.canceled";
+    public static final String MESSAGE_ROUTE_RECALLED = "message.route.recalled";
     public static final String MESSAGE_ROUTE_ACKNOWLEDGED = "message.route.acknowledged";
     public static final String MESSAGE_ROUTE_FYIED = "message.route.fyied";
     public static final String MESSAGE_NO_HELP_TEXT = "message.nohelp";
     public static final String MESSAGE_REVERT_SUCCESSFUL = "message.revert.successful";
     public static final String MESSAGE_REVERT_UNNECESSARY = "message.revert.unnecessary";
     public static final String MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO = "message.disapprove.noteTextIntro";
+    public static final String MESSAGE_RECALL_NOTE_TEXT_INTRO = "message.recall.noteTextIntro";
 
     public static final String MESSAGE_DELETE="message.delete";
     public static final String MESSAGE_DELETED="mesage.deleted";
 
 
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";
+    public static final String QUESTION_RECALL_DOCUMENT = "document.question.recall.text";
     public static final String QUESTION_SENSITIVE_DATA_DOCUMENT = "document.question.sensitiveData.text";
 
     public static final String ERROR_MISSING = "error.missing";
@@ -200,8 +206,11 @@ public final class RiceKeyConstants {
     public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
 
     public static final String ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE = "error.document.identityManagementPerson.qualifier.valueNotUnique";
-    
-	private RiceKeyConstants() {
+
+    // PeopleFlow
+    public static final String PEOPLEFLOW_DUPLICATE = "peopleFlow.duplicate";
+
+    private RiceKeyConstants() {
 		throw new UnsupportedOperationException("do not call");
 	}
 }

@@ -34,10 +34,10 @@ public final class KEWPropertyConstants {
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR = "initiator";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED = "dateCreated";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG = "routeLog";
-    public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS = "appDocStatus";
+    public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS = "applicationDocumentStatus";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE = "statusCode";
+    public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR_DISPLAY_NAME = "initiatorDisplayName";
 
-    
     // Constants used by DocumentTypeLookupableHelperServiceImpl
     public static final String DOCUMENT_TYPE_ID = "documentTypeId";
     public static final String NAME = "name";

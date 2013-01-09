@@ -25,7 +25,8 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.DocumentFormBase;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService;
@@ -53,6 +54,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +68,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Controller for the Test UI Page
@@ -75,6 +78,27 @@ import java.util.UUID;
 public class AgendaEditorController extends MaintenanceDocumentController {
 
     private SequenceAccessorService sequenceAccessorService;
+
+     /**
+     * Override route to set the setSelectedAgendaItemId to empty and disable all the buttons
+     *
+     * @see org.kuali.rice.krad.web.controller.MaintenanceDocumentController.route
+     *      (DocumentFormBase, HttpServletRequest, HttpServletResponse)
+     */
+     @Override
+    @RequestMapping(params = "methodToCall=route")
+    public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        ModelAndView modelAndView;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
+        AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+        agendaEditor.setSelectedAgendaItemId("");
+        agendaEditor.setDisableButtons(true);
+        modelAndView = super.route(form, result, request, response);
+
+        return modelAndView;
+    }
 
     /**
      * This overridden method does extra work on refresh to update the namespace when the context has been changed.
@@ -88,7 +112,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         ModelAndView modelAndView = super.refresh(form, result, request, response);
 
         // handle return from context lookup
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
         if (rule.validContext(agendaEditor) && rule.validAgendaName(agendaEditor)) {
@@ -110,6 +134,16 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
         return modelAndView;
+    }
+
+
+    @Override
+    public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // Reset the page Id so that bread crumbs can come back to the default page on EditAgenda
+        form.setPageId(null);
+        return super.maintenanceEdit(form,result,request,response);
     }
 
     /**
@@ -137,7 +171,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
-            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S")
+            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class)
                     .toString());
             if (StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
                 rule.setNamespace("");
@@ -246,10 +280,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         MaintenanceDocument document = maintenanceForm.getDocument();
         if (rule.processAgendaItemBusinessRules(document)) {
-            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S")
+            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S", AgendaItemBo.class)
                     .toString());
             newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
             if (agenda.getFirstItemId() == null) {
@@ -297,6 +331,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         boolean result = true;
 
         if (proposition != null) { // Null props are allowed.
+
+            if (StringUtils.isBlank(proposition.getDescription())) {
+                GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.missingDescription");
+                result &= false;
+            }
 
             if (StringUtils.isBlank(proposition.getCompoundOpCode())) {
                 // then this is a simple proposition, validate accordingly
@@ -359,10 +399,14 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Operator");
             result &= false;
         }
-        if (StringUtils.isBlank(propConstant)) {
+        if (StringUtils.isBlank(propConstant) && !operator.endsWith("null")) { // ==null and !=null operators have blank values.
             GlobalVariables.getMessageMap().putErrorForSectionId(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Value");
             result &= false;
+        }  else if (operator.endsWith("null")) { // ==null and !=null operators have blank values.
+            if (propConstant != null) {
+                proposition.getParameters().get(1).setValue(null);
+            }
         } else if (!StringUtils.isBlank(termId)) {
             // validate that the constant value is comparable against the term
             String termType = lookupTermType(termId);
@@ -446,7 +490,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         } else {
             //validate normal term
-            TermDefinition termDefinition = KrmsRepositoryServiceLocator.getTermBoService().getTermById(termId);
+            TermDefinition termDefinition = KrmsRepositoryServiceLocator.getTermBoService().getTerm(termId);
             if (termDefinition == null) {
                 GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                         "error.rule.proposition.simple.invalidTerm", proposition.getDescription());
@@ -469,7 +513,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             String termSpecificationId = key.substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
             termSpec = KrmsRepositoryServiceLocator.getTermBoService().getTermSpecificationById(termSpecificationId);
         } else {
-            TermDefinition term = KrmsRepositoryServiceLocator.getTermBoService().getTermById(key);
+            TermDefinition term = KrmsRepositoryServiceLocator.getTermBoService().getTerm(key);
             if (term != null) {
                 termSpec = term.getSpecification();
             }
@@ -487,7 +531,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     private String getCreateAgendaId(AgendaBo agenda) {
         if (agenda.getId() == null) {
-            agenda.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_S").toString());
+            agenda.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_S", AgendaItemBo.class).toString());
         }
         return agenda.getId();
     }
@@ -544,7 +588,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         updateRuleAction(agendaEditor);
 
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         MaintenanceDocument document = maintenanceForm.getDocument();
         if (rule.processAgendaItemBusinessRules(document)) {
             node.setRule(agendaItemLine.getRule());
@@ -618,6 +662,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return getUIFModelAndView(form);
+    }
+
+    /**
+     * Exposes Ajax callback to UI to validate entered rule name to copy
+     * @param name the copyRuleName
+     * @param namespace the rule namespace
+     * @return true or false
+     */
+    @RequestMapping(params = "methodToCall=" + "ajaxValidRuleName", method=RequestMethod.GET)
+    public @ResponseBody boolean ajaxValidRuleName(@RequestParam String name, @RequestParam String namespace) {
+        return (getRuleBoService().getRuleByNameAndNamespace(name, namespace) != null);
     }
 
     /**
@@ -1167,7 +1222,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return the {@link AgendaEditor} from the form
      */
     private AgendaEditor getAgendaEditor(UifFormBase form) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         return ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
     }
 
@@ -1597,7 +1652,20 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String name = agendaEditor.getCopyRuleName();
         String namespace = agendaEditor.getNamespace();
         // fetch existing rule and copy fields to new rule
+
+        final String copyRuleNameErrorPropertyName = "AgendaEditorView-AddRule-Page"; //"copyRuleName",
+        if (StringUtils.isBlank(name)) {
+            GlobalVariables.getMessageMap().putError(copyRuleNameErrorPropertyName, "error.rule.missingCopyRuleName");
+            return super.refresh(form, result, request, response);
+        }
+
         RuleDefinition oldRuleDefinition = getRuleBoService().getRuleByNameAndNamespace(name, namespace);
+
+        if (oldRuleDefinition == null) {
+            GlobalVariables.getMessageMap().putError(copyRuleNameErrorPropertyName, "error.rule.invalidCopyRuleName", namespace + ":" + name);
+            return super.refresh(form, result, request, response);
+        }
+
         RuleBo oldRule = RuleBo.from(oldRuleDefinition);
         RuleBo newRule = RuleBo.copyRule(oldRule);
         agendaEditor.getAgendaItemLine().setRule( newRule );
@@ -1711,7 +1779,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if (root.getChildren().isEmpty()){
                 PropositionBo blank = PropositionBo.createSimplePropositionBoStub(null,PropositionType.SIMPLE.getCode());
                 blank.setRuleId(rule.getId());
-                blank.setTypeId(rule.getTypeId());  // ?? bug
                 rule.setPropId(blank.getId());
                 rule.setProposition(blank);
                 rule.refreshPropositionTree(true);
@@ -1995,7 +2062,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
                 // create a new compound proposition
                 PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(propBo, true);
-                compound.setDescription("New Compound Proposition " + UUID.randomUUID().toString());
+                compound.setDescription("New Compound Proposition");
                 compound.setEditMode(false);
 
                 if (parent.getData() == null) { // SPECIAL CASE: this is the only proposition in the tree

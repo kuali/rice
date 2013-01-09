@@ -16,48 +16,34 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class ClientErrorsIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        WebDriver driver = new FirefoxDriver();
-        selenium = new WebDriverBackedSelenium(driver,
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
-
-        // Login
-        selenium.open(
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
-        Assert.assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class ClientErrorsIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start";
     }
 
     @Test
     public void testClientErrors() throws Exception {
-        selenium.fireEvent("name=field1", "focus");
-        selenium.type("name=field1", "");
-        selenium.fireEvent("name=field1", "blur");
-        Assert.assertEquals("true", selenium.getAttribute("name=field1@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(selenium.isElementPresent("//textarea[@name='field1']/../img[@alt='Error']"));
-        selenium.fireEvent("name=field1", "focus");
+        fireEvent("name=field1", "focus");
+        waitAndType("name=field1", "");
+        fireEvent("name=field1", "blur");
+        Assert.assertEquals("true", getAttribute("name=field1@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isElementPresent("//textarea[@name='field1']/../../img[@alt='Error']"));
+        fireEvent("name=field1", "focus");
         for (int second = 0; ; second++) {
             if (second >= 60) {
                 Assert.fail("timeout");
             }
             try {
-                if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) {
+                if (isVisible("css=.jquerybubblepopup-innerHtml")) {
                     break;
                 }
             } catch (Exception e) {
@@ -65,17 +51,17 @@ public class ClientErrorsIT {
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(selenium.isVisible(
+        Assert.assertTrue(isVisible(
                 "css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
-        selenium.type("name=field1", "a");
-        selenium.keyDown("name=field1", "b");
-        selenium.keyUp("name=field1", "b");
+        waitAndType("name=field1", "a");
+        fireEvent("name=field1", "blur");
+        fireEvent("name=field1", "focus");
         for (int second = 0; ; second++) {
             if (second >= 60) {
                 Assert.fail("timeout");
             }
             try {
-                if (!selenium.isVisible("css=.jquerybubblepopup-innerHtml")) {
+                if (!isVisible("css=.jquerybubblepopup-innerHtml")) {
                     break;
                 }
             } catch (Exception e) {
@@ -83,56 +69,56 @@ public class ClientErrorsIT {
             Thread.sleep(1000);
         }
 
-        Assert.assertFalse(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
-        selenium.fireEvent("name=field1", "blur");
-        Assert.assertFalse(selenium.isElementPresent("name=field1@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field1@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(selenium.isElementPresent("//textarea[@name='field1']/../img[@alt='Error']"));
-        selenium.fireEvent("name=field2", "focus");
-        selenium.type("name=field2", "");
-        selenium.fireEvent("name=field2", "blur");
-        Assert.assertEquals("true", selenium.getAttribute("name=field2@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field2@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(selenium.isElementPresent("//input[@name='field2']/../img[@alt='Error']"));
-        selenium.fireEvent("name=field2", "focus");
-        selenium.type("name=field2", "a");
-        selenium.fireEvent("name=field2", "blur");
-        Assert.assertFalse(selenium.isElementPresent("name=field2@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field2@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(selenium.isElementPresent("//textarea[@name='field2']/../img[@alt='Error']"));
-        selenium.fireEvent("name=field3", "focus");
-        selenium.select("name=field3", "");
-        selenium.fireEvent("name=field3", "blur");
-        Assert.assertEquals("true", selenium.getAttribute("name=field3@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field3@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(selenium.isElementPresent("//select[@name='field3']/../img[@alt='Error']"));
-        selenium.fireEvent("name=field3", "focus");
-        selenium.select("name=field3", "Option 1");
-        selenium.fireEvent("name=field3", "blur");
-        Assert.assertFalse(selenium.isElementPresent("name=field3@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field3@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(selenium.isElementPresent("//select[@name='field3']/../img[@alt='Error']"));
-        selenium.fireEvent("name=field4", "focus");
-        selenium.removeAllSelections("name=field4");
-        selenium.fireEvent("name=field4", "blur");
-        Assert.assertEquals("true", selenium.getAttribute("name=field4@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field4@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(selenium.isElementPresent("//select[@name='field4']/../img[@alt='Error']"));
-        selenium.fireEvent("name=field4", "focus");
-        selenium.select("name=field4", "Option 1");
-        selenium.fireEvent("name=field4", "blur");
-        Assert.assertFalse(selenium.isElementPresent("name=field4@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field4@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(selenium.isElementPresent("//select[@name='field4']/../img[@alt='Error']"));
-        selenium.fireEvent("name=field117 value=3", "focus");
-        selenium.uncheck("name=field117 value=3");
-        selenium.fireEvent("name=field117", "blur");
+        Assert.assertFalse(isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        fireEvent("name=field1", "blur");
+        Assert.assertFalse(isElementPresent("name=field1@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field1@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresent("//textarea[@name='field1']/../img[@alt='Error']"));
+        fireEvent("name=field2", "focus");
+        waitAndType("name=field2", "");
+        fireEvent("name=field2", "blur");
+        Assert.assertEquals("true", getAttribute("name=field2@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field2@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isElementPresent("//input[@name='field2']/../img[@alt='Error']"));
+        fireEvent("name=field2", "focus");
+        waitAndType("name=field2", "a");
+        fireEvent("name=field2", "blur");
+        Assert.assertFalse(isElementPresent("name=field2@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field2@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresent("//textarea[@name='field2']/../img[@alt='Error']"));
+        fireEvent("name=field3", "focus");
+        select("name=field3", "");
+        fireEvent("name=field3", "blur");
+        Assert.assertEquals("true", getAttribute("name=field3@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field3@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isElementPresent("//select[@name='field3']/../img[@alt='Error']"));
+        fireEvent("name=field3", "focus");
+        select("name=field3", "Option 1");
+        fireEvent("name=field3", "blur");
+        Assert.assertFalse(isElementPresent("name=field3@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field3@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresent("//select[@name='field3']/../img[@alt='Error']"));
+        fireEvent("name=field114", "focus");
+        removeAllSelections("name=field114");
+        fireEvent("name=field114", "blur");
+        Assert.assertEquals("true", getAttribute("name=field114@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field114@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isElementPresent("//select[@name='field114']/../img[@alt='Error']"));
+        fireEvent("name=field114", "focus");
+        select("name=field114", "Option 1");
+        fireEvent("name=field114", "blur");
+        Assert.assertFalse(isElementPresent("name=field114@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field114@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresent("//select[@name='field114']/../img[@alt='Error']"));
+        fireEvent("name=field117 value=3", "focus");
+        uncheck("name=field117 value=3");
+        fireEvent("name=field117", "blur");
         for (int second = 0; ; second++) {
             if (second >= 60) {
                 Assert.fail("timeout");
             }
             try {
-                if (selenium.isElementPresent("//input[@name='field117']/../../../img[@alt='Error']")) {
+                if (isElementPresent("//input[@name='field117']/../../../img[@alt='Error']")) {
                     break;
                 }
             } catch (Exception e) {
@@ -140,18 +126,18 @@ public class ClientErrorsIT {
             Thread.sleep(1000);
         }
 
-        Assert.assertEquals("true", selenium.getAttribute("name=field117 value=1@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field117 value=1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(selenium.isElementPresent("//input[@name='field117']/../../../img[@alt='Error']"));
-        selenium.fireEvent("name=field117 value=3", "focus");
-        selenium.check("name=field117 value=3");
-        selenium.fireEvent("name=field117 value=3", "blur");
+        Assert.assertEquals("true", getAttribute("name=field117 value=1@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field117 value=1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isElementPresent("//input[@name='field117']/../../../img[@alt='Error']"));
+        fireEvent("name=field117 value=3", "focus");
+        check("name=field117 value=3");
+        fireEvent("name=field117 value=3", "blur");
         for (int second = 0; ; second++) {
             if (second >= 60) {
                 Assert.fail("timeout");
             }
             try {
-                if (!selenium.isElementPresent("//input[@name='field117']/../../../img[@alt='Error']")) {
+                if (!isElementPresent("//input[@name='field117']/../../../img[@alt='Error']")) {
                     break;
                 }
             } catch (Exception e) {
@@ -159,33 +145,33 @@ public class ClientErrorsIT {
             Thread.sleep(1000);
         }
 
-        Assert.assertFalse(selenium.isElementPresent("name=field117 value=1@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field117 value=3@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(selenium.isElementPresent("//input[@name='field117']/../../../img[@alt='Error']"));
-        selenium.fireEvent("name=bField1", "focus");
-        selenium.uncheck("name=bField1");
-        selenium.fireEvent("name=bField1", "blur");
-        Assert.assertEquals("true", selenium.getAttribute("name=bField1@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=bField1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(selenium.isElementPresent(
+        Assert.assertFalse(isElementPresent("name=field117 value=1@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field117 value=3@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresent("//input[@name='field117']/../../../img[@alt='Error']"));
+        fireEvent("name=bField1", "focus");
+        uncheck("name=bField1");
+        fireEvent("name=bField1", "blur");
+        Assert.assertEquals("true", getAttribute("name=bField1@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=bField1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isElementPresent(
                 "//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
-        selenium.fireEvent("name=bField1", "focus");
-        selenium.check("name=bField1");
-        selenium.fireEvent("name=bField1", "blur");
-        Assert.assertFalse(selenium.isElementPresent("name=bField1@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=bField1@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(selenium.isElementPresent(
+        fireEvent("name=bField1", "focus");
+        check("name=bField1");
+        fireEvent("name=bField1", "blur");
+        Assert.assertFalse(isElementPresent("name=bField1@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=bField1@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresent(
                 "//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
-        selenium.fireEvent("name=field114 value=3", "focus");
-        selenium.uncheck("name=field114 value=3");
-        selenium.uncheck("name=field114 value=4");
-        selenium.fireEvent("name=field114", "blur");
+        fireEvent("name=field115 value=3", "focus");
+        uncheck("name=field115 value=3");
+        uncheck("name=field115 value=4");
+        fireEvent("name=field115", "blur");
         for (int second = 0; ; second++) {
             if (second >= 60) {
                 Assert.fail("timeout");
             }
             try {
-                if (selenium.isElementPresent("//input[@name='field114']/../../../img[@alt='Error']")) {
+                if (isElementPresent("//input[@name='field115']/../../../img[@alt='Error']")) {
                     break;
                 }
             } catch (Exception e) {
@@ -193,19 +179,19 @@ public class ClientErrorsIT {
             Thread.sleep(1000);
         }
 
-        Assert.assertEquals("true", selenium.getAttribute("name=field114 value=1@aria-invalid"));
-        Assert.assertTrue(selenium.getAttribute("name=field114 value=1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(selenium.isElementPresent("//input[@name='field114']/../../../img[@alt='Error']"));
-        selenium.fireEvent("name=field114 value=3", "focus");
-        selenium.check("name=field114 value=3");
-        selenium.check("name=field114 value=4");
-        selenium.fireEvent("name=field114", "blur");
+        Assert.assertEquals("true", getAttribute("name=field115 value=1@aria-invalid"));
+        Assert.assertTrue(getAttribute("name=field115 value=1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isElementPresent("//input[@name='field115']/../../../img[@alt='Error']"));
+        fireEvent("name=field115 value=3", "focus");
+        check("name=field115 value=3");
+        check("name=field115 value=4");
+        fireEvent("name=field115", "blur");
         for (int second = 0; ; second++) {
             if (second >= 60) {
                 Assert.fail("timeout");
             }
             try {
-                if (!selenium.isElementPresent("//input[@name='field114']/../../../img[@alt='Error']")) {
+                if (!isElementPresent("//input[@name='field115']/../../../img[@alt='Error']")) {
                     break;
                 }
             } catch (Exception e) {
@@ -213,12 +199,7 @@ public class ClientErrorsIT {
             Thread.sleep(1000);
         }
 
-        Assert.assertFalse(selenium.isElementPresent("name=field114 value=1@aria-invalid"));
-        Assert.assertFalse(selenium.isElementPresent("//input[@name='field114']/../../../img[@alt='Error']"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        Assert.assertFalse(isElementPresent("name=field115 value=1@aria-invalid"));
+        Assert.assertFalse(isElementPresent("//input[@name='field115']/../../../img[@alt='Error']"));
     }
 }

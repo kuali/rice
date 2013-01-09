@@ -97,7 +97,7 @@ public interface Container extends Component, Helpable {
 
 	/**
 	 * Setter for the containers layout manager
-	 * 
+	 *
 	 * @param layoutManager
 	 */
 	void setLayoutManager(LayoutManager layoutManager);
@@ -122,7 +122,7 @@ public interface Container extends Component, Helpable {
 
 	/**
 	 * Setter for the containers header field
-	 * 
+	 *
 	 * @param header
 	 */
 	void setHeader(Header header);
@@ -145,7 +145,7 @@ public interface Container extends Component, Helpable {
 
 	/**
 	 * Setter for the containers footer
-	 * 
+	 *
 	 * @param footer
 	 */
 	void setFooter(Group footer);
@@ -169,7 +169,7 @@ public interface Container extends Component, Helpable {
 
 	/**
 	 * Setter for the containers summary message field
-	 * 
+	 *
 	 * @param instructionalMessage
 	 */
 	void setInstructionalMessage(Message instructionalMessage);
@@ -190,7 +190,7 @@ public interface Container extends Component, Helpable {
 
 	/**
 	 * Setter for the containers errors field
-	 * 
+	 *
 	 * @param validationMessages
 	 */
 	void setValidationMessages(ValidationMessages validationMessages);

@@ -16,25 +16,31 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.io.Serializable;
 
 /**
-            The help element provides the keys to obtain a
-            help description from the database.
-
-            On document JSP pages, a help icon may be rendered.  If this tag is specified, then
-            the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and name.
-
-            The value of the parameter is relative to the value of the "externalizable.help.url" property in ConfigurationService (see KualiHelpAction).
-            parameterNamespace: namespace of the parameter that has the path to the help page
-            parameterName: name of the parameter that has the path to the help page
-            parameterDetailType: detail type of the parameter that has the path to the help page
+ * The help element provides the keys to obtain a
+ * help description from the database.
+ *
+ * On document JSP pages, a help icon may be rendered.  If this tag is specified, then
+ * the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and
+ * name.
+ *
+ * The value of the parameter is relative to the value of the "externalizable.help.url" property in
+ * ConfigurationService
+ * (see KualiHelpAction).
+ * parameterNamespace: namespace of the parameter that has the path to the help page
+ * parameterName: name of the parameter that has the path to the help page
+ * parameterDetailType: detail type of the parameter that has the path to the help page
  */
+@BeanTag(name = "helpDefinition")
 public class HelpDefinition extends DataDictionaryDefinitionBase implements Serializable {
     private static final long serialVersionUID = -6869646654597012863L;
-    
-	protected String parameterNamespace;
+
+    protected String parameterNamespace;
     protected String parameterDetailType;
     protected String parameterName;
 
@@ -44,7 +50,8 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
     public HelpDefinition() {}
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
+     *      java.lang.Class)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         // No real validation to be done here other than perhaps checking to be
@@ -54,6 +61,7 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
     /**
      * @return
      */
+    @BeanTagAttribute(name = "parameterName")
     public String getParameterName() {
         return parameterName;
     }
@@ -71,6 +79,7 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
     /**
      * @return
      */
+    @BeanTagAttribute(name = "parameterNamespace")
     public String getParameterNamespace() {
         return parameterNamespace;
     }
@@ -82,18 +91,19 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
         this.parameterNamespace = parameterNamespace;
     }
 
-	public String getParameterDetailType() {
-		return this.parameterDetailType;
-	}
+    @BeanTagAttribute(name = "parameterDetailType")
+    public String getParameterDetailType() {
+        return this.parameterDetailType;
+    }
 
-	/**
-	 * parameterDetailType: detail type of the parameter that has the path to the help page
-	 */
-	public void setParameterDetailType(String parameterDetailType) {
+    /**
+     * parameterDetailType: detail type of the parameter that has the path to the help page
+     */
+    public void setParameterDetailType(String parameterDetailType) {
         if (StringUtils.isBlank(parameterDetailType)) {
             throw new IllegalArgumentException("invalid (blank) parameterDetailType");
         }
-		this.parameterDetailType = parameterDetailType;
-	}
+        this.parameterDetailType = parameterDetailType;
+    }
 
 }

@@ -20,19 +20,20 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-  
+
 
   <!-- Box Layout Managers -->
 
   <bean id="Uif-BoxLayoutBase" abstract="true" parent="Uif-BoxLayoutBase-parentBean"/>
   <bean id="Uif-BoxLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.BoxLayoutManager"
         scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/layout/box.ftl"/>
+    <property name="templateName" value="uif_box"/>
     <property name="cssClasses">
       <list>
         <value>uif-boxLayout</value>
       </list>
     </property>
-    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/box.jsp"/>
   </bean>
 
   <bean id="Uif-HorizontalBoxLayout" parent="Uif-HorizontalBoxLayout-parentBean"/>
@@ -60,7 +61,8 @@
   <bean id="Uif-GridLayoutBase" abstract="true" parent="Uif-GridLayoutBase-parentBean"/>
   <bean id="Uif-GridLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.GridLayoutManager"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/grid.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/layout/grid.ftl"/>
+    <property name="templateName" value="uif_grid"/>
     <property name="cssClasses">
       <list>
         <value>uif-gridLayout</value>
@@ -95,7 +97,8 @@
   <bean id="Uif-TableCollectionLayout" parent="Uif-TableCollectionLayout-parentBean"/>
   <bean id="Uif-TableCollectionLayout-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.TableLayoutManager"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/table.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/layout/table.ftl"/>
+    <property name="templateName" value="uif_table"/>
     <property name="cssClasses">
       <list>
         <value>uif-tableCollectionLayout</value>
@@ -113,6 +116,9 @@
           <list merge="true">
             <value>uif-sequenceItem</value>
           </list>
+        </property>
+        <property name="quickfinder">
+          <null/>
         </property>
       </bean>
     </property>
@@ -134,6 +140,31 @@
       <bean parent="Uif-PagedRichTable"/>
     </property>
     <property name="suppressLineWrapping" value="true"/>
+    <property name="toggleAllDetailsAction">
+      <bean parent="Uif-ToggleRowDetailsAction"/>
+    </property>
+    <property name="expandDetailsActionPrototype">
+      <bean parent="Uif-ExpandDetailsAction"/>
+    </property>
+    <property name="rowDetailsSwapActionImage" value="true"/>
+    <property name="totalLabel">
+      <bean parent="Uif-Label" p:labelText="Total"/>
+    </property>
+    <property name="pageTotalLabel">
+      <bean parent="Uif-Label" p:labelText="Page Total"/>
+    </property>
+    <property name="groupTotalLabelPrototype">
+      <bean parent="Uif-Label" p:labelText="Group Total">
+        <property name="dataAttributes">
+          <map>
+            <entry key="role" value="groupTotalLabel"/>
+          </map>
+        </property>
+      </bean>
+    </property>
+    <property name="showPageTotal" value="true"/>
+    <property name="showTotal" value="true"/>
+
   </bean>
 
   <!--Stacked Collection Layout Managers-->
@@ -141,7 +172,8 @@
   <bean id="Uif-StackedCollectionLayoutBase" abstract="true" parent="Uif-StackedCollectionLayoutBase-parentBean"/>
   <bean id="Uif-StackedCollectionLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/layout/stacked.ftl"/>
+    <property name="templateName" value="uif_stacked"/>
     <property name="cssClasses">
       <list>
         <value>uif-stackedCollectionLayout</value>
@@ -174,6 +206,23 @@
     </property>
     <property name="lineGroupPrototype">
       <bean parent="Uif-CollectionHorizontalBoxItem"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-StackedCollectionLayout-List" parent="Uif-StackedCollectionLayout-WithBoxItems">
+    <property name="template" value="/krad/WEB-INF/ftl/layout/stackedList.ftl"/>
+    <property name="templateName" value="uif_stackedList"/>
+    <property name="lineGroupPrototype">
+      <bean parent="Uif-VerticalBoxSection">
+        <property name="header">
+          <bean parent="Uif-HeaderFour"/>
+        </property>
+        <property name="disclosure.renderImage" value="false"/>
+        <property name="disclosure.defaultOpen" value="true"/>
+      </bean>
+    </property>
+    <property name="subCollectionFieldGroupPrototype">
+      <bean parent="Uif-VerticalFieldGroup" p:fieldLabel.render="false"/>
     </property>
   </bean>
 

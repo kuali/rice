@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+  <bean id="TravelAuthorization" parent="Uif-TransactionalDocumentView">
+    <property name="headerText" value="Travel Authorization Request"/>
+    <property name="formClass" value="edu.sampleu.travel.approval.TravelAuthorizationForm"/>
+    <property name="documentClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocument"/>
+    <property name="items">
+      <list>
+        <ref bean="TravelAuthorization-MainPage"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-MainPage" parent="Uif-DocumentPage">
+    <property name="items">
+      <list merge="true">
+        <bean parent="TravelAuthorization-TravelerDetail"/>
+        <bean parent="TravelAuthorization-TripDetail"/>
+      </list>
+    </property>
+  </bean>
+  
+ 
+  <bean id="TravelAuthorization-TravelerDetail"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Traveler Detail">
+    <property name="items">
+    <list>
+      <ref bean="TravelAuthorization-TravelerDetail-PrimaryTraveler"/>
+      <ref bean="TravelAuthorization-TravelerDetail-EmergencyContact"/>
+      <ref bean="TravelAuthorization-TravelerDetail-OtherTravelers"/>
+    </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-TravelerDetail-PrimaryTraveler" parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="Primary Traveler">
+    <property name="items">
+      <list>
+        <ref bean="lookups1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-TravelerDetail-EmergencyContact" parent="Uif-Disclosure-GridSubSection" p:headerText="Emergency Contact"
+        p:layoutManager.numberOfColumns="4">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
+              p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
+        <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
+        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCounty"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-TravelerDetail-OtherTravelers" parent="Uif-Disclosure-GridSubSection" p:headerText="Other Travelers"
+        p:layoutManager.numberOfColumns="4">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
+              p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
+        <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
+        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCounty"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-TripDetail" parent="Uif-Disclosure-GridSection" p:headerText="Trip Detail"
+        p:layoutManager.numberOfColumns="4">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
+              p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
+        <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
+        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCounty"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-Traveler-Lookup" parent="Uif-VerticalBoxGroup">
+    <property name="items">
+    <list>
+      <bean parent="GenericTextField" p:readOnly="true" p:propertyName="field59" p:defaultValue="a2">
+        <property name="inquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+        <property name="inquiry.inquiryParameters">
+          <map>
+            <entry key="field59" value="number" />
+          </map>
+        </property>
+      </bean>
+    </list>
+    </property>
+
+  </bean>
+
+</beans>

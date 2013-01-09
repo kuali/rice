@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.krad.datadictionary.state;
+
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.List;
 import java.util.Map;
@@ -129,5 +130,13 @@ public interface StateMapping {
      * client when in that state
      */
     public void setCustomClientSideValidationStates(Map<String, String> customClientSideValidationStates);
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     */
+    public void completeValidation(ValidationTrace tracer);
 
 }

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -23,11 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO Administrator don't forget to fill this in. 
- * 
+ * TODO Administrator don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IntegerPatternConstraint extends ValidDataPatternConstraint{
+@BeanTag(name = "integerPatternConstraint", parent = "IntegerPatternConstraint")
+public class IntegerPatternConstraint extends ValidDataPatternConstraint {
     protected boolean allowNegative;
     protected boolean onlyNegative;
     protected boolean omitZero;
@@ -41,26 +44,24 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
 
         if (isAllowNegative() && !onlyNegative) {
             regex.append("((-?");
-        }
-        else if(onlyNegative){
+        } else if (onlyNegative) {
             regex.append("((-");
-        }
-        else {
+        } else {
             regex.append("((");
         }
-        if(omitZero){
+        if (omitZero) {
             regex.append("[1-9][0-9]*))");
-        }
-        else{
+        } else {
             regex.append("[1-9][0-9]*)|[0]*)");
         }
 
         return regex.toString();
     }
-    
+
     /**
      * @return the allowNegative
      */
+    @BeanTagAttribute(name = "allowNegative")
     public boolean isAllowNegative() {
         return this.allowNegative;
     }
@@ -72,24 +73,28 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
         this.allowNegative = allowNegative;
     }
 
+    @BeanTagAttribute(name = "onlyNegative")
     public boolean isOnlyNegative() {
         return onlyNegative;
     }
 
     /**
      * When set to true, only allows negative numbers (and zero if allowZero is still true)
+     *
      * @param onlyNegative
      */
     public void setOnlyNegative(boolean onlyNegative) {
         this.onlyNegative = onlyNegative;
     }
 
+    @BeanTagAttribute(name = "omitZero")
     public boolean isOmitZero() {
         return omitZero;
     }
 
     /**
      * When set to true, zero is not allowed in the set of allowed numbers.
+     *
      * @param omitZero
      */
     public void setOmitZero(boolean omitZero) {
@@ -98,7 +103,7 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
     @Override
@@ -107,35 +112,28 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
             validationMessageParams = new ArrayList<String>();
             ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
             if (allowNegative && !onlyNegative) {
-                if(omitZero){
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
-                                    + "positiveOrNegative"));
+                if (omitZero) {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegative"));
+                } else {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegativeOrZero"));
                 }
-                else{
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
-                                    + "positiveOrNegativeOrZero"));
+            } else if (onlyNegative) {
+                if (omitZero) {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "negative"));
+                } else {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "negativeOrZero"));
                 }
-            }
-            else if(onlyNegative){
-                if(omitZero){
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "negative"));
-                }
-                else{
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "negativeOrZero"));
-                }
-            }
-            else {
-                if(omitZero){
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
-                }
-                else{
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrZero"));
+            } else {
+                if (omitZero) {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
+                } else {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrZero"));
                 }
             }
         }

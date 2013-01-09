@@ -72,6 +72,27 @@ public interface ServiceBus {
      * @throws IllegalArgumentException if serviceName is null
      */
     List<Endpoint> getEndpoints(QName serviceName);
+    
+    /**
+     * Returns an unmodifiable list of accessible endpoints that are available to the service bus
+     * with the given service name for the given application id. This method will only return
+     * endpoints that the service bus believes are online, endpoints which are offline will not be
+     * included. In certain cases a specific service endpoint will be available both as a local and
+     * remote service. In these cases, the list returned from this method will preferentially
+     * include the local service. It will *not* include both the local and remote endpoint to the
+     * same service. This is important as this method may be used to get endpoints for broadcasting
+     * service calls to all endpoints with a given name. In these cases, it is not desirable to
+     * invoke the same endpoint twice.
+     * @param serviceName the name of the service for which to locate an available endpoint
+     * @param applicationId the id of the application for which to locate an available endpoint for
+     *        the given service name
+     * @return a list of the remote endpoints that are available for the given service name, this
+     *         list will never be null but may be empty if there are no remote endpoints for the
+     *         given service name
+     * @throws IllegalArgumentException if serviceName is null
+     * @since 2.1.1
+     */
+    List<Endpoint> getEndpoints(QName serviceName, String applicationId);
 
     /**
      * Returns an unmodifiable list of remotely accessible endpoints that are available in the

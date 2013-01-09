@@ -99,11 +99,11 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
     }
 
 	@Override
-	public TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion) {
-		if (termResolverDefintion == null) {
-			throw new IllegalArgumentException("termResolverDefintion was null");
+	public TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefinition) {
+		if (termResolverDefinition == null) {
+			throw new IllegalArgumentException("termResolverDefinition was null");
 		}
-		KrmsTypeDefinition typeDefinition = getTypeDefinition(termResolverDefintion.getTypeId());
+		KrmsTypeDefinition typeDefinition = getTypeDefinition(termResolverDefinition.getTypeId());
 		return resolveTypeService(typeDefinition, TermResolverTypeService.class);
 	}
 	

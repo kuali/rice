@@ -17,9 +17,8 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
-
-import java.util.List;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation,
@@ -29,6 +28,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "businessObjectEntry")
 public class BusinessObjectEntry extends DataObjectEntry {
 
     protected Class<? extends BusinessObject> baseBusinessObjectClass;
@@ -52,8 +52,8 @@ public class BusinessObjectEntry extends DataObjectEntry {
     }
 
     /**
-     * The baseBusinessObjectClass is an optional parameter for specifying a superclass
-     * for the dataObjectClass, allowing the data dictionary to index by superclass
+     * The baseBusinessObjectClass is an optional parameter for specifying a base class
+     * for the dataObjectClass, allowing the data dictionary to index by the base class
      * in addition to the current class.
      */
 
@@ -61,6 +61,7 @@ public class BusinessObjectEntry extends DataObjectEntry {
         this.baseBusinessObjectClass = baseBusinessObjectClass;
     }
 
+    @BeanTagAttribute(name = "baseBusinessObjectClass")
     public Class<? extends BusinessObject> getBaseBusinessObjectClass() {
         return baseBusinessObjectClass;
     }
@@ -71,11 +72,6 @@ public class BusinessObjectEntry extends DataObjectEntry {
     @Override
     public void completeValidation() {
         try {
-
-            if (baseBusinessObjectClass != null && !baseBusinessObjectClass.isAssignableFrom(getDataObjectClass())) {
-                throw new ClassValidationException("The baseBusinessObjectClass " + baseBusinessObjectClass.getName() +
-                        " is not a superclass of the dataObjectClass " + getDataObjectClass().getName());
-            }
 
             super.completeValidation();
 
@@ -102,11 +98,11 @@ public class BusinessObjectEntry extends DataObjectEntry {
         if (inactivationBlockingDefinitions != null) {
             for (InactivationBlockingDefinition ibd : inactivationBlockingDefinitions) {
                 ibd.setBusinessObjectClass(getBusinessObjectClass());
-                if (StringUtils.isNotBlank(ibd.getBlockedReferencePropertyName()) &&
-                        ibd.getBlockedBusinessObjectClass() == null) {
+                if (StringUtils.isNotBlank(ibd.getBlockedReferencePropertyName())
+                        && ibd.getBlockedBusinessObjectClass() == null) {
                     // if the user didn't specify a class name for the blocked reference, determine it here
-                    ibd.setBlockedBusinessObjectClass(DataDictionary
-                            .getAttributeClass(getDataObjectClass(), ibd.getBlockedReferencePropertyName()));
+                    ibd.setBlockedBusinessObjectClass(DataDictionary.getAttributeClass(getDataObjectClass(),
+                            ibd.getBlockedReferencePropertyName()));
                 }
                 ibd.setBlockingReferenceBusinessObjectClass(getBusinessObjectClass());
             }

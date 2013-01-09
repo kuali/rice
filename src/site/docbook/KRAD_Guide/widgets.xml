@@ -482,8 +482,8 @@
             <para>The lightbox widget is used to render content in a modal window. This widget is
                 used in KRAD to open the inquiry and lookup views in the modal lightbox without
                 navigating away from the current view. The jQuery Fancybox plugin is used in KRAD.
-                See <link xlink:href="http://fancybox.net/api"
-                >http://fancybox.net/api</link>.</para>
+                See <link xlink:href="http://fancyapps.com/fancybox/#docs"
+                >http://fancyapps.com/fancybox/#docs</link>.</para>
             <section>
                 <title>Properties</title>
                 <para>
@@ -534,49 +534,44 @@
                             </thead>
                             <tbody>
                                 <row>
-                                    <entry> autoScale </entry>
+                                    <entry> fitToView </entry>
                                     <entry> true </entry>
-                                    <entry> If true, the lightbox is scaled to fit in viewport </entry>
+                                    <entry> If set to true, fancyBox is resized to fit inside viewport before opening </entry>
                                 </row>
                                 <row>
-                                    <entry> centerOnScroll </entry>
-                                    <entry> true </entry>
-                                    <entry> When true, the lightbox is centered while scrolling page </entry>
-                                </row>
-                                <row>
-                                    <entry> transitionIn </entry>
+                                    <entry> openEffect </entry>
                                     <entry> fade </entry>
                                     <entry> The transition type. Can be set to ‘elastic’, ‘fade’ or
                                         ‘none’ </entry>
                                 </row>
                                 <row>
-                                    <entry> transitionOut </entry>
+                                    <entry> closeEffect </entry>
                                     <entry> fade </entry>
                                     <entry> The transition type. Can be set to ‘elastic’, ‘fade’ or
                                         ‘none’ </entry>
                                 </row>
                                 <row>
-                                    <entry> speedIn </entry>
+                                    <entry> openSpeed </entry>
                                     <entry> 200 </entry>
                                     <entry> Speed of the fade and elastic transitions, in
                                         milliseconds </entry>
                                 </row>
                                 <row>
-                                    <entry> speedOut </entry>
+                                    <entry> closeSpeed </entry>
                                     <entry> 200 </entry>
                                     <entry> Speed of the fade and elastic transitions, in
                                         milliseconds </entry>
                                 </row>
                                 <row>
-                                    <entry> hideOnOverlayClick </entry>
-                                    <entry> false </entry>
-                                    <entry> Toggle if clicking the overlay should close the
-                                        lightbox. </entry>
+                                    <entry> helpers </entry>
+                                    <entry> overlay:{css:{cursor:'arrow'},closeClick:false} </entry>
+                                    <entry> Settings for additional fancybox helpers.  Defaults specify
+                                    an arrow cursor and disables closing of lightbox on mouse click.</entry>
                                 </row>
                                 <row>
                                     <entry> type </entry>
                                     <entry> iframe </entry>
-                                    <entry> Forces content type. Can be set to ‘image’, ’ajax’,
+                                    <entry> Forces content type. Can be set to ‘image’, 'html', ’ajax’,
                                         ’iframe’, ’swf’ or ‘inline’ </entry>
                                 </row>
                             </tbody>
@@ -1449,11 +1444,11 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
     <section>
         <title>Creating a New Widget </title>
         <para>To create a new widget basically takes five steps.  First you have to find the
-            appropriate JjqQuery plugin or JavaScript function that will satisfy your widget
+            appropriate jQuery plugin or JavaScript function that will satisfy your widget
             requirements. Secondly one needs to create a Java widget class that extends the widget
-            base. Thirdly you would create the jsp template .tag file that will render the widget on
+            base. Thirdly you would create the FreeMarker template file that will render the widget on
             the browser. The fourth step is to create a custom JavaScript would only be necessary in
-            some cases when you need to pass the component id to the jJqQuery select. Lastly you
+            some cases when you need to pass the component id to the jQuery select. Lastly you
             need to create the spring beans definitions.</para>
         <para>For our exercise application we will look at adding a spinner widget that will render
             spinner buttons on an input control to make increasing and decreasing numeric values
@@ -1529,25 +1524,20 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
 }    </programlisting>
         </section>
         <section>
-            <title>JSP Template</title>
+            <title>FreeMarker Template</title>
             <para>Because we extended the TextControl to create the SpinnerControl widget class, we
-                will do the same when creating the template. We use the tiles:insertTemplate tag to
-                do that. To render the spinner buttons on the control we use the krad:script tag to
-                call the createSpinner function that will add the spinner plugin on that text field.
-                We pass the specific SpinnerControl id and the component options as
-                paramtersparameters.</para>
-            <programlisting>&lt;%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+                will do the same when creating the template. We will invoke the text control macro
+                to include the standard text control. To render the spinner buttons on the control
+                we use the script macro to call the createSpinner function that will add the spinner
+                plugin on that text field. We pass the specific SpinnerControl id and the component
+                options as parameters.</para>
+            <programlisting>&lt;#macro spinner control field> 
 
-&lt;tiles:useAttribute name="control" classname="org.kuali.rice.krad.uif.control.SpinnerControl "/>   
-&lt;tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.InputField"/>
-
-&lt;%-- Create Standard HTML Text Input then decorates with Spinner plugin --%>       
-&lt;tiles:insertTemplate template="/krad/WEB-INF/jsp/templates/control/text.jsp">     
-  &lt;tiles:putAttribute name="control" value="${field.control}"/>     
-  &lt;tiles:putAttribute name="field" value="${field}"/>   
-&lt;/tiles:insertTemplate>       
-
-&lt;krad:script value="createSpinner('${control.id}', ${control.spinner.componentOptionsJSString});" />    </programlisting>
+  &lt;#-- Create Standard HTML Text Input then decorates with Spinner plugin -->
+  &lt;uif_text control=control field=field/>       
+     
+  &lt;@krad.script value="createSpinner('${control.id}', ${control.spinner.componentOptionsJSString});/>
+&lt;/#macro>   </programlisting>
         </section>
         <section>
             <title>JavaScript Function</title>

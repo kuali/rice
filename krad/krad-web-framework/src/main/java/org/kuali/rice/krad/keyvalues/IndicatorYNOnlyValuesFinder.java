@@ -23,8 +23,8 @@ import java.util.List;
 
 /**
  * This class returns list of boolean key value pairs.
- * 
- * 
+ *
+ *
  */
 public class IndicatorYNOnlyValuesFinder extends KeyValuesBase {
 

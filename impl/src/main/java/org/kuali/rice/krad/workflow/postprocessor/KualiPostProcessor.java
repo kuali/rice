@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.workflow.postprocessor;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
@@ -59,12 +60,19 @@ public class KualiPostProcessor implements PostProcessor {
     }
 
     /**
-     * 
      * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
     @Override
     public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
         return KRADServiceLocatorInternal.getPostProcessorService().doActionTaken(event);
+    }
+
+    /**
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#afterActionTaken(org.kuali.rice.kew.api.action.ActionType, org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
+     */
+    @Override
+    public ProcessDocReport afterActionTaken(ActionType performed, ActionTakenEvent event) throws Exception {
+        return KRADServiceLocatorInternal.getPostProcessorService().afterActionTaken(performed, event);
     }
 
     /**

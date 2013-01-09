@@ -16,14 +16,16 @@
 package org.kuali.test;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
-import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.xml.namespace.QName;
 import java.util.HashSet;
@@ -36,14 +38,11 @@ import java.util.List;
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public abstract class KRADTestCase extends BaselineTestCase {
-
     private static final String SQL_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.sql";
     private static final String XML_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.xml";
     private static final String KRAD_MODULE_NAME = "krad";
 
-    private SpringResourceLoader kradTestSpringResourceLoader;
-
-    protected DataDictionary dd = null;
+    protected DataDictionary dd;
 
     public KRADTestCase() {
         super(KRAD_MODULE_NAME);
@@ -64,9 +63,10 @@ public abstract class KRADTestCase extends BaselineTestCase {
         List<Class> classes = TestUtilities.getHierarchyClassesToHandle(getClass(),
                 new Class[]{TestDictionaryConfig.class}, new HashSet<String>());
 
-        // if annotation is present then initialize test data dictionary
+        // if annotation is present then initialize test data dictionary (setup once per suite)
         if (!classes.isEmpty()) {
-            dd = (DataDictionary) kradTestSpringResourceLoader.getContext().getBean("testDataDictionary");
+            ConfigurableApplicationContext context  = new ClassPathXmlApplicationContext("TestDataDictionary.xml");
+            dd = (DataDictionary) context.getBean("testDataDictionary");
 
             // add any additional dictionary files required by the test
             for (Class c : classes) {
@@ -74,10 +74,14 @@ public abstract class KRADTestCase extends BaselineTestCase {
                     TestDictionaryConfig testDictionaryConfig = (TestDictionaryConfig) c.getAnnotation(
                             TestDictionaryConfig.class);
 
+                    String namespaceCode = testDictionaryConfig.namespaceCode();
                     String dictionaryFileString = testDictionaryConfig.dataDictionaryFiles();
+
                     String[] dictionaryFiles = StringUtils.split(dictionaryFileString, ",");
                     for (String dictionaryFile : dictionaryFiles) {
-                        dd.addConfigFileLocation(dictionaryFile);
+                        LOG.info("Adding test data dictionary file: " + dictionaryFile);
+
+                        dd.addConfigFileLocation(namespaceCode, dictionaryFile);
                     }
                 }
             }
@@ -104,6 +108,7 @@ public abstract class KRADTestCase extends BaselineTestCase {
     protected List<Lifecycle> getSuiteLifecycles() {
         List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
         suiteLifecycles.add(new KEWXmlDataLoaderLifecycle(XML_FILE));
+
         return suiteLifecycles;
     }
 
@@ -115,14 +120,9 @@ public abstract class KRADTestCase extends BaselineTestCase {
 
     @Override
     protected Lifecycle getLoadApplicationLifecycle() {
-        return getKRADTestSpringResourceLoader();
-    }
-
-    public SpringResourceLoader getKRADTestSpringResourceLoader() {
-        if (kradTestSpringResourceLoader == null) {
-            kradTestSpringResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"),
-                    "classpath:KRADTestSpringBeans.xml", null);
-        }
-        return kradTestSpringResourceLoader;
+        SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"),
+                "classpath:KRADTestSpringBeans.xml", null);
+        springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+        return springResourceLoader;
     }
 }

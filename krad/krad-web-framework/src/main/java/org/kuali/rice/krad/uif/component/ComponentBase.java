@@ -16,6 +16,11 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
@@ -45,7 +50,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentBase extends ConfigurableBase implements Component {
+@BeanTag(name = "componentBase", parent = "Uif-ComponentBase")
+public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
@@ -70,7 +76,12 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private List<String> conditionalRefreshControlNames;
 
     private List<String> refreshWhenChangedPropertyNames;
+    private List<String> additionalComponentsToRefresh;
+    private String additionalComponentsToRefreshJs;
     private boolean refreshedByAction;
+    private boolean disclosedByAction;
+
+    private int refreshTimer;
 
     private boolean resetDataOnRefresh;
     private String methodToCallOnRefresh;
@@ -83,8 +94,12 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String valign;
     private String width;
 
+    // optional table-backed layout options
     private int colSpan;
     private int rowSpan;
+    private List<String> cellCssClasses;
+    private String cellStyle;
+    private String cellWidth;
 
     private String style;
     private List<String> cssClasses;
@@ -135,11 +150,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private transient Map<String, Object> context;
 
     private List<PropertyReplacer> propertyReplacers;
-    
-    private Map<String,String> dataAttributes;
-    private String dataRoleAttribute;
-    private String dataTypeAttribute;
-    private String dataMetaAttribute;
+
+    private Map<String, String> dataAttributes;
 
     public ComponentBase() {
         super();
@@ -160,7 +172,9 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
 
         refreshWhenChangedPropertyNames = new ArrayList<String>();
+        additionalComponentsToRefresh = new ArrayList<String>();
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
+        cellCssClasses = new ArrayList<String>();
         cssClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
         templateOptions = new HashMap<String, String>();
@@ -190,7 +204,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * render status</li>
      * </ul>
      *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performApplyModel(View view, Object model, Component parent) {
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
@@ -216,7 +231,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
      *
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
         if (StringUtils.isNotEmpty(progressiveRender)) {
@@ -296,6 +312,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = new ArrayList<Component>();
 
+        components.add(toolTip);
+
         return components;
     }
 
@@ -331,6 +349,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getId()
      */
+    @BeanTagAttribute(name = "id")
     public String getId() {
         return this.id;
     }
@@ -359,6 +378,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getTemplate()
      */
+    @BeanTagAttribute(name = "template")
     public String getTemplate() {
         return this.template;
     }
@@ -370,6 +390,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         this.template = template;
     }
 
+    @BeanTagAttribute(name = "templateName")
     public String getTemplateName() {
         return templateName;
     }
@@ -381,6 +402,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getTitle()
      */
+    @BeanTagAttribute(name = "title")
     public String getTitle() {
         return this.title;
     }
@@ -395,6 +417,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#isHidden()
      */
+    @BeanTagAttribute(name = "hidden")
     public boolean isHidden() {
         return this.hidden;
     }
@@ -409,6 +432,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#isReadOnly()
      */
+    @BeanTagAttribute(name = "readOnly")
     public boolean isReadOnly() {
         return this.readOnly;
     }
@@ -423,6 +447,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getRequired()
      */
+    @BeanTagAttribute(name = "required")
     public Boolean getRequired() {
         return this.required;
     }
@@ -437,6 +462,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#isRender()
      */
+    @BeanTagAttribute(name = "render")
     public boolean isRender() {
         return this.render;
     }
@@ -451,6 +477,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getColSpan()
      */
+    @BeanTagAttribute(name = "ColSpan")
     public int getColSpan() {
         return this.colSpan;
     }
@@ -465,6 +492,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getRowSpan()
      */
+    @BeanTagAttribute(name = "rowSpan")
     public int getRowSpan() {
         return this.rowSpan;
     }
@@ -477,80 +505,114 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * Horizontal alignment of the component within its container
-     * <p>
-     * All components belong to a <code>Container</code> and are placed using a
-     * <code>LayoutManager</code>. This property specifies how the component
-     * should be aligned horizontally within the container. During the finalize
-     * phase the CSS text-align style will be created for the align setting.
-     * </p>
-     *
-     * @return String horizontal align
-     * @see org.kuali.rice.krad.uif.CssConstants.TextAligns
+     * @see org.kuali.rice.krad.uif.component.Component#getCellCssClasses()
      */
+    public List<String> getCellCssClasses() {
+        return cellCssClasses;
+    }
+
+    /**
+     * @see Component#setCellCssClasses(java.util.List)
+     */
+    public void setCellCssClasses(List<String> cellCssClasses) {
+        this.cellCssClasses = cellCssClasses;
+    }
+
+    /**
+     * @see Component#addCellCssClass(String)
+     */
+    public void addCellCssClass(String cssClass) {
+        if (this.cellCssClasses == null){
+            this.cellCssClasses = new ArrayList<String>();
+        }
+
+        if(cssClass != null){
+            this.cellCssClasses.add(cssClass);
+        }
+    }
+
+    /**
+     * Builds the HTML class attribute string by combining the cellStyleClasses list
+     * with a space delimiter
+     *
+     * @return String class attribute string
+     */
+    public String getCellStyleClassesAsString() {
+        if (cellCssClasses != null) {
+            return StringUtils.join(cellCssClasses, " ");
+        }
+
+        return "";
+    }
+
+    /**
+     * @see Component#getCellStyle()
+     */
+    public String getCellStyle() {
+        return cellStyle;
+    }
+
+    /**
+     * @see Component#setCellStyle(java.lang.String)
+     */
+    public void setCellStyle(String cellStyle) {
+        this.cellStyle = cellStyle;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getCellWidth()
+     */
+    public String getCellWidth() {
+        return cellWidth;
+    }
+
+    /**
+     * @see Component#setCellWidth(java.lang.String)
+     */
+    public void setCellWidth(String cellWidth) {
+        this.cellWidth = cellWidth;
+    }
+
+    /**
+     * @see Component#getAlign()
+     */
+    @BeanTagAttribute(name = "align")
     public String getAlign() {
         return this.align;
     }
 
     /**
-     * Sets the components horizontal alignment
-     *
-     * @param align
+     * @see Component#setAlign(java.lang.String)
      */
     public void setAlign(String align) {
         this.align = align;
     }
 
     /**
-     * Vertical alignment of the component within its container
-     *
-     * <p>
-     * All components belong to a <code>Container</code> and are placed using a
-     * <code>LayoutManager</code>. This property specifies how the component
-     * should be aligned vertically within the container. During the finalize
-     * phase the CSS vertical-align style will be created for the valign
-     * setting.
-     * </p>
-     *
-     * @return String vertical align
-     * @see org.kuali.rice.krad.uif.CssConstants.VerticalAligns
+     * @see Component#getValign()
      */
+    @BeanTagAttribute(name = "valign")
     public String getValign() {
         return this.valign;
     }
 
     /**
-     * Setter for the component's vertical align
-     *
-     * @param valign
+     * @see Component#setValign(java.lang.String)
      */
     public void setValign(String valign) {
         this.valign = valign;
     }
 
     /**
-     * Width the component should take up in the container
-     * <p>
-     * All components belong to a <code>Container</code> and are placed using a
-     * <code>LayoutManager</code>. This property specifies a width the component
-     * should take up in the Container. This is not applicable for all layout
-     * managers. During the finalize phase the CSS width style will be created
-     * for the width setting.
-     * </p>
-     * <p>
-     * e.g. '30%', '55px'
-     * </p>
-     *
-     * @return String width string
+     * @see Component#getWidth()
      */
+    @BeanTagAttribute(name = "width")
     public String getWidth() {
         return this.width;
     }
 
     /**
-     * Setter for the components width
-     *
-     * @param width
+     * @see Component#setWidth(java.lang.String)
      */
     public void setWidth(String width) {
         this.width = width;
@@ -559,6 +621,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
+    @BeanTagAttribute(name = "style")
     public String getStyle() {
         return this.style;
     }
@@ -573,6 +636,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
+    @BeanTagAttribute(name = "cssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getCssClasses() {
         return this.cssClasses;
     }
@@ -620,6 +684,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodToCall()
      */
+    @BeanTagAttribute(name = "finalizeMethodToCall")
     public String getFinalizeMethodToCall() {
         return this.finalizeMethodToCall;
     }
@@ -636,6 +701,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodAdditionalArguments()
      */
+    @BeanTagAttribute(name = "finalizeMethodAdditionalArguments", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Object> getFinalizeMethodAdditionalArguments() {
         return finalizeMethodAdditionalArguments;
     }
@@ -652,6 +718,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodInvoker()
      */
+    @BeanTagAttribute(name = "finalizeMethodInvoker", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MethodInvokerConfig getFinalizeMethodInvoker() {
         return this.finalizeMethodInvoker;
     }
@@ -668,6 +735,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#isSelfRendered()
      */
+    @BeanTagAttribute(name = "selfRendered")
     public boolean isSelfRendered() {
         return this.selfRendered;
     }
@@ -682,6 +750,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getRenderedHtmlOutput()
      */
+    @BeanTagAttribute(name = "renderedHtmlOutput")
     public String getRenderedHtmlOutput() {
         return this.renderedHtmlOutput;
     }
@@ -696,6 +765,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see Component#isDisableSessionPersistence()
      */
+    @BeanTagAttribute(name = "disableSessionPersistence")
     public boolean isDisableSessionPersistence() {
         return disableSessionPersistence;
     }
@@ -710,6 +780,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see Component#isForceSessionPersistence()
      */
+    @BeanTagAttribute(name = "forceSessionPersistence")
     public boolean isForceSessionPersistence() {
         return forceSessionPersistence;
     }
@@ -724,6 +795,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see Component#getComponentSecurity()
      */
+    @BeanTagAttribute(name = "componentSecurity", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ComponentSecurity getComponentSecurity() {
         return componentSecurity;
     }
@@ -747,6 +819,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getComponentModifiers()
      */
+    @BeanTagAttribute(name = "componentModifiers", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ComponentModifier> getComponentModifiers() {
         return this.componentModifiers;
     }
@@ -761,6 +834,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getContext()
      */
+    @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<String, Object> getContext() {
         return this.context;
     }
@@ -808,6 +882,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getPropertyReplacers()
      */
+    @BeanTagAttribute(name = "propertyReplacers", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PropertyReplacer> getPropertyReplacers() {
         return this.propertyReplacers;
     }
@@ -822,6 +897,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.springframework.core.Ordered#getOrder()
      */
+    @BeanTagAttribute(name = "order")
     public int getOrder() {
         return this.order;
     }
@@ -838,6 +914,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getToolTip()
      */
+    @BeanTagAttribute(name = "toolTip", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Tooltip getToolTip() {
         return toolTip;
     }
@@ -852,6 +929,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnLoadScript()
      */
+    @BeanTagAttribute(name = "onLoadScript")
     public String getOnLoadScript() {
         return onLoadScript;
     }
@@ -868,8 +946,23 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDocumentReadyScript()
      */
+    @BeanTagAttribute(name = "onDocumentReadyScript")
     public String getOnDocumentReadyScript() {
-        return onDocumentReadyScript;
+        String onDocScript = this.onDocumentReadyScript;
+        // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer to the onDocumentReadyScript.
+        // if the refreshTimer property is set then the methodToCallOnRefresh should also be set.
+        if (refreshTimer > 0) {
+            onDocScript = (null == onDocScript) ? "" : onDocScript;
+            onDocScript = "refreshComponentUsingTimer('"
+                    + this.id
+                    + "','"
+                    + this.methodToCallOnRefresh
+                    + "',"
+                    + refreshTimer
+                    + ");"
+                    + onDocScript;
+        }
+        return onDocScript;
     }
 
     /**
@@ -884,6 +977,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnUnloadScript()
      */
+    @BeanTagAttribute(name = "onUnloadScript")
     public String getOnUnloadScript() {
         return onUnloadScript;
     }
@@ -900,6 +994,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnCloseScript()
      */
+    @BeanTagAttribute(name = "onCloseScript")
     public String getOnCloseScript() {
         return onCloseScript;
     }
@@ -916,6 +1011,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnBlurScript()
      */
+    @BeanTagAttribute(name = "onBlurScript")
     public String getOnBlurScript() {
         return onBlurScript;
     }
@@ -932,6 +1028,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnChangeScript()
      */
+    @BeanTagAttribute(name = "onChangeScript")
     public String getOnChangeScript() {
         return onChangeScript;
     }
@@ -948,6 +1045,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnClickScript()
      */
+    @BeanTagAttribute(name = "onClickScript")
     public String getOnClickScript() {
         return onClickScript;
     }
@@ -964,6 +1062,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDblClickScript()
      */
+    @BeanTagAttribute(name = "onDblClickScript")
     public String getOnDblClickScript() {
         return onDblClickScript;
     }
@@ -980,6 +1079,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnFocusScript()
      */
+    @BeanTagAttribute(name = "onFocusScript")
     public String getOnFocusScript() {
         return onFocusScript;
     }
@@ -996,6 +1096,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnSubmitScript()
      */
+    @BeanTagAttribute(name = "onSubmitScript")
     public String getOnSubmitScript() {
         return onSubmitScript;
     }
@@ -1012,6 +1113,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyPressScript()
      */
+    @BeanTagAttribute(name = "onKeyPressScript")
     public String getOnKeyPressScript() {
         return onKeyPressScript;
     }
@@ -1028,6 +1130,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyUpScript()
      */
+    @BeanTagAttribute(name = "onKeyUpScript")
     public String getOnKeyUpScript() {
         return onKeyUpScript;
     }
@@ -1044,6 +1147,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyDownScript()
      */
+    @BeanTagAttribute(name = "onKeyDownScript")
     public String getOnKeyDownScript() {
         return onKeyDownScript;
     }
@@ -1060,6 +1164,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOverScript()
      */
+    @BeanTagAttribute(name = "onMouseOverScript")
     public String getOnMouseOverScript() {
         return onMouseOverScript;
     }
@@ -1076,6 +1181,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOutScript()
      */
+    @BeanTagAttribute(name = "onMouseOutScript")
     public String getOnMouseOutScript() {
         return onMouseOutScript;
     }
@@ -1092,6 +1198,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseUpScript()
      */
+    @BeanTagAttribute(name = "onMouseUpScript")
     public String getOnMouseUpScript() {
         return onMouseUpScript;
     }
@@ -1108,6 +1215,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseDownScript()
      */
+    @BeanTagAttribute(name = "onMouseDownScript")
     public String getOnMouseDownScript() {
         return onMouseDownScript;
     }
@@ -1124,6 +1232,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseMoveScript()
      */
+    @BeanTagAttribute(name = "onMouseMoveScript")
     public String getOnMouseMoveScript() {
         return onMouseMoveScript;
     }
@@ -1139,8 +1248,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
-     * @return
      */
+    @BeanTagAttribute(name = "templateOptions", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getTemplateOptions() {
         if (templateOptions == null) {
             templateOptions = new HashMap<String, String>();
@@ -1150,7 +1259,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * @see Component#setTemplateOptions(java.util.Map)
-     * @param templateOptions
      */
     public void setTemplateOptions(Map<String, String> templateOptions) {
         this.templateOptions = templateOptions;
@@ -1164,6 +1272,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @return String of widget options formatted as JS Map
      */
     @Override
+    @BeanTagAttribute(name = "templateOptionsJSString")
     public String getTemplateOptionsJSString() {
         if (templateOptionsJSString != null) {
             return templateOptionsJSString;
@@ -1219,6 +1328,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      *
      * @return String progressiveRender expression
      */
+    @BeanTagAttribute(name = "progressiveRender")
     public String getProgressiveRender() {
         return this.progressiveRender;
     }
@@ -1232,26 +1342,31 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * When set if the condition is satisfied, the component will be refreshed.
-     * The component MUST BE a container or field type. conditionalRefresh is
+     *
+     * <p>The component MUST BE a container or field type. conditionalRefresh is
      * defined in a limited Spring EL syntax. Only valid form property names,
      * and, or, logical comparison operators (non-arithmetic), and the matches
      * clause are allowed. String and regex values must use single quotes ('),
      * booleans must be either true or false, numbers must be a valid double
-     * either negative or positive. <br>
-     * DO NOT use progressiveRender and conditionalRefresh on the same component
+     * either negative or positive.
+     *
+     * <p>DO NOT use progressiveRender and conditionalRefresh on the same component
      * unless it is known that the component will always be visible in all cases
      * when a conditionalRefresh happens (ie conditionalRefresh has
      * progressiveRender's condition anded with its own condition). <b>If a
      * component should be refreshed every time it is shown, use the
-     * progressiveRenderAndRefresh option with this property instead.</b>
+     * progressiveRenderAndRefresh option with this property instead.</b></p>
      *
      * @return the conditionalRefresh
      */
+    @BeanTagAttribute(name = "conditionalRefresh")
     public String getConditionalRefresh() {
         return this.conditionalRefresh;
     }
 
     /**
+     * Set the conditional refresh condition
+     *
      * @param conditionalRefresh the conditionalRefresh to set
      */
     public void setConditionalRefresh(String conditionalRefresh) {
@@ -1301,13 +1416,15 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * When progressiveRenderViaAJAX is true, this component will be retrieved
      * from the server when it first satisfies its progressive render condition.
-     * After the first retrieval, it is hidden/shown in the html by the js when
+     *
+     * <p>After the first retrieval, it is hidden/shown in the html by the js when
      * its progressive condition result changes. <b>By default, this is false,
      * so components with progressive render capabilities will always be already
-     * within the client html and toggled to be hidden or visible.</b>
+     * within the client html and toggled to be hidden or visible.</b></p>
      *
      * @return the progressiveRenderViaAJAX
      */
+    @BeanTagAttribute(name = "progressiveRenderViaAJAX")
     public boolean isProgressiveRenderViaAJAX() {
         return this.progressiveRenderViaAJAX;
     }
@@ -1323,17 +1440,22 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * If true, when the progressiveRender condition is satisfied, the component
      * will always be retrieved from the server and shown(as opposed to being
      * stored on the client, but hidden, after the first retrieval as is the
-     * case with the progressiveRenderViaAJAX option). <b>By default, this is
+     * case with the progressiveRenderViaAJAX option).
+     *
+     * <p><b>By default, this is
      * false, so components with progressive render capabilities will always be
-     * already within the client html and toggled to be hidden or visible.</b>
+     * already within the client html and toggled to be hidden or visible.</b></p>
      *
      * @return the progressiveRenderAndRefresh
      */
+    @BeanTagAttribute(name = "progressiveRenderAndRefresh")
     public boolean isProgressiveRenderAndRefresh() {
         return this.progressiveRenderAndRefresh;
     }
 
     /**
+     * Set the progressive render and refresh option.
+     *
      * @param progressiveRenderAndRefresh the progressiveRenderAndRefresh to set
      */
     public void setProgressiveRenderAndRefresh(boolean progressiveRenderAndRefresh) {
@@ -1343,6 +1465,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * @see Component#getRefreshWhenChangedPropertyNames()
      */
+    @BeanTagAttribute(name = "refreshWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getRefreshWhenChangedPropertyNames() {
         return this.refreshWhenChangedPropertyNames;
     }
@@ -1352,6 +1475,21 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
         this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames;
+    }
+
+    /**
+     * @see Component#getAdditionalComponentsToRefresh()
+     */
+    @BeanTagAttribute(name = "additionalComponentsToRefresh", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getAdditionalComponentsToRefresh() {
+        return additionalComponentsToRefresh;
+    }
+
+    /**
+     * @see Component#setAdditionalComponentsToRefresh(java.util.List<java.lang.String>)
+     */
+    public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh) {
+        this.additionalComponentsToRefresh = additionalComponentsToRefresh;
     }
 
     /**
@@ -1369,8 +1507,47 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.component.Component#isDisclosedByAction()
+     */
+    public boolean isDisclosedByAction() {
+        return disclosedByAction;
+    }
+
+    /**
+     * @see Component#setDisclosedByAction(boolean)
+     */
+    public void setDisclosedByAction(boolean disclosedByAction) {
+        this.disclosedByAction = disclosedByAction;
+    }
+
+    /**
+     * Time in seconds that the component will be automatically refreshed
+     *
+     * <p>
+     * This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
+     * When using this property methodToCallOnRefresh and id should also be specified
+     * </p>
+     *
+     * @return refreshTimer
+     */
+    @BeanTagAttribute(name = "refreshTimer")
+    public int getRefreshTimer() {
+        return refreshTimer;
+    }
+
+    /**
+     * Setter for refreshTimer
+     *
+     * @param refreshTimer
+     */
+    public void setRefreshTimer(int refreshTimer) {
+        this.refreshTimer = refreshTimer;
+    }
+
+    /**
      * @see Component#isResetDataOnRefresh()
      */
+    @BeanTagAttribute(name = "resetDataOnRefresh")
     public boolean isResetDataOnRefresh() {
         return resetDataOnRefresh;
     }
@@ -1383,7 +1560,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * Name of a method on the controller that should be invoked as part of the component refresh and disclosure process
+     * Name of a method on the controller that should be invoked as part of the component refresh and disclosure
+     * process
      *
      * <p>
      * During the component refresh or disclosure process it might be necessary to perform other operations, such as
@@ -1398,6 +1576,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      *
      * @return String valid controller method name
      */
+    @BeanTagAttribute(name = "methodToCallOnRefresh")
     public String getMethodToCallOnRefresh() {
         return methodToCallOnRefresh;
     }
@@ -1424,97 +1603,73 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      *
      * @return the skipInTabOrder flag
      */
+    @BeanTagAttribute(name = "skipInTabOrder")
     public boolean isSkipInTabOrder() {
         return skipInTabOrder;
     }
 
     /**
-     * Add a data attribute to the dataAttributes map
-     * @param key
-     * @param value
+     * Get the dataAttributes setup for this component - to be written to the html/jQuery data
+     *
+     * <p>The attributes that are complex objects (contain {}) they will be written through script.
+     * The attritubes that are simple (contain no objects) will be written directly to the html of the
+     * component using standard data-.
+     * Either way they can be access through .data() call in jQuery</p>
+     *
+     * @return map of dataAttributes
      */
-    public void addDataAttribute(String key, String value){
-        dataAttributes.put(key,value);    
-    }
-
+    @BeanTagAttribute(name = "dataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getDataAttributes() {
         return dataAttributes;
     }
 
     /**
-     *  the data role - used as a html5 data attribute (data-role) to specify the role
-     * @return the data role attribute value
-     */
-    public String getDataRoleAttribute() {
-        return dataRoleAttribute;
-    }
-
-    /**
-     * set the value of data-role attribute
-     * @param dataRoleAttribute the data role value
-     */
-    public void setDataRoleAttribute(String dataRoleAttribute) {
-        this.dataRoleAttribute = dataRoleAttribute;
-    }
-
-    /**
-     *  the data type - used as a html5 data attribute (data-type)
-     * @return the data type attribute value
-     */
-    public String getDataTypeAttribute() {
-        return dataTypeAttribute;
-    }
-
-    /**
-     * set the value of data-type attribute
-     * @param dataTypeAttribute the data type value
-     */
-    public void setDataTypeAttribute(String dataTypeAttribute) {
-        this.dataTypeAttribute = dataTypeAttribute;
-    }
-
-    /**
-     *  the data meta - used as a html5 data attribute (data-meta) for custom information
-     * @return the data meta attribute value
-     */
-    public String getDataMetaAttribute() {
-        return dataMetaAttribute;
-    }
-
-    /**
-     * set the value of data-meta attribute
-     * @param dataMetaAttribute the data meta value
-     */
-    public void setDataMetaAttribute(String dataMetaAttribute) {
-        this.dataMetaAttribute = dataMetaAttribute;
-    }
-
-    /**
      * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
-     * The attributes that are complex objects (contain {}) they will be written through script.
-     * The attritubes that are simple (contain no objects) will be written directly to the html of the
-     * component using standard data-.
-     * Either way they can be access through .data() call in jQuery
-     * @param dataAttributes
+     *
+     * @param dataAttributes the data attributes to set for this component
      */
     public void setDataAttributes(Map<String, String> dataAttributes) {
         this.dataAttributes = dataAttributes;
     }
 
     /**
+     * Add a data attribute to the dataAttributes map - to be written to the html/jQuery data.
+     *
+     * @param key key of the data attribute
+     * @param value value of the data attribute
+     */
+    public void addDataAttribute(String key, String value) {
+        dataAttributes.put(key, value);
+    }
+
+    /**
+     * Add a data attribute to the dataAttributes map if the given value is non null
+     * or the empty string
+     *
+     * @param key - key for the data attribute entry
+     * @param value - value for the data attribute
+     */
+    public void addDataAttributeIfNonEmpty(String key, String value) {
+        if (StringUtils.isNotBlank(value)) {
+            addDataAttribute(key, value);
+        }
+    }
+
+    /**
      * Returns js that will add data to this component by the element which matches its id.
      * This will return script for only the complex data elements (containing {});
+     *
      * @return jQuery data script for adding complex data attributes
      */
-    public String getComplexDataAttributesJs(){
+    public String getComplexDataAttributesJs() {
         String js = "";
         if (getDataAttributes() == null) {
             return js;
         } else {
-            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
-                if(data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
-                    js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
-                            +"', " + data.getValue() +");";
+            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
+                if (data != null && data.getValue() != null &&
+                        data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")) {
+                    js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey() + "', " + data.getValue() + ");";
                 }
             }
             return js;
@@ -1524,15 +1679,16 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * Returns a string that can be put into a the tag of a component to add data attributes inline.
      * This does not include the complex attributes which contain {}
+     *
      * @return html string for data attributes for the simple attributes
      */
-    public String getSimpleDataAttributes(){
+    public String getSimpleDataAttributes() {
         String attributes = "";
         if (getDataAttributes() == null) {
             return attributes;
         } else {
-            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
-                if(!data.getValue().trim().startsWith("{")){
+            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
+                if (data != null && data.getValue() != null && !data.getValue().trim().startsWith("{")) {
                     attributes = attributes + " " + "data-" + data.getKey() + "=\"" + data.getValue() + "\"";
                 }
             }
@@ -1540,20 +1696,121 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         }
     }
 
-    @Override
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getAllDataAttributesJs()
      */
+    @Override
     public String getAllDataAttributesJs() {
         String js = "";
         if (getDataAttributes() == null) {
             return js;
         } else {
-            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
-                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
-                        +"', " + ScriptUtils.convertToJsValue(data.getValue()) +");";
+            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
+                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey() + "', " + ScriptUtils
+                        .convertToJsValue(data.getValue()) + ");";
             }
             return js;
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefreshJs
+     */
+    public String getAdditionalComponentsToRefreshJs() {
+        if (!(this.getAdditionalComponentsToRefresh().isEmpty())) {
+            additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(
+                    this.getAdditionalComponentsToRefresh());
+        }
+
+        return additionalComponentsToRefreshJs;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Check for invalid characters in the components id
+        if (getId() != null) {
+            if (getId().contains("'")
+                    || getId().contains("\"")
+                    || getId().contains("[]")
+                    || getId().contains(".")
+                    || getId().contains("#")) {
+                String currentValues[] = {"id = " + getId()};
+                tracer.createError("Id contains invalid characters", currentValues);
+            }
+        }
+
+        if (tracer.getValidationStage() == ValidationTrace.BUILD) {
+            // Check for a render presence if the component is set to render
+            if ((isProgressiveRenderViaAJAX() || isProgressiveRenderAndRefresh()) && (getProgressiveRender() == null)) {
+                String currentValues[] = {"progressiveRenderViaAJAX = " + isProgressiveRenderViaAJAX(),
+                        "progressiveRenderAndRefresh = " + isProgressiveRenderAndRefresh(),
+                        "progressiveRender = " + getProgressiveRender()};
+                tracer.createError(
+                        "ProgressiveRender must be set if progressiveRenderViaAJAX or progressiveRenderAndRefresh are true",
+                        currentValues);
+            }
+        }
+
+        // Check for rendered html if the component is set to self render
+        if (isSelfRendered() && getRenderedHtmlOutput() == null) {
+            String currentValues[] =
+                    {"selfRendered = " + isSelfRendered(), "renderedHtmlOutput = " + getRenderedHtmlOutput()};
+            tracer.createError("RenderedHtmlOutput must be set if selfRendered is true", currentValues);
+        }
+
+        // Check to prevent over writing of session persistence status
+        if (isDisableSessionPersistence() && isForceSessionPersistence()) {
+            String currentValues[] = {"disableSessionPersistence = " + isDisableSessionPersistence(),
+                    "forceSessionPersistence = " + isForceSessionPersistence()};
+            tracer.createWarning("DisableSessionPersistence and forceSessionPersistence cannot be both true",
+                    currentValues);
+        }
+
+        // Check for un-executable data resets when no refresh option is set
+        if (getMethodToCallOnRefresh() != null || isResetDataOnRefresh()) {
+            if (!isProgressiveRenderAndRefresh()
+                    && !isRefreshedByAction()
+                    && !isProgressiveRenderViaAJAX()
+                    && !StringUtils.isNotEmpty(conditionalRefresh)
+                    && !(refreshTimer > 0)) {
+                String currentValues[] = {"methodToCallONRefresh = " + getMethodToCallOnRefresh(),
+                        "resetDataONRefresh = " + isResetDataOnRefresh(),
+                        "progressiveRenderAndRefresh = " + isProgressiveRenderAndRefresh(),
+                        "refreshedByAction = " + isRefreshedByAction(),
+                        "progressiveRenderViaAJAX = " + isProgressiveRenderViaAJAX(),
+                        "conditionalRefresh = " + getConditionalRefresh(), "refreshTimer = " + getRefreshTimer()};
+                tracer.createWarning(
+                        "MethodToCallONRefresh and resetDataONRefresh should only be set when a trigger event is set",
+                        currentValues);
+            }
+        }
+
+        // Check to prevent complications with rendering and refreshing a component that is not always shown
+        if (StringUtils.isNotEmpty(getProgressiveRender()) && StringUtils.isNotEmpty(conditionalRefresh)) {
+            String currentValues[] = {"progressiveRender = " + getProgressiveRender(),
+                    "conditionalRefresh = " + getConditionalRefresh()};
+            tracer.createWarning("DO NOT use progressiveRender and conditionalRefresh on the same component unless "
+                    + "it is known that the component will always be visible in all cases when a conditionalRefresh "
+                    + "happens (ie conditionalRefresh has progressiveRender's condition and with its own condition). "
+                    + "If a component should be refreshed every time it is shown, use the progressiveRenderAndRefresh "
+                    + "option with this property instead.", currentValues);
+        }
+
+        // Check for valid Spring EL format for progressiveRender
+        if (!Validator.validateSpringEL(getProgressiveRender())) {
+            String currentValues[] = {"progressiveRender =" + getProgressiveRender()};
+            tracer.createError("ProgressiveRender must follow the Spring EL @{} format", currentValues);
+        }
+
+        // Check for valid Spring EL format for conditionalRefresh
+        if (!Validator.validateSpringEL(getConditionalRefresh())) {
+            String currentValues[] = {"conditionalRefresh =" + getConditionalRefresh()};
+            tracer.createError("conditionalRefresh must follow the Spring EL @{} format", currentValues);
+            ;
         }
     }
 

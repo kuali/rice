@@ -173,7 +173,6 @@
     <field-descriptor name="delegatorPrincipalId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
-    <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
     <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
       <foreignkey field-ref="documentId" />
@@ -197,7 +196,6 @@
     <field-descriptor name="delegatorPrincipalId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
-    <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="documentId" />
@@ -221,11 +219,10 @@
     <field-descriptor name="delegatorPrincipalId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
-    <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
-    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="documentId" />
-    </reference-descriptor>-->
+    </reference-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actiontaken.ActionTakenValue" table="KREW_ACTN_TKN_T">
@@ -410,6 +407,12 @@
       <inverse-foreignkey field-ref="documentTypeId"/>
     </collection-descriptor>
     <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
+      element-class-ref="org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory"
+      name="applicationStatusCategories"
+      proxy="false">
+      <inverse-foreignkey field-ref="documentTypeId"  />
+    </collection-descriptor>
+    <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
       element-class-ref="org.kuali.rice.kew.doctype.ApplicationDocumentStatus"
       name="validApplicationStatuses"
       proxy="false">
@@ -435,13 +438,17 @@
   <class-descriptor class="org.kuali.rice.kew.doctype.ApplicationDocumentStatus" table="KREW_DOC_TYP_APP_DOC_STAT_T">
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="DOC_STAT_NM" name="statusName" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor column="CAT_NM" name="categoryName" jdbc-type="VARCHAR"/>
+    <field-descriptor column="SEQ_NO" name="sequenceNumber" jdbc-type="INTEGER"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
-<!--
-    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType" auto-retrieve="true" auto-update="false" auto-delete="false">
-      <foreignkey field-ref="documentTypeId" />
-    </reference-descriptor>
--->
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory" table="KREW_DOC_TYP_APP_STAT_CAT_T">
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor column="CAT_NM" name="categoryName" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
+    <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentStatusTransition" table="KREW_APP_DOC_STAT_TRAN_T">
@@ -536,7 +543,7 @@
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
     <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo"
-        auto-delete="true" auto-retrieve="true" auto-update="true">
+        auto-delete="true" auto-retrieve="true" auto-update="true" proxy="true">
       <inverse-foreignkey field-ref="ruleAttributeId" target-field-ref="id" />
     </collection-descriptor>
   </class-descriptor>
@@ -802,6 +809,17 @@
       <fk-pointing-to-this-class column="FROM_RTE_NODE_INSTN_ID"/>
       <fk-pointing-to-element-class column="TO_RTE_NODE_INSTN_ID"/>
     </collection-descriptor>
+    <collection-descriptor name="initialDocumentRouteHeaderValues"
+        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+        element-class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue"
+        auto-retrieve="false"
+        auto-update="none"
+        auto-delete="none"
+        proxy="true"
+        indirection-table="KREW_INIT_RTE_NODE_INSTN_T">
+      <fk-pointing-to-this-class column="RTE_NODE_INSTN_ID"/>
+      <fk-pointing-to-element-class column="DOC_HDR_ID"/>
+    </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.engine.node.Branch" table="KREW_RTE_BRCH_T">
@@ -818,7 +836,7 @@
     <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="initialNode" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="initialNodeId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="joinNode" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="joinNode" auto-update="false" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="joinNodeId"/>
     </reference-descriptor>
     <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="splitNode" auto-delete="false" auto-retrieve="true" auto-update="false">
@@ -974,6 +992,5 @@
       <foreignkey field-ref="attributeDefinitionId" />
     </reference-descriptor>
   </class-descriptor>
-
 
 </descriptor-repository>

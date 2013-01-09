@@ -26,7 +26,8 @@
 		<!-- End required KNS forms -->
 		<form-bean name="MessageQueueForm" type="org.kuali.rice.ksb.messaging.web.MessageQueueForm" />
 		<form-bean name="ServiceRegistryForm" type="org.kuali.rice.ksb.messaging.web.ServiceRegistryForm" />
-		<form-bean name="ConfigViewerForm" type="org.kuali.rice.ksb.messaging.web.ConfigViewerForm" />
+    <form-bean name="ServiceBusForm" type="org.kuali.rice.ksb.messaging.web.ServiceBusForm" />
+    <form-bean name="ConfigViewerForm" type="org.kuali.rice.ksb.messaging.web.ConfigViewerForm" />
 		<form-bean name="ThreadPoolForm" type="org.kuali.rice.ksb.messaging.web.ThreadPoolForm" />
 		<form-bean name="QuartzForm" type="org.kuali.rice.ksb.messaging.web.QuartzQueueForm" />
 		<form-bean name="JavaSecurityManagementForm" type="org.kuali.rice.ksb.security.admin.web.JavaSecurityManagementForm" />
@@ -52,7 +53,7 @@
 		<forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp" />
 		<forward name="updateTextArea" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         <forward name="exceptionIncidentHandler" path="/../kr/kualiExceptionIncidentReport.do" />
-		<forward name="authorizationExceptionHandler" path="/kr/authorizationExceptionReport.do" />
+		<forward name="authorizationExceptionHandler" path="/../kr/authorizationExceptionReport.do" />
 		<!-- End required KNS forwards -->
 		<forward name="moduleLocked" path="/../WEB-INF/jsp/moduleLocked.jsp" />
 	</global-forwards>
@@ -91,6 +92,11 @@
 			type="org.kuali.rice.ksb.messaging.web.ServiceRegistryAction" parameter="methodToCall">
 			<forward name="basic" path="/WEB-INF/jsp/registry/ServiceRegistry.jsp" />
 		</action>
+
+    <action path="/ServiceBus" name="ServiceBusForm" scope="request" input="/WEB-INF/jsp/bus/ServiceBus.jsp" validate="false"
+      type="org.kuali.rice.ksb.messaging.web.ServiceBusAction" parameter="methodToCall">
+      <forward name="basic" path="/WEB-INF/jsp/bus/ServiceBus.jsp" />
+    </action>
 
 		<action path="/ThreadPool" name="ThreadPoolForm" scope="request" input="/WEB-INF/jsp/threadpool/ThreadPool.jsp" validate="false"
 			type="org.kuali.rice.ksb.messaging.web.ThreadPoolAction" parameter="methodToCall">

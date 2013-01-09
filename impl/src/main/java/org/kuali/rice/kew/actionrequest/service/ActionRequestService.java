@@ -180,4 +180,6 @@ public interface ActionRequestService {
     public boolean doesPrincipalHaveRequest(String principalId, String documentId);
 
     public Map<String, String> getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame);
+
+    public ActionRequestValue getActionRequestForRole(String actionTakenId);
 }

@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,11 +29,40 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ViewTheme implements Serializable{
+@BeanTags(
+        {@BeanTag(name = "viewTheme", parent = "Uif-ViewTheme"), @BeanTag(name = "baseTheme", parent = "Uif-BaseTheme"),
+                @BeanTag(name = "classicKnsTheme", parent = "Uif-ClassicKnsTheme"),
+                @BeanTag(name = "kradTheme", parent = "Uif-KradTheme")})
+public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 7063256242857896580L;
 
+    private String imageDirectory;
+    
     private List<String> cssFiles;
     private List<String> scriptFiles;
+
+    /**
+     * Path to the directory (either relative or absolute) that contains images for the theme
+     * 
+     * <p>
+     * Configured diretory will populate the {@link org.kuali.rice.krad.uif.UifConstants.ContextVariableNames#THEME_IMAGES}
+     * context variable which can be referenced with an expression for an image source
+     * </p>
+     * 
+     * @return String theme image directory
+     */
+    public String getImageDirectory() {
+        return imageDirectory;
+    }
+
+    /**
+     * Setter for the directory that contains images for the theme
+     * 
+     * @param imageDirectory
+     */
+    public void setImageDirectory(String imageDirectory) {
+        this.imageDirectory = imageDirectory;
+    }
 
     /**
      * Get the css stylesheets to be imported for this view, this must be a list of .css files
@@ -36,6 +70,7 @@ public class ViewTheme implements Serializable{
      *
      * @return List<String>
      */
+    @BeanTagAttribute(name = "cssFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getCssFiles() {
         return cssFiles;
     }
@@ -55,6 +90,7 @@ public class ViewTheme implements Serializable{
      *
      * @return List<String>
      */
+    @BeanTagAttribute(name = "scriptFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getScriptFiles() {
         return scriptFiles;
     }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.location.api.state;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.location.api.LocationConstants;
@@ -52,11 +53,11 @@ public interface StateService {
      * @param countryCode country code. cannot be blank.
      * @param code        state code. cannot be blank.
      * @return a {@link State} or null
-     * @throws IllegalArgumentException country code or state code is blank
+     * @throws RiceIllegalArgumentException country code or state code is blank
      */
     @WebMethod(operationName = "getState")
     @WebResult(name = "state")
-    @Cacheable(value=State.Cache.NAME, key="'countryCode=' + #countryCode + '|' + 'code=' + #code")
+    @Cacheable(value=State.Cache.NAME, key="'countryCode=' + #p0 + '|' + 'code=' + #p1")
     State getState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "code") String code)
             throws RiceIllegalArgumentException;
 
@@ -74,13 +75,13 @@ public interface StateService {
      *
      * @param countryCode state code. cannot be blank.
      * @return an immutable collection of states
-     * @throws IllegalArgumentException country code is blank
+     * @throws RiceIllegalArgumentException country code is blank
      */
     @WebMethod(operationName = "findAllStatesInCountry")
     @XmlElementWrapper(name = "states", required = true)
     @XmlElement(name = "state", required = false)
     @WebResult(name = "states")
-    @Cacheable(value=State.Cache.NAME, key="'countryCode=' + #countryCode")
+    @Cacheable(value=State.Cache.NAME, key="'countryCode=' + #p0")
     List<State> findAllStatesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;
     
@@ -105,7 +106,19 @@ public interface StateService {
     @XmlElementWrapper(name = "states", required = true)
     @XmlElement(name = "state", required = false)
     @WebResult(name = "states")
-    @Cacheable(value=State.Cache.NAME, key="'alternateCode=' + #alternateCode")
+    @Cacheable(value=State.Cache.NAME, key="'alternateCode=' + #p0")
     List<State> findAllStatesInCountryByAltCode(@WebParam(name = "alternateCode") String alternateCode)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     * This method find States based on a query criteria.  The criteria cannot be null.
+     *
+     * @since 2.0.1
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findStates")
+    @WebResult(name = "results")
+    StateQueryResults findStates(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 }

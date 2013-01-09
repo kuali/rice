@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -29,6 +31,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="maintenaceActiveCollectionFilter")
 public class MaintenanceActiveCollectionFilter implements CollectionFilter {
     private static final long serialVersionUID = -6045332235106531456L;
 
@@ -91,6 +94,7 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter {
      *
      * @return String binding path
      */
+    @BeanTagAttribute(name="oldBindingObjectPath")
     public String getOldBindingObjectPath() {
         return oldBindingObjectPath;
     }

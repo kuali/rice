@@ -130,7 +130,7 @@ class DocumentSearchURLParametersTest extends DocumentSearchTestBase {
         req.addParameter("documentTypeName", DOCUMENT_TYPE_NAME)
         req.addParameter(LookupForm.HEADER_BAR_ENABLED_PARAM, "false")
         req.addParameter(LookupForm.SEARCH_CRITERIA_ENABLED_PARAM, "false")
-        req.addParameter(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD, "YES")
+        req.addParameter(KRADConstants.ADVANCED_SEARCH_FIELD, "YES")
         req.addParameter(DocumentSearchCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD, "YES")
         req.addParameter(DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, "YES")
         req.addParameter("dateCreated", "11/11/11..12/12/15")

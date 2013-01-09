@@ -21,6 +21,8 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DataObjectAuthorizerBase;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
@@ -28,6 +30,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.ActionSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldSecurity;
@@ -53,6 +56,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="viewAuthorizer")
 public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements ViewAuthorizer {
     private static final long serialVersionUID = -2687378084630965412L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewAuthorizerBase.class);
@@ -143,7 +147,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canUnmaskField(View view, ViewModel model, DataField field, String propertyName, Person user) {
         // check mask authz flag is set
-        AttributeSecurity attributeSecurity = field.getComponentSecurity().getAttributeSecurity();
+        AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
         if (attributeSecurity == null || !attributeSecurity.isMask()) {
             return true;
         }
@@ -181,7 +185,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canPartialUnmaskField(View view, ViewModel model, DataField field, String propertyName,
             Person user) {
         // check partial mask authz flag is set
-        AttributeSecurity attributeSecurity = field.getComponentSecurity().getAttributeSecurity();
+        AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
         if (attributeSecurity == null || !attributeSecurity.isPartialMask()) {
             return true;
         }
@@ -303,7 +307,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canPerformAction(View view, ViewModel model, Action action, String actionEvent,
             String actionId, Person user) {
         // check action authz flag is set
-        if (!action.getComponentSecurity().isPerformActionAuthz()) {
+        if (!((ActionSecurity)action.getComponentSecurity()).isPerformActionAuthz()) {
             return true;
         }
 
@@ -319,7 +323,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Person user) {
         // check edit line authz flag is set
-        if (!collectionGroup.getComponentSecurity().isEditLineAuthz()) {
+        if (!collectionGroup.getCollectionGroupSecurity().isEditLineAuthz()) {
             return true;
         }
 
@@ -330,7 +334,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canViewLine(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Person user) {
         // check view line authz flag is set
-        if (!collectionGroup.getComponentSecurity().isViewLineAuthz()) {
+        if (!collectionGroup.getCollectionGroupSecurity().isViewLineAuthz()) {
             return true;
         }
 
@@ -374,7 +378,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             String collectionPropertyName, Object line, Action action, String actionEvent, String actionId,
             Person user) {
         // check perform line action authz flag is set
-        if (!action.getComponentSecurity().isPerformLineActionAuthz()) {
+        if (!((ActionSecurity)action.getComponentSecurity()).isPerformLineActionAuthz()) {
             return true;
         }
 
@@ -481,6 +485,25 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
         return permissionDetails;
     }
+    
+    /**
+     * Builds the permission details map for an action which includes the namespace, view id, and
+     * action id and event
+     *
+     * @param view - view instance the widget belongs to
+     * @param dataObject - default object from the data model (used for subclasses to build details)
+     * @param action - action instance the details are being built for
+     * @return Map<String, String> permission details for action
+     */
+    protected Map<String, String> getActionPermissionDetails(View view, Object dataObject, Action action) {
+        Map<String, String> permissionDetails = new HashMap<String, String>();
+
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
+        permissionDetails.put(KimConstants.AttributeConstants.FIELD_ID, action.getId());
+
+        return permissionDetails;
+    }
 
     /**
      * Performs a permission check for the given template name in the context of the given view and component
@@ -527,6 +550,8 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             permissionDetails.putAll(getGroupPermissionDetails(view, dataObjectForContext, (Group) component));
         } else if (component instanceof Widget) {
             permissionDetails.putAll(getWidgetPermissionDetails(view, dataObjectForContext, (Widget) component));
+        } else if (component instanceof Action) {
+            permissionDetails.putAll(getActionPermissionDetails(view, dataObjectForContext, (Action) component));
         }
 
         // pick up additional attributes and overrides from component security
@@ -584,6 +609,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
                 && !getConfigurationService().getPropertyValueAsBoolean(KRADConstants.ENABLE_NONPRODUCTION_UNMASKING);
     }
 
+    @BeanTagAttribute(name="configurationService",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     protected ConfigurationService getConfigurationService() {
         if (configurationService == null) {
             return KRADServiceLocator.getKualiConfigurationService();

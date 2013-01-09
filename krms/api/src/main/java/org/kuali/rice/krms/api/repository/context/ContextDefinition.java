@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
@@ -411,7 +412,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         /**
          * Sets the Map of attributes as name / value pairs.
          *
-         * @param attributes a Map of name value String pairs respresenting the attributes
+         * @param attributes a Map of name value String pairs representing the attributes
          * associated with this context
          */
 		public void setAttributes(Map<String, String> attributes){
@@ -460,7 +461,9 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         final static String AGENDAS = "agendas";
 		final static String ATTRIBUTES = "attributes";
     }
-		
-	
+
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + ContextDefinition.Constants.TYPE_NAME;
+    }
 	
 }

@@ -15,28 +15,21 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
+import static org.junit.Assert.assertEquals;
 
 /**
  * tests creating and cancelling new and edit Routing Rule maintenance screens 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
     }
 
     @Test
@@ -44,25 +37,17 @@ public class WorkFlowRouteRulesIT {
      * tests that a new Routing Rule maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");        
-        selenium.selectFrame("relative=up");        
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.setSpeed("3000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Routing Rules");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClick("//img[@alt='create new']");
+//        selectFrame("relative=up");
+        waitAndClick("methodToCall.cancel", "https://jira.kuali.org/browse/KULRICE-8161 Work Flow Route Rules cancel new yields 404 not found");
+        setSpeed("3000");
+        // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
+        waitAndClick("methodToCall.processAnswer.button0", "https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.");
     }
 
     @Test
@@ -70,30 +55,14 @@ public class WorkFlowRouteRulesIT {
      * tests that a Routing Rule maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditRouteRules() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
-              
-    }
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Routing Rules");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=edit");
+        waitAndClick("methodToCall.cancel");
+        waitAndClick("methodToCall.processAnswer.button0");
     }
 }

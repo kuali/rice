@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -50,7 +52,7 @@ import java.util.Map;
  * @see org.kuali.rice.krad.uif.field.Field
  * @see org.kuali.rice.krad.uif.widget.Widget
  */
-public interface Component extends Configurable, Serializable, Ordered, ScriptEventSupport {
+public interface Component extends UifDictionaryBean, Serializable, Ordered, ScriptEventSupport {
 
     /**
      * The unique id (within a given tree) for the component
@@ -352,6 +354,77 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     void setRequired(Boolean required);
 
     /**
+     * Horizontal alignment of the component within its container
+     *
+     * <p>
+     * All components belong to a <code>Container</code> and are placed using a
+     * <code>LayoutManager</code>. This property specifies how the component
+     * should be aligned horizontally within the container. During the finalize
+     * phase the CSS text-align style will be created for the align setting.
+     * </p>
+     *
+     * @return String horizontal align
+     * @see org.kuali.rice.krad.uif.CssConstants.TextAligns
+     */
+    public String getAlign();
+
+    /**
+     * Sets the components horizontal alignment
+     *
+     * @param align
+     */
+    public void setAlign(String align);
+
+    /**
+     * Vertical alignment of the component within its container
+     *
+     * <p>
+     * All components belong to a <code>Container</code> and are placed using a
+     * <code>LayoutManager</code>. This property specifies how the component
+     * should be aligned vertically within the container. During the finalize
+     * phase the CSS vertical-align style will be created for the valign
+     * setting.
+     * </p>
+     *
+     * @return String vertical align
+     * @see org.kuali.rice.krad.uif.CssConstants.VerticalAligns
+     */
+    public String getValign();
+
+    /**
+     * Setter for the component's vertical align
+     *
+     * @param valign
+     */
+    public void setValign(String valign);
+
+    /**
+     * Width the component should take up in the container
+     *
+     * <p>
+     * All components belong to a <code>Container</code> and are placed using a
+     * <code>LayoutManager</code>. This property specifies a width the component
+     * should take up in the Container. This is not applicable for all layout
+     * managers. During the finalize phase the CSS width style will be created
+     * for the width setting.
+     * </p>
+     *
+     * <p>
+     * e.g. '30%', '55px'
+     * </p>
+     *
+     * @return String width string
+     */
+    public String getWidth();
+
+    /**
+     * Setter for the components width
+     *
+     * @param width
+     */
+    public void setWidth(String width);
+
+    /**
      * CSS style string to be applied to the component
      *
      * <p>
@@ -461,6 +534,63 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @param rowSpan
      */
     void setRowSpan(int rowSpan);
+
+    /**
+     * The cellCssClasses property defines the classes that will be placed on the corresponding td (or th) elements
+     * relating to this component when used in a table backed layout.  This property has no effect on other layouts.
+     *
+     * @return the css classes to apply to the wrapping td (or th) element for this component
+     */
+    public List<String> getCellCssClasses();
+
+    /**
+     * Set the cellCssClasses property which defines the classes that will be placed on the corresponding td (or th)
+     * relating to this component when used in a table backed layout.  This property has no effect on other layouts.
+     *
+     * @param cellCssClasses
+     */
+    public void setCellCssClasses(List<String> cellCssClasses);
+
+    /**
+     * Add a cell css class to the cell classes list
+     *
+     * @param cssClass the name of the class to add
+     */
+    public void addCellCssClass(String cssClass);
+
+    /**
+     * CSS style string to be applied to the cell containing the component (only applies within
+     * table based layouts)
+     *
+     * <p>
+     * e.g. 'align: right;'
+     * </p>
+     *
+     * @return String css style string
+     */
+    public String getCellStyle();
+
+    /**
+     * Setter for the cell style attribute
+     *
+     * @param cellStyle
+     */
+    public void setCellStyle(String cellStyle);
+
+    /**
+     * Width setting for the cell containing the component (only applies within table based
+     * layouts)
+     *
+     * @return String width ('25%', '155px')
+     */
+    public String getCellWidth();
+
+    /**
+     * Setter for the containing cell width
+     *
+     * @param cellWidth
+     */
+    public void setCellWidth(String cellWidth);
 
     /**
      * Context map for the component
@@ -900,6 +1030,33 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames);
 
     /**
+     * Returns a list of componentIds which will be also be refreshed when this component is refreshed
+     *
+     * <p>
+     * This will be a comma separated list of componentIds that need to be refreshed when a refresh
+     * condition has been set on this component.
+     * </p>
+     *
+     * @return List<String>
+     */
+    public List<String> getAdditionalComponentsToRefresh();
+
+    /**
+     * Setter for alsoRefreshComponents
+     *
+     * @param additionalComponentsToRefresh
+     */
+    public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh);
+
+    /**
+     * Returns a string for representing the list of additional components to be refreshed as
+     * a JavaScript value
+     *
+     * @return String representation of the list of componentIds for the components that need to be refreshed
+     */
+    public String getAdditionalComponentsToRefreshJs();
+
+    /**
      * Indicates the component can be refreshed by an action
      *
      * <p>
@@ -924,6 +1081,21 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     void setRefreshedByAction(boolean refreshedByAction);
 
     /**
+     * If true if this component is disclosed by an action in js, a placeholder will be put in this components place
+     * if render is also false.
+     *
+     * @return true if this component is disclosed by an action
+     */
+    public boolean isDisclosedByAction();
+
+    /**
+     * Set if this component is disclosed by some outside action
+     *
+     * @param disclosedByAction
+     */
+    public void setDisclosedByAction(boolean disclosedByAction);
+
+    /**
      * Indicates whether data contained within the component should be reset (set to default) when the
      * component is refreshed
      *
@@ -937,6 +1109,20 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @param resetDataOnRefresh
      */
     void setResetDataOnRefresh(boolean resetDataOnRefresh);
+
+    /**
+     * Time in seconds after which the component is automatically refreshed
+     *
+     * @return time in seconds
+     */
+    int getRefreshTimer();
+
+    /**
+     * Setter for refreshTimer
+     *
+     * @param refreshTimer
+     */
+    void setRefreshTimer(int refreshTimer);
 
     /**
      * Add a data attribute to the dataAttributes map
@@ -989,5 +1175,13 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @return jQuery data script for adding all data attributes
      */
     String getAllDataAttributesJs();
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     */
+    void completeValidation(ValidationTrace tracer);
 
 }

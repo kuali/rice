@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ public class ViewCleaner {
         view.setPage(null);
         view.setViewMenuLink(null);
         view.setClientSideState(new HashMap<String, Object>());
+        view.setViewTemplates(new ArrayList<String>());
 
         // clear all view pages exception the current page
         PageGroup currentPage = view.getCurrentPage();

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="Collection Group 1 - CollectionGroupTableLayout" id="collection1"
+                   instructionalText="This is a table based layout of a collection - CollectionGroupTableLayout"
+                   layoutManager.numberOfColumns="4" layoutManager.richTable.render="false"
+                   layoutManager.sequencePropertyName="field1" parent="Uif-Disclosure-TableCollectionSection"
+                   propertyName="list1">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField constraintText="Requires Field 1 be filled out" label="Field 2" parent="Uif-InputField"
+                  propertyName="field2" required="true">
+        <dependencyConstraint>
+          <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field1"/>
+        </dependencyConstraint>
+      </inputField>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="SubField 4" parent="Uif-InputField" propertyName="bfield" required="true">
+        <control>
+          <checkboxControl onChangeScript="alert('checkbox clicked')" parent="Uif-CheckboxControl"/>
+        </control>
+      </inputField>
+    </items>
+  </collectionGroup>
+  <collectionGroup collectionLookup.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                   collectionLookup.fieldConversions="number:field1,name:field2,subAccount:field3,subAccountName:field4"
+                   collectionLookup.render="true" collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on"
+                   id="collection2"
+                   instructionalText="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery richTable and        multi-value lookup and having the actions in the first column. Also with custom line actions"
+                   layoutManager.actionColumnPlacement="LEFT" layoutManager.numberOfColumns="4"
+                   layoutManager.richTable.render="true" layoutManager.sequencePropertyName="field1"
+                   parent="Uif-Disclosure-TableCollectionSection" propertyName="list2">
+    <lineActions>
+      <action actionLabel="custom" actionParameters="field1:@{#line.field1},field2:@{#line.field2}"
+              methodToCall="customLineAction" parent="Uif-SecondaryActionButton-Small"/>
+    </lineActions>
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" readOnly="true" required="true"/>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value"
+                  label="Field 4" parent="Uif-InputField" propertyName="field4" required="true">
+        <mustOccurConstraints>
+          <mustOccurConstraint max="2" min="1" parent="MustOccurConstraint">
+            <prerequisiteConstraints>
+              <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field1"/>
+            </prerequisiteConstraints>
+            <mustOccurConstraints>
+              <mustOccurConstraint max="2" min="2" parent="MustOccurConstraint">
+                <prerequisiteConstraints>
+                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field2"/>
+                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field3"/>
+                </prerequisiteConstraints>
+              </mustOccurConstraint>
+            </mustOccurConstraints>
+          </mustOccurConstraint>
+        </mustOccurConstraints>
+      </inputField>
+    </items>
+    <filters>
+      <eLCollectionFilter expression="#line.field1 ne '1'" parent="Uif-ConditionalCollectionFilter"/>
+    </filters>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="Collection Group 3 - Stacked" id="collection3"
+                   instructionalText="This is a stacked layout of a collection - CollectionGroup"
+                   layoutManager.summaryFields="field1" layoutManager.summaryTitle="Line Summary"
+                   parent="Uif-Disclosure-StackedCollectionSection" propertyName="list3">
+    <items>
+      <inputField
+              constraintText="When this is A, Field 2 must be Alpha and maxLength 5.  When this is 1, Field 2 must be numeric and min 1 max 50"
+              label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true">
+        <caseConstraint>
+          <caseConstriant parent="CaseConstraint" propertyName="field1">
+            <whenConstraint>
+              <whenConstraint parent="WhenConstraint">
+                <values>
+                  <value>A</value>
+                  <value>a</value>
+                </values>
+                <constraint>
+                  <alphaPatternConstraint parent="AlphaPatternConstraint"/>
+                </constraint>
+              </whenConstraint>
+              <whenConstraint parent="WhenConstraint">
+                <values>
+                  <value>A</value>
+                  <value>a</value>
+                </values>
+                <constraint>
+                  <simpleContraint maxLength="5" parent="SimpleConstraint"/>
+                </constraint>
+              </whenConstraint>
+              <whenConstraint parent="WhenConstraint" value="1">
+                <constraint>
+                  <numericPatternConstraint parent="NumericPatternConstraint"/>
+                </constraint>
+              </whenConstraint>
+              <whenConstraint parent="WhenConstraint" value="1">
+                <constraint>
+                  <simpleContraint exclusiveMin="0" inclusiveMax="50" parent="SimpleConstraint"/>
+                </constraint>
+              </whenConstraint>
+            </whenConstraint>
+          </caseConstriant>
+        </caseConstraint>
+      </inputField>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="Collection Group 4 - Stacked Collection with a Table subcollection" id="collection4"
+                   instructionalText="This is a stacked layout of a collection - CollectionGroup"
+                   layoutManager.summaryTitle="Line Summary '@{#line.field1}' With Expression"
+                   parent="Uif-Disclosure-StackedCollectionSection" propertyName="list4">
+    <items>
+      <inputField label="Field @{#line.field1}" parent="Uif-InputField" propertyName="field1" required="true">
+        <control>
+          <textControl disabled="@{#line.field1 eq '1'}" parent="Uif-TextControl"/>
+        </control>
+      </inputField>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+    <lineActions>
+      <action actionLabel="@{#line.field1 eq '1' ? 'Make Official' : 'Update Official'}"
+              disabled="@{#line.field1 eq '1'}" parent="Uif-PrimaryActionButton"/>
+      <action actionLabel="delete" methodToCall="deleteLine" onClickScript="alert('foo');"
+              parent="Uif-NavigationActionLink"/>
+    </lineActions>
+    <subCollection>
+      <ref bean="subCollection1"/>
+    </subCollection>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="SubCollection - (@{#parentLine.subList.size()} lines) " id="subCollection1"
+                   instructionalText="A table collection within an item of a stacked collection"
+                   layoutManager.numberOfColumns="4" layoutManager.richTable.render="true"
+                   layoutManager.sequencePropertyName="field1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
+                   propertyName="subList">
+    <items>
+      <inputField
+              constraintText="When this is A, SubField 2 must be Alpha and maxLength 5.  When this is 1, SubField 2 must be numeric and min 1 max 50"
+              label="SubField 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="SubField 2" parent="Uif-InputField" propertyName="field2" required="true">
+        <caseConstraint>
+          <caseConstriant parent="CaseConstraint" propertyName="field1">
+            <whenConstraint>
+              <whenConstraint parent="WhenConstraint">
+                <values>
+                  <value>A</value>
+                  <value>a</value>
+                </values>
+                <constraint>
+                  <alphaPatternConstraint parent="AlphaPatternConstraint"/>
+                </constraint>
+              </whenConstraint>
+              <whenConstraint parent="WhenConstraint">
+                <values>
+                  <value>A</value>
+                  <value>a</value>
+                </values>
+                <constraint>
+                  <simpleContraint maxLength="5" parent="SimpleConstraint"/>
+                </constraint>
+              </whenConstraint>
+              <whenConstraint parent="WhenConstraint" value="1">
+                <constraint>
+                  <numericPatternConstraint parent="NumericPatternConstraint"/>
+                </constraint>
+              </whenConstraint>
+              <whenConstraint parent="WhenConstraint" value="1">
+                <constraint>
+                  <simpleContraint exclusiveMin="0" inclusiveMax="50" parent="SimpleConstraint"/>
+                </constraint>
+              </whenConstraint>
+            </whenConstraint>
+          </caseConstriant>
+        </caseConstraint>
+      </inputField>
+      <inputField label="SubField 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="SubField 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="Collection Group 5 - Stacked Collection with a Stacked subcollection" id="collection5"
+                   instructionalText="This is a stacked layout of a collection - CollectionGroup"
+                   layoutManager.summaryFields="field1" layoutManager.summaryTitle="Line Summary"
+                   parent="Uif-Disclosure-StackedCollectionSection" propertyName="list5">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+    <subCollection>
+      <ref bean="subCollection2"/>
+    </subCollection>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" disclosure.render="false"
+                   headertext="SubCollection" id="subCollection2"
+                   instructionalText="This is a stacked layout of a collection - CollectionGroup"
+                   layoutManager.summaryFields="field1" layoutManager.summaryTitle="Line Summary"
+                   parent="Uif-StackedSubCollection-WithinSection" propertyName="subList">
+    <items>
+      <inputField label="SubField 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="SubField 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField label="SubField 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="SubField 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on"
+                   id="collection6"
+                   instructionalText="No sequence column rendering on, separate add line, infinite scrolling"
+                   layoutManager.addLineGroup.layoutManager.numberOfColumns="8"
+                   layoutManager.generateAutoSequence="false" layoutManager.numberOfColumns="4"
+                   layoutManager.renderSequenceField="false" layoutManager.richTable.render="true"
+                   layoutManager.separateAddLine="true" layoutManager.sequencePropertyName="field1"
+                   parent="Uif-Disclosure-TableCollectionSection" propertyName="list6">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+    <addLineItems>
+      <inputField label="Add line field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="Add line field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField label="Add line field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="Add line field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </addLineItems>
+    <layoutManager.richTable.templateOptions>
+      <entry key="'bScrollInfinite'" value="true"/>
+      <entry key="'bScrollCollapse'" value="true"/>
+      <entry key="'sScrollY'" value="200px"/>
+    </layoutManager.richTable.templateOptions>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="Collection Group rendered as a List" id="UifCompView-CollectionList"
+                   instructionalText="Each line of the collection is a list, with each field of the line a list item."
+                   parent="Uif-ListCollectionSection" propertyName="list2">
+    <items>
+      <messageField messageText="Field 1 is @{#line.field1}, Field 2 is @{#line.field2}" parent="Uif-MessageField"/>
+    </items>
+  </collectionGroup>
+</spring:beans>

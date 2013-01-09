@@ -18,7 +18,6 @@ package org.kuali.rice.krad.kim;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +29,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ViewEditModePermissionTypeServiceImpl extends PermissionTypeServiceBase {
+public class ViewEditModePermissionTypeServiceImpl extends ViewPermissionTypeServiceImpl {
 
     @Override
     protected List<String> getRequiredAttributes() {

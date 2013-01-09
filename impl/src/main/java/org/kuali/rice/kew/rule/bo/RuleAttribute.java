@@ -15,10 +15,15 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinitionContract;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -33,16 +38,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.api.extension.ExtensionDefinitionContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -199,6 +198,15 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Exte
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
 	}
+
+    public boolean isWorkflowAttribute() {
+        return isWorkflowAttribute(getType());
+    }
+
+    public static boolean isWorkflowAttribute(String type) {
+        return KewApiConstants.RULE_ATTRIBUTE_TYPE.equals(type) ||
+            KewApiConstants.RULE_XML_ATTRIBUTE_TYPE.equals(type);
+    }
 
     public static ExtensionDefinition to(RuleAttribute ruleAttribute) {
         if (ruleAttribute == null) {

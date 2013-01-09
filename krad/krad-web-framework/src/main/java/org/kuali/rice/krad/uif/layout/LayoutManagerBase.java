@@ -16,15 +16,14 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.CssConstants;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
-import sun.misc.Regexp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,15 +35,15 @@ import java.util.Set;
 
 /**
  * Base class for all layout managers
- * 
+ *
  * <p>
  * Provides general properties of all layout managers, such as the unique id,
  * rendering template, and style settings
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LayoutManagerBase extends ConfigurableBase implements LayoutManager {
+public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements LayoutManager {
 	private static final long serialVersionUID = -2657663560459456814L;
 
 	private String id;
@@ -101,7 +100,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * Set of property names for the layout manager base for which on the
 	 * property value reference should be copied. Subclasses can override this
 	 * but should include a call to super
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertiesForReferenceCopy()
 	 */
     @Override
@@ -115,7 +114,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 
 	/**
 	 * Default Impl
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getSupportedContainer()
 	 */
 	@Override
@@ -145,6 +144,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getId()
 	 */
     @Override
+    @BeanTagAttribute(name="id")
     public String getId() {
 		return this.id;
 	}
@@ -161,6 +161,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getTemplate()
 	 */
     @Override
+    @BeanTagAttribute(name="template")
     public String getTemplate() {
 		return this.template;
 	}
@@ -179,6 +180,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
      * @return template name
      * @see #getTemplate()
      */
+    @BeanTagAttribute(name="tempateName")
     public String getTemplateName() {
         return templateName;
     }
@@ -196,6 +198,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getStyle()
 	 */
     @Override
+    @BeanTagAttribute(name="Style")
     public String getStyle() {
 		return this.style;
 	}
@@ -212,6 +215,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getCssClasses()
 	 */
     @Override
+    @BeanTagAttribute(name="cssClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getCssClasses() {
 		return this.cssClasses;
 	}
@@ -227,7 +231,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	/**
 	 * Builds the HTML class attribute string by combining the styleClasses list
 	 * with a space delimiter
-	 * 
+	 *
 	 * @return String class attribute string
 	 */
 	public String getStyleClassesAsString() {
@@ -243,7 +247,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * delimited by space. This is a convenience for configuration. If a child
 	 * bean needs to inherit the classes from the parent, it should configure as
 	 * a list and use merge="true"
-	 * 
+	 *
 	 * @param styleClasses
 	 */
 	public void setStyleClasses(String styleClasses) {
@@ -276,6 +280,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getContext()
 	 */
     @Override
+    @BeanTagAttribute(name="context",type= BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<String, Object> getContext() {
 		return this.context;
 	}
@@ -305,6 +310,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyReplacers()
 	 */
     @Override
+    @BeanTagAttribute(name="propertyReplacers",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PropertyReplacer> getPropertyReplacers() {
 		return this.propertyReplacers;
 	}

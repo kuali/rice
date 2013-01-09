@@ -15,16 +15,19 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
+import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
+import org.springframework.core.convert.support.GenericConversionService;
 
 import java.beans.PropertyDescriptor;
 import java.util.Map;
 
 /**
  * Utility methods to get/set property values and working with objects
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.springframework.beans.BeanWrapper
  */
@@ -91,7 +94,7 @@ public class ObjectPropertyUtils {
 			}
 		}
 	}
-	
+
     public static boolean isReadableProperty(Object object, String propertyPath) {
         return wrapObject(object).isReadableProperty(propertyPath);
     }
@@ -103,6 +106,11 @@ public class ObjectPropertyUtils {
 	public static BeanWrapper wrapObject(Object object) {
 		BeanWrapper beanWrapper = new BeanWrapperImpl(object);
 		beanWrapper.setAutoGrowNestedPaths(true);
+
+        GenericConversionService conversionService = new GenericConversionService();
+        conversionService.addConverter(new StringMapConverter());
+        conversionService.addConverter(new StringListConverter());
+        beanWrapper.setConversionService(conversionService);
 
 		return beanWrapper;
 	}

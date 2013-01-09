@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.doctype.service;
 
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
@@ -49,7 +50,28 @@ public interface DocumentTypePermissionService {
 	 */
 	boolean canAdministerRouting(String principalId, DocumentType documentType);
 
-	/**
+    /**
+     * Determines if the given principal can super user approve a single action
+     * request for a given DocumentType, route node, and routeStatusCode
+     */
+    boolean canSuperUserApproveSingleActionRequest(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode);
+
+    /**
+     * Determines if the given principal can super user approve a document
+     * for a given DocumentType, route node, and routeStatusCode
+     */
+    boolean canSuperUserApproveDocument(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode);
+
+    /**
+     * Determines if the given principal can super user disapprove a document
+     * for a given DocumentType, route node, and routeStatusCode
+     */
+    boolean canSuperUserDisapproveDocument(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode);
+
+    /**
 	 * Determines if the given principal can initiate documents of the given DocumentType.
 	 */
 	boolean canInitiate(String principalId, DocumentType documentType);
@@ -91,5 +113,11 @@ public interface DocumentTypePermissionService {
 	 * also considers the document status and initiator of the document.
 	 */
 	boolean canAddRouteLogMessage(String principalId, DocumentRouteHeaderValue documentRouteHeaderValue);
-	
+
+    /**
+     * Determines if the given principal can recall the specified document given the permission details.
+     * @since 2.1
+     */
+    boolean canRecall(String principalId, String documentId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String applicationStatus, String initiatorPrincipalId);
+
 }

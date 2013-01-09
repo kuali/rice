@@ -37,14 +37,12 @@ public abstract class AbstractWebServiceExporter implements ServiceExporter {
     
     private final ServiceDefinition serviceDefinition;
     private final Bus cxfBus;
-    private final ServerRegistry cxfServerRegistry;
 
     protected abstract void publishService(ServiceDefinition serviceDefinition, Object serviceImpl, String address) throws Exception;
 
-    public AbstractWebServiceExporter(ServiceDefinition serviceDefinition, Bus cxfBus, ServerRegistry cxfServerRegistry) {
+    public AbstractWebServiceExporter(ServiceDefinition serviceDefinition, Bus cxfBus) {
         this.serviceDefinition = serviceDefinition;
         this.cxfBus = cxfBus;
-        this.cxfServerRegistry = cxfServerRegistry;
     }
     
     @Override
@@ -111,7 +109,7 @@ public abstract class AbstractWebServiceExporter implements ServiceExporter {
     }
 
     protected ServerRegistry getCXFServerRegistry() {
-    	return this.cxfServerRegistry;
+    	return getCXFBus().getExtension(ServerRegistry.class);
     }
 
 }

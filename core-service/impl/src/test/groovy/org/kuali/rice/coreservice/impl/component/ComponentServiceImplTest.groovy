@@ -25,6 +25,8 @@ import org.kuali.rice.krad.service.BusinessObjectService
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.fail
 import java.sql.Timestamp
+import org.kuali.rice.coreservice.impl.namespace.NamespaceServiceImpl
+import org.kuali.rice.coreservice.api.namespace.Namespace
 
 /**
  * Unit test for {@link org.kuali.rice.coreservice.impl.component.ComponentServiceImpl}.
@@ -46,7 +48,7 @@ class ComponentServiceImplTest {
     org.kuali.rice.coreservice.impl.component.ComponentSetDao componentSetDao
 
     static final Component component = createComponent()
-    static final org.kuali.rice.coreservice.impl.component.ComponentBo componentBo = org.kuali.rice.coreservice.impl.component.ComponentBo.from(component)
+    static final org.kuali.rice.coreservice.impl.component.ComponentBo componentBo = convertComponent(component)
 
     static final Component derivedComponent = createDerivedComponent()
     static final org.kuali.rice.coreservice.impl.component.DerivedComponentBo derivedComponentBo = org.kuali.rice.coreservice.impl.component.DerivedComponentBo.from(derivedComponent)
@@ -510,6 +512,15 @@ class ComponentServiceImplTest {
     private static createComponent() {
         Component.Builder builder = Component.Builder.create(NAMESPACE_CODE, CODE, NAME)
         return builder.build()
+    }
+
+    private static ComponentBo convertComponent(Component component) {
+        ComponentBo.setNamespaceService(new NamespaceServiceImpl() {
+            Namespace getNamespace(String code) {
+                return new Namespace()
+            }
+        })
+        return ComponentBo.from(component)
     }
 
     private static final String DERIVED_CODE = "MyDerivedComponentCode"

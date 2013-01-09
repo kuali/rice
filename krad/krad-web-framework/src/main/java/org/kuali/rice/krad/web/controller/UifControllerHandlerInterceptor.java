@@ -19,8 +19,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.util.UifFormManager;
-import org.kuali.rice.krad.uif.util.UifWebUtils;
+import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -80,7 +79,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-        UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
+        UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);
     }
 
     /**
@@ -93,38 +92,42 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
             Exception ex) throws Exception {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
-
         UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
 
-        if (uifForm != null) {
-            if (uifForm.isRequestRedirect()) {
-                // view wasn't rendered, just set to null and leave previous posted view
-                uifForm.setView(null);
-            } else if (uifForm.isSkipViewInit()) {
-                // partial refresh or query
-                View postedView = uifForm.getPostedView();
-                if (postedView != null) {
-                    postedView.getViewHelperService().cleanViewAfterRender(postedView);
-                }
-            } else {
-                // full view render
-                View view = uifForm.getView();
-                if (view != null) {
-                    view.getViewHelperService().cleanViewAfterRender(view);
+        if ((uifForm == null) || (uifForm.getView() == null && uifForm.getPostedView() == null)) {
+            return;
+        }
 
-                    // check whether form should be keep in session or not
-                    if (view.isPersistFormToSession()) {
-                        // Remove the session transient variables from the request form before adding it to the list of
-                        // Uifsession forms
-                        uifFormManager.purgeForm(uifForm);
-                        uifFormManager.addSessionForm(uifForm);
-                    }
-                }
+        // perform form session handling
+        boolean persistFormToSession = uifForm.getView() != null ? uifForm.getView().isPersistFormToSession() :
+                uifForm.getPostedView().isPersistFormToSession();
 
-                uifForm.setPostedView(view);
-                uifForm.setView(null);
+        // cleaning of view structure
+        if (uifForm.isRequestRedirected() || uifForm.isUpdateNoneRequest()) {
+            // view wasn't rendered, just set to null and leave previous posted view
+            uifForm.setView(null);
+        } else if (uifForm.isUpdateViewRequest() || uifForm.isUpdateDialogRequest()) {
+            // partial refresh on posted view
+            View postedView = uifForm.getPostedView();
+            if (postedView != null) {
+                postedView.getViewHelperService().cleanViewAfterRender(postedView);
+            }
+        } else {
+            // full view render
+            View view = uifForm.getView();
+            if (view != null) {
+                view.getViewHelperService().cleanViewAfterRender(view);
             }
 
+            uifForm.setPostedView(view);
+            uifForm.setView(null);
+        }
+
+        // remove the session transient variables from the request form before adding it to the list of
+        // Uif session forms
+        if (persistFormToSession) {
+            uifFormManager.purgeForm(uifForm);
+            uifFormManager.addSessionForm(uifForm);
         }
     }
 

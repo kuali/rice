@@ -27,7 +27,7 @@ import java.util.List;
  * Layout manager implementations that work with a collection (such as a table
  * layout) should implement this interface for building the collection
  * <code>Component</code> instances
- * 
+ *
  * <p>
  * Unlike other <code>Group</code> instances, <code>CollectionGroup</code>
  * instances need to generate new instances of the configured components for
@@ -37,7 +37,7 @@ import java.util.List;
  * applyModel phase) this method will be invoked on the manager so that it may
  * setup the line as needed.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.container.CollectionGroupBuilder
  */
@@ -46,14 +46,14 @@ public interface CollectionLayoutManager extends LayoutManager {
 	/**
 	 * Call to the layout manager to build the components necessary for the
 	 * given collection line
-	 * 
+	 *
 	 * <p>
 	 * As the collection is being iterated over by the
 	 * <code>CollectionGroupBuilder</code> this method is invoked for each line.
 	 * The builder will create copies of the configured fields and actions for
 	 * the line and pass into the layout manager so they can be assembled
 	 * </p>
-	 * 
+	 *
 	 * @param view
 	 *            - view instance the collection belongs to
 	 * @param model
@@ -89,7 +89,7 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 * sub-collection field groups. For each sub-collection a copy of the
 	 * prototype is made and the list will be passed to the layout manager
 	 * buildLine method
-	 * 
+	 *
 	 * @return GroupField instance to use as prototype
 	 */
 	public FieldGroup getSubCollectionFieldGroupPrototype();

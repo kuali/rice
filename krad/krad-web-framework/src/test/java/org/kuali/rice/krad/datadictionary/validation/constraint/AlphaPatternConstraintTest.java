@@ -37,62 +37,62 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 
 /**
  * Things this test should check:
- * 
+ *
  * 1. value with all valid characters.(success) {@link #testValueAllValidChars()}
  * 2. value with invalid characters. (failure) {@link #testValueNotValidChars()}
  * 3. value with all valid characters. Allowing white space.(success) {@link #testValueAllValidCharsAllowWhitespace()}
  * 4. value with invalid characters Allowing white space. (failure) {@link #testValueNotValidCharsAllowWhitespace()}
  * 5. value with invalid characters(Special Characters) Allowing white space. (failure) {@link #testValueWithSpecialCharsAllowWhitespace()}
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AlphaPatternConstraintTest {
 
 	private AttributeDefinition street1Definition;
-	private AttributeDefinition cityDefinition;	
-	
+	private AttributeDefinition cityDefinition;
+
 	private BusinessObjectEntry addressEntry;
 	private DictionaryValidationResult dictionaryValidationResult;
-	
+
 	private ValidCharactersConstraintProcessor processor;
-	
+
 	private Address washingtonDCAddress = new Address("893 Presidential Ave", "(A_123) Suite 800.", "Washington", "DC", "NHW123A", "USA", null);
 	private Address newYorkNYAddress = new Address("Presidential Street", "(A-123) Suite 800", "New York", "NY", "ZH 3456", "USA", null);
 	private Address sydneyAUSAddress = new Address("Presidential Street-Ave.", "Suite_800.", "Sydney", "ZZ", "ZH-5656", "USA", null);
-	
+
 	private AlphaPatternConstraint street1AlphaPatternConstraint;
-	private AlphaPatternConstraint cityAlphaPatternConstraint;	
-	
+	private AlphaPatternConstraint cityAlphaPatternConstraint;
+
 	@Before
 	public void setUp() throws Exception {
-		
+
 		processor = new ValidCharactersConstraintProcessor();
-		
+
 		dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		
+
 		addressEntry = new BusinessObjectEntry();
-		
+
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
-		
+
 		cityAlphaPatternConstraint = new AlphaPatternConstraint();
-		
+
 		cityDefinition = new AttributeDefinition();
 		cityDefinition.setName("city");
 		cityDefinition.setValidCharactersConstraint(cityAlphaPatternConstraint);
-		attributes.add(cityDefinition);					
-		
+		attributes.add(cityDefinition);
+
 		street1AlphaPatternConstraint = new AlphaPatternConstraint();
 		street1AlphaPatternConstraint.setAllowWhitespace(true);
-		
+
 		street1Definition = new AttributeDefinition();
 		street1Definition.setName("street1");
 		street1Definition.setValidCharactersConstraint(street1AlphaPatternConstraint);
-		attributes.add(street1Definition);			
-		
-		addressEntry.setAttributes(attributes);	
+		attributes.add(street1Definition);
+
+		addressEntry.setAttributes(attributes);
 	}
-	
+
 	@Test
 	public void testValueAllValidChars() {
 		ConstraintValidationResult result = process(washingtonDCAddress, "city", cityAlphaPatternConstraint);
@@ -141,11 +141,11 @@ public class AlphaPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	private ConstraintValidationResult process(Object object, String attributeName, ValidCharactersConstraint constraint) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
-		
+
 		Object value = attributeValueReader.getValue();
 		return processor.process(dictionaryValidationResult, value, constraint, attributeValueReader).getFirstConstraintValidationResult();
 	}

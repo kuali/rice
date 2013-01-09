@@ -29,6 +29,8 @@ import org.kuali.rice.kew.api.document.DocumentStatus
 import java.sql.Timestamp
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.impl.group.GroupBo
+import org.kuali.rice.kim.api.identity.principal.Principal
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName
 
 /**
  * Defines the business object that specifies the criteria used on document searches.
@@ -44,10 +46,13 @@ class DocumentSearchCriteriaBo implements BusinessObject {
     String applicationDocumentStatus
     String title
     String initiatorPrincipalName
+    String initiatorPrincipalId
     String viewerPrincipalName
+    String viewerPrincipalId
     String groupViewerName
     String groupViewerId
     String approverPrincipalName
+    String approverPrincipalId
     String routeNodeName
     String routeNodeLogic
     Timestamp dateCreated
@@ -69,20 +74,22 @@ class DocumentSearchCriteriaBo implements BusinessObject {
     }
 
     Person getInitiatorPerson() {
-        if (initiatorPrincipalName == null) {
+        if (initiatorPrincipalId == null) {
             return null
         }
-        return KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalName)
+        return KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId)
     }
-	
-	String getInitiatorDisplayName() {
-		if(!initiatorPrincipalName) {
-			return null
-		}
-		String initiatorPrincipalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(initiatorPrincipalName)?.getPrincipalId()
-		EntityName entityName = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(initiatorPrincipalId)?.getDefaultName()
-		return entityName.getCompositeName()
-	}
+
+    String getInitiatorDisplayName() {
+        if(initiatorPrincipalId != null) {
+            EntityNamePrincipalName entityNamePrincipalName = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(initiatorPrincipalId);
+            if(entityNamePrincipalName != null){
+                EntityName entityName = entityNamePrincipalName.getDefaultName();
+                return entityName == null ? null : entityName.getCompositeName();
+            }
+        }
+        return null;
+    }
 
     Person getApproverPerson() {
         if (approverPrincipalName == null) {
@@ -140,12 +147,16 @@ class DocumentSearchCriteriaBo implements BusinessObject {
         applicationDocumentStatus = document.applicationDocumentStatus
         title = document.title
         initiatorPrincipalName = principalIdToName(document.initiatorPrincipalId)
+        initiatorPrincipalId = document.initiatorPrincipalId
         dateCreated = new Timestamp(document.dateCreated.getMillis())
     }
 
     private String principalIdToName(String principalId) {
-        if (principalId.trim()) {
-            return KimApiServiceLocator.getIdentityService().getPrincipal(principalId).getPrincipalName()
+        if (principalId != null && principalId.trim() ) {
+            Principal principal =  KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            if(principal != null){
+                return principal.getPrincipalName();
+            }
         }
         return null
     }

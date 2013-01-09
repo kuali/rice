@@ -15,18 +15,22 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * TODO delyea don't forget to fill this in.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "fixedPointPatternConstraint", parent = "FixedPointPatternConstraint")
 public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
 
     protected boolean allowNegative;
@@ -35,7 +39,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
 
     /**
      * Overriding retrieval of
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersPatternConstraint#getRegexString()
      */
     @Override
@@ -58,6 +62,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     /**
      * @return the allowNegative
      */
+    @BeanTagAttribute(name = "allowNegative")
     public boolean isAllowNegative() {
         return this.allowNegative;
     }
@@ -72,6 +77,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     /**
      * @return the precision
      */
+    @BeanTagAttribute(name = "precision")
     public int getPrecision() {
         return this.precision;
     }
@@ -86,6 +92,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     /**
      * @return the scale
      */
+    @BeanTagAttribute(name = "scale")
     public int getScale() {
         return this.scale;
     }
@@ -99,26 +106,44 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
     @Override
     public List<String> getValidationMessageParams() {
-        if(validationMessageParams == null){
+        if (validationMessageParams == null) {
             validationMessageParams = new ArrayList<String>();
             ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
             if (allowNegative) {
-                validationMessageParams.add(configService.getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
-                        + "positiveOrNegative"));
+                validationMessageParams.add(configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegative"));
             } else {
-                validationMessageParams.add(configService.getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
-                        + "positive"));
+                validationMessageParams.add(configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
             }
-    
+
             validationMessageParams.add(Integer.toString(precision));
             validationMessageParams.add(Integer.toString(scale));
         }
         return validationMessageParams;
+    }
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean("FixedPointPatternConstraint", getMessageKey());
+
+        if (getPrecision() <= getScale()) {
+            String currentValues[] = {"precision =" + getPrecision(), "scale = " + getScale()};
+            tracer.createError("Precision should greater than Scale", currentValues);
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 
 }

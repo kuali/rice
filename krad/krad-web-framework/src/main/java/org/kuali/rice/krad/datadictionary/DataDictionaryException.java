@@ -17,15 +17,13 @@ package org.kuali.rice.krad.datadictionary;
 
 /**
  * Exception thrown when an error occurs loading entries into the DataDictionaryEntry.
- * 
- * 
  */
 public class DataDictionaryException extends RuntimeException {
 
     public DataDictionaryException(Throwable t) {
-    	super(t);
+        super(t);
     }
-    
+
     /**
      * @param message
      */

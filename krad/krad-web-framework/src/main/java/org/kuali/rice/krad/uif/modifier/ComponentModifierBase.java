@@ -15,26 +15,27 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Base class for <code>ComponentModifier</code> implementations
- * 
+ *
  * <p>
  * Holds run phase property and defaults to the INITIALIZE phase, and the order
  * property for setting the order in which the component modifier will be
  * invoked
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentModifierBase extends ConfigurableBase implements ComponentModifier {
+public abstract class ComponentModifierBase extends UifDictionaryBeanBase implements ComponentModifier {
 	private static final long serialVersionUID = -8284332412469942130L;
 
 	private String runPhase;
@@ -70,13 +71,14 @@ public abstract class ComponentModifierBase extends ConfigurableBase implements 
     /**
 	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunPhase()
 	 */
+    @BeanTagAttribute(name="runPhase")
 	public String getRunPhase() {
 		return this.runPhase;
 	}
 
 	/**
 	 * Setter for the component initializer run phase
-	 * 
+	 *
 	 * @param runPhase
 	 */
 	public void setRunPhase(String runPhase) {
@@ -86,13 +88,14 @@ public abstract class ComponentModifierBase extends ConfigurableBase implements 
 	/**
 	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunCondition()
 	 */
+    @BeanTagAttribute(name="runCondition")
 	public String getRunCondition() {
 		return this.runCondition;
 	}
 
 	/**
 	 * Setter for the component modifiers run condition
-	 * 
+	 *
 	 * @param runCondition
 	 */
 	public void setRunCondition(String runCondition) {
@@ -102,6 +105,7 @@ public abstract class ComponentModifierBase extends ConfigurableBase implements 
 	/**
 	 * @see org.springframework.core.Ordered#getOrder()
 	 */
+    @BeanTagAttribute(name="order")
 	public int getOrder() {
 		return this.order;
 	}

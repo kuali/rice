@@ -233,7 +233,7 @@ class IdentityServiceImplTest {
             sampleEntityBioDemographics.put(bo.entityId, bo);
         }
     }
-
+    
     @Before
     void setupMockContext() {
         mockBoService = new MockFor(BusinessObjectService.class);

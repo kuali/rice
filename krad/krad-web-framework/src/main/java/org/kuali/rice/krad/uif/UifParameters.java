@@ -19,7 +19,7 @@ package org.kuali.rice.krad.uif;
  * Constants for parameter names that need to be retrieved from general
  * <code>Map</code> implementations (like the request, action parameters map,
  * component template options, component layout options)
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifParameters {
@@ -32,7 +32,9 @@ public class UifParameters {
     public static final String CONFIG_PROPERTIES = "ConfigProperties";
 	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
 	public static final String DISABLE_SEARCH_BUTTONS = "disableSearchButtons";
+    public static final String DOCUMENT_CLASS = "documentClass";
     public static final String DOC_NUM = "docNum";
+    public static final String DOC_TYPE_NAME = "docTypeName";
     public static final String FORM_KEY = "formKey";
     public static final String FORM_MANAGER = "formManager";
 	public static final String HEADER_BAR_ENABLED = "headerBarEnabled";
@@ -46,13 +48,11 @@ public class UifParameters {
     public static final String REDIRECTED_INQUIRY = "redirectedInquiry";
     public static final String REDIRECTED_LOOKUP = "redirectedLookup";
 	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
-	public static final String RENDER_FULL_VIEW = "renderFullView";
 	public static final String RETURN_LOCATION = "returnLocation";
 	public static final String RETURN_FORM_KEY = "returnFormKey";
     public static final String REQUESTED_COMPONENT_ID = "reqComponentId";
     public static final String REQUEST = "request";
     public static final String SHOW_INACTIVE_RECORDS = "showInactiveRecords";
-    public static final String SKIP_VIEW_INIT = "skipViewInit";
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
     public static final String SELECTED_LINE_VALUES = "selectedLineValues";
@@ -70,5 +70,6 @@ public class UifParameters {
     public static final String QUERY_FIELD_ID = "queryFieldId";
     public static final String QUERY_TERM = "queryTerm";
     public static final String UPDATE_COMPONENT_ID = "updateComponentId";
+    public static final String AJAX_REQUEST = "ajaxRequest";
 
 }

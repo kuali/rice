@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.krad.uif.view;
 
 import org.junit.Before;
@@ -65,7 +64,7 @@ public class ViewIndexTest {
             viewIndex.indexComponent(component);
             viewIndex.addInitialComponentStateIfNeeded(component);
         }
-        
+
         // verify initial view index state
         for (Component component: components) {
             assertNotNull(viewIndex.getComponentById(component.getId()));

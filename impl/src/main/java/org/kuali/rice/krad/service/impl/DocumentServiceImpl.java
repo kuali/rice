@@ -47,6 +47,7 @@ import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.BlanketApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.CompleteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
@@ -62,6 +63,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -256,6 +258,15 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
         getDocumentDao().save(document);
+        return superUserDisapproveDocumentWithoutSaving(document, annotation);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentService#superUserCancelDocument(org.kuali.rice.krad.document.Document,
+     *      java.lang.String)
+     */
+    @Override
+    public Document superUserDisapproveDocumentWithoutSaving(Document document, String annotation) throws WorkflowException {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService()
                 .superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
@@ -264,6 +275,7 @@ public class DocumentServiceImpl implements DocumentService {
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
+
 
     /**
      * @see org.kuali.rice.krad.service.DocumentService#disapproveDocument(org.kuali.rice.krad.document.Document,
@@ -274,6 +286,11 @@ public class DocumentServiceImpl implements DocumentService {
         checkForNulls(document);
 
         Note note = createNoteFromDocument(document, annotation);
+        //if note type is BO, override and link disapprove notes to Doc Header
+        if (document.getNoteType().equals(NoteType.BUSINESS_OBJECT)) {
+            note.setNoteTypeCode(NoteType.DOCUMENT_HEADER.getCode());
+            note.setRemoteObjectIdentifier(document.getDocumentHeader().getObjectId());
+        }
         document.addNote(note);
 
         //SAVE THE NOTE
@@ -316,6 +333,22 @@ public class DocumentServiceImpl implements DocumentService {
                 document.getDocumentHeader().getWorkflowDocument());
         //getBusinessObjectService().delete(document.getAdHocRoutePersons());
         //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        removeAdHocPersonsAndWorkgroups(document);
+        return document;
+    }
+
+    @Override
+    public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException {
+        checkForNulls(document);
+
+        Note note = createNoteFromDocument(document, annotation);
+        document.addNote(note);
+        getNoteService().save(note);
+
+        prepareWorkflowDocument(document);
+        getWorkflowDocumentService().recall(document.getDocumentHeader().getWorkflowDocument(), annotation, cancel);
+        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -378,6 +411,31 @@ public class DocumentServiceImpl implements DocumentService {
         KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
                 document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
+        return document;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentService#completeDocument(org.kuali.rice.krad.document.Document,
+     *      java.lang.String,
+     *      java.util.List)
+     */
+    @Override
+    public Document completeDocument(Document document, String annotation,
+            List adHocRecipients) throws WorkflowException {
+        checkForNulls(document);
+
+        document.prepareForSave();
+        validateAndPersistDocument(document, new CompleteDocumentEvent(document));
+
+        prepareWorkflowDocument(document);
+        getWorkflowDocumentService().complete(document.getDocumentHeader().getWorkflowDocument(), annotation,
+                adHocRecipients);
+
+        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
+
+        removeAdHocPersonsAndWorkgroups(document);
+
         return document;
     }
 
@@ -470,12 +528,15 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * Creates a new document by document type name.
+     * Creates a new document by document type name. The principal name
+     * passed in will be used as the document initiator.  If the  initiatorPrincipalNm
+     * is null or blank, the current user will be used.
      *
-     * @see org.kuali.rice.krad.service.DocumentService#getNewDocument(java.lang.String)
+     * @see org.kuali.rice.krad.service.DocumentService#getNewDocument(String, String)
      */
     @Override
-    public Document getNewDocument(String documentTypeName) throws WorkflowException {
+    public Document getNewDocument(String documentTypeName, String initiatorPrincipalNm) throws WorkflowException {
+
         // argument validation
         String watchName = "DocumentServiceImpl.getNewDocument";
         StopWatch watch = new StopWatch();
@@ -494,8 +555,16 @@ public class DocumentServiceImpl implements DocumentService {
         // get the class for this docTypeName
         Class<? extends Document> documentClass = getDocumentClassByTypeName(documentTypeName);
 
-        // get the current user
-        Person currentUser = GlobalVariables.getUserSession().getPerson();
+        // get the initiator
+        Person initiator = null;
+        if (StringUtils.isBlank(initiatorPrincipalNm)) {
+            initiator = GlobalVariables.getUserSession().getPerson();
+        } else {
+            initiator = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalNm);
+            if (ObjectUtils.isNull(initiator)) {
+                initiator = GlobalVariables.getUserSession().getPerson();
+            }
+        }
 
         // get the authorization
         DocumentAuthorizer documentAuthorizer = getDocumentDictionaryService().getDocumentAuthorizer(documentTypeName);
@@ -504,12 +573,12 @@ public class DocumentServiceImpl implements DocumentService {
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
         if (!documentPresentationController.canInitiate(documentTypeName) ||
-                !documentAuthorizer.canInitiate(documentTypeName, currentUser)) {
-            throw new DocumentAuthorizationException(currentUser.getPrincipalName(), "initiate", documentTypeName);
+                !documentAuthorizer.canInitiate(documentTypeName, initiator)) {
+            throw new DocumentAuthorizationException(initiator.getPrincipalName(), "initiate", documentTypeName);
         }
 
         // initiate new workflow entry, get the workflow doc
-        WorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
+        WorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, initiator);
         KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
         // create a new document header object
@@ -569,6 +638,17 @@ public class DocumentServiceImpl implements DocumentService {
 
         return document;
     }
+
+    /**
+     * Creates a new document by document type name.
+     *
+     * @see org.kuali.rice.krad.service.DocumentService#getNewDocument(java.lang.String)
+     */
+    @Override
+    public Document getNewDocument(String documentTypeName) throws WorkflowException {
+        return getNewDocument(documentTypeName, null);
+    }
+
 
     /**
      * This is temporary until workflow 2.0 and reads from a table to get documents whose status has changed to A
@@ -665,7 +745,16 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected void loadNotes(Document document) {
         if (isNoteTargetReady(document)) {
-            List<Note> notes = getNoteService().getByRemoteObjectId(document.getNoteTarget().getObjectId());
+            List<Note> notes = new ArrayList<Note>();
+            if (StringUtils.isNotBlank(document.getNoteTarget().getObjectId())) {
+                notes.addAll(getNoteService().getByRemoteObjectId(document.getNoteTarget().getObjectId()));
+            }
+            //notes created on 'disapprove' are linked to Doc Header, so this checks that even if notetype = BO
+            if (document.getNoteType().equals(NoteType.BUSINESS_OBJECT)
+                 && document.getDocumentHeader().getWorkflowDocument().isDisapproved()) {
+                notes.addAll(getNoteService().getByRemoteObjectId(document.getDocumentHeader().getObjectId()));
+            }
+
             // KULRNE-5692 - force a refresh of the attachments
             // they are not (non-updateable) references and don't seem to update properly upon load
             for (Note note : notes) {
@@ -749,6 +838,7 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * Validates and persists a document.
      */
+    @Override
     public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException {
         if (document == null) {
             LOG.error("document passed to validateAndPersist was null");
@@ -925,6 +1015,11 @@ public class DocumentServiceImpl implements DocumentService {
      * @return true if the note target is ready, false otherwise
      */
     protected boolean isNoteTargetReady(Document document) {
+
+        //special case for disappoved documents
+        if (document.getDocumentHeader().getWorkflowDocument().isDisapproved()) {
+            return true;
+        }
         PersistableBusinessObject noteTarget = document.getNoteTarget();
         if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
             return false;
@@ -1066,7 +1161,4 @@ public class DocumentServiceImpl implements DocumentService {
         this.kualiConfigurationService = kualiConfigurationService;
     }
 
-    protected ConfigurationService getKualiConfigurationService() {
-        return kualiConfigurationService;
-    }
 }

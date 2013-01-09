@@ -215,6 +215,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 	
 	@Override
+	public List<ActionRequest> getPendingActionRequests(String documentId) {
+		if (StringUtils.isBlank(documentId)) {
+			throw new RiceIllegalArgumentException("documentId was blank or null");
+		}
+		List<ActionRequest> actionRequests = new ArrayList<ActionRequest>();
+		List<ActionRequestValue> actionRequestBos = KEWServiceLocator.getActionRequestService().findAllPendingRequests(documentId);
+		for (ActionRequestValue actionRequestBo : actionRequestBos) {
+			actionRequests.add(ActionRequestValue.to(actionRequestBo));
+		}
+		return Collections.unmodifiableList(actionRequests);
+	}
+	
+	@Override
 	public List<ActionRequest> getActionRequestsForPrincipalAtNode(String documentId, String nodeName,
             String principalId) {
         if (StringUtils.isBlank(documentId)) {
@@ -262,6 +275,25 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 		return actionTakens;
 	}
+
+    @Override
+    public List<ActionTaken> _getActionsTaken(String documentId) {
+        return getActionsTaken(documentId);
+    }
+
+    @Override
+    public List<ActionTaken> getAllActionsTaken(String documentId){
+        if(StringUtils.isEmpty(documentId)){
+            throw new RiceIllegalArgumentException("documentId is null or empty.");
+        }
+
+		List<ActionTaken> actionsTaken = new ArrayList<ActionTaken>();
+        Collection<ActionTakenValue> actionTakenBos = KEWServiceLocator.getActionTakenService().findByDocumentIdIgnoreCurrentInd(documentId);
+		for (ActionTakenValue actionTakenBo : actionTakenBos) {
+			actionsTaken.add(ActionTakenValue.to(actionTakenBo));
+		}
+       return actionsTaken;
+    }
 	
 	@Override
 	public DocumentDetail getDocumentDetail(@WebParam(name = "documentId") String documentId) {
@@ -351,6 +383,33 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     		LOG.debug("Fetching current RouteNodeInstanceVOs [docId=" + documentId + "]");
     	}
     	return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId));
+    }
+    
+    public List<String> getActiveRouteNodeNames(String documentId) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+    	
+    	final List<String> nodes = KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(documentId);
+    	return nodes != null ? Collections.unmodifiableList(nodes) : Collections.<String>emptyList();
+    }
+    
+    public List<String> getTerminalRouteNodeNames(String documentId) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+    	
+    	final List<String> nodes = KEWServiceLocator.getRouteNodeService().getTerminalRouteNodeNames(documentId);
+    	return nodes != null ? Collections.unmodifiableList(nodes) : Collections.<String>emptyList();
+    }
+
+    public List<String> getCurrentRouteNodeNames(String documentId) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+    	
+    	final List<String> nodes = KEWServiceLocator.getRouteNodeService().getCurrentRouteNodeNames(documentId);
+    	return nodes != null ? Collections.unmodifiableList(nodes) : Collections.<String>emptyList();
     }
 
 	private List<RouteNodeInstance> convertRouteNodeInstances(List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodeInstanceBos) {

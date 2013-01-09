@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 
 /**
@@ -58,6 +59,11 @@ public final class ExternalizableBusinessObjectUtils {
 	public static boolean isExternalizableBusinessObjectInterface(Class businessObjectClass) {
 		return businessObjectClass != null && businessObjectClass.isInterface() && ExternalizableBusinessObject.class.isAssignableFrom(businessObjectClass);
 	}
+
+    public static boolean isExternalizableBusinessObject(Class businessObjectClass) {
+        return businessObjectClass != null && ExternalizableBusinessObject.class.isAssignableFrom(businessObjectClass);
+    }
+
 
 	public static boolean isExternalizableBusinessObjectInterface(String businessObjectClassName) {
 		try {

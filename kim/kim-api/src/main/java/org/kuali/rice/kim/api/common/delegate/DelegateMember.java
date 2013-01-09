@@ -55,7 +55,7 @@ import java.util.Map;
 public final class DelegateMember extends AbstractDataTransferObject
         implements DelegateMemberContract {
 
-    @XmlElement(name = Elements.DELEGATION_MEMBER_ID, required = true)
+    @XmlElement(name = Elements.DELEGATION_MEMBER_ID, required = false)
     private final String delegationMemberId;
 
     @XmlElement(name = Elements.DELEGATION_ID, required = false)
@@ -110,7 +110,11 @@ public final class DelegateMember extends AbstractDataTransferObject
         this.delegationId = builder.getDelegationId();
         this.memberId = builder.getMemberId();
         this.roleMemberId = builder.getRoleMemberId();
-        this.typeCode = builder.getType().getCode();
+        if (builder.getType() == null) {
+            this.typeCode = null;
+        } else {
+            this.typeCode = builder.getType().getCode();
+        }
         this.versionNumber = builder.getVersionNumber();
         this.activeFromDate = builder.getActiveFromDate();
         this.activeToDate = builder.getActiveToDate();
@@ -217,10 +221,6 @@ public final class DelegateMember extends AbstractDataTransferObject
         }
 
         public DelegateMember build() {
-            if (StringUtils.isEmpty(this.delegationMemberId) || this.versionNumber == null) {
-                throw new IllegalStateException("Required fields of delegationMemberId and versionNumber set to valid non-null" +
-                        " values before calling build()");
-            }
             return new DelegateMember(this);
         }
 
@@ -230,8 +230,8 @@ public final class DelegateMember extends AbstractDataTransferObject
         }
 
         public void setDelegationMemberId(String delegationMemberId) {
-            if (StringUtils.isEmpty(delegationMemberId)) {
-                throw new IllegalArgumentException("delegationMemberId is a required field and cannot be null or blank");
+            if (StringUtils.isWhitespace(delegationMemberId)) {
+                throw new IllegalArgumentException("delegationMemberId cannot be whitespace");
             }
             this.delegationMemberId = delegationMemberId;
         }
@@ -283,9 +283,6 @@ public final class DelegateMember extends AbstractDataTransferObject
         }
 
         public void setVersionNumber(Long versionNumber) {
-            if (versionNumber == null) {
-                throw new IllegalArgumentException("versionNumber is required and must be non-null");
-            }
             this.versionNumber = versionNumber;
         }
 

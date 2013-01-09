@@ -1,10 +1,32 @@
+/**
+ * Copyright 2005-2012 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.widget.Help;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +34,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "image", parent = "Uif-Image"),
+        @BeanTag(name = "helpImage", parent = "Uif-HelpImage"),
+        @BeanTag(name = "quickLookupImage", parent = "Uif-QuickLookupImage"),
+        @BeanTag(name = "directInquiryImage", parent = "Uif-DirectInquiryImage")})
 public class Image extends ContentElementBase {
     private static final long serialVersionUID = -3911849875276940507L;
 
@@ -28,12 +54,37 @@ public class Image extends ContentElementBase {
     private String cutlineText;
     private Message cutlineMessage;
 
-    private Help help;
-
     public Image() {
         super();
 
         altText = "";
+    }
+
+    /**
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>Initializes the cutline message and caption header components if necessary</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        if ((StringUtils.isNotBlank(captionHeaderText) || (getPropertyExpression("captionHeaderText") != null)) && (
+                captionHeader == null)) {
+            captionHeader = ComponentFactory.getImageCaptionHeader();
+            view.assignComponentIds(captionHeader);
+        }
+
+        if ((StringUtils.isNotBlank(cutlineText) || (getPropertyExpression("cutlineText") != null)) && (cutlineMessage
+                == null)) {
+            cutlineMessage = ComponentFactory.getImageCutlineMessage();
+            view.assignComponentIds(cutlineMessage);
+        }
     }
 
     /**
@@ -80,6 +131,7 @@ public class Image extends ContentElementBase {
      *
      * @return String containing the URL of this image.
      */
+    @BeanTagAttribute(name="source")
     public String getSource() {
         return this.source;
     }
@@ -111,6 +163,7 @@ public class Image extends ContentElementBase {
      *
      * @return a String representing alternative information about this image
      */
+    @BeanTagAttribute(name="altText")
     public String getAltText() {
         return this.altText;
     }
@@ -137,6 +190,7 @@ public class Image extends ContentElementBase {
      *
      * @return String containing of the height style attribute of this image
      */
+    @BeanTagAttribute(name="height")
     public String getHeight() {
         return this.height;
     }
@@ -163,6 +217,7 @@ public class Image extends ContentElementBase {
      *
      * @return String containing the width of this image
      */
+    @BeanTagAttribute(name="width")
     public String getWidth() {
         return width;
     }
@@ -185,6 +240,7 @@ public class Image extends ContentElementBase {
      *
      * @return String containing the caption
      */
+    @BeanTagAttribute(name="captionHeaderText")
     public String getCaptionHeaderText() {
         return captionHeaderText;
     }
@@ -203,6 +259,7 @@ public class Image extends ContentElementBase {
      *
      * @return Header component which wraps the caption text.
      */
+    @BeanTagAttribute(name="captionHeader",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Header getCaptionHeader() {
         return captionHeader;
     }
@@ -226,6 +283,7 @@ public class Image extends ContentElementBase {
      *
      * @return String containing the cutline text.
      */
+    @BeanTagAttribute(name="cutlineText")
     public String getCutlineText() {
         return cutlineText;
     }
@@ -248,6 +306,7 @@ public class Image extends ContentElementBase {
      *
      * @return Message component wrapping the cutline.
      */
+    @BeanTagAttribute(name="cutlineMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getCutlineMessage() {
         return cutlineMessage;
     }
@@ -266,6 +325,7 @@ public class Image extends ContentElementBase {
      *
      * @return true if the caption is to be displayed above the image. false if displayed below the image.
      */
+    @BeanTagAttribute(name="captionHeaderPlacmentAboveImage")
     public boolean isCaptionHeaderPlacementAboveImage() {
         return captionHeaderPlacementAboveImage;
     }
@@ -280,26 +340,28 @@ public class Image extends ContentElementBase {
     }
 
     /**
-     * Help configuration object for the Image
-     *
-     * <p>
-     * External help information can be configured for the Image. The
-     * <code>Help</code> object can the configuration for rendering a link to
-     * that help information.
-     * </p>
-     *
-     * @return Help for Image
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
-    public Help getHelp() {
-        return this.help;
-    }
+    @Override
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean(this);
 
-    /**
-     * Setter for the Image help content
-     *
-     * @param help
-     */
-    public void setHelp(Help help) {
-        this.help = help;
+        // Checks that a source is set
+        if(getSource()==null){
+            if(!Validator.checkExpressions(this, "source")){
+                String currentValues [] = {"source ="+getSource()};
+                tracer.createError("Source must be set",currentValues);
+            }
+        }
+
+        // Checks that alt text is set
+        if(getAltText().compareTo("")==0){
+            if(Validator.checkExpressions(this, "altText")){
+                String currentValues [] = {"altText ="+getAltText()};
+                tracer.createWarning("Alt text should be set, violates accessibility standards if not set",currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

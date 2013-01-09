@@ -26,6 +26,7 @@ import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -76,8 +77,8 @@ public class ActionInvocationQueueImpl implements ActionInvocationQueue {
                         + principal.getPrincipalName()
                         + "'");
                 return;
-            } else if (!KEWServiceLocator.getActionRegistry().getValidActions(principal, document).getActionTakenCodes()
-                    .contains(action.getActionTakenCode())) {
+            } else if (!KEWServiceLocator.getActionRegistry().getValidActions(principal, document).getValidActions()
+                    .contains(ActionType.fromCode(action.getActionTakenCode()))) {
                 LOG.warn("Action "
                         + action.getActionTakenCode()
                         + " is not valid for document "

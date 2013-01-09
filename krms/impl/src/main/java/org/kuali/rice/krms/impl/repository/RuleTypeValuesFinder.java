@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.apache.cxf.common.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.form.InquiryForm;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
@@ -45,12 +45,12 @@ public class RuleTypeValuesFinder extends UifKeyValuesFinderBase {
             agendaEditor = ((AgendaEditor) inquiryForm.getDataObject());
 
         } else {
-            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
             agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
         }
 
         // if we have an agenda w/ a selected context
-        if (agendaEditor.getAgenda() != null && !StringUtils.isEmpty(agendaEditor.getAgenda().getContextId())) {
+        if (agendaEditor.getAgenda() != null && StringUtils.isNotBlank(agendaEditor.getAgenda().getContextId())) {
             Collection<KrmsTypeDefinition> ruleTypes = getKrmsTypeRepositoryService().findAllRuleTypesByContextId(
                     agendaEditor.getAgenda().getContextId());
             for (KrmsTypeDefinition ruleType : ruleTypes) {

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch.service.impl
 
-import javax.xml.bind.JAXBContext
-import javax.xml.bind.Marshaller
-import javax.xml.bind.Unmarshaller
 import org.apache.commons.lang.RandomStringUtils
 import org.apache.commons.lang.SerializationUtils
 import org.apache.commons.lang.time.StopWatch
@@ -25,11 +22,15 @@ import org.joda.time.DateTime
 import org.junit.Test
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
-
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
+
+import javax.xml.bind.JAXBContext
+import javax.xml.bind.Marshaller
+import javax.xml.bind.Unmarshaller
+
 import static org.junit.Assert.assertEquals
-import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 
 /**
  * Tests DocumentSearchCriteria marshalling and performance
@@ -38,10 +39,13 @@ class DocumentSearchCriteriaTest {
 
     @Test
     public void test_Xml_Marshal_Unmarshal() {
-        //JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create("name"), XML, DocumentSearchCriteria.class)
-        // DateTimeAdapter ensures DateTimes are marshalled appropriately, but MultiValuedStringMapAdapter is not fully implemented
+        // DateTimeAdapter ensures DateTimes are marshalled appropriately
         DocumentSearchCriteria c = createWithoutDocAttribs("name")
         assertEquals(c, unmarshalJAXB(marshalJAXB(c)))
+
+        // test w/ full object including attributes
+        c = create("name");
+        assertEquals(c, unmarshalJAXB(marshalJAXB(c)));
     }
 
     @Test
@@ -118,22 +122,24 @@ class DocumentSearchCriteriaTest {
 
     protected static DocumentSearchCriteria.Builder createBare(String saveName = null) {
         def builder = DocumentSearchCriteria.Builder.create()
-        builder.applicationDocumentId = RandomStringUtils.randomAlphanumeric(20)
-        builder.applicationDocumentStatus = RandomStringUtils.randomAlphanumeric(10)
-        builder.approverPrincipalName = RandomStringUtils.randomAlphanumeric(20)
-
-        builder.documentId = RandomStringUtils.randomAlphanumeric(10)
-        builder.documentTypeName = RandomStringUtils.randomAlphanumeric(10)
+        builder.applicationDocumentId = RandomStringUtils.randomAlphanumeric(5)
+        builder.applicationDocumentStatus = RandomStringUtils.randomAlphanumeric(5)
+        builder.approverPrincipalName = RandomStringUtils.randomAlphanumeric(5)
+        builder.approverPrincipalId = RandomStringUtils.randomAlphanumeric(5)
+        builder.documentId = RandomStringUtils.randomAlphanumeric(5)
+        builder.documentTypeName = RandomStringUtils.randomAlphanumeric(5)
         builder.documentStatusCategories = Arrays.asList([ DocumentStatusCategory.PENDING, DocumentStatusCategory.SUCCESSFUL ] as DocumentStatusCategory[])
         builder.documentStatuses = Arrays.asList([ DocumentStatus.ENROUTE, DocumentStatus.INITIATED, DocumentStatus.SAVED ] as DocumentStatus[])
-        builder.initiatorPrincipalName = RandomStringUtils.randomAlphanumeric(20)
-        builder.maxResults = 1000
-        builder.routeNodeName = RandomStringUtils.randomAlphanumeric(10)
+        builder.initiatorPrincipalName = RandomStringUtils.randomAlphanumeric(10)
+        builder.initiatorPrincipalId = RandomStringUtils.randomAlphanumeric(10)
+        builder.maxResults = 500
+        builder.routeNodeName = RandomStringUtils.randomAlphanumeric(5)
         builder.saveName = saveName
         builder.startAtIndex = 1
-        builder.title = RandomStringUtils.randomAlphanumeric(20)
-        builder.groupViewerId = RandomStringUtils.randomAlphanumeric(10)
-        builder.viewerPrincipalName = RandomStringUtils.randomAlphanumeric(20)
+        builder.title = RandomStringUtils.randomAlphanumeric(10)
+        builder.groupViewerId = RandomStringUtils.randomAlphanumeric(5)
+        builder.viewerPrincipalName = RandomStringUtils.randomAlphanumeric(10)
+        builder.viewerPrincipalId = RandomStringUtils.randomAlphanumeric(10)
         builder.routeNodeLookupLogic = RouteNodeLookupLogic.EXACTLY
         return builder
     }
@@ -141,12 +147,12 @@ class DocumentSearchCriteriaTest {
     protected static void addDocAttribs(DocumentSearchCriteria.Builder builder) {
         // TODO: FIXME: MultiValuedStringMapAdapter unmarshal not implemented
         Map<String, List<String>> attrs = new HashMap<String, List<String>>()
-        for (i in 1..10) {
-            def list = new ArrayList(10)
-            for (j in 1..10) {
-                list.add(RandomStringUtils.randomAlphanumeric(10))
+        for (i in 1..5) {
+            def list = new ArrayList(5)
+            for (j in 1..5) {
+                list.add(RandomStringUtils.randomAlphanumeric(5))
             }
-            attrs.put(RandomStringUtils.randomAlphanumeric(10), list)
+            attrs.put(RandomStringUtils.randomAlphanumeric(5), list)
         }
         builder.documentAttributeValues = attrs
     }

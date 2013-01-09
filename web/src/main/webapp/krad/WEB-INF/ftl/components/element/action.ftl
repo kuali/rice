@@ -1,19 +1,20 @@
 <#--
-  ~ Copyright 2006-2012 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
 
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <#--
     Standard HTML Input Submit - will create an input of type submit or type image if the action
     image element is configured
@@ -37,12 +38,12 @@
     </#if>
 
     <#if element.disabled>
-        <#local disabled="disabled=\"true\""/>
+        <#local disabled="disabled=\"disabled\""/>
     </#if>
 
     <#assign imagePlacement="${element.actionImagePlacement}"/>
 
-    <#-- determine if input of type image should be rendered -->
+<#-- determine if input of type image should be rendered -->
     <#if element.actionImage?? && element.actionImage.render && (!imagePlacement?has_content
     || (imagePlacement == 'IMAGE_ONLY'))>
 
@@ -50,12 +51,12 @@
            src="${element.actionImage.source}"
            alt="${element.actionImage.altText!}"
            title="${element.actionImage.title!}" ${height!} ${width!}
-        ${attrBuild(element)} ${tabindex!}
-        ${element.simpleDataAttributes!}/>
+    ${krad.attrBuild(element)} ${tabindex!}
+    ${element.simpleDataAttributes!}/>
     <#else>
 
-        <#-- build a button with or without an image -->
-        <button id="${element.id}" ${attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+    <#-- build a button with or without an image -->
+    <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
 
         <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
             <#if imagePlacement == 'TOP'>
@@ -83,18 +84,18 @@
         </#if>
 
         <#if ['TOP','LEFT']?seq_contains(element.actionImagePlacement)>
-            ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel!}
+        ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel!}
         <#elseif ['BOTTOM','RIGHT']?seq_contains(element.actionImagePlacement)>
-            ${element.actionLabel!}${spanBeginTag!}${imageTag!}${spanEndTag!}
+        ${element.actionLabel!}${spanBeginTag!}${imageTag!}${spanEndTag!}
         <#else>
-            <#-- no image, just render label text -->
-            ${element.actionLabel!}
+        <#-- no image, just render label text -->
+        ${element.actionLabel!}
         </#if>
 
-       </button>
+    </button>
 
     </#if>
 
-    <@krad.template component=element.lightBoxLookup componentId="${element.id}"/>
+    <@krad.disable control=element type="action"/>
 
 </#macro>

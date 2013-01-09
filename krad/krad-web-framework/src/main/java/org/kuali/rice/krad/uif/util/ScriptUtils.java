@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 
+import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -86,27 +87,86 @@ public class ScriptUtils {
 
             jsValue += "}";
         } else {
-            boolean quoteValue = true;
-
             Class<?> valueClass = value.getClass();
-            if (TypeUtils.isBooleanClass(valueClass) || TypeUtils.isDecimalClass(valueClass) || TypeUtils
-                    .isIntegralClass(valueClass)) {
-                quoteValue = false;
-            }
+            if (TypeUtils.isSimpleType(valueClass) || TypeUtils.isClassClass(valueClass)) {
+                boolean quoteValue = true;
 
-            if (quoteValue) {
-                jsValue = "\"";
-            }
+                if (TypeUtils.isBooleanClass(valueClass) ||
+                        TypeUtils.isDecimalClass(valueClass) ||
+                        TypeUtils.isIntegralClass(valueClass)) {
+                    quoteValue = false;
+                }
 
-            // TODO: should this go through property editors?
-            jsValue += value.toString();
+                if (quoteValue) {
+                    jsValue = "\"";
+                }
 
-            if (quoteValue) {
-                jsValue += "\"";
+                // TODO: should this go through property editors?
+                jsValue += value.toString();
+
+                if (quoteValue) {
+                    jsValue += "\"";
+                }
+            } else {
+                // treat as data object
+                jsValue = "{";
+
+                PropertyDescriptor[] propertyDescriptors = ObjectPropertyUtils.getPropertyDescriptors(value);
+                for (int i = 0; i < propertyDescriptors.length; i++) {
+                    PropertyDescriptor descriptor = propertyDescriptors[i];
+                    if ((descriptor.getReadMethod() != null) && !"class".equals(descriptor.getName())) {
+                        Object propertyValue = ObjectPropertyUtils.getPropertyValue(value, descriptor.getName());
+
+                        jsValue += descriptor.getName() + ":";
+                        jsValue += translateValue(propertyValue);
+                        jsValue += ",";
+                    }
+                }
+                jsValue = StringUtils.removeEnd(jsValue, ",");
+
+                jsValue += "}";
             }
         }
 
         return jsValue;
+    }
+
+    /**
+     * Builds a JSON string form the given map
+     *
+     * @param map - map to translate
+     * @return String in JSON format
+     */
+    public static String toJSON(Map<String, String> map) {
+        StringBuffer sb = new StringBuffer("{");
+
+        for (String key : map.keySet()) {
+            String optionValue = map.get(key);
+            if (sb.length() > 1) {
+                sb.append(",");
+            }
+            sb.append("\"" + key + "\"");
+
+            sb.append(":");
+            sb.append("\"" + escapeJSONString(optionValue) + "\"");
+        }
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    /**
+     * Escapes double quotes present in the given string
+     *
+     * @param jsonString - string to escape
+     * @return String escaped string
+     */
+    public static String escapeJSONString(String jsonString) {
+        if (jsonString != null) {
+            jsonString = jsonString.replace("\"", "&quot;");
+        }
+
+        return jsonString;
     }
 
     /**
@@ -118,12 +178,14 @@ public class ScriptUtils {
      */
     public static String convertToJsValue(String value) {
         boolean isNumber = false;
+
         // save input value to preserve any whitespace formatting
         String originalValue = value;
+
         // remove whitespace for correct string matching
         value = StringUtils.strip(value);
-        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.substring(0, 1)) || value
-                .substring(0, 1).equals("-"))) {
+        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.substring(0, 1)) || value.substring(0, 1)
+                .equals("-"))) {
             try {
                 Double.parseDouble(value);
                 isNumber = true;
@@ -175,11 +237,15 @@ public class ScriptUtils {
      */
     public static String convertStringListToJsArray(List<String> list) {
         String array = "[";
-        for (String s : list) {
-            array = array + "'" + s + "',";
+
+        if (list != null) {
+            for (String s : list) {
+                array = array + "'" + s + "',";
+            }
+            array = StringUtils.removeEnd(array, ",");
         }
-        array = StringUtils.removeEnd(array, ",");
         array = array + "]";
+
         return array;
     }
 
@@ -195,7 +261,7 @@ public class ScriptUtils {
     public static String escapeHtml(String string) {
         if (string == null) {
             return null;
-        }  else {
+        } else {
             return StringEscapeUtils.escapeHtml(string).replace("'", "&apos;");
         }
     }
@@ -207,16 +273,37 @@ public class ScriptUtils {
      * @return - the array, with the strings escaped
      */
     public static List<String> escapeHtml(List<String> strings) {
-       if (strings == null) {
-           return null;
-       } else if (strings.isEmpty()) {
-           return strings;
-       } else {
-           List<String> result = new ArrayList<String>(strings.size());
-           for (String string: strings) {
-               result.add(escapeHtml(string));
-           }
-           return result;
-       }
+        if (strings == null) {
+            return null;
+        } else if (strings.isEmpty()) {
+            return strings;
+        } else {
+            List<String> result = new ArrayList<String>(strings.size());
+            for (String string : strings) {
+                result.add(escapeHtml(string));
+            }
+            return result;
+        }
+    }
+
+    /**
+     * Will append the second script parameter to the first if the first is not empty, also checks to see if the
+     * first script needs an end semi-colon added
+     *
+     * @param script - script that will be added to (null is allowed and converted to empty string)
+     * @param appendScript - script to append
+     * @return String result of appending the two script parameters
+     */
+    public static String appendScript(String script, String appendScript) {
+        String appendedScript = script;
+        if (appendedScript == null) {
+            appendedScript = "";
+        } else if (StringUtils.isNotBlank(appendedScript) && !appendedScript.trim().endsWith(";")) {
+            appendedScript += "; ";
+        }
+
+        appendedScript += appendScript;
+
+        return appendedScript;
     }
 }

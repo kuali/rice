@@ -221,7 +221,7 @@ public class PersonServiceImplTest extends KIMTestCase {
     @Test
     public void testFindPeopleInactive() {
         HashMap<String,String> criteria = new HashMap<String,String>();
-        criteria.put( "active", "N" );
+        criteria.put( "principals.active", "N" );
         List<Person> people = personService.findPeople( criteria );
         assertNotNull( "result must not be null", people );
         assertEquals( "wrong number of people returned", 1, people.size() );
@@ -253,7 +253,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 	@Test
 	public void testResolvePrincipalNamesToPrincipalIds() throws Exception {
 		
-		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
+		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation("KR-KIM", "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
 		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
 
 		Map<String,String> criteria = new HashMap<String,String>();
@@ -310,7 +310,7 @@ public class PersonServiceImplTest extends KIMTestCase {
         DescriptorRepository dr = mm.readDescriptorRepository(is);
         mm.mergeDescriptorRepository(dr);
 		
-		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
+		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation("KR-KIM", "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
 		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
 		BusinessObjectService bos = KRADServiceLocator.getBusinessObjectService();
 		bos.delete( new ArrayList(bos.findAll( BOContainingPerson.class )) );

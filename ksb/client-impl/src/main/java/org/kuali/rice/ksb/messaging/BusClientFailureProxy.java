@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import java.io.InterruptedIOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.net.ConnectException;
+import java.net.NoRouteToHostException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
 import org.apache.commons.httpclient.NoHttpResponseException;
@@ -25,17 +37,6 @@ import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-
-import java.io.InterruptedIOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.net.ConnectException;
-import java.net.NoRouteToHostException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 
@@ -59,7 +60,8 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 		serviceRemovalExceptions.add(ConnectTimeoutException.class);
 		serviceRemovalExceptions.add(ConnectionPoolTimeoutException.class);
 		serviceRemovalExceptions.add(ConnectException.class);
-	}
+        serviceRemovalExceptions.add(SocketTimeoutException.class);
+    }
 	
 	static {
 	    serviceRemovalResponseCodes.add(new Integer(404));
@@ -84,22 +86,25 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 			} catch (Throwable throwable) {			
 				if (isServiceRemovalException(throwable)) {
 					synchronized (failoverLock) {
-						LOG.error("Exception caught accessing remote service " + this.serviceConfiguration.getServiceName(), throwable);
-						if (servicesTried == null) {
+                        LOG.error("Exception caught accessing remote service " + this.serviceConfiguration.getServiceName() + " at " + this.serviceConfiguration.getEndpointUrl(), throwable);
+                        if (servicesTried == null) {
 							servicesTried = new HashSet<ServiceConfiguration>();
 							servicesTried.add(serviceConfiguration);
 						}
 						Object failoverService = null;
-						List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(serviceConfiguration.getServiceName());
+						List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(serviceConfiguration.getServiceName(), serviceConfiguration.getApplicationId());
 						for (Endpoint endpoint : endpoints) {
 							if (!servicesTried.contains(endpoint.getServiceConfiguration())) {
 								failoverService = endpoint.getService();
+                                if(Proxy.isProxyClass(failoverService.getClass()) && Proxy.getInvocationHandler(failoverService) instanceof BusClientFailureProxy) {
+                                    failoverService = ((BusClientFailureProxy)Proxy.getInvocationHandler(failoverService)).getTarget();
+                                }
 								servicesTried.add(endpoint.getServiceConfiguration());
 							}
 						}									
 						if (failoverService != null) {
-							LOG.info("Refetched replacement service for service " + this.serviceConfiguration.getServiceName());
-							// as per KULRICE-4287, reassign target to the new service we just fetched, hopefully this one works better!
+                            LOG.info("Refetched replacement service for service " + this.serviceConfiguration.getServiceName() + " at " + this.serviceConfiguration.getEndpointUrl());
+                            // as per KULRICE-4287, reassign target to the new service we just fetched, hopefully this one works better!
 							setTarget(failoverService);
 						} else {
 							LOG.error("Didn't find replacement service throwing exception");
@@ -118,8 +123,14 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 		if (serviceRemovalExceptions.contains(throwable.getClass())) {
 			LOG.info("Found a Service Removal Exception: " + throwable.getClass().getName());
 			return true;
-		} else if (throwable instanceof HttpException) {
-			HttpException httpException = (HttpException)throwable;
+		} else if (throwable instanceof org.kuali.rice.ksb.messaging.HttpException) {
+			org.kuali.rice.ksb.messaging.HttpException httpException = (org.kuali.rice.ksb.messaging.HttpException)throwable;
+			if (serviceRemovalResponseCodes.contains(httpException.getResponseCode())) {
+				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + " " + throwable.getClass().getName());
+				return true;
+			}
+		} else if (throwable instanceof org.apache.cxf.transport.http.HTTPException) {
+			org.apache.cxf.transport.http.HTTPException httpException = (org.apache.cxf.transport.http.HTTPException)throwable;
 			if (serviceRemovalResponseCodes.contains(httpException.getResponseCode())) {
 				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + " " + throwable.getClass().getName());
 				return true;

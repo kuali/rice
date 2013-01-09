@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Years;
 import org.junit.Test;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.RequestedActions;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
@@ -33,15 +35,12 @@ import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,7 +54,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class DocumentSearchTest extends KEWTestCase {
@@ -99,6 +97,113 @@ public class DocumentSearchTest extends KEWTestCase {
         savedCriteria = docSearchService.getNamedSearchCriteria(user.getPrincipalId(), "for in accounts");
         assertNotNull(savedCriteria);
         assertEquals("for in accounts", savedCriteria.getSaveName());
+    }
+
+    // KULRICE-5755 tests that the Document in the DocumentResult is properly populated
+    @Test public void testDocSearchDocumentResult() throws Exception {
+        String[] docIds = routeTestDocs();
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        DocumentSearchResult result = results.getSearchResults().get(0);
+        Document doc = result.getDocument();
+
+        // check all the DocumentContract properties
+        assertNotNull(doc.getApplicationDocumentStatus());
+        assertNotNull(doc.getApplicationDocumentStatusDate());
+        assertNotNull(doc.getDateApproved());
+        assertNotNull(doc.getDateCreated());
+        assertNotNull(doc.getDateFinalized());
+        assertNotNull(doc.getDocumentId());
+        assertNotNull(doc.getDocumentTypeName());
+        assertNotNull(doc.getApplicationDocumentId());
+        assertNotNull(doc.getDateLastModified());
+        assertNotNull(doc.getDocumentHandlerUrl());
+        assertNotNull(doc.getDocumentTypeId());
+        assertNotNull(doc.getInitiatorPrincipalId());
+        assertNotNull(doc.getRoutedByPrincipalId());
+        assertNotNull(doc.getStatus());
+        assertNotNull(doc.getTitle());
+        // route variables are currently excluded
+        assertTrue(doc.getVariables().isEmpty());
+    }
+
+    @Test public void testDocSearch_appDocStatuses() throws Exception {
+        String[] docIds = routeTestDocs();
+
+        DateTime now = DateTime.now();
+        DateTime before = now.minusDays(2);
+        DateTime after = now.plusDays(2);
+
+        String principalId = getPrincipalId("bmcgough");
+
+        // first test basic multi-appDocStatus search without dates.  search for 2 out of 3 existing statuses
+
+        List<String> appDocStatusSearch = Arrays.asList("Submitted", "Pending");
+        DocumentSearchResults results = doAppStatusDocSearch(principalId, appDocStatusSearch, null, null);
+
+        assertEquals("should have matched one doc for each status", 2, results.getSearchResults().size());
+
+        for (DocumentSearchResult result : results.getSearchResults()) {
+            assertTrue("app doc status should be in " + StringUtils.join(appDocStatusSearch, ", "),
+                    appDocStatusSearch.contains(result.getDocument().getApplicationDocumentStatus()));
+        }
+
+        // use times to verify app doc status change date functionality
+
+        // first try to bring all 3 docs back with a range that includes all the test docs
+
+        appDocStatusSearch = Arrays.asList("Submitted", "Pending", "Completed");
+        results = doAppStatusDocSearch(principalId, appDocStatusSearch, before, after);
+
+        assertEquals("all docs are in the date range, should have matched them all", 3, results.getSearchResults().size());
+
+        for (DocumentSearchResult result : results.getSearchResults()) {
+            assertTrue("app doc status should be in " + StringUtils.join(appDocStatusSearch, ", "),
+                    appDocStatusSearch.contains(result.getDocument().getApplicationDocumentStatus()));
+        }
+
+        // test that the app doc status list still limits the results when a date range is set
+
+        appDocStatusSearch = Arrays.asList("Submitted", "Pending");
+
+        results = doAppStatusDocSearch(principalId, appDocStatusSearch, before, after);
+        assertEquals("should have matched one doc for each status", 2, results.getSearchResults().size());
+
+        for (DocumentSearchResult result : results.getSearchResults()) {
+            assertTrue("app doc status should be in " + StringUtils.join(appDocStatusSearch, ", "),
+                    appDocStatusSearch.contains(result.getDocument().getApplicationDocumentStatus()));
+        }
+
+        // test that the date range limits the results too.  No docs will be in this range.
+
+        appDocStatusSearch = Arrays.asList("Submitted", "Pending", "Completed");
+
+        results = doAppStatusDocSearch(principalId, appDocStatusSearch, after, after.plusDays(1));
+        assertEquals("none of the docs should be in the date range", 0, results.getSearchResults().size());
+
+        // finally, test a legacy form of the search to make sure that the criteria is still respected
+
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setApplicationDocumentStatus("Submitted");
+
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals("legacy style app doc status search should have matched one document",
+                1, results.getSearchResults().size());
+        assertTrue("app doc status should match the search criteria",
+                "Submitted".equals(results.getSearchResults().get(0).getDocument().getApplicationDocumentStatus()));
+    }
+
+    private DocumentSearchResults doAppStatusDocSearch(String principalId, List<String> appDocStatuses,
+            DateTime appStatusChangedFrom, DateTime appStatusChangedTo) {
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setApplicationDocumentStatuses(appDocStatuses);
+        criteria.setDateApplicationDocumentStatusChangedFrom(appStatusChangedFrom);
+        criteria.setDateApplicationDocumentStatusChangedTo(appStatusChangedTo);
+        return docSearchService.lookupDocuments(principalId, criteria.build());
     }
 
     @Test public void testDocSearch_maxResults() throws Exception {
@@ -717,28 +822,41 @@ public class DocumentSearchTest extends KEWTestCase {
                 result.getSearchResults().size());
     }
 
+    private static final class TestDocData {
+        private TestDocData() { throw new IllegalStateException("leave me alone"); }
+
+        static String docTypeName = "SearchDocType";
+        static String[] principalNames = {"bmcgough", "quickstart", "rkirkend"};
+        static String[] titles = {"The New Doc", "Document Number 2", "Some New Document"};
+        static String[] appDocIds = {"6543", "5432", "4321"};
+        static String[] appDocStatuses = {"Submitted", "Pending", "Completed"};
+        static String[] approverNames = {null, "jhopf", null};
+    }
+
     /**
      * Routes some test docs for searching
      * @return String[] of doc ids
      */
     protected String[] routeTestDocs() {
         // Route some test documents.
-        String docTypeName = "SearchDocType";
-        String[] principalNames = {"bmcgough", "quickstart", "rkirkend"};
-        String[] titles = {"The New Doc", "Document Number 2", "Some New Document"};
-        String[] docIds = new String[titles.length];
-        String[] appDocIds = {"6543", "5432", "4321"};
-        String[] approverNames = {null, "jhopf", null};
-        for (int i = 0; i < titles.length; i++) {
-            WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId(principalNames[i]), docTypeName);
-            workflowDocument.setTitle(titles[i]);
-            workflowDocument.setApplicationDocumentId(appDocIds[i]);
+        String[] docIds = new String[TestDocData.titles.length];
+
+        for (int i = 0; i < TestDocData.titles.length; i++) {
+            WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(
+                    getPrincipalId(TestDocData.principalNames[i]), TestDocData.docTypeName);
+            workflowDocument.setTitle(TestDocData.titles[i]);
+            workflowDocument.setApplicationDocumentId(TestDocData.appDocIds[i]);
             workflowDocument.route("routing this document.");
+
             docIds[i] = workflowDocument.getDocumentId();
-            if (approverNames[i] != null) {
-                workflowDocument.switchPrincipal(getPrincipalId(approverNames[i]));
+
+            if (TestDocData.approverNames[i] != null) {
+                workflowDocument.switchPrincipal(getPrincipalId(TestDocData.approverNames[i]));
                 workflowDocument.approve("approving this document.");
             }
+
+            workflowDocument.setApplicationDocumentStatus(TestDocData.appDocStatuses[i]);
+            workflowDocument.saveDocumentData();
         }
 
         return docIds;

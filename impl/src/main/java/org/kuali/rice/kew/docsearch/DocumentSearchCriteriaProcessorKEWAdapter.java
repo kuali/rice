@@ -15,27 +15,30 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import com.google.common.collect.Iterables;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
+import org.kuali.rice.kew.impl.document.ApplicationDocumentStatusUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class adapts the RemotableAttributeField instances from the various attributes
@@ -47,7 +50,7 @@ import java.util.Map;
  * This implementation relies on applicationDocumentStatus, and dateApplicationDocumentStatusChanged conditional fields
  * being defined in the DD for basic display purposes.  These fields are conditionally shown depending on whether
  * a document supporting application document statuses has been specified.  Further, the applicationDocumentStatus field
- * is dynamically switched to a dropdown when the document specifies an explicit enumeration of valid statuses (this
+ * is dynamically switched to a multiselect when the document specifies an explicit enumeration of valid statuses (this
  * control switching is something that is not possible via declarative DD, at the time of this writing).
  * </p>
  * <p>
@@ -64,10 +67,6 @@ import java.util.Map;
  *
  */
 public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearchCriteriaProcessor {
-    /**
-     * Name if the hidden input field containing basic/detailed search toggle state
-     */
-    public static final String ADVANCED_SEARCH_FIELD = "isAdvancedSearch";
     /**
      * Name if the hidden input field containing non-superuser/superuser search toggle state
      */
@@ -92,7 +91,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             "documentTypeName",
             "initiatorPrincipalName",
             "documentId",
-            "groupViewerId",
+            APPLICATION_DOCUMENT_STATUS,
             "dateCreated",
             DOCUMENT_ATTRIBUTE_FIELD_MARKER,
             "saveName"
@@ -198,7 +197,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                         if (APPLICATION_DOCUMENT_STATUS.equals(field.getPropertyName())) {
                             // If Application Document Status policy is in effect for this document type,
                             // add search attributes for document status, and transition dates.
-                            // Note: document status field is a drop down if valid statuses are defined, a text input field otherwise.
+                            // Note: document status field is a multiselect if valid statuses are defined, a text input field otherwise.
                             applyApplicationDocumentStatusCustomizations(field, documentType);
                             break;
                         } else if (ROUTE_NODE_NAME.equals(field.getPropertyName())) {
@@ -244,6 +243,12 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                 }
                 // prepend all document attribute field names with "documentAttribute."
                 field.setPropertyName(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + field.getPropertyName());
+                if (StringUtils.isNotBlank(field.getLookupParameters())) {
+                    field.setLookupParameters(prefixLookupParameters(field.getLookupParameters()));
+                }
+                if (StringUtils.isNotBlank(field.getFieldConversions())) {
+                    field.setFieldConversions(prefixFieldConversions(field.getFieldConversions()));
+                }
             }
             fixedDocumentAttributeRows.add(row);
         }
@@ -260,22 +265,59 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
      * @param documentType the document type
      */
     protected void applyApplicationDocumentStatusCustomizations(Field field, DocumentType documentType) {
-        List<ApplicationDocumentStatus> validStatuses = documentType.getValidApplicationStatuses();
-        if (validStatuses == null || validStatuses.size() == 0){
+
+        if (documentType.getValidApplicationStatuses() == null || documentType.getValidApplicationStatuses().size() == 0){
             // use a text input field
             // StandardSearchCriteriaField(String fieldKey, String propertyName, String fieldType, String datePickerKey, String labelMessageKey, String helpMessageKeyArgument, boolean hidden, String displayOnlyPropertyName, String lookupableImplServiceName, boolean lookupTypeRequired)
             // new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS,"criteria.appDocStatus",StandardSearchCriteriaField.TEXT,null,null,"DocSearchApplicationDocStatus",false,null,null,false));
             // String fieldKey DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS
             field.setFieldType(Field.TEXT);
         } else {
-            // dropdown
+            // multiselect
             // String fieldKey DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS + "_VALUES"
-            field.setFieldType(Field.DROPDOWN);
+            field.setFieldType(Field.MULTISELECT);
             List<KeyValue> validValues = new ArrayList<KeyValue>();
-            for (ApplicationDocumentStatus status: validStatuses) {
-                validValues.add(new ConcreteKeyValue(status.getStatusName(), status.getStatusName()));
+
+            // add to set for quick membership check and removal.  LinkedHashSet to preserve order
+            Set<String> statusesToDisplay = new LinkedHashSet<String>();
+            for (ApplicationDocumentStatus status: documentType.getValidApplicationStatuses()) {
+                statusesToDisplay.add(status.getStatusName());
             }
+
+            // KULRICE-7786: support for groups (categories) of application document statuses
+
+            LinkedHashMap<String, List<String>> appDocStatusCategories =
+                    ApplicationDocumentStatusUtils.getApplicationDocumentStatusCategories(documentType.getName());
+
+            if (!appDocStatusCategories.isEmpty()) {
+                for (Map.Entry<String,List<String>> group : appDocStatusCategories.entrySet()) {
+                    boolean addedCategoryHeading = false; // only add category if it has valid members
+                    for (String member : group.getValue()) {
+                        if (statusesToDisplay.remove(member)) { // remove them from the set as we display them
+                            if (!addedCategoryHeading) {
+                                addedCategoryHeading = true;
+                                validValues.add(new ConcreteKeyValue("category:" + group.getKey(), group.getKey()));
+                            }
+                            validValues.add(new ConcreteKeyValue(member, "- " + member));
+                        }
+                    }
+                }
+            }
+
+            // add remaining statuses, if any.
+            for (String member : statusesToDisplay) {
+                validValues.add(new ConcreteKeyValue(member, member));
+            }
+
             field.setFieldValidValues(validValues);
+
+            // size the multiselect as appropriate
+            if (validValues.size() > 5) {
+                field.setSize(5);
+            } else {
+                field.setSize(validValues.size());
+            }
+
             //dropDown.setOptionsCollectionProperty("validApplicationStatuses");
             //dropDown.setCollectionKeyProperty("statusName");
             //dropDown.setCollectionLabelProperty("statusName");
@@ -297,7 +339,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
         hiddenRow.setHidden(true);
 
         Field detailedField = new Field();
-        detailedField.setPropertyName(ADVANCED_SEARCH_FIELD);
+        detailedField.setPropertyName(KRADConstants.ADVANCED_SEARCH_FIELD);
         detailedField.setPropertyValue(advancedSearch ? "YES" : "NO");
         detailedField.setFieldType(Field.HIDDEN);
 
@@ -318,6 +360,50 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
         hiddenRow.setFields(hiddenFields);
         rows.add(hiddenRow);
 
+    }
+    
+    private String prefixLookupParameters(String lookupParameters) {
+        StringBuilder newLookupParameters = new StringBuilder(KRADConstants.EMPTY_STRING);
+        String[] conversions = StringUtils.split(lookupParameters, KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+
+        for (int m = 0; m < conversions.length; m++) {
+            String conversion = conversions[m];
+            String[] conversionPair = StringUtils.split(conversion, KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
+            String conversionFrom = conversionPair[0];
+            String conversionTo = conversionPair[1];
+            conversionFrom = KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + conversionFrom;
+            newLookupParameters.append(conversionFrom)
+                    .append(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR)
+                    .append(conversionTo);
+
+            if (m < conversions.length) {
+                newLookupParameters.append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+            }
+        }
+        return newLookupParameters.toString();
+    }
+    
+    private String prefixFieldConversions(String fieldConversions) {
+        StringBuilder newFieldConversions = new StringBuilder(KRADConstants.EMPTY_STRING);
+        String[] conversions = StringUtils.split(fieldConversions, KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+
+        for (int l = 0; l < conversions.length; l++) {
+            String conversion = conversions[l];
+            //String[] conversionPair = StringUtils.split(conversion, KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+            String[] conversionPair = StringUtils.split(conversion, KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
+            String conversionFrom = conversionPair[0];
+            String conversionTo = conversionPair[1];
+            conversionTo = KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + conversionTo;
+            newFieldConversions.append(conversionFrom)
+                    .append(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR)
+                    .append(conversionTo);
+
+            if (l < conversions.length) {
+                newFieldConversions.append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+            }
+        }
+
+        return newFieldConversions.toString();
     }
 
 }

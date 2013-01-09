@@ -16,14 +16,11 @@
 
 package edu.samplu.krad.compview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -33,13 +30,10 @@ import static org.junit.Assert.fail;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ParentLineIT {
-    private DefaultSelenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome",  System.getProperty("remote.public.url"));//"http://localhost:8080/"
-        selenium.start();
+public class ParentLineIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return "/kr-krad/uicomponents?methodToCall=start&readOnlyFields=field91&viewId=UifCompView_KNS#UifCompView-Page7";
     }
 
     @Test
@@ -47,31 +41,17 @@ public class ParentLineIT {
      * tests that the size of a sub collection is correctly displayed using the parentLine el variable
      */
     public void testSubCollectionSize() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=Uif Components (Kitchen Sink)");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectFrame("iframeportlet");
-        // click on collections page link
-        selenium.click("id=u961");
-        // Thread.sleep(30000);
-        // wait for collections page to load by checking the presence of a sub collection line item
+        checkForIncidentReport("link=Collections");
+//        // click on collections page link
+        waitAndClick("link=Collections");
+//        // wait for collections page to load by checking the presence of a sub collection line item
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u1089_line0_line0_control")) break; } catch (Exception e) {}
+            try { if (isElementPresent("link=SubCollection - (3 lines)")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
         // verify that sub collection sizes are displayed as expected
-        assertEquals("SubCollection - (3 lines)", selenium.getText("id=u1030_line0"));
-        assertEquals("SubCollection - (2 lines)", selenium.getText("id=u1030_line1"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        assertEquals("SubCollection - (3 lines)", getText("link=SubCollection - (3 lines)"));
+        assertEquals("SubCollection - (2 lines)", getText("link=SubCollection - (2 lines)"));
     }
 }

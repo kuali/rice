@@ -16,19 +16,19 @@
 package org.kuali.rice.krad.datadictionary.validation;
 
 /**
- *  
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Account {
-	
+
 	private String accountId;
 	private String bankName;
 	private String totalBalance;
 	private String creditBalance;
 	private String debitBalance;
-	
-	
-	
+
+
+
 	/**
 	 * @param accountId
 	 * @param bankName
@@ -54,8 +54,8 @@ public class Account {
 	 */
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
-	}		
-	
+	}
+
 	/**
 	 * @return the bankName
 	 */
@@ -103,6 +103,6 @@ public class Account {
 	 */
 	public void setDebitBalance(String debitBalance) {
 		this.debitBalance = debitBalance;
-	}	
-	
+	}
+
 }

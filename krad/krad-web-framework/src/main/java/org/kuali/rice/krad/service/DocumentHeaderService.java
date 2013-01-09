@@ -22,38 +22,38 @@ import org.kuali.rice.krad.bo.DocumentHeader;
  * DocumentHeader class being used. Originally written to facilitate the Kuali
  * Financial System custom document header which included a 'total amount'
  * field.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
  */
 public interface DocumentHeaderService {
 
     /**
      * This method returns the class to use to instantiate document header objects
-     * 
+     *
      * @return the class to be used for new document header objects
      */
     public Class<? extends DocumentHeader> getDocumentHeaderBaseClass();
 
     /**
      * This method retrieves a document header using the given documentHeaderId
-     * 
+     *
      * @param documentHeaderId - the id of the document to retrieve the document header for
      * @return the document header associated with the given document header id
      */
     public DocumentHeader getDocumentHeaderById(String documentHeaderId);
-    
-    
+
+
     /**
      * This method saves a document header object
-     * 
+     *
      * @param documentHeader - the document header object to save
      */
     public void saveDocumentHeader(DocumentHeader documentHeader);
-    
+
     /**
      * This method deletes a document header object
-     * 
+     *
      * @param documentHeader - the document header to be removed
      */
     public void deleteDocumentHeader(DocumentHeader documentHeader);

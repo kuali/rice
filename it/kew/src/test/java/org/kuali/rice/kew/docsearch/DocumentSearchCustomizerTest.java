@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kew.docsearch;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -166,7 +167,7 @@ public class DocumentSearchCustomizerTest extends KEWTestCase {
         results = KewApiServiceLocator.getWorkflowDocumentService().documentSearch(ewestfal, builder.build());
         assertEquals(1, results.getSearchResults().size());
         result = results.getSearchResults().get(0);
-        assertEquals(2, result.getDocumentAttributes().size());
+        assertEquals(3, result.getDocumentAttributes().size());
         for (DocumentAttribute attribute : result.getDocumentAttributes()) {
             if (attribute.getName().equals("myAttribute")) {
                 assertEquals("myAttribute", attribute.getName());
@@ -176,7 +177,10 @@ public class DocumentSearchCustomizerTest extends KEWTestCase {
                 assertEquals("myMultiValuedAttribute", attribute.getName());
                 assertEquals("value0", attribute.getValue());
                 assertEquals(DocumentAttributeDataType.STRING, attribute.getDataType());
-            } else {
+            } else if (attribute.getName().equals("criteriaUserId")) {
+                assertEquals("criteriaUserId", attribute.getName());
+                assertEquals(ewestfal, attribute.getValue());
+            }else {
                 fail("Encountered an attribute name which i didn't understand: " + attribute.getName());
             }
         }
@@ -221,8 +225,13 @@ public class DocumentSearchCustomizerTest extends KEWTestCase {
                 DocumentSearchResultValue.Builder resultValueBuilder = DocumentSearchResultValue.Builder.create(defaultResults.get(0).getDocument().getDocumentId());
                 resultValueBuilder.getDocumentAttributes().add(DocumentAttributeFactory.loadContractIntoBuilder(DocumentAttributeFactory.createStringAttribute("myAttribute", "myCustomizedValue")));
                 resultValueBuilder.getDocumentAttributes().add(DocumentAttributeFactory.loadContractIntoBuilder(DocumentAttributeFactory.createStringAttribute("myMultiValuedAttribute", "value0")));
-                valuesBuilder.getResultValues().add(resultValueBuilder);
 
+                // Return if principal id was foudn in criteria
+                if(StringUtils.isNotBlank(documentSearchCriteria.getDocSearchUserId())) {
+                     resultValueBuilder.getDocumentAttributes().add(DocumentAttributeFactory.loadContractIntoBuilder(DocumentAttributeFactory.createStringAttribute("criteriaUserId", documentSearchCriteria.getDocSearchUserId())));
+                }
+
+                valuesBuilder.getResultValues().add(resultValueBuilder);
                 return valuesBuilder.build();
             } else {
                 return null;
@@ -249,6 +258,7 @@ public class DocumentSearchCustomizerTest extends KEWTestCase {
             attributes.add(DocumentAttributeFactory.createStringAttribute("myAttribute", "myValue"));
             attributes.add(DocumentAttributeFactory.createStringAttribute("myMultiValuedAttribute", "value1"));
             attributes.add(DocumentAttributeFactory.createStringAttribute("myMultiValuedAttribute", "value2"));
+            attributes.add(DocumentAttributeFactory.createStringAttribute("criteriaUserId", "blank"));
             return attributes;
         }
         @Override
@@ -258,6 +268,8 @@ public class DocumentSearchCustomizerTest extends KEWTestCase {
             RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create("myAttribute");
             searchFields.add(builder.build());
             builder = RemotableAttributeField.Builder.create("myMultiValuedAttribute");
+            searchFields.add(builder.build());
+            builder = RemotableAttributeField.Builder.create("criteriaUserId");
             searchFields.add(builder.build());
             return searchFields;
         }

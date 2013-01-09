@@ -445,7 +445,120 @@
 				</policy>
 			</policies>
 		</documentType>
-		<documentType>
+
+    <documentType>
+      <name>RecallTest</name>
+      <parent>NotificationTest</parent>
+      <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+    </documentType>
+    <documentType>
+      <name>RecallTestRestricted</name>
+      <parent>RecallTest</parent>
+      <label>RecallTestRestricted</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+      <policies>
+        <policy>
+          <name>RECALL_VALID_ACTIONSTAKEN</name>
+          <stringValue>SAvEd, cOmPlete</stringValue>
+        </policy>
+      </policies>
+    </documentType>
+    <documentType>
+      <name>RecallTestOnlyAdhoc</name>
+      <label>RecallTestOnlyAdhoc</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc"/>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>RecallWithPrevNotifyTest</name>
+      <parent>NotificationTest</parent>
+      <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+      <policies>
+        <policy>
+          <name>NOTIFY_COMPLETED_ON_RETURN</name>
+          <value>true</value>
+        </policy>
+      </policies>
+    </documentType>
+    <documentType>
+      <name>IntermediateRecallDocType</name>
+      <parent>NotificationTest</parent>
+      <label>RecallTest</label>
+      <policies>
+        <policy>
+          <name>NOTIFY_COMPLETED_ON_RETURN</name>
+          <value>true</value>
+        </policy>
+        <policy>
+          <name>NOTIFY_PENDING_ON_RETURN</name>
+          <value>false</value>
+        </policy>
+      </policies>
+    </documentType>
+    <documentType>
+      <name>RecallWithoutPendingNotifyTest</name>
+      <parent>IntermediateRecallDocType</parent>
+      <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+    </documentType>
+    <documentType>
+      <name>RecallWithThirdPartyNotifyTest</name>
+      <parent>NotificationTest</parent>
+      <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+      <policies>
+        <policy>
+          <name>NOTIFY_COMPLETED_ON_RETURN</name>
+          <value>true</value>
+        </policy>
+        <policy>
+          <name>RECALL_NOTIFICATION</name>
+          <value>true</value>
+          <recipients xmlns:r="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule" xmlns:dt="ns:workflow/DocumentType">
+            <r:principalName>quickstart</r:principalName>
+            <r:user>quickstart</r:user>
+            <role namespace="KR-SYS" name="Technical Administrator"/>
+          </recipients>
+        </policy>
+      </policies>
+    </documentType>
+
+    <documentType>
+      <name>SUDisapproveWithNotificationTest</name>
+      <parent>NotificationTest</parent>
+      <label>SUDisapproveWithNotificationTest</label>
+      <policies>
+        <policy>
+          <name>SEND_NOTIFICATION_ON_SU_DISAPPROVE</name>
+          <value>true</value>
+        </policy>
+      </policies>
+    </documentType>
+
+    <documentType>
+      <name>SUApproveFinalNodeDisallowed</name>
+      <parent>NotificationTest</parent>
+      <label>SUApproveFinalNodeDisallowed</label>
+      <policies>
+        <policy>
+          <name>ALLOW_SU_FINAL_APPROVAL</name>
+          <value>false</value>
+        </policy>
+      </policies>
+    </documentType>
+
+    <documentType>
 			<name>BlanketApproveMandatoryNodeTest</name>
 			<parent>BlanketApproveTest</parent>
 			<description>BlanketApproveMandatoryNodeTest</description>
@@ -715,6 +828,7 @@
     <documentType>
       <name>AdhocRouteTest-PriorityParallel</name>
       <docHandler>_blank</docHandler>
+      <label>AdhocRouteTest-PriorityParallel</label>
       <routePaths>
         <routePath>
           <start name="AdHoc" />

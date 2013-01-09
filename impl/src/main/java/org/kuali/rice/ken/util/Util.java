@@ -19,13 +19,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationContentType;
-import org.kuali.rice.ken.bo.NotificationPriority;
-import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationSender;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
+import org.kuali.rice.ken.bo.NotificationPriorityBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
+import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -157,8 +157,8 @@ public final class Util {
      * @param notification
      * @return
      */
-    public static String transformContent(Notification notification) {
-        NotificationContentType contentType = notification.getContentType();
+    public static String transformContent(NotificationBo notification) {
+        NotificationContentTypeBo contentType = notification.getContentType();
         String xsl = contentType.getXsl();
         
         LOG.debug("xsl: "+xsl);
@@ -264,15 +264,15 @@ public final class Util {
      * @param notification the object to clone
      * @return Notification a fresh instance
      */
-    public static final Notification cloneNotificationWithoutObjectReferences(Notification notification) {
-	Notification clone = new Notification();
+    public static final NotificationBo cloneNotificationWithoutObjectReferences(NotificationBo notification) {
+	NotificationBo clone = new NotificationBo();
 	
 	// handle simple data types first
         if(notification.getCreationDateTime() != null) {
-            clone.setCreationDateTime(new Timestamp(notification.getCreationDateTime().getTime()));
+            clone.setCreationDateTimeValue(new Timestamp(notification.getCreationDateTimeValue().getTime()));
         }
 	if(notification.getAutoRemoveDateTime() != null) {
-	    clone.setAutoRemoveDateTime(new Timestamp(notification.getAutoRemoveDateTime().getTime()));
+	    clone.setAutoRemoveDateTimeValue(new Timestamp(notification.getAutoRemoveDateTimeValue().getTime()));
 	}
 	clone.setContent(new String(notification.getContent()));
 	clone.setDeliveryType(new String(notification.getDeliveryType()));
@@ -280,14 +280,14 @@ public final class Util {
 	    clone.setId(new Long(notification.getId()));
 	}
 	clone.setProcessingFlag(new String(notification.getProcessingFlag()));
-	if(notification.getSendDateTime() != null) {
-	    clone.setSendDateTime(new Timestamp(notification.getSendDateTime().getTime()));
+	if(notification.getSendDateTimeValue() != null) {
+	    clone.setSendDateTimeValue(new Timestamp(notification.getSendDateTimeValue().getTime()));
 	}
 	
         clone.setTitle(notification.getTitle());
         
 	// now take care of the channel
-	NotificationChannel channel = new NotificationChannel();
+	NotificationChannelBo channel = new NotificationChannelBo();
 	channel.setId(new Long(notification.getChannel().getId()));
 	channel.setName(new String(notification.getChannel().getName()));
 	channel.setDescription(new String(notification.getChannel().getDescription()));
@@ -295,7 +295,7 @@ public final class Util {
 	clone.setChannel(channel);
 	
 	// handle the content type
-	NotificationContentType contentType = new NotificationContentType();
+	NotificationContentTypeBo contentType = new NotificationContentTypeBo();
 	contentType.setId(new Long(notification.getContentType().getId()));
 	contentType.setDescription(new String(notification.getContentType().getDescription()));
 	contentType.setName(new String(notification.getContentType().getName()));
@@ -303,7 +303,7 @@ public final class Util {
 	clone.setContentType(contentType);
 	
 	// take care of the prioirity
-	NotificationPriority priority = new NotificationPriority();
+	NotificationPriorityBo priority = new NotificationPriorityBo();
 	priority.setDescription(new String(notification.getPriority().getDescription()));
 	priority.setId(new Long(notification.getPriority().getId()));
 	priority.setName(new String(notification.getPriority().getName()));
@@ -311,7 +311,7 @@ public final class Util {
 	clone.setPriority(priority);
 	
 	// take care of the producer
-	NotificationProducer producer = new NotificationProducer();
+	NotificationProducerBo producer = new NotificationProducerBo();
 	producer.setDescription(new String(notification.getProducer().getDescription()));
 	producer.setId(new Long(notification.getProducer().getId()));
 	producer.setName(new String(notification.getProducer().getName()));
@@ -319,10 +319,10 @@ public final class Util {
 	clone.setProducer(producer);
 	
 	// process the list of recipients now
-	ArrayList<NotificationRecipient> recipients = new ArrayList<NotificationRecipient>();
+	ArrayList<NotificationRecipientBo> recipients = new ArrayList<NotificationRecipientBo>();
 	for(int i = 0; i < notification.getRecipients().size(); i++) {
-	    NotificationRecipient recipient = notification.getRecipient(i);
-	    NotificationRecipient cloneRecipient = new NotificationRecipient();
+	    NotificationRecipientBo recipient = notification.getRecipient(i);
+	    NotificationRecipientBo cloneRecipient = new NotificationRecipientBo();
 	    cloneRecipient.setRecipientId(new String(recipient.getRecipientId()));
 	    cloneRecipient.setRecipientType(new String(recipient.getRecipientType()));
 	    
@@ -331,10 +331,10 @@ public final class Util {
 	clone.setRecipients(recipients);
 	
 	// process the list of senders now
-	ArrayList<NotificationSender> senders = new ArrayList<NotificationSender>();
+	ArrayList<NotificationSenderBo> senders = new ArrayList<NotificationSenderBo>();
 	for(int i = 0; i < notification.getSenders().size(); i++) {
-	    NotificationSender sender = notification.getSender(i);
-	    NotificationSender cloneSender = new NotificationSender();
+	    NotificationSenderBo sender = notification.getSender(i);
+	    NotificationSenderBo cloneSender = new NotificationSenderBo();
 	    cloneSender.setSenderName(new String(sender.getSenderName()));
 	    
 	    senders.add(cloneSender);

@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -25,6 +25,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -34,6 +35,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -157,17 +159,72 @@ public final class KRADUtils {
         return numberInt;
     }
 
+    /**
+     * Attempt to coerce a String attribute value to the given propertyType.  If the transformation can't be made,
+     * either because the propertyType is null or because the transformation required exceeds this method's very small
+     * bag of tricks, then null is returned.
+     *
+     * @param propertyType the Class to coerce the attributeValue to
+     * @param attributeValue the String value to coerce
+     * @return an instance of the propertyType class, or null the transformation can't be made.
+     */
+    public static Object hydrateAttributeValue(Class<?> propertyType, String attributeValue) {
+        Object attributeValueObject = null;
+        if (propertyType != null && attributeValue != null) {
+            if (String.class.equals(propertyType)) {
+                // it's already a String
+                attributeValueObject = attributeValue;
+            } // KULRICE-6808: Kim Role Maintenance - Custom boolean role qualifier values are not being converted properly
+            else if (Boolean.class.equals(propertyType) || Boolean.TYPE.equals(propertyType)) {
+                attributeValueObject = Truth.strToBooleanIgnoreCase(attributeValue);
+            } else {
+                // try to create one with KRADUtils for other misc data types
+                attributeValueObject = KRADUtils.createObject(propertyType, new Class[]{String.class},
+                        new Object[]{attributeValue});
+                // if that didn't work, we'll get a null back
+            }
+        }
+        return attributeValueObject;
+    }
+
     public static Object createObject(Class<?> clazz, Class<?>[] argumentClasses, Object[] argumentValues) {
-        if (clazz == null)
+        if (clazz == null) {
             return null;
+        }
+        if (argumentClasses.length == 1 && argumentClasses[0] == String.class) {
+            if (argumentValues.length == 1 && argumentValues[0] != null) {
+                if (clazz == String.class) {
+                    // this means we're trying to create a String from a String
+                    // don't new up Strings, it's a bad idea
+                    return argumentValues[0];
+                } else {
+                    // maybe it's a type that supports valueOf?
+                    Method valueOfMethod = null;
+                    try {
+                        valueOfMethod = clazz.getMethod("valueOf", String.class);
+                    } catch (NoSuchMethodException e) {
+                        // ignored
+                    }
+                    if (valueOfMethod != null) {
+                        try {
+                            return valueOfMethod.invoke(null, argumentValues[0]);
+                        } catch (Exception e) {
+                            // ignored
+                        }
+                    }
+                }
+            }
+        }
         try {
             Constructor<?> constructor = clazz.getConstructor(argumentClasses);
             return constructor.newInstance(argumentValues);
         } catch (Exception e) {
-            return null;
+            // ignored
         }
+        return null;
     }
-     /**
+
+    /**
      * Creates a comma separated String representation of the given list.
      *
      * <p>
@@ -178,8 +235,9 @@ public final class KRADUtils {
      * @return the joined String, empty if the list is null or has no elements
      */
     public static String joinWithQuotes(List<String> list) {
-        if (list == null || list.size() == 0)
+        if (list == null || list.size() == 0) {
             return "";
+        }
 
         return KRADConstants.SINGLE_QUOTE +
                 StringUtils.join(list.iterator(), KRADConstants.SINGLE_QUOTE + "," + KRADConstants.SINGLE_QUOTE) +
@@ -541,9 +599,9 @@ public final class KRADUtils {
             return false;
         }
         ParameterService parameterService = CoreFrameworkServiceLocator.getParameterService();
-        Collection<String> sensitiveDataPatterns = parameterService
-                .getParameterValuesAsString(KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
-                        KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
+        Collection<String> sensitiveDataPatterns = parameterService.getParameterValuesAsString(
+                KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
         for (String pattern : sensitiveDataPatterns) {
             if (Pattern.compile(pattern).matcher(fieldValue).find()) {
                 return true;
@@ -572,28 +630,28 @@ public final class KRADUtils {
      */
     public static boolean isProductionEnvironment() {
         return KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                KRADConstants.PROD_ENVIRONMENT_CODE_KEY)
-                .equalsIgnoreCase(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.PROD_ENVIRONMENT_CODE_KEY).equalsIgnoreCase(
+                KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                         KRADConstants.ENVIRONMENT_KEY));
     }
 
     /**
-     * Gets the message associated with ErrorMessage object passed in, using the configuration service passed in.
+     * Gets the message associated with ErrorMessage object passed in, using message service.
      * The prefix and suffix will be appended to the retrieved message if processPrefixSuffix is true and if those
      * settings are set on the ErrorMessage passed in.
      *
-     * @param configService configuration service to use to retrieve the message
-     * @param errorMessage the ErrorMessage object containg the message key(s)
+     * @param errorMessage the ErrorMessage object containing the message key(s)
      * @param processPrefixSuffix if true appends the prefix and suffix to the message if they exist on ErrorMessage
      * @return the converted/retrieved message
      */
-    public static String getMessage(ConfigurationService configService, ErrorMessage errorMessage,
-            boolean processPrefixSuffix) {
+    public static String getMessageText(ErrorMessage errorMessage, boolean processPrefixSuffix) {
         String message = "";
         if (errorMessage != null && errorMessage.getErrorKey() != null) {
+            MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
-            //find message by key
-            message = configService.getPropertyValueAsString(errorMessage.getErrorKey());
+            // find message by key
+            message = messageService.getMessageText(errorMessage.getNamespaceCode(), errorMessage.getComponentCode(),
+                    errorMessage.getErrorKey());
             if (message == null) {
                 message = "Intended message with key: " + errorMessage.getErrorKey() + " not found.";
             }
@@ -603,9 +661,10 @@ public final class KRADUtils {
                 message = MessageFormat.format(message, (Object[]) errorMessage.getMessageParameters());
             }
 
-            //add prefix
+            // add prefix
             if (StringUtils.isNotBlank(errorMessage.getMessagePrefixKey()) && processPrefixSuffix) {
-                String prefix = configService.getPropertyValueAsString(errorMessage.getMessagePrefixKey());
+                String prefix = messageService.getMessageText(errorMessage.getNamespaceCode(),
+                        errorMessage.getComponentCode(), errorMessage.getMessagePrefixKey());
 
                 if (errorMessage.getMessagePrefixParameters() != null && StringUtils.isNotBlank(prefix)) {
                     prefix = prefix.replace("'", "''");
@@ -617,9 +676,10 @@ public final class KRADUtils {
                 }
             }
 
-            //add suffix
+            // add suffix
             if (StringUtils.isNotBlank(errorMessage.getMessageSuffixKey()) && processPrefixSuffix) {
-                String suffix = configService.getPropertyValueAsString(errorMessage.getMessageSuffixKey());
+                String suffix = messageService.getMessageText(errorMessage.getNamespaceCode(),
+                        errorMessage.getComponentCode(), errorMessage.getMessageSuffixKey());
 
                 if (errorMessage.getMessageSuffixParameters() != null && StringUtils.isNotBlank(suffix)) {
                     suffix = suffix.replace("'", "''");

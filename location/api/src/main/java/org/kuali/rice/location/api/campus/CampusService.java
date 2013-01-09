@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.location.api.campus;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.location.api.LocationConstants;
 import org.springframework.cache.annotation.Cacheable;
@@ -41,9 +42,7 @@ public interface CampusService {
      * This will return a {@link Campus}.
      *
      * @param code the code of the campus to return
-     * @throws IllegalArgumentException if the code is null
-     * @throws IllegalStateException if the campus does not exist in the system under the
-     * specific code
+     * @throws RiceIllegalArgumentException if the code is null or blank
      */
     @WebMethod(operationName="getCampus")
     @WebResult(name = "campus")
@@ -65,9 +64,8 @@ public interface CampusService {
      *
      * @param code the code of the campus type to return
      * @return CampusType object represented by the passed in code
-     * @throws IllegalArgumentException if the code is null
-     * @throws IllegalStateException if the campus does not exist in the system under the
-     * specific code
+     * @throws RiceIllegalArgumentException if the code is null
+     *
      */
     @WebMethod(operationName="getCampusType")
     @WebResult(name = "campusType")
@@ -83,4 +81,28 @@ public interface CampusService {
     @WebResult(name = "campusTypes")
     @Cacheable(value=CampusType.Cache.NAME, key="'all'")
     List<CampusType> findAllCampusTypes();
+
+    /**
+     * This method find Campuses based on a query criteria.  The criteria cannot be null.
+     *
+     * @since 2.0.1
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findCampuses")
+    @WebResult(name = "results")
+    CampusQueryResults findCampuses(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+
+    /**
+     * This method find CampusTypes based on a query criteria.  The criteria cannot be null.
+     *
+     * @since 2.0.1
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findCampusTypes")
+    @WebResult(name = "results")
+    CampusTypeQueryResults findCampusTypes(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 }

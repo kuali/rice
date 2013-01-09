@@ -38,7 +38,7 @@
       </list>
     </property>
     <property name="documentTypeName" value="ComponentMaintenanceDocument"/>
-    <property name="businessRulesClass" value="org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase"/>
+    <property name="businessRulesClass" value="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="workflowProperties">
       <ref bean="ComponentMaintenanceDocument-workflowProperties"/>

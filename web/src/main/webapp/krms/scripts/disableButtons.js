@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var TREE = '.tree-bar-button';
 var ADD = '.kr-add-button';
+var CUT='.kr-cut-button';
+var PASTE='.kr-paste-button';
+var DELETE='.kr-delete-button';
 var REFRESH='.kr-refresh-button';
+var TREE = '.tree-bar-button';
 
 var ENABLED = true;
+var pasting = false;
 
 function disableButton(id) {
     if (ENABLED && jq(id) != null) {
@@ -45,62 +49,103 @@ function enableAddButton() {
     enableButton(ADD);
 }
 
+function enablePasteButton() {
+    pasting = true;
+    enableButton(PASTE);
+}
+
+function enableDeleteButton() {
+    enableButton(DELETE);
+}
+
 function enableRefreshButton() {
     enableButton(REFRESH);
 }
 
 function enableTreeButtons() {
-    enableButton(TREE)
+    enableButton(TREE);
+    if (!pasting) {
+        disablePasteButton();
+    }
+}
+
+function disablePasteButton() {
+    pasting = false;
+    disableButton(PASTE);
 }
 
 function disableTreeButtons() {
-    disableButton(TREE)
+    disableButton(TREE);
 }
+
+
+function cutPasteButtonInit() {
+    // CUT
+    if (jq('.kr-cut-button') != undefined && jq('.kr-cut-button') != null) {
+        jq('.kr-cut-button').click(function() {
+            enablePasteButton();
+        });
+    }
+    // PASTE
+    if (jq('.kr-paste-button') != undefined && jq('.kr-paste-button') != null) {
+        jq('.kr-paste-button').click(function() {
+            disablePasteButton();
+        });
+    }
+}
+
 
 function propButtonsInit() {
     disableTreeButtons();
-    enableAddButton();
-    enableRefreshButton();
-    selectedPropCheck();
+
+    if (propositionAddInProgress()) {
+        disablePasteButton();
+        enableDeleteButton();
+    } else {
+        cutPasteButtonInit();
+        enableAddButton();
+        enableRefreshButton();
+        selectedCheck();
+        selectedPropCheck();
+    }
 }
 
 var onProp = false;
-// hack to disable buttons on Proposition Page when they are clicked (since document ready isn't called).
-// these ID numbers are not really ids, they are parameters hardcoded and passed in from calling javascript 
-function enabledCheck(id) {
+function enabledCheck(command) {
     if (onProp) return true;
 
-    if (id == '356') { // 356 edit
+    if (command == 'edit') {
         onProp = true;
         propButtonsInit();
-    } else if (id == 'add') {
+    } else if (command == 'add') {
         onProp = true;
         propButtonsInit();
-    } else if (id == '385') { // 385 add parent
+    } else if (command == 'addparent') {
         onProp = true;
         propButtonsInit();
-    } else if (id == '391') { // 391 left
+    } else if (command == 'left') {
         onProp = true;
         propButtonsInit();
-    } else if (id == '397') { // 397 right
+    } else if (command == 'right') {
         onProp = true;
         propButtonsInit();
-    } else if (id == '403') { // 403 up
+    } else if (command == 'up') {
         onProp = true;
         propButtonsInit();
-    } else if (id == '409') { // 409 down
+    } else if (command == 'down') {
         onProp = true;
         propButtonsInit();
-    } else if (id == '418') { // 418 cut
+    } else if (command == 'cut') {
         onProp = true;
         propButtonsInit();
-    } else if (id == '424') { // 424 paste
+        enablePasteButton(); // clicks have not been inited yet, enable paste button
+    } else if (command == 'paste') {
         onProp = true;
         propButtonsInit();
-    } else if (id == 'refresh') { 
+    } else if (command == 'refresh') {
         onProp = true;
         propButtonsInit();
-    } else if (id == '430') {
+    } else if (command == 'delete') {
         onProp = true;
         propButtonsInit();
     }
@@ -108,7 +153,11 @@ function enabledCheck(id) {
 }
 
 function selectedCheck() {
-    if (getSelectedItemInput() != null) {
+    var disableButtons = jq('input.disableButtons').val();
+    if(disableButtons == 'true'){
+        disableTreeButtons();
+    }
+    if (getSelectedItemInput() != null &&  disableButtons == 'false') {
         if (getSelectedItemInput().val() != "" && getSelectedItemInput().val() != undefined) {
             enableTreeButtons();
         }
@@ -123,11 +172,9 @@ function selectedPropCheck() {
     }
 }
 
-jq(document).ready(function() {
+function loadControlsInit() {
     if (ENABLED) {
-        disableTreeButtons();
-        enableAddButton();
-        enableRefreshButton();
-        selectedCheck();
+        disablePasteButton();
+        propButtonsInit();
     }
-});
+}

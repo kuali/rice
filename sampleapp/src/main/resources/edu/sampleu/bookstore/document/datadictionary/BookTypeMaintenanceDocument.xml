@@ -32,6 +32,7 @@
     </property>
   </bean>
   <bean id="BookType-MaintenanceView" parent="Uif-MaintenanceView">
+  <property name="headerText" value="Book Type Maintenance"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
     <property name="items">
       <list merge="true">

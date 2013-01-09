@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <formView formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="Rich Messages"
+            id="RichMessagesView" parent="Uif-FormView">
+    <items>
+      <pageGroup parent="Uif-Page">
+        <items>
+          <ref bean="Demo-BasicMessagesSection"/>
+          <ref bean="Demo-AdvancedMessagesSection"/>
+          <ref bean="Demo-RadioCheckboxMessageSection"/>
+          <ref bean="Demo-RichMessageLinks"/>
+        </items>
+      </pageGroup>
+    </items>
+    <theme>
+      <viewTheme parent="Uif-KradTheme"/>
+    </theme>
+  </formView>
+  <formView id="RichMessagesView_KNS" parent="RichMessagesView">
+    <theme>
+      <viewTheme parent="Uif-ClassicKnsTheme"/>
+    </theme>
+  </formView>
+  <group headertext="Basic [css='fl-text-underline']Functionality[/css]" id="Demo-BasicMessagesSection"
+         parent="Uif-VerticalBoxSection">
+    <items>
+      <message messageText="Message with [b]bold[/b] and [em]emphasis[/em] and [strong]strong[/strong] inline"
+               parent="Uif-Message"/>
+      <message messageText="Message with input [0] and link [1] inline" parent="Uif-Message">
+        <inlineComponents>
+          <inputField parent="Uif-InputField" propertyName="field1"/>
+          <link href="http://www.kuali.org" linkText="Kuali" parent="Uif-Link"/>
+        </inlineComponents>
+      </message>
+      <message messageText="Message getting component by id [id=Demo-SampleMessageInput] inside its content"
+               parent="Uif-Message"/>
+    </items>
+  </group>
+  <group headertext="Advanced Functionality" id="Demo-AdvancedMessagesSection" parent="Uif-VerticalBoxSection">
+    <items>
+      <message messageText="Message with [color=green]color[/color] [color=blue]option[/color]" parent="Uif-Message"/>
+      <message messageText="Message with [css='fl-text-underline fl-text-larger']css class[/css] option"
+               parent="Uif-Message"/>
+      <message
+              messageText="[b]Message[/b] using a [color=#F78C00] [css='fl-text-underline']combination[/css] [0] of different options[/color] [id=Demo-SampleMessageInput2] inside its [1] content"
+              parent="Uif-Message">
+        <inlineComponents>
+          <inputField parent="Uif-InputField" propertyName="field3" required="true"/>
+          <action actionLabel="Action Button" actionScript="alert('Inline Button')"
+                  parent="Uif-PrimaryActionButton-Small"/>
+        </inlineComponents>
+      </message>
+      <inputField
+              constraintText="[b]Constraint text[/b] with [a href='http://www.kuali.org']rich message[/a] [color='red']functionality[/color] inline"
+              label="Rich Message Field" parent="Uif-InputField" propertyName="field5">
+        <instructionalMessage>
+          <message messageText="Instructions with [i]rich message[/i] functionality [0] inline" parent="Uif-Message">
+            <inlineComponents>
+              <action actionLabel="Instruction Button" actionScript="alert('Inline Button')"
+                      parent="Uif-SecondaryActionButton-Small"/>
+            </inlineComponents>
+          </message>
+        </instructionalMessage>
+      </inputField>
+      <inputField label="Label With [color=green]Color[/color]" parent="Uif-InputField-LabelTop"
+                  propertyName="field100"/>
+      <inputField label="Label With [i][b]Html[/b][/i]" parent="Uif-InputField-LabelTop" propertyName="field101"/>
+      <inputField label="Label With [id=Demo-RichMessagesImage]Image" parent="Uif-InputField-LabelTop"
+                  propertyName="field102"/>
+      <message messageText="Getting message content from a value on the form (springEL): @{#dp.richMessageField}"
+               parent="Uif-Message"/>
+      <message
+              messageText="Getting message content from a value with [css=fl-text-underline]no formatting [/css]- [b]@{#dp.testValueField}[/b] - and applying rich message around it"
+              parent="Uif-Message"/>
+      <message
+              messageText="Getting a message from the form that mixes inlineComponents and id specified content into its value: @{#dp.richMessageField2}"
+              parent="Uif-Message">
+        <inlineComponents>
+          <inputField constraintText="Only [b]numbers[/b] allowed" parent="Uif-InputField-LabelTop"
+                      propertyName="field6" required="true">
+            <validCharactersConstraint>
+              <numericPatternConstraint parent="NumericPatternConstraint"/>
+            </validCharactersConstraint>
+          </inputField>
+        </inlineComponents>
+      </message>
+      <message
+              messageText="Multiple ways to get an image inline within a message:                     [ul]                     [li]By inlineComponents[0][/li]                     [li]By id[id=Demo-RichMessagesImage][/li]                     [li]By html image tag[image src=&quot;@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif&quot;][/li]                     [/ul]"
+              parent="Uif-Message">
+        <inlineComponents>
+          <image altText="Image" parent="Uif-Image"
+                 source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </inlineComponents>
+      </message>
+      <message messageText="Testing rich message special character(\[\]) escape [color=green]\[[b]content[/b]\][/color]"
+               parent="Uif-Message"/>
+      <message
+              messageText="Testing component by id setting propertyName to field12, required to false, label to 'Label Text'                     [id='Demo-SampleMessageInput3' propertyName=field12 required=false label='Label Text']"
+              parent="Uif-Message"/>
+      <message
+              messageText="Testing component with progressive render condition                     [id='Demo-SampleMessageInput3' propertyName=field13 refreshWhenChangedPropertyNames=field24]"
+              parent="Uif-Message"/>
+    </items>
+  </group>
+  <group headertext="[color=red]Radio[/color] and   [color=blue]Checkbox[/color] groups rich messages"
+         id="Demo-RadioCheckboxMessageSection"
+         instructionalText="Testing [css='fl-text-underline']checkbox and radio groups[/css] below"
+         parent="Uif-VerticalBoxSection">
+    <items>
+      <inputField label="Favorite Color" parent="Uif-InputField-LabelTop" propertyName="field24" width="auto">
+        <control>
+          <radioGroupControl parent="Uif-VerticalRadioControl">
+            <options>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="1"/>
+                <spring:property name="value" value="[color=blue]Blue[/color]"/>
+              </spring:bean>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="2"/>
+                <spring:property name="value" value="[color=red]Red[/color]"/>
+              </spring:bean>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="3"/>
+                <spring:property name="value" value="[color=gold]Yellow[/color]"/>
+              </spring:bean>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="4"/>
+                <spring:property name="value" value="Other: [id=Demo-SampleMessageInput4]"/>
+              </spring:bean>
+            </options>
+          </radioGroupControl>
+        </control>
+      </inputField>
+      <inputField label="You heard about us from?" parent="Uif-InputField-LabelTop" propertyName="field115"
+                  width="auto">
+        <control>
+          <spring:bean parent="Uif-VerticalCheckboxesControl">
+            <spring:property name="inlineComponents">
+              <spring:list>
+                <spring:bean parent="Uif-InputField">
+                  <spring:property name="propertyName" value="field19"/>
+                </spring:bean>
+                <spring:bean parent="Uif-InputField">
+                  <spring:property name="propertyName" value="field20"/>
+                </spring:bean>
+              </spring:list>
+            </spring:property>
+            <spring:property name="options">
+              <spring:list>
+                <spring:bean parent="Uif-KeyLabelPair">
+                  <spring:property name="key" value="1"/>
+                  <spring:property name="value" value="A website: [0]"/>
+                </spring:bean>
+                <spring:bean parent="Uif-KeyLabelPair">
+                  <spring:property name="key" value="2"/>
+                  <spring:property name="value" value="A magazine: [1]"/>
+                </spring:bean>
+                <spring:bean parent="Uif-KeyLabelPair">
+                  <spring:property name="key" value="3"/>
+                  <spring:property name="value" value="Other: [id=Demo-SampleMessageInput2]"/>
+                </spring:bean>
+              </spring:list>
+            </spring:property>
+          </spring:bean>
+        </control>
+      </inputField>
+      <inputField label="CheckboxControl" parent="Uif-InputField-LabelTop" propertyName="bField1">
+        <control>
+          <checkboxControl
+                  checkboxLabel="I,                     [id=Demo-SampleMessageInput4 propertyName=field103], agree to the terms                     and conditions of this form"
+                  parent="Uif-CheckboxControl"/>
+        </control>
+      </inputField>
+    </items>
+  </group>
+  <group headertext="Link Declarations" id="Demo-RichMessageLinks"
+         instructionalText="Testing [css='fl-text-underline'][/css] below" parent="Uif-VerticalBoxSection">
+    <items>
+      <message messageText="Testing link tag [link='http://www.kuali.org']Link[/link]" parent="Uif-Message"/>
+      <message messageText="Testing methodToCall action [action=addErrors]addErrors[/action]" parent="Uif-Message"/>
+      <message
+              messageText="Testing methodToCall action (no client validation check)                     [action=addErrors,false]addErrors[/action]"
+              parent="Uif-Message"/>
+      <message
+              messageText="Testing passing data [action=addErrors,false data={extraInfo: 'You passed data'}]addErrors[/action]"
+              parent="Uif-Message"/>
+      <message messageText="Testing non-ajax submit [action=addErrors,false,false]addErrors[/action]"
+               parent="Uif-Message"/>
+      <message
+              messageText="Testing custom success callback [action=addErrors,false,true,function(){alert('Successful Callback')}]addErrors[/action]"
+              parent="Uif-Message"/>
+    </items>
+  </group>
+  <inputField id="Demo-SampleMessageInput" parent="Uif-InputField" propertyName="field2">
+    <control>
+      <checkboxControl checkboxLabel="Checkbox Label" parent="Uif-CheckboxControl"/>
+    </control>
+  </inputField>
+  <inputField id="Demo-SampleMessageInput2" parent="Uif-InputField-LabelTop" propertyName="field4" required="true">
+    <control>
+      <selectControl parent="Uif-DropdownControl"/>
+    </control>
+    <optionsFinder>
+      <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues">
+        <spring:property name="blankOption" value="true"/>
+      </spring:bean>
+    </optionsFinder>
+  </inputField>
+  <inputField constraintText="Only [b]letters[/b] allowed" id="Demo-SampleMessageInput3"
+              parent="Uif-InputField-LabelTop" propertyName="field5" required="true">
+    <validCharactersConstraint>
+      <alphaPatternConstraint parent="AlphaPatternConstraint"/>
+    </validCharactersConstraint>
+  </inputField>
+  <inputField id="Demo-SampleMessageInput4" parent="Uif-InputField-LabelTop" propertyName="field22" required="true"/>
+  <image altText="Image" id="Demo-RichMessagesImage" parent="Uif-Image"
+         source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+</spring:beans>

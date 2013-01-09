@@ -16,6 +16,9 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.element.Header;
@@ -28,18 +31,19 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Base <code>Container</code> implementation which container implementations
  * can extend
- * 
+ *
  * <p>
  * Provides properties for the basic <code>Container</code> functionality in
  * addition to default implementation of the lifecycle methods including some
  * setup of the header, items list, and layout manager
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ContainerBase extends ComponentBase implements Container {
@@ -67,13 +71,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	/**
 	 * The following initialization is performed:
-	 * 
+	 *
 	 * <ul>
 	 * <li>Sorts the containers list of components</li>
      * <li>Initializes the instructional field if necessary</li>
 	 * <li>Initializes LayoutManager</li>
 	 * </ul>
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
@@ -81,12 +85,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void performInitialization(View view, Object model) {
 		super.performInitialization(view, model);
 
-		// sort items list by the order property
-		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
-                defaultItemPosition);
-		setItems(sortedItems);
+        sortItems(view, model);
 
-        if (StringUtils.isNotBlank(instructionalText) && (instructionalMessage == null)) {
+        if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
+                instructionalMessage == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
             view.assignComponentIds(instructionalMessage);
         }
@@ -104,6 +106,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void performApplyModel(View view, Object model, Component parent) {
 		super.performApplyModel(view, model, parent);
 
+		// setup summary message field if necessary
+		if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+			instructionalMessage.setMessageText(instructionalText);
+		}
+
 		if (layoutManager != null) {
 			layoutManager.performApplyModel(view, model, this);
 		}
@@ -111,13 +118,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	/**
 	 * The following finalization is performed:
-	 * 
+	 *
 	 * <ul>
 	 * <li>Sets the headerText of the header Group if it is blank</li>
 	 * <li>Set the messageText of the summary Message if it is blank</li>
 	 * <li>Finalizes LayoutManager</li>
 	 * </ul>
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
@@ -129,15 +136,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
             header.addDataAttribute("headerFor", this.getId());
         }
 
-		// setup summary message field if necessary
-		if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
-			instructionalMessage.setMessageText(instructionalText);
-		}
-
 		if (layoutManager != null) {
 			layoutManager.performFinalize(view, model, this);
 		}
-        
+
 	}
 
 	/**
@@ -178,10 +180,24 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         return components;
     }
 
+    /**
+     * Performs sorting of the container items based on the order property
+     *
+     * @param view view instance containing the container
+     * @param model model object containing the view data
+     */
+    protected void sortItems(View view, Object model) {
+        // sort items list by the order property
+        List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
+                defaultItemPosition);
+        setItems(sortedItems);
+    }
+
 	/**
 	 * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
 	 */
 	@Override
+    @BeanTagAttribute(name="validationMessages",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public ValidationMessages getValidationMessages() {
 		return this.validationMessages;
 	}
@@ -198,6 +214,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.widget.Helpable#getHelp()
 	 */
 	@Override
+    @BeanTagAttribute(name="help",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Help getHelp() {
 		return this.help;
 	}
@@ -236,11 +253,12 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getItems()
 	 */
 	@Override
+    @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public abstract List<? extends Component> getItems();
 
 	/**
 	 * Setter for the containers list of components
-	 * 
+	 *
 	 * @param items
 	 */
 	public abstract void setItems(List<? extends Component> items);
@@ -251,16 +269,17 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * this property. The first component found in the list without an order
 	 * will be assigned the configured initial value, and incremented by one for
 	 * each component (without an order) found afterwards
-	 * 
+	 *
 	 * @return int order sequence
 	 */
+    @BeanTagAttribute(name="defaultItemPosition")
 	public int getDefaultItemPosition() {
 		return this.defaultItemPosition;
 	}
 
 	/**
 	 * Setter for the container's item ordering sequence number (initial value)
-	 * 
+	 *
 	 * @param defaultItemPosition
 	 */
 	public void setDefaultItemPosition(int defaultItemPosition) {
@@ -271,6 +290,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getLayoutManager()
 	 */
 	@Override
+    @BeanTagAttribute(name="layoutManager",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public LayoutManager getLayoutManager() {
 		return this.layoutManager;
 	}
@@ -287,6 +307,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getHeader()
 	 */
 	@Override
+    @BeanTagAttribute(name="header",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Header getHeader() {
 		return this.header;
 	}
@@ -303,6 +324,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getFooter()
 	 */
 	@Override
+    @BeanTagAttribute(name="footer",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Group getFooter() {
 		return this.footer;
 	}
@@ -318,13 +340,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * Convenience setter for configuration to turn rendering of the header
 	 * on/off
-	 * 
+	 *
 	 * <p>
 	 * For nested groups (like Field Groups) it is often necessary to only show
 	 * the container body (the contained components). This method allows the
 	 * header to not be displayed
 	 * </p>
-	 * 
+	 *
 	 * @param renderHeader
 	 */
 	public void setRenderHeader(boolean renderHeader) {
@@ -338,11 +360,12 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return The text that should be displayed on the header
      */
+    @BeanTagAttribute(name="headertext")
     public String getHeaderText () {
-        if (header != null) {
+        if (header != null && header.getHeaderText() != null) {
             return header.getHeaderText();
         } else {
-            return null;
+            return "";
         }
     }
 
@@ -360,13 +383,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * Convenience setter for configuration to turn rendering of the footer
 	 * on/off
-	 * 
+	 *
 	 * <p>
 	 * For nested groups it is often necessary to only show the container body
 	 * (the contained components). This method allows the footer to not be
 	 * displayed
 	 * </p>
-	 * 
+	 *
 	 * @param renderFooter
 	 */
 	public void setRenderFooter(boolean renderFooter) {
@@ -381,6 +404,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return String instructional message
      */
+    @BeanTagAttribute(name="instructionalText")
 	public String getInstructionalText() {
 		return this.instructionalText;
 	}
@@ -404,6 +428,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return Message instructional message field
      */
+    @BeanTagAttribute(name="instructionalMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Message getInstructionalMessage() {
 		return this.instructionalMessage;
 	}
@@ -422,4 +447,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		this.instructionalMessage = instructionalMessage;
 	}
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean(this);
+
+        // Checks for over writing of the instructional text or message
+        if(getInstructionalText()!=null && getInstructionalMessage()!=null){
+            String currentValues [] = {"instructionalMessage.text = "+getInstructionalMessage().getMessageText(),"instructionalText = "+getInstructionalText()};
+            tracer.createWarning("InstructionalMessage will override instructioanlText",currentValues);
+        }
+
+        super.completeValidation(tracer.getCopy());
+    }
 }

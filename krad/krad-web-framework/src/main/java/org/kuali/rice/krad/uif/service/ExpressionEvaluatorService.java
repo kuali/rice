@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service;
 
-import org.kuali.rice.krad.uif.component.Configurable;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.Map;
@@ -60,7 +60,7 @@ public interface ExpressionEvaluatorService {
      * </p>
      *
      * @param view - view instance being rendered
-     * @param configurable - object whose properties should be checked for expressions
+     * @param expressionConfigurable - object whose properties should be checked for expressions
      * and evaluated
      * @param contextObject - context object for the expression evaluations
      * @param evaluationParameters - map of parameters that may appear in expressions, the map
@@ -68,7 +68,7 @@ public interface ExpressionEvaluatorService {
      * expression, and the map value is the object that expression
      * should evaluate against when that name is found
      */
-    public void evaluateExpressionsOnConfigurable(View view, Configurable configurable, Object contextObject,
+    public void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable, Object contextObject,
             Map<String, Object> evaluationParameters);
 
     /**

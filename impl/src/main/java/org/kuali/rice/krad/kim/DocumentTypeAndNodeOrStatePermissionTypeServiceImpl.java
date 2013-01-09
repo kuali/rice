@@ -50,7 +50,8 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
         for ( Permission kpi : permissionsList ) {
             PermissionBo bo = PermissionBo.from(kpi);
             if ( routeNodeMatches(requestedDetails, bo.getDetails()) &&
-                    routeStatusMatches(requestedDetails, bo.getDetails())) {
+                 routeStatusMatches(requestedDetails, bo.getDetails()) &&
+                 appDocStatusMatches(requestedDetails, bo.getDetails()) ) {
                 matchingPermissions.add( kpi );
             }           
         }
@@ -73,5 +74,13 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
 		return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE), permissionDetails.get(
                 KimConstants.AttributeConstants.ROUTE_STATUS_CODE));
 	}
+
+    protected boolean appDocStatusMatches(Map<String, String> requestedDetails, Map<String, String> permissionDetails) {
+        if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.APP_DOC_STATUS) ) ) {
+            return true;
+        }
+        return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.APP_DOC_STATUS), permissionDetails.get(
+                KimConstants.AttributeConstants.APP_DOC_STATUS));
+    }
 
 }

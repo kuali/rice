@@ -33,7 +33,10 @@ public interface RouteNodeDAO {
     public RouteNode findRouteNodeById(String nodeId);
     public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId);
     public List<RouteNodeInstance> getActiveNodeInstances(String documentId);
+    public List<String> getActiveRouteNodeNames(String documentId);
     public List<RouteNodeInstance> getTerminalNodeInstances(String documentId);
+    public List<String> getTerminalRouteNodeNames(String documentId);
+    public List<String> getCurrentRouteNodeNames(String documentId);
     public List getInitialNodeInstances(String documentId);
     public NodeState findNodeState(Long nodeInstanceId, String key);
     public RouteNode findRouteNodeByName(String documentTypeId, String name);

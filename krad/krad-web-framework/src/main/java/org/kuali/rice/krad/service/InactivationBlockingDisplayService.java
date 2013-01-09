@@ -22,14 +22,14 @@ import java.util.List;
 
 /**
  * A service that helps to print out records that block the inactivation of another BO
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface InactivationBlockingDisplayService {
 	/**
 	 * Retrieves a List of Strings representing each record that blocks the inactivation of blockedBo
-	 * 
+	 *
 	 * @param blockedBo
 	 * @param inactivationBlockingMetadata the blocking relationship
 	 * @return

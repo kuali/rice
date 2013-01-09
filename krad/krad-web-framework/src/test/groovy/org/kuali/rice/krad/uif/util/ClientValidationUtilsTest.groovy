@@ -85,6 +85,6 @@ class ClientValidationUtilsTest {
     @Test
     void testEmptyLabelKeyReturnsDefaultMessage() {
         def DEFAULT_MESSAGE = "NO MESSAGE"
-        assertEquals(DEFAULT_MESSAGE, ClientValidationUtils.generateMessageFromLabelKey(null, null))
+        assertEquals(DEFAULT_MESSAGE, ClientValidationUtils.generateMessageText(null, null, null, null))
     }
 }

@@ -243,9 +243,9 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
         try {
             refreshRate = new Integer(ConfigContext.getCurrentContextConfig().getProperty(Config.REFRESH_RATE));
         } catch (NumberFormatException nfe) {
-            LOG.error("Couldn't parse property " + org.kuali.rice.core.api.config.property.Config.REFRESH_RATE + " to set bus refresh rate. Defaulting to 30 seconds.");
-            ConfigContext.getCurrentContextConfig().putProperty(org.kuali.rice.core.api.config.property.Config.REFRESH_RATE, "30");
-            return 30;
+            LOG.error("Couldn't parse property " + org.kuali.rice.core.api.config.property.Config.REFRESH_RATE + " to set bus refresh rate. Defaulting to 60 seconds.");
+            ConfigContext.getCurrentContextConfig().putProperty(org.kuali.rice.core.api.config.property.Config.REFRESH_RATE, "60");
+            return 60;
         }
         return refreshRate;
     }

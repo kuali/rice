@@ -109,7 +109,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *
      * @return a new Set
      */
-    private static Set<BusinessObject> newIdentitySet() {
+    protected final Set<BusinessObject> newIdentitySet() {
         return java.util.Collections.newSetFromMap(new IdentityHashMap<BusinessObject, Boolean>());
     }
 
@@ -244,7 +244,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
     }
 
-    private void validateUpdatabableReferencesRecursively(BusinessObject businessObject, int maxDepth,
+    protected void validateUpdatabableReferencesRecursively(BusinessObject businessObject, int maxDepth,
             boolean validateRequired, boolean chompLastLetterSFromCollectionName, Set<BusinessObject> processedBOs) {
         // if null or already processed, return
         if (ObjectUtils.isNull(businessObject) || processedBOs.contains(businessObject)) {
@@ -383,7 +383,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * iterates through the property discriptors looking for business objects or lists of business objects. calls
+     * iterates through the property descriptors looking for business objects or lists of business objects. calls
      * validate method
      * for each bo found
      *
@@ -779,8 +779,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * Validates using the defined AttributeValueReader (which allows access the object being validated) against
-     * the validationState and stateMapping (if specified).  If state information is null,
-     * validates the constraints as stateless (ie all constraints apply regardless of their states attribute).
+     * the validationState and stateMapping (if specified).
+     *
+     * <p>If state information is null, validates the constraints as stateless (ie all constraints apply regardless of
+     * their states attribute).</p>
      *
      * @param valueReader - an object to validate
      * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values
@@ -990,6 +992,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+     * Validates the attribute specified by definition
+     *
      * @param definition -   the constrainable attribute definition of a specific attribute name
      * @throws AttributeValidationException
      * @see #validateAttribute(DictionaryValidationResult, AttributeValueReader, boolean) for the other parameters

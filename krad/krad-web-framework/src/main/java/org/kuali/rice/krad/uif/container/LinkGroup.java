@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+
 /**
  * Special <code>Group</code> that presents a grouping on links, which can
  * also include nested groupings of links
@@ -27,6 +31,9 @@ package org.kuali.rice.krad.uif.container;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "linkGroup", parent = "Uif-LinkGroup"),
+        @BeanTag(name = "linkSubGroup", parent = "Uif-LinkSubGroup"),
+        @BeanTag(name = "lookupView-resultActions", parent = "Uif-LookupView-ResultActions")})
 public class LinkGroup extends Group {
     private static final long serialVersionUID = -4173031543626881250L;
 
@@ -51,6 +58,7 @@ public class LinkGroup extends Group {
      *
      * @return String group begin delimiter
      */
+    @BeanTagAttribute(name = "groupBeginDelimiter")
     public String getGroupBeginDelimiter() {
         return groupBeginDelimiter;
     }
@@ -76,6 +84,7 @@ public class LinkGroup extends Group {
      *
      * @return String group end delimiter
      */
+    @BeanTagAttribute(name = "groupEndDelimiter")
     public String getGroupEndDelimiter() {
         return groupEndDelimiter;
     }
@@ -96,6 +105,7 @@ public class LinkGroup extends Group {
      *
      * @return String link separator
      */
+    @BeanTagAttribute(name = "linkSeparator")
     public String getLinkSeparator() {
         return linkSeparator;
     }
@@ -115,6 +125,7 @@ public class LinkGroup extends Group {
      *
      * @return String empty group string
      */
+    @BeanTagAttribute(name = "emptyLinkGroupString")
     public String getEmptyLinkGroupString() {
         return emptyLinkGroupString;
     }

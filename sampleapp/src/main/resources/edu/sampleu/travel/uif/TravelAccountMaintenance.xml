@@ -33,11 +33,13 @@
               <bean parent="Uif-InputField" p:propertyName="number"/>
               <bean parent="Uif-InputField" p:propertyName="name"/>
               <bean parent="Uif-InputField" p:propertyName="extension.accountTypeCode">
+                <property name="id" value="quickfinder1"/> <!-- changing this will break tests -->
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
               </bean>
               <bean parent="Uif-InputField" p:propertyName="subAccount">
+                <property name="id" value="quickfinder2"/> <!-- changing this will break tests -->
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
@@ -54,6 +56,7 @@
               <bean parent="Uif-InputField" p:propertyName="createDate"/>
               <bean parent="Uif-InputField" p:propertyName="subsidizedPercent"/>
               <bean parent="Uif-InputField" p:propertyName="foId" >
+                <property name="id" value="quickfinder3"/> <!-- changing this will break tests -->
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
@@ -71,6 +74,7 @@
               <bean parent="Uif-InputField" p:propertyName="number"/>
               <bean parent="Uif-InputField" p:propertyName="name"/>
               <bean parent="Uif-InputField" p:propertyName="foId">
+                <property name="id" value="quickfinder4"/> <!-- changing this will break tests -->
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>

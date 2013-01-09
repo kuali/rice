@@ -16,15 +16,16 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -32,7 +33,6 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.springframework.util.AutoPopulatingList;
 
 import java.beans.PropertyEditor;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -54,6 +54,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "validationMessages", parent = "Uif-ValidationMessagesBase")
 public class ValidationMessages extends ContentElementBase {
     private static final long serialVersionUID = 780940788435330077L;
 
@@ -84,6 +85,7 @@ public class ValidationMessages extends ContentElementBase {
     }
 
     /**
+     * Generates the messages based on the content in the messageMap
      *
      * @param reset - true to reset the errors, warnings, and info lists
      * @param view - the current View
@@ -102,14 +104,24 @@ public class ValidationMessages extends ContentElementBase {
 
         String parentContainerId = "";
         Object parentContainer = parent.getContext().get("parent");
+
         if (parentContainer != null && (parentContainer instanceof Container
                 || parentContainer instanceof FieldGroup)) {
             parentContainerId = ((Component) parentContainer).getId();
         }
 
+        //special message component case
+        if (parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer)
+                .isGenerateSpan()) {
+            parentContainerId = ((Component) parentContainer).getId();
+        }
+
         //Add identifying data attributes
         this.addDataAttribute("messagesFor", parent.getId());
-        parent.addDataAttribute("parent", parentContainerId);
+
+        if (parent.getDataAttributes().get("parent") == null) {
+            parent.addDataAttribute("parent", parentContainerId);
+        }
 
         //Handle the special FieldGroup case - adds the FieldGroup itself to ids handled by this group (this must
         //be a group if its parent is FieldGroup)
@@ -167,10 +179,9 @@ public class ValidationMessages extends ContentElementBase {
         List<String> result = new ArrayList<String>();
         for (List<ErrorMessage> errorList : lists) {
             if (errorList != null && StringUtils.isNotBlank(key)) {
-                ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
-
                 for (ErrorMessage e : errorList) {
-                    String message = KRADUtils.getMessage(configService, e, true);
+                    String message = KRADUtils.getMessageText(e, true);
+                    message = MessageStructureUtils.translateStringMessage(message);
 
                     result.add(message);
                 }
@@ -237,6 +248,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the additionalKeysToMatch
      */
+    @BeanTagAttribute(name="additionalKeysToMatch",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalKeysToMatch() {
         return this.additionalKeysToMatch;
     }
@@ -273,6 +285,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the displayMessages
      */
+    @BeanTagAttribute(name="displayMessages")
     public boolean isDisplayMessages() {
         return this.displayMessages;
     }
@@ -290,6 +303,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the errors
      */
+    @BeanTagAttribute(name="errors",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getErrors() {
         return this.errors;
     }
@@ -300,6 +314,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the warnings
      */
+    @BeanTagAttribute(name="warnings",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getWarnings() {
         return this.warnings;
     }
@@ -310,6 +325,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the infos
      */
+    @BeanTagAttribute(name="infos",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getInfos() {
         return this.infos;
     }

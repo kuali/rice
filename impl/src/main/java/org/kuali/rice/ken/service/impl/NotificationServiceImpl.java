@@ -17,10 +17,10 @@ package org.kuali.rice.ken.service.impl;
 
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationResponse;
+import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationResponseBo;
 import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
@@ -81,11 +81,11 @@ public class NotificationServiceImpl implements NotificationService {
 	 * This is the default implementation that uses the businessObjectDao.
 	 * @see org.kuali.rice.ken.service.NotificationService#getNotification(java.lang.Long)
 	 */
-	public Notification getNotification(Long id) {
+	public NotificationBo getNotification(Long id) {
 		HashMap<String, Long> primaryKeys = new HashMap<String, Long>();
 		primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, id);
 
-		return (Notification) businessObjectDao.findByPrimaryKey(Notification.class, primaryKeys);
+		return (NotificationBo) businessObjectDao.findByPrimaryKey(NotificationBo.class, primaryKeys);
 	}
 
 	/**
@@ -95,19 +95,19 @@ public class NotificationServiceImpl implements NotificationService {
 	 * is saved.
 	 * @see org.kuali.rice.ken.service.NotificationService#sendNotification(java.lang.String)
 	 */
-	public NotificationResponse sendNotification(String notificationMessageAsXml) throws IOException, XmlException {
+	public NotificationResponseBo sendNotification(String notificationMessageAsXml) throws IOException, XmlException {
 		// try to parse out the XML with the message content service
-		Notification notification = messageContentService.parseNotificationRequestMessage(notificationMessageAsXml);
+		NotificationBo notification = messageContentService.parseNotificationRequestMessage(notificationMessageAsXml);
 
 		// now call out to the meat of the notification sending - this will validate users, groups, producers, and save
 		return sendNotification(notification);
 	}
 
 	/**
-	 * @see org.kuali.rice.ken.service.NotificationService#sendNotification(org.kuali.rice.ken.bo.Notification)
+	 * @see org.kuali.rice.ken.service.NotificationService#sendNotification(org.kuali.rice.ken.bo.NotificationBo)
 	 */
-	public NotificationResponse sendNotification(Notification notification) {
-		NotificationResponse response = new NotificationResponse();
+	public NotificationResponseBo sendNotification(NotificationBo notification) {
+		NotificationResponseBo response = new NotificationResponseBo();
 
 		// make sure that the producer is able to send notifications on behalf of the channel
 		boolean producerAuthorizedForChannel = notificationAuthorizationService.isProducerAuthorizedToSendNotificationForChannel(notification.getProducer(), notification.getChannel());
@@ -120,7 +120,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 		// make sure that the recipients are valid
 		for(int i = 0; i < notification.getRecipients().size(); i++) {
-			NotificationRecipient recipient = notification.getRecipient(i);
+			NotificationRecipientBo recipient = notification.getRecipient(i);
 			boolean validRecipient = notificationRecipientService.isRecipientValid(recipient.getRecipientId(), recipient.getRecipientType());
 			if(!validRecipient) {
 				response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
@@ -132,17 +132,17 @@ public class NotificationServiceImpl implements NotificationService {
 
 		// set the creationDateTime attribute to the current timestamp if it's currently null
 		if (notification.getCreationDateTime() == null) {
-			notification.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
+			notification.setCreationDateTimeValue(new Timestamp(System.currentTimeMillis()));
 		}
 
 		// set the sendDateTime attribute to the current timestamp if it's currently null
 		if(notification.getSendDateTime() == null) {
-			notification.setSendDateTime(new Timestamp(System.currentTimeMillis()));
+			notification.setSendDateTimeValue(new Timestamp(System.currentTimeMillis()));
 		}
 
 		// if the autoremove time is before the send date time, reject the notification
 		if (notification.getAutoRemoveDateTime() != null) {
-			if (notification.getAutoRemoveDateTime().before(notification.getSendDateTime()))  {
+			if (notification.getAutoRemoveDateTimeValue().before(notification.getSendDateTimeValue()))  {
 				response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
 				response.setMessage(NotificationConstants.RESPONSE_MESSAGES.INVALID_REMOVE_DATE);
 				return response;
@@ -182,7 +182,7 @@ public class NotificationServiceImpl implements NotificationService {
 		queryCriteria.put(NotificationConstants.BO_PROPERTY_NAMES.CONTENT_TYPE_NAME, contentTypeName);
 		queryCriteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENTS_RECIPIENT_ID, recipientId);
 
-		return businessObjectDao.findMatching(Notification.class, queryCriteria);
+		return businessObjectDao.findMatching(NotificationBo.class, queryCriteria);
 	}
 
 	/**
@@ -199,7 +199,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 */   
 	public void dismissNotificationMessageDelivery(NotificationMessageDelivery nmd, String user, String cause) {
 		// get the notification that generated this particular message delivery
-		Notification notification = nmd.getNotification();
+		NotificationBo notification = nmd.getNotification();
 
 		// get all of the other deliveries of this notification for the user
 		Collection<NotificationMessageDelivery> userDeliveries = notificationMessageDeliveryService.getNotificationMessageDeliveries(notification, nmd.getUserRecipientId());
@@ -259,7 +259,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 * @return a list of available notifications that have been marked as taken by the caller
 	 */
 	//switch to JPA criteria
-	public Collection<Notification> takeNotificationsForResolution() {
+	public Collection<NotificationBo> takeNotificationsForResolution() {
 		// get all unprocessed notifications with sendDateTime <= current
 //		Criteria criteria = new Criteria();
 //		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
@@ -274,15 +274,15 @@ public class NotificationServiceImpl implements NotificationService {
 
 		//Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
 		
-		Collection<Notification> available_notifications = notDao.findMatchedNotificationsForResolution(new Timestamp(System.currentTimeMillis()), businessObjectDao);
+		Collection<NotificationBo> available_notifications = notDao.findMatchedNotificationsForResolution(new Timestamp(System.currentTimeMillis()), businessObjectDao);
 
 		//LOG.debug("Available notifications: " + available_notifications.size());
 
 		// mark as "taken"
 		if (available_notifications != null) {
-			for (Notification notification: available_notifications) {
+			for (NotificationBo notification: available_notifications) {
 				LOG.info("notification: " + notification);
-				notification.setLockedDate(new Timestamp(System.currentTimeMillis()));
+				notification.setLockedDateValue(new Timestamp(System.currentTimeMillis()));
 				businessObjectDao.save(notification);
 			}
 		}
@@ -296,7 +296,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 * @param notification the notification object to unlock
 	 */
 	//switch to JPA criteria
-	public void unlockNotification(Notification notification) {
+	public void unlockNotification(NotificationBo notification) {
 //		Map<String, Long> criteria = new HashMap<String, Long>();
 //		criteria.put(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
 //		Criteria criteria = new Criteria();
@@ -308,14 +308,14 @@ public class NotificationServiceImpl implements NotificationService {
 
 		//Collection<Notification> notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
 		
-		Collection<Notification> notifications = notDao.findMatchedNotificationsForUnlock(notification, businessObjectDao);
+		Collection<NotificationBo> notifications = notDao.findMatchedNotificationsForUnlock(notification, businessObjectDao);
 		
 		if (notifications == null || notifications.size() == 0) {
 			throw new RuntimeException("Notification #" + notification.getId() + " not found to unlock");
 		}
 
-		Notification n = notifications.iterator().next();
-		n.setLockedDate(null);
+		NotificationBo n = notifications.iterator().next();
+		n.setLockedDateValue(null);
 
 		businessObjectDao.save(n);
 	}

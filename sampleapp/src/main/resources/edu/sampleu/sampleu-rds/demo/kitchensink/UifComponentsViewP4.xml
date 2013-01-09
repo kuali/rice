@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <group disclosure.render="false" id="regex1" layoutManager.orientation="VERTICAL" parent="Uif-VerticalBoxSection">
+    <items>
+      <inputField
+              instructionalText="Fixed point pattern constraint with precision 5(max numbers total) and scale 2 (max numbers after decimal)"
+              label="FixedPointPatternConstraint" parent="GenericTextField" propertyName="field50">
+        <validCharactersConstraint>
+          <fixedPointPatternConstraint parent="FixedPointPatternConstraint" precision="5" scale="2"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="Floating point number, allow negative on" label="FloatingPointPatternConstraint"
+                  parent="GenericTextField" propertyName="field51">
+        <control>
+          <textControl parent="Uif-TextControl" size="30" watermarkText="Float"/>
+        </control>
+        <validCharactersConstraint>
+          <spring:bean parent="FloatingPointPatternConstraint">
+            <spring:property name="allowNegative" value="true"/>
+          </spring:bean>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="Integer, allow negative on" label="IntegerPatternConstraint"
+                  parent="GenericTextField" propertyName="field77">
+        <validCharactersConstraint>
+          <integerPatternConstraint allowNegative="true" parent="IntegerPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="###-###-####" label="PhoneNumberPatternConstraint" parent="GenericTextField"
+                  propertyName="field52">
+        <validCharactersConstraint>
+          <spring:bean parent="PhoneNumberPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="valid java class names accepted" label="JavaClassPatternConstraint"
+                  parent="GenericTextField" propertyName="field53">
+        <validCharactersConstraint>
+          <spring:bean parent="JavaClassPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="email address" label="EmailAddressPatternConstraint" parent="GenericTextField"
+                  propertyName="field54">
+        <validCharactersConstraint>
+          <spring:bean parent="EmailAddressPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="Url in http format" label="UrlPatternConstraint" parent="GenericTextField"
+                  propertyName="field84">
+        <validCharactersConstraint>
+          <spring:bean parent="UrlPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField
+              instructionalText="Accepts EVERY DateFormat set up in the system configuration, use allowedFormats property to limit (this must be a subset of allowed formats), see next field"
+              label="DatePatternConstraint" parent="GenericTextField" propertyName="field55">
+        <validCharactersConstraint>
+          <dataPatternConstraint parent="DatePatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField
+              instructionalText="Accepts some basic date formats (by setting allowedFormats property on DatePatternConstraint): MM/dd/yy, MM/dd/yyyy, MM-dd-yy"
+              label="BasicDatePatternConstraint" parent="GenericTextField" propertyName="field75">
+        <validCharactersConstraint>
+          <dataPatternConstraint parent="BasicDatePatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="Accepts some basic 12 hour time format" label="TimePatternConstraint"
+                  parent="GenericTextField" propertyName="field82">
+        <validCharactersConstraint>
+          <spring:bean parent="TimePatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="Accepts some basic 24(0-23) hour time format" label="Time24HPatternConstraint"
+                  parent="GenericTextField" propertyName="field83">
+        <validCharactersConstraint>
+          <spring:bean parent="Time24HPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="Timestamp - under revamp" label="TimestampPatternConstraint"
+                  parent="GenericTextField" propertyName="field56">
+        <validCharactersConstraint>
+          <spring:bean parent="TimestampPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="Valid years 1600s to 2000s only" label="YearPatternConstraint"
+                  parent="GenericTextField" propertyName="field57">
+        <validCharactersConstraint>
+          <spring:bean parent="YearPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="any valid month number" label="MonthPatternConstraint" parent="GenericTextField"
+                  propertyName="field58">
+        <validCharactersConstraint>
+          <spring:bean parent="MonthPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="any valid zipcode with or without -" label="ZipcodePatternConstraint"
+                  parent="GenericTextField" propertyName="field61">
+        <validCharactersConstraint>
+          <spring:bean parent="ZipcodePatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="alpha numeric characters only - no options on"
+                  label="AlphaNumericPatternConstraint" parent="GenericTextField" propertyName="field62">
+        <validCharactersConstraint>
+          <alphaNumericPatternConstraint parent="AlphaNumericPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField
+              instructionalText="alpha numeric characters with flags for whitespace, underscore, and forward slash on"
+              label="AlphaNumericPatternConstraint with Options" parent="GenericTextField" propertyName="field63">
+        <validCharactersConstraint>
+          <alphaNumericPatternConstraint allowForwardSlash="true" allowUnderscore="true" allowWhitespace="true"
+                                         parent="AlphaNumericPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="alpha characters with flags for whitespace and commas on"
+                  label="AlphaPatternConstraint" parent="GenericTextField" propertyName="field64">
+        <validCharactersConstraint>
+          <alphaPatternConstraint allowComma="true" allowWhitespace="true" parent="AlphaPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField
+              instructionalText="alpha characters with flag for all &quot;allowable&quot; symbols turned on - | and ~ are not in this set, for example"
+              label="AlphaPatternConstraint" parent="GenericTextField" propertyName="field76">
+        <validCharactersConstraint>
+          <alphaPatternConstraint allowAll="true" parent="AlphaPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="anything with no whitespace allowed" label="NoWhitespacePatternConstraint"
+                  parent="GenericTextField" propertyName="field65">
+        <validCharactersConstraint>
+          <spring:bean parent="NoWhitespacePatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="only allow a set of characters - example allows a, b, c, A, B, or C"
+                  label="CharsetPatternConstraint" parent="GenericTextField" propertyName="field66">
+        <validCharactersConstraint>
+          <charsetPatternConstraint parent="CharsetPatternConstraint" validChars="abcABC"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField instructionalText="allows only numeric characters, allowParenthesis and allowDash on"
+                  label="NumericPatternConstraint" parent="GenericTextField" propertyName="field67">
+        <validCharactersConstraint>
+          <numericPatternConstraint allowDash="true" allowParenthesis="true" parent="NumericPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField
+              instructionalText="custom valid characters constraint - this one accepts only 1 alpha character followed by a period  and then followed by a number (a.8, b.0, etc)"
+              label="ValidCharactersConstraint - custom" parent="GenericTextField" propertyName="field68">
+        <validCharactersConstraint>
+          <validCharactersConstraint messageKey="validation.aDotNumTest" parent="ValidCharactersConstraint"
+                                     value="^[a-zA-Z]\.[0-9]$"/>
+        </validCharactersConstraint>
+      </inputField>
+    </items>
+  </group>
+</spring:beans>

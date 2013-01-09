@@ -92,7 +92,7 @@ public class DocumentSearchInternalUtils {
 
         CONFIGURATIONS.add(new SearchableAttributeConfiguration(
                 DECIMAL_ATTRIBUTE_TABLE_NAME,
-                EnumSet.of(DataType.FLOAT, DataType.DOUBLE),
+                EnumSet.of(DataType.FLOAT, DataType.DOUBLE, DataType.CURRENCY),
                 Float.TYPE));
 
         CONFIGURATIONS.add(new SearchableAttributeConfiguration(

@@ -177,17 +177,6 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     }
 
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader) {
-    	// need to clear action list cache for users who have this item in their action list
-    	ActionListService actionListSrv = KEWServiceLocator.getActionListService();
-    	Collection actionItems = actionListSrv.findByDocumentId(routeHeader.getDocumentId());
-    	for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-    		ActionItem actionItem = (ActionItem) iter.next();
-    		try {
-    			KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
-    		} catch (Exception e) {
-    			LOG.error("error saving refreshUserOption", e);
-    		}
-    	}
     	this.getPersistenceBrokerTemplate().delete(routeHeader);
     }
 
@@ -215,13 +204,13 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         try {
             broker = getPersistenceBroker(false);
             conn = broker.serviceConnectionManager().getConnection();
-            String respIds = "(";
+            String respIds = "('";
             int index = 0;
             for (String responsibilityId : responsibilityIds) {
-                respIds += responsibilityId + (index == responsibilityIds.size()-1 ? "" : ",");
+                respIds += responsibilityId + (index == responsibilityIds.size()-1 ? "" : "','");
                 index++;
             }
-            respIds += ")";
+            respIds += "')";
             String query = "SELECT DISTINCT(doc_hdr_id) FROM KREW_ACTN_RQST_T "+
             	"WHERE (STAT_CD='" +
             	ActionRequestStatus.INITIALIZED.getCode()+

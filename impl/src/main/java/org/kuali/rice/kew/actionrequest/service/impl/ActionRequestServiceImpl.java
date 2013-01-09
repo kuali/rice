@@ -312,13 +312,13 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
             if(principalId==null && ignoreUnknownPrincipalIds)
             {
-                LOG.warn("Ignoring action items with null principalId");
+                LOG.warn("Ignoring action item with actionRequestID of " + actionRequest.getActionRequestId()  + " due to null principalId.");
             }
             else
             {
                 if(principalId==null)
                 {
-                    NullPointerException e = new NullPointerException("Exception thrown when trying to add action item with null principalId");
+                    IllegalArgumentException e = new IllegalArgumentException("Exception thrown when trying to add action item with null principalId");
                     LOG.error(e);
                     throw e;
                 }
@@ -1042,6 +1042,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             }
         }
         return false;
+    }
+
+    @Override
+    public ActionRequestValue getActionRequestForRole(String actionTakenId) {
+        return getActionRequestDAO().getRoleActionRequestByActionTakenId(actionTakenId);
     }
 
 }

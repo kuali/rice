@@ -15,6 +15,29 @@
  */
 package org.kuali.rice.kns.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -29,15 +52,24 @@ import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
+import org.kuali.rice.kns.web.struts.form.InquiryForm;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.struts.form.pojo.PojoFormBase;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -52,27 +84,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * General helper methods for handling requests.
  */
@@ -84,6 +95,11 @@ public class WebUtils {
 
 	private static final String APPLICATION_IMAGE_URL_PROPERTY_PREFIX = "application.custom.image.url";
 	private static final String DEFAULT_IMAGE_URL_PROPERTY_NAME = "kr.externalizable.images.url";
+
+    /**
+     * Prefixes indicating an absolute url
+     */
+    private static final String[] SCHEMES = { "http://", "https://" };
 
 	/**
 	 * A request attribute name that indicates that a
@@ -183,7 +199,7 @@ public class WebUtils {
 	 */
 	private static String getMethodToCallSettingAttribute(ActionForm form, HttpServletRequest request, String string) {
 
-		if (form instanceof ActionForm
+		if (form instanceof KualiForm
 				&& !((KualiForm) form).shouldMethodToCallParameterBeUsed(string, request.getParameter(string), request)) {
 			throw new RuntimeException("Cannot verify that the methodToCall should be " + string);
 		}
@@ -289,7 +305,7 @@ public class WebUtils {
 	 * 
 	 * @param response
 	 * @param contentType
-	 * @param outStream
+	 * @param byteArrayOutputStream
 	 * @param fileName
 	 */
 	public static void saveMimeOutputStreamAsFile(HttpServletResponse response, String contentType,
@@ -297,7 +313,7 @@ public class WebUtils {
 
 		// set response
 		response.setContentType(contentType);
-		response.setHeader("Content-disposition", "attachment; filename=" + fileName);
+		response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
 		response.setHeader("Expires", "0");
 		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");
@@ -316,7 +332,7 @@ public class WebUtils {
 	 * 
 	 * @param response
 	 * @param contentType
-	 * @param outStream
+	 * @param inStream
 	 * @param fileName
 	 */
 	public static void saveMimeInputStreamAsFile(HttpServletResponse response, String contentType,
@@ -324,7 +340,7 @@ public class WebUtils {
 
 		// set response
 		response.setContentType(contentType);
-		response.setHeader("Content-disposition", "attachment; filename=" + fileName);
+		response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
 		response.setHeader("Expires", "0");
 		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");
@@ -352,6 +368,28 @@ public class WebUtils {
 	public static void incrementTabIndex(KualiForm form, String tabKey) {
 		form.incrementTabIndex();
 	}
+
+    /**
+     * Attempts to reopen sub tabs which would have been closed for inactive records
+     *
+     * @param sections the list of Sections whose rows and fields to set the open tab state on
+     * @param tabStates the map of tabKey->tabState.  This map will be modified to set entries to "OPEN"
+     * @param collectionName the name of the collection reopening
+     */
+    public static void reopenInactiveRecords(List<Section> sections, Map<String, String> tabStates, String collectionName) {
+        for (Section section : sections) {
+            for (Row row: section.getRows()) {
+                for (Field field : row.getFields()) {
+                    if (field != null) {
+                        if (Field.CONTAINER.equals(field.getFieldType()) && StringUtils.startsWith(field.getContainerName(), collectionName)) {
+                            final String tabKey = WebUtils.generateTabKey(FieldUtils.generateCollectionSubTabName(field));
+                            tabStates.put(tabKey, KualiForm.TabState.OPEN.name());
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 	/**
 	 * Generates a String from the title that can be used as a Map key.
@@ -538,8 +576,9 @@ public class WebUtils {
 
 	public static int getIndexOfCoordinateExtension(String parameter) {
 		int indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION);
-		if (indexOfCoordinateExtension == -1)
-			indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
+        if (indexOfCoordinateExtension == -1) {
+            indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
+        }
 		return indexOfCoordinateExtension;
 	}
 
@@ -719,12 +758,18 @@ public class WebUtils {
 		String outputString = StringEscapeUtils.escapeHtml(inputString);
 		// string has been escaped of all <, >, and & (and other characters)
 
-		Map<String, String> findAndReplacePatterns = new HashMap<String, String>();
+        Map<String, String> findAndReplacePatterns = new LinkedHashMap<String, String>();
 
-		// now replace our rice custom markup into html
+        // now replace our rice custom markup into html
 
-		// DON'T ALLOW THE SCRIPT TAG OR ARBITRARY IMAGES/URLS/ETC. THROUGH
+        // DON'T ALLOW THE SCRIPT TAG OR ARBITRARY IMAGES/URLS/ETC. THROUGH
 
+        //strip out instances where javascript precedes a URL
+        findAndReplacePatterns.put("\\[a ((javascript|JAVASCRIPT|JavaScript).+)\\]", "");
+        //turn passed a href value into appropriate tag
+        findAndReplacePatterns.put("\\[a (.+)\\]", "<a href=\"$1\">");
+        findAndReplacePatterns.put("\\[/a\\]", "</a>");
+        
 		// filter any one character tags
 		findAndReplacePatterns.put("\\[([A-Za-z])\\]", "<$1>");
 		findAndReplacePatterns.put("\\[/([A-Za-z])\\]", "</$1>");
@@ -771,6 +816,14 @@ public class WebUtils {
 		return buttonImageUrl;
 	}
 
+    public static String getAttachmentImageForUrl(String contentType) {
+        String image = getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ATTACHMENT_IMAGE_PREFIX + contentType);
+        if (StringUtils.isEmpty(image)) {
+            return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ATTACHMENT_IMAGE_DEFAULT);
+        }
+        return image;
+    }
+
 	/**
 	 * Generates a default button image URL, in the form of:
 	 * ${kr.externalizable.images.url}buttonsmall_${imageName}.gif
@@ -806,4 +859,75 @@ public class WebUtils {
     	convertedString = convertedString.replaceAll("  ", "&nbsp;&nbsp;").replaceAll("(&nbsp; | &nbsp;)", "&nbsp;&nbsp;");
     	return convertedString;
     }
+    
+    public static String getKimGroupDisplayName(String groupId) {
+    	if(StringUtils.isBlank(groupId)) {
+    		throw new IllegalArgumentException("Group ID must have a value");
+    	}
+    	return KimApiServiceLocator.getGroupService().getGroup(groupId).getName();
+    }
+    
+    public static String getPrincipalDisplayName(String principalId) {
+    	if(StringUtils.isBlank(principalId)) {
+    		throw new IllegalArgumentException("Principal ID must have a value");
+    	}
+    	return KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(principalId).getDefaultName().getCompositeName();
+    }
+
+    /**
+     * Takes an {@link org.kuali.rice.kew.api.action.ActionRequest} with a recipient type of
+     * {@link org.kuali.rice.kew.api.action.RecipientType#ROLE} and returns the display name for the role.
+     *
+     * @param actionRequest the action request
+     * @return the display name for the role
+     * @throws IllegalArgumentException if the action request is null, or the recipient type is not ROLE
+     */
+    public static String getRoleDisplayName(ActionRequest actionRequest) {
+        String result;
+
+        if(actionRequest == null) {
+            throw new IllegalArgumentException("actionRequest must be non-null");
+        }
+        if (RecipientType.ROLE != actionRequest.getRecipientType()) {
+            throw new IllegalArgumentException("actionRequest recipient must be a Role");
+        }
+
+        Role role = KimApiServiceLocator.getRoleService().getRole(actionRequest.getRoleName());
+
+        if (role != null) {
+            result = role.getName();
+        } else if (!StringUtils.isBlank(actionRequest.getQualifiedRoleNameLabel())) {
+            result = actionRequest.getQualifiedRoleNameLabel();
+        } else {
+            result = actionRequest.getRoleName();
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns an absolute URL which is a combination of a base part plus path,
+     * or in the case that the path is already an absolute URL, the path alone
+     * @param base the url base path
+     * @param path the path to append to base
+     * @return an absolute URL representing the combination of base+path, or path alone if it is already absolute
+     */
+    public static String toAbsoluteURL(String base, String path) {
+        boolean abs = false;
+        if (StringUtils.isBlank(path)) {
+            path = "";
+        } else {
+            for (String scheme: SCHEMES) {
+                if (path.startsWith(scheme)) {
+                    abs = true;
+                    break;
+                }
+            }
+        }
+        if (abs) {
+            return path;
+        }
+        return base + path;
+    }
+
 }

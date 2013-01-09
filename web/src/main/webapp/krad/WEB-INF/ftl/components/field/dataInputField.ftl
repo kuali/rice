@@ -1,19 +1,20 @@
 <#--
-  ~ Copyright 2006-2012 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
 
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <#macro uif_dataInputField field>
 
     <#local readOnly=field.readOnly || !field.inputAllowed/>
@@ -22,27 +23,52 @@
 
         <@krad.fieldLbl field=field>
 
+            <#if field.renderFieldset>
+                <fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
+                    <legend style="display: none">${field.label!}</legend>
+            </#if>
             <#-- render field value (if read-only) or control (if edit) -->
             <#if readOnly>
 
                 <#local readOnlyDisplay>
-                    <#-- display replacement display value if set -->
-                    <#if field.readOnlyDisplayReplacement?has_content>
-                        ${field.readOnlyDisplayReplacement}
-                    <#else>
-                        <#-- display actual field value -->
-                        <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
-                        htmlEscape=field.escapeHtmlInPropertyValue/>
-                        ${spring.status.value?default("")}
+                    <#-- if it is a textarea add a pre tag to preserve formatting-->
+                    <#if field.multiLineReadOnlyDisplay>
+                        <pre>
+                            <#-- display replacement display value if set -->
+                            <#if field.readOnlyDisplayReplacement?has_content>
+                               ${field.readOnlyDisplayReplacement?replace(" ","&nbsp;")}
+                            <#else>
+                                <#-- display actual field value -->
+                                <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
+                                htmlEscape=field.escapeHtmlInPropertyValue/>
+                                ${(spring.status.value?default(""))?replace(" ","&nbsp;")}
 
-                        <#-- add display suffix value if set -->
-                        <#if field.readOnlyDisplaySuffix?has_content>
-                            *-* ${field.readOnlyDisplaySuffix}
+                                <#-- add display suffix value if set -->
+                                <#if field.readOnlyDisplaySuffix?has_content>
+                                   *-* ${field.readOnlyDisplaySuffix?replace(" ","&nbsp;")}
+
+                                </#if>
+                            </#if>
+                        </pre>
+                      <#else>
+                        <#-- display replacement display value if set -->
+                        <#if field.readOnlyDisplayReplacement?has_content>
+                            ${field.readOnlyDisplayReplacement}
+                        <#else>
+                            <#-- display actual field value -->
+                            <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
+                            htmlEscape=field.escapeHtmlInPropertyValue/>
+                            ${spring.status.value?default("")}
+
+                            <#-- add display suffix value if set -->
+                            <#if field.readOnlyDisplaySuffix?has_content>
+                                *-* ${field.readOnlyDisplaySuffix}
+                            </#if>
                         </#if>
                     </#if>
                 </#local>
 
-                <span id="${field.id}">
+                <span id="${field.id}_control" class="uif-readOnlyContent">
                     <#-- render inquiry if enabled -->
                     <#if field.inquiry.render>
                         <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
@@ -72,6 +98,13 @@
                 <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
             </#if>
 
+            <#-- render field help -->
+            <@krad.template component=field.help/>
+
+            <#if field.renderFieldset>
+                </fieldset>
+            </#if>
+
         </@krad.fieldLbl>
 
     <!-- placeholder for dynamic field markers -->
@@ -89,14 +122,11 @@
         <span id="${field.id}_info_message"></span>
 
         <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
-            <span id="${field.id}_info_${cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
+            <span id="${field.id}_info_${krad.cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
                 <@spring.bind path="KualiForm.${infoPropertyPath}"/>
                  ${spring.status.value?default("")}
             </span>
         </#list>
-
-        <#-- render field help -->
-        <@krad.template component=field.help/>
 
         <#-- render field suggest if field is editable -->
         <#if !readOnly>
@@ -106,8 +136,8 @@
         <#-- render hidden fields -->
         <#-- TODO: always render hiddens if configured? -->
         <#list field.additionalHiddenPropertyNames as hiddenPropertyName>
-            <@spring.formHiddenInput path="KualiForm.${hiddenPropertyName}"
-            attributes='id="${field.id}_h${hiddenPropertyName_index}"'/>
+            <@spring.formHiddenInput id="${field.id}_h${hiddenPropertyName_index}"
+            path="KualiForm.${hiddenPropertyName}"/>
         </#list>
 
         <#-- transform all text on attribute field to uppercase -->

@@ -22,6 +22,8 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
 
+import javax.xml.namespace.QName;
+
 /**
  * This class keeps track of the KRMS Repository Services
  * 
@@ -45,6 +47,7 @@ public final class KrmsRepositoryServiceLocator {
     public static final String KRMS_RULE_BO_SERVICE = "ruleBoService";
     public static final String KRMS_AGENDA_AUTHORIZATION_SERVICE = "agendaAuthorizationService";
     public static final String KRMS_REPOSITORY_TO_ENGINE_TRANSLATOR = "repositoryToEngineTranslator";
+    public static final String TYPE_TYPE_RELATION_BO_SERVICE = "typeTypeRelationBoService";
 
 	private static KrmsAttributeDefinitionService krmsAttributeDefinitionService;
     private static ContextBoService contextBoService;
@@ -54,6 +57,7 @@ public final class KrmsRepositoryServiceLocator {
     private static AgendaAuthorizationService agendaAuthorizationService;
     private static KrmsTypeRepositoryService krmsTypeRepositoryService;
     private static RepositoryToEngineTranslator krmsRepositoryToEngineTranslator;
+    private static TypeTypeRelationBoService typeTypeRelationBoService;
 
     public static <T extends Object> T getService(String serviceName) {
 		return KrmsRepositoryServiceLocator.<T>getBean(serviceName);
@@ -63,7 +67,7 @@ public final class KrmsRepositoryServiceLocator {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.<T>getService(serviceName);
+		return GlobalResourceLoader.<T>getService(QName.valueOf(serviceName));
 	}
 
     public static KrmsAttributeDefinitionService getKrmsAttributeDefinitionService() {
@@ -128,5 +132,12 @@ public final class KrmsRepositoryServiceLocator {
             krmsRepositoryToEngineTranslator = getService(KRMS_REPOSITORY_TO_ENGINE_TRANSLATOR);
         }
         return krmsRepositoryToEngineTranslator;
+    }
+
+    public static TypeTypeRelationBoService getTypeTypeRelationBoService() {
+        if (typeTypeRelationBoService == null) {
+            typeTypeRelationBoService = getService(TYPE_TYPE_RELATION_BO_SERVICE);
+        }
+        return typeTypeRelationBoService;
     }
 }

@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Growls sets up settings for growls global to the current view and its pages
  *
@@ -26,6 +33,7 @@ package org.kuali.rice.krad.uif.widget;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "growls", parent = "Uif-Growls")
 public class Growls extends WidgetBase {
     private static final long serialVersionUID = -8701090110933484411L;
 
@@ -38,10 +46,37 @@ public class Growls extends WidgetBase {
     }
 
     /**
+     * Override to add property values to the template options
+     *
+     * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
+     */
+    @Override
+    public Map<String, String> getTemplateOptions() {
+        Map<String, String> templateOptions = super.getTemplateOptions();
+
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
+        }
+
+        if (!templateOptions.containsKey("sticky")) {
+            templateOptions.put("sticky", Boolean.toString(sticky));
+        }
+        if (!templateOptions.containsKey("life")) {
+            templateOptions.put("life", Integer.toString(timeShown));
+        }
+        if (StringUtils.isNotBlank(position) && !templateOptions.containsKey("position")) {
+            templateOptions.put("position", position);
+        }
+
+        return templateOptions;
+    }
+
+    /**
      * If true, the growl will stick to the page until the user dismisses it
      *
      * @return the sticky
      */
+    @BeanTagAttribute(name="sticky")
     public boolean isSticky() {
         return this.sticky;
     }
@@ -51,7 +86,6 @@ public class Growls extends WidgetBase {
      */
     public void setSticky(boolean sticky) {
         this.sticky = sticky;
-        this.getTemplateOptions().put("sticky", Boolean.toString(sticky));
     }
 
     /**
@@ -59,6 +93,7 @@ public class Growls extends WidgetBase {
      *
      * @return the timeShown
      */
+    @BeanTagAttribute(name="timeShown")
     public int getTimeShown() {
         return this.timeShown;
     }
@@ -68,7 +103,6 @@ public class Growls extends WidgetBase {
      */
     public void setTimeShown(int timeShown) {
         this.timeShown = timeShown;
-        this.getTemplateOptions().put("life", Integer.toString(timeShown));
     }
 
     /**
@@ -77,6 +111,7 @@ public class Growls extends WidgetBase {
      *
      * @return the position
      */
+    @BeanTagAttribute(name="position")
     public String getPosition() {
         return this.position;
     }
@@ -86,6 +121,5 @@ public class Growls extends WidgetBase {
      */
     public void setPosition(String position) {
         this.position = position;
-        this.getTemplateOptions().put("position", position);
     }
 }

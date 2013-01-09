@@ -15,59 +15,32 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-public class MaintenanceSaveIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class MaintenanceSaveIT extends KradMenuITBase {
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
-    @Test
+     @Test
     /**
      * Verify Save
      */
     public void testVerifySave() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-        selenium.type("id=u116_control", "Test Document");
-        selenium.click("id=u802_control");
-        selenium.type("id=u802_control", "1234567890");
-        selenium.type("id=u836_control", "EAT");
-        selenium.type("id=u853_control", "a1");
-        selenium.click("id=u1147");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                break;
-            }
-
-            if (selenium.isTextPresent("error")) {
-                fail("An error appeared after clicking save");
-            }
-
-            Thread.sleep(1000);
-        }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
+        gotoMenuLinkLocator();
+        waitAndType("name=document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
+        waitAndClick("name=document.newMaintainableObject.dataObject.number");
+        waitAndType("name=document.newMaintainableObject.dataObject.number", "1234567890");
+        waitAndType("name=document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
+        waitAndType("name=document.newMaintainableObject.dataObject.subAccount", "a1");
+        waitAndClick("css=button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
+        Thread.sleep(2000);
+        checkErrorMessageItem(" also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
+     }
 }

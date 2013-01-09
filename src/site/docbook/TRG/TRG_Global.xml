@@ -349,6 +349,18 @@
                         <entry>org/kuali/rice/core/ojb/RiceOJB.properties</entry>
                     </row>
                     <row>
+                        <entry>rice.cache.disableAllCaches</entry>
+                        <entry>Flag to disable all Spring caching in Rice</entry>
+                        <entry>false</entry>
+                    </row>
+                    <row>
+                        <entry>rice.cache.disabledCaches</entry>
+                        <entry>Flag to disable specific Spring caches in Rice by name.  The cache names should be comma
+                            separated.</entry>
+                        <entry>http://rice.kuali.org/kim/v2_0/PermissionType,
+                          http://rice.kuali.org/kim/v2_0/TemplateType{Permission}</entry>
+                    </row>
+                    <row>
                         <entry>rice.logging.configure</entry>
                         <entry>Determines whether the logging lifecycle should be loaded.</entry>
                         <entry>false</entry>
@@ -1432,7 +1444,9 @@ config.parseConfig();             </programlisting>
                     xlink:href="http://www.atomikos.com/Main/TransactionsEssentials">Atomikos
                     TransactionsEssentials</link>, and there are also commercial and open source JTA
                 implementations that come as part of an application server (i.e. JBoss, WebSphere,
-                GlassFish).</para>
+                GlassFish).  Alternatively, Kuali Rice can be configured to use
+                <link xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link>.
+            </para>
             <para>If installing Rice using the standalone server option and a full Java application
                 server is not being utilized, then the libraries required for JTA will need to be
                 moved to the servlet server which is being used. These libraries have already been
@@ -1488,12 +1502,12 @@ config.parseConfig();             </programlisting>
                 <para>Configure the JOTM transaction manager and user transaction objects as Spring
                     beans in your application’s Spring configuration file. Here is an
                     example:</para>
-                <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+                <programlisting>&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
     &lt;property name="defaultTimeout" value=”3600”/>
 &lt;/bean>
     
-&lt;alias name="jotm" alias="jtaTransactionManager"/>
-&lt;alias name="jotm" alias="jtaUserTransaction"/></programlisting>
+&lt;alias name="transactionManagerXAPool" alias="jtaTransactionManager"/>
+&lt;alias name="transactionManagerXAPool" alias="jtaUserTransaction"/></programlisting>
                 <para>You can use these beans in the configuration of Spring’s JTA transaction
                     manager and the Rice configurer. This configuration might look like the
                     following:</para>
@@ -1507,13 +1521,13 @@ config.parseConfig();             </programlisting>
 &lt;/bean>    
 
 &lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-    &lt;property name="transactionManager" ref="jtaTransactionManager" />    
+    &lt;property name="transactionManager" ref="jtaTransactionManager" />
     &lt;property name="userTransaction" ref="jtaUserTransaction" />
     ...
 &lt;/bean></programlisting>
             </sect3>
             <sect3>
-                <title>Configuring Transactional Data Sources</title>
+                <title>Configuring JOTM Transactional Data Sources</title>
                 <para>JTA requires that the datasources that are used implement the XADataSource
                     interface. Some database vendors, such as Oracle, have pure XA implementations
                     of their datasources. However, internally to Rice, we use wrappers on plain
@@ -1535,7 +1549,7 @@ config.parseConfig();             </programlisting>
 &lt;/bean></programlisting>
             </sect3>
             <sect3>
-                <title>Configuring Non-Transactional Data Sources</title>
+                <title>Configuring JTOM Non-Transactional Data Sources</title>
                 <para>When using the built-in instance of the Quartz scheduler that Rice creates,
                     you will need to inject a non-transactional data source into the RiceConfigurer
                     in addition to the JTA transactional instance. This is to prevent deadlocks in
@@ -1565,6 +1579,81 @@ config.parseConfig();             </programlisting>
     ...
 &lt;/bean></programlisting>
             </sect3>
+            <sect3>
+              <title>Configuring Bitronix</title>
+              <para>Configure the <link xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link>
+                  transaction manager and user transaction objects as Spring
+                  beans in your application’s Spring configuration file. Here is an
+                  example:</para>
+              <programlisting>&lt;bean id="btmConfig" factory-method="getConfiguration"
+          class="bitronix.tm.TransactionManagerServices" lazy-init="true"/>
+&lt;bean id="transactionManagerBitronix" class="bitronix.tm.TransactionManagerServices"
+          factory-method="getTransactionManager" depends-on="btmConfig" destroy-method="shutdown" lazy-init="true"/>
+
+&lt;alias name="transactionManagerBitronix" alias="jtaTransactionManager"/>
+&lt;alias name="transactionManagerBitronix" alias="jtaUserTransaction"/></programlisting>
+              <para>You can use these beans in the configuration of the Rice configurer. This configuration might look like the
+                  following:</para>
+              <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+    &lt;property name="transactionManager" ref="jtaTransactionManager" />
+    &lt;property name="userTransaction" ref="jtaUserTransaction" />
+  ...
+&lt;/bean></programlisting>
+            </sect3>
+            <sect3>
+              <title>Configuring Bitronix Transactional Data Sources</title>
+              <para>An example configuration of Btironix Transactional Data Sources:</para>
+  <programlisting>&lt;bean id="riceDataSourceBitronixXa" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+         destroy-method="close" lazy-init="true">
+    &lt;property name="className" value="oracle.jdbc.xa.client.OracleXADataSource" />
+    &lt;property name="uniqueName" ref="ds-random-string" />
+    &lt;property name="minPoolSize" value="${datasource.pool.minSize}" />
+    &lt;property name="maxPoolSize" value="${datasource.pool.maxSize}" />
+    &lt;property name="useTmJoin" value="true" />
+    &lt;property name="testQuery" value="${datasource.pool.validationQuery}" />
+    &lt;property name="allowLocalTransactions" value="true" />
+    &lt;property name="driverProperties">
+      &lt;props>
+        &lt;prop key="URL">${datasource.url}&lt;/prop>
+        &lt;prop key="user">${datasource.username}&lt;/prop>
+        &lt;prop key="password">${datasource.password}&lt;/prop>
+      &lt;/props>
+    &lt;/property>
+&lt;/bean>
+
+&lt;bean id="ds-random-string" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    &lt;property name="staticMethod" value="org.apache.commons.lang.RandomStringUtils.randomAlphanumeric"/>
+    &lt;property name="arguments">&lt;list>&lt;value>20&lt;/value>&lt;/list>&lt;/property>
+&lt;/bean></programlisting>
+            </sect3>
+            <sect3>
+              <title>Configuring Bitronix Non-Transactional Data Sources</title>
+              <para>Notice the addition of the driverClassName prop in the dirverProperties in the non-transaction data
+                source configuration</para>
+  <programlisting>&lt;bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+        destroy-method="close" lazy-init="true">
+    &lt;property name="className" value="bitronix.tm.resource.jdbc.lrc.LrcXADataSource" />
+    &lt;property name="uniqueName" ref="ds-random-string" />
+    &lt;property name="minPoolSize" value="${datasource.pool.minSize}" />
+    &lt;property name="maxPoolSize" value="${datasource.pool.maxSize}" />
+    &lt;property name="useTmJoin" value="true" />
+    &lt;property name="testQuery" value="${datasource.pool.validationQuery}" />
+    &lt;property name="allowLocalTransactions" value="true" />
+    &lt;property name="driverProperties">
+      &lt;props>
+        &lt;prop key="Url">${datasource.url}&lt;/prop>
+        &lt;prop key="driverClassName">${datasource.driver.name}&lt;/prop>
+        &lt;prop key="user">${datasource.username}&lt;/prop>
+        &lt;prop key="password">${datasource.password}&lt;/prop>
+      &lt;/props>
+    &lt;/property>
+&lt;/bean>
+
+&lt;bean id="ds-random-string" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    &lt;property name="staticMethod" value="org.apache.commons.lang.RandomStringUtils.randomAlphanumeric"/>
+    &lt;property name="arguments">&lt;list>&lt;value>20&lt;/value>&lt;/list>&lt;/property>
+&lt;/bean></programlisting>
+          </sect3>
         </sect2>
     </sect1>
     <sect1 xml:id="version_compatibility">

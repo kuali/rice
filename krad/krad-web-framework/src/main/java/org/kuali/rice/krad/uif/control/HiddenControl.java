@@ -15,13 +15,16 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+
 /**
  * Represents a HTML Hidden control, generally rendered as an input control of
  * type 'hidden'. This is used to hold a value that the user will not see but
  * will be posted back with the form
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "hiddenControl", parent = "Uif-HiddenControl")
 public class HiddenControl extends ControlBase {
 	private static final long serialVersionUID = -8428898303430923425L;
 

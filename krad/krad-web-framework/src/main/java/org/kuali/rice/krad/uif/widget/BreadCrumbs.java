@@ -15,38 +15,48 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * The breadcrumb widget contains various settings for setting up
- * Breadcrumb/History support on the view.
+ * Breadcrumb/History support on the view
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "breadcrumbs", parent = "Uif-Breadcrumbs")
 public class BreadCrumbs extends WidgetBase {
     private static final long serialVersionUID = -2864287914665842251L;
 
     private boolean displayHomewardPath;
     private boolean displayPassedHistory;
     private boolean displayBreadcrumbsWhenOne;
+
     private List<HistoryEntry> homewardPathList;
+
+    public BreadCrumbs() {
+        homewardPathList = new ArrayList<HistoryEntry>();
+    }
 
     /**
      * The following updates are done here:
      *
      * <ul>
-     * <li>Evaluate expression on howeward path list</li>
+     * <li>Evaluate expression on homeward path list</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
@@ -57,6 +67,7 @@ public class BreadCrumbs extends WidgetBase {
             context.putAll(view.getContext());
 
             for (HistoryEntry historyEntry : homewardPathList) {
+                ExpressionUtils.populatePropertyExpressionsFromGraph(historyEntry, false);
                 KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
                         historyEntry, model, context);
             }
@@ -70,6 +81,7 @@ public class BreadCrumbs extends WidgetBase {
      *
      * @return the displayHomewardPath
      */
+    @BeanTagAttribute(name="displayHomewardPath")
     public boolean isDisplayHomewardPath() {
         return this.displayHomewardPath;
     }
@@ -88,6 +100,7 @@ public class BreadCrumbs extends WidgetBase {
      *
      * @return the displayPassedHistory
      */
+    @BeanTagAttribute(name="displayPassedHistory")
     public boolean isDisplayPassedHistory() {
         return this.displayPassedHistory;
     }
@@ -106,6 +119,7 @@ public class BreadCrumbs extends WidgetBase {
      *
      * @return the homewardPathList
      */
+    @BeanTagAttribute(name="homewardPathList",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<HistoryEntry> getHomewardPathList() {
         return this.homewardPathList;
     }
@@ -123,6 +137,7 @@ public class BreadCrumbs extends WidgetBase {
      *
      * @return the displayBreadcrumbsWhenOne
      */
+    @BeanTagAttribute(name="displayBreadcrumbsWhenOne")
     public boolean isDisplayBreadcrumbsWhenOne() {
         return this.displayBreadcrumbsWhenOne;
     }

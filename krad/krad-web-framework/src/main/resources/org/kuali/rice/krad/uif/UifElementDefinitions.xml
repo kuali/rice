@@ -31,7 +31,8 @@
   <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.element.ValidationMessages"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/validationMessages.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/validationMessages.ftl"/>
+    <property name="templateName" value="uif_validationMessages"/>
     <!--By default not displayed - all display is handled by the framework - do not change-->
     <property name="style" value="display: none;"/>
     <property name="cssClasses">
@@ -82,7 +83,8 @@
   <bean id="Uif-Iframe" parent="Uif-Iframe-parentBean"/>
   <bean id="Uif-Iframe-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Iframe"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/iframe.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/iframe.ftl"/>
+    <property name="templateName" value="uif_iframe"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-iFrame</value>
@@ -93,25 +95,29 @@
   <bean id="Uif-Image" parent="Uif-Image-parentBean"/>
   <bean id="Uif-Image-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Image"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/image.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/image.ftl"/>
+    <property name="templateName" value="uif_image"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-image</value>
       </list>
     </property>
     <property name="captionHeaderPlacementAboveImage" value="true"/>
-    <property name="captionHeader">
-      <bean parent="Uif-HeaderFour"/>
-    </property>
-    <property name="cutlineMessage">
-      <bean parent="Uif-Message" p:cssClasses="uif-cutlineMessage"/>
-    </property>
+  </bean>
+
+  <bean id="Uif-ImageCaptionHeader"  parent="Uif-ImageCaptionHeader-parentBean"/>
+  <bean id="Uif-ImageCaptionHeader-parentBean" abstract="true" parent="Uif-HeaderFour"/>
+
+  <bean id="Uif-ImageCutineMessage"  parent="Uif-ImageCutineMessage-parentBean"/>
+  <bean id="Uif-ImageCutineMessage-parentBean" abstract="true" parent="Uif-Message">
+     <property name="cssClasses" value="uif-cutlineMessage"/>
   </bean>
 
   <bean id="Uif-Label" parent="Uif-Label-parentBean"/>
   <bean id="Uif-Label-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Label"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/label.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/label.ftl"/>
+    <property name="templateName" value="uif_label"/>
     <property name="cssClasses">
       <list>
         <value>uif-label</value>
@@ -125,7 +131,8 @@
   <bean id="Uif-Link" parent="Uif-Link-parentBean"/>
   <bean id="Uif-Link-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Link"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/link.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/link.ftl"/>
+    <property name="templateName" value="uif_link"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-link</value>
@@ -142,7 +149,8 @@
   <bean id="Uif-DataTable" parent="Uif-DataTable-parentBean"/>
   <bean id="Uif-DataTable-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.DataTable"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/dataTable.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/dataTable.ftl"/>
+    <property name="templateName" value="uif_dataTable"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-tableCollectionLayout</value>
@@ -168,12 +176,15 @@
   <bean id="Uif-Action" parent="Uif-Action-parentBean"/>
   <bean id="Uif-Action-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Action"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/action.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/action.ftl"/>
+    <property name="templateName" value="uif_action"/>
+    <property name="focusOnIdAfterSubmit" value="SELF"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-action</value>
       </list>
     </property>
+    <property name="loadingMessageText" value="Loading..."/>
   </bean>
 
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>
@@ -224,20 +235,11 @@
 
   <bean id="Uif-ActionLink" parent="Uif-ActionLink-parentBean"/>
   <bean id="Uif-ActionLink-parentBean" abstract="true" parent="Uif-Action" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/actionLink.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/actionLink.ftl"/>
+    <property name="templateName" value="uif_actionLink"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-actionLink</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-AjaxActionButton" parent="Uif-AjaxActionButton-parentBean"/>
-  <bean id="Uif-AjaxActionButton-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.AjaxAction"
-        parent="Uif-PrimaryActionButton" scope="prototype">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-ajaxAction</value>
       </list>
     </property>
   </bean>
@@ -252,9 +254,9 @@
         <value>uif-navigationActionLink</value>
       </list>
     </property>
+    <property name="performDirtyValidation" value="true"/>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
     <property name="focusOnIdAfterSubmit" value="FIRST"/>
-    <property name="actionScript" value="submitForm();"/>
   </bean>
 
   <bean id="Uif-NavigationActionButton" parent="Uif-NavigationActionButton-parentBean"/>
@@ -264,9 +266,9 @@
         <value>uif-navigationActionButton</value>
       </list>
     </property>
+    <property name="performDirtyValidation" value="true"/>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
     <property name="focusOnIdAfterSubmit" value="FIRST"/>
-    <property name="actionScript" value="submitForm();"/>
   </bean>
 
   <bean id="Uif-SecondaryNavigationActionButton" parent="Uif-SecondaryNavigationActionButton-parentBean"/>
@@ -277,15 +279,16 @@
         <value>uif-navigationActionButton</value>
       </list>
     </property>
+    <property name="performDirtyValidation" value="true"/>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
     <property name="focusOnIdAfterSubmit" value="FIRST"/>
-    <property name="actionScript" value="submitForm();"/>
   </bean>
 
   <bean id="Uif-Message" parent="Uif-Message-parentBean"/>
   <bean id="Uif-Message-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Message"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/message.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/message.ftl"/>
+    <property name="templateName" value="uif_message"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-message</value>
@@ -317,6 +320,23 @@
     <property name="cssClasses">
       <list merge="true">
         <value>uif-requiredMessage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-RequiredInstructionsMessage" parent="Uif-Message" p:messageText="* indicates required field">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-requiredInstructionsMessage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-StateBased-RequiredInstructionsMessage" parent="Uif-Message"
+        p:messageText="* indicates required field.&lt;br&gt;** indicates required for next state.">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-requiredInstructionsMessage</value>
       </list>
     </property>
   </bean>

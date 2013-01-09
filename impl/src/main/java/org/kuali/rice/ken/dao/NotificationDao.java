@@ -16,7 +16,7 @@
 package org.kuali.rice.ken.dao;
 
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -30,6 +30,6 @@ public interface NotificationDao {
 	
 	public Collection findMatchedNotificationsForResolution(Timestamp tm,  GenericDao dao);
 	
-	public Collection findMatchedNotificationsForUnlock(Notification not, GenericDao dao);
+	public Collection findMatchedNotificationsForUnlock(NotificationBo not, GenericDao dao);
 	
 }

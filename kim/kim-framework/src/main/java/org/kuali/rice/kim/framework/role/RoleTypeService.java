@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.framework.role;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -61,7 +62,7 @@ public interface RoleTypeService extends KimTypeService {
      * @param qualification the qualification.  cannot be null.
      * @param roleQualifier the role qualifier. cannot be null.
      * @return true if the qualifications match
-     * @throws IllegalArgumentException if the qualification or roleQualifier is null
+     * @throws RiceIllegalArgumentException if the qualification or roleQualifier is null
      */
     @WebMethod(operationName="doesRoleQualifierMatchQualification")
     @WebResult(name = "match")
@@ -78,7 +79,7 @@ public interface RoleTypeService extends KimTypeService {
      * @param qualification the qualification.  cannot be null.
      * @param roleMemberships the list of roleMemberships to check for matches. cannot be null.
      * @return an immutable list of matched roleMemberships.  will not return null.
-     * @throws IllegalArgumentException if the qualification or roleMemberships is null.
+     * @throws RiceIllegalArgumentException if the qualification or roleMemberships is null.
      */
     @WebMethod(operationName="getMatchingRoleMemberships")
     @XmlElementWrapper(name = "roleMemberships", required = true)
@@ -115,8 +116,8 @@ public interface RoleTypeService extends KimTypeService {
      * @param roleName the name of the role.  cannot be blank or null.
      * @param qualification the qualification.  cannot be null.
      * @return if the principal has a derived role.
-     * @throws IllegalArgumentException if the principalId, namespaceCode, roleName is blank or null.
-     * @throws IllegalArgumentException if the groupIds, qualification is null.
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, roleName is blank or null.
+     * @throws RiceIllegalArgumentException if the groupIds, qualification is null.
      */
     @WebMethod(operationName="hasDerivedRole")
     @WebResult(name = "derivedRole")
@@ -157,7 +158,7 @@ public interface RoleTypeService extends KimTypeService {
      * 
      * @param roleMemberships the list of roleMemberships to check for matches. cannot be null.
      * @return an immutable list of matched roleMemberships.  will not return null.
-     * @throws IllegalArgumentException if the roleMemberships is null.
+     * @throws RiceIllegalArgumentException if the roleMemberships is null.
      */
     @WebMethod(operationName="sortRoleMembers")
     @XmlElementWrapper(name = "roleMemberships", required = true)
@@ -175,8 +176,8 @@ public interface RoleTypeService extends KimTypeService {
      * @param memberRoleName the name of the member role.  cannot be blank or null.
      * @param qualification the qualification.  cannot be null.
      * @return an immutable map of qualifiers. Will never return null.
-     * @throws IllegalArgumentException if the namespaceCode, roleName, memberRoleNamespaceCode, memberRoleName, is blank or null.
-     * @throws IllegalArgumentException if the qualification is null.
+     * @throws RiceIllegalArgumentException if the namespaceCode, roleName, memberRoleNamespaceCode, memberRoleName is blank or null.
+     * @throws RiceIllegalArgumentException if the qualification is null.
      */
     @WebMethod(operationName="convertQualificationForMemberRoles")
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -218,5 +219,13 @@ public interface RoleTypeService extends KimTypeService {
     @XmlElement(name = "name", required = false)
     @WebResult(name = "names")
     List<String> getQualifiersForExactMatch();
-    
+
+    /**
+     * Returns whether a membertype should have its qualifiers validated
+     * @return true if
+     * @since 2.1.2
+     */
+    @WebMethod(operationName="shouldvalidateQualifiersForMemberType")
+    @WebResult(name="validateQualifiers")
+    boolean shouldValidateQualifiersForMemberType(@WebParam(name="memberType") MemberType memberType);
 }

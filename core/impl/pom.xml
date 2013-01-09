@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.kuali.rice</groupId>
         <artifactId>rice-core</artifactId>
-        <version>2.2.0-M2-SNAPSHOT</version>
+        <version>2.2.0</version>
     </parent>
 
     <properties>
@@ -83,7 +83,6 @@
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
-            <version>${jsp-api.version}</version>
         </dependency>
 
         <dependency>
@@ -133,11 +132,6 @@
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-common-utilities</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-bindings-soap</artifactId>
         </dependency>
 
@@ -167,8 +161,14 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
+          <!--
+          KULRICE-7262: Bad jstl version in maven repository
+          When we are able to bump this version, go back to the javax.servlet artifact
+          -->
+          <!-- <groupId>javax.servlet</groupId>
+          <artifactId>jstl</artifactId> -->
+          <groupId>org.glassfish.web</groupId>
+          <artifactId>jstl-impl</artifactId>
         </dependency>
 
         <dependency>
@@ -309,7 +309,6 @@
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <version>${persistence.version}</version>
         </dependency>
 
         <dependency>
@@ -396,6 +395,11 @@
           <groupId>com.google.guava</groupId>
           <artifactId>guava</artifactId>
         </dependency>
+
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+      </dependency>
     </dependencies>
 
 
@@ -426,9 +430,18 @@
         <id>monitoring</id>
         <properties>
           <monitoring.spring.import><![CDATA[
+
+          begin monitoring config
+  -->
           <import resource="classpath:net/bull/javamelody/monitoring-spring.xml" />
+  <!--
+  end monitoring config
+
           ]]></monitoring.spring.import>
           <monitoring.spring.service><![CDATA[
+
+          begin monitoring config
+  -->
           <import resource="classpath:net/bull/javamelody/monitoring-spring.xml" />
           <bean id="facadeMonitoringAdvisor" class="net.bull.javamelody.MonitoringSpringAdvisor">
           <property name="pointcut">
@@ -437,6 +450,9 @@
           </bean>
           </property>
           </bean>
+  <!--
+  end monitoring config
+
           ]]></monitoring.spring.service>
         </properties>
       </profile>

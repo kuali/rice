@@ -43,9 +43,11 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String parameterName;
 	protected String campusCode;
 	protected String documentTypeName;
-	protected String actionRequestCd;
+    protected String appCode;
+    protected String actionRequestCd;
 	protected String routeStatusCode;
 	protected String routeNodeName;
+    protected String appDocStatus;
 	protected String roleName;
 	protected String permissionName;
 	protected String responsibilityName;
@@ -235,6 +237,21 @@ public class KimAttributes extends TransientBusinessObjectBase {
 		this.documentTypeName = documentTypeName;
 	}
 
+    /**
+     * @return the appCode
+     */
+    public String getAppCode() {
+        return appCode;
+    }
+
+    /**
+     * @param appCode
+     *            the appCode to set
+     */
+    public void setAppCode(String appCode) {
+        this.appCode = appCode;
+    }
+
 	/**
 	 * @return the actionRequestCd
 	 */
@@ -279,6 +296,21 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public void setRouteNodeName(String routeNodeName) {
 		this.routeNodeName = routeNodeName;
 	}
+
+    /**
+     * @return the appDocStatus
+     */
+    public String getAppDocStatus() {
+        return this.appDocStatus;
+    }
+
+    /**
+     * @param appDocStatus
+     *            the appDocStatus to set
+     */
+    public void setAppDocStatus(String appDocStatus) {
+        this.appDocStatus = appDocStatus;
+    }
 
 	/**
 	 * @return the roleName

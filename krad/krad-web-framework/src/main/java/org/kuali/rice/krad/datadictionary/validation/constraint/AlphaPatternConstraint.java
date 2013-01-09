@@ -16,14 +16,18 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
-
 
 /**
  * Pattern for matching alpha characters
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "alphaPatternConstraint", parent = "AlphaPatternConstraint"),
+        @BeanTag(name = "alphaWithBasicPunc", parent = "AlphaWithBasicPunc")})
 public class AlphaPatternConstraint extends AllowCharacterConstraint {
     protected boolean lowerCase = false;
     protected boolean upperCase = false;
@@ -38,8 +42,7 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
          */
         if (lowerCase) {
             regexString = new StringBuilder("[a-z");
-        }
-        else if(upperCase){
+        } else if (upperCase) {
             regexString = new StringBuilder("[A-Z");
         }
         regexString.append(this.getAllowedCharacterRegex());
@@ -49,30 +52,31 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
     }
 
     /**
-     * A label key is auto generated for this bean if none is set. This generated message can be
-     * overridden through setLabelKey, but the generated message should cover most cases.
-     * 
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     * A message key is auto generated for this bean if none is set. This generated message can be
+     * overridden through setMessageKey, but the generated message should cover most cases.
+     *
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override
-    public String getLabelKey() {
-        if (StringUtils.isEmpty(labelKey)) {
+    public String getMessageKey() {
+        if (StringUtils.isEmpty(messageKey)) {
             StringBuilder key = new StringBuilder("");
             if (lowerCase) {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPatternLowerCase");
-            } else if(upperCase){
+            } else if (upperCase) {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPatternUpperCase");
-            }
-            else{
+            } else {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPattern");
             }
         }
-        return labelKey;
+
+        return messageKey;
     }
-	
+
     /**
      * @return the lowerCase
      */
+    @BeanTagAttribute(name = "lowerCase")
     public boolean isLowerCase() {
         return this.lowerCase;
     }
@@ -80,12 +84,14 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
     /**
      * Only allow lowerCase characters. DO NOT use with upperCase option, no flags set for case
      * means both upper and lower case are allowed.
+     *
      * @param lowerCase the lowerCase to set
      */
     public void setLowerCase(boolean lowerCase) {
         this.lowerCase = lowerCase;
     }
 
+    @BeanTagAttribute(name = "upperCase")
     public boolean isUpperCase() {
         return upperCase;
     }
@@ -93,7 +99,8 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
     /**
      * Only allow upperCase characters.  DO NOT use with lowerCase option, no flags set for case
      * means both upper and lower case are allowed.
-     * @param lowerCase the lowerCase to set
+     *
+     * @param upperCase the lowerCase to set
      */
     public void setUpperCase(boolean upperCase) {
         this.upperCase = upperCase;

@@ -16,10 +16,12 @@
 package org.kuali.rice.kim.config;
 
 import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
 import org.kuali.rice.kim.api.KimApiConstants;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,8 +33,9 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KIMConfigurer extends ModuleConfigurer {
-
+    public static final String KIM_DATASOURCE_OBJ = "kim.datasource";
 	private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KimWebSpringBeans.xml";
+    private DataSource dataSource;
 
     public KIMConfigurer() {
         super(KimApiConstants.Namespaces.MODULE_NAME);
@@ -59,6 +62,24 @@ public class KIMConfigurer extends ModuleConfigurer {
 		return springFileLocations;
 	}
 
+    @Override
+    public void addAdditonalToConfig() {
+        configureDataSource();
+    }
+
+    private void configureDataSource() {
+        if (getDataSource() != null) {
+            ConfigContext.getCurrentContextConfig().putObject(KIM_DATASOURCE_OBJ, getDataSource());
+        }
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
     @Override
     public boolean hasWebInterface() {
         return true;

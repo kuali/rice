@@ -23,7 +23,7 @@ import java.sql.Timestamp;
  * PropertyEditor converts between date display strings and
  * <code>java.sql.Timestamp</code> objects using the
  * <code>org.kuali.rice.core.api.datetime.DateTimeService</code>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifTimestampEditor extends UifDateEditor implements Serializable {
@@ -33,7 +33,7 @@ public class UifTimestampEditor extends UifDateEditor implements Serializable {
      * This overridden method uses the
      * <code>org.kuali.rice.core.api.datetime.DateTimeService</code> to convert
      * the time stamp object to the display string.
-     * 
+     *
      * @see UifDateEditor#getAsText()
      */
     @Override
@@ -52,7 +52,7 @@ public class UifTimestampEditor extends UifDateEditor implements Serializable {
      * This overridden method converts the display string to a
      * <code>java.sql.Timestamp</code> object using the
      * <code>org.kuali.rice.core.api.datetime.DateTimeService</code>.
-     * 
+     *
      * @see UifDateEditor#setAsText(java.lang.String)
      */
     @Override

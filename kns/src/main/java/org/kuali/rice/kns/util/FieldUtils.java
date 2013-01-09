@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kns.util;
 
+import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
-import org.kuali.rice.core.api.uif.RemotableControlContract;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
@@ -29,6 +29,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
+import org.kuali.rice.core.api.uif.RemotableControlContract;
 import org.kuali.rice.core.api.uif.RemotableDatepicker;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
 import org.kuali.rice.core.api.uif.RemotablePasswordInput;
@@ -96,6 +97,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -354,6 +356,13 @@ public final class FieldUtils {
     public static Field getPropertyField(Class businessObjectClass, String attributeName, boolean convertForLookup) {
         Field field = new Field();
         field.setPropertyName(attributeName);
+        
+        //hack to get correct BO impl in case of ebos....
+        if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(businessObjectClass)) {
+            ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);
+            businessObjectClass = moduleService.getExternalizableBusinessObjectDictionaryEntry(businessObjectClass).getDataObjectClass();
+        }
+        
         field.setFieldLabel(getDataDictionaryService().getAttributeLabel(businessObjectClass, attributeName));
 
         setFieldControl(businessObjectClass, attributeName, convertForLookup, field);
@@ -598,7 +607,7 @@ public final class FieldUtils {
                 if (isPropertyNested(propertyName) && !isObjectTreeNonNullAllTheWayDown(bo, propertyName) && ((!element.getFieldType().equals(Field.IMAGE_SUBMIT)) && !(element.getFieldType().equals(Field.CONTAINER)) && (!element.getFieldType().equals(Field.QUICKFINDER)))) {
                     element.setPropertyValue(null);
                 }
-                else if (PropertyUtils.isReadable(bo, propertyName)) {
+                else if (isPropertyReadable(bo, propertyName)) {
                 	populateReadableField(element, bo);
                 }
                 
@@ -619,10 +628,36 @@ public final class FieldUtils {
 
         return populatedFields;
     }
+    
+    private static boolean isPropertyReadable(Object bean, String name) {
+        try {
+            return PropertyUtils.isReadable(bean, name);
+        } catch (NestedNullException e) {
+            return false;
+        }
+    }
+
+    private static boolean isPropertyWritable(Object bean, String name) {
+        try {
+            return PropertyUtils.isWriteable(bean, name);
+        } catch (NestedNullException e) {
+            return false;
+        }
+    }
 
     public static void populateReadableField(Field field, BusinessObject businessObject){
 		Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
-		if (obj != null) {
+
+        // For files the FormFile is not being persisted instead the file data is stored in
+		// individual fields as defined by PersistableAttachment.
+	    if (Field.FILE.equals(field.getFieldType())) {
+            Object fileName = ObjectUtils.getNestedValue(businessObject, KRADConstants.BO_ATTACHMENT_FILE_NAME);
+            Object fileType = ObjectUtils.getNestedValue(businessObject, KRADConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE);
+            field.setImageSrc(WebUtils.getAttachmentImageForUrl((String)fileType));
+            field.setPropertyValue(fileName);
+        }
+
+        if (obj != null) {
 			String formattedValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(businessObject, field.getPropertyName());
 			field.setPropertyValue(formattedValue);
         	
@@ -771,7 +806,7 @@ public final class FieldUtils {
                         String checkboxValue = (String) fieldValues.get(checkboxName);
                         if (checkboxValue == null) {
                             // didn't find a checkbox value, assume that it is unchecked
-                            if (PropertyUtils.isWriteable(bo, checkboxName)) {
+                            if (isPropertyWritable(bo, checkboxName)) {
                                 Class type = ObjectUtils.easyGetPropertyType(bo, checkboxName);
                                 if (type == Boolean.TYPE || type == Boolean.class) {
                                     // ASSUMPTION: unchecked means false
@@ -783,7 +818,7 @@ public final class FieldUtils {
                     // else, if not null, then it has a value, and we'll let the rest of the code handle it when the param is processed on
                     // another iteration (may be before or after this iteration).
                 }
-                else if (PropertyUtils.isWriteable(bo, propertyName) && fieldValues.get(propertyName) != null ) {
+                else if (isPropertyWritable(bo, propertyName) && fieldValues.get(propertyName) != null ) {
                     // if the field propertyName is a valid property on the bo class
                     Class type = ObjectUtils.easyGetPropertyType(bo, propertyName);
                     try {
@@ -1256,7 +1291,7 @@ public final class FieldUtils {
         return false;
     }
 
-    public static List createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
+    public static List<Field> createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
         List<Field> fields = new ArrayList<Field>();
         BusinessObjectEntry boe = (BusinessObjectEntry) getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
 
@@ -1480,7 +1515,10 @@ public final class FieldUtils {
 
     private static List<Field> constructFieldsForAttributeDefinition(RemotableAttributeField remotableAttributeField) {
         List<Field> fields = new ArrayList<Field>();
-        if (remotableAttributeField.getAttributeLookupSettings() != null && remotableAttributeField.getAttributeLookupSettings().isRanged()) {
+        if (remotableAttributeField.getAttributeLookupSettings() != null
+                && remotableAttributeField.getAttributeLookupSettings().isRanged()
+                && (!remotableAttributeField.getDataType().equals(DataType.DATE)
+                    && !remotableAttributeField.getDataType().equals(DataType.DATETIME))) {
             // create two fields, one for the "from" and one for the "to"
             AttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
             // Create a pair of range input fields for a ranged attribute
@@ -1507,10 +1545,31 @@ public final class FieldUtils {
         } else {
             //this ain't right....
             Field tempField = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
+            if (remotableAttributeField.getMaxLength() != null) {
+                tempField.setMaxLength(remotableAttributeField.getMaxLength());
+            }
 
             if (remotableAttributeField.getShortLabel() != null) {
                 tempField.setFieldLabel(remotableAttributeField.getShortLabel());
             }
+
+            if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
+                tempField.setFieldDataType(remotableAttributeField.getDataType().name().toLowerCase());
+            } else {
+                tempField.setFieldDataType(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT);
+            }
+
+            tempField.setMainFieldLabel(remotableAttributeField.getLongLabel());
+            tempField.setFieldHelpSummary(remotableAttributeField.getHelpSummary());
+            tempField.setUpperCase(remotableAttributeField.isForceUpperCase());
+            if (remotableAttributeField.getMaxLength() != null) {
+                if (remotableAttributeField.getMaxLength().intValue() > 0) {
+                    tempField.setMaxLength(remotableAttributeField.getMaxLength().intValue());
+                } else {
+                    tempField.setMaxLength(100);
+                }
+            }
+            tempField.setFieldRequired(remotableAttributeField.isRequired());
 
             fields.add(tempField);
         }
@@ -1541,7 +1600,6 @@ public final class FieldUtils {
 
         List<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
         builder.setDataType(DataType.valueOf(field.getFieldDataType().toUpperCase()));
-
         builder.setShortLabel(field.getFieldLabel());
         builder.setLongLabel(field.getMainFieldLabel());
         builder.setHelpSummary(field.getFieldHelpSummary());
@@ -1549,14 +1607,18 @@ public final class FieldUtils {
         //builder.setHelpDescription();
         builder.setForceUpperCase(field.isUpperCase());
         //builder.setMinLength()
-        builder.setMaxLength(new Integer(field.getMaxLength()));
+        if (field.getMaxLength() > 0) {
+            builder.setMaxLength(new Integer(field.getMaxLength()));
+        } else {
+            builder.setMaxLength(new Integer(100));
+        }
         //builder.setMinValue();
         //builder.setMaxValue();
         //builder.setRegexConstraint(field.);
         //builder.setRegexContraintMsg();
         builder.setRequired(field.isFieldRequired());
         builder.setDefaultValues(Collections.singletonList(field.getDefaultValue()));
-        builder.setControl(FieldUtils.constructControl(field.getFieldType(), field.getFieldValidValues()));
+        builder.setControl(FieldUtils.constructControl(field, field.getFieldValidValues()));
         if (field.getHasLookupable()) {
             builder.setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder.create());
             RemotableQuickFinder.Builder quickfinder =
@@ -1564,6 +1626,32 @@ public final class FieldUtils {
             quickfinder.setFieldConversions(toMap(field.getFieldConversions()));
             quickfinder.setLookupParameters(toMap(field.getLookupParameters()));
             widgets.add(quickfinder);
+        }
+        if (builder.getDataType().equals(DataType.DATETIME)
+                || builder.getDataType().equals(DataType.DATE)) {
+            if (field.isRanged()) {
+                RemotableAttributeLookupSettings.Builder lookupSettings = RemotableAttributeLookupSettings.Builder.create();
+                lookupSettings.setRanged(field.isRanged());
+                if (field.isDatePicker()) {
+                    lookupSettings.setLowerDatePicker(Boolean.TRUE);
+                    lookupSettings.setUpperDatePicker(Boolean.TRUE);
+                }
+                builder.setAttributeLookupSettings(lookupSettings);
+            }
+        }
+
+        if (!field.isColumnVisible()) {
+            RemotableAttributeLookupSettings.Builder lookupSettings =
+                    builder.getAttributeLookupSettings() == null
+                            ? RemotableAttributeLookupSettings.Builder.create()
+                            : RemotableAttributeLookupSettings.Builder.create(builder.getAttributeLookupSettings());
+            lookupSettings.setInResults(field.isColumnVisible());
+            builder.setAttributeLookupSettings(lookupSettings);
+        }
+
+        if (field.getFieldType().equals(Field.CURRENCY)) {
+            builder.setDataType(DataType.CURRENCY);
+            builder.setMaxLength(field.getFormattedMaxLength());
         }
         if (field.isDatePicker()) {
             widgets.add(RemotableDatepicker.Builder.create());
@@ -1576,35 +1664,52 @@ public final class FieldUtils {
         return builder.build();
     }
 
-    private static RemotableAbstractControl.Builder constructControl(String type, List<KeyValue> options) {
+    private static RemotableAbstractControl.Builder constructControl(Field field, List<KeyValue> options) {
 
-        RemotableAbstractControl.Builder control = null;
-        Map<String, String> optionMap = new HashMap<String, String>();
+        //RemotableAbstractControl.Builder control = null;
+        Map<String, String> optionMap = new LinkedHashMap<String, String>();
         if (options != null) {
             for (KeyValue option : options) {
                 optionMap.put(option.getKey(), option.getValue());
             }
         }
+        String type = field.getFieldType();
         if (Field.TEXT.equals(type) || Field.DATEPICKER.equals(type)) {
-			control = RemotableTextInput.Builder.create();
+            RemotableTextInput.Builder control = RemotableTextInput.Builder.create();
+            control.setSize(field.getSize());
+            return control;
         } else if (Field.TEXT_AREA.equals(type)) {
-            control = RemotableTextarea.Builder.create();
+            RemotableTextarea.Builder control = RemotableTextarea.Builder.create();
+            control.setCols(field.getCols());
+            control.setRows(field.getRows());
+            return control;
 		} else if (Field.DROPDOWN.equals(type)) {
-            control = RemotableSelect.Builder.create(optionMap);
+            return RemotableSelect.Builder.create(optionMap);
+        } else if (Field.DROPDOWN_REFRESH.equals(type)) {
+            RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
+            control.setRefreshOnChange(true);
+            return control;
         } else if (Field.CHECKBOX.equals(type)) {
-            control = RemotableCheckboxGroup.Builder.create(optionMap);
+            return RemotableCheckbox.Builder.create();
 		} else if (Field.RADIO.equals(type)) {
-            control = RemotableRadioButtonGroup.Builder.create(optionMap);
+            return RemotableRadioButtonGroup.Builder.create(optionMap);
 		} else if (Field.HIDDEN.equals(type)) {
-            control = RemotableHiddenInput.Builder.create();
+            return RemotableHiddenInput.Builder.create();
 		} else if (Field.MULTIBOX.equals(type)) {
-            RemotableSelect.Builder builder = RemotableSelect.Builder.create(optionMap);
-            builder.setMultiple(true);
-            control = builder;
+            RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
+            control.setMultiple(true);
+            return control;
+        } else if (Field.MULTISELECT.equals(type)) {
+            RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
+            control.setMultiple(true);
+            return control;
+        } else if (Field.CURRENCY.equals(type)) {
+            RemotableTextInput.Builder control = RemotableTextInput.Builder.create();
+            control.setSize(field.getSize());
+            return control;
         } else {
 		    throw new IllegalArgumentException("Illegal field type found: " + type);
         }
-        return control;
 
     }
 
@@ -1617,6 +1722,12 @@ public final class FieldUtils {
         }
         if (control == null || control instanceof RemotableTextInput) {
             fieldType = Field.TEXT;
+            if (((RemotableTextInput)remotableField.getControl()).getSize() != null) {
+              field.setSize(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
+            }
+            if (((RemotableTextInput)remotableField.getControl()).getSize() != null) {
+                field.setFormattedMaxLength(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
+            }
         } else if (control instanceof RemotableCheckboxGroup) {
             RemotableCheckboxGroup checkbox = (RemotableCheckboxGroup)control;
             fieldType = Field.CHECKBOX;
@@ -1637,11 +1748,18 @@ public final class FieldUtils {
             field.setFieldValidValues(FieldUtils.convertMapToKeyValueList(selectControl.getKeyLabels()));
             if (selectControl.isMultiple()) {
                 fieldType = Field.MULTISELECT;
+            } else if (selectControl.isRefreshOnChange()) {
+                fieldType = Field.DROPDOWN_REFRESH;
             } else {
                 fieldType = Field.DROPDOWN;
             }
         } else if (control instanceof RemotableTextarea) {
             fieldType = Field.TEXT_AREA;
+            if (((RemotableTextarea)remotableField.getControl()).getCols() != null
+                    && ((RemotableTextarea)remotableField.getControl()).getRows() != null) {
+                field.setCols(((RemotableTextarea)remotableField.getControl()).getCols().intValue());
+                field.setSize(((RemotableTextarea)remotableField.getControl()).getRows().intValue());
+            }
         } else {
             throw new IllegalArgumentException("Given control type is not supported: " + control.getClass());
         }
@@ -1666,10 +1784,14 @@ public final class FieldUtils {
     private static void applyLookupAttributes(RemotableAttributeField remotableField, Field field) {
         AttributeLookupSettings lookupSettings = remotableField.getAttributeLookupSettings();
         if (lookupSettings != null) {
-            field.setColumnVisible(lookupSettings.isInCriteria());
+            field.setColumnVisible(lookupSettings.isInResults());
             if (!lookupSettings.isInCriteria()) {
                 field.setFieldType(Field.HIDDEN);
             }
+            field.setRanged(lookupSettings.isRanged());
+            boolean datePickerLow = lookupSettings.isLowerDatePicker() == null ? false : lookupSettings.isLowerDatePicker().booleanValue();
+            boolean datePickerUpper = lookupSettings.isUpperDatePicker() == null ? false : lookupSettings.isUpperDatePicker().booleanValue();
+            field.setDatePicker(datePickerLow || datePickerUpper);
         }
     }
 
@@ -1726,8 +1848,8 @@ public final class FieldUtils {
         } else {
             column.setEscapeXMLValue(true);
         }
-        column.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(dataType.getClass()));
-        column.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(dataType.getClass()));
+        column.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(dataType.getType()));
+        column.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(dataType.getType()));
 
         if(StringUtils.isNotEmpty(attributeField.getFormatterName())) {
             try  {
@@ -1738,7 +1860,7 @@ public final class FieldUtils {
                 column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
             }
         }  else {
-         column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
+            column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
         }
 
         return column;
@@ -1748,7 +1870,7 @@ public final class FieldUtils {
         List<Column> attributeColumns = new ArrayList<Column>();
         if (attributeFields != null) {
             for (RemotableAttributeField attributeField : attributeFields) {
-                attributeColumns.add(constructColumnFromAttributeField(attributeField));
+                    attributeColumns.add(constructColumnFromAttributeField(attributeField));
             }
         }
         return attributeColumns;
@@ -1756,6 +1878,27 @@ public final class FieldUtils {
 
     public static Formatter getFormatterForDataType(DataType dataType) {
         return Formatter.getFormatter(dataType.getType());
+    }
+
+    /**
+     * Finds a container field's sub tab name
+     *
+     * @param field the field for which to derive the collection sub tab name
+     * @return the sub tab name
+     */
+    public static String generateCollectionSubTabName(Field field) {
+        final String containerName = field.getContainerElementName();
+        final String cleanedContainerName =
+                (containerName == null) ?
+                        "" :
+                        containerName.replaceAll("\\d+", "");
+        StringBuilder subTabName = new StringBuilder(cleanedContainerName);
+        if (field.getContainerDisplayFields() != null) {
+            for (Field containerField : field.getContainerDisplayFields()) {
+                subTabName.append(containerField.getPropertyValue());
+            }
+        }
+        return subTabName.toString();
     }
 
     private static Map<String, String> toMap(String s) {

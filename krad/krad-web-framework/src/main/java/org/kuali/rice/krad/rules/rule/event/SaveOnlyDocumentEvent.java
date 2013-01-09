@@ -24,13 +24,13 @@ import java.util.List;
  * This class represents the save event that is part of an eDoc in Kuali. This could be triggered when a user presses the save
  * button for a given document or it could happen when another piece of code calls the save method in the document service. This
  * event does not trigger sub-events for validation.
- * 
- * 
+ *
+ *
  */
 public class SaveOnlyDocumentEvent extends SaveDocumentEvent {
     /**
      * Constructs a SaveOnlyDocumentEvent with the specified errorPathPrefix and document
-     * 
+     *
      * @param document
      * @param errorPathPrefix
      */
@@ -40,13 +40,13 @@ public class SaveOnlyDocumentEvent extends SaveDocumentEvent {
 
     /**
      * Constructs a SaveDocumentEvent with the given document
-     * 
+     *
      * @param document
      */
     public SaveOnlyDocumentEvent(Document document) {
         this("", document);
     }
-    
+
     /**
      * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase#KualiDocumentEventBase(java.lang.String, java.lang.String, org.kuali.rice.krad.document.Document)
      */
@@ -56,13 +56,13 @@ public class SaveOnlyDocumentEvent extends SaveDocumentEvent {
 
     /**
      * This overridden method returns an empty list always
-     * 
+     *
      * @see org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent#generateEvents()
      */
     @Override
     public List<KualiDocumentEvent> generateEvents() {
 	return new ArrayList<KualiDocumentEvent>();
     }
-    
-    
+
+
 }

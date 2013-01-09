@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.component;
 
 /**
  * Extends <code>Ordered</code> interface to add setter for the order property
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Ordered extends org.springframework.core.Ordered {
@@ -25,7 +25,7 @@ public interface Ordered extends org.springframework.core.Ordered {
 
 	/**
 	 * Setter for the order value
-	 * 
+	 *
 	 * @param order
 	 * @see org.springframework.core.Ordered.getOrder()
 	 */

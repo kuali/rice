@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * Data field security adds attribute security to the standard component security
@@ -29,6 +31,7 @@ import org.kuali.rice.krad.datadictionary.AttributeSecurity;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="dataFieldSecurity")
 public class DataFieldSecurity extends FieldSecurity {
     private static final long serialVersionUID = 585138507596582667L;
 
@@ -43,6 +46,7 @@ public class DataFieldSecurity extends FieldSecurity {
      *
      * @return AttributeSecurity instance
      */
+    @BeanTagAttribute(name="attributeSecurity",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public AttributeSecurity getAttributeSecurity() {
         return attributeSecurity;
     }

@@ -15,13 +15,16 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 
 /**
  * Decorates a group with collapse/expand functionality
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "disclosure", parent = "Uif-Disclosure")
 public class Disclosure extends WidgetBase {
     private static final long serialVersionUID = 1238789480161901850L;
 
@@ -44,16 +47,17 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Path to the images that should be displayed to collapse the group
-     * 
+     *
      * @return String image path
      */
+    @BeanTagAttribute(name="CollapseImageSrc")
     public String getCollapseImageSrc() {
         return this.collapseImageSrc;
     }
 
     /**
      * Setter for the collapse image path
-     * 
+     *
      * @param collapseImageSrc
      */
     public void setCollapseImageSrc(String collapseImageSrc) {
@@ -62,16 +66,17 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Path to the images that should be displayed to expand the group
-     * 
+     *
      * @return String image path
      */
+    @BeanTagAttribute(name="expandImageSrc")
     public String getExpandImageSrc() {
         return this.expandImageSrc;
     }
 
     /**
      * Setter for the expand image path
-     * 
+     *
      * @param collapseImageSrc
      */
     public void setExpandImageSrc(String expandImageSrc) {
@@ -81,16 +86,17 @@ public class Disclosure extends WidgetBase {
     /**
      * Gives the speed for the open/close animation, a smaller int will result
      * in a faster animation
-     * 
+     *
      * @return int animation speed
      */
+    @BeanTagAttribute(name="animationSpeed")
     public int getAnimationSpeed() {
         return this.animationSpeed;
     }
 
     /**
      * Setter for the open/close animation speed
-     * 
+     *
      * @param animationSpeed
      */
     public void setAnimationSpeed(int animationSpeed) {
@@ -99,17 +105,18 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Indicates whether the group should be initially open
-     * 
+     *
      * @return boolean true if group should be initially open, false if it
      *         should be closed
      */
+    @BeanTagAttribute(name="defaultOpen")
     public boolean isDefaultOpen() {
         return this.defaultOpen;
     }
 
     /**
      * Setter for the default open indicator
-     * 
+     *
      * @param defaultOpen
      */
     public void setDefaultOpen(boolean defaultOpen) {
@@ -122,6 +129,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return boolean true to render the expand/colapse image false to not
      */
+    @BeanTagAttribute(name="renderImage")
     public boolean isRenderImage() {
         return renderImage;
     }

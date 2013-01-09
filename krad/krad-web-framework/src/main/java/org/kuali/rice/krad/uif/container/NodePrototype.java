@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.element.Message;
 
 import java.io.Serializable;
 
-public class NodePrototype extends ConfigurableBase implements Serializable {
+@BeanTag(name="nodePrototype")
+public class NodePrototype extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Message labelPrototype;
@@ -40,6 +43,7 @@ public class NodePrototype extends ConfigurableBase implements Serializable {
     /**
      * @return the labelPrototype
      */
+    @BeanTagAttribute(name="labelPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getLabelPrototype() {
         return this.labelPrototype;
     }
@@ -54,6 +58,7 @@ public class NodePrototype extends ConfigurableBase implements Serializable {
     /**
      * @return the dataGroupPrototype
      */
+    @BeanTagAttribute(name="dataGroupPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getDataGroupPrototype() {
         return this.dataGroupPrototype;
     }

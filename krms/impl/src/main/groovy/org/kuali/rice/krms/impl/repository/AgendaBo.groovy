@@ -22,6 +22,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 import org.kuali.rice.krad.util.ObjectUtils
 import org.kuali.rice.krad.service.SequenceAccessorService
 import org.kuali.rice.krad.service.KRADServiceLocator
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
 
 
 public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract {
@@ -40,6 +41,8 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 	def List<AgendaItemBo> items
 
     def ContextBo context
+
+    private static SequenceAccessorService sequenceAccessorService;
 
     public AgendaBo() {
         active = true;
@@ -97,15 +100,28 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
         String initAgendaItemId = this.getFirstItemId();
         List<AgendaItemBo> copiedAgendaItems = new ArrayList<AgendaItemBo>();
         Map<String, RuleBo> oldRuleIdToNew = new HashMap<String, RuleBo>();
+        Map<String, AgendaItemBo> oldAgendaItemIdToNew = new HashMap<String, AgendaItemBo>();
+
         for (AgendaItemBo agendaItem: agendaItems) {
-            AgendaItemBo copiedAgendaItem = agendaItem.copyAgendaItem(copiedAgenda, oldRuleIdToNew, dateTimeStamp);
-            if (initAgendaItemId != null && initAgendaItemId.equals(agendaItem.getId())) {
-                copiedAgenda.setFirstItemId(copiedAgendaItem.getId());
+            if (!oldAgendaItemIdToNew.containsKey(agendaItem.getId())) {
+                AgendaItemBo copiedAgendaItem = agendaItem.copyAgendaItem(copiedAgenda, oldRuleIdToNew, oldAgendaItemIdToNew, copiedAgendaItems, dateTimeStamp);
+                if (initAgendaItemId != null && initAgendaItemId.equals(agendaItem.getId())) {
+                    copiedAgenda.setFirstItemId(copiedAgendaItem.getId());
+                }
+                copiedAgendaItems.add(copiedAgendaItem);
+                oldAgendaItemIdToNew.put(agendaItem.getId(), copiedAgendaItem);
             }
-            copiedAgendaItems.add(copiedAgendaItem);
         }
         copiedAgenda.setItems(copiedAgendaItems);
         return copiedAgenda;
+    }
+
+    /**
+     * Set the SequenceAccessorService, useful for testing.
+     * @param sas SequenceAccessorService to use for getNewId()
+     */
+    public static void setSequenceAccessorService(SequenceAccessorService sas) {
+        sequenceAccessorService = sas;
     }
 
     /**
@@ -113,8 +129,21 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
      * @return String the next available id
      */
     private static String getNewId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class);
+        if (sequenceAccessorService == null) {
+            // we don't assign to sequenceAccessorService to preserve existing behavior
+            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class) + "";
+        }
+        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class);
         return id.toString();
+    }
+
+    /**
+     * Converts a mutable bo to it's immutable counterpart
+     * @param AgendaBo the mutable business object
+     * @return the immutable object AgendaDefinition
+     */
+    static AgendaDefinition to(AgendaBo bo) {
+        if (bo == null) { return null; }
+        return org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Builder.create(bo).build();
     }
 }

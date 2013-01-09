@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.concurrent.Callable;
 
 /**
  * A KEW Plugin.  A Plugin represents a distinct classloading space living below (as a child) of the core
@@ -59,16 +59,17 @@ public class Plugin extends BaseWrappingResourceLoader {
         }
         LOG.info(getLogPrefix()+" Starting...");
         try {
-            bindThread();
-            try {
-                startupFailure = false;
-                started = true;
-                super.start();
-                LOG.info("Starting plugin listeners");
-                startPluginListeners();
-            } finally {
-                unbindThread();
-            }
+            ContextClassLoaderBinder.doInContextClassLoader(getClassLoader(), new Callable() {
+                @Override
+                public Object call() throws Exception {
+                    startupFailure = false;
+                    started = true;
+                    Plugin.super.start();
+                    LOG.info("Starting plugin listeners");
+                    startPluginListeners();
+                    return null;
+                }
+            });
             ClassLoader classLoader = getClassLoader();
             LOG.info(getLogPrefix()+" ...started." + (classLoader != null ? classLoader.toString() : ""));
         } catch (Throwable t) {
@@ -96,16 +97,19 @@ public class Plugin extends BaseWrappingResourceLoader {
             return;
         }
         LOG.info(getLogPrefix()+" Stopping...");
-        bindThread();
         try {
-            started = false;
-            stopPluginListeners();
-            // stop resource loaders of super class
-            super.stop();
+            ContextClassLoaderBinder.doInContextClassLoader(getClassLoader(), new Callable() {
+                @Override
+                public Object call() throws Exception {
+                    started = false;
+                    stopPluginListeners();
+                    // stop resource loaders of super class
+                    Plugin.super.stop();
+                    return null;
+                }
+            });
         } catch (Throwable t) {
         	LOG.error(getLogPrefix()+" Failed when attempting to stop the plugin.", t);
-        } finally {
-            unbindThread();
         }
         resetPlugin();
         LOG.info(getLogPrefix()+" ...stopped.");
@@ -153,14 +157,6 @@ public class Plugin extends BaseWrappingResourceLoader {
 	public void setSupressStartupFailure(boolean supressStartupFailure) {
 		this.supressStartupFailure = supressStartupFailure;
 	}
-
-	public void bindThread() {
-		ContextClassLoaderBinder.bind(getClassLoader());
-    }
-
-    public void unbindThread() {
-        ContextClassLoaderBinder.unbind();
-    }
 
 	/**
      * Cleanup plugin resources.

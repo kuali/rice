@@ -17,16 +17,24 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.field.ImageField;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.widget.LightBox;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,47 +45,118 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "action", parent = "Uif-Action"), @BeanTag(name = "actionImage", parent = "Uif-ActionImage"),
+        @BeanTag(name = "primaryActionButton", parent = "Uif-PrimaryActionButton"),
+        @BeanTag(name = "secondaryActionButton", parent = "Uif-SecondaryActionButton"),
+        @BeanTag(name = "primaryActionButton-small", parent = "Uif-PrimaryActionButton-Small"),
+        @BeanTag(name = "secondaryActionButton-small", parent = "Uif-SecondaryActionButton-Small"),
+        @BeanTag(name = "actionLink", parent = "Uif-ActionLink"),
+        @BeanTag(name = "navigationActionLink", parent = "Uif-NavigationActionLink"),
+        @BeanTag(name = "navigationActionButton", parent = "Uif-NavigationActionButton"),
+        @BeanTag(name = "secondaryNavigationActionButton", parent = "Uif-SecondaryNavigationActionButton"),
+        @BeanTag(name = "helpAction", parent = "Uif-HelpAction"),
+        @BeanTag(name = "saveAction", parent = "Uif-SaveAction"),
+        @BeanTag(name = "closeAction", parent = "Uif-CloseAction"),
+        @BeanTag(name = "cancelAction", parent = "Uif-CancelAction"),
+        @BeanTag(name = "checkFormAction", parent = "Uif-CheckFormAction"),
+        @BeanTag(name = "addLineAction", parent = "Uif-AddLineAction"),
+        @BeanTag(name = "deleteLineAction", parent = "Uif-DeleteLineAction"),
+        @BeanTag(name = "saveLineAction", parent = "Uif-SaveLineAction"),
+        @BeanTag(name = "addBlankLineAction", parent = "Uif-AddBlankLineAction"),
+        @BeanTag(name = "addViaLightBoxAction", parent = "Uif-AddViaLightBoxAction"),
+        @BeanTag(name = "toggleRowDetailsAction", parent = "Uif-ToggleRowDetailsAction"),
+        @BeanTag(name = "expandDetailsAction", parent = "Uif-ExpandDetailsAction"),
+        @BeanTag(name = "expandDetailsImageAction", parent = "Uif-ExpandDetailsImageAction"),
+        @BeanTag(name = "jumpToTopLink", parent = "Uif-JumpToTopLink"),
+        @BeanTag(name = "jumpToBottomLink", parent = "Uif-JumpToBottomLink"),
+        @BeanTag(name = "expandDisclosuresButton", parent = "Uif-ExpandDisclosuresButton"),
+        @BeanTag(name = "collapseDisclosuresButton", parent = "Uif-CollapseDisclosuresButton"),
+        @BeanTag(name = "showInactiveCollectionItemsButton", parent = "Uif-ShowInactiveCollectionItemsButton"),
+        @BeanTag(name = "hideInactiveCollectionItemsButton", parent = "Uif-HideInactiveCollectionItemsButton"),
+        @BeanTag(name = "collectionQuickFinderAction", parent = "Uif-CollectionQuickFinderAction")})
 public class Action extends ContentElementBase {
     private static final long serialVersionUID = 1025672792657238829L;
 
     private String methodToCall;
+    private String actionEvent;
     private String navigateToPageId;
 
-    private boolean performClientSideValidation;
     private String actionScript;
-
-    private String jumpToIdAfterSubmit;
-    private String jumpToNameAfterSubmit;
-    private String focusOnIdAfterSubmit;
 
     private String actionLabel;
     private Image actionImage;
     private String actionImagePlacement;
 
-    private String actionEvent;
-    private Map<String, String> actionParameters;
+    private String jumpToIdAfterSubmit;
+    private String jumpToNameAfterSubmit;
+    private String focusOnIdAfterSubmit;
 
-    private LightBox lightBoxLookup;
-    private LightBox lightBoxDirectInquiry;
-
+    private boolean performClientSideValidation;
     private boolean performDirtyValidation;
-
-    private boolean disabled;
-    private String disabledReason;
 
     private String preSubmitCall;
     private boolean ajaxSubmit;
 
+    private String ajaxReturnType;
+    private String refreshId;
+    private String refreshPropertyName;
+
     private String successCallback;
     private String errorCallback;
+
+    private String loadingMessageText;
+    private boolean disableBlocking;
+
+    private Map<String, String> additionalSubmitData;
+    private Map<String, String> actionParameters;
+
+    private boolean evaluateDisabledOnKeyUp;
+
+    private boolean disabled;
+    private String disabledReason;
+    private String disabledExpression;
+    private String disabledConditionJs;
+    private List<String> disabledConditionControlNames;
+
+    private List<String> disabledWhenChangedPropertyNames;
+    private List<String> enabledWhenChangedPropertyNames;
 
     public Action() {
         super();
 
         actionImagePlacement = UifConstants.Position.LEFT.name();
 
-        disabled = false;
+        ajaxSubmit = true;
+
+        successCallback = "";
+        errorCallback = "";
+        preSubmitCall = "";
+
+        additionalSubmitData = new HashMap<String, String>();
         actionParameters = new HashMap<String, String>();
+
+        disabled = false;
+        disabledWhenChangedPropertyNames = new ArrayList<String>();
+        enabledWhenChangedPropertyNames = new ArrayList<String>();
+    }
+
+    /**
+     * Sets the disabledExpression, if any, evaluates it and sets the disabled property
+     *
+     * @param view - view instance to which the component belongs
+     * @param model - Top level object containing the data (could be the form or a
+     * @param parent
+     */
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+        disabledExpression = this.getPropertyExpression("disabled");
+        if (disabledExpression != null) {
+            ExpressionEvaluatorService expressionEvaluatorService =
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService();
+            disabledExpression = expressionEvaluatorService.replaceBindingPrefixes(view, this, disabledExpression);
+            disabled = (Boolean) expressionEvaluatorService.evaluateExpression(model, this.getContext(),
+                    disabledExpression);
+        }
     }
 
     /**
@@ -86,6 +165,10 @@ public class Action extends ContentElementBase {
      * <ul>
      * <li>Add methodToCall action parameter if set and setup event code for
      * setting action parameters</li>
+     * <li>Invoke method to build the data attributes and submit data for the action</li>
+     * <li>Compose the final onclick script for the action</li>
+     * <li>Parses the disabled expressions, if any, to equivalent javascript and evaluates the disable/enable when
+     * changed property names</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
@@ -94,7 +177,31 @@ public class Action extends ContentElementBase {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-        //clear alt text to avoid screen reader confusion when using image in button with text
+
+        if (StringUtils.isNotEmpty(disabledExpression)
+                && !disabledExpression.equalsIgnoreCase("true")
+                && !disabledExpression.equalsIgnoreCase("false")) {
+            disabledConditionControlNames = new ArrayList<String>();
+            disabledConditionJs = ExpressionUtils.parseExpression(disabledExpression, disabledConditionControlNames);
+        }
+
+        List<String> adjustedDisablePropertyNames = new ArrayList<String>();
+        for (String propertyName : disabledWhenChangedPropertyNames) {
+            adjustedDisablePropertyNames.add(
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
+                            propertyName));
+        }
+        disabledWhenChangedPropertyNames = adjustedDisablePropertyNames;
+
+        List<String> adjustedEnablePropertyNames = new ArrayList<String>();
+        for (String propertyName : enabledWhenChangedPropertyNames) {
+            adjustedEnablePropertyNames.add(
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
+                            propertyName));
+        }
+        enabledWhenChangedPropertyNames = adjustedEnablePropertyNames;
+
+        // clear alt text to avoid screen reader confusion when using image in button with text
         if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(
                 actionLabel)) {
             actionImage.setAltText("");
@@ -103,9 +210,6 @@ public class Action extends ContentElementBase {
         if (!actionParameters.containsKey(UifConstants.UrlParams.ACTION_EVENT) && StringUtils.isNotBlank(actionEvent)) {
             actionParameters.put(UifConstants.UrlParams.ACTION_EVENT, actionEvent);
         }
-
-        actionParameters.put(UifConstants.UrlParams.SHOW_HOME, "false");
-        actionParameters.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
 
         if (StringUtils.isNotBlank(navigateToPageId)) {
             actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
@@ -120,148 +224,150 @@ public class Action extends ContentElementBase {
             actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
         }
 
-        // If there is no lightBox then create the on click script
-        if (lightBoxLookup == null) {
-            String prefixScript = this.getOnClickScript();
-            if (prefixScript == null) {
-                prefixScript = "";
-            }
+        setupRefreshAction(view);
 
-            boolean validateFormDirty = false;
-            if (view instanceof FormView && isPerformDirtyValidation()) {
-                validateFormDirty = ((FormView) view).isApplyDirtyCheck();
-            }
+        buildActionData(view, model, parent);
 
-            boolean includeDirtyCheckScript = false;
-            String writeParamsScript = "";
-            if (!actionParameters.isEmpty()) {
-                for (String key : actionParameters.keySet()) {
-                    String parameterPath = key;
-                    if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-                        parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
-                    }
-
-                    writeParamsScript =
-                            writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '" + actionParameters.get(
-                                    key) + "'); ";
-
-                    // Include dirtycheck js function call if the method to call
-                    // is refresh, navigate, cancel or close
-                    if (validateFormDirty && !includeDirtyCheckScript && key.equals(
-                            UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-                        String keyValue = (String) actionParameters.get(key);
-                        if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || StringUtils.equals(
-                                keyValue, UifConstants.MethodToCallNames.NAVIGATE) || StringUtils.equals(keyValue,
-                                UifConstants.MethodToCallNames.CANCEL) || StringUtils.equals(keyValue,
-                                UifConstants.MethodToCallNames.CLOSE)) {
-                            includeDirtyCheckScript = true;
-                        }
-                    }
-                }
-            }
-
-            // TODO possibly fix some other way - this is a workaround, prevents
-            // showing history and showing home again on actions which submit
-            // the form
-            writeParamsScript = writeParamsScript
-                    + "writeHiddenToForm('"
-                    + UifConstants.UrlParams.SHOW_HISTORY
-                    + "', '"
-                    + "false"
-                    + "'); ";
-            writeParamsScript = writeParamsScript
-                    + "writeHiddenToForm('"
-                    + UifConstants.UrlParams.SHOW_HOME
-                    + "' , '"
-                    + "false"
-                    + "'); ";
-
-            if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
-                // if this is blank focus this actionField by default
-                focusOnIdAfterSubmit = this.getId();
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + this.getId() + "'); ";
-            } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
-                // Use the id passed in
-                writeParamsScript =
-                        writeParamsScript + "writeHiddenToForm('focusId' , '" + focusOnIdAfterSubmit + "'); ";
-            } else {
-                // First input will be focused, must be first field set to empty
-                // string
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , ''); ";
-            }
-
-            if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
-                jumpToIdAfterSubmit = this.getId();
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '" + this.getId() + "'); ";
-            } else if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
-                writeParamsScript =
-                        writeParamsScript + "writeHiddenToForm('jumpToId' , '" + jumpToIdAfterSubmit + "'); ";
-            } else {
-                writeParamsScript =
-                        writeParamsScript + "writeHiddenToForm('jumpToName' , '" + jumpToNameAfterSubmit + "'); ";
-            }
-
-            String postScript = "";
-            if (StringUtils.isNotBlank(actionScript)) {
-                postScript = actionScript;
-            }
-            if (isPerformClientSideValidation()) {
-                postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
-            }
-            String submitScript = "";
-            if (ajaxSubmit) {
-                submitScript = "ajaxSubmitForm( '"
-                        + getMethodToCall()
-                        + "',"
-                        + successCallback
-                        + ", null, null,"
-                        + errorCallback
-                        + ");";
-            } else {
-                submitScript = "jQuery('#kualiForm').submit();";
-            }
-            if (StringUtils.isBlank(postScript)) {
-                //if the preSubmitCall evaluates to true then submit the form else don't
-                if (StringUtils.isNotBlank(preSubmitCall)) {
-                    postScript = "if (" + preSubmitCall + "== true ) {" + submitScript + "}";
-                } else {
-                    postScript = submitScript;
-                }
-            }
-
-            if (includeDirtyCheckScript) {
-                this.setOnClickScript("e.preventDefault(); if (checkDirty(e) == false) { "
-                        + prefixScript
-                        + writeParamsScript
-                        + postScript
-                        + " ; } ");
-            } else {
-                this.setOnClickScript("e.preventDefault();" + prefixScript + writeParamsScript + postScript);
-            }
-
+        // build final onclick script
+        String onClickScript = this.getOnClickScript();
+        if (StringUtils.isNotBlank(actionScript)) {
+            onClickScript = ScriptUtils.appendScript(onClickScript, actionScript);
         } else {
-            // When there is a light box - don't add the on click script as it
-            // will be prevented from executing
-            // Create a script map object which will be written to the form on
-            // click event
-            StringBuffer sb = new StringBuffer();
-            sb.append("{");
-            for (String key : actionParameters.keySet()) {
-                String optionValue = actionParameters.get(key);
-                if (sb.length() > 1) {
-                    sb.append(",");
-                }
-                if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-                    sb.append("\"" + UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]" + "\"");
-                } else {
-                    sb.append("\"" + key + "\"");
-                }
-                sb.append(":");
-                sb.append("\"" + optionValue + "\"");
-            }
-            sb.append("}");
-            lightBoxLookup.setActionParameterMapString(sb.toString());
+            onClickScript = ScriptUtils.appendScript(onClickScript, "actionInvokeHandler(this);");
         }
+
+        // add dirty check if it is enabled for the view and the action requires it
+        if (view instanceof FormView) {
+            if (((FormView) view).isApplyDirtyCheck() && performDirtyValidation) {
+                onClickScript = "if (checkDirty(e) == false) { " + onClickScript + " ; } ";
+            }
+        }
+
+        //stop action if the action is disabled
+        if (disabled) {
+            this.addStyleClass("disabled");
+            this.setSkipInTabOrder(true);
+        }
+        onClickScript = "if(jQuery(this).hasClass('disabled')){ return false; }" + onClickScript;
+
+        setOnClickScript("e.preventDefault();" + onClickScript);
+    }
+
+    /**
+     * When the action is updating a component sets up the refresh script for the component (found by the
+     * given refresh id or refresh property name)
+     *
+     * @param view - view instance the action belongs to
+     */
+    protected void setupRefreshAction(View view) {
+        // if refresh property or id is given, make return type update component
+        if (StringUtils.isNotBlank(refreshPropertyName) || StringUtils.isNotBlank(refreshId)) {
+            ajaxReturnType = UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey();
+        }
+
+        // if refresh property name is given, adjust the binding and then attempt to find the
+        // component in the view index
+        Component refreshComponent = null;
+        if (StringUtils.isNotBlank(refreshPropertyName)) {
+            // TODO: does this support all binding prefixes?
+            if (refreshPropertyName.startsWith(UifConstants.NO_BIND_ADJUST_PREFIX)) {
+                refreshPropertyName = StringUtils.removeStart(refreshPropertyName, UifConstants.NO_BIND_ADJUST_PREFIX);
+            } else if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
+                refreshPropertyName = view.getDefaultBindingObjectPath() + "." + refreshPropertyName;
+            }
+
+            DataField dataField = view.getViewIndex().getDataFieldByPath(refreshPropertyName);
+            if (dataField != null) {
+                refreshComponent = dataField;
+                refreshId = refreshComponent.getId();
+            }
+        } else if (StringUtils.isNotBlank(refreshId)) {
+            Component component = view.getViewIndex().getComponentById(refreshId);
+            if (component != null) {
+                refreshComponent = component;
+            }
+        }
+
+        if (refreshComponent != null) {
+            refreshComponent.setRefreshedByAction(true);
+
+            // update initial state
+            Component initialComponent = view.getViewIndex().getInitialComponentStates().get(
+                    refreshComponent.getBaseId());
+            if (initialComponent != null) {
+                initialComponent.setRefreshedByAction(true);
+                view.getViewIndex().getInitialComponentStates().put(refreshComponent.getBaseId(), initialComponent);
+            }
+        }
+    }
+
+    /**
+     * Builds the data attributes that will be read client side to determine how to
+     * handle the action and the additional data that should be submitted with the action
+     *
+     * <p>
+     * Note these data attributes will be exposed as a data map client side. The simple attributes (non object
+     * value) are also written out as attributes on the action element.
+     * </p>
+     *
+     * @param view - view instance the action belongs to
+     * @param model - model object containing the view data
+     * @param parent - component the holds the action
+     */
+    protected void buildActionData(View view, Object model, Component parent) {
+        // map properties to data attributes
+        addDataAttribute("ajaxsubmit", Boolean.toString(ajaxSubmit));
+        addDataAttributeIfNonEmpty("successcallback", this.successCallback);
+        addDataAttributeIfNonEmpty("errorcallback", this.errorCallback);
+        addDataAttributeIfNonEmpty("presubmitcall", this.preSubmitCall);
+        addDataAttributeIfNonEmpty("loadingmessage", this.loadingMessageText);
+        addDataAttributeIfNonEmpty("disableblocking", Boolean.toString(this.disableBlocking));
+        addDataAttributeIfNonEmpty("ajaxreturntype", this.ajaxReturnType);
+        addDataAttributeIfNonEmpty("refreshid", this.refreshId);
+        addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
+
+        // all action parameters should be submitted with action
+        Map<String, String> submitData = new HashMap<String, String>();
+        for (String key : actionParameters.keySet()) {
+            String parameterPath = key;
+            if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+                parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
+            }
+            submitData.put(parameterPath, actionParameters.get(key));
+        }
+
+        for (String key : additionalSubmitData.keySet()) {
+            submitData.put(key, additionalSubmitData.get(key));
+        }
+
+        // TODO possibly fix some other way - this is a workaround, prevents
+        // showing history and showing home again on actions which submit the form
+        submitData.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
+        submitData.put(UifConstants.UrlParams.SHOW_HOME, "false");
+
+        // if focus id not set default to focus on action
+        if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.SELF.toString())) {
+            focusOnIdAfterSubmit = this.getId();
+            submitData.put("focusId", focusOnIdAfterSubmit);
+        } else if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.NEXT_INPUT.toString())) {
+            focusOnIdAfterSubmit = UifConstants.Order.NEXT_INPUT.toString() + ":" + this.getId();
+            submitData.put("focusId", focusOnIdAfterSubmit);
+        } else {
+            // Use the id passed in
+            submitData.put("focusId", focusOnIdAfterSubmit);
+        }
+
+        // if jump to not set default to jump to location of the action
+        if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
+            jumpToIdAfterSubmit = this.getId();
+            submitData.put("jumpToId", jumpToIdAfterSubmit);
+        } else if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
+            submitData.put("jumpToId", jumpToIdAfterSubmit);
+        } else {
+            submitData.put("jumpToName", jumpToNameAfterSubmit);
+        }
+
+        addDataAttribute("submitData", ScriptUtils.toJSON(submitData));
     }
 
     /**
@@ -272,14 +378,13 @@ public class Action extends ContentElementBase {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(actionImage);
-        components.add(lightBoxLookup);
-        components.add(lightBoxDirectInquiry);
 
         return components;
     }
 
     /**
      * Name of the method that should be called when the action is selected
+     *
      * <p>
      * For a server side call (clientSideCall is false), gives the name of the
      * method in the mapped controller that should be invoked when the action is
@@ -289,6 +394,7 @@ public class Action extends ContentElementBase {
      *
      * @return String name of method to call
      */
+    @BeanTagAttribute(name = "methodToCall")
     public String getMethodToCall() {
         return this.methodToCall;
     }
@@ -304,6 +410,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Label text for the action
+     *
      * <p>
      * The label text is used by the template renderers to give a human readable
      * label for the action. For buttons this generally is the button text,
@@ -312,6 +419,7 @@ public class Action extends ContentElementBase {
      *
      * @return String label for action
      */
+    @BeanTagAttribute(name = "actionLabel")
     public String getActionLabel() {
         return this.actionLabel;
     }
@@ -337,6 +445,7 @@ public class Action extends ContentElementBase {
      *
      * @return Image action image
      */
+    @BeanTagAttribute(name = "actionImage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Image getActionImage() {
         return this.actionImage;
     }
@@ -355,6 +464,7 @@ public class Action extends ContentElementBase {
      * <code>NavigationGroup</code, the navigate to page id can be set to
      * configure the page that should be navigated to when the action is
      * selected
+     *
      * <p>
      * Support exists in the <code>UifControllerBase</code> for handling
      * navigation between pages
@@ -363,6 +473,7 @@ public class Action extends ContentElementBase {
      * @return String id of page that should be rendered when the action item is
      *         selected
      */
+    @BeanTagAttribute(name = "navigateToPageId")
     public String getNavigateToPageId() {
         return this.navigateToPageId;
     }
@@ -389,6 +500,7 @@ public class Action extends ContentElementBase {
      * @return String action event name
      * @see org.kuali.rice.krad.uif.UifConstants.ActionEvents
      */
+    @BeanTagAttribute(name = "actionEvent")
     public String getActionEvent() {
         return actionEvent;
     }
@@ -403,11 +515,46 @@ public class Action extends ContentElementBase {
     }
 
     /**
+     * Map of additional data that will be posted when the action is invoked
+     *
+     * <p>
+     * Each entry in this map will be sent as a request parameter when the action is chosen. Note this in
+     * addition to the form data that is sent. For example, suppose the model contained a property named
+     * number and a boolean named showActive, we can send values for this properties by adding the following
+     * entries to this map:
+     * {'number':'a13', 'showActive', 'true'}
+     * </p>
+     *
+     * <p>
+     * The additionalSubmitData map is different from the actionParameters map. All name/value pairs given as
+     * actionParameters populated the form map actionParameters. While name/value pair given in additionalSubmitData
+     * populate different form (model) properties
+     * </p>
+     *
+     * @return Map<String, String> additional key/value pairs to submit
+     */
+    @BeanTagAttribute(name = "additionalSubmitData", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    public Map<String, String> getAdditionalSubmitData() {
+        return additionalSubmitData;
+    }
+
+    /**
+     * Setter for map holding additional data to post
+     *
+     * @param additionalSubmitData
+     */
+    public void setAdditionalSubmitData(Map<String, String> additionalSubmitData) {
+        this.additionalSubmitData = additionalSubmitData;
+    }
+
+    /**
      * Parameters that should be sent when the action is invoked
+     *
      * <p>
      * Action renderer will decide how the parameters are sent for the action
      * (via script generated hiddens, or script parameters, ...)
      * </p>
+     *
      * <p>
      * Can be set by other components such as the <code>CollectionGroup</code>
      * to provide the context the action is in (such as the collection name and
@@ -416,6 +563,7 @@ public class Action extends ContentElementBase {
      *
      * @return Map<String, String> action parameters
      */
+    @BeanTagAttribute(name = "actionParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getActionParameters() {
         return this.actionParameters;
     }
@@ -451,16 +599,6 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Action Field Security object that indicates what authorization (permissions) exist for the action
-     *
-     * @return ActionSecurity instance
-     */
-    @Override
-    public ActionSecurity getComponentSecurity() {
-        return (ActionSecurity) super.getComponentSecurity();
-    }
-
-    /**
      * Override to assert a {@link ActionSecurity} instance is set
      *
      * @param componentSecurity - instance of ActionSecurity
@@ -480,30 +618,9 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Setter for the light box lookup widget
-     *
-     * @param lightBoxLookup <code>LightBoxLookup</code> widget to set
-     */
-    public void setLightBoxLookup(LightBox lightBoxLookup) {
-        this.lightBoxLookup = lightBoxLookup;
-    }
-
-    /**
-     * LightBoxLookup widget for the field
-     * <p>
-     * The light box lookup widget will change the lookup behaviour to open the
-     * lookup in a light box.
-     * </p>
-     *
-     * @return the <code>DirectInquiry</code> field DirectInquiry
-     */
-    public LightBox getLightBoxLookup() {
-        return lightBoxLookup;
-    }
-
-    /**
      * @return the jumpToIdAfterSubmit
      */
+    @BeanTagAttribute(name = "jumpToIdAfterSubmit")
     public String getJumpToIdAfterSubmit() {
         return this.jumpToIdAfterSubmit;
     }
@@ -533,6 +650,7 @@ public class Action extends ContentElementBase {
      *
      * @return the jumpToNameAfterSubmit
      */
+    @BeanTagAttribute(name = "jumpToNameAfterSubmit")
     public String getJumpToNameAfterSubmit() {
         return this.jumpToNameAfterSubmit;
     }
@@ -545,13 +663,23 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * The id of the field to place focus on in the new page after the new page
-     * is retrieved. Passing in "FIRST" will focus on the first visible input
-     * element on the form. Passing in the empty string will result in this
-     * Action being focused.
+     * The element to place focus on in the new page after the new page
+     * is retrieved.
+     *
+     * <p>The following are allowed:
+     * <ul>
+     * <li>A valid element id</li>
+     * <li>"FIRST" will focus on the first visible input element on the form</li>
+     * <li>"SELF" will result in this Action being focused (action bean defaults to "SELF")</li>
+     * <li>"LINE_FIRST" will result in the first input of the collection line to be focused (if available)</li>
+     * <li>"NEXT_INPUT" will result in the next available input that exists after this Action to be focused
+     * (only if this action still exists on the page)</li>
+     * </ul>
+     * </p>
      *
      * @return the focusOnAfterSubmit
      */
+    @BeanTagAttribute(name = "focusOnIdAfterSubmit")
     public String getFocusOnIdAfterSubmit() {
         return this.focusOnIdAfterSubmit;
     }
@@ -568,6 +696,7 @@ public class Action extends ContentElementBase {
      *
      * return true if validation should occur, false otherwise
      */
+    @BeanTagAttribute(name = "performClientSideValidation")
     public boolean isPerformClientSideValidation() {
         return this.performClientSideValidation;
     }
@@ -582,16 +711,20 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Client side javascript to be executed when this actionField is clicked.
+     * Client side javascript to be executed when this actionField is clicked
+     *
+     * <p>
      * This overrides the default action for this Action so the method
      * called must explicitly submit, navigate, etc. through js, if necessary.
      * In addition, this js occurs AFTER onClickScripts set on this field, it
      * will be the last script executed by the click event. Sidenote: This js is
      * always called after hidden actionParameters and methodToCall methods are
      * written by the js to the html form.
+     * </p>
      *
      * @return the actionScript
      */
+    @BeanTagAttribute(name = "actionScript")
     public String getActionScript() {
         return this.actionScript;
     }
@@ -607,28 +740,6 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Setter for the light box direct inquiry widget
-     *
-     * @param lightBoxDirectInquiry <code>LightBox</code> widget to set
-     */
-    public void setLightBoxDirectInquiry(LightBox lightBoxDirectInquiry) {
-        this.lightBoxDirectInquiry = lightBoxDirectInquiry;
-    }
-
-    /**
-     * LightBox widget for the field
-     * <p>
-     * The light box widget will change the direct inquiry behaviour to open up
-     * in a light box.
-     * </p>
-     *
-     * @return the <code>LightBox</code> field LightBox
-     */
-    public LightBox getLightBoxDirectInquiry() {
-        return lightBoxDirectInquiry;
-    }
-
-    /**
      * @param performDirtyValidation the blockValidateDirty to set
      */
     public void setPerformDirtyValidation(boolean performDirtyValidation) {
@@ -638,6 +749,7 @@ public class Action extends ContentElementBase {
     /**
      * @return the blockValidateDirty
      */
+    @BeanTagAttribute(name = "performDirtyValidation")
     public boolean isPerformDirtyValidation() {
         return performDirtyValidation;
     }
@@ -647,6 +759,7 @@ public class Action extends ContentElementBase {
      *
      * @return boolean true if the action field is disabled, false if not
      */
+    @BeanTagAttribute(name = "disabled")
     public boolean isDisabled() {
         return disabled;
     }
@@ -667,6 +780,7 @@ public class Action extends ContentElementBase {
      * @return String disabled reason text
      * @see {@link #isDisabled()}
      */
+    @BeanTagAttribute(name = "disabledReason")
     public String getDisabledReason() {
         return disabledReason;
     }
@@ -680,6 +794,7 @@ public class Action extends ContentElementBase {
         this.disabledReason = disabledReason;
     }
 
+    @BeanTagAttribute(name = "actionImagePlacement")
     public String getActionImagePlacement() {
         return actionImagePlacement;
     }
@@ -697,11 +812,27 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Gets the script which needs to be invoked before the form is submitted. The script should return a boolean
-     * indicating if the form should be submitted or not.
+     * Gets the script which needs to be invoked before the form is submitted
+     *
+     * <p>
+     * The preSubmitCall can carry out custom logic for the action before the submit occurs. The value should
+     * be given as one or more lines of script and should return a boolean. If false is returned from the call,
+     * the submit is not carried out. Furthermore, the preSubmitCall can refer to the request object through the
+     * variable 'kradRequest' or 'this'. This gives full access over the request for doing such things as
+     * adding additional data
+     * </p>
+     *
+     * <p>
+     * Examples 'return doFunction(kradRequest);', 'var valid=true;return valid;'
+     * </p>
+     *
+     * <p>
+     * The preSubmit call will be invoked both for ajax and non-ajax submits
+     * </p>
      *
      * @return String script text that will be invoked before form submission
      */
+    @BeanTagAttribute(name = "preSubmitCall")
     public String getPreSubmitCall() {
         return preSubmitCall;
     }
@@ -721,6 +852,7 @@ public class Action extends ContentElementBase {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name = "ajaxSubmit")
     public boolean isAjaxSubmit() {
         return ajaxSubmit;
     }
@@ -735,11 +867,75 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Getter for successCallback property. This will be invoked for successful ajax calls
+     * Gets the return type for the ajax call
      *
-     * @return String
+     * <p>
+     * The ajax return type indicates how the response content will be handled in the client. Typical
+     * examples include updating a component, the page, or doing a redirect.
+     * </p>
+     *
+     * @return String return type
+     * @see org.kuali.rice.krad.uif.UifConstants.AjaxReturnTypes
      */
+    @BeanTagAttribute(name = "ajaxReturnType")
+    public String getAjaxReturnType() {
+        return this.ajaxReturnType;
+    }
 
+    /**
+     * Setter for the type of ajax return
+     *
+     * @param ajaxReturnType
+     */
+    public void setAjaxReturnType(String ajaxReturnType) {
+        this.ajaxReturnType = ajaxReturnType;
+    }
+
+    /**
+     * Indicates if the action response should be displayed in a lightbox
+     *
+     * @return boolean true if response should be rendered in a lightbox, false if not
+     */
+    @BeanTagAttribute(name = "displayResponseInLightBox")
+    public boolean isDisplayResponseInLightBox() {
+        return StringUtils.equals(this.ajaxReturnType, UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey());
+    }
+
+    /**
+     * Setter for indicating the response should be rendered in a lightbox
+     *
+     * @param displayResponseInLightBox
+     */
+    public void setDisplayResponseInLightBox(boolean displayResponseInLightBox) {
+        if (displayResponseInLightBox) {
+            this.ajaxReturnType = UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey();
+        }
+        // if display lightbox is false and it was previously true, set to default of update page
+        else if (StringUtils.equals(this.ajaxReturnType, UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey())) {
+            this.ajaxReturnType = UifConstants.AjaxReturnTypes.UPDATEPAGE.getKey();
+        }
+    }
+
+    /**
+     * Gets the script which will be invoked on a successful ajax call
+     *
+     * <p>
+     * The successCallback can carry out custom logic after a successful ajax submission has been made. The
+     * value can contain one or more script statements. In addition, the response contents can be accessed
+     * through the variable 'responseContents'
+     * </p>
+     *
+     * <p>
+     * Examples 'handleSuccessfulUpdate(responseContents);'
+     * </p>
+     *
+     * <p>
+     * The successCallback may only be specified when {@link #isAjaxSubmit()} is true
+     * </p>
+     *
+     * @return String containing script to be executed when the action is successful
+     */
+    @BeanTagAttribute(name = "successCallback")
     public String getSuccessCallback() {
         return successCallback;
     }
@@ -754,10 +950,26 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Getter for errorCallback. This will be invoked for failed ajax calls
+     * Gets the script which will be invoked when the action fails due to problems in the ajax call or
+     * the return of an incident report
      *
-     * @return
+     * <p>
+     * The errorCallback can carry out custom logic after a failed ajax submission. The
+     * value can contain one or more script statements. In addition, the response contents can be accessed
+     * through the variable 'responseContents'
+     * </p>
+     *
+     * <p>
+     * Examples 'handleFailedUpdate(responseContents);'
+     * </p>
+     *
+     * <p>
+     * The errorCallback may only be specified when {@link #isAjaxSubmit()} is true
+     * </p>
+     *
+     * @return String containing script to be executed when the action is successful
      */
+    @BeanTagAttribute(name = "errorCallback")
     public String getErrorCallback() {
         return errorCallback;
     }
@@ -769,5 +981,204 @@ public class Action extends ContentElementBase {
      */
     public void setErrorCallback(String errorCallback) {
         this.errorCallback = errorCallback;
+    }
+
+    /**
+     * Id for the component that should be refreshed after the action completes
+     *
+     * <p>
+     * Either refresh id or refresh property name can be set to configure the component that should
+     * be refreshed after the action completes. If both are blank, the page will be refreshed
+     * </p>
+     *
+     * @return String valid component id
+     */
+    @BeanTagAttribute(name = "refreshId")
+    public String getRefreshId() {
+        return refreshId;
+    }
+
+    /**
+     * Setter for the component refresh id
+     *
+     * @param refreshId
+     */
+    public void setRefreshId(String refreshId) {
+        this.refreshId = refreshId;
+    }
+
+    /**
+     * Property name for the {@link org.kuali.rice.krad.uif.field.DataField} that should be refreshed after the action
+     * completes
+     *
+     * <p>
+     * Either refresh id or refresh property name can be set to configure the component that should
+     * be refreshed after the action completes. If both are blank, the page will be refreshed
+     * </p>
+     *
+     * <p>
+     * Property name will be adjusted to use the default binding path unless it contains the form prefix
+     * </p>
+     *
+     * @return String valid property name with an associated DataField
+     * @see org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX
+     */
+    @BeanTagAttribute(name = "refreshPropertyName")
+    public String getRefreshPropertyName() {
+        return refreshPropertyName;
+    }
+
+    /**
+     * Setter for the property name of the DataField that should be refreshed
+     *
+     * @param refreshPropertyName
+     */
+    public void setRefreshPropertyName(String refreshPropertyName) {
+        this.refreshPropertyName = refreshPropertyName;
+    }
+
+    /**
+     * Gets the loading message used by action's blockUI
+     *
+     * @returns String if String is not null, used in place of loading message
+     */
+    @BeanTagAttribute(name = "loadingMessageText")
+    public String getLoadingMessageText() {
+        return loadingMessageText;
+    }
+
+    /**
+     * When this property is set, it is used in place of the loading message text used by the blockUI
+     *
+     * @param loadingMessageText
+     */
+    public void setLoadingMessageText(String loadingMessageText) {
+        this.loadingMessageText = loadingMessageText;
+    }
+
+    /**
+     * Indicates whether blocking for the action should be disabled
+     *
+     * <p>
+     * By default when an action is invoked part of the page or the entire window is blocked until
+     * the action completes. If this property is set to true the blocking will not be displayed.
+     * </p>
+     *
+     * <p>
+     * Currently if an action returns a file download, this property should be set to true. If not, the blocking
+     * will never get unblocked (because the page does not get notification a file was downloaded)
+     * </p>
+     *
+     * @return boolean true if blocking should be disabled, false if not
+     */
+    @BeanTagAttribute(name = "disableBlocking")
+    public boolean isDisableBlocking() {
+        return disableBlocking;
+    }
+
+    /**
+     * Setter for disabling blocking when the action is invoked
+     *
+     * @param disableBlocking
+     */
+    public void setDisableBlocking(boolean disableBlocking) {
+        this.disableBlocking = disableBlocking;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that a label or image ui is presence
+        if (getActionLabel() == null && getActionImage() == null) {
+            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
+            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
+        }
+
+        // Checks that an action is set
+        if (getJumpToIdAfterSubmit() != null && getJumpToNameAfterSubmit() != null) {
+            String currentValues[] = {"jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit(),
+                    "jumpToNameAfterSubmit =" + getJumpToNameAfterSubmit()};
+            tracer.createWarning("Only 1 jumpTo property should be set", currentValues);
+        }
+        super.completeValidation(tracer.getCopy());
+    }
+
+    /**
+     * Evaluate the disable condition on controls which disable it on each key up event
+     *
+     * @return true if evaluate on key up, false otherwise
+     */
+    @BeanTagAttribute(name = "evaluateDisabledOnKeyUp")
+    public boolean isEvaluateDisabledOnKeyUp() {
+        return evaluateDisabledOnKeyUp;
+    }
+
+    /**
+     * Set evaluateDisableOnKeyUp
+     *
+     * @param evaluateDisabledOnKeyUp
+     */
+    public void setEvaluateDisabledOnKeyUp(boolean evaluateDisabledOnKeyUp) {
+        this.evaluateDisabledOnKeyUp = evaluateDisabledOnKeyUp;
+    }
+
+    /**
+     * Get the disable condition js derived from the springEL, cannot be set.
+     *
+     * @return the disableConditionJs javascript to be evaluated
+     */
+    public String getDisabledConditionJs() {
+        return disabledConditionJs;
+    }
+
+    /**
+     * Control names to add handlers to for disable functionality, cannot be set
+     *
+     * @return control names to add handlers to for disable
+     */
+    public List<String> getDisabledConditionControlNames() {
+        return disabledConditionControlNames;
+    }
+
+    /**
+     * Gets the property names of fields that when changed, will disable this component
+     *
+     * @return the property names to monitor for change to disable this component
+     */
+    @BeanTagAttribute(name = "disabledWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getDisabledWhenChangedPropertyNames() {
+        return disabledWhenChangedPropertyNames;
+    }
+
+    /**
+     * Sets the property names of fields that when changed, will disable this component
+     *
+     * @param disabledWhenChangedPropertyNames
+     */
+    public void setDisabledWhenChangedPropertyNames(List<String> disabledWhenChangedPropertyNames) {
+        this.disabledWhenChangedPropertyNames = disabledWhenChangedPropertyNames;
+    }
+
+    /**
+     * Gets the property names of fields that when changed, will enable this component
+     *
+     * @return the property names to monitor for change to enable this component
+     */
+    @BeanTagAttribute(name = "enabledWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getEnabledWhenChangedPropertyNames() {
+        return enabledWhenChangedPropertyNames;
+    }
+
+    /**
+     * Sets the property names of fields that when changed, will enable this component
+     *
+     * @param enabledWhenChangedPropertyNames
+     */
+    public void setEnabledWhenChangedPropertyNames(List<String> enabledWhenChangedPropertyNames) {
+        this.enabledWhenChangedPropertyNames = enabledWhenChangedPropertyNames;
     }
 }

@@ -29,6 +29,8 @@ import static org.junit.Assert.*;
 
 /**
  * MessageMapTest tests the MessageMap methods
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageMapTest {
 
@@ -84,7 +86,7 @@ public class MessageMapTest {
     }
 
     /**
-     * Test the error path is being prepended.
+     * Test error prepending and lack thereof.
      */
     @Test public void testErrorPath() {
     	MessageMap testMap = new MessageMap();
@@ -101,9 +103,18 @@ public class MessageMapTest {
         assertTrue(testMap.getKeyPath("accountNbr", true).equals("document.newAccountingLine.accountNbr"));
         assertTrue(testMap.getKeyPath("accountNbr", false).equals("accountNbr"));
 
+        // Verify that with putError, the error path is prepended to the propertyName
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_INACTIVE);
         assertEquals(1, testMap.countFieldMessages("document.newAccountingLine.accountNbr"));
         assertTrue(testMap.fieldHasMessage("document.newAccountingLine.accountNbr", RiceKeyConstants.ERROR_INACTIVE));
+
+        testMap.removeAllErrorMessagesForProperty("document.newAccountingLine.accountNbr");
+
+        // Verify that with putErrorWithoutFullErrorPath, nothing is prepended to the propertyName
+        testMap.putErrorWithoutFullErrorPath("accountNbr", RiceKeyConstants.ERROR_INACTIVE);
+        assertEquals(1, testMap.countFieldMessages("accountNbr"));
+        assertTrue(testMap.fieldHasMessage("accountNbr", RiceKeyConstants.ERROR_INACTIVE));
+        assertFalse(testMap.fieldHasMessage("document.newAccountingLine.accountNbr", RiceKeyConstants.ERROR_INACTIVE));
 
         // global key should not be prepended with key path
         assertTrue(testMap.getKeyPath(KRADConstants.GLOBAL_ERRORS, true).equals(KRADConstants.GLOBAL_ERRORS));
@@ -113,6 +124,7 @@ public class MessageMapTest {
         assertTrue(testMap.getKeyPath("accountNbr", true).equals("document.accountNbr"));
         testMap.removeFromErrorPath("document");
         assertTrue(testMap.getKeyPath("accountNbr", true).equals("accountNbr"));
+
     }
 
     /**

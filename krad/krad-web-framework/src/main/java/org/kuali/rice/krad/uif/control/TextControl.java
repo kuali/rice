@@ -16,9 +16,12 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.DatePicker;
 
 import java.util.List;
@@ -26,35 +29,41 @@ import java.util.List;
 /**
  * Represents a HTML Text control, generally rendered as a input field of type
  * 'text'. This can display and receive a single value
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "textControl", parent = "Uif-TextControl"),
+        @BeanTag(name = "smallTextControl", parent = "Uif-SmallTextControl"),
+        @BeanTag(name = "mediumTextControl", parent = "Uif-MediumTextControl"),
+        @BeanTag(name = "largeTextControl", parent = "Uif-LargeTextControl"),
+        @BeanTag(name = "currencyTextControl", parent = "Uif-CurrencyTextControl"),
+        @BeanTag(name = "dateControl", parent = "Uif-DateControl")})
 public class TextControl extends ControlBase implements SizedControl {
-	private static final long serialVersionUID = -8267606288443759880L;
+    private static final long serialVersionUID = -8267606288443759880L;
 
-	private int size;
+    private int size;
     private Integer maxLength;
     private Integer minLength;
 
-	private DatePicker datePicker;
-	private String watermarkText = StringUtils.EMPTY;
-	private boolean textExpand;
-	
-	public TextControl() {
-		super();
-	}
+    private DatePicker datePicker;
+    private String watermarkText = StringUtils.EMPTY;
+    private boolean textExpand;
 
-	/**
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-	 */
-	@Override
-	public List<Component> getComponentsForLifecycle() {
-		List<Component> components = super.getComponentsForLifecycle();
+    public TextControl() {
+        super();
+    }
 
-		components.add(datePicker);
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
 
-		return components;
-	}
+        components.add(datePicker);
+
+        return components;
+    }
 
     /**
      * The following actions are performed:
@@ -83,11 +92,12 @@ public class TextControl extends ControlBase implements SizedControl {
     }
 
     /**
-	 * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
-	 */
-	public int getSize() {
-		return this.size;
-	}
+     * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
+     */
+    @BeanTagAttribute(name = "size")
+    public int getSize() {
+        return this.size;
+    }
 
     /**
      * @see org.kuali.rice.krad.uif.control.SizedControl#setSize(int)
@@ -103,6 +113,7 @@ public class TextControl extends ControlBase implements SizedControl {
      *
      * @return int max number of characters
      */
+    @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
         return maxLength;
     }
@@ -123,6 +134,7 @@ public class TextControl extends ControlBase implements SizedControl {
      *
      * @return int max number of characters
      */
+    @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {
         return minLength;
     }
@@ -137,26 +149,27 @@ public class TextControl extends ControlBase implements SizedControl {
     }
 
     /**
-	 * Renders a calendar that can be used to select a date value for the text
-	 * control. The <code>Calendar</code> instance contains configuration such
-	 * as the date format string
-	 * 
-	 * @return Calendar
-	 */
-	public DatePicker getDatePicker() {
-		return this.datePicker;
-	}
+     * Renders a calendar that can be used to select a date value for the text
+     * control. The <code>Calendar</code> instance contains configuration such
+     * as the date format string
+     *
+     * @return Calendar
+     */
+    @BeanTagAttribute(name = "datePicker", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public DatePicker getDatePicker() {
+        return this.datePicker;
+    }
 
     /**
      * Setter for the date picker
      *
      * @param datePicker
      */
-	public void setDatePicker(DatePicker datePicker) {
-		this.datePicker = datePicker;
-	}
+    public void setDatePicker(DatePicker datePicker) {
+        this.datePicker = datePicker;
+    }
 
-	/**
+    /**
      * Gets the watermark text for this TextControl.
      *
      * <p>
@@ -164,26 +177,27 @@ public class TextControl extends ControlBase implements SizedControl {
      * element is empty and does not have focus. This provides a hint to the user as to what the input
      * is used for, or the type of input that is required.
      * </p>
-	 *
+     *
      * @return the watermarkText
-	 */
-	public String getWatermarkText() {
-		return this.watermarkText;
-	}
+     */
+    @BeanTagAttribute(name = "watermarkText")
+    public String getWatermarkText() {
+        return this.watermarkText;
+    }
 
-	/**
+    /**
      * Sets the watermark text for this TextControl
      *
-	 * @param watermarkText the watermarkText to set
-	 */
-	public void setWatermarkText(String watermarkText) {
-		//to avoid users from putting in the same value as the watermark adding some spaces here
-		//see watermark troubleshooting for more info
-		if (StringUtils.isNotEmpty(watermarkText)) {
-			watermarkText = watermarkText + "   ";
-		}
-		this.watermarkText = watermarkText;
-	}
+     * @param watermarkText the watermarkText to set
+     */
+    public void setWatermarkText(String watermarkText) {
+        //to avoid users from putting in the same value as the watermark adding some spaces here
+        //see watermark troubleshooting for more info
+        if (StringUtils.isNotEmpty(watermarkText)) {
+            watermarkText = watermarkText + "   ";
+        }
+        this.watermarkText = watermarkText;
+    }
 
     /**
      * If set to true, this control will have a button which can be clicked to expand the text area through
@@ -191,6 +205,7 @@ public class TextControl extends ControlBase implements SizedControl {
      *
      * @return the textExpand
      */
+    @BeanTagAttribute(name = "textExpand")
     public boolean isTextExpand() {
         return this.textExpand;
     }
@@ -203,6 +218,5 @@ public class TextControl extends ControlBase implements SizedControl {
     public void setTextExpand(boolean textExpand) {
         this.textExpand = textExpand;
     }
-	
-	
+
 }

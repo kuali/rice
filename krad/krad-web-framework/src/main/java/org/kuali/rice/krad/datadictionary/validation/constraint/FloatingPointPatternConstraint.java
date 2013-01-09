@@ -15,18 +15,21 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Validation pattern for matching floating point numbers, optionally matching negative numbers
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "floatingPointPatternConstraint", parent = "FloatingPointPatternConstraint")
 public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatternConstraint {
 
     protected boolean allowNegative;
@@ -49,6 +52,7 @@ public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatte
     /**
      * @return the allowNegative
      */
+    @BeanTagAttribute(name = "allowNegative")
     public boolean isAllowNegative() {
         return this.allowNegative;
     }
@@ -62,7 +66,7 @@ public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatte
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
     @Override
@@ -71,12 +75,11 @@ public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatte
             validationMessageParams = new ArrayList<String>();
             ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
             if (allowNegative) {
-                validationMessageParams.add(configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
-                                + "positiveOrNegative"));
+                validationMessageParams.add(configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegative"));
             } else {
-                validationMessageParams.add(configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
+                validationMessageParams.add(configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
             }
         }
         return validationMessageParams;

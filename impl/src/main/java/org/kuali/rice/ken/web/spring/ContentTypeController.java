@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.kuali.rice.ken.service.NotificationService;
@@ -95,7 +95,7 @@ public class ContentTypeController extends MultiActionController {
 
       view = "ContentTypeManager";
       
-      Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
+      Collection<NotificationContentTypeBo> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("contentTypes", contentTypes);
       return new ModelAndView(view, model);
@@ -112,14 +112,14 @@ public class ContentTypeController extends MultiActionController {
    public ModelAndView displayContentTypeForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
       view = "ContentTypeForm";
-      NotificationContentType notificationContentType;
+      NotificationContentTypeBo notificationContentType;
       String actionrequested; 
       String name = request.getParameter("name");
       LOG.debug("name param: "+name);
  
       if (name == null) {
 	 actionrequested = new String("add");
-         notificationContentType = new NotificationContentType();
+         notificationContentType = new NotificationContentTypeBo();
       } else {
 	  actionrequested = new String("update"); 
 	 notificationContentType = this.notificationContentTypeService.getNotificationContentType(name);
@@ -155,7 +155,7 @@ public class ContentTypeController extends MultiActionController {
        LOG.debug("xsd: "+xsd);
        LOG.debug("xsl: "+xsl);
        
-       NotificationContentType notificationContentType = new NotificationContentType();
+       NotificationContentTypeBo notificationContentType = new NotificationContentTypeBo();
        notificationContentType.setName(name);
        notificationContentType.setDescription(description);
        notificationContentType.setNamespace(namespace);
@@ -164,7 +164,7 @@ public class ContentTypeController extends MultiActionController {
        
        this.notificationContentTypeService.saveNotificationContentType(notificationContentType);
        
-       Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
+       Collection<NotificationContentTypeBo> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
        Map<String, Object> model = new HashMap<String, Object>();
        model.put("contentTypes", contentTypes);            
        return new ModelAndView(view, model);     
@@ -194,7 +194,7 @@ public class ContentTypeController extends MultiActionController {
        LOG.debug("xsd: "+xsd);
        LOG.debug("xsl: "+xsl);
        
-       NotificationContentType notificationContentType = this.notificationContentTypeService.getNotificationContentType(name);
+       NotificationContentTypeBo notificationContentType = this.notificationContentTypeService.getNotificationContentType(name);
         
        notificationContentType.setName(name);
        notificationContentType.setDescription(description);
@@ -206,7 +206,7 @@ public class ContentTypeController extends MultiActionController {
        
        
        // get updated content type collection
-       Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
+       Collection<NotificationContentTypeBo> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
        Map<String, Object> model = new HashMap<String, Object>();
        model.put("contentTypes", contentTypes);
        return new ModelAndView(view, model);     

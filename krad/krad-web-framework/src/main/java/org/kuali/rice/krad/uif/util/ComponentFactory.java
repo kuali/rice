@@ -87,6 +87,8 @@ import java.util.Map;
  */
 public class ComponentFactory {
 
+    private static Log LOG = LogFactory.getLog(ComponentFactory.class);
+
     protected static final String TEXT_CONTROL = "Uif-TextControl";
     protected static final String CHECKBOX_CONTROL = "Uif-CheckboxControl";
     protected static final String HIDDEN_CONTROL = "Uif-HiddenControl";
@@ -115,13 +117,16 @@ public class ComponentFactory {
     protected static final String LABEL = "Uif-Label";
     protected static final String MESSAGE = "Uif-Message";
     protected static final String MESSAGE_FIELD = "Uif-MessageField";
+    protected static final String COLLECTION_GROUPING_FIELD = "Uif-ColGroupingField";
     protected static final String FIELD_GROUP = "Uif-VerticalFieldGroup";
     protected static final String HORIZONTAL_FIELD_GROUP = "Uif-HorizontalFieldGroup";
 
-    protected static final String GROUP = "Uif-BoxSection";
+    protected static final String GROUP = "Uif-GroupBase";
+    protected static final String VERTICAL_BOX_GROUP = "Uif-VerticalBoxGroup";
+    protected static final String HORIZONTAL_BOX_GROUP = "Uif-HorizontalBoxGroup";
     protected static final String PAGE_GROUP = "Uif-Page";
     protected static final String GROUP_GRID_LAYOUT = "Uif-GridSection";
-    protected static final String GROUP_BODY_ONLY = "Uif-BoxGroup";
+    protected static final String GROUP_BODY_ONLY = "Uif-BoxGroupBase";
     protected static final String GROUP_GRID_BODY_ONLY = "Uif-GridGroup";
     protected static final String TAB_GROUP = "Uif-TabSection";
     protected static final String NAVIGATION_GROUP = "Uif-NavigationGroupBase";
@@ -138,8 +143,10 @@ public class ComponentFactory {
     protected static final String CONSTRAINT_MESSAGE = "Uif-ConstraintMessage";
     protected static final String INSTRUCTIONAL_MESSAGE = "Uif-InstructionalMessage";
     protected static final String HELP_ACTION = "Uif-HelpAction";
+    protected static final String IMAGE_CAPTION_HEADER = "Uif-ImageCaptionHeader";
+    protected static final String IMAGE_CUTLINE_MESSAGE = "Uif-ImageCutineMessage";
 
-    private static Log LOG = LogFactory.getLog(ComponentFactory.class);
+    private static Map<String, Component> cache = new HashMap<String, Component>();
 
     /**
      * Gets a fresh copy of the component by the id passed in which used to look up the component in
@@ -153,7 +160,7 @@ public class ComponentFactory {
         Component origComponent = view.getViewIndex().getComponentById(id);
 
         if (origComponent == null) {
-            throw new RuntimeException(id + " not found in view index try setting p:persistInSession=\"true\" in xml");
+            throw new RuntimeException(id + " not found in view index try setting p:forceSessionPersistence=\"true\" in xml");
         }
 
         if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getBaseId())) {
@@ -182,14 +189,23 @@ public class ComponentFactory {
      * @return new component instance or null if no such component definition was found
      */
     public static Component getNewComponentInstance(String beanId) {
-        Component component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(beanId);
+        Component component = null;
+        if (cache.containsKey(beanId)) {
+            component = ComponentUtils.copy(cache.get(beanId));
+        } else {
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(beanId);
 
-        // clear id before returning so duplicates do not occur
-        component.setId(null);
-        component.setBaseId(null);
+            // clear id before returning so duplicates do not occur
+            component.setId(null);
+            component.setBaseId(null);
 
-        // populate property expressions from expression graph
-        ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
+            // populate property expressions from expression graph
+            ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
+
+            // add to cache
+            // TODO: is this copy needed here? A copy is done when a request is made
+            cache.put(beanId, ComponentUtils.copy(component));
+        }
 
         return component;
     }
@@ -825,6 +841,15 @@ public class ComponentFactory {
     }
 
     /**
+     * Gets the collection grouping field
+     *
+     * @return MessageField message field
+     */
+    public static MessageField getColGroupingField() {
+        return (MessageField) getNewComponentInstance(COLLECTION_GROUPING_FIELD);
+    }
+
+    /**
      * Gets the field group
      *
      * @return FieldGroup field group
@@ -849,6 +874,24 @@ public class ComponentFactory {
      */
     public static Group getGroup() {
         return (Group) getNewComponentInstance(GROUP);
+    }
+
+    /**
+     * Gets the vertical box group
+     *
+     * @return Group group
+     */
+    public static Group getVerticalBoxGroup() {
+        return (Group) getNewComponentInstance(VERTICAL_BOX_GROUP);
+    }
+
+    /**
+     * Gets the horizontal box group
+     *
+     * @return Group group
+     */
+    public static Group getHorizontalBoxGroup() {
+        return (Group) getNewComponentInstance(HORIZONTAL_BOX_GROUP);
     }
 
     /**
@@ -1004,4 +1047,21 @@ public class ComponentFactory {
         return (Message) getNewComponentInstance(INSTRUCTIONAL_MESSAGE);
     }
 
+    /**
+     * Gets the default image caption header configuration
+     *
+     * @return Header component for image caption headers
+     */
+    public static Header getImageCaptionHeader() {
+        return (Header) getNewComponentInstance(IMAGE_CAPTION_HEADER);
+    }
+
+    /**
+     * Gets the default image cutline message configuration
+     *
+     * @return Message component for image cutlines messages
+     */
+    public static Message getImageCutlineMessage() {
+        return (Message) getNewComponentInstance(IMAGE_CUTLINE_MESSAGE);
+    }
 }

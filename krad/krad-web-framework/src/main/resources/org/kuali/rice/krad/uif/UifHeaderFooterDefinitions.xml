@@ -44,7 +44,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-HeaderUpperGroup" parent="Uif-HorizontalBoxGroup">
+  <bean id="Uif-HeaderUpperGroup" parent="Uif-HeaderUpperGroup-parentBean"/>
+  <bean id="Uif-HeaderUpperGroup-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-upperHeaderGroup</value>
@@ -52,7 +53,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-HeaderRightGroup" parent="Uif-HorizontalBoxGroup">
+  <bean id="Uif-HeaderRightGroup" parent="Uif-HeaderRightGroup-parentBean"/>
+  <bean id="Uif-HeaderRightGroup-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-rightHeaderGroup</value>
@@ -60,7 +62,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-HeaderLowerGroup" parent="Uif-HorizontalBoxGroup">
+  <bean id="Uif-HeaderLowerGroup" parent="Uif-HeaderLowerGroup-parentBean"/>
+  <bean id="Uif-HeaderLowerGroup-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-lowerHeaderGroup</value>
@@ -112,6 +115,7 @@
     <property name="cssClasses">
       <list merge="true">
         <value>uif-pageHeader</value>
+        <value>clearfix</value>
       </list>
     </property>
   </bean>
@@ -172,42 +176,9 @@
   <bean id="Uif-FormFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save" p:performClientSideValidation="true"/>
-        <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="Cancel"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-DocumentPageFooter" parent="Uif-FooterBase">
-    <property name="items">
-      <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="performRouteReport" p:actionLabel="route report"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="sendAdHocRequests" p:actionLabel="send adhoc"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="submit" p:performClientSideValidation="true"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="save" p:performClientSideValidation="true"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="reload" p:actionLabel="reload"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="blanketApprove" p:actionLabel="blanket approve" p:performClientSideValidation="true"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="approve" p:actionLabel="approve"  p:performClientSideValidation="true"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_APPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="disapprove" p:actionLabel="disapprove"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_DISAPPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="fyi" p:actionLabel="fyi"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_FYI]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="acknowledge" p:actionLabel="acknowledge"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ACKNOWLEDGE]}"/>
-        <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="close"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CLOSE]}"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="cancel"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="copy" p:actionLabel="copy"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>
+        <bean parent="Uif-SaveAction"/>
+        <bean parent="Uif-CloseAction"/>
+        <bean parent="Uif-CancelAction"/>
       </list>
     </property>
   </bean>

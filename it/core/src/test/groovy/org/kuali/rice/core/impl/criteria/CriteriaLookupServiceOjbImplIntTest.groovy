@@ -29,6 +29,7 @@ import org.kuali.rice.test.data.UnitTestData
 import org.kuali.rice.test.data.UnitTestSql
 import static org.junit.Assert.*
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*
+import org.kuali.rice.core.api.criteria.CriteriaLookupService
 
 @PerSuiteUnitTestData(value = [@UnitTestData(sqlStatements = [
   @UnitTestSql("INSERT INTO KRCR_NMSPC_T(NMSPC_CD, OBJ_ID, VER_NBR, NM, ACTV_IND, APPL_ID) VALUES('FOO-NS', '53680C68F595AD9BE0404F8189D80A6B', 1, 'FOO System', 'Y', 'FOO-KUALI')"),
@@ -46,11 +47,13 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*
 ])])
 class CriteriaLookupServiceOjbImplIntTest extends CORETestCase {
 
-    def lookup;
+    CriteriaLookupService lookup;
 
+    @Override
     @Before
-    void initLookup() {
-        lookup = GlobalResourceLoader.getService("criteriaLookupService");
+    public void setUp() throws Exception {
+        super.setUp()
+        lookup = GlobalResourceLoader.getService("criteriaLookupService")
     }
 
     @Test

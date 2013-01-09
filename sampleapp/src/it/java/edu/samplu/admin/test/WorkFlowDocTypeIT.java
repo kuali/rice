@@ -18,26 +18,19 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests creating and cancelling new and edit Document Type maintenance screens 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowDocTypeIT {
-    private Selenium selenium;
-    
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class WorkFlowDocTypeIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
     }
 
     @Test
@@ -45,26 +38,18 @@ public class WorkFlowDocTypeIT {
      * tests that a new Document Type maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Document Type");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Administration");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Document Type");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClick("//img[@alt='create new']");
+        waitAndClick("methodToCall.cancel");
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
     }
     
     @Test
@@ -72,34 +57,39 @@ public class WorkFlowDocTypeIT {
      * tests that a Document Type maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditDocType() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Document Type");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
-    }
-
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Administration");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        waitAndClick("link=Document Type");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClick("link=edit");
+        waitAndClick("methodToCall.cancel");
+        waitAndClick("methodToCall.processAnswer.button0");
     }
     
+    //Test to validate the requirement of Document Type Label field while submitting a document.
+    @Test
+    public void testCreateDocType() throws Exception {
+        waitAndClick("link=Administration");
+        waitForPageToLoad();
+        waitAndClick("link=Document Type");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClick("css=img[alt=\"create new\"]");
+        waitAndType("id=document.documentHeader.documentDescription", "Document Type description");
+        waitAndType("id=document.newMaintainableObject.name", "DocType Name");
+        waitAndClick("name=methodToCall.route");
+        waitForPageToLoad();
+        assertTrue(isTextPresent("Document Type Label is required."));
+        waitAndClick("name=methodToCall.cancel");
+        waitAndClick("name=methodToCall.processAnswer.button0");
+        waitForPageToLoad();
+        selectWindow("null");
+        waitAndClick("xpath=(//input[@name='imageField'])[2]");
+    }
 }

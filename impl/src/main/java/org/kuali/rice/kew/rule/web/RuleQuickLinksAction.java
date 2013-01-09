@@ -49,6 +49,8 @@ import org.kuali.rice.krad.util.KRADConstants;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -112,9 +114,9 @@ public class RuleQuickLinksAction extends KewKualiAction {
 
     public ActionForward addDelegationRule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionForward result = null;
-    	
-    	String ruleTemplateId = request.getParameter("delegationRuleBaseValues.ruleTemplate.ruleTemplateId");
-        String docTypeName = request.getParameter("delegationRuleBaseValues.documentType.name");
+
+        String ruleTemplateId = request.getParameter("delegationRule.ruleTemplate.id");
+        String docTypeName = request.getParameter("delegationRule.documentType.name");
         List rules = getRuleService().search(docTypeName, null, ruleTemplateId, "", null, null, Boolean.FALSE, Boolean.TRUE, new HashMap(), null);
         
         if (rules.size() == 1) {
@@ -168,9 +170,19 @@ public class RuleQuickLinksAction extends KewKualiAction {
 						flattenedNodes.add( new RouteNodeForDisplay( routeNode ) );
 					}
 				}
+                Collections.sort(flattenedNodes,new Comparator() {
+                    public int compare(Object o1, Object o2) {
+                        return ( ((RouteNode)o1).getRouteNodeName().compareTo(((RouteNode)o2).getRouteNodeName()));
+                    }
+                });
 				for ( Iterator<DocumentType> iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext(); ) {
 					childrenDocumentTypes.add( new DocumentTypeQuickLinksStructure( iter.next() ) );
 				}
+                Collections.sort(childrenDocumentTypes,new Comparator() {
+                    public int compare(Object o1, Object o2) {
+                         return ( ((DocumentTypeQuickLinksStructure)o1).documentType.getLabel().compareTo(((DocumentTypeQuickLinksStructure)o2).documentType.getLabel()));
+                    }
+                });
 			}
 		}
 

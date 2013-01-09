@@ -119,17 +119,17 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         return removeOutBoxItems(results);
     }
 
-    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName) {
+    public Collection<OutboxItemActionListExtension> getOutboxItemsByDocumentType(String documentTypeName) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("docName", documentTypeName);
         List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-        Iterator<ActionItem> iterator = results.iterator();
-        while (iterator.hasNext()) {
-            if (!(iterator.next() instanceof OutboxItemActionListExtension)) {
-                iterator.remove();
+        List<OutboxItemActionListExtension> finalResults = new ArrayList<OutboxItemActionListExtension>();
+        for (ActionItem actionItem : results) {
+            if (actionItem instanceof OutboxItemActionListExtension) {
+                finalResults.add((OutboxItemActionListExtension)actionItem);
             }
         }
-        return results;
+        return finalResults;
     }
     
     public Collection<ActionItem> findByDocumentId(String documentId) {

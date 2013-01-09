@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright 2005-2012 The Kuali Foundation
@@ -16,572 +16,754 @@
     limitations under the License.
 
 -->
-<chapter xml:id="TRG_KIM" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
-    <title>KIM</title>
-    <sect1>
-        <title>Terminology</title>
-        <sect2>
-            <title>Principal</title>
-            <para>A principal represents an entity that can authenticate. In essence, you can think
-                of a principal as an "account" or as an entity's authentication credentials. A
-                principal has an ID that is used to uniquely identify it. It also has a name that
-                represents the principal's username and is typically what is entered when
-                authenticating. All principals are associated with one and only one entity.</para>
-        </sect2>
-        <sect2>
-            <title>Entity</title>
-            <para>An entity represents a person or system. Additionally, other "types" of entities
-                can be defined in KIM. Information like name, phone number, etc. is associated with
-                an entity. While an entity will typically have a single principal associated with
-                it, it is possible for an entity to have more than one principal or even no
-                principals at all (in the case where the entity does not actually
-                authenticate).</para>
-            <para>Entities have numerous attributes associated with them, including:<itemizedlist>
-                    <listitem>
-                        <para>Names </para>
-                    </listitem>
-                    <listitem>
-                        <para>Addresses </para>
-                    </listitem>
-                    <listitem>
-                        <para>Phone Numbers </para>
-                    </listitem>
-                    <listitem>
-                        <para>Email Addresses </para>
-                    </listitem>
-                    <listitem>
-                        <para>Entity Type </para>
-                    </listitem>
-                    <listitem>
-                        <para>Affiliations </para>
-                    </listitem>
-                    <listitem>
-                        <para>Employment Information </para>
-                    </listitem>
-                    <listitem>
-                        <para>External Identifiers </para>
-                    </listitem>
-                    <listitem>
-                        <para>Privacy Preferences </para>
-                    </listitem>
-                </itemizedlist></para>
-        </sect2>
-        <sect2>
-            <title>Group</title>
-            <para>A group is a collection of principals. You can create a group using both direct
-                principal assignment and nested group membership. All groups are uniquely identified
-                by a namespace code plus a name. A principal or group is a "member" of a group if it
-                is either directly assigned to the group or indirectly assigned (through a nested
-                group membership). A principal or group is a "direct" member of another group only
-                if it is directly assigned as a member of the group, and not through a nested group
-                assignment.</para>
-        </sect2>
-        <sect2>
-            <title>Permission</title>
-            <para>A permission is the ability to perform an action. All permissions have a
-                permission template. Both permissions and permission templates are uniquely
-                identified by a namespace code plus a name. The permission template defines the
-                coarse-grained permission and specifies what additional permission details need to
-                be collected on permissions that use that template. For example, a permission
-                template might have a name of "Initiate Document," which requires a permission
-                detail specifying the document type that can be initiated. A permission created from
-                the "Initiate Document" template would define the name of the specific Document Type
-                that can be initiated as a permission detail.</para>
-            <para>The <emphasis role="bold">isAuthorized</emphasis> and <emphasis role="bold"
-                    >isAuthorizedByTemplateName</emphasis> operations on the <emphasis role="bold"
-                    >PermissionService</emphasis> are used to execute authorization checks
-                for a principal against a permission. Permissions are always assigned to roles
-                (never directly to a principal or group). A particular principal will be authorized
-                for a given permission if the principal is assigned to a role that has been granted
-                the permission.</para>
-        </sect2>
-        <sect2>
-            <title>Responsibility</title>
-            <para>A responsibility represents an action that a principal is requested to take. This
-                is used for defining workflow actions (such as approve, acknowledge, FYI) for which
-                the principal is responsible. Responsibilities form the basis of the workflow engine
-                routing process.</para>
-            <para>A responsibility is very similar to a permission in a couple of ways. First,
-                responsibilities are always granted to a role, never assigned directly to a
-                principal or group. Furthermore, similar to permissions, a role has a responsibility
-                template. The responsibility template specifies what additional responsibility
-                details need to be defined when the responsibility is created.</para>
-        </sect2>
-        <sect2>
-            <title>Role</title>
-            <para>You grant permissions and responsibilities to roles. Roles have a membership
-                consisting of principals, groups, and/or other roles. As a member of a role, the
-                associated principal has all permissions and responsibilities that have been granted
-                to that role.</para>
-            <para>You can specify a qualification to any membership assignment on the role, which is
-                extra information about that particular member of the role. For example, a person
-                may have the role of "Dean" but that can be further qualified by the school they are
-                the dean of, such as "Computer Science." You can pass qualifications as part of
-                authorization checks to restrict the subset of roles to check.</para>
-        </sect2>
-        <sect2>
-            <title>Reference Information</title>
-            <para>There are several collections of reference information managed within KIM:<itemizedlist>
-                    <listitem>
-                        <para>Address type </para>
-                    </listitem>
-                    <listitem>
-                        <para>Affiliation type </para>
-                    </listitem>
-                    <listitem>
-                        <para>Citizenship status </para>
-                    </listitem>
-                    <listitem>
-                        <para>Email type </para>
-                    </listitem>
-                    <listitem>
-                        <para>Employment status </para>
-                    </listitem>
-                    <listitem>
-                        <para>Employment type </para>
-                    </listitem>
-                    <listitem>
-                        <para>Entity name type </para>
-                    </listitem>
-                    <listitem>
-                        <para>Entity type </para>
-                    </listitem>
-                    <listitem>
-                        <para>External identifier type </para>
-                    </listitem>
-                    <listitem>
-                        <para>Phone number type </para>
-                    </listitem>
-                </itemizedlist></para>
-            <sect3>
-                <title>Configuration Parameters</title>
-                <table frame="none">
-                    <title>KIM Configuration Parameters</title>
-                    <tgroup cols="3">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
-                        <thead>
-                            <row>
-                                <entry>Configuration Parameter</entry>
-                                <entry>Description</entry>
-                                <entry>Default value</entry>
-                            </row>
-                        </thead>
-                        <tbody>
-                          <row>
-                                <entry>kim.mode</entry>
-                                <entry>The mode that KIM will run in; choices are "local",
-                                    "embedded", or "remote".</entry>
-                                <entry>local</entry>
-                            </row>
-                            <row>
-                                <entry>kim.soapExposedService.jaxws.security</entry>
-                                <entry>Determines if KIM services published on the service bus will
-                                    be secured</entry>
-                                <entry>true</entry>
-                            </row>
-                            <row>
-                                <entry>kim.url</entry>
-                                <entry>The base URL of KIM services and pages.</entry>
-                                <entry>${application.url}/kim</entry>
-                            </row>
-                        </tbody>
-                    </tgroup>
-                </table>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
-        <title>Services</title>
-        <para>KIM provides 3 main service APIs with which client applications should interact. These are:<itemizedlist>
-                <listitem>
-                    <para><emphasis role="bold"
-                            >org.kuali.rice.kim.api.role.RoleManagementService</emphasis>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para><emphasis role="bold">org.kuali.rice.kim.service.PersonService</emphasis>
-                    </para>
-                </listitem>
-            </itemizedlist></para>
-        <para>These services act as client-side facades to the underlying KIM services and provide
-            important features such as caching. It is always recommended that applications invoke
-            these services instead of the individual services that they façade in order to take
-            advantage of these additional features.</para>
-        <para>In the next few sections we will look in-depth at these services. However, for more
-            details, please see the javadocs for these services and the services they delegate
-            to.</para>
-        <sect2>
-            <title>Using the Services</title>
-            <para>All KIM clients should retrieve service instances using the KIM service locator
-                class <emphasis role="bold">KimApiServiceLocator</emphasis>. This class contains static
-                methods to retrieve the appropriate Spring bean for the service. An example of
-                retrieving the <emphasis role="bold">IdentityService</emphasis> service
-                is:</para>
-            <programlisting>IdentityService idmSvc = KimApiServiceLocator.getIdentityService();</programlisting>
-            <para>You would use a similar mechanism for retrieving references to the other KIM
-                services.</para>
-        </sect2>
-        <sect2>
-            <title>IdentityManagementService</title>
-            <para>The <emphasis role="bold">IdentityManagementService</emphasis> is the service the
-                client applications will interact with most frequently. This service delegates
-                operations to these underlying KIM services:<itemizedlist>
-                    <listitem>
-                        <para><emphasis role="bold">IdentityService</emphasis>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">IdentityUpdateService</emphasis>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">GroupService</emphasis>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">GroupUpdateService</emphasis>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">PermissionService</emphasis>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">PermissionUpdateService</emphasis>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">ResponsibilityService</emphasis>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">ResponsibilityUpdateService</emphasis>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">AuthenticationService</emphasis>
-                        </para>
-                    </listitem>
-                </itemizedlist></para>
-            <para>The <emphasis role="bold">IdentityManagementService</emphasis> aggregates the
-                service methods from all it’s underlying services into a single service contract
-                which client applications interact with.</para>
-            <para>Additionally, it also provides caching on top of these services to help increase
-                the performance of service calls for the client application. To this end, the
-                identity <emphasis role="bold">IdentityManagementService</emphasis> is actually
-                deployed and resides within the client application and is not generally called over
-                a remote interface (such as a web service).</para>
-            <sect3>
-                <title>Retrieving Principal Information</title>
-                <para>To retrieve the principal ID for a user, use the <emphasis role="bold"
-                        >getPrincipalByPrincipalName</emphasis> method:</para>
-                <programlisting>KimPrincipalInfo info = idmSvc.getPrincipalByPrincipalName(principalName);</programlisting>
-                <para>Note that KIM, by default, stores principal names in lower case; the PRNCPL_NM
-                    column of KRIM_PRNCPL_T must store values in lower case. If your institution’s
-                    existing identity systems do not handle lowercase principal names, then there
-                    are three points to override that setting:</para>
-                <para>
-                    <orderedlist>
-                        <listitem>
-                            <para><emphasis role="bold"
-                                    >org.kuali.rice.kim.impl.identity.IdentityServiceImpl</emphasis>
-                                method <emphasis role="bold">getPrincipalByPrincipalName</emphasis>
-                                lowercases the principal name sent in; depending on how principals
-                                were integrated into the system it may not need to. Note that
-                                    <emphasis role="bold">IdentityServiceImpl</emphasis> method
-                                    <emphasis role="bold"
-                                    >getPrincipalByPrincipalNameAndPassword</emphasis> does not
-                                lowercase the principal name automatically.</para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold"
-                                    >org.kuali.rice.kim.lookup.PersonLookableHelperServiceImpl</emphasis>
-                                method <emphasis role="bold">getSearchResults</emphasis> also
-                                automatically lowercases any principal name sent in; that behavior
-                                may also need to be changed</para>
-                        </listitem>
-                        <listitem>
-                            <para>Finally, the file <emphasis role="bold">{Rice
-                                    home}/impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</emphasis>
-                                hold the data dictionary attribute templates for principal name as
-                                    <emphasis role="bold">KimBaseBeans-principalName</emphasis>. The
-                                    <emphasis role="bold">forceUppercase</emphasis> attribute is set
-                                to false by default, but perhaps should be overridden to true, to
-                                force uppercase principal names.</para>
-                        </listitem>
-                    </orderedlist>
-                </para>
-                <para>Once these three points have been overridden, you’ll be able to use uppercase
-                    principal names.</para>
-            </sect3>
-            <sect3>
-                <title>Retrieving Entity Default Information</title>
-                <para>To retrieve the default information for an entity, use one of the
-                getEntityDefaultInfo methods:</para>
-                <programlisting>KimEntityDefaultInfo infoByEntityId = idmSvc.getEntityDefaultInfo(entityId);
+<chapter version="5.0" xml:id="TRG_KIM" xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:ns5="http://www.w3.org/1999/xhtml"
+         xmlns:ns4="http://www.w3.org/2000/svg"
+         xmlns:ns3="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns="http://docbook.org/ns/docbook">
+  <title>KIM</title>
 
-KimEntityDefaultInfo infoByPrincipalId = idmSvc.getEntityDefaultInfoByPrincipalId(principalId);
-</programlisting>
-            </sect3>
-            <sect3>
-                <title>Retrieving Reference Information</title>
-                <para>To retrieve information about a type or status code, use the getter for that
-                    type. </para>
-                <para>Types in KIM are:<itemizedlist>
-                        <listitem>
-                            <para>Address type </para>
-                        </listitem>
-                        <listitem>
-                            <para>Affiliation type </para>
-                        </listitem>
-                        <listitem>
-                            <para>Citizenship status </para>
-                        </listitem>
-                        <listitem>
-                            <para>Email type </para>
-                        </listitem>
-                        <listitem>
-                            <para>Employment status </para>
-                        </listitem>
-                        <listitem>
-                            <para>Employment type </para>
-                        </listitem>
-                        <listitem>
-                            <para>Entity name type </para>
-                        </listitem>
-                        <listitem>
-                            <para>Entity type </para>
-                        </listitem>
-                        <listitem>
-                            <para>External identifier type </para>
-                        </listitem>
-                        <listitem>
-                            <para>Phone type </para>
-                        </listitem>
-                    </itemizedlist></para>
-                <para>For instance, to retrieve information on an address type code:</para>
-                <programlisting>AddressTypeInfo info = idmSvc.getAddressType(code);</programlisting>
-            </sect3>
-            <sect3>
-                <title>Retrieving Group Membership Information</title>
-                <para>To retrieve a list of all groups in which a particular user is a member, use
-                    the <emphasis role="bold">getGroupsForPrincipal</emphasis> method:</para>
-                <programlisting>List&lt;GroupInfo> groups = idmSvc.getGroupsForPrincipal(principalId);</programlisting>
-                <para>To determine if a user is a member of a particular group, use the <emphasis
-                        role="bold">isMemberOfGroup</emphasis> method:</para>
-                <programlisting>if (idmSvc.isMemberOfGroup(principalId, groupId)) {
+  <sect1>
+    <title>Terminology</title>
+
+    <sect2>
+      <title>Principal</title>
+
+      <para>A principal represents an entity that can authenticate. In
+      essence, you can think of a principal as an "account" or as an entity's
+      authentication credentials. A principal has an ID that is used to
+      uniquely identify it. It also has a name that represents the principal's
+      username and is typically what is entered when authenticating. All
+      principals are associated with one and only one entity.</para>
+    </sect2>
+
+    <sect2>
+      <title>Entity</title>
+
+      <para>An entity represents a person or system. Additionally, other
+      "types" of entities can be defined in KIM. Information like name, phone
+      number, etc. is associated with an entity. While an entity will
+      typically have a single principal associated with it, it is possible for
+      an entity to have more than one principal or even no principals at all
+      (in the case where the entity does not actually authenticate).</para>
+
+      <para>Entities have numerous attributes associated with them,
+      including:<itemizedlist>
+          <listitem>
+            <para>Names</para>
+          </listitem>
+
+          <listitem>
+            <para>Addresses</para>
+          </listitem>
+
+          <listitem>
+            <para>Phone Numbers</para>
+          </listitem>
+
+          <listitem>
+            <para>Email Addresses</para>
+          </listitem>
+
+          <listitem>
+            <para>Entity Type</para>
+          </listitem>
+
+          <listitem>
+            <para>Affiliations</para>
+          </listitem>
+
+          <listitem>
+            <para>Employment Information</para>
+          </listitem>
+
+          <listitem>
+            <para>External Identifiers</para>
+          </listitem>
+
+          <listitem>
+            <para>Privacy Preferences</para>
+          </listitem>
+        </itemizedlist></para>
+    </sect2>
+
+    <sect2>
+      <title>Group</title>
+
+      <para>A group is a collection of principals. You can create a group
+      using both direct principal assignment and nested group membership. All
+      groups are uniquely identified by a namespace code plus a name. A
+      principal or group is a "member" of a group if it is either directly
+      assigned to the group or indirectly assigned (through a nested group
+      membership). A principal or group is a "direct" member of another group
+      only if it is directly assigned as a member of the group, and not
+      through a nested group assignment.</para>
+    </sect2>
+
+    <sect2>
+      <title>Permission</title>
+
+      <para>A permission is the ability to perform an action. All permissions
+      have a permission template. Both permissions and permission templates
+      are uniquely identified by a namespace code plus a name. The permission
+      template defines the coarse-grained permission and specifies what
+      additional permission details need to be collected on permissions that
+      use that template. For example, a permission template might have a name
+      of "Initiate Document," which requires a permission detail specifying
+      the document type that can be initiated. A permission created from the
+      "Initiate Document" template would define the name of the specific
+      Document Type that can be initiated as a permission detail.</para>
+
+      <para>The <emphasis role="bold">isAuthorized</emphasis> and <emphasis
+      role="bold">isAuthorizedByTemplateName</emphasis> operations on the
+      <emphasis role="bold">PermissionService</emphasis> are used to execute
+      authorization checks for a principal against a permission. Permissions
+      are always assigned to roles (never directly to a principal or group). A
+      particular principal will be authorized for a given permission if the
+      principal is assigned to a role that has been granted the
+      permission.</para>
+    </sect2>
+
+    <sect2>
+      <title>Responsibility</title>
+
+      <para>A responsibility represents an action that a principal is
+      requested to take. This is used for defining workflow actions (such as
+      approve, acknowledge, FYI) for which the principal is responsible.
+      Responsibilities form the basis of the workflow engine routing
+      process.</para>
+
+      <para>A responsibility is very similar to a permission in a couple of
+      ways. First, responsibilities are always granted to a role, never
+      assigned directly to a principal or group. Furthermore, similar to
+      permissions, a role has a responsibility template. The responsibility
+      template specifies what additional responsibility details need to be
+      defined when the responsibility is created.</para>
+    </sect2>
+
+    <sect2>
+      <title>Role</title>
+
+      <para>You grant permissions and responsibilities to roles. Roles have a
+      membership consisting of principals, groups, and/or other roles. As a
+      member of a role, the associated principal has all permissions and
+      responsibilities that have been granted to that role.</para>
+
+      <para>You can specify a qualification to any membership assignment on
+      the role, which is extra information about that particular member of the
+      role. For example, a person may have the role of "Dean" but that can be
+      further qualified by the school they are the dean of, such as "Computer
+      Science." You can pass qualifications as part of authorization checks to
+      restrict the subset of roles to check.</para>
+    </sect2>
+
+    <sect2>
+      <title>Reference Information</title>
+
+      <para>There are several collections of reference information managed
+      within KIM:<itemizedlist>
+          <listitem>
+            <para>Address type</para>
+          </listitem>
+
+          <listitem>
+            <para>Affiliation type</para>
+          </listitem>
+
+          <listitem>
+            <para>Citizenship status</para>
+          </listitem>
+
+          <listitem>
+            <para>Email type</para>
+          </listitem>
+
+          <listitem>
+            <para>Employment status</para>
+          </listitem>
+
+          <listitem>
+            <para>Employment type</para>
+          </listitem>
+
+          <listitem>
+            <para>Entity name type</para>
+          </listitem>
+
+          <listitem>
+            <para>Entity type</para>
+          </listitem>
+
+          <listitem>
+            <para>External identifier type</para>
+          </listitem>
+
+          <listitem>
+            <para>Phone number type</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <sect3>
+        <title>Configuration Parameters</title>
+
+        <table frame="none">
+          <title>KIM Configuration Parameters</title>
+
+          <tgroup cols="3">
+            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+
+            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+
+            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+
+            <thead>
+              <row>
+                <entry>Configuration Parameter</entry>
+
+                <entry>Description</entry>
+
+                <entry>Default value</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>kim.mode</entry>
+
+                <entry>The mode that KIM will run in; choices are "LOCAL",
+                "EMBEDDED", or "REMOTE".</entry>
+
+                <entry>LOCAL</entry>
+              </row>
+
+              <row>
+                <entry>kim.soapExposedService.jaxws.security</entry>
+
+                <entry>Determines if KIM services published on the service bus
+                will be secured</entry>
+
+                <entry>true</entry>
+              </row>
+
+              <row>
+                <entry>kim.url</entry>
+
+                <entry>The base URL of KIM services and pages.</entry>
+
+                <entry>${application.url}/kim</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Services</title>
+
+    <para>KIM provides several service APIs with which client applications
+    should interact. These are:<itemizedlist>
+        <listitem>
+          <para><emphasis
+          role="bold">org.kuali.rice.kim.api.role.RoleService</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis
+          role="bold">org.kuali.rice.kim.api.group.GroupService</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis
+          role="bold">org.kuali.rice.kim.api.identity.IdentityService</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis
+          role="bold">org.kuali.rice.kim.permission.PermissionService</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis
+          role="bold">org.kuali.rice.kim.responsibility.ResponsibilityService</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis
+          role="bold">org.kuali.rice.kim.service.PersonService</emphasis></para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>These services act as client-side facades to the underlying KIM data
+    and provide important features such as caching.</para>
+
+    <para>In the next few sections we will look in-depth at these services.
+    However, for more details, please see the javadocs for these services and
+    the services they delegate to.</para>
+
+    <sect2>
+      <title>Using the Services</title>
+
+      <para>All KIM clients should retrieve service instances using the KIM
+      service locator class <emphasis
+      role="bold">KimApiServiceLocator</emphasis>. This class contains static
+      methods to retrieve the appropriate Spring bean for the service. An
+      example of retrieving the <emphasis
+      role="bold">IdentityService</emphasis> service is:</para>
+
+      <programlisting>IdentityService idmSvc = KimApiServiceLocator.getIdentityService();</programlisting>
+
+      <para>You would use a similar mechanism for retrieving references to the
+      other KIM services.</para>
+    </sect2>
+
+    <sect2>
+      <title>IdentityService</title>
+
+      <para>The <emphasis role="bold">IdentityService</emphasis> is one of the
+      services the client applications will interact with most
+      frequently.</para>
+
+      <para>The <emphasis role="bold">IdentityService</emphasis> contains
+      service methods that allow for the retrieval, creation, and upating of
+      entity information.</para>
+
+      <para>Additionally, it also provides caching for the retrieval methods
+      to help increase the performance of service calls for the client
+      application.</para>
+
+      <sect3>
+        <title>Retrieving Principal Information</title>
+
+        <para>To retrieve the principal ID for a user, use the <emphasis
+        role="bold">getPrincipalByPrincipalName</emphasis> method:</para>
+
+        <programlisting>Principal info = identityService.getPrincipalByPrincipalName(principalName);</programlisting>
+
+        <para>Note that KIM, by default, stores principal names in lower case;
+        the PRNCPL_NM column of KRIM_PRNCPL_T must store values in lower case.
+        If your institution’s existing identity systems do not handle
+        lowercase principal names, then there are three points to override
+        that setting:</para>
+
+        <para><orderedlist>
+            <listitem>
+              <para><emphasis
+              role="bold">org.kuali.rice.kim.impl.identity.IdentityServiceImpl</emphasis>
+              method <emphasis
+              role="bold">getPrincipalByPrincipalName</emphasis> lowercases
+              the principal name sent in; depending on how principals were
+              integrated into the system it may not need to. Note that
+              <emphasis role="bold">IdentityServiceImpl</emphasis> method
+              <emphasis
+              role="bold">getPrincipalByPrincipalNameAndPassword</emphasis>
+              does not lowercase the principal name automatically.</para>
+            </listitem>
+
+            <listitem>
+              <para><emphasis
+              role="bold">org.kuali.rice.kim.lookup.PersonLookableHelperServiceImpl</emphasis>
+              method <emphasis role="bold">getSearchResults</emphasis> also
+              automatically lowercases any principal name sent in; that
+              behavior may also need to be changed</para>
+            </listitem>
+
+            <listitem>
+              <para>Finally, the file <emphasis role="bold">{Rice
+              home}/impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</emphasis>
+              hold the data dictionary attribute templates for principal name
+              as <emphasis role="bold">KimBaseBeans-principalName</emphasis>.
+              The <emphasis role="bold">forceUppercase</emphasis> attribute is
+              set to false by default, but perhaps should be overridden to
+              true, to force uppercase principal names.</para>
+            </listitem>
+          </orderedlist></para>
+
+        <para>Once these three points have been overridden, you’ll be able to
+        use uppercase principal names.</para>
+      </sect3>
+
+      <sect3>
+        <title>Retrieving Entity Default Information</title>
+
+        <para>To retrieve the default information for an entity, use one of
+        the getEntityDefaultInfo methods:</para>
+
+        <programlisting>EntityDefault infoByEntityId = identityService.getEntityDefault(entityId);
+
+EntityDefault infoByPrincipalId = identityService.getEntityDefaultByPrincipalId(principalId);</programlisting>
+      </sect3>
+
+      <sect3>
+        <title>Retrieving Reference Information</title>
+
+        <para>To retrieve information about a type or status code, use the
+        getter for that type.</para>
+
+        <para>Types in KIM are:<itemizedlist>
+            <listitem>
+              <para>Address type</para>
+            </listitem>
+
+            <listitem>
+              <para>Affiliation type</para>
+            </listitem>
+
+            <listitem>
+              <para>Citizenship status</para>
+            </listitem>
+
+            <listitem>
+              <para>Email type</para>
+            </listitem>
+
+            <listitem>
+              <para>Employment status</para>
+            </listitem>
+
+            <listitem>
+              <para>Employment type</para>
+            </listitem>
+
+            <listitem>
+              <para>Entity name type</para>
+            </listitem>
+
+            <listitem>
+              <para>Entity type</para>
+            </listitem>
+
+            <listitem>
+              <para>External identifier type</para>
+            </listitem>
+
+            <listitem>
+              <para>Phone type</para>
+            </listitem>
+          </itemizedlist></para>
+
+        <para>For instance, to retrieve information on an address type
+        code:</para>
+
+        <programlisting>CodedAttribute addressType = identityService.getAddressType(code);</programlisting>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>GroupService</title>
+
+      <sect3>
+        <title>Retrieving Group Membership Information</title>
+
+        <para>To retrieve a list of all groups in which a particular user is a
+        member, use the <emphasis role="bold">getGroupsForPrincipal</emphasis>
+        method:</para>
+
+        <programlisting>List&lt;Group&gt; groups = groupService.getGroupsByPrincipalId(principalId);</programlisting>
+
+        <para>To determine if a user is a member of a particular group, use
+        the <emphasis role="bold">isMemberOfGroup</emphasis> method:</para>
+
+        <programlisting>if (groupService.isMemberOfGroup(principalId, groupId)) {
     // Do something special
 }</programlisting>
-                <para>To get a list of all members of a group, use the <emphasis role="bold"
-                        >getMemberPrincipalIds</emphasis> method:</para>
-                <programlisting>List&lt;String> members = idmSvc.getMemberPrincipalIds(groupId);</programlisting>
-            </sect3>
-            <sect3>
-                <title>Retrieving Group Information</title>
-                <para>To retrieve information about a group, use the <emphasis role="bold"
-                        >getGroupInfo</emphasis> or <emphasis role="bold"
-                        >getGroupInfoByName</emphasis> methods, depending on whether you know the
-                    group’s ID or name:</para>
-                <programlisting>GroupInfo info = idmSvc.getGroupInfo(groupId);
-GroupInfo info = idmSvc.getGroupInfoByName(groupName);</programlisting>
-            </sect3>
-            <sect3>
-                <title>Checking Permission</title>
-                <para>To determine if a user has been granted a permission, without considering role
-                    qualifications, use the <emphasis role="bold">hasPermission</emphasis>
-                    method:</para>
-                <programlisting>if (idmSvc.hasPermission(principalId, namespaceCode, permissionName,
- permissionDetails)) {
+
+        <para>To get a list of all members of a group, use the <emphasis
+        role="bold">getMemberPrincipalIds</emphasis> method:</para>
+
+        <programlisting>List&lt;String&gt; members = groupService.getMemberPrincipalIds(groupId);</programlisting>
+      </sect3>
+
+      <sect3>
+        <title>Retrieving Group Information</title>
+
+        <para>To retrieve information about a group, use the <emphasis
+        role="bold">getGroup</emphasis> or <emphasis
+        role="bold">getGroupByNamespaceCodeAndName</emphasis> methods,
+        depending on whether you know the group’s ID or name:</para>
+
+        <programlisting>Group info = groupService.getGroup(groupId);
+Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupName);</programlisting>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>PermissionService</title>
+
+      <sect3>
+        <title>Checking Permission</title>
+
+        <para>To determine if a user has been granted a permission, without
+        considering role qualifications, use the <emphasis
+        role="bold">hasPermission</emphasis> method:</para>
+
+        <programlisting>if (permissionService.hasPermission(principalId, namespaceCode, permissionName)) {
     // Do the action
 }
 </programlisting>
-                <para>To determine if a user has been granted a permission, use the <emphasis
-                        role="bold">isAuthorized</emphasis> method:</para>
-                <programlisting>if (idmSvc.isAuthorized(principalId, namespaceCode, permissionName,
- permissionDetails, qualification)) {
+
+        <para>To determine if a user has been granted a permission, use the
+        <emphasis role="bold">isAuthorized</emphasis> method:</para>
+
+        <programlisting>if (permissionService.isAuthorized(principalId, namespaceCode, permissionName, qualification)) {
     // Do the action
 }
 </programlisting>
-            </sect3>
-            <sect3>
-                <title>Retrieving Permission Information</title>
-                <para>To retrieve a list of principals granted a permission (including any
-                    delegates), use the <emphasis role="bold">getPermissionAssignees</emphasis>
-                    method:</para>
-                <programlisting>List&lt;PermissionAssigneeInfo> people = idmSvc.getPermissionAssignees(namespaceCode,
- permissionName, permissionDetails, qualification);
+      </sect3>
+
+      <sect3>
+        <title>Retrieving Permission Information</title>
+
+        <para>To retrieve a list of principals granted a permission (including
+        any delegates), use the <emphasis
+        role="bold">getPermissionAssignees</emphasis> method:</para>
+
+        <programlisting>List&lt;Assignee&gt; people = permissionService.getPermissionAssignees(namespaceCode,
+ permissionName, qualification);
 </programlisting>
-                <para>To retrieve a list of permissions granted to a principal, use the <emphasis
-                        role="bold">getAuthorizedPermissions</emphasis> method:</para>
-                <programlisting>List&lt;KimPermissionInfo> perms = idmSvc.getAuthorizedPermissions(principalId,
- namespaceCode, permissionName, permissionDetails, qualification);
+
+        <para>To retrieve a list of permissions granted to a principal, use
+        the <emphasis role="bold">getAuthorizedPermissions</emphasis>
+        method:</para>
+
+        <programlisting>List&lt;Permission&gt; perms = permissionService.getAuthorizedPermissions(principalId,
+ namespaceCode, permissionName, qualification);
 </programlisting>
-            </sect3>
-            <sect3>
-                <title>Checking Responsibility</title>
-                <para>To determine if a user has a responsibility, use the <emphasis role="bold"
-                        >hasResponsibility</emphasis> method:</para>
-                <programlisting>if (idmSvc.hasResponsibility(principalId, namespaceCode, responsibilityName, qualification, permissionDetails)) {
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>ResponsibilityService</title>
+
+      <sect3>
+        <title>Checking Responsibility</title>
+
+        <para>To determine if a user has a responsibility, use the <emphasis
+        role="bold">hasResponsibility</emphasis> method:</para>
+
+        <programlisting>if (responsibilityService.hasResponsibility(principalId, namespaceCode, responsibilityName, qualification)) {
     // Do the action
 
 }
 </programlisting>
-            </sect3>
-            <sect3>
-                <title>Retrieving Responsibility Information</title>
-                <para>To retrieve a list of roles associated with a responsibility, use the
-                        <emphasis role="bold">getRoleIdsForResponsibility</emphasis> method:</para>
-                <programlisting>List&lt;String> roleIds = idmSvc.getRoleIdsForResponsibility(responsibility, qualification);</programlisting>
-            </sect3>
-            <sect3>
-                <title>Checking Authentication</title>
-                <para>The <emphasis role="bold">AuthenticationService</emphasis> and related methods
-                    on the <emphasis role="bold">IdentityManagementService</emphasis> are somewhat
-                    different than the other services. The <emphasis role="bold"
-                        >AuthenticationService</emphasis> is not typically deployed remotely (unlike
-                    the <emphasis role="bold">IdentityService</emphasis>, <emphasis role="bold"
-                        >GroupService</emphasis>, etc.).</para>
-                <para>Instead, the role of this service is simply to extract the authenticated
-                    user’s principal name from the <emphasis role="bold"
-                        >HttpServletRequest</emphasis> and inform the client-side development
-                    framework (typically, the KNS) about this information. KIM itself does not
-                    implement full authentication services, but rather relies on other
-                    implementations (such as CAS or Shibboleth) to provide this
-                    functionality.</para>
-                <para>The client application can then establish a local session to store the
-                    information about the principal that authenticated. This will typically be used
-                    in subsequent calls to the KIM services, such as making authorization checks for
-                    the principal.</para>
-                <para>The reference implementation of the <emphasis role="bold"
-                        >AuthenticationService</emphasis> simply extracts the REMOTE_USER parameter
-                    from the request and presents that as the principal name. This is often
-                    sufficient for many authentication providers that are available. However, if
-                    necessary this reference implementation can be overridden.</para>
-                <para>There is only a single method on the <emphasis role="bold"
-                        >IdentityManagementService</emphasis> related to authentication.</para>
-                <programlisting>String principalName = idmSvc.getAuthenticatedPrincipalName(request);</programlisting>
-            </sect3>
-        </sect2>
-        <sect2>
-            <title>RoleManagementService</title>
-            <para>In KIM, Roles are used as a way to associate principals, groups and other roles
-                with permissions and responsibilities. It is therefore not a common or recommended
-                practice to query for whether or not a principal is a member of a Role for the
-                purposes of logic in a client application. It is recommended to use permissions and
-                the <emphasis role="bold">isAuthorized</emphasis> check to perform this sort of
-                logic.</para>
-            <para>However, in some cases, querying for this information may be desirable. Or, in
-                even more common cases, one may want to use an API to add or remove members from a
-                Role. These kinds of operations are the responsibility of the <emphasis role="bold"
-                    >RoleManagementService</emphasis>. Like the <emphasis role="bold"
-                    >IdentityManagementService</emphasis>, this service is a façade which provides
-                caching and delegates to underlying services. Specifically, it delegates to:<itemizedlist>
-                    <listitem>
-                        <para>RoleService </para>
-                    </listitem>
-                </itemizedlist></para>
-            <sect3>
-                <title>Checking Role Assignment</title>
-                <para>To determine if a role is assigned to a principal, use the <emphasis
-                        role="bold">principalHasRole</emphasis> method:</para>
-                <programlisting>if (rmSvc.principalHasRole(principalId, roleIds, qualifications)) {
+      </sect3>
+
+      <sect3>
+        <title>Retrieving Responsibility Information</title>
+
+        <para>To retrieve a list of roles associated with a responsibility,
+        use the <emphasis role="bold">getRoleIdsForResponsibility</emphasis>
+        method:</para>
+
+        <programlisting>List&lt;String&gt; roleIds = responsibilityService.getRoleIdsForResponsibility(responsibilityId);</programlisting>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>AuthenticationService</title>
+
+      <sect3>
+        <title>Checking Authentication</title>
+
+        <para>The <emphasis role="bold">AuthenticationService</emphasis> is
+        somewhat different than the other services. The <emphasis
+        role="bold">AuthenticationService</emphasis> is not typically deployed
+        remotely (unlike the <emphasis role="bold">IdentityService</emphasis>,
+        <emphasis role="bold">GroupService</emphasis>, etc.).</para>
+
+        <para>Instead, the role of this service is simply to extract the
+        authenticated user’s principal name from the <emphasis
+        role="bold">HttpServletRequest</emphasis> and inform the client-side
+        development framework (typically, the KNS) about this information. KIM
+        itself does not implement full authentication services, but rather
+        relies on other implementations (such as CAS or Shibboleth) to provide
+        this functionality.</para>
+
+        <para>The client application can then establish a local session to
+        store the information about the principal that authenticated. This
+        will typically be used in subsequent calls to the KIM services, such
+        as making authorization checks for the principal.</para>
+
+        <para>The reference implementation of the <emphasis
+        role="bold">AuthenticationService</emphasis> simply extracts the
+        REMOTE_USER parameter from the request and presents that as the
+        principal name. This is often sufficient for many authentication
+        providers that are available. However, if necessary this reference
+        implementation can be overridden.</para>
+
+        <para>There is only a single method on the <emphasis
+        role="bold">IdentityManagementService</emphasis> related to
+        authentication.</para>
+
+        <programlisting>String principalName = authenticationService.getPrincipalName(request);</programlisting>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>RoleService</title>
+
+      <para>In KIM, Roles are used as a way to associate principals, groups
+      and other roles with permissions and responsibilities. It is therefore
+      not a common or recommended practice to query for whether or not a
+      principal is a member of a Role for the purposes of logic in a client
+      application. It is recommended to use permissions and the <emphasis
+      role="bold">isAuthorized</emphasis> check to perform this sort of
+      logic.</para>
+
+      <para>However, in some cases, querying for this information may be
+      desirable. Or, in even more common cases, one may want to use an API to
+      add or remove members from a Role. These kinds of operations are the
+      responsibility of the <emphasis
+      role="bold">RoleManagementService</emphasis>. Like the <emphasis
+      role="bold">IdentityManagementService</emphasis>, this service is a
+      façade which provides caching and delegates to underlying services.
+      Specifically, it delegates to:<itemizedlist>
+          <listitem>
+            <para>RoleService</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <sect3>
+        <title>Checking Role Assignment</title>
+
+        <para>To determine if a role is assigned to a principal, use the
+        <emphasis role="bold">principalHasRole</emphasis> method:</para>
+
+        <programlisting>if (roleService.principalHasRole(principalId, roleIds, qualifications)) {
     // Do something
 }</programlisting>
-            </sect3>
-            <sect3>
-                <title>Retrieving Role Information</title>
-                <para>To retrieve information on a role, use the <emphasis role="bold"
-                        >getRole</emphasis> or <emphasis role="bold">getRoleByName</emphasis>
-                    method:</para>
-                <programlisting>KimRoleInfo info = rmSvc.getRole(roleId);
-KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </programlisting>
-                <para>To retrieve the list of principal IDs assigned to a role, use the <emphasis
-                        role="bold">getRoleMemberPrincipalIds</emphasis> method:</para>
-                <programlisting>Collection&lt;String> principals = rmSvc.getRoleMemberPrincipalIds(namespaceCode, roleName, qualifications);</programlisting>
-            </sect3>
-            <sect3>
-                <title>Updating Role Membership</title>
-                <para>To assign a principal to a role, use the <emphasis role="bold"
-                        >assignPrincipalToRole</emphasis> method:</para>
-                <programlisting>rmSvc.assignPrincipalToRole(principalId, namespaceCode, roleName, qualifications);</programlisting>
-                <para>To remove a principal from a role, use the <emphasis role="bold"
-                        >removePrincipalFromRole</emphasis> method:</para>
-                <programlisting>rmSvc.removePrincipalFromRole(principalId, namespaceCode, roleName, qualifications);</programlisting>
-            </sect3>
-        </sect2>
-        <sect2>
-            <title>Person Service</title>
-            <para>The <emphasis role="bold">PersonService</emphasis> is used to aggregate <emphasis
-                    role="bold">Entity</emphasis> and <emphasis role="bold">Principal</emphasis>
-                data into a data structure called a <emphasis role="bold">Person</emphasis>. A
-                person is essentially a flattened collection of the various attributes on an entity
-                (name, address, principal id, principal name, etc). This is intended to allow client
-                applications to more easily interact with the data in the underlying KIM data model
-                for entities and principals. </para>
-            <sect3>
-                <title>Retrieving Personal Information</title>
-                <para>To retrieve information on a person by principal ID, use the <emphasis
-                        role="bold">getPerson</emphasis> method:</para>
-                <programlisting>Person person = perSvc.getPerson(principalId);</programlisting>
-                <para>To retrieve information on a person by principal name, use the <emphasis
-                        role="bold">getPersonByPrincipalName</emphasis> method:</para>
-                <programlisting>Person person = perSvc.getPersonByPrincipalName(principalName);</programlisting>
-                <para>In order to search for people by a given set of criteria you can use the
-                        <emphasis role="bold">findPeople</emphasis> method:</para>
-                <programlisting>List&lt;? extends Person> people = perSvc.getPersonByPrincipalName(criteria);</programlisting>
-                <para>In this case, criteria is a <emphasis role="bold">java.util.Map&lt;String,
-                        String></emphasis> which contains key-value pairs. The key is the name of
-                    the Person property to search on, while the value is the value to search
-                    for.</para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
-        <title>KimTypeService Callbacks</title>
-        <sect2>
-            <title>Implementing Custom KIM Types</title>
-            <para>KIM uses the concept of "types" to define additional attributes for it's various
-                objects (such as groups, roles, permissions, etc.) and to affect their
-                behavior.</para>
-            <para>All custom type services must implement a sub-interface of
-                    <code>org.kuali.rice.kim.framework.type.KimTypeService</code> based on the kind
-                of custom type being created and the KIM objects it will be related to. The current
-                type services supported by KIM are as follows:<itemizedlist>
-                    <listitem>
-                        <para><code>GroupTypeService</code></para>
-                    </listitem>
-                    <listitem>
-                        <para><code>RoleTypeService</code></para>
-                    </listitem>
-                    <listitem>
-                        <para><code>PermissionTypeService</code></para>
-                    </listitem>
-                    <listitem>
-                        <para><code>ResponsibilityTypeService</code></para>
-                    </listitem>
-                    <listitem>
-                        <para><code>DelegationTypeService</code></para>
-                    </listitem>
-                </itemizedlist></para>
-            <para>In addition to the interfaces provided above, KIM provides a standard set of
-                implementations of each of these which can be extended by your application in order
-                to inherit standard default behavior (including integration with the KNS Data
-                Dictionary for reading and defining custom attributes). More detailed information
-                about these base classes can be found in the KIM javadocs. Your custom type service
-                class should extend the appropriate subclass and only override the methods necessary
-                to implement your custom behavior. Use the methods in these classes as the basis for
-                your custom code.</para>
-            <para>For example, you might define a custom <code>PermissionTypeService</code> by
-                extending <code>org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase</code>
-                as follows:</para>
-            <programlisting>import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
+      </sect3>
+
+      <sect3>
+        <title>Retrieving Role Information</title>
+
+        <para>To retrieve information on a role, use the <emphasis
+        role="bold">getRole</emphasis> or <emphasis
+        role="bold">getRoleByName</emphasis> method:</para>
+
+        <programlisting>Role info = roleService.getRole(roleId);
+Role info = roleService.getRoleByNamespaceCodeAndName(namespaceCode, roleName);             </programlisting>
+
+        <para>To retrieve the list of principal IDs assigned to a role, use
+        the <emphasis role="bold">getRoleMemberPrincipalIds</emphasis>
+        method:</para>
+
+        <programlisting>Collection&lt;String&gt; principals = roleService.getRoleMemberPrincipalIds(namespaceCode, roleName, qualifications);</programlisting>
+      </sect3>
+
+      <sect3>
+        <title>Updating Role Membership</title>
+
+        <para>To assign a principal to a role, use the <emphasis
+        role="bold">assignPrincipalToRole</emphasis> method:</para>
+
+        <programlisting>roleService.assignPrincipalToRole(principalId, namespaceCode, roleName, qualifications);</programlisting>
+
+        <para>To remove a principal from a role, use the <emphasis
+        role="bold">removePrincipalFromRole</emphasis> method:</para>
+
+        <programlisting>roleService.removePrincipalFromRole(principalId, namespaceCode, roleName, qualifications);</programlisting>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Person Service</title>
+
+      <para>The <emphasis role="bold">PersonService</emphasis> is used to
+      aggregate <emphasis role="bold">Entity</emphasis> and <emphasis
+      role="bold">Principal</emphasis> data into a data structure called a
+      <emphasis role="bold">Person</emphasis>. A person is essentially a
+      flattened collection of the various attributes on an entity (name,
+      address, principal id, principal name, etc). This is intended to allow
+      client applications to more easily interact with the data in the
+      underlying KIM data model for entities and principals.</para>
+
+      <sect3>
+        <title>Retrieving Personal Information</title>
+
+        <para>To retrieve information on a person by principal ID, use the
+        <emphasis role="bold">getPerson</emphasis> method:</para>
+
+        <programlisting>Person person = perSvc.getPerson(principalId);</programlisting>
+
+        <para>To retrieve information on a person by principal name, use the
+        <emphasis role="bold">getPersonByPrincipalName</emphasis>
+        method:</para>
+
+        <programlisting>Person person = perSvc.getPersonByPrincipalName(principalName);</programlisting>
+
+        <para>In order to search for people by a given set of criteria you can
+        use the <emphasis role="bold">findPeople</emphasis> method:</para>
+
+        <programlisting>List&lt;Person&gt; people = perSvc.findPeople(criteria);</programlisting>
+
+        <para>In this case, criteria is a <emphasis
+        role="bold">java.util.Map&lt;String, String&gt;</emphasis> which
+        contains key-value pairs. The key is the name of the Person property
+        to search on, while the value is the value to search for.</para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>KimTypeService Callbacks</title>
+
+    <sect2>
+      <title>Implementing Custom KIM Types</title>
+
+      <para>KIM uses the concept of "types" to define additional attributes
+      for it's various objects (such as groups, roles, permissions, etc.) and
+      to affect their behavior.</para>
+
+      <para>All custom type services must implement a sub-interface of
+      <code>org.kuali.rice.kim.framework.type.KimTypeService</code> based on
+      the kind of custom type being created and the KIM objects it will be
+      related to. The current type services supported by KIM are as
+      follows:<itemizedlist>
+          <listitem>
+            <para><code>GroupTypeService</code></para>
+          </listitem>
+
+          <listitem>
+            <para><code>RoleTypeService</code></para>
+          </listitem>
+
+          <listitem>
+            <para><code>PermissionTypeService</code></para>
+          </listitem>
+
+          <listitem>
+            <para><code>ResponsibilityTypeService</code></para>
+          </listitem>
+
+          <listitem>
+            <para><code>DelegationTypeService</code></para>
+          </listitem>
+        </itemizedlist></para>
+
+      <para>In addition to the interfaces provided above, KIM provides a
+      standard set of implementations of each of these which can be extended
+      by your application in order to inherit standard default behavior
+      (including integration with the KNS Data Dictionary for reading and
+      defining custom attributes). More detailed information about these base
+      classes can be found in the KIM javadocs. Your custom type service class
+      should extend the appropriate subclass and only override the methods
+      necessary to implement your custom behavior. Use the methods in these
+      classes as the basis for your custom code.</para>
+
+      <para>For example, you might define a custom
+      <code>PermissionTypeService</code> by extending
+      <code>org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase</code>
+      as follows:</para>
+
+      <programlisting>import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 
 public class MyPermissionTypeService extends PermissionTypeServiceBase {
 
     @Override
-    protected boolean performMatch(Map&lt;String, String> inputMap, Map&lt;String, String> storedMap) {
+    protected boolean performMatch(Map&lt;String, String&gt; inputMap, Map&lt;String, String&gt; storedMap) {
         if (some_condition_is_true) {
             // perform custom matching logic
             ...
@@ -592,31 +774,38 @@ public class MyPermissionTypeService extends PermissionTypeServiceBase {
 
 }
                 </programlisting>
-            <para>Detailed documentation on the specific methods which can be implemented on
-                    <code>KimTypeService</code> and it's various sub-interfaces can be found in the
-                KIM javadocs.</para>
-        </sect2>
-        <sect2>
-            <title>Configuring Custom KIM Types</title>
-            <para>Groups, Roles, Permissions, Responsibilities, and Delegations can all have custom
-                types in KIM. These custom types can be mapped back to the KIM type services that
-                you create. In order to do this, there are a few things you must do:<itemizedlist>
-                    <listitem>
-                        <para>Register the KIM Type which points to your custom type service</para>
-                    </listitem>
-                    <listitem>
-                        <para>Update any of the "typed" KIM objects that you want to point to your
-                            new KIM type</para>
-                    </listitem>
-                    <listitem>
-                        <para>Publish your KIM type service so that it is available on the Kuali
-                            Service Bus and the Rice resource loader framework</para>
-                    </listitem>
-                </itemizedlist>Currently, there is no way to register a new KIM Type without
-                updating the KIM database using SQL. Fortunately, this is a fairly simple thing to
-                do. The database table storing KIM Types is named <code>KRIM_TYP_T</code>. An
-                example of how to insert a new KIM Type into this table in Oracle is
-                below:<programlisting>INSERT INTO KRIM_TYP_T (
+
+      <para>Detailed documentation on the specific methods which can be
+      implemented on <code>KimTypeService</code> and it's various
+      sub-interfaces can be found in the KIM javadocs.</para>
+    </sect2>
+
+    <sect2>
+      <title>Configuring Custom KIM Types</title>
+
+      <para>Groups, Roles, Permissions, Responsibilities, and Delegations can
+      all have custom types in KIM. These custom types can be mapped back to
+      the KIM type services that you create. In order to do this, there are a
+      few things you must do:<itemizedlist>
+          <listitem>
+            <para>Register the KIM Type which points to your custom type
+            service</para>
+          </listitem>
+
+          <listitem>
+            <para>Update any of the "typed" KIM objects that you want to point
+            to your new KIM type</para>
+          </listitem>
+
+          <listitem>
+            <para>Publish your KIM type service so that it is available on the
+            Kuali Service Bus and the Rice resource loader framework</para>
+          </listitem>
+        </itemizedlist>Currently, there is no way to register a new KIM Type
+      without updating the KIM database using SQL. Fortunately, this is a
+      fairly simple thing to do. The database table storing KIM Types is named
+      <code>KRIM_TYP_T</code>. An example of how to insert a new KIM Type into
+      this table in Oracle is below:<programlisting>INSERT INTO KRIM_TYP_T (
     KIM_TYP_ID,
     NMSPC_CD,
     NM,
@@ -628,77 +817,100 @@ VALUES (
     'MyPermissionType',
     '{http://myapp.myu.edu}myPermissionTypeService',
     SYS_GUID()) </programlisting></para>
-            <para>One of the most important things to note about this is the service name (SRVC_NM)
-                column. As we can see in the example above, for this KIM type we are linking it to
-                a service named <code>{http://myapp.myu.edu}myPermissionTypeService</code>. This is
-                how KIM will look up your custom type service whenever it needs to load and invoke it.<footnote>
-                    <para>While the service name here is a single string value, it will be parsed
-                        into a <code>javax.xml.namespace.QName</code> object using that classes
-                            <code>valueOf(...)</code> method.  This means that, for our example of
-                            <code>{http://myapp.myu.edu}myPermissionTypeService</code>, it will get
-                        parsed into a QName which is equivalent to <code>new
-                            QName("http://myapp.myu.edu", "myPermissionTypeService")</code>.</para>
-                </footnote> It does this through the Rice resource loading framework which includes
-                locally available services defined in Spring as well as services published on the
-                Kuali Service Bus. For KIM type services, it's generally required to deploy them
-                onto the KSB because the user interface components of KIM will use these when
-                determining which custom attributes may need to be displayed and collected on it's
-                various screens.</para>
-            <para>More information on how to publish these services can be found in the next
-                section.</para>
-            <para>Once the KIM type has been registered, it will be assigned an ID, this is the
-                value of the <code>KIM_TYP_ID</code> column after the record has been inserted. This
-                ID can then be used to associate the type with the appropriate and desired data
-                elements in KIM.</para>
-            <para>For example, to associate the custom <code>PermissionTypeService</code> you
-                created earlier with one of your permission templates, you can execute the following
-                SQL (assuming the ID of your new KIM type is
-                10000):<programlisting>UPDATE KRIM_PERM_TMPL_T SET KIM_TYP_ID = '10000'
+
+      <para>One of the most important things to note about this is the service
+      name (SRVC_NM) column. As we can see in the example above, for this KIM
+      type we are linking it to a service named
+      <code>{http://myapp.myu.edu}myPermissionTypeService</code>. This is how
+      KIM will look up your custom type service whenever it needs to load and
+      invoke it.<footnote>
+          <para>While the service name here is a single string value, it will
+          be parsed into a <code>javax.xml.namespace.QName</code> object using
+          that classes <code>valueOf(...)</code> method. This means that, for
+          our example of
+          <code>{http://myapp.myu.edu}myPermissionTypeService</code>, it will
+          get parsed into a QName which is equivalent to <code>new
+          QName("http://myapp.myu.edu",
+          "myPermissionTypeService")</code>.</para>
+        </footnote> It does this through the Rice resource loading framework
+      which includes locally available services defined in Spring as well as
+      services published on the Kuali Service Bus. For KIM type services, it's
+      generally required to deploy them onto the KSB because the user
+      interface components of KIM will use these when determining which custom
+      attributes may need to be displayed and collected on it's various
+      screens.</para>
+
+      <para>More information on how to publish these services can be found in
+      the next section.</para>
+
+      <para>Once the KIM type has been registered, it will be assigned an ID,
+      this is the value of the <code>KIM_TYP_ID</code> column after the record
+      has been inserted. This ID can then be used to associate the type with
+      the appropriate and desired data elements in KIM.</para>
+
+      <para>For example, to associate the custom
+      <code>PermissionTypeService</code> you created earlier with one of your
+      permission templates, you can execute the following SQL (assuming the ID
+      of your new KIM type is 10000):<programlisting>UPDATE KRIM_PERM_TMPL_T SET KIM_TYP_ID = '10000'
 WHERE NMSPC_CD = 'MyNamespace' AND NM = 'MyPermissionTemplate'</programlisting></para>
-            <para>Once this is complete, any existing or new permissions you create with this
-                template will use your custom KIM type and it's associated type service.</para>
-        </sect2>
-        <sect2>
-            <title>Publishing Custom KIM Types to the Kuali Service Bus</title>
-            <para>As mentioned previously, KIM type services should be published onto the Kuali
-                Service Bus in order to allow the KIM user interface functionality (which is
-                typically deployed on the Rice Standalone Server) to access the services remotely.
-                Since KIM type services are considered "callback" services because of the fact that
-                the standalone server makes callbacks to them, the
-                    <code>org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter</code> should
-                be used.</para>
-            <para>Information on how to export and publish a callback service can be found in <xref
-                    linkend="callback_service_exporter"/>.</para>
-            <para>Assuming you have already wired up your custom PermissionTypeService
-                implementation in your Spring file under a bean id of "myPermissionTypeService", an
-                example Spring configuration which will publish the service would look like the
-                following:<programlisting>&lt;bean id="myPermissionTypeService.exporter"
+
+      <para>Once this is complete, any existing or new permissions you create
+      with this template will use your custom KIM type and it's associated
+      type service.</para>
+    </sect2>
+
+    <sect2>
+      <title>Publishing Custom KIM Types to the Kuali Service Bus</title>
+
+      <para>As mentioned previously, KIM type services should be published
+      onto the Kuali Service Bus in order to allow the KIM user interface
+      functionality (which is typically deployed on the Rice Standalone
+      Server) to access the services remotely. Since KIM type services are
+      considered "callback" services because of the fact that the standalone
+      server makes callbacks to them, the
+      <code>org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter</code>
+      should be used.</para>
+
+      <para>Information on how to export and publish a callback service can be
+      found in <xref linkend="callback_service_exporter"/>.</para>
+
+      <para>Assuming you have already wired up your custom
+      PermissionTypeService implementation in your Spring file under a bean id
+      of "myPermissionTypeService", an example Spring configuration which will
+      publish the service would look like the following:<programlisting>&lt;bean id="myPermissionTypeService.exporter"
       class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter"
       p:callbackService-ref="myPermissionTypeService"
       p:serviceNameSpaceURI="http://myapp.myu.edu"
       p:localServiceName="myPermissionTypeService"
-      p:serviceInterface="org.kuali.rice.kim.framework.permission.PermissionTypeService"/></programlisting></para>
-        </sect2>
-    </sect1>
-    <sect1>
-        <title>KIM Database Tables</title>
-        <sect2>
-            <title>Table Name Prefixes</title>
-            <para>The KIM tables in the Rice database are prefixed by KRIM, which stands for
-                    <emphasis role="bold">K</emphasis>uali <emphasis role="bold">R</emphasis>ice
-                    <emphasis role="bold">I</emphasis>dentity <emphasis role="bold"
-                >M</emphasis>anagement.</para>
-        </sect2>
-        <sect2>
-            <title>Unmapped LAST_UPDT_DT Columns</title>
-            <para>Many of the KIM tables have an additional column called LAST_UPDTD_DT (of type
-                DATE in Oracle, DATETIME in MySQL) that isn't mapped at the ORM layer. Using this
-                column is entirely optional, and it is unmapped by design. Its purpose is to aid
-                implementers with tracking changes, and with doing data synchronization or extracts
-                against KIM tables. The following sample PL/SQL script (Oracle only) adds to all the
-                tables that contain LAST_UPDATED_DT an insert and update trigger to populate
-                it:</para>
-            <programlisting>DECLARE
+      p:serviceInterface="org.kuali.rice.kim.framework.permission.PermissionTypeService"/&gt;</programlisting></para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>KIM Database Tables</title>
+
+    <sect2>
+      <title>Table Name Prefixes</title>
+
+      <para>The KIM tables in the Rice database are prefixed by KRIM, which
+      stands for <emphasis role="bold">K</emphasis>uali <emphasis
+      role="bold">R</emphasis>ice <emphasis role="bold">I</emphasis>dentity
+      <emphasis role="bold">M</emphasis>anagement.</para>
+    </sect2>
+
+    <sect2>
+      <title>Unmapped LAST_UPDT_DT Columns</title>
+
+      <para>Many of the KIM tables have an additional column called
+      LAST_UPDTD_DT (of type DATE in Oracle, DATETIME in MySQL) that isn't
+      mapped at the ORM layer. Using this column is entirely optional, and it
+      is unmapped by design. Its purpose is to aid implementers with tracking
+      changes, and with doing data synchronization or extracts against KIM
+      tables. The following sample PL/SQL script (Oracle only) adds to all the
+      tables that contain LAST_UPDATED_DT an insert and update trigger to
+      populate it:</para>
+
+      <programlisting>DECLARE
     CURSOR tables IS
         SELECT table_name
             FROM user_tab_columns
@@ -714,6 +926,6 @@ BEGIN
 END;
 /
 </programlisting>
-        </sect2>
-    </sect1>
+    </sect2>
+  </sect1>
 </chapter>

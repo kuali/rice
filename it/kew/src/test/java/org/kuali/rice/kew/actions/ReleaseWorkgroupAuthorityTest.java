@@ -66,7 +66,7 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
         assertTrue("There should be more than one action item", actionItems.size() > 1);
         for (Iterator<ActionItem> iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = iter.next();
-            assertTrue("Action Item not to workgroup member", TakeWorkgroupAuthorityTest.WORKGROUP_MEMBERS.contains(actionItem.getPerson().getPrincipalName()));
+            assertTrue("Action Item not to workgroup member", TakeWorkgroupAuthorityTest.WORKGROUP_MEMBERS.contains(getPrincipalNameForId(actionItem.getPrincipalId())));
         }
     }
 }

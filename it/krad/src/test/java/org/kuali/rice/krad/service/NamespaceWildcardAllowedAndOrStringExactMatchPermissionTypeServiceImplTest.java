@@ -41,8 +41,9 @@ import static org.junit.Assert.assertTrue;
  */
 public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImplTest extends KRADTestCase {
 
+    final static String INGESTER_ACTION = "org.kuali.rice.core.web.impex.IngesterAction";
     NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl permissionService;
-    
+
     @Before
     @Override
     public void setUp() throws Exception {
@@ -71,7 +72,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
         Template template = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName("KR-NS",
                 "Use Screen");
         permissionsList.add(createPermission(template, "Use All Screens", "KR-SYS", "namespaceCode=KR*"));
-        PermissionBo exactMatch = createPermission(template, "Use Ingester Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction", "namespaceCode=KR-WKFLW");
+        PermissionBo exactMatch = createPermission(template, "Use Ingester Screen", "KR-WKFLW", "actionClass=" + INGESTER_ACTION, "namespaceCode=KR-WKFLW");
         permissionsList.add(exactMatch);
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
@@ -95,7 +96,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 
         Template template = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName("KR-NS", "Use Screen");
         permissionsList.add(createPermission(template, "Use Screen", "KR-SYS", "namespaceCode=KR*"));
-        PermissionBo exactMatch = createPermission(template, "Use Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction");
+        PermissionBo exactMatch = createPermission(template, "Use Screen", "KR-WKFLW", "actionClass=" + INGESTER_ACTION);
         permissionsList.add(exactMatch);
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
@@ -112,7 +113,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
      */
     private Map<String, String> getUseIngesterRequestedDetails() {
         Map<String, String> requestedDetails = new HashMap<String, String>();
-        requestedDetails.put("actionClass", "org.kuali.rice.kew.batch.web.IngesterAction");
+        requestedDetails.put("actionClass", INGESTER_ACTION);
         requestedDetails.put("namespaceCode", "KR-WKFLW");
         return requestedDetails;
     }

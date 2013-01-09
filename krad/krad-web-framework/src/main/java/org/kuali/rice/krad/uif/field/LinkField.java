@@ -16,11 +16,17 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +34,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "linkField", parent = "Uif-LinkField")
 public class LinkField extends FieldBase {
     private static final long serialVersionUID = -1908504471910271148L;
 
@@ -57,6 +64,24 @@ public class LinkField extends FieldBase {
     }
 
     /**
+     * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's
+     * content
+     *
+     * @param view the view
+     * @param model the model
+     * @param parent the parent component
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        //determine what id to use for the for attribute of the label, if present
+        if (this.getFieldLabel() != null && this.getLink() != null && StringUtils.isNotBlank(this.getLink().getId())) {
+            this.getFieldLabel().setLabelForComponentId(this.getLink().getId());
+        }
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
     @Override
@@ -69,10 +94,11 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     *  Returns the <code>Link<code/> field.
+     * Returns the <code>Link<code/> field.
      *
      * @return The Link field
      */
+    @BeanTagAttribute(name="link",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Link getLink() {
         return link;
     }
@@ -91,6 +117,7 @@ public class LinkField extends FieldBase {
      *
      * @return The link label
      */
+    @BeanTagAttribute(name="linkText")
     public String getLinkText() {
         return link.getLinkText();
     }
@@ -105,10 +132,11 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     *  Returns the target of the <code>Link<code/> field that will be used to specify where to open the href.
+     * Returns the target of the <code>Link<code/> field that will be used to specify where to open the href.
      *
      * @return The target
      */
+    @BeanTagAttribute(name="target")
     public String getTarget() {
         return link.getTarget();
     }
@@ -127,6 +155,7 @@ public class LinkField extends FieldBase {
      *
      * @return The href text
      */
+    @BeanTagAttribute(name="href")
     public String getHref() {
         return link.getHref();
     }
@@ -156,12 +185,39 @@ public class LinkField extends FieldBase {
      *
      * @return The <code>LightBox</code>
      */
+    @BeanTagAttribute(name="lightBox",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public LightBox getLightBox() {
         if (link != null) {
             return link.getLightBox();
         }
 
         return null;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean(this);
+
+        // Checks that the link is set
+        if(getLink()==null){
+            if(Validator.checkExpressions(this, "link")){
+                String currentValues [] = {"link = "+getLink()};
+                tracer.createError("Link should be set",currentValues);
+            }
+        }
+
+        // Checks that the label is set
+        if(getLabel()==null){
+            if(Validator.checkExpressions(this, "label")){
+                String currentValues [] = {"label ="+getLabel(),"link ="+getLink()};
+                tracer.createWarning("Label is null, link should be used instead",currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 
 }

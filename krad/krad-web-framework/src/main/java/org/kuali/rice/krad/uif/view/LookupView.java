@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -47,6 +49,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "lookupView", parent = "Uif-LookupView")
 public class LookupView extends FormView {
     private static final long serialVersionUID = 716926008488403616L;
 
@@ -101,7 +104,8 @@ public class LookupView extends FormView {
      * <li>Set the abstractTypeClasses map for the lookup object path</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
      */
     @Override
     public void performInitialization(View view, Object model) {
@@ -109,6 +113,7 @@ public class LookupView extends FormView {
         if (getItems().isEmpty()) {
             setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
         }
+
         super.performInitialization(view, model);
 
         // if this is a multi-value lookup, don't show return column
@@ -116,7 +121,7 @@ public class LookupView extends FormView {
             hideReturnLinks = true;
         }
 
-        getObjectPathToConcreteClassMapping().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
+        getObjectPathToConcreteClassMapping().put(UifPropertyPaths.LOOKUP_CRITERIA, getDataObjectClassName());
         if (StringUtils.isNotBlank(getDefaultBindingObjectPath())) {
             getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDataObjectClassName());
         }
@@ -177,29 +182,29 @@ public class LookupView extends FormView {
 
     public void applyConditionalLogicForFieldDisplay() {
         // TODO: work into view lifecycle
-//	    LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) getViewHelperService();
-//		Set<String> readOnlyFields = lookupViewHelperService.getConditionallyReadOnlyPropertyNames();
-//		Set<String> requiredFields = lookupViewHelperService.getConditionallyRequiredPropertyNames();
-//		Set<String> hiddenFields = lookupViewHelperService.getConditionallyHiddenPropertyNames();
-//		if ( (readOnlyFields != null && !readOnlyFields.isEmpty()) ||
-//			 (requiredFields != null && !requiredFields.isEmpty()) ||
-//			 (hiddenFields != null && !hiddenFields.isEmpty())
-//			) {
-//			for (Field field : getResultsGroup().getItems()) {
-//				if (InputField.class.isAssignableFrom(field.getClass())) {
-//					InputField attributeField = (InputField) field;
-//					if (readOnlyFields != null && readOnlyFields.contains(attributeField.getBindingInfo().getBindingName())) {
-//						attributeField.setReadOnly(true);
-//					}
-//					if (requiredFields != null && requiredFields.contains(attributeField.getBindingInfo().getBindingName())) {
-//						attributeField.setRequired(Boolean.TRUE);
-//					}
-//					if (hiddenFields != null && hiddenFields.contains(attributeField.getBindingInfo().getBindingName())) {
-//						attributeField.setControl(LookupInquiryUtils.generateCustomLookupControlFromExisting(HiddenControl.class, null));
-//					}
-//				}
-//	        }
-//		}
+        //	    LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) getViewHelperService();
+        //		Set<String> readOnlyFields = lookupViewHelperService.getConditionallyReadOnlyPropertyNames();
+        //		Set<String> requiredFields = lookupViewHelperService.getConditionallyRequiredPropertyNames();
+        //		Set<String> hiddenFields = lookupViewHelperService.getConditionallyHiddenPropertyNames();
+        //		if ( (readOnlyFields != null && !readOnlyFields.isEmpty()) ||
+        //			 (requiredFields != null && !requiredFields.isEmpty()) ||
+        //			 (hiddenFields != null && !hiddenFields.isEmpty())
+        //			) {
+        //			for (Field field : getResultsGroup().getItems()) {
+        //				if (InputField.class.isAssignableFrom(field.getClass())) {
+        //					InputField attributeField = (InputField) field;
+        //					if (readOnlyFields != null && readOnlyFields.contains(attributeField.getBindingInfo().getBindingName())) {
+        //						attributeField.setReadOnly(true);
+        //					}
+        //					if (requiredFields != null && requiredFields.contains(attributeField.getBindingInfo().getBindingName())) {
+        //						attributeField.setRequired(Boolean.TRUE);
+        //					}
+        //					if (hiddenFields != null && hiddenFields.contains(attributeField.getBindingInfo().getBindingName())) {
+        //						attributeField.setControl(LookupInquiryUtils.generateCustomLookupControlFromExisting(HiddenControl.class, null));
+        //					}
+        //				}
+        //	        }
+        //		}
     }
 
     /**
@@ -214,6 +219,7 @@ public class LookupView extends FormView {
      *
      * @return Class<?> lookup data object class
      */
+    @BeanTagAttribute(name="dataObjectClassName")
     public Class<?> getDataObjectClassName() {
         return this.dataObjectClassName;
     }
@@ -230,6 +236,7 @@ public class LookupView extends FormView {
     /**
      * @return the hideReturnLinks
      */
+    @BeanTagAttribute(name="hideReturnLinks")
     public boolean isHideReturnLinks() {
         return this.hideReturnLinks;
     }
@@ -244,6 +251,7 @@ public class LookupView extends FormView {
     /**
      * @return the suppressActions
      */
+    @BeanTagAttribute(name="isSuppressActions")
     public boolean isSuppressActions() {
         return this.suppressActions;
     }
@@ -258,6 +266,7 @@ public class LookupView extends FormView {
     /**
      * @return the showMaintenanceLinks
      */
+    @BeanTagAttribute(name="showMaintenanceLinks")
     public boolean isShowMaintenanceLinks() {
         return this.showMaintenanceLinks;
     }
@@ -279,6 +288,7 @@ public class LookupView extends FormView {
      *
      * @return boolean true if multiple values should be enabled, false otherwise
      */
+    @BeanTagAttribute(name="multipleValueSelect")
     public boolean isMultipleValuesSelect() {
         return multipleValuesSelect;
     }
@@ -295,6 +305,7 @@ public class LookupView extends FormView {
     /**
      * @return the resultsActionsField
      */
+    @BeanTagAttribute(name="resultActionsFieldGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getResultsActionsFieldGroup() {
         return this.resultsActionsFieldGroup;
     }
@@ -309,6 +320,7 @@ public class LookupView extends FormView {
     /**
      * @return the resultsReturnField
      */
+    @BeanTagAttribute(name="resultReturnField",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getResultsReturnField() {
         return this.resultsReturnField;
     }
@@ -320,6 +332,7 @@ public class LookupView extends FormView {
         this.resultsReturnField = resultsReturnField;
     }
 
+    @BeanTagAttribute(name="criteriaGroup",type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getCriteriaGroup() {
         return this.criteriaGroup;
     }
@@ -328,6 +341,7 @@ public class LookupView extends FormView {
         this.criteriaGroup = criteriaGroup;
     }
 
+    @BeanTagAttribute(name="resultsGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionGroup getResultsGroup() {
         return this.resultsGroup;
     }
@@ -336,6 +350,7 @@ public class LookupView extends FormView {
         this.resultsGroup = resultsGroup;
     }
 
+    @BeanTagAttribute(name="criteriaFields",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getCriteriaFields() {
         return this.criteriaFields;
     }
@@ -344,6 +359,7 @@ public class LookupView extends FormView {
         this.criteriaFields = criteriaFields;
     }
 
+    @BeanTagAttribute(name="resultFields",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getResultFields() {
         return this.resultFields;
     }
@@ -352,6 +368,7 @@ public class LookupView extends FormView {
         this.resultFields = resultFields;
     }
 
+    @BeanTagAttribute(name="defaultSortAttributeNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getDefaultSortAttributeNames() {
         return this.defaultSortAttributeNames;
     }
@@ -360,6 +377,7 @@ public class LookupView extends FormView {
         this.defaultSortAttributeNames = defaultSortAttributeNames;
     }
 
+    @BeanTagAttribute(name="defaultSortAscending")
     public boolean isDefaultSortAscending() {
         return this.defaultSortAscending;
     }
@@ -374,6 +392,7 @@ public class LookupView extends FormView {
      *
      * @return Integer result set limit
      */
+    @BeanTagAttribute(name="resultSetLimit")
     public Integer getResultSetLimit() {
         return resultSetLimit;
     }
@@ -407,6 +426,7 @@ public class LookupView extends FormView {
     /**
      * @return the returnTarget
      */
+    @BeanTagAttribute(name="returnTarget")
     public String getReturnTarget() {
         return returnTarget;
     }
@@ -414,6 +434,7 @@ public class LookupView extends FormView {
     /**
      * @return the returnByScript
      */
+    @BeanTagAttribute(name="returnByScript")
     public boolean isReturnByScript() {
         return returnByScript;
     }
@@ -439,6 +460,7 @@ public class LookupView extends FormView {
      *
      * @return String mapping string
      */
+    @BeanTagAttribute(name="maintenanceUrlMapping")
     public String getMaintenanceUrlMapping() {
         return maintenanceUrlMapping;
     }

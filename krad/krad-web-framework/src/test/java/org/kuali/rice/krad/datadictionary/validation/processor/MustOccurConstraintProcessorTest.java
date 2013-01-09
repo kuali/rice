@@ -23,19 +23,19 @@ import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidation
 
 /**
  * Things this test should check:
- * 
+ *
  * 1. city and state entered, but no postal code (success) {@link #testCityStateNoPostalSuccess()}
  * 2. city entered, no state or postal code (failure) {@link #testCityNoStateNoPostalFailure()}
  * 3. postal code entered but no city or state (success) {@link #testPostalNoCityStateSuccess()}
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MustOccurConstraintProcessorTest extends BaseConstraintProcessorTest<MustOccurConstraintProcessor> {
 
 	private Address noPostalCodeAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
 	private Address noStateOrPostalCodeAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "", "USA", null);
 	private Address noCityStateAddress = new Address("893 Presidential Ave", "Suite 800", "", "", "12340", "USA", null);
-	
+
 	@Test
 	public void testCityStateNoPostalSuccess() {
 		ConstraintValidationResult result = process(noPostalCodeAddress, null, topLevelConstraint);
@@ -44,7 +44,7 @@ public class MustOccurConstraintProcessorTest extends BaseConstraintProcessorTes
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new MustOccurConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testCityNoStateNoPostalFailure() {
 		ConstraintValidationResult result = process(noStateOrPostalCodeAddress, null, topLevelConstraint);
@@ -52,7 +52,7 @@ public class MustOccurConstraintProcessorTest extends BaseConstraintProcessorTes
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new MustOccurConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testPostalNoCityStateSuccess() {
 		ConstraintValidationResult result = process(noCityStateAddress, null, topLevelConstraint);

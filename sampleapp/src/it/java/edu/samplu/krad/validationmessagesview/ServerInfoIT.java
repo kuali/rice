@@ -16,91 +16,73 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class ServerInfoIT{
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        WebDriver driver = new FirefoxDriver();
-        selenium = new WebDriverBackedSelenium(driver,
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
-
-        // Login
-        selenium.open(
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
-        Assert.assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class ServerInfoIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start";
     }
 
 	@Test
 	public void testServerInfoIT() throws Exception {
-		selenium.click("//button[contains(.,'Get Info Messages')]");
-		selenium.waitForPageToLoad("30000");
-		Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
-		Assert.assertTrue(selenium.isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
-		Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
-		Assert.assertTrue(selenium.isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
-		Assert.assertTrue(selenium.isElementPresent("css=div[data-role=\"InputField\"] img[alt=\"Information\"]"));
-		selenium.mouseOver("//a[contains(.,'Field 1')]");
-		Assert.assertTrue(selenium.isElementPresent("css=.uif-infoHighlight"));
-		selenium.click("//a[contains(.,'Field 1')]");
+		waitAndClick("//button[contains(.,'Get Info Messages')]");
+        waitIsVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]");
+		Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
+		Assert.assertTrue(isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
+		Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
+		Assert.assertTrue(isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
+		Assert.assertTrue(isElementPresent("css=div[data-role=\"InputField\"] img[alt=\"Information\"]"));
+		mouseOver("//a[contains(.,'Field 1')]");
+		Assert.assertTrue(isElementPresent("css=.uif-infoHighlight"));
+		waitAndClick("//a[contains(.,'Field 1')]");
 		for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
-			try { if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}
+			try { if (isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
 
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
-		selenium.type("name=field1", "");
-		selenium.fireEvent("name=field1", "blur");
-		selenium.fireEvent("name=field1", "focus");
+		Assert.assertTrue(isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
+		Assert.assertTrue(isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+		waitAndType("name=field1", "");
+		fireEvent("name=field1", "blur");
+		fireEvent("name=field1", "focus");
 		for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
-			try { if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}
+			try { if (isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
 
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+		Assert.assertTrue(isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
 		for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
-			try { if (selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) break; } catch (Exception e) {}
+			try { if (isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
 
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
-		selenium.type("name=field1", "b");
-		selenium.keyDown("name=field1", "b");
-		selenium.keyUp("name=field1", "b");
-        selenium.typeKeys("name=field1", "\b\b\b");
-		for (int second = 0;; second++) {
+		Assert.assertTrue(isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+		waitAndType("name=field1", "b");
+        fireEvent("name=field1", "blur");
+        fireEvent("name=field1", "focus");
+        for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
-			try { if (!selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) break; } catch (Exception e) {}
+			try { if (!isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
+        fireEvent("name=field1", "blur");
 
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
-		Assert.assertFalse(selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
-		selenium.type("name=field1", "");
-		selenium.fireEvent("name=field1", "focus");
-		selenium.fireEvent("name=field1", "blur");
-		Assert.assertTrue(selenium.isElementPresent("css=.uif-hasError"));
-		Assert.assertTrue(selenium.isElementPresent("css=img[src*=\"error.png\"]"));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		selenium.stop();
+		Assert.assertTrue(!isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+		Assert.assertFalse(isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+		waitAndType("name=field1", "");
+		fireEvent("name=field1", "focus");
+		fireEvent("name=field1", "blur");
+		Assert.assertTrue(isElementPresent("css=.uif-hasError"));
+		Assert.assertTrue(isElementPresent("css=img[src*=\"error.png\"]"));
 	}
 }

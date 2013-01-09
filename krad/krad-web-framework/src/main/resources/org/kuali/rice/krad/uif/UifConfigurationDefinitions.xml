@@ -70,21 +70,87 @@
 
   <bean id="Uif-KeyLabelPair" class="org.kuali.rice.core.api.util.ConcreteKeyValue" scope="prototype"/>
 
+  <bean id="Uif-ColumnCalculationInfo" class="org.kuali.rice.krad.uif.util.ColumnCalculationInfo" scope="prototype"
+        abstract="true">
+    <property name="showTotal" value="true"/>
+    <property name="showPageTotal" value="true"/>
+    <property name="showGroupTotal" value="false"/>
+    <property name="calculateOnKeyUp" value="false"/>
+    <property name="recalculateTotalClientside" value="true"/>
+    <property name="totalField">
+      <bean parent="Uif-MessageField" p:message.messageText="N/A"
+            p:fieldLabel.labelText="Total">
+        <property name="message.dataAttributes">
+          <map>
+            <entry key="role" value="totalValue"/>
+          </map>
+        </property>
+      </bean>
+    </property>
+    <property name="pageTotalField">
+      <bean parent="Uif-MessageField" p:message.messageText="N/A"
+            p:fieldLabel.labelText="Page Total">
+        <property name="message.dataAttributes">
+          <map>
+            <entry key="role" value="totalValue"/>
+          </map>
+        </property>
+      </bean>
+    </property>
+    <property name="groupTotalFieldPrototype">
+      <bean parent="Uif-MessageField" p:message.messageText="N/A"
+            p:fieldLabel.labelText="Group Total">
+        <property name="message.dataAttributes">
+          <map>
+            <entry key="role" value="totalValue"/>
+          </map>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Uif-ColumnCalculationInfo-Sum" abstract="true"
+        parent="Uif-ColumnCalculationInfo" p:calculationFunctionName="sumValues"/>
+
+  <bean id="Uif-ColumnCalculationInfo-Average" abstract="true"
+        parent="Uif-ColumnCalculationInfo" p:calculationFunctionName="averageValues">
+    <property name="totalField.fieldLabel.labelText" value="Average"/>
+    <property name="pageTotalField.fieldLabel.labelText" value="Page Average"/>
+    <property name="groupTotalFieldPrototype.fieldLabel.labelText" value="Group Average"/>
+  </bean>
+
+  <bean id="Uif-ColumnCalculationInfo-Max" abstract="true"
+        parent="Uif-ColumnCalculationInfo" p:calculationFunctionName="maxValue">
+    <property name="totalField.fieldLabel.labelText" value="Max"/>
+    <property name="pageTotalField.fieldLabel.labelText" value="Page Max"/>
+    <property name="groupTotalFieldPrototype.fieldLabel.labelText" value="Group Max"/>
+  </bean>
+
+  <bean id="Uif-ColumnCalculationInfo-Min" abstract="true"
+        parent="Uif-ColumnCalculationInfo" p:calculationFunctionName="minValue">
+    <property name="totalField.fieldLabel.labelText" value="Min"/>
+    <property name="pageTotalField.fieldLabel.labelText" value="Page Min"/>
+    <property name="groupTotalFieldPrototype.fieldLabel.labelText" value="Group Min"/>
+  </bean>
+
   <bean id="Uif-MethodInvokerConfig" class="org.kuali.rice.krad.uif.component.MethodInvokerConfig" scope="prototype"/>
 
-  <bean id="Uif-ConditionalBeanPropertyReplacer" class="org.kuali.rice.krad.uif.component.PropertyReplacer" scope="prototype"/>
+  <bean id="Uif-ConditionalBeanPropertyReplacer" class="org.kuali.rice.krad.uif.component.PropertyReplacer"
+        scope="prototype"/>
 
   <bean id="Uif-AttributeQueryConfig" class="org.kuali.rice.krad.uif.field.AttributeQuery" scope="prototype"
         p:returnMessageStyleClasses="uif-attributeQueryErrorMessage"/>
 
-  <bean id="Uif-RemotableFieldsPlaceholderConfig" class="org.kuali.rice.krad.uif.field.RemoteFieldsHolder" scope="prototype">
+  <bean id="Uif-RemotableFieldsPlaceholderConfig" class="org.kuali.rice.krad.uif.field.RemoteFieldsHolder"
+        scope="prototype">
     <property name="bindingInfo">
       <bean parent="Uif-BindingInfo"/>
     </property>
   </bean>
 
-  <bean id="Uif-ConditionalCollectionFilter" class="org.kuali.rice.krad.uif.container.ELCollectionFilter" scope="prototype"/>
-  
+  <bean id="Uif-ConditionalCollectionFilter" class="org.kuali.rice.krad.uif.container.ELCollectionFilter"
+        scope="prototype"/>
+
   <bean id="Uif-ViewTheme" class="org.kuali.rice.krad.uif.view.ViewTheme" scope="prototype"/>
 
 </beans>

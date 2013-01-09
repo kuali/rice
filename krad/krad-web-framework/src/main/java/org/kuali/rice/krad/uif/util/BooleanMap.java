@@ -22,7 +22,7 @@ import java.util.Set;
  * Map implementation takes a <code>Set</code> of Strings and converts to Map
  * where the string is the map key and value is the Boolean true, convenience
  * collection for expression language
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BooleanMap extends HashMap<String, Boolean> {
@@ -39,7 +39,7 @@ public class BooleanMap extends HashMap<String, Boolean> {
     /**
      * Overrides the get method to return Boolean false if the key does not
      * exist in the Map
-     * 
+     *
      * @see java.util.HashMap#get(java.lang.Object)
      */
     @Override

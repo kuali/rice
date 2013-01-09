@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -23,6 +24,7 @@ import org.kuali.rice.krad.uif.view.View;
 /**
  * ValidationMessages for logic and options specific to groups
  */
+@BeanTag(name = "fieldValidationMessages", parent = "Uif-FieldValidationMessages")
 public class FieldValidationMessages extends ValidationMessages{
 
     private boolean useTooltip;
@@ -43,6 +45,7 @@ public class FieldValidationMessages extends ValidationMessages{
         parent.addDataAttribute("validationMessages", "{"
             + "displayMessages:" + this.isDisplayMessages() + ","
             + "useTooltip:"+ useTooltip + ","
+            + "messagingEnabled:"+ this.isDisplayMessages() + ","
             + "hasOwnMessages:"+ hasMessages + ","
             + "serverErrors:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors())) + ","
             + "serverWarnings:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings())) + ","
@@ -54,14 +57,17 @@ public class FieldValidationMessages extends ValidationMessages{
     /**
      * When true, use the tooltip on fields to display their relevant messages.  When false, these messages
      * will appear directly below the control.
+     *
      * @return true if using tooltips for messages, false to display below control
      */
+    @BeanTagAttribute(name="useTooltip")
     public boolean isUseTooltip() {
         return useTooltip;
     }
 
     /**
      * Set the useTooltip flag
+     *
      * @param useTooltip - if true show tooltip, otherwise show messages below field control
      */
     public void setUseTooltip(boolean useTooltip) {

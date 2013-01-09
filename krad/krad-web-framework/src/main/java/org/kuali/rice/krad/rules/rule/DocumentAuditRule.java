@@ -19,7 +19,7 @@ import org.kuali.rice.krad.document.Document;
 
 /**
  * audit rule marker
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */

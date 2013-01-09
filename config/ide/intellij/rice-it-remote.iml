@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/remote/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/remote/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/it/remote">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-test-sources/test-annotations" isTestSource="true" />

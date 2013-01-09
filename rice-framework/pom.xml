@@ -18,6 +18,7 @@
     <module>krad-web-framework</module>
     <module>krad-it</module>
     <module>krad-sampleapp</module>
+    <module>rice-krad-web</module>
   </modules>
 
 

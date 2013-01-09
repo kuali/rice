@@ -24,7 +24,7 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../rice-middleware/web/src/main/webapp/WEB-INF/krad-servlet.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web/src/main/webapp/WEB-INF/krad-servlet.xml</file>
         </fileset>
       </configuration>
     </facet>

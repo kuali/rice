@@ -10,14 +10,14 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/it/vc">
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/vc/target/generated-test-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/vc/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/target" />
     </content>

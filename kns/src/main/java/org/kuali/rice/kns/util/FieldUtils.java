@@ -1536,6 +1536,9 @@ public final class FieldUtils {
             if (lookupSettings.isLowerDatePicker() != null) {
                 lowerField.setDatePicker(lookupSettings.isLowerDatePicker());
             }
+            if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
+                lowerField.setFieldDataType(remotableAttributeField.getDataType().name().toLowerCase());
+            }
             fields.add(lowerField);
 
             label = StringUtils.defaultString(lookupSettings.getUpperLabel(), attrLabel
@@ -1546,6 +1549,9 @@ public final class FieldUtils {
             upperField.setRangeFieldInclusive(lookupSettings.isUpperBoundInclusive());
             if (lookupSettings.isUpperDatePicker() != null) {
                 upperField.setDatePicker(lookupSettings.isUpperDatePicker());
+            }
+            if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
+                upperField.setFieldDataType(remotableAttributeField.getDataType().name().toLowerCase());
             }
             fields.add(upperField);
         } else {

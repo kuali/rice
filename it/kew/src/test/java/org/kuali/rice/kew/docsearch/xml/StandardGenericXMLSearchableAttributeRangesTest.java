@@ -186,7 +186,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         assertTrue(remotableAttributeFields.get(0).getAttributeLookupSettings().isUpperDatePicker());
         rows = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
         if ((new SearchableAttributeDateTimeValue()).allowsRangeSearches()) {
-            assertEquals("Invalid number of search rows", 1, rows.size());
+            assertEquals("Invalid number of search rows", 2, rows.size());
             for (int i = 0; i < rows.size(); i++) {
                 Row row = rows.get(i);
 	            assertTrue("Invalid number of fields for search row", row.getFields().size() == 1);
@@ -194,9 +194,15 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 	            assertTrue("Field should be the member of a range search", field.isRanged());
 
                 assertTrue("Field should be using datepicker field", field.isDatePicker());
-                assertTrue("Field should not be inclusive", field.isInclusive());
-                assertEquals("Field in row should be of data type date", DataType.DATE.toString().toLowerCase(), field.getFieldDataType());
 
+                if (field.getPropertyName().startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+                    // this is the lower bound row
+                    assertFalse("Lower Field should not be inclusive", field.isInclusive());
+                } else {
+                    // this is the upper bound row
+                    assertTrue("Upper Field should be inclusive", field.isInclusive());
+                    assertEquals("Field in row should be of data type date", DataType.DATE.toString().toLowerCase(), field.getFieldDataType());
+                }
 			}
         } else {
             assertEquals("Invalid number of search rows", 1, rows.size());

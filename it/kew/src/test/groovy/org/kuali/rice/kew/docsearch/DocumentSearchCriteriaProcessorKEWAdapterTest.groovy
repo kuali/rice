@@ -102,6 +102,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
     private static def SEARCHABLE_FIELD_NAMES = [
         "documentAttribute.givenname", "documentAttribute.testLongKey","documentAttribute.testFloatKey",
         "documentAttribute.testDateTimeKey", "documentAttribute.testDateTimeKey",
+        "documentAttribute.rangeLowerBoundKeyPrefix_testDateTimeKey",
         "isAdvancedSearch",
         "resetSavedSearch",
         "superUserSearch"

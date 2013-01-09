@@ -261,6 +261,10 @@ delete from krim_prncpl_t where prncpl_id not in ('1', 'admin', 'notsys')
 delete from krim_role_perm_t where role_perm_id = '856'
 /
 
+-- delete the assignment of the recall from routing permission for KULRICE-7687
+delete from krim_role_perm_t where role_perm_id = '862'
+/
+
 -- #####################
 -- # Sample App Tables #
 -- #####################

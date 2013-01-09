@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@ package org.kuali.rice.kew.role.service.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.RolePokerQueue;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.FlexRM;
@@ -60,7 +60,8 @@ public class RoleServiceImpl implements RoleService {
     	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerQueue");
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
-    		RolePokerQueue rolePokerQueue = MessageServiceNames.getRolePokerQueue(documentId);
+            String applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(documentId);
+            RolePokerQueue rolePokerQueue = KewApiServiceLocator.getRolePokerQueue(documentId, applicationId);
     		rolePokerQueue.reResolveRole(documentId, roleName);
 		}
     }
@@ -78,7 +79,8 @@ public class RoleServiceImpl implements RoleService {
     	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerQueue");
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
-    		RolePokerQueue rolePokerQueue = MessageServiceNames.getRolePokerQueue(documentId);
+            String applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(documentId);
+            RolePokerQueue rolePokerQueue = KewApiServiceLocator.getRolePokerQueue(documentId, applicationId);
     		rolePokerQueue.reResolveQualifiedRole(documentId, roleName, qualifiedRoleNameLabel);
 		}
     }
@@ -229,7 +231,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     protected void requeueDocument(DocumentRouteHeaderValue document) {
-        DocumentProcessingQueue documentProcessingQueue = MessageServiceNames.getDocumentProcessingQueue(document);
+        String applicationId = document.getDocumentType().getApplicationId();
+        DocumentProcessingQueue documentProcessingQueue = KewApiServiceLocator.getDocumentProcessingQueue(document.getDocumentId(), applicationId);
         documentProcessingQueue.process(document.getDocumentId());
     }
 

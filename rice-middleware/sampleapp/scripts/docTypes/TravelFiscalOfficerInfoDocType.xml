@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
       <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
       <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
       <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
-      <docHandler>${application.url}/krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo</docHandler>
+      <docHandler><![CDATA[${application.url}/krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerInfo]]></docHandler>
       <active>true</active>
       <routingVersion>2</routingVersion>
       <routePaths>

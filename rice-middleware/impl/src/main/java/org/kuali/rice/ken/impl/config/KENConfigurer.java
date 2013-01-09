@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,19 @@
 package org.kuali.rice.ken.impl.config;
 
 import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.ken.api.KenApiConstants;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class KENConfigurer extends ModuleConfigurer {
+    public static final String KEN_DATASOURCE_OBJ = "ken.datasource";
+    private DataSource dataSource;
+
     public KENConfigurer() {
         super(KenApiConstants.Namespaces.MODULE_NAME);
         setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
@@ -40,4 +45,22 @@ public class KENConfigurer extends ModuleConfigurer {
 		return springFileLocations;
 	}
 
+    @Override
+    public void addAdditonalToConfig() {
+        configureDataSource();
+    }
+
+    private void configureDataSource() {
+        if (getDataSource() != null) {
+            ConfigContext.getCurrentContextConfig().putObject(KEN_DATASOURCE_OBJ, getDataSource());
+        }
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }

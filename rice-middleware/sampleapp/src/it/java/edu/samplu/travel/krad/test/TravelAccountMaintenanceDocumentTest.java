@@ -23,11 +23,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.kew.api.exception.WorkflowException;
-import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.location.impl.campus.CampusTypeBo;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.test.BaseMaintenanceDocumentTest;
 /*

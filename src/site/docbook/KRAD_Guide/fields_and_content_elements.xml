@@ -978,7 +978,7 @@ public class Test2Object {
             definition:</para>
     <programlisting>            
 &lt;bean id=&quot;TravelAccount&quot; parent=&quot;DataObjectEntry&quot;&gt;
-    &lt;property name=&quot;dataObjectClass&quot; value=&quot;edu.sampleu.travel.bo.TravelAccount&quot;/&gt;
+    &lt;property name=&quot;dataObjectClass&quot; value=&quot;org.kuali.rice.krad.demo.travel.account.TravelAccount&quot;/&gt;
         &lt;property name=&quot;attributes&quot;&gt;
             &lt;list&gt;
                 &lt;ref bean=&quot;TravelAccount-number&quot;/&gt;
@@ -1040,11 +1040,11 @@ public class Test2Object {
             This is generally the full class name a data object. The dictionary attribute name is
             then the value for the name attribute on the definition we want to pick up. For our
             previous example this configuration would be as follows:</para>
-    <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”number” p:dictionaryObjectEntry=”edu.sampleu.travel.bo.TravelAccount” p:dictionaryAttributeName=”number”/&gt; </programlisting>
+    <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”number” p:dictionaryObjectEntry=”org.kuali.rice.krad.demo.travel.account.TravelAccount” p:dictionaryAttributeName=”number”/&gt; </programlisting>
     <para>We can also leave off the dictionaryAttributeName, in which case the framework will
             default it to the given propertyName:</para>
     <para>&lt;bean parent=”Uif-InputField” p:propertyName=”number” </para>
-    <programlisting>p:dictionaryObjectEntry=”edu.sampleu.travel.bo.TravelAccount”/&gt;</programlisting>
+    <programlisting>p:dictionaryObjectEntry=”org.kuali.rice.krad.demo.travel.account.TravelAccount”/&gt;</programlisting>
     <para>If the dictionary properties are not set, the UIF will attempt to find an attribute
             definition with the binding path. This works as follows:</para>
     <orderedlist>
@@ -2211,7 +2211,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
     <programlisting>
 &lt;bean parent=”Uif-InputField” p:propertyName=”document.number”&gt;
     &lt;property name=”fieldLookup”&gt;
-        &lt;bean parent=”Uif-QuickFinder” p:dataObjectClassName=” edu.sampleu.travel.bo.TravelAccount” p:fieldConversions=”number:document.number”/&gt;
+        &lt;bean parent=”Uif-QuickFinder” p:dataObjectClassName=” org.kuali.rice.krad.demo.travel.account.TravelAccount” p:fieldConversions=”number:document.number”/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
         </programlisting>
@@ -2225,7 +2225,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
             fieldConversions properties directly using nested notation. Note this only works if the
             bean we are inheriting from (or one of its parents) has configured the parent property,
             else a NullPointerException will be thrown:</para>
-    <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”document.number” p:fieldLookup.dataObjectClassName=”edu.sampleu.travel.bo.TravelAccount” p:fieldLookup.fieldConversions=”number:document.number”/&gt;</programlisting>
+    <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”document.number” p:fieldLookup.dataObjectClassName=”org.kuali.rice.krad.demo.travel.account.TravelAccount” p:fieldLookup.fieldConversions=”number:document.number”/&gt;</programlisting>
     <note>
       <title>Initializing Nested Components</title>
       <para>It is a common practice in the UIF for base beans to initialize and nested components. 
@@ -2284,10 +2284,10 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
     <programlisting>
 &lt;bean parent=”Uif-InputField” p:propertyName=”document.number”&gt;
     &lt;property name=”fieldInquiry”&gt;
-        &lt;bean parent=”Uif-Inquiry” p:dataObjectClassName=” edu.sampleu.travel.bo.TravelAccount” p:inquiryParameters=”document.number:number”/&gt;
+        &lt;bean parent=”Uif-Inquiry” p:dataObjectClassName=” org.kuali.rice.krad.demo.travel.account.TravelAccount” p:inquiryParameters=”document.number:number”/&gt;
     &lt;/property&gt;
     &lt;property name=”fieldDirectInquiry”&gt;
-        &lt;bean parent=”Uif-DirectInquiry” p:dataObjectClassName=” edu.sampleu.travel.bo.TravelAccount” p:inquiryParameters=”document.number:number”/&gt;
+        &lt;bean parent=”Uif-DirectInquiry” p:dataObjectClassName=” org.kuali.rice.krad.demo.travel.account.TravelAccount” p:inquiryParameters=”document.number:number”/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
         </programlisting>

@@ -1,6 +1,6 @@
 <%--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -67,8 +67,8 @@
 				 		</th>
 				 		<td>
 				 		<kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="${readOnly}" />
-                        <kul:lookup boClassName="edu.sampleu.travel.bo.TravelAccount" fieldConversions="number:travelAccount.number" />
-                        <kul:directInquiry boClassName="edu.sampleu.travel.bo.TravelAccount" inquiryParameters="travelAccount.number:number" />
+                        <kul:lookup boClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" fieldConversions="number:travelAccount.number" />
+                        <kul:directInquiry boClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" inquiryParameters="travelAccount.number:number" />
 						<html:image property="methodToCall.insertAccount" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" alt="Insert an Item" title="Insert an Item" styleClass="tinybutton"/>
                         </td>
 				 		</tr>

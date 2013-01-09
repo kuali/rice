@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@
         <bean parent="GenericTextField" p:propertyName="field72" p:defaultValue="a3">
           <property name="additionalHiddenPropertyNames" value="field73,field74"/>
           <property name="attributeQuery">
-            <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+            <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
                   p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74"/>
           </property>
         </bean>

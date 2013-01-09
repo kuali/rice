@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -200,16 +200,18 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         List<ApplicationDocumentStatusCategory> appDocStatCategories = documentType.getApplicationStatusCategories();
         List<ApplicationDocumentStatus> appDocStats = documentType.getValidApplicationStatuses();
 
-        if (!appDocStatCategories.isEmpty()) {
+        if (appDocStatCategories != null && !appDocStatCategories.isEmpty()) {
             Element appDocStatCategoriesElement = renderer.renderElement(parent, APP_DOC_STATUSES);
             for (Iterator iterator = appDocStatCategories.iterator(); iterator.hasNext();) {
                 ApplicationDocumentStatusCategory appDocStatCategory = (ApplicationDocumentStatusCategory) iterator.next();
                 Element appStatusCatElement = renderer.renderElement(appDocStatCategoriesElement, CATEGORY);
                 appStatusCatElement.setAttribute(NAME, appDocStatCategory.getCategoryName().trim());
-                for (Iterator iterator2 = appDocStats.iterator(); iterator2.hasNext();) {
-                    ApplicationDocumentStatus appDocStat = (ApplicationDocumentStatus) iterator2.next();
-                    if  (StringUtils.equals(appDocStat.getCategoryName(), appDocStatCategory.getCategoryName())) {
-                        renderer.renderTextElement(appStatusCatElement, STATUS, appDocStat.getStatusName());
+                if(appDocStats != null) {
+                    for (Iterator iterator2 = appDocStats.iterator(); iterator2.hasNext();) {
+                        ApplicationDocumentStatus appDocStat = (ApplicationDocumentStatus) iterator2.next();
+                        if  (StringUtils.equals(appDocStat.getCategoryName(), appDocStatCategory.getCategoryName())) {
+                            renderer.renderTextElement(appStatusCatElement, STATUS, appDocStat.getStatusName());
+                        }
                     }
                 }
             }
@@ -502,7 +504,7 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         	while ((docType = docType.getParentDocType()) != null) {
         		depth++;
         	}
-        	return new Integer(depth);
+        	return Integer.valueOf(depth);
         }
 
     }

@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@
           <value>field74</value>
         </additionalHiddenPropertyNames>
         <attributeQuery>
-          <attributeQuery dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" parent="Uif-AttributeQueryConfig"
+          <attributeQuery dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" parent="Uif-AttributeQueryConfig"
                           queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
         </attributeQuery>
       </inputField>

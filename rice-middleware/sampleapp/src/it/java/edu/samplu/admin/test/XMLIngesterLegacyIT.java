@@ -35,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
@@ -96,6 +97,7 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
                     && "true".equalsIgnoreCase((String) props.get("userIncludeDTSinPrefix"))) {
                 props.setProperty("userPrefix", "" + props.get("userPrefix") + ITUtil.DTS);
             }
+            systemPropertiesOverride(props);
 
             // build files and add to array
             fileUploadList.add(
@@ -110,6 +112,22 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
         return fileUploadList;
     }
 
+    /**
+     * -DXMLIngester.userCnt=176 will override the userCnt in property files.
+     * @param props
+     */
+    private void systemPropertiesOverride(Properties props) {
+        Enumeration<?> names = props.propertyNames();
+        Object nameObject;
+        String name;
+        while (names.hasMoreElements()) {
+            nameObject = names.nextElement();
+            if (nameObject instanceof String) {
+                name = (String)nameObject;
+                props.setProperty(name, System.getProperty("XMLIngester." + name, props.getProperty(name)));
+            }
+        }
+    }
 
     /**
      * Based on load user and groups manual tests; dynamically generates user and group file

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@
      <property name="layoutManager.actionFieldPrototype.width" value="10%" />
      <property name="layoutManager.actionColumnPlacement" value="LEFT" />
      <property name="collectionLookup.render" value="true"/>
-     <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+     <property name="collectionLookup.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
      <property name="collectionLookup.fieldConversions" value="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
      <property name="lineActions">
            <list>

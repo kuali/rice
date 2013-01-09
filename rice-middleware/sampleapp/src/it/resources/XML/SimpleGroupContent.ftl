@@ -33,7 +33,7 @@
                     <principalName>${member}</principalName>
                 </#list>
                 </#if>
-                <#list 0..userCnt?number as cnt>
+                <#list userCntBegin?number..userCnt?number as cnt>
                     <principalName>${userPrefix}${cnt}</principalName>
                 </#list>
             </members>

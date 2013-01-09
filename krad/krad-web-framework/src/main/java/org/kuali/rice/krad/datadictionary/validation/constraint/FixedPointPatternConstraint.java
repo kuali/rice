@@ -46,6 +46,11 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     protected String getRegexString() {
         StringBuilder regex = new StringBuilder();
 
+        if (getPrecision() < 0 || getScale() < 0 || getPrecision() - getScale() < 0){
+            throw new RuntimeException("Precision and scale cannot be negative AND scale cannot be greater than "
+                    + "precision for FixedPointPatternConstraints!");
+        }
+
         if (isAllowNegative()) {
             regex.append("-?");
         }

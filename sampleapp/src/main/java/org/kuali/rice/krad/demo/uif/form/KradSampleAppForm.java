@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.krad.demo.uif.form;
 
+import edu.sampleu.demo.kitchensink.UITestObject;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Basic form for the KRAD sample application
@@ -58,10 +62,27 @@ public class KradSampleAppForm extends UifFormBase {
     //MessageField
     private String messageField1;
 
+    // Collections
+    private List<UITestObject> collection1 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection2 = new ArrayList<UITestObject>();
+
     public KradSampleAppForm() {
         super();
 
         messageField1 = "fruits";
+
+        getCollection1().add(new UITestObject("13", "14", "15", "16"));
+        getCollection1().add(new UITestObject("17", "18", "19", "20"));
+        getCollection1().add(new UITestObject("5", "6", "7", "8"));
+        getCollection1().add(new UITestObject("1", "2", "3", "4"));
+        getCollection1().add(new UITestObject("9", "10", "11", "12"));
+        getCollection1().add(new UITestObject("13", "14", "15", "16"));
+        getCollection1().add(new UITestObject("213", "143", "151", "126"));
+        getCollection1().add(new UITestObject("133", "144", "155", "156"));
+
+        getCollection2().add(new UITestObject("A", "B", "C", "D"));
+        getCollection2().add(new UITestObject("1", "2", "3", "4"));
+        getCollection2().add(new UITestObject("W", "X", "Y", "Z"));
     }
 
     /**
@@ -286,4 +307,19 @@ public class KradSampleAppForm extends UifFormBase {
         this.testGroupId = testGroupId;
     }
 
+    public List<UITestObject> getCollection1() {
+        return collection1;
+    }
+
+    public void setCollection1(List<UITestObject> collection1) {
+        this.collection1 = collection1;
+    }
+
+    public List<UITestObject> getCollection2() {
+        return collection2;
+    }
+
+    public void setCollection2(List<UITestObject> collection2) {
+        this.collection2 = collection2;
+    }
 }

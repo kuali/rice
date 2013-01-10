@@ -20,7 +20,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <!-- Action demo -->
+  <!-- CollectionGroup demo -->
   <bean id="Demo-CollectionGroup-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroup"/>

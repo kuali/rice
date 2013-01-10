@@ -65,6 +65,9 @@
   </bean:define>
 <bean:define id="emptyActionListMessage">
 	<bean-el:message key="actionList.ActionList.emptyList" />
+</bean:define>
+<bean:define id="emptyOutboxMessage">
+	<bean-el:message key="actionList.Outbox.emptyList" />
 </bean:define>  
     <c:url var="actionListURI" value="ActionList.do">
     <c:param name="methodToCall" value="start"/>
@@ -261,7 +264,14 @@
 					<display:setProperty name="export.banner" value="" />
 					<display:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display:setProperty name="css.tr.odd" value="actionlist_anyRow" />
-					<display:setProperty name="basic.msg.empty_list" value="${emptyActionListMessage}" />
+                    <c:choose>
+                        <c:when test="${ActionListForm.viewOutbox}">
+                            <display:setProperty name="basic.msg.empty_list" value="${emptyOutboxMessage}" />
+                        </c:when>
+                        <c:otherwise>
+                            <display:setProperty name="basic.msg.empty_list" value="${emptyActionListMessage}" />
+                        </c:otherwise>
+                    </c:choose>
           <c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasDisplayParameters}">
           <display:column title="&nbsp;">
 						<c:choose>

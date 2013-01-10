@@ -452,6 +452,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkGroup-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Tab Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TabGroup-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Collection Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionGroup-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

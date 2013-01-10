@@ -63,6 +63,9 @@
 <bean:define id="outboxActionItemDelete">
     Delete Item
   </bean:define>
+<bean:define id="emptyActionListMessage">
+	<bean-el:message key="actionList.ActionList.emptyList" />
+</bean:define>  
     <c:url var="actionListURI" value="ActionList.do">
     <c:param name="methodToCall" value="start"/>
     <c:param name="currentPage" value="${ActionListForm.currentPage}"/>
@@ -258,6 +261,7 @@
 					<display:setProperty name="export.banner" value="" />
 					<display:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display:setProperty name="css.tr.odd" value="actionlist_anyRow" />
+					<display:setProperty name="basic.msg.empty_list" value="${emptyActionListMessage}" />
           <c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasDisplayParameters}">
           <display:column title="&nbsp;">
 						<c:choose>

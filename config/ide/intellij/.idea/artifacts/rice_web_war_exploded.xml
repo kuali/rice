@@ -223,6 +223,7 @@
           </element>
         </element>
       </element>
+      <element id="artifact" artifact-name="rice-krad-web:war exploded" />
     </root>
   </artifact>
 </component>

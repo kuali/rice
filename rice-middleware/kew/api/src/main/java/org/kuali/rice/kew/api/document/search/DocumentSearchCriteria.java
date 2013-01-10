@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,13 +60,10 @@ import java.util.Map;
     DocumentSearchCriteria.Elements.APPLICATION_DOCUMENT_ID,
     DocumentSearchCriteria.Elements.APPLICATION_DOCUMENT_STATUS,
     DocumentSearchCriteria.Elements.INITIATOR_PRINCIPAL_NAME,
-    DocumentSearchCriteria.Elements.INITIATOR_PRINCIPAL_ID,
     DocumentSearchCriteria.Elements.VIEWER_PRINCIPAL_NAME,
-    DocumentSearchCriteria.Elements.VIEWER_PRINCIPAL_ID,
     DocumentSearchCriteria.Elements.GROUP_VIEWER_ID,
     DocumentSearchCriteria.Elements.GROUP_VIEWER_NAME,
     DocumentSearchCriteria.Elements.APPROVER_PRINCIPAL_NAME,
-    DocumentSearchCriteria.Elements.APPROVER_PRINCIPAL_ID,
     DocumentSearchCriteria.Elements.ROUTE_NODE_NAME,
     DocumentSearchCriteria.Elements.ROUTE_NODE_LOOKUP_LOGIC,
     DocumentSearchCriteria.Elements.DOCUMENT_TYPE_NAME,
@@ -89,6 +86,9 @@ import java.util.Map;
     DocumentSearchCriteria.Elements.SEARCH_OPTIONS,
     DocumentSearchCriteria.Elements.APPLICATION_DOCUMENT_STATUSES,
     DocumentSearchCriteria.Elements.DOC_SEARCH_USER_ID,
+    DocumentSearchCriteria.Elements.INITIATOR_PRINCIPAL_ID,
+    DocumentSearchCriteria.Elements.VIEWER_PRINCIPAL_ID,
+    DocumentSearchCriteria.Elements.APPROVER_PRINCIPAL_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentSearchCriteria extends AbstractDataTransferObject implements DocumentSearchCriteriaContract {

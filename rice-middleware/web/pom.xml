@@ -35,6 +35,13 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-web</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rice-krms-impl</artifactId>
       <version>${project.version}</version>
     </dependency>

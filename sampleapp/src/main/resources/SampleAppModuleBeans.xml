@@ -178,6 +178,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMustOccurConstraint.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoPrerequisiteConstraint.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
@@ -261,7 +262,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoIntegerConstraintResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMustOccurConstraintResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPrerequisiteConstraintResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSequenceResources</value>
       </list>
     </property>
   </bean>

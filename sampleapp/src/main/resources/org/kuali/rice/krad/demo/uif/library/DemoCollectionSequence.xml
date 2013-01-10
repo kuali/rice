@@ -20,25 +20,26 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <!-- CollectionGroup demo -->
-  <bean id="Demo-CollectionGroup-View" parent="ComponentLibraryView">
-    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml"/>
+  <!-- Action demo -->
+  <bean id="Demo-CollectionSequence-View" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroup"/>
     <property name="docBookAnchor" value="d6813e8513"/>
     <property name="exampleSize" value="LARGE"/>
     <property name="demoGroups">
       <list>
-        <ref bean="Demo-CollectionGroup-Example1"/>
-        <ref bean="Demo-CollectionGroup-Example2"/>
+        <ref bean="Demo-CollectionSequence-Example1"/>
+        <ref bean="Demo-CollectionSequence-Example2"/>
+        <ref bean="Demo-CollectionSequence-Example3"/>
       </list>
     </property>
   </bean>
 
-  <!-- TableLayout -->
-  <bean id="Demo-CollectionGroup-Example1"  parent="Uif-VerticalBoxSection">
+  <!-- Auto sequence -->
+  <bean id="Demo-CollectionSequence-Example1"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-CollectionGroup-Example1 start-->
+        <!-- ex:Demo-CollectionSequence-Example1 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
           <property name="headerText" value="Table Layout" />
           <property name="collectionObjectClass"
@@ -54,33 +55,55 @@
           </property>
         </bean>
 
-        <!-- ex:Demo-CollectionGroup-Example1 end-->
+        <!-- ex:Demo-CollectionSequence-Example1 end-->
       </list>
     </property>
   </bean>
 
-  <!-- StackedLayout -->
-  <bean id="Demo-CollectionGroup-Example2"  parent="Uif-VerticalBoxSection">
+  <!-- Field sequence -->
+  <bean id="Demo-CollectionSequence-Example2"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-CollectionGroup-Example2 start-->
-        <bean parent="Uif-Disclosure-StackedCollectionSection">
-          <property name="headerText" value="Stack Layout" />
+        <!-- ex:Demo-CollectionSequence-Example2 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
+          <property name="headerText" value="Table Layout" />
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject" />
-          <property name="propertyName" value="collection2" />
-          <property name="layoutManager.summaryTitle" value="Line Summary" />
-          <property name="layoutManager.summaryFields" value="field1" />
+          <property name="propertyName" value="collection1" />
+          <property name="layoutManager.sequencePropertyName" value="field1" />
+          <property name="layoutManager.richTable.render" value="true" />
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" />
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" />
-              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" />
-              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" />
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
             </list>
           </property>
         </bean>
-        <!-- ex:Demo-CollectionGroup-Example2 end-->
+        <!-- ex:Demo-CollectionSequence-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- No sequence -->
+  <bean id="Demo-CollectionSequence-Example3"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionSequence-Example3 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
+          <property name="headerText" value="Table Layout" />
+          <property name="collectionObjectClass"
+                    value="edu.sampleu.demo.kitchensink.UITestObject" />
+          <property name="propertyName" value="collection1" />
+          <property name="layoutManager.renderSequenceField" value="false" />
+          <property name="layoutManager.richTable.render" value="true" />
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionSequence-Example3 end-->
       </list>
     </property>
   </bean>

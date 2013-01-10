@@ -488,8 +488,8 @@
   <bean id="ComponentLibrary-Nav-CollectionFeatures" p:headerText="Collection Features" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Add/Delete Line"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AddDeleteLine-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Sequence Column"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSequence-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

@@ -42,7 +42,7 @@ public class KRADLibraryPropertiesDoclet {
     public static void main(String[] args) {
         Main.execute(new String[]{"-doclet", "org.kuali.rice.krad.demo.uif.library.tools.KRADLibraryPropertiesDoclet",
                 "-sourcepath", "C:/Java/Projects/Rice/Trunk/krad/krad-web-framework/src/main/java", "-subpackages",
-                "org.kuali.rice.krad.uif"});
+                "org.kuali.rice.krad.uif:org.kuali.rice.krad.datadictionary.validation.constraint"});
     }
 
     /*

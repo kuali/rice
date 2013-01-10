@@ -269,6 +269,12 @@
     margin-bottom: 10px;
 }
 
+.demo-componentLibView > .uif-viewContentWrapper > .uif-pageContentWrapper {
+    float: left;
+    margin-left: 20px;
+    width: 700px;
+}
+
 /** Component Exhibit *********************************************************************/
 
 #ComponentLibrary-TabGroup{
@@ -357,8 +363,35 @@
     display: none;
 }
 
-.demo-noTabs > div.ui-tabs > div.ui-tabs-panel {
-    width: 680px !important;
+.demo-noTabs > #ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel {
+    width: 675px;
+    float: left;
+}
+
+.demo-xLargeLibraryView > .uif-viewContentWrapper > .uif-pageContentWrapper{
+    width: 940px;
+}
+
+.demo-xLargeLibraryView div#Uif-Navigation{
+    display: none;
+}
+
+.demo-xLargeLibraryView .demo-noTabs > #ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel{
+    width: 916px;
+}
+
+.demo-componentLibView .uif-pageHeader .uif-header-upperGroup{
+    display: none;
+}
+
+.demo-xLargeLibraryView .uif-pageHeader .uif-header-upperGroup{
+    display: block;
+    position: absolute;
+    top: -25px;
+}
+
+.demo-xLargeLibraryView .demo-sampleAppPage {
+    padding-top: 50px;
 }
 
 /**** Source code viewer *********************************************************/
@@ -398,11 +431,7 @@
     margin-top: 7px;
 }
 
-.demo-componentLibView > .uif-viewContentWrapper > .uif-pageContentWrapper {
-    float: left;
-    margin-left: 20px;
-    width: 700px;
-}
+
 
 .demo-componentLibNav .ui-accordion-header {
 

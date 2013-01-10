@@ -163,7 +163,8 @@ public class ComponentLibraryView extends FormView {
         exhibit.setDemoSourceCode(sourceCode);
         exhibit.setDemoGroups(this.getDemoGroups());
 
-        if (this.getExampleSize() != null && this.getExampleSize().equals(ExampleSize.LARGE)) {
+        if (this.getExampleSize() != null &&
+                (this.getExampleSize().equals(ExampleSize.LARGE) || this.getExampleSize().equals(ExampleSize.XLARGE))) {
             exhibit.getTabGroup().addStyleClass("demo-noTabs");
             Group headerRightGroup = view.getPage().getHeader().getRightGroup();
             for (Component item : headerRightGroup.getItems()) {
@@ -182,6 +183,10 @@ public class ComponentLibraryView extends FormView {
                     item.setRender(true);
                 }
             }
+        }
+
+        if(this.getExampleSize() != null && this.getExampleSize().equals(ExampleSize.XLARGE)){
+            this.addStyleClass("demo-xLargeLibraryView");
         }
 
         //Add detailsGroup and exhibit to page

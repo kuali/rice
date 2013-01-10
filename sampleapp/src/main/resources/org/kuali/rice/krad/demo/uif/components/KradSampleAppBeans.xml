@@ -273,6 +273,16 @@
         <value>demo-componentLibView</value>
       </list>
     </property>
+    <property name="page.header.upperGroup">
+      <bean parent="Uif-VerticalBoxGroup">
+        <property name="items">
+          <list>
+            <bean id="ComponentLibrary-ShowNavLink" parent="Uif-ActionLink" p:actionScript="showLibraryNav();"
+                    p:actionLabel=">> Show Library Navigation"/>
+          </list>
+        </property>
+      </bean>
+    </property>
     <property name="page.header.rightGroup">
       <bean parent="Uif-HorizontalBoxGroup">
         <property name="items">

@@ -111,3 +111,28 @@ function handleTabSwap(control){
     }
 }
 
+function showLibraryNav(){
+
+    if(jQuery("#Uif-Navigation").is(":hidden")){
+        jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width: '675px'}, 25);
+        jQuery(".uif-pageContentWrapper").animate({width: '700px'}, 25);
+
+        jQuery("#Uif-Navigation").css("width", "0");
+        jQuery("#Uif-Navigation").show();
+        jQuery("#Uif-Navigation").animate({width: '220px'}, 300, function(){
+            jQuery("#ComponentLibrary-ShowNavLink").text("<< Close Library Navigation");
+        });
+    }
+    else{
+
+        jQuery("#Uif-Navigation").animate({width: '1px'}, {duration: 300, queue: false, complete: function(){
+            jQuery("#ComponentLibrary-ShowNavLink").text(">> Show Library Navigation");
+            jQuery("#Uif-Navigation").hide();
+        }});
+
+        jQuery(".uif-pageContentWrapper").animate({width: '940px'}, 425);
+        jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width: '916px'}, 450);
+    }
+
+}
+

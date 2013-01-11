@@ -188,7 +188,9 @@ public class Inquiry extends WidgetBase {
             if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass, inquiryParameter.getValue())) {
                 try {
-                    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
                     throw new RuntimeException(e);

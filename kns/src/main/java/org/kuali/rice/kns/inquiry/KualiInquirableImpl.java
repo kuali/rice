@@ -401,7 +401,9 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 					businessObject.getClass().getName(), keyName);
 			if (attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI()) {
 				try {
-					keyValue = getEncryptionService().encrypt(keyValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+					    keyValue = getEncryptionService().encrypt(keyValue);
+                    }
 				}
 				catch (GeneralSecurityException e) {
 					LOG.error("Exception while trying to encrypted value for inquiry framework.", e);

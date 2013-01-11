@@ -43,7 +43,9 @@ public class HibernateKualiEncryptDecryptUserType extends HibernateImmutableValu
 
 		if (value != null) {
 	        try {
-	            converted = CoreApiServiceLocator.getEncryptionService().decrypt(value);
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+	                converted = CoreApiServiceLocator.getEncryptionService().decrypt(value);
+                }
 	        }
 	        catch (GeneralSecurityException gse) {
 	            throw new RuntimeException("Unable to decrypt value from db: " + gse.getMessage());
@@ -67,7 +69,9 @@ public class HibernateKualiEncryptDecryptUserType extends HibernateImmutableValu
 
 		if (value != null) {
 	        try {
-	            converted = CoreApiServiceLocator.getEncryptionService().encrypt(value);
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+	                converted = CoreApiServiceLocator.getEncryptionService().encrypt(value);
+                }
 	        }
 	        catch (GeneralSecurityException gse) {
 	            throw new RuntimeException("Unable to encrypt value to db: " + gse.getMessage());

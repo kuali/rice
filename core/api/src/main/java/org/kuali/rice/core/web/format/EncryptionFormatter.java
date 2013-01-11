@@ -17,6 +17,7 @@ package org.kuali.rice.core.web.format;
 
 import java.security.GeneralSecurityException;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -34,7 +35,9 @@ public class EncryptionFormatter extends Formatter {
 
         String decryptedValue = null;
         try {
-            decryptedValue = getEncryptionFormatter().decrypt(target);
+            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                decryptedValue = getEncryptionFormatter().decrypt(target);
+            }
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to decrypt value.");
         }
@@ -45,7 +48,9 @@ public class EncryptionFormatter extends Formatter {
     public Object format(Object target) {
         String encryptedValue = null;
         try {
-            encryptedValue = getEncryptionFormatter().encrypt(target);
+            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                encryptedValue = getEncryptionFormatter().encrypt(target);
+            }
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt secure field.");
         }

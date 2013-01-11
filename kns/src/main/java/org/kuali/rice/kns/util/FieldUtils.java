@@ -695,7 +695,9 @@ public final class FieldUtils {
                 	field.setEncryptedValue(fieldValue.toString());
                 }
                 else {
-                	field.setEncryptedValue(CoreApiServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                	    field.setEncryptedValue(CoreApiServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
+                    }
                 }
             }
             catch (GeneralSecurityException e) {

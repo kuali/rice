@@ -72,8 +72,10 @@ public class LookupInquiryUtils {
 				&& KRADServiceLocatorWeb.getDataObjectAuthorizationService()
 						.attributeValueNeedsToBeEncryptedOnFormsAndLinks(lookupObjectClass, propertyName)) {
 			try {
-				parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
-						+ EncryptionService.ENCRYPTION_POST_PREFIX;
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+				    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
+					    	+ EncryptionService.ENCRYPTION_POST_PREFIX;
+                }
 			}
 			catch (GeneralSecurityException e) {
 				LOG.error("Unable to encrypt value for property name: " + propertyName);

@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversionDefaultImpl;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiEncryptDecryptFieldConversion;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -106,8 +107,10 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
     public void encrypt(PersistableBusinessObject businessObject, Set<String> attributeNames) {
 	for (String attributeName : attributeNames) {
 	    try {
-		PropertyUtils.setProperty(businessObject, attributeName, encryptionService.encrypt(PropertyUtils
-			.getProperty(businessObject, attributeName)));
+            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+        		PropertyUtils.setProperty(businessObject, attributeName, encryptionService.encrypt(PropertyUtils
+        			.getProperty(businessObject, attributeName)));
+            }
 	    } catch (Exception e) {
 		throw new RuntimeException(new StringBuffer(
 			"PostDataLoadEncryptionServiceImpl caught exception while attempting to encrypt attribute ").append(
@@ -177,7 +180,9 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
                 columnOldValue = columnNamesValues.get(columnName);
                 //List chosen over a java object (for old and new value) for better performance
                 oldNewValues.add(PostDataLoadEncryptionDao.UNENCRYPTED_VALUE_INDEX, columnOldValue);
-                oldNewValues.add(PostDataLoadEncryptionDao.ENCRYPTED_VALUE_INDEX, encryptionService.encrypt(columnOldValue));
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                    oldNewValues.add(PostDataLoadEncryptionDao.ENCRYPTED_VALUE_INDEX, encryptionService.encrypt(columnOldValue));
+                }
                 columnNameOldNewValuesMap.put(columnName, oldNewValues);
             } catch (Exception e) {
                 throw new RuntimeException(new StringBuffer(

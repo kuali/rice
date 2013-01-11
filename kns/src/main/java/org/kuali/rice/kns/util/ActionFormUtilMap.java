@@ -199,7 +199,9 @@ public class ActionFormUtilMap extends HashMap {
         }
 
         try {
-            encrypted = CoreApiServiceLocator.getEncryptionService().encrypt(value);
+            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                encrypted = CoreApiServiceLocator.getEncryptionService().encrypt(value);
+            }
         }
         catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt value in action form: " + e.getMessage());

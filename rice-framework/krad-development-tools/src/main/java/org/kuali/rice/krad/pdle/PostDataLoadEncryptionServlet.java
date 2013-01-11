@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.devtools.pdle;
+package org.kuali.rice.krad.pdle;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -60,7 +60,7 @@ import java.util.Set;
 
 	<servlet>
 	    <servlet-name>postDataLoadEncryption</servlet-name>
-	    <servlet-class>org.kuali.rice.devtools.pdle.PostDataLoadEncryptionServlet</servlet-class>
+	    <servlet-class>org.kuali.rice.krad.pdle.PostDataLoadEncryptionServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.devtools.pdle;
+package org.kuali.rice.krad.pdle;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;

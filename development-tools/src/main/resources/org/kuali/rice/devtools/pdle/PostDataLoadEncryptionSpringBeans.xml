@@ -65,9 +65,9 @@
 		<property name="serviceName" value="encryptionService" />
 	</bean>
 
-    <bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.krad.dao.jdbc.PostDataLoadEncryptionDaoJdbc" />
+    <bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.krad.pdle.PostDataLoadEncryptionDaoJdbc" />
 
-	<bean id="postDataLoadEncryptionService" class="org.kuali.rice.devtools.pdle.PostDataLoadEncryptionServiceImpl">
+	<bean id="postDataLoadEncryptionService" class="org.kuali.rice.krad.pdle.PostDataLoadEncryptionServiceImpl">
 		<property name="postDataLoadEncryptionDao" ref="postDataLoadEncryptionDao" />
 		<property name="businessObjectService" ref="businessObjectService" />
 		<property name="encryptionService" ref="encryptionService" />

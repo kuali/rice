@@ -25,7 +25,7 @@
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroup"/>
     <property name="docBookAnchor" value="d6813e8513"/>
-    <property name="exampleSize" value="LARGE"/>
+    <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionGroup-Example1"/>

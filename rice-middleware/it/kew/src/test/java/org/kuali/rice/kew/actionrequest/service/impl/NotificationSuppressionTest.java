@@ -33,11 +33,11 @@ import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
@@ -224,9 +224,9 @@ public class NotificationSuppressionTest extends KEWTestCase {
         MockDocumentRefreshQueueImpl.clearRequeuedDocumentIds();
         String applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(
                 document.getDocumentId());
-        MessageServiceNames.getDocumentRequeuerService(
-                (applicationId != null) ? applicationId : CoreConfigHelper.getApplicationId(),
-                document.getDocumentId(), 0).refreshDocument(document.getDocumentId());
+        KewApiServiceLocator.getDocumentRequeuerService(
+                (applicationId != null) ? applicationId : CoreConfigHelper.getApplicationId(), document.getDocumentId(),
+                0).refreshDocument(document.getDocumentId());
 
         assertTrue("nobody should have been notified",
                 0 == getMockEmailService().immediateReminderEmailsSent("user2", document.getDocumentId(),

@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.krms.test;
 
+import org.junit.Before;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;

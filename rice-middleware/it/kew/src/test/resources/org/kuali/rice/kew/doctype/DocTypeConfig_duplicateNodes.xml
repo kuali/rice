@@ -39,7 +39,8 @@
 					<start name="AdHoc" nextNode="Split1" />
 					<split name="Split1" nextNode="Split2">
 						<branch name="Left">
-							<requests name="RuleTemplate1" nextNode="Join1" />
+              <requests name="RuleTemplate1" nextNode="RuleTemplate2" />
+              <requests name="RuleTemplate2" nextNode="Join1" />
 						</branch>
 						<branch name="Right">
 							<simple name="NoOp1" nextNode="Join1" />
@@ -48,7 +49,8 @@
 					</split>
 					<split name="Split2">
 						<branch name="Left">
-							<requests name="RuleTemplate1" nextNode="Join2" />
+              <requests name="RuleTemplate1" nextNode="RuleTemplate3" />
+              <requests name="RuleTemplate3" nextNode="Join2" />
 						</branch>
 						<branch name="Right">
 							<simple name="NoOp2" nextNode="Join2" />
@@ -65,6 +67,14 @@
 					<activationType>S</activationType>
 					<ruleTemplate>RuleTemplate1</ruleTemplate>
 				</requests>
+        <requests name="RuleTemplate2">
+          <activationType>S</activationType>
+          <ruleTemplate>RuleTemplate2</ruleTemplate>
+        </requests>
+        <requests name="RuleTemplate3">
+          <activationType>S</activationType>
+          <ruleTemplate>RuleTemplate3</ruleTemplate>
+        </requests>
 				<split name="Split1">
 					<type>org.kuali.rice.kew.server.TestSplitNode</type>
 				</split>
@@ -90,7 +100,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+          <principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -103,10 +113,23 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>user2</user>
-					<actionRequested>A</actionRequested>
-					<priority>1</priority>
-				</responsibility>
+          <principalName>user2</principalName>
+          <actionRequested>A</actionRequested>
+          <priority>1</priority>
+        </responsibility>
+      </responsibilities>
+    </rule>
+    <rule>
+      <documentType>TestDoubleNodeDocumentType</documentType>
+      <ruleTemplate>RuleTemplate3</ruleTemplate>
+      <description>RuleTemplate3 TestDoubleNodeDocumentType</description>
+      <forceAction>false</forceAction>
+         <responsibilities>
+           <responsibility>
+           <principalName>user3</principalName>
+		       <actionRequested>A</actionRequested>
+			     <priority>1</priority>
+			   </responsibility>
 			</responsibilities>
 		</rule>
 	</rules>

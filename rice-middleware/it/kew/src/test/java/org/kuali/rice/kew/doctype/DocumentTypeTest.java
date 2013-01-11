@@ -65,20 +65,53 @@ public class DocumentTypeTest extends KEWTestCase {
      * 
      * KULRICE-3526
      */
-    @Ignore
+    @Test public void testDuplicateNodeName() throws Exception {
+        try {
+            loadXmlFile("DocTypeConfig_loadDupliateNodes.xml");
+            fail("loadXmlFile should have thrown routing exception");
+        } catch (Exception e) {
+        }
+    }
     @Test public void testDuplicateNodeNameInRoutePath() throws Exception {
-        loadXmlFile("DoctypeConfig_duplicateNodes.xml");
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument("user1", "TestDoubleNodeDocumentType");
+        loadXmlFile("DocTypeConfig_duplicateNodes.xml");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestDoubleNodeDocumentType");
         document.setTitle("");
         document.route("");
-        document = WorkflowDocumentFactory.loadDocument("rkirkend", document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
         document.approve("");
-        document = WorkflowDocumentFactory.loadDocument("user2", document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
         document.approve("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
+        assertTrue("user3 should have an approve request", document.isApprovalRequested());
+        document.approve("");
     }
-
+    @Test public void testNestedDuplicateNodeNameInRoutePath() throws Exception {
+        loadXmlFile("DocTypeConfig_nestedNodes.xml");
+        // Path 1
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestDoubleNodeDocumentType");
+        document.setTitle("");
+        document.route("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
+        document.approve("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
+        assertTrue("user2 should have an approve request", document.isApprovalRequested());
+        document.approve("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
+        assertTrue("user3 should have an approve request", document.isApprovalRequested());
+        document.approve("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
+        assertTrue("user4 should have an approve request", document.isApprovalRequested());
+        document.approve("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
+        document.approve("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
+        assertTrue("user3 should have an approve request", document.isApprovalRequested());
+        document.approve("");
+    }
     /**
      * Verify that enroute documents are not affected if you edit their document type.
      * @throws Exception

@@ -434,8 +434,7 @@ public class ActionField extends FieldBase {
      *
      * @return ActionFieldSecurity instance
      */
-    @Override
-    public ActionFieldSecurity getComponentSecurity() {
+    public ActionFieldSecurity getActionFieldSecurity() {
         return (ActionFieldSecurity) super.getComponentSecurity();
     }
 

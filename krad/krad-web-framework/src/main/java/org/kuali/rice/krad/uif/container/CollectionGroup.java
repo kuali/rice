@@ -742,8 +742,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return CollectionGroupSecurity instance
      */
-    @Override
-    public CollectionGroupSecurity getComponentSecurity() {
+    public CollectionGroupSecurity getCollectionGroupSecurity() {
         return (CollectionGroupSecurity) super.getComponentSecurity();
     }
 

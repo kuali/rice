@@ -283,8 +283,8 @@ public class DataField extends FieldBase implements DataBinding {
         }
 
         // security
-        if (getComponentSecurity().getAttributeSecurity() == null) {
-            getComponentSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
+        if (getDataFieldSecurity().getAttributeSecurity() == null) {
+            getDataFieldSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 
         // alternate property name
@@ -544,8 +544,7 @@ public class DataField extends FieldBase implements DataBinding {
      *
      * @return DataFieldSecurity instance
      */
-    @Override
-    public DataFieldSecurity getComponentSecurity() {
+    public DataFieldSecurity getDataFieldSecurity() {
         return (DataFieldSecurity) super.getComponentSecurity();
     }
 
@@ -822,8 +821,8 @@ public class DataField extends FieldBase implements DataBinding {
      */
     public boolean hasSecureValue() {
         return isApplyValueMask() || ((getComponentSecurity().isViewAuthz()
-                || getComponentSecurity().isViewInLineAuthz()
-                || ((getComponentSecurity().getAttributeSecurity() != null) && getComponentSecurity()
+                || getDataFieldSecurity().isViewInLineAuthz()
+                || ((getDataFieldSecurity().getAttributeSecurity() != null) && getDataFieldSecurity()
                 .getAttributeSecurity().isHide())) && isHidden());
     }
 

@@ -65,6 +65,9 @@ public class KradSampleAppForm extends UifFormBase {
     // Collections
     private List<UITestObject> collection1 = new ArrayList<UITestObject>();
     private List<UITestObject> collection2 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection3 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection4 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection5 = new ArrayList<UITestObject>();
 
     public KradSampleAppForm() {
         super();
@@ -83,6 +86,43 @@ public class KradSampleAppForm extends UifFormBase {
         getCollection2().add(new UITestObject("A", "B", "C", "D"));
         getCollection2().add(new UITestObject("1", "2", "3", "4"));
         getCollection2().add(new UITestObject("W", "X", "Y", "Z"));
+        collection2.add(new UITestObject("a", "b", "c", "d"));
+        collection2.add(new UITestObject("a", "s", "d", "f"));
+
+        collection3.add(new UITestObject("A", "B", "C", "D"));
+        collection3.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        collection3.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        collection3.get(0).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
+        collection3.add(new UITestObject("1", "2", "3", "4"));
+        collection3.get(1).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        collection3.get(1).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        collection3.add(new UITestObject("W", "X", "Y", "Z"));
+        collection3.get(2).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
+
+        collection4.add(new UITestObject("A", "B", "C", "D"));
+        collection4.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        collection4.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        collection4.get(0).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
+        collection4.add(new UITestObject("1", "2", "3", "4"));
+        collection4.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
+        collection4.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
+
+        //triple nesting
+        collection5.add(new UITestObject("a", "a", "a", "a"));
+        collection5.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        collection5.get(0).getSubList().get(0).getSubList().add(new UITestObject("a3", "3", "3", "3"));
+        collection5.get(0).getSubList().get(0).getSubList().add(new UITestObject("a3", "3", "3", "3"));
+        collection5.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        collection5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
+        collection5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
+        collection5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
+        collection5.add(new UITestObject("b", "b", "b", "b"));
+        collection5.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
+        collection5.get(1).getSubList().get(0).getSubList().add(new UITestObject("a23", "3", "3", "3"));
+        collection5.get(1).getSubList().get(0).getSubList().add(new UITestObject("a23", "3", "3", "3"));
+        collection5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
+        collection5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
+        collection5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
     }
 
     /**
@@ -95,7 +135,6 @@ public class KradSampleAppForm extends UifFormBase {
     }
 
     /**
-     *
      * @param themeName
      */
     public void setThemeName(String themeName) {
@@ -321,5 +360,29 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setCollection2(List<UITestObject> collection2) {
         this.collection2 = collection2;
+    }
+
+    public List<UITestObject> getCollection3() {
+        return collection3;
+    }
+
+    public void setCollection3(List<UITestObject> collection3) {
+        this.collection3 = collection3;
+    }
+
+    public List<UITestObject> getCollection4() {
+        return collection4;
+    }
+
+    public void setCollection4(List<UITestObject> collection4) {
+        this.collection4 = collection4;
+    }
+
+    public List<UITestObject> getCollection5() {
+        return collection5;
+    }
+
+    public void setCollection5(List<UITestObject> collection5) {
+        this.collection5 = collection5;
     }
 }

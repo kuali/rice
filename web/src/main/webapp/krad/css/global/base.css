@@ -1294,6 +1294,11 @@ li.uif-infoMessageItem:before {
 }
 
 /***** Syntax Highlighter *********************************************************************/
+.uif-syntaxHighlighter > div{
+    max-height: 400px;
+    overflow: auto;
+}
+
 .uif-syntaxHighlighter li{
     list-style: decimal outside none;
 }

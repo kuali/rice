@@ -114,8 +114,11 @@ function handleTabSwap(control){
 function showLibraryNav(){
 
     if(jQuery("#Uif-Navigation").is(":hidden")){
-        jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width: '675px'}, 25);
+        jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width: '675px'}, 25, function(){
+            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow", "auto");
+        });
         jQuery(".uif-pageContentWrapper").animate({width: '700px'}, 25);
+
 
         jQuery("#Uif-Navigation").css("width", "0");
         jQuery("#Uif-Navigation").show();
@@ -131,7 +134,10 @@ function showLibraryNav(){
         }});
 
         jQuery(".uif-pageContentWrapper").animate({width: '940px'}, 425);
-        jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width: '916px'}, 450);
+        jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width: '916px'}, 450, function(){
+            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow", "hidden");
+        });
+
     }
 
 }

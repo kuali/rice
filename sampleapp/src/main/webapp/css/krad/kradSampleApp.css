@@ -287,7 +287,7 @@
 
 #ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel {
     min-height: 200px;
-    overflow: auto;
+    overflow: hidden;
     width: 72%;
     border: 1px solid #CCCCCC;
     border-radius: 4px 4px 4px 4px;
@@ -944,4 +944,8 @@ div#KradSampleAppDemo-Row2-Demo1, div#KradSampleAppDemo-Row2-Demo2, div#KradSamp
 
 div#Demo-InputField-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 290px;
+}
+
+div#Demo-TableLayoutDetails-View input[type="text"]{
+    width: 12em;
 }

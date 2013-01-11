@@ -180,6 +180,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutDetails.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAction.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
@@ -266,6 +267,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSequenceResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutDetailsResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoActionResources</value>
       </list>
     </property>
   </bean>

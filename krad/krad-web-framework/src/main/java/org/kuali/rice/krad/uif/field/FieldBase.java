@@ -319,9 +319,7 @@ public class FieldBase extends ComponentBase implements Field {
     }
     
     /**
-     * Field Security object that indicates what authorization (permissions) exist for the field
-     *
-     * @return FieldSecurity instance
+     * @see org.kuali.rice.krad.uif.field.Field#getFieldSecurity()
      */
     public FieldSecurity getFieldSecurity() {
         return (FieldSecurity) super.getComponentSecurity();

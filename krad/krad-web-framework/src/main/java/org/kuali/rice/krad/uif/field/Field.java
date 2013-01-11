@@ -137,4 +137,11 @@ public interface Field extends Component {
      */
     public void setLabelColSpan(int labelColSpan);
 
+    /**
+     * Field Security object that indicates what authorization (permissions) exist for the field
+     *
+     * @return FieldSecurity instance
+     */
+    public FieldSecurity getFieldSecurity();
+
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,8 +88,9 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             Iterator<ParameterBo> resultsIter = results.iterator();
             while (resultsIter.hasNext()) {
                 ParameterBo result = resultsIter.next();
-                if (!pattern.matcher(result.getComponent().getName()).matches()) {
-                    resultsIter.remove();
+                if ((result.getComponent() == null ) ||
+                    (!pattern.matcher(result.getComponent().getName()).matches())) {
+                        resultsIter.remove();
                 }
             }
         }

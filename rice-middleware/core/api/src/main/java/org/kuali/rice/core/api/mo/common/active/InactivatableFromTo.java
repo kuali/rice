@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package org.kuali.rice.core.api.mo.common.active;
 
 import org.joda.time.DateTime;
+
+import java.sql.Timestamp;
 
 /**
  * This interface can be used to identify a model object which has an

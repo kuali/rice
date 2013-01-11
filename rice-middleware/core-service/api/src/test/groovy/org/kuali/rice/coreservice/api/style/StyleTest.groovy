@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package org.kuali.rice.coreservice.api.style
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.coreservice.test.JAXBAssert
+import org.kuali.rice.coreservice.api.style.Style
+import org.kuali.rice.coreservice.api.style.StyleContract
 
 class StyleTest {
 	private static final String STYLE_ID = "1"

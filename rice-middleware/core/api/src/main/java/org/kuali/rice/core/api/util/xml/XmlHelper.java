@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,6 +181,10 @@ public final class XmlHelper {
         for (Method method : methods) {
             String name = method.getName();
             if ("getClass".equals(name)) {
+                continue;
+            }
+            // The post processor could be in another server and we would be unable to retrieve it.
+            if ("getPostProcessor".equals(name)) {
                 continue;
             }
             if (!name.startsWith("get") || method.getParameterTypes().length > 0) {

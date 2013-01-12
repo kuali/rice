@@ -416,6 +416,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             if (this.isShowPageTotal()) {
                 view.assignComponentIds(pageTotalLabel);
+                pageTotalLabel.addDataAttribute("role", "pageTotal");
                 groupItems.add(pageTotalLabel);
             }
 

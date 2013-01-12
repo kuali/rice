@@ -115,7 +115,8 @@ function showLibraryNav(){
 
     if(jQuery("#Uif-Navigation").is(":hidden")){
         jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width: '675px'}, 25, function(){
-            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow", "auto");
+            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-y", "hidden");
+            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-x", "scroll");
         });
         jQuery(".uif-pageContentWrapper").animate({width: '700px'}, 25);
 
@@ -135,10 +136,33 @@ function showLibraryNav(){
 
         jQuery(".uif-pageContentWrapper").animate({width: '940px'}, 425);
         jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width: '916px'}, 450, function(){
-            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow", "hidden");
+            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-y", "hidden");
+            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-x", "hidden");
         });
 
     }
 
+}
+
+/**
+ * Custom totaling function that takes the values and subtracts them from the startingValue.  If no starting value is
+ * supplied, subtracts the values from 0.
+ *
+ * @param values values to subtract from startingValue
+ * @param startingValue(optional) value to subtract the values from, if not supplied this will be 0
+ */
+function subtractValues(values, startingValue){
+    if(!startingValue){
+        //subtract the values from 0 if no startingValue provided
+        startingValue = 0;
+    }
+
+    //subtract each value, values supplied will always be numeric
+    for (var i = 0; i < values.length; i++) {
+        startingValue -= values[i];
+    }
+
+    //return value, whatever is returned is displayed in the total
+    return startingValue;
 }
 

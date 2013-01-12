@@ -64,10 +64,25 @@ public class KradSampleAppForm extends UifFormBase {
 
     // Collections
     private List<UITestObject> collection1 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_2 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_3 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_4 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_5 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_6 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_7 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_8 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_9 = new ArrayList<UITestObject>();
     private List<UITestObject> collection2 = new ArrayList<UITestObject>();
     private List<UITestObject> collection3 = new ArrayList<UITestObject>();
     private List<UITestObject> collection4 = new ArrayList<UITestObject>();
     private List<UITestObject> collection5 = new ArrayList<UITestObject>();
+
+    private List<UITestObject> groupedCollection1 = new ArrayList<UITestObject>();
+    private List<UITestObject> groupedCollection2 = new ArrayList<UITestObject>();
+    private List<UITestObject> groupedCollection3 = new ArrayList<UITestObject>();
+    private List<UITestObject> doubleGroupedCollection = new ArrayList<UITestObject>();
+
+    private String fakeTotal = "123(server value)";
 
     public KradSampleAppForm() {
         super();
@@ -82,6 +97,19 @@ public class KradSampleAppForm extends UifFormBase {
         getCollection1().add(new UITestObject("13", "14", "15", "16"));
         getCollection1().add(new UITestObject("213", "143", "151", "126"));
         getCollection1().add(new UITestObject("133", "144", "155", "156"));
+        getCollection1().add(new UITestObject("25", "14", "15", "15"));
+        getCollection1().add(new UITestObject("1", "5", "5", "4"));
+        getCollection1().add(new UITestObject("5", "5", "5", "5"));
+        getCollection1().add(new UITestObject("5", "7", "3", "1"));
+
+        collection1_2.addAll(collection1);
+        collection1_3.addAll(collection1);
+        collection1_4.addAll(collection1);
+        collection1_5.addAll(collection1);
+        collection1_6.addAll(collection1);
+        collection1_7.addAll(collection1);
+        collection1_8.addAll(collection1);
+        collection1_9.addAll(collection1);
 
         getCollection2().add(new UITestObject("A", "B", "C", "D"));
         getCollection2().add(new UITestObject("1", "2", "3", "4"));
@@ -123,6 +151,74 @@ public class KradSampleAppForm extends UifFormBase {
         collection5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
         collection5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
         collection5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
+
+        groupedCollection1.add(new UITestObject("A", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("A", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("A", "102", "200", "300"));
+        groupedCollection1.add(new UITestObject("A", "103", "200", "300"));
+        groupedCollection1.add(new UITestObject("A", "104", "200", "300"));
+
+        groupedCollection1.add(new UITestObject("B", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("B", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("B", "102", "200", "300"));
+
+        groupedCollection1.add(new UITestObject("C", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("C", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("C", "102", "200", "300"));
+        groupedCollection1.add(new UITestObject("C", "103", "200", "300"));
+
+        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
+
+        groupedCollection2.addAll(groupedCollection1);
+        groupedCollection3.addAll(groupedCollection1);
+
+        doubleGroupedCollection.add(new UITestObject("Fall", "2001", "AAA123", "2"));
+        doubleGroupedCollection.add(new UITestObject("Fall", "2001", "BBB123", "3"));
+        doubleGroupedCollection.add(new UITestObject("Fall", "2001", "CCC123", "4"));
+        doubleGroupedCollection.add(new UITestObject("Fall", "2001", "DDD123", "3"));
+
+        doubleGroupedCollection.add(new UITestObject("Fall", "2002", "AAA123", "3"));
+        doubleGroupedCollection.add(new UITestObject("Fall", "2002", "BBB123", "2"));
+        doubleGroupedCollection.add(new UITestObject("Fall", "2002", "CCC123", "3"));
+
+        doubleGroupedCollection.add(new UITestObject("Fall", "2003", "AAA123", "3"));
+        doubleGroupedCollection.add(new UITestObject("Fall", "2003", "CCC123", "3"));
+
+        doubleGroupedCollection.add(new UITestObject("Spring", "2001", "AAA123", "3"));
+        doubleGroupedCollection.add(new UITestObject("Spring", "2001", "BBB123", "3"));
+        doubleGroupedCollection.add(new UITestObject("Spring", "2001", "CCC123", "3"));
+
+        doubleGroupedCollection.add(new UITestObject("Spring", "2002", "AAA123", "4"));
+        doubleGroupedCollection.add(new UITestObject("Spring", "2002", "BBB123", "4"));
+        doubleGroupedCollection.add(new UITestObject("Spring", "2002", "CCC123", "2"));
+
+        doubleGroupedCollection.add(new UITestObject("Spring", "2003", "AAA123", "4"));
+        doubleGroupedCollection.add(new UITestObject("Spring", "2003", "BBB123", "3"));
+        doubleGroupedCollection.add(new UITestObject("Spring", "2003", "CCC123", "3"));
+        doubleGroupedCollection.add(new UITestObject("Spring", "2003", "DDD123", "2"));
     }
 
     /**
@@ -354,6 +450,70 @@ public class KradSampleAppForm extends UifFormBase {
         this.collection1 = collection1;
     }
 
+    public List<UITestObject> getCollection1_2() {
+        return collection1_2;
+    }
+
+    public void setCollection1_2(List<UITestObject> collection1_2) {
+        this.collection1_2 = collection1_2;
+    }
+
+    public List<UITestObject> getCollection1_3() {
+        return collection1_3;
+    }
+
+    public void setCollection1_3(List<UITestObject> collection1_3) {
+        this.collection1_3 = collection1_3;
+    }
+
+    public List<UITestObject> getCollection1_4() {
+        return collection1_4;
+    }
+
+    public void setCollection1_4(List<UITestObject> collection1_4) {
+        this.collection1_4 = collection1_4;
+    }
+
+    public List<UITestObject> getCollection1_5() {
+        return collection1_5;
+    }
+
+    public void setCollection1_5(List<UITestObject> collection1_5) {
+        this.collection1_5 = collection1_5;
+    }
+
+    public List<UITestObject> getCollection1_6() {
+        return collection1_6;
+    }
+
+    public void setCollection1_6(List<UITestObject> collection1_6) {
+        this.collection1_6 = collection1_6;
+    }
+
+    public List<UITestObject> getCollection1_7() {
+        return collection1_7;
+    }
+
+    public void setCollection1_7(List<UITestObject> collection1_7) {
+        this.collection1_7 = collection1_7;
+    }
+
+    public List<UITestObject> getCollection1_8() {
+        return collection1_8;
+    }
+
+    public void setCollection1_8(List<UITestObject> collection1_8) {
+        this.collection1_8 = collection1_8;
+    }
+
+    public List<UITestObject> getCollection1_9() {
+        return collection1_9;
+    }
+
+    public void setCollection1_9(List<UITestObject> collection1_9) {
+        this.collection1_9 = collection1_9;
+    }
+
     public List<UITestObject> getCollection2() {
         return collection2;
     }
@@ -384,5 +544,45 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setCollection5(List<UITestObject> collection5) {
         this.collection5 = collection5;
+    }
+
+    public List<UITestObject> getGroupedCollection1() {
+        return groupedCollection1;
+    }
+
+    public void setGroupedCollection1(List<UITestObject> groupedCollection1) {
+        this.groupedCollection1 = groupedCollection1;
+    }
+
+    public List<UITestObject> getGroupedCollection2() {
+        return groupedCollection2;
+    }
+
+    public void setGroupedCollection2(List<UITestObject> groupedCollection2) {
+        this.groupedCollection2 = groupedCollection2;
+    }
+
+    public List<UITestObject> getGroupedCollection3() {
+        return groupedCollection3;
+    }
+
+    public void setGroupedCollection3(List<UITestObject> groupedCollection3) {
+        this.groupedCollection3 = groupedCollection3;
+    }
+
+    public List<UITestObject> getDoubleGroupedCollection() {
+        return doubleGroupedCollection;
+    }
+
+    public void setDoubleGroupedCollection(List<UITestObject> doubleGroupedCollection) {
+        this.doubleGroupedCollection = doubleGroupedCollection;
+    }
+
+    public String getFakeTotal() {
+        return fakeTotal;
+    }
+
+    public void setFakeTotal(String fakeTotal) {
+        this.fakeTotal = fakeTotal;
     }
 }

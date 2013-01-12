@@ -45,10 +45,7 @@
       <list>
         <!-- ex:Demo-TableLayoutDetails-Example1 start-->
         <bean id="Demo-TableLayoutDetails-Section1" parent="Uif-TableCollectionSection">
-          <property name="headerText"
-                    value="Row Details Default"/>
-          <property name="instructionalText"
-                    value="Row Details with default settings"/>
+          <property name="header.render" value="false"/>
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject"/>
           <property name="readOnly" value="false"/>
@@ -93,10 +90,7 @@
       <list>
         <!-- ex:Demo-TableLayoutDetails-Example2 start-->
         <bean id="Demo-TableLayoutDetails-Section2" parent="Uif-TableCollectionSection">
-          <property name="headerText"
-                    value="Row Details with image option on, showing two fields in details"/>
-          <property name="instructionalText"
-                    value="Details group contains Field3 and Field4 of the collection object"/>
+          <property name="header.render" value="false"/>
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject"/>
           <property name="propertyName" value="collection1"/>
@@ -166,10 +160,7 @@
       <list>
         <!-- ex:Demo-TableLayoutDetails-Example3 start-->
         <bean id="Demo-TableLayoutDetails-Section3" parent="Uif-TableCollectionSection">
-          <property name="headerText"
-                    value="TableCollection inside the details itself"/>
-          <property name="instructionalText"
-                    value="Details group contains a collection"/>
+          <property name="header.render" value="false"/>
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject"/>
           <property name="propertyName" value="collection4"/>
@@ -245,10 +236,7 @@
       <list>
         <!-- ex:Demo-TableLayoutDetails-Example4 start-->
         <bean id="Demo-TableLayoutDetails-Section4" parent="Uif-TableCollectionSection">
-          <property name="headerText"
-                    value="Stacked Collection with its own tables inside details"/>
-          <property name="instructionalText"
-                    value="Details group contains a collection"/>
+          <property name="header.render" value="false"/>
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject"/>
           <property name="propertyName" value="collection5"/>
@@ -336,8 +324,7 @@
       <list>
         <!-- ex:Demo-TableLayoutDetails-Example5 start-->
         <bean id="Demo-TableLayoutDetails-Section5" parent="Uif-TableCollectionSection">
-          <property name="headerText"
-                    value="Table with details inside details"/>
+          <property name="header.render" value="false"/>
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject"/>
           <property name="propertyName" value="collection3"/>
@@ -422,10 +409,7 @@
       <list>
         <!-- ex:Demo-TableLayoutDetails-Example6 start-->
         <bean id="Demo-TableLayoutDetails-Section6" parent="Uif-TableCollectionSection">
-          <property name="headerText"
-                    value="Row Details Default"/>
-          <property name="instructionalText"
-                    value="Row Details all rows open by default and showing toggle all details button"/>
+          <property name="header.render" value="false"/>
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject"/>
 

@@ -486,6 +486,34 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	}
 
     @Override
+    public List<Principal> getPrincipalsByEntityId(String entityId) {
+        List<Principal> principals = getInnerIdentityService().getPrincipalsByEntityId(entityId);
+        if ( principals == null ) {
+            EntityDefault entity = getEntityDefault(entityId);
+            if (entity != null) {
+                if ( entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+                    principals = entity.getPrincipals();
+                }
+            }
+        }
+        return principals;
+    }
+
+    @Override
+    public List<Principal> getPrincipalsByEmployeeId(String employeeId) {
+        List<Principal> principals = getInnerIdentityService().getPrincipalsByEmployeeId(employeeId);
+        if ( principals == null ) {
+            EntityDefault entity = getEntityDefaultByEmployeeId(employeeId);
+            if (entity != null) {
+                if ( entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+                    principals = entity.getPrincipals();
+                }
+            }
+        }
+        return principals;
+    }
+
+    @Override
 	public Principal getPrincipalByPrincipalNameAndPassword(
 			String principalName, String password) {
 		return getInnerIdentityService().getPrincipalByPrincipalNameAndPassword(

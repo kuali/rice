@@ -736,6 +736,57 @@ public class IdentityServiceImpl implements IdentityService {
         return null;
     }
 
+    @Override
+    public List<Principal> getPrincipalsByEntityId(String entityId) throws RiceIllegalArgumentException {
+        incomingParamCheck(entityId, "entityId");
+
+        List<Principal>  principals = new ArrayList<Principal>();
+        Map<String,Object> criteria = new HashMap<String,Object>(2);
+        criteria.put(KIMPropertyConstants.Person.ENTITY_ID, entityId);
+        Collection<PrincipalBo> principalBos = businessObjectService.findMatching(PrincipalBo.class, criteria);
+
+        if (principalBos != null && !principalBos.isEmpty()) {
+
+            for(PrincipalBo principalBo: principalBos) {
+                Principal principal = PrincipalBo.to(principalBo);
+                principals.add(principal);
+            }
+            return principals;
+        }
+        return null;
+    }
+
+    @Override
+    public List<Principal> getPrincipalsByEmployeeId(String employeeId) throws RiceIllegalArgumentException {
+        incomingParamCheck(employeeId, "employeeId");
+
+        List<Principal>  principals = new ArrayList<Principal>();
+        Map<String,Object> criteria = new HashMap<String,Object>(2);
+        criteria.put(KIMPropertyConstants.Person.EMPLOYEE_ID, employeeId);
+        Collection<EntityEmploymentBo> entityEmploymentBos = businessObjectService.findMatching(EntityEmploymentBo.class, criteria);
+
+        if (entityEmploymentBos != null && !entityEmploymentBos.isEmpty()) {
+            List<String>  entityIds = new ArrayList<String>();
+            for(EntityEmploymentBo entityEmploymentBo: entityEmploymentBos) {
+                String entityId =  entityEmploymentBo.getEntityId();
+                if (StringUtils.isNotBlank(entityId) && !entityIds.contains(entityId)) {
+                    entityIds.add(entityId);
+                }
+            }
+
+            for(String entityId: entityIds) {
+                List<Principal> principalsForEntity = getPrincipalsByEntityId(entityId);
+                if (principalsForEntity != null && !principalsForEntity.isEmpty()) {
+                    principals.addAll(principalsForEntity);
+                }
+            }
+            if (!principals.isEmpty()) {
+                return principals;
+            }
+        }
+        return null;
+    }
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
 	 */

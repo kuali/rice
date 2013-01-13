@@ -489,11 +489,9 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     public List<Principal> getPrincipalsByEntityId(String entityId) {
         List<Principal> principals = getInnerIdentityService().getPrincipalsByEntityId(entityId);
         if ( principals == null ) {
-            EntityDefault entity = getEntityDefault(entityId);
-            if (entity != null) {
-                if ( entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
-                    principals = entity.getPrincipals();
-                }
+            EntityDefault entity = getIdentityArchiveService().getEntityDefaultFromArchive(entityId);
+            if (entity != null && entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+                principals = entity.getPrincipals();
             }
         }
         return principals;
@@ -503,11 +501,9 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     public List<Principal> getPrincipalsByEmployeeId(String employeeId) {
         List<Principal> principals = getInnerIdentityService().getPrincipalsByEmployeeId(employeeId);
         if ( principals == null ) {
-            EntityDefault entity = getEntityDefaultByEmployeeId(employeeId);
-            if (entity != null) {
-                if ( entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
-                    principals = entity.getPrincipals();
-                }
+            EntityDefault entity = getIdentityArchiveService().getEntityDefaultFromArchive(employeeId);
+            if (entity != null && entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+                principals = entity.getPrincipals();
             }
         }
         return principals;

@@ -35,16 +35,14 @@
     <title>Lookup View Type</title>
     <section>
       <title>Lookup View</title>
-      <para>Lookups are used to list sets of data objects of a specific data object class. 
-        This might be used as the initial entry point from the application portal in order
-        to list existing documents for view, edit or copy.  Or it might be used inside of a
-        document to make an association to reference data (e.g. to assign a member to a
-        group).  In both cases the same Lookup View is being used.
-      </para>
-      <para>To create a document-specific lookup view the Uif-LookupView is extended.  The
-        Uif-LookupView consists of two distinct sections, the criteria section and the
-        result section.
-      </para>
+      <para>Lookups are used to list sets of data objects of a specific data object class.  This
+        might be used as the initial entry point from the application portal in order to list
+        existing documents for view, edit, or copy.  Or, it might be used inside of a document to
+        make an association to reference data (e.g. to assign a member to a group).  In both cases,
+        the same Lookup View is being used. </para>
+      <para>To create a document-specific lookup view, the Uif-LookupView is extended.  The
+        Uif-LookupView consists of two distinct sections, the criteria section and the result
+        section. </para>
       <figure>
         <title>Lookup View</title>
         <mediaobject>
@@ -53,51 +51,44 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Extending a lookup from the Uif-LookupView not only provides a standard look but
-        it also removes the burden of creating the individual sections by simply specifying
-        the criteria and result fields. 
-      </para>
+      <para>Extending a lookup from the Uif-LookupView not only provides a standard look, but it
+        also removes the burden of creating the individual sections by simply specifying the
+        criteria and result fields.  </para>
       <programlisting>
-        &lt;bean id=”BookLookupView” parent=”Uif-LookupView”&gt;
-        &lt;property name=”title” value=”Book Lookup” /&gt;
-        &lt;property name=”dataObjectClassName” value=”org.gutenberg.catalog.BookBo” /&gt;
-        &lt;property name=”lookupCriteria” /&gt;
-        &lt;list&gt;
-        &lt;bean parent=”Uif-LookupCriteriaInputField” p:propertyName=”id” /&gt;
-        &lt;bean parent=”Uif-LookupCriteriaInputField” p:propertyName=”title” /&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
-        &lt;property name=”resultFields”&gt;
-        &lt;list&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”id” /&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”title” /&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”numOfPages” /&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
-        &lt;/bean&gt;
+&lt;bean id="BookLookupView" parent="Uif-LookupView"&gt;
+&lt;property name="title" value="Book Lookup" /&gt;
+&lt;property name="dataObjectClassName" value="org.gutenberg.catalog.BookBo" /&gt;
+&lt;property name="lookupCriteria" /&gt;
+&lt;list&gt;
+&lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" /&gt;
+&lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="title" /&gt;
+&lt;/list&gt;
+&lt;/property&gt;
+&lt;property name="resultFields"&gt;
+&lt;list&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="id" /&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="title" /&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="numOfPages" /&gt;
+&lt;/list&gt;
+&lt;/property&gt;
+&lt;/bean&gt;
       </programlisting>
-      <para>As usual we give the lookup bean a unique ID.  The title property will contain the
-        header text of our lookup.  We assign the business object that will be returned by
-        this lookup via the  dataObjectClassName property.  The lookupCriteria property is a
-        list of LookupCriteriaAttributeFields.  These specify by which fields we can narrow
-        the results.  Finally we specify what fields should appear in the result via the
-        resultFields property.  To specify these fields use the Uif-DataFields
-        property.
-      </para>
+      <para>As usual, we give the lookup bean a unique ID.  The title property will contain the
+        header text of our lookup.  We assign the business object that will be returned by this
+        lookup via the dataObjectClassName property.  The lookupCriteria property is a list of
+        LookupCriteriaAttributeFields.  These specify the fields by which we can narrow the
+        results.  Finally, we specify what fields should appear in the result via the resultFields
+        property.  To specify these fields, use the Uif-DataFields property. </para>
     </section>
     <section>
       <title>Lookupable and LookupableImpl</title>
-      <para>For lookups the Lookupable interface needs to be implemented in conjunction with
-        extending the ViewHelperService.  In most cases the out-of-the-box implementation
-        LookupableImpl is sufficient.  If customization of the lookup view rendering
-        lifecycle is needed, the LookupableImpl can be extended and the necessary methods
-        overridden.
-      </para>
-      <para>If we implement our own Lookupable we specify this in the
-        viewHelperServiceClass property of the view.
-      </para>
-      <programlisting>
-        &lt;property name=”viewHelperServiceClass” value=”org.gutenberg.catalog.BookLookupableImpl” /&gt;
+      <para>For lookups, the Lookupable interface needs to be implemented in conjunction with
+        extending the ViewHelperService.  In most cases, the out-of-the-box implementation
+        LookupableImpl is sufficient.  If customization of the lookup view rendering lifecycle is
+        needed, the LookupableImpl can be extended and the necessary methods overridden. </para>
+      <para>If we implement our own Lookupable, we specify this in the viewHelperServiceClass
+        property of the view. </para>
+      <programlisting>&lt;property name="viewHelperServiceClass" value="org.gutenberg.catalog.BookLookupableImpl" /&gt;
       </programlisting>
     </section>
     <section>
@@ -116,9 +107,8 @@
     <section>
       <title>Customizing the Lookup View</title>
       <para>The sorting of the result set can be customized with the defaultSortAttributeName
-        property which specifies the sort key and the defaultSortAscending property which
-        reverses the sorting order.
-      </para>
+        property, which specifies the sort key and the defaultSortAscending property, which reverses
+        the sorting order. </para>
       <section>
         <title>Adding Action URLs</title>
         <para>The resultsActionsField property contains the field with the actions that are
@@ -140,69 +130,59 @@
     <title>Inquiry View Type</title>
     <section>
       <title>Inquiry View</title>
-      <para>The inquiry view is the read-only view used to display detailed information of
-        data objects.  Fields on documents, lookups and other inquiries may have an inquiry
-        link to display the details of these linked data objects. For example we might have
-        an inquiry link on a book title that will bring up the inquiry view of that book
-        with the book’s details, such as author, summary, number of pages, etc.
-      </para>
-      <para>To create a document-specific inquiry view the Uif-InquiryView is extended. </para>
+      <para>The inquiry view is the read-only view used to display detailed information of data
+        objects.  Fields on documents, lookups, and other inquiries may have an inquiry link to
+        display the details of these linked data objects. For example, we might have an inquiry link
+        on a book title that will bring up the inquiry view of that book with the book's details
+        such as author, summary, number of pages, etc. </para>
+      <para>To create a document-specific inquiry view, the Uif-InquiryView is extended. </para>
       <programlisting>
-        &lt;bean id=”BookInquiryView” parent=”Uif-InquiryView”&gt;
-        &lt;property name=”title” value=”Book Inquiry” /&gt;
-        &lt;property name=”dataObjectClassName” value=”org.gutenberg.catalog.BookBo” /&gt;
-        &lt;property name=”items” /&gt;
-        &lt;list&gt;
-        &lt;bean parent=”Uif-GridSection” /&gt;
-        &lt;property name=”layoutManager.numberOfColumns” value=”2” /&gt;
-        &lt;property name=”items”&gt;
-        &lt;list&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”id” /&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”title” /&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”numOfPages” /&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
-        &lt;/bean&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
-        &lt;/bean&gt;
+&lt;bean id="BookInquiryView" parent="Uif-InquiryView"&gt;
+&lt;property name="title" value="Book Inquiry" /&gt;
+&lt;property name="dataObjectClassName" value="org.gutenberg.catalog.BookBo" /&gt;
+&lt;property name="items" /&gt;
+&lt;list&gt;
+&lt;bean parent="Uif-GridSection" /&gt;
+&lt;property name="layoutManager.numberOfColumns" value="2" /&gt;
+&lt;property name="items"&gt;
+&lt;list&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="id" /&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="title" /&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="numOfPages" /&gt;
+&lt;/list&gt;
+&lt;/property&gt;
+&lt;/bean&gt;
+&lt;/list&gt;
+&lt;/property&gt;
+&lt;/bean&gt;
       </programlisting>
-      <para>We identify the inquiry view by assigning a unique ID.  The title property will
-        contain the header text of our inquiry.   We specify the business object that will
-        be displayed by this inquiry with the dataObjectClassName property.   With the items
-        property we can specify one or more groups that will make up the inquiry page.  Here
-        we choose a simple two column grid layout with Uif-InputFields that will display the
-        label in the first column and the value in the second.
-      </para>
+      <para>We identify the inquiry view by assigning a unique ID. The title property will contain
+        the header text of our inquiry. We specify the business object that will be displayed by
+        this inquiry with the dataObjectClassName property. With the items property, we can specify
+        one or more groups that will make up the inquiry page. Here, we choose a simple two column
+        grid layout with Uif-InputFields that will display the label in the first column and the
+        value in the second. </para>
     </section>
     <section>
       <title>Inquirable and InquirableImpl</title>
-      <para>For inquiries the Inquiry interface needs to be implemented in conjunction with
+      <para>For inquiries, the Inquiry interface needs to be implemented in conjunction with
         extending the ViewHelperService.  In most cases the out-of-the-box implementation
-        InquirableImpl is sufficient.  If customization of the inquiry view rendering
-        lifecycle is needed, the InquirableImpl can be extended and the necessary methods
-        overridden.
-      </para>
-      <para>If we implement our own Inquirable we specify this in the
-        viewHelperServiceClass property of the view.
-      </para>
-      <programlisting>
-        &lt;property name=”viewHelperServiceClass” value=”org.gutenberg.catalog.BookInquirableImpl” /&gt;
+        InquirableImpl is sufficient.  If customization of the inquiry view rendering lifecycle is
+        needed, the InquirableImpl can be extended, and the necessary methods overridden. </para>
+      <para>If we implement our own Inquirable, we specify this in the viewHelperServiceClass
+        property of the view. </para>
+      <programlisting>&lt;property name="viewHelperServiceClass" value="org.gutenberg.catalog.BookInquirableImpl" /&gt;
       </programlisting>
     </section>
     <section>
       <title>Customizing the Inquiry View</title>
-      <para>The inquiry view doesn’t restrict us to the label-value grid layout.  You can
-        choose any group layout, introduce nested groups and sections.  You also have all
-        widgets at your disposal which will be displayed in their read-only state.
-      </para>
-      <para>If your view contains a field that creates an inquiry link to the same data object
-        you most likely want to suppress this to avoid unnecessary recursive inquiries that
-        might confuse the user.  To do so set the fieldInquiry.render property to
-        false.
-      </para>
-      <programlisting>
-        &lt;bean parent=”Uif-InputField” p:propertyName=”title” p:fieldInquiry.render="false" /&gt;
+      <para>The inquiry view doesn't restrict us to the label-value grid layout.  You can choose any
+        group layout, and introduce nested groups and sections.  You also have all widgets at your
+        disposal, which will be displayed in their read-only state. </para>
+      <para>If your view contains a field that creates an inquiry link to the same data object, you
+        most likely want to suppress this to avoid unnecessary recursive inquiries that might
+        confuse the user.  To do so, set the fieldInquiry.render property to false. </para>
+      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="title" p:fieldInquiry.render="false" /&gt;
       </programlisting>
     </section>
   </section>
@@ -226,31 +206,29 @@
         </mediaobject>
       </figure>
       <programlisting>
-        &lt;bean id=”BookMaintenanceView” parent=”Uif-MaintenanceView”&gt;
-        &lt;property name=”title” value=”Book Maintenance” /&gt;
-        &lt;property name=”dataObjectClassName” value=”org.gutenberg.catalog.BookBo” /&gt;
-        &lt;property name=”items” /&gt;
-        &lt;list&gt;
-        &lt;bean parent=”Uif-GridSection” /&gt;
-        &lt;property name=”layoutManager.numberOfColumns” value=”2” /&gt;
-        &lt;property name=”items”&gt;
-        &lt;list&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”id” /&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”title” /&gt;
-        &lt;bean parent=”Uif-DataField” p:propertyName=”numOfPages” /&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
-        &lt;/bean&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
-        &lt;/bean&gt;
+&lt;bean id="BookMaintenanceView" parent="Uif-MaintenanceView"&gt;
+&lt;property name="title" value="Book Maintenance" /&gt;
+&lt;property name="dataObjectClassName" value="org.gutenberg.catalog.BookBo" /&gt;
+&lt;property name="items" /&gt;
+&lt;list&gt;
+&lt;bean parent="Uif-GridSection" /&gt;
+&lt;property name="layoutManager.numberOfColumns" value="2" /&gt;
+&lt;property name="items"&gt;
+&lt;list&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="id" /&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="title" /&gt;
+&lt;bean parent="Uif-DataField" p:propertyName="numOfPages" /&gt;
+&lt;/list&gt;
+&lt;/property&gt;
+&lt;/bean&gt;
+&lt;/list&gt;
+&lt;/property&gt;
+&lt;/bean&gt;
       </programlisting>
-      <para>We identify the Maintenance View by a unique Id and assign the heading for the
-        maintenance screen to the title property.  The dataObjectClassName specifies the
-        data object for which we are creating the maintenance view.  For a simple layout we
-        choose the two column Uif-GridSection layout and specify the data object fields in
-        it.
-      </para>
+      <para>We identify the Maintenance View by a unique Id, and assign the heading for the
+        maintenance screen to the title property.  The dataObjectClassName specifies the data object
+        for which we are creating the maintenance view.  For a simple layout, we choose the two
+        column Uif-GridSection layout, and specify the data object fields in it. </para>
     </section>
     <section>
       <title>Comparable and Maintenance Edit</title>
@@ -260,17 +238,14 @@
     </section>
     <section>
       <title>Maintainable and MaintainableImpl</title>
-      <para>For maintainables the Maintainable interface needs to be implemented in
-        conjunction with extending the ViewHelperService.  In most cases the out-of-the-box
-        implementation MaintainableImpl is sufficient.  If customization of the inquiry view
-        rendering lifecycle is needed, the MaintainableImpl can be extended and the
-        necessary methods overridden.
-      </para>
-      <para>If we implement our own Maintainable we specify this in the
-        viewHelperServiceClass property of the view.
-      </para>
+      <para>For maintainables, the Maintainable interface needs to be implemented in conjunction
+        with extending the ViewHelperService.  In most cases, the out-of-the-box implementation
+        MaintainableImpl is sufficient.  If customization of the inquiry view rendering lifecycle is
+        needed, the MaintainableImpl can be extended, and the necessary methods overridden. </para>
+      <para>If we implement our own Maintainable, we specify this in the viewHelperServiceClass
+        property of the view. </para>
       <programlisting>
-        &lt;property name=”viewHelperServiceClass” value=”org.gutenberg.catalog.BookMaintainableImpl” /&gt;
+&lt;property name="viewHelperServiceClass" value="org.gutenberg.catalog.BookMaintainableImpl" /&gt;
       </programlisting>
     </section>
     <section>
@@ -294,24 +269,23 @@
           primary keys of the data object.
         </para>
         <programlisting>
-          &lt;bean id=”BookMaintenanceView” parent=”Uif-MaintenanceView”&gt;
-          ...
-          &lt;property name=”lockingKeys” &gt;
-          &lt;list&gt;
-          &lt;value&gt;id&lt;/value&gt;
-          &lt;/list&gt;
-          &lt;/property&gt;
-          ...
-          &lt;/bean&gt;
+&lt;bean id="BookMaintenanceView" parent="Uif-MaintenanceView"&gt;
+ ...
+&lt;property name="lockingKeys" &gt;
+&lt;list&gt;
+&lt;value&gt;id&lt;/value&gt;
+&lt;/list&gt;
+&lt;/property&gt;
+ ...
+&lt;/bean&gt;
         </programlisting>
       </section>
     </section>
     <section>
       <title>Customizing Maintenance Documents</title>
-      <para>With the Maintenance document we aren’t restricted to the two column grid layout. 
-        You can choose any group layout, introduce nested groups and sections.  All the
-        widgets can be used.
-      </para>
+      <para>With the Maintenance document, we aren't restricted to the two column grid layout.  You
+        can choose any group layout, and introduce nested groups and sections.  All the widgets can
+        be used. </para>
     </section>
   </section>
   <section>
@@ -389,14 +363,13 @@
   <section>
     <title>KIM Primer</title>
     <para>Kuali Identity Management is the component of Rice which deals with actors within an
-      application.  The vast majority of system actors for an application are, sensibly
-      enough, users.  However, KIM was designed to handle non-user actors as well: people who
-      are not actors but still interact with the system such as university applicants or
-      visiting speakers, faculty and staff throughout the university (whether they use the
-      application or not), and even the application itself.  Marshaling all of this
-      information and using it to grant actors abilities to use the application and be
-      notified of its effects is at the heart of what KIM does.
-    </para>
+      application.  The vast majority of system actors for an application are, sensibly enough,
+      users.  However, KIM was designed to handle non-user actors as well: people who are not
+      actors, but still interact with the system such as university applicants or visiting speakers,
+      faculty and staff throughout the university (whether they use the application or not), and
+      even the application itself.  Marshaling all of this information and using it to grant actors
+      abilities to use the application and be notified of its effects is at the heart of what KIM
+      does. </para>
     <para>Keeping track of this information may seem to be an order of the highest complexity,
       but it can be understood as consisting of a mere six high level objects.  First, there
       are the system actors themselves, which KIM labels as "entities".  Entities with the
@@ -408,19 +381,18 @@
       to act upon actions others have taken within the application.  (Permissions should seem
       fairly intuitive since they were covered earlier.)  This primer will work its way
       through the first five of these concepts in turn.  Responsibilities will be covered in
-      more detail in the KEW primer.
+      more detail in the <link linkend="KEWPrimer">KEW primer</link>.
     </para>
     <section>
       <title>
         <emphasis role="bold">Entities</emphasis>
       </title>
-      <para>Once again, system actors are known as "entities" in KIM terminology.  Entities
-        can interact or be acted upon the system in any number of ways.  Most "entities"
-        will represent people, though there are some entities which represent applications
-        (known as "system entities") to be associated the acts of application itself or
-        other applications.  These are rarer cases - typically, there's a handful of system
-        entities known by an application but large numbers of "person" entities.
-      </para>
+      <para>Once again, system actors are known as "entities" in KIM terminology.  Entities can
+        interact or be acted upon the system in any number of ways.  Most "entities" will represent
+        people, though there are some entities which represent applications (known as "system
+        entities") to be associated with the acts of application itself, or other applications. 
+        These are rarer cases - typically, there's a handful of system entities known by an
+        application, but large numbers of "person" entities. </para>
       <para>Since most entities represent people, there's a staggering amount of information
         about entities which KIM can manage.  Entities can be associated with multiple
         addresses, so that home, work, and other addresses can be stored.  The same is true
@@ -433,47 +405,39 @@
         create generic entity attributes for an application, so that an application can
         store extra values, which it itself defines, about the entity.
       </para>
-      <para>Entities managed by KIM are typically maintained through the Person Identity
-        Management document.  However, since it's very common for institutions to already
-        have an identity management system in place, maintenance of KIM information can be
-        overridden via a new implementation of
-        org.kuali.rice.kim.api.identity.IdentityService.  Institutions looking to override
-        that service should check on Rice collaboration lists; there's a good chance that
-        implementations geared towards specific technologies already exist.  At least once
-        Kuali Community created IdentityService implementation - for LDAP - comes packaged
-        with Rice.
-      </para>
-      <para>There is one other important piece of information which KIM manages about that
-        very special subset of entities who use the system: principal information.  A
-        principal is an entity - person or system - which can authenticate into a system and
-        then act within the system.  Principals have a special id (which may be equal to the
-        entity id, depending on how each institution implements KIM) and a "principal name"
-        - the username for the user in the system.
-      </para>
+      <para>Entities managed by KIM are typically maintained through the Person Identity Management
+        document.  However, since it's very common for institutions to already have an identity
+        management system in place, maintenance of KIM information can be overridden via a new
+        implementation of org.kuali.rice.kim.api.identity.IdentityService.  Institutions looking to
+        override that service should check on Rice collaboration lists; there's a good chance that
+        implementations geared towards specific technologies already exist.  At least one Kuali
+        Community created IdentityService implementation - for LDAP - comes packaged with Rice. </para>
+      <para>There is one other important piece of information which KIM manages about that very
+        special subset of entities who use the system: principal information.  A principal is an
+        entity - person or system - which can authenticate into a system, and then act within the
+        system.  Principals have a special id (which may be equal to the entity id, depending on how
+        each institution implements KIM) and a "principal name" - the username for the user in the
+        system. </para>
       <para>Just as entity management can be overridden through the IdentityService, web
-        authentication can be overridden via
-        org.kuali.rice.kim.api.identity.AuthenticationService.  Again, there's a high
-        likelihood that common authentication options already have implementations; ask Rice
-        collab lists.
-      </para>
+        authentication can be overridden via org.kuali.rice.kim.api.identity.AuthenticationService. 
+        Again, there's a high likelihood that common authentication options already have
+        implementations; ask Rice collaboration lists. </para>
     </section>
     <section>
       <title>
         <emphasis role="bold">Groups and Roles</emphasis>
       </title>
-      <para>As useful as it is to have information on all of those various entities, the
-        biggest interaction an application has with them is to treat them as users: to allow
-        authentication of principals and then grant those principals permission to perform
-        certain actions within the system as well as responsibility to view actions which
-        have occurred within the system.  And, of course, granting all of that principal by
-        principal would get tedious quickly and difficult to manage to boot.  Therefore, KIM
-        provides two ways to collect principals together so that principals with similar
-        rights within the application can be treated as a whole.  Once again, KIM offers two
-        main forms of collecting principals: groups and roles.  Roles are terribly
-        important: permissions and responsibilities are only assigned to roles.  Groups,
-        though, tend to be a more intuitive concept and therefore a better starting
-        place.
-      </para>
+      <para>As useful as it is to have information on all of those various entities, the biggest
+        interaction an application has with them is to treat them as users: to allow authentication
+        of principals, and then grant those principals permission to perform certain actions within
+        the system, as well as the responsibility to view actions which have occurred within the
+        system.  And, of course, granting all of that principal by principal would get tedious
+        quickly and difficult to manage to boot.  Therefore, KIM provides two ways to collect
+        principals together so that principals with similar rights within the application can be
+        treated as a whole.  Once again, KIM offers two main forms of collecting principals: groups
+        and roles.  Roles are terribly important: permissions and responsibilities are only assigned
+        to roles.  Groups, though, tend to be a more intuitive concept and therefore a better
+        starting place. </para>
       <para>Groups are simply a collection of principals and other groups.  Together, each
         principal or group collected into the parent group are known as "members".  A group
         has a unique group id to identify it as well as a unique module namespace and group
@@ -483,40 +447,33 @@
         user-assigned module namespace and name.
       </para>
       <para>Of course, such a concept hardly originated with KIM; the KIM code for groups is
-        actually based on older code which was part of KEW.  Furthermore, just like with
-        entities and principals, KIM supports other sources of group data, such as the open
-        source Grouper project or Microsoft Active Directory Services.  Group data is
-        accessed through an implementation of org.kuali.rice.kim.api.group.GroupService. 
-        Rice comes with an implementation of GroupService which holds group information in
-        the KIM database but once again, other implementations for popular group services
-        such as Active Directory Services or Grouper are almost certainly available in the
-        Kuali community.
-      </para>
-      <para>At first glance, roles likely will not seem that different from groups.  Roles
-        also have members, which can be principals, groups, or other roles.  (Note: groups
-        cannot have roles as members.)  Roles have a system assigned role id but are better
-        known by the unique combination of a module namespace and role name.  They even have
-        descriptions.  And yet, roles have the power to be associated with permissions and
-        responsibilities; the only way groups have a similar power is to be a member of a
-        role.  What then makes roles so special?  Unlike groups, roles can provide further
-        information about the principals within them: a role can differentiate among its
-        members.  Because of that, roles typically model certain authorities within the
-        university system.
-      </para>
-      <para>For instance, let's say a Rice application is being written for a state university
-        with nineteen child campuses among the state.  Let's say furthermore that each
-        campus has a collection of people whose job it is to administrate financial aid for
-        students.  That could be modeled as nineteen groups, one for each campus in the
-        state.  But in KIM, a better modeling would be to create one role, which for the
-        purposes of this example will have the module namespace KS-SA and the role name
-        Financial Administrator.  All the financial administrators for each of the nineteen
-        campuses would become members of this role: but each membership would also keep
-        track of which campus the member is associated with.  Groups cannot do that, and
-        this is why KIM roles are so much more powerful than KIM groups.
-      </para>
-      <para>How, then, does this differentiation among members which occurs in roles work? 
-        The next section takes that question up.
-      </para>
+        actually based on older code which was part of KEW.  Furthermore, just like with entities
+        and principals, KIM supports other sources of group data, such as the open source Grouper
+        project or Microsoft Active Directory Services.  Group data is accessed through an
+        implementation of org.kuali.rice.kim.api.group.GroupService.  Rice comes with an
+        implementation of GroupService which holds group information in the KIM database but once
+        again, other implementations for popular group services, such as Active Directory Services
+        or Grouper, are almost certainly available in the Kuali community. </para>
+      <para>At first glance, roles likely will not seem that different from groups.  Roles also have
+        members, which can be principals, groups, or other roles.  (Note: groups cannot have roles
+        as members.)  Roles have a system assigned role id, but are better known by the unique
+        combination of a module namespace and role name.  They even have descriptions.  And yet,
+        roles have the power to be associated with permissions and responsibilities; the only way
+        groups have a similar power is to be a member of a role.  What then makes roles so special? 
+        Unlike groups, roles can provide further information about the principals within them: a
+        role can differentiate among its members.  Because of that, roles typically model certain
+        authorities within the university system. </para>
+      <para>For instance, let's say a Rice application is being written for a state university with
+        nineteen child campuses among the state.  Let's say furthermore that each campus has a
+        collection of people whose job it is to administrate financial aid for students.  That could
+        be modeled as nineteen groups, one for each campus in the state.  But in KIM, a better
+        modeling would be to create one role, which, for the purposes of this example, will have the
+        module namespace KS-SA, and the role name Financial Administrator.  All the financial
+        administrators for each of the nineteen campuses would become members of this role: but each
+        membership would also keep track of which campus the member is associated with.  Groups
+        cannot do that, and this is why KIM roles are so much more powerful than KIM groups. </para>
+      <para>How, then, does this differentiation among members which occurs in roles, work?  The
+        next section takes that question up. </para>
     </section>
     <section>
       <title>
@@ -538,19 +495,17 @@
         data of another KIM entity (typically a role membership).  A closer look at that
         process will be covered in the section on KIM permissions.
       </para>
-      <para>Now, roles do not need to associate with any attributes - though, because an
-        application needs roles to assign to permission and responsibilities, attributeless
-        roles still exist within applications.  Those roles have a KIM type of KUALI Default
-        (which, unsurprisingly, has a unique id of "1").  In this case, when members are
-        added to role via, say, the Role Identity Management document, there are no
-        qualifiers to assign. Screen Shot 40 shows assignment of members with no qualifiers
-        using the Role document.
-      </para>
+      <para>Now, roles do not need to associate with any attributes - though, because an application
+        needs roles to assign to permission and responsibilities, attributeless roles still exist
+        within applications.  Those roles have a KIM type of KUALI Default (which, unsurprisingly,
+        has a unique id of "1").  In this case, when members are added to role via, say, the Role
+        Identity Management document, there are no qualifiers to assign. The below screen shot shows
+        assignment of members with no qualifiers using the Role document. </para>
       <figure>
         <title>Role Screen</title>
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/KRAD_Guide/roleScreen.png"/>
+            <imagedata fileref="../images/KRAD_Guide/roleScreen.png" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -712,7 +667,7 @@
       </para>
     </section>
   </section>
-  <section>
+  <section xml:id="KEWPrimer">
     <title>KEW Primer</title>
     <para>Versions of what is now Kuali Enterprise Workflow existed before the first Kuali
       application was even written.  Why?  Because enterprise applications find it highly

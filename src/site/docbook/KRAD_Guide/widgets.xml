@@ -23,10 +23,10 @@
         <para>Widgets allow developers to produce rich UI functionality. KRAD already contains the
             basic and most commonly used widgets and provides the functionality to configure these
             widgets to suit your needs. Examples of widgets that come packaged in the framework
-            include a date picker and a spinner value selector. The framework also provides the base
-            widget classes that can be extended to create custom widgets. Custom widgets should only
-            be created in instances where the current KRAD functionality cannot be used to deliver
-            the required functionality.</para>
+            include a date picker, and a spinner value selector. The framework also provides the
+            base widget classes that can be extended to create custom widgets. Custom widgets should
+            only be created in instances where the current KRAD functionality cannot be used to
+            deliver the required functionality.</para>
         <section>
             <title>RECAP</title>
             <itemizedlist>
@@ -54,15 +54,15 @@
         <para>Most widgets in KRAD are built using jQuery plugins. jQuery is a cross-browser, open
             source JavaScript library designed to simplify the client-side scripting of HTML. jQuery
             also provides capabilities for developers to create plug-ins on top of the JavaScript
-            library. Currently there are thousands of jQuery plug-ins available on the web that
+            library. Currently, there are thousands of jQuery plug-ins available on the web that
             cover a wide range of functionality such as Ajax helpers, webservices, datagrids,
             dynamic lists,  drag and drop, events and modal windows. Many of these can be used to
             create new widgets.</para>
-        <para>jQuery plugins can usually be called with one argument which is an object literal of
+        <para>jQuery plugins can usually be called with one argument, which is an object literal of
             the settings you would like to override. The base widget classes allow you to pass
             javascript options to these widgets by initializing the componentOptions map property.
-            This map will then be converted to a string literal which will be used to call the
-            jQuery function. The framework widgets have some default options configured and can be
+            This map will then be converted to a string literal, which will be used to call the
+            jQuery function. The framework widgets have some default options configured, and can be
             seen in the UifWidgetDefinitions.xml data dictionary file in the source code. </para>
         <programlisting>&lt;property name="templateOptions">
     &lt;map>
@@ -84,9 +84,9 @@
         &lt;/map>
     &lt;/property>
 &lt;/bean>    </programlisting>
-        <para>In this example the example the date picker  is extended and only the showButtonPanel
-            parameter is changed. The merge = ‘true’ property on map is very important if you want
-            to keep the parent bean’s properties.</para>
+        <para>In this example the date picker  is extended, and only the showButtonPanel parameter
+            is changed. The merge = 'true' property on map is very important if you want to keep the
+            parent bean's properties.</para>
         <section>
             <title>RECAP</title>
             <itemizedlist>
@@ -96,24 +96,24 @@
                 </listitem>
                 <listitem>
                     <para>The properties for the client side component are configured using the
-                        widget’s templateOptions property</para>
+                        widget's templateOptions property</para>
                 </listitem>
                 <listitem>
                     <para>The templateOptions property is a Map. The map key is the name of the
-                        client side property and the map value is the corresponding value for the
+                        client side property, and the map value is the corresponding value for the
                         property</para>
                 </listitem>
                 <listitem>
                     <para>The template options are translated to a Javascript object string and
-                        passed to the plugin as the ‘options’ argument</para>
+                        passed to the plugin as the 'options' argument</para>
                 </listitem>
                 <listitem>
-                    <para>Since the widget properties are ‘loosely’ coupled with the class through
-                        the generic map, we can easily exchange out plugins (without change the Java
-                        widget class)</para>
+                    <para>Since the widget properties are 'loosely' coupled with the class through
+                        the generic map, we can easily exchange out plugins (without changing the
+                        Java widget class)</para>
                 </listitem>
                 <listitem>
-                    <para>In some cases, to make configuration easier for common plugin options a
+                    <para>In some cases, to make configuration easier for common plugin options, a
                         property has been added to the widget class</para>
                 </listitem>
             </itemizedlist>
@@ -122,9 +122,9 @@
     <section>
         <title>Types of Widgets </title>
         <para>The most commonly used widgets have already been added to the KRAD framework. These
-            widgets can be extended and their properties and component option overridden. Some of
-            the options are added as properties on the beans where other will have to be set by
-            adding it to the component options map. </para>
+            widgets can be extended, and their properties and component options overridden. Some of
+            the options are added as properties on the beans where others will have to be set by
+            adding them to the component options map. </para>
         <section>
             <title>Breadcrumbs</title>
             <para>The breadcrumbs widget is used to render the breadcrumbs on the views that allow
@@ -132,12 +132,13 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" pgwide="1">
                         <title>Breadcrumb Properties</title>
+                        <?dbfo table-width="100%" ?>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="1*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.69*"/>
+                            <colspec colname="c3" colnum="3" colwidth="1.15*"/>
                             <thead>
                                 <row>
                                     <entry>
@@ -170,8 +171,8 @@
                                 </row>
                                 <row>
                                     <entry> homewardPathList </entry>
-                                    <entry> &lt;bean parent="Uif-HistoryEntry" p:title= "Home" p:url=
-                                        "@{#ConfigProperties['application.url']}/portal.do"/&gt; </entry>
+                                    <entry> &lt;bean parent="Uif-HistoryEntry" p:title="Home"
+                                        p:url="@{#ConfigProperties['application.url']}/portal.do"/&gt; </entry>
                                     <entry> This history entry that points to the portal will be used
                                         when home is selected. </entry>
                                 </row>
@@ -198,12 +199,12 @@
             <section>
                 <title>Plugin (Template) Options</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" pgwide="1">
                         <title>DatePicker Options</title>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="1*"/>
+                            <colspec colname="c2" colnum="2" colwidth="2.77*"/>
+                            <colspec colname="c3" colnum="3" colwidth="1.89*"/>
                             <thead>
                                 <row>
                                     <entry>
@@ -267,17 +268,17 @@
             <title>DirectInquiry</title>
             <para>The DirectInquiry widget renders the icon next to a field and opens an inquiry
                 lightbox for the current value in that field when clicked. The default setting is to
-                open the inquiry view in a lightbox. This can be changed to open in in a new
+                open the inquiry view in a lightbox. This can be changed to open in a new
                 window.</para>
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" pgwide="1">
                         <title>DirectInquiry Properties</title>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="1*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.46*"/>
+                            <colspec colname="c3" colnum="3" colwidth="1.23*"/>
                             <thead>
                                 <row>
                                     <entry>Property</entry>
@@ -318,9 +319,9 @@
                     <table frame="all">
                         <title>Disclosure Properties</title>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="1*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1*"/>
+                            <colspec colname="c3" colnum="3" colwidth="1*"/>
                             <thead>
                                 <row>
                                     <entry>Property</entry>
@@ -362,19 +363,20 @@
         <section>
             <title>Help</title>
             <para>The Help widget is used to render tooltip help and/or external help.</para>
-            <para>The tooltip help appears when the mouse is placed over the header text of a view, page, section or
-                sub-section or over the label of a field.  Plain text and HTML formatted text are supported.  Tooltip
-                help content is defined in the data dictionary. This is an example of how to add a tooltip on a
-                TextControl:</para>
+            <para>The tooltip help appears when the mouse is placed over the header text of a view,
+                page, section or sub-section, or over the label of a field. Plain text and HTML
+                formatted text are supported. Tooltip help content is defined in the data
+                dictionary. This is an example of how to add a tooltip on a TextControl:</para>
             <programlisting>
 &lt;bean parent="Uif-TextControl"&gt;
     &lt;property name="help"&gt;
         &lt;bean parent="Uif-Help" p:tooltipHelpContent="This is my help text"/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;</programlisting>
-            <para>The external help renders as a clickable help icon which opens a separate window for the help URL.
-                The URL of the help can either be specified via the data dictionary or through a system parameter.
-                This is an example of how to add a external help with the URL from the data dictionary to a View:</para>
+            <para>The external help renders as a clickable help icon which opens a separate window
+                for the help URL. The URL of the help can either be specified via the data
+                dictionary, or through a system parameter. This is an example of how to add a
+                external help with the URL from the data dictionary to a View:</para>
             <programlisting>
 &lt;bean parent="Uif-View"&gt;
     &lt;property name="help"&gt;
@@ -410,19 +412,21 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry> tooltipHelpContent </entry>
+                      <entry>tooltipHelpContent </entry>
                       <entry/>
-                      <entry> Plain or HTML formatted text that should be displayed inside the help tooltip. </entry>
+                      <entry>Plain or HTML formatted text that should be displayed inside the help
+                                        tooltip. </entry>
                     </row>
                     <row>
-                      <entry> externalHelpUrl </entry>
+                      <entry>externalHelpUrl </entry>
                       <entry/>
-                      <entry> The URL for the external help. </entry>
+                      <entry>The URL for the external help. </entry>
                     </row>
                     <row>
-                      <entry> helpDefinition </entry>
+                      <entry>helpDefinition </entry>
                       <entry/>
-                      <entry> The HelpDefinition bean that contains the keys for retrieving the external help URL from the system parameters. </entry>
+                      <entry>The HelpDefinition bean that contains the keys for retrieving the
+                                        external help URL from the system parameters. </entry>
                     </row>
                   </tbody>
                 </tgroup>
@@ -436,18 +440,18 @@
         </section>
         <section>
             <title>Inquiry</title>
-            <para>The inquiry widget is used render the link fields that will open an inquiry
+            <para>The inquiry widget is used to render the link fields that will open an inquiry
                 window. The default setting is to open the inquiry view in a lightbox. This can be
                 changed to open in in a new window.</para>
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" pgwide="1">
                         <title>Inquiry Properties</title>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="1*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.75*"/>
+                            <colspec colname="c3" colnum="3" colwidth="1.38*"/>
                             <thead>
                                 <row>
                                     <entry>Property</entry>
@@ -481,9 +485,9 @@
             <title>Lightbox</title>
             <para>The lightbox widget is used to render content in a modal window. This widget is
                 used in KRAD to open the inquiry and lookup views in the modal lightbox without
-                navigating away from the current view. The jQuery Fancybox plugin is used in KRAD.
+                navigating away from the current view. The jQuery fancyBox plugin is used in KRAD.
                 See <link xlink:href="http://fancyapps.com/fancybox/#docs"
-                >http://fancyapps.com/fancybox/#docs</link>.</para>
+                    >http://fancyapps.com/fancybox/#docs</link>.</para>
             <section>
                 <title>Properties</title>
                 <para>
@@ -541,14 +545,14 @@
                                 <row>
                                     <entry> openEffect </entry>
                                     <entry> fade </entry>
-                                    <entry> The transition type. Can be set to ‘elastic’, ‘fade’ or
-                                        ‘none’ </entry>
+                                    <entry> The transition type. Can be set to 'elastic', 'fade' or
+                                        'none' </entry>
                                 </row>
                                 <row>
                                     <entry> closeEffect </entry>
                                     <entry> fade </entry>
-                                    <entry> The transition type. Can be set to ‘elastic’, ‘fade’ or
-                                        ‘none’ </entry>
+                                    <entry> The transition type. Can be set to 'elastic', 'fade' or
+                                        'none' </entry>
                                 </row>
                                 <row>
                                     <entry> openSpeed </entry>
@@ -565,14 +569,15 @@
                                 <row>
                                     <entry> helpers </entry>
                                     <entry> overlay:{css:{cursor:'arrow'},closeClick:false} </entry>
-                                    <entry> Settings for additional fancybox helpers.  Defaults specify
-                                    an arrow cursor and disables closing of lightbox on mouse click.</entry>
+                                    <entry> Settings for additional fancybox helpers. Defaults
+                                        specify an arrow cursor and disables closing of lightbox on
+                                        mouse click</entry>
                                 </row>
                                 <row>
                                     <entry> type </entry>
                                     <entry> iframe </entry>
-                                    <entry> Forces content type. Can be set to ‘image’, 'html', ’ajax’,
-                                        ’iframe’, ’swf’ or ‘inline’ </entry>
+                                    <entry> Forces content type. Can be set to 'image', 'html',
+                                        'ajax', 'iframe', 'swf' or 'inline' </entry>
                                 </row>
                             </tbody>
                         </tgroup>
@@ -583,24 +588,24 @@
         <section>
             <title>QuickFinder</title>
             <para>The Quickfinder Widget is used for navigating to a lookup from a field. There are
-                two instances of this widget. Firstly there is the standard widget that will do a
+                two instances of this widget. Firstly, there is the standard widget that will do a
                 page refresh when returning the results and reload the parent view. The second
                 instance (Uif-QuickFinderByScript) will return the value by script and not reload
                 the parent view.</para>
             <tip><para>
                     <emphasis role="bold">Return by Script: </emphasis> If you do not need the
-                    parent view to be refreshed when returning values you can return the values by
-                    script and greatly improve the performance. To do this you have to set a field’s
-                    ‘fieldLookup’ property to the Uif-QuickFinderByScript bean. </para></tip>
+                    parent view to be refreshed when returning values, you can return the values by
+                    script and greatly improve the performance. To do this, you have to set a
+                    field's 'fieldLookup' property to the Uif-QuickFinderByScript bean. </para></tip>
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" pgwide="1">
                         <title>QuickFinder Properties</title>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="1*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.84*"/>
+                            <colspec colname="c3" colnum="3" colwidth="1.41*"/>
                             <thead>
                                 <row>
                                     <entry>Property</entry>
@@ -661,8 +666,7 @@
                                 <row>
                                     <entry>showSearchAndExportOptions </entry>
                                     <entry> false </entry>
-                                    <entry> Indicates whether if search and export options are
-                                        enabled </entry>
+                                    <entry> Indicates whether search and export options are enabled </entry>
                                 </row>
                             </tbody>
                         </tgroup>
@@ -672,12 +676,12 @@
             <section>
                 <title>Plugin (Template) Options</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" pgwide="1">
                         <title>Rich Table Options</title>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="1*"/>
+                            <colspec colname="c2" colnum="2" colwidth="3.54*"/>
+                            <colspec colname="c3" colnum="3" colwidth="2.18*"/>
                             <thead>
                                 <row>
                                     <entry>Option</entry>
@@ -700,8 +704,8 @@
                                 </row>
                                 <row>
                                     <entry> oTableTools </entry>
-                                    <entry> aButtons’ : [ ‘csv’, ‘xls’ ] , ‘sSwfPath’ :
-                                        ‘@{#ConfigProperties['application.url']}/krad/scripts/jquery/copy_cvs_xls_pdf.swf’
+                                    <entry> aButtons' : [ 'csv', 'xls' ] , 'sSwfPath' :
+                                        '@{#ConfigProperties['application.url']}/krad/scripts/jquery/copy_cvs_xls_pdf.swf'
                                         } </entry>
                                     <entry>To customize the TableTools options through the
                                         DataTables initialization object, you can make use of this
@@ -741,7 +745,7 @@
                                 <row>
                                     <entry> suggestQuery </entry>
                                     <entry/>
-                                    <entry>Attribute query instance the will be executed to provide
+                                    <entry>Attribute query instance that will be executed to provide
                                         the suggest options </entry>
                                 </row>
                             </tbody>
@@ -786,9 +790,9 @@
         </section>
         <section>
             <title>Tabs</title>
-            <para>The Tabs widget used for creating tabs to break up content in multiple sections.
+            <para>The Tabs widget used for creating tabs to break up content into multiple sections.
                 See <link xlink:href="http://jqueryui.com/demos/tabs/"
-                        >http://jqueryui.com/demos/tabs/</link></para>
+                    >http://jqueryui.com/demos/tabs/</link></para>
             <section>
                 <title>Properties</title>
                 <para>None</para>
@@ -812,8 +816,8 @@
                 <title>Tree Group</title>
                 <para>Uif-TreeGroup - A group that contains a visual tree structure, with parent
                     nodes that can be expanded or collapsed to show or hide their children.  This
-                    allows you to naturally display components that nest within other component for
-                    example a visual representation of folders and files.</para>
+                    allows you to naturally display components that nest within other components;
+                    for example, a visual representation of folders and files.</para>
                 <para>Uif-TreeSection - A section that contains a tree group.  This component is
                     actually an extension of Uif-TreeGroup, and so everything discussed below
                     applies to both, but we'll be using Uif-TreeSection in our examples.  The
@@ -826,7 +830,7 @@
     &lt;property name="propertyName" value="tree"/>
 &lt;/bean>    </programlisting>
                 <para>The most important piece of configuration for this Uif-TreeSection is the
-                    propertyName whose value corresponds to a getter method on the data object or
+                    propertyName whose value corresponds to a getter method on the data object, or
                     the form which returns an object of type
                     org.kuali.rice.core.api.util.tree.Tree.  For the above configuration snippet,
                     the body of this method might look like this:</para>
@@ -834,17 +838,15 @@
 public Tree&lt;Foo, String> getTree() {
     return this.tree;  // return the Tree member of this data object or form
 }</programlisting>
-                <para> This is a straight forward getter method, but we'll need to know more about
-                    the structure of the object we're returning.  Tree has two generic types
-                    associated with it, of the form Tree&lt;T,K&gt;.  For use in a Uif-TreeSection,
-                    the generic type T will correspond to the class of the data object at each node,
-                    and the generic type K will always be String to hold the label text for the
-                    node.  </para>
-                <para>So in the above example, we have a data objects of type Foo that each node in
+                <para>This is a straightforward getter method, but we'll need to know more about the
+                    structure of the object we're returning.  Tree has two generic types associated
+                    with it, of the form Tree&lt;T,K&gt;.  For use in a Uif-TreeSection, the generic
+                    type T will correspond to the class of the data object at each node, and the
+                    generic type K will always be String to hold the label text for the node.  </para>
+                <para>So in the above example, we have a data object of type Foo that each node in
                     the tree holds, and (as always) a corresponding String label. Speaking of nodes,
-                    letslet’s look at some key parts of the APIapi for
-                    org.kuali.rice.core.api.util.Tree and it's right hand class,
-                    org.kuali.rice.core.api.util.tree.Node:</para>
+                    let's look at some key parts of the API for org.kuali.rice.core.api.util.Tree
+                    and it's right hand class, org.kuali.rice.core.api.util.tree.Node:</para>
                 <programlisting>public class Tree&lt;T, K> implements Serializable {
     /*...*/
     // this is where you put the content into the tree.  
@@ -872,12 +874,12 @@ public class Node&lt;T, K> implements Serializable {
 }</programlisting>
                 <para>Your data object containing the tree structure may use other classes than Tree
                     and Node for the internal representation of your tree.  In that case, you can
-                    still utilize Uif-TreeSection is to add a method that translates your internal
-                    tree into a Tree made up of Nodes.  Spend a few minutes following this example
-                    where we are translating a tree made out of Foo objects which contain child Foos
-                    into a Tree of Nodes:</para>
-                <warning><para>If you are not comfortable with recursion, you may want to do some homework on
-                    it to follow along</para></warning>
+                    still utilize Uif-TreeSection to add a method that translates your internal tree
+                    into a Tree made up of Nodes.  Spend a few minutes following this example where
+                    we are translating a tree made out of Foo objects which contain child Foos into
+                    a Tree of Nodes:</para>
+                <warning><para>If you are not comfortable with recursion, you may want to do some homework on it to follow
+                        along.</para></warning>
                 <programlisting>/* somewhere in your form or data object */
 
 /** Getter method referenced from Uif-TreeSection component via the propertyName */
@@ -889,8 +891,8 @@ public Tree&lt;Foo, String> getTree() {
     Node Node&lt;Foo, String> rootNode = new Node&lt;Foo, String>();         
     myTree.setRootElement(rootNode);
 
-    // populate the tree structure with a recursive walk of our Foos          buildFooTree( rootNode,
-    this.getRootFoo() );
+    // populate the tree structure with a recursive walk of our Foos          
+    buildFooTree(rootNode, this.getRootFoo() );
     
     return myTree;
 }           
@@ -921,12 +923,12 @@ private void buildFooTree(Node sprout, Foo foo) {
     }
 }    </programlisting>
                 <para>So far we have talked about trees with nodes that only display labels for
-                    their corresponding data objects.  Each node is in fact rendered in two parts:
+                    their corresponding data objects.  Each node is, in fact, rendered in two parts:
                     the label, and the data group.  There are templates for how nodes are rendered,
                     which are called node prototypes.  Without doing any configuration, the default
-                    node prototype has just an empty container for its data group, which results a
-                    tree that renders similar to the screenshot shown previously, but we can change
-                    that by configuring a custom defaultNodePrototype.</para>
+                    node prototype has just an empty container for its data group, which results in
+                    a tree that renders similar to the screenshot shown previously; but we can
+                    change that by configuring a custom defaultNodePrototype.</para>
                 <programlisting>&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
     &lt;property name="title" value="Tree with Data Group"/>
     &lt;property name="propertyName" value="tree"/>
@@ -986,11 +988,11 @@ private void buildFooTree(Node sprout, Foo foo) {
                 <para>You can see here that we have defined a defaultNodePrototype that contains a
                     dataGroupPrototype with a couple of nested groups for formatting, and four
                     Uif-InputFields inside it.  These could in fact be just about any components
-                    that you wanted to use to represent the data objects on your Nodes.  Still going
-                    along with the notion that the data objects for our nodes are of class Foo, we
-                    can infer from these input fields that class Foo must have properties (members
-                    with corresponding getters and setters) named field1, field2, field3 and
-                    field4.  A tree rendered from the above configuration (with some admittedly
+                    that you wanted to use to represent the data objects on your Nodes.  Still,
+                    going along with the notion that the data objects for our nodes are of class
+                    Foo, we can infer from these input fields that class Foo must have properties
+                    (members with corresponding getters and setters) named field1, field2, field3
+                    and field4.  A tree rendered from the above configuration (with some admittedly
                     silly data in the fields) might look like this:</para>
                 <para><inlinemediaobject>
                         <imageobject>
@@ -1004,7 +1006,7 @@ private void buildFooTree(Node sprout, Foo foo) {
             </section>
             <section>
                 <title>The #np Context Variable</title>
-                <para> When you are working with fields inside the data group of a node, there is a
+                <para>When you are working with fields inside the data group of a node, there is a
                     very powerful tool for referencing other properties of the same node, and that
                     is the #np context variable.  In special properties of components that allow
                     references to other fields in the view, the #np context variable is a
@@ -1012,18 +1014,18 @@ private void buildFooTree(Node sprout, Foo foo) {
                     progressively render a component within a node based on the value of another
                     field in that same node.  Here's a simple example: </para>
                 <programlisting>&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
-    &lt;property name="title" value="Tree with Data Group"/>      
-    &lt;property name="propertyName" value="tree"/>          
-    &lt;property name="defaultNodePrototype">             
+  &lt;property name="title" value="Tree with Data Group"/>      
+  &lt;property name="propertyName" value="tree"/>          
+  &lt;property name="defaultNodePrototype">             
     
-    &lt;!-- our custom node prototype -->         
-    &lt;bean class="org.kuali.rice.krad.uif.container.NodePrototype">           
-        &lt;property name="labelPrototype">             
-          &lt;bean parent="Uif-MessageField"/>           
-        &lt;/property>           
-        &lt;property name="dataGroupPrototype">              
-          &lt;bean parent="Uif-VerticalBoxGroup" p:style="margin-left: 2em;">                
-          &lt;property name="items">                  
+   &lt;!-- our custom node prototype -->         
+   &lt;bean class="org.kuali.rice.krad.uif.container.NodePrototype">           
+    &lt;property name="labelPrototype">             
+      &lt;bean parent="Uif-MessageField"/>           
+    &lt;/property>           
+    &lt;property name="dataGroupPrototype">              
+      &lt;bean parent="Uif-VerticalBoxGroup" p:style="margin-left: 2em;">                
+         &lt;property name="items">                  
               &lt;list>                    
                 &lt;bean parent="Uif-HorizontalFieldGroup">                      
                   &lt;property name="items">                       
@@ -1052,16 +1054,16 @@ private void buildFooTree(Node sprout, Foo foo) {
                             p:instructionalText="instructions 4"                                
                             p:labelField.styleClasses="labelTop"                                
                             p:progressiveRender="@{#np.field3 matches 'A.*'}"/>                        
-                        &lt;/list>                      
-                    &lt;/property>                    
-                  &lt;/bean>                  
-                &lt;/list>                
-              &lt;/property>               
-            &lt;/bean>             
-         &lt;/property>          
-      &lt;/bean>          
-   &lt;/property>   
-&lt;/bean> 
+                      &lt;/list>                      
+                  &lt;/property>                    
+                &lt;/bean>                  
+              &lt;/list>                
+         &lt;/property>               
+      &lt;/bean>                       
+    &lt;/property>   
+   &lt;/bean> 
+  &lt;/property>   
+&lt;/bean>
 &lt;!-- the end of our Uif-TreeSection --></programlisting>
                 <para>The only thing different here from our previous example is that for field4
                     we've made it no longer required, and we've set a progressiveRender on it
@@ -1078,14 +1080,14 @@ private void buildFooTree(Node sprout, Foo foo) {
                 <para>This is a very simple and contrived example, but there are many real world use
                     cases for this type of functionality.  As you can probably imagine, you can
                     create very complex and dynamic trees with nodes that render very differently
-                    depending on the data contained within each based on conditional rendering and
+                    depending on the data contained within each, based on conditional rendering and
                     progressive disclosure using the #np context variable. However, there is another
                     more elemental configuration that can be used to render different nodes of a
                     tree in different ways.</para>
             </section>
             <section>
                 <title>The NodePrototype Map</title>
-                <para>Previously we have specified a custom defaultNodePrototype to change the way
+                <para>Previously, we have specified a custom defaultNodePrototype to change the way
                     that all the nodes in the tree are rendered.  There is another property of the
                     Uif-TreeSection (and Uif-TreeGroup) that can be used to allow trees with nodes
                     containing data objects of differing classes to be rendered in different ways. 
@@ -1145,7 +1147,7 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                 <programlisting>Tree&lt;Object, String&gt; myTree;    </programlisting>
                 <para>Obviously, you could put any object you like in a Node for this tree, but the
                     Framework won't be able to render it unless you have an entry in your
-                    nodePrototypeMap with the Class (or a parent Class) of that object as the key
+                    nodePrototypeMap with the Class (or a parent Class) of that object as the key,
                     and a NodePrototype that is valid for the properties on that object as the
                     value.</para>
             </section>
@@ -1155,8 +1157,8 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
             <para>The Tooltip widget is used to render a tooltip. The jQuery Bubble Popup plugin is
                 used. See <link
                     xlink:href="http://www.maxvergelli.com/jquery-bubble-popup/documentation/"
-                    >http://www.maxvergelli.com/jquery-bubble-popup/documentation/</link>.  Tooltips
-                can displays plain text or HTML and can be added to any component by setting the
+                    >http://www.maxvergelli.com/jquery-bubble-popup/documentation/</link>. Tooltips
+                can display plain text or HTML, and can be added to any component by setting the
                 tooltipContent in the Data Dictionary. This is a example of how to add a tooltip on
                 a TextControl : </para>
             <programlisting>&lt;bean parent="Uif-TextControl">
@@ -1167,12 +1169,12 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" pgwide="1">
                         <title>Tooltip Properties</title>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1.22*"/>
+                            <colspec colname="c1" colnum="1" colwidth="1.4*"/>
                             <colspec colname="c2" colnum="2" colwidth="1*"/>
-                            <colspec colname="c3" colnum="3" colwidth="11.85*"/>
+                            <colspec colname="c3" colnum="3" colwidth="6.97*"/>
                             <thead>
                                 <row>
                                     <entry>Property</entry>
@@ -1184,8 +1186,8 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                                 <row>
                                     <entry>tooltipContent</entry>
                                     <entry> </entry>
-                                    <entry> Plain text or HTML string that will be used to render
-                                        the tooltip content.</entry>
+                                    <entry>Plain text or HTML string that will be used to render the
+                                        tooltip content.</entry>
                                 </row>
                                 <row>
                                     <entry>onFocus</entry>
@@ -1207,12 +1209,12 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
             <section>
                 <title>Plugin (Template) Options</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" pgwide="1">
                         <title>Tooltip Options</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1*"/>
-                            <colspec colname="c2" colnum="2" colwidth="2.36*"/>
-                            <colspec colname="c3" colnum="3" colwidth="6.11*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.66*"/>
+                            <colspec colname="c3" colnum="3" colwidth="2.54*"/>
                             <thead>
                                 <row>
                                     <entry>Option</entry>
@@ -1225,14 +1227,14 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                                     <entry>position</entry>
                                     <entry>top</entry>
                                     <entry>It sets the Bubble Popup on the left, top, right or
-                                        bottom side of the target element;possible values are'left',
-                                        'top', 'right' or 'bottom'.</entry>
+                                        bottom side of the target element; possible values
+                                        are'left', 'top', 'right' or 'bottom'</entry>
                                 </row>
                                 <row>
                                     <entry>align</entry>
                                     <entry>left</entry>
                                     <entry>It sets the Bubble Popup alignment along the side of the
-                                        target element;possible values are 'left', 'center' or
+                                        target element; possible values are 'left', 'center' or
                                         'right' when position is 'top or 'bottom' otherwise 'top',
                                         'middle' or 'bottom' when position is 'left' or
                                         'right'</entry>
@@ -1240,12 +1242,12 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                                 <row>
                                     <entry>alwaysVisible</entry>
                                     <entry>false</entry>
-                                    <entry>If it’s  true , the Bubble Popup maintains the position
-                                        and alignment if it’s possible,  also when the browser
-                                        window is resized ; otherwise the plugin changes (or restore
-                                        back) the Bubble Popup’s position to make it always visible
-                                        in the browser’s viewport, this works as well when browser
-                                        window is resized.</entry>
+                                    <entry>If it's  true, the Bubble Popup maintains the position
+                                        and alignment if it's possible,  also when the browser
+                                        window is resized ; otherwise the plugin changes (or
+                                        restores back) the Bubble Popup's position to make it always
+                                        visible in the browser's viewport, this works as well when
+                                        browser window is resized</entry>
                                 </row>
                                 <row>
                                     <entry>tail</entry>
@@ -1254,21 +1256,20 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                                         option sets the alignment for the tail and possible values
                                         are 'left', 'center' or 'right' when Bubble Popup's position
                                         is 'top' or 'bottom' otherwise 'top', 'middle' or 'bottom'
-                                        when position is 'left' or 'right';</para><para>"hidden" (Boolean) option
-                                            can be trueor false and toggle on or off the tail's image.</para> </entry>
+                                        when position is 'left' or 'right';</para><para>"hidden" (Boolean) option can be true or false and toggle on or off the tail's image</para> </entry>
                                 </row>
                                 <row>
                                     <entry>themePath</entry>
                                     <entry>../krad/plugins/tooltip/jquerybubblepopup-theme/</entry>
                                     <entry>It sets the  relative path  of the folder that contains
-                                        all the themes.</entry>
+                                        all the themes</entry>
                                 </row>
                                 <row>
                                     <entry>themeName</entry>
                                     <entry>black</entry>
                                     <entry>It sets the theme for the Bubble Popup; all the themes
-                                        are saved inside the themePath folder ; possible values are
-                                        : azure, black, blue, green, grey, orange, violet, yellow,
+                                        are saved inside the themePath folder; possible values are:
+                                        azure, black, blue, green, grey, orange, violet, yellow,
                                         all-azure, all-black, all-blue, all-green, all-grey,
                                         all-orange, all-violet, all-yellow</entry>
                                 </row>
@@ -1276,12 +1277,12 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                                     <entry>selectable</entry>
                                     <entry>true</entry>
                                     <entry>When the mouse is over the target element, a bubble popup
-                                        appears; then, if "selectable" is true  you will be able to
-                                        select the content inside it; if the mouse goes out of the 
-                                        button OR the bubble , the popup will be closed.By default,
-                                        this option is  false , then you will not be able to select
-                                        the content because when the mouse is immediately out of the
-                                        button, the popup will be closed. </entry>
+                                        appears; then, if "selectable" is true, you will be able to
+                                        select the content inside it; if the mouse goes out of
+                                        the button OR the bubble, the popup will be closed. By
+                                        default, this option is false, then you will not be able to
+                                        select the content because when the mouse is immediately out
+                                        of the button, the popup will be closed</entry>
                                 </row>
                                 <row>
                                     <entry>distance</entry>
@@ -1293,130 +1294,131 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                                     <entry>width</entry>
                                     <entry>null</entry>
                                     <entry>It sets the width of the Bubble Popup, an integer "10" or
-                                        a string as "10px" is accepted;this option sets a CSS width
+                                        a string as "10px" is accepted; this option sets a CSS width
                                         property for the main &lt;TABLE> in the markup
-                                        template.</entry>
+                                        template</entry>
                                 </row>
                                 <row>
                                     <entry>height</entry>
                                     <entry>null</entry>
                                     <entry>It sets the height of the Bubble Popup, an integer "10"
-                                        or a string as "10px" is accepted;this option sets a CSS
+                                        or a string as "10px" is accepted; this option sets a CSS
                                         height property for the main &lt;TABLE> in the markup
-                                        template.</entry>
+                                        template</entry>
                                 </row>
                                 <row>
                                     <entry>divStyle</entry>
                                     <entry>{}</entry>
                                     <entry>It is an object that contains CSS properties as {color:
-                                        '#000000', margin:'0px'}the CSS properties inside this
+                                        '#000000', margin:'0px'} the CSS properties inside this
                                         object will be added to the main &lt;DIV> tag in the  markup
-                                        template; by default it is an empty object. </entry>
+                                        template; by default it is an empty object</entry>
                                 </row>
                                 <row>
                                     <entry>tableStyle</entry>
                                     <entry>{}</entry>
                                     <entry>It is an object that contains CSS properties as {color:
-                                        '#000000', margin:'0px'}the CSS properties inside this
+                                        '#000000', margin:'0px'} the CSS properties inside this
                                         object will be added to the main &lt;TABLE> tag in the 
-                                        markup template ;by default it is an empty object. </entry>
+                                        markup template; by default it is an empty object</entry>
                                 </row>
                                 <row>
                                     <entry>innerHtml</entry>
                                     <entry>null</entry>
-                                    <entry>The inner text inside the Bubble Popup, it can contains
-                                        HTML tags. </entry>
+                                    <entry>The inner text inside the Bubble Popup, it can contain
+                                        HTML tags</entry>
                                 </row>
                                 <row>
                                     <entry>innerHtmlStyle</entry>
                                     <entry>{}</entry>
                                     <entry>It is an object that contains CSS properties as {color:
-                                        '#000000', margin:'0px'}the CSS properties inside this
+                                        '#000000', margin:'0px'} the CSS properties inside this
                                         object will be added to the &lt;TD> tag container with
-                                        "{BASE CLASS}-innerHtml" as class attribute in the  markup
-                                        template ; by default it is an empty object. </entry>
+                                        "{BASE CLASS}-innerHtml" as class attribute in the markup
+                                        template; by default it is an empty object</entry>
                                 </row>
                                 <row>
-                                    <entry> dropShadow</entry>
+                                    <entry>dropShadow</entry>
                                     <entry>true</entry>
                                     <entry>Drop the shadow ( true ) or not ( false ) for the Bubble
-                                        Popup.</entry>
+                                        Popup</entry>
                                 </row>
                                 <row>
                                     <entry>manageMouseEvents</entry>
                                     <entry>false</entry>
                                     <entry>Do not change this property as KRAD overrides this to
-                                        false.</entry>
+                                        false</entry>
                                 </row>
                                 <row>
                                     <entry>mouseOver</entry>
                                     <entry>show</entry>
                                     <entry>It adds a managed mouseover event to the target DOM
                                         element associated with the Bubble Popup; possible values
-                                        are 'show' or 'hide'.  'show' : when mouse is over the
-                                        target element, show the Bubble Popup associated with it.
-                                        'hide' : when mouse is over the target element, hide the
-                                        Bubble Popup associated with it.</entry>
+                                        are 'show' or 'hide'. 'show' : when mouse is over the target
+                                        element, show the Bubble Popup associated with it. 'hide' :
+                                        when mouse is over the target element, hide the Bubble Popup
+                                        associated with it</entry>
                                 </row>
                                 <row>
                                     <entry>mouseOut</entry>
                                     <entry>hide</entry>
                                     <entry>It adds a managed mouseout event to the target DOM
-                                        element associated with the Bubble Popup;possible values are
-                                        'show' or 'hide'. 'show' : when mouse is out the target
-                                        element, show the Bubble Popup associated with it.  'hide' :
-                                        when mouse is out the target element, hide the Bubble Popup
-                                        associated with it.</entry>
+                                        element associated with the Bubble Popup; possible values
+                                        are 'show' or 'hide'. 'show' : when mouse is out of the
+                                        target element, show the Bubble Popup associated with it.
+                                        'hide' : when mouse is out of the target element, hide the
+                                        Bubble Popup associated with it</entry>
                                 </row>
                                 <row>
                                     <entry>openingSpeed</entry>
                                     <entry>250</entry>
-                                    <entry>It sets the opening speed.</entry>
+                                    <entry>It sets the opening speed</entry>
                                 </row>
                                 <row>
                                     <entry>closingSpeed</entry>
                                     <entry>250</entry>
-                                    <entry>It sets the closing speed.</entry>
+                                    <entry>It sets the closing speed</entry>
                                 </row>
                                 <row>
                                     <entry>openingDelay</entry>
                                     <entry>0</entry>
                                     <entry>It sets a delay in milliseconds when the Bubble Popup is
-                                        opening.</entry>
+                                        opening</entry>
                                 </row>
                                 <row>
                                     <entry>closingDelay</entry>
                                     <entry>0</entry>
                                     <entry>It sets a delay in milliseconds when the Bubble Popup is
-                                        closing.</entry>
+                                        closing</entry>
                                 </row>
                                 <row>
                                     <entry>baseClass</entry>
                                     <entry>jquerybubblepopup</entry>
                                     <entry>It sets the base class name saved in the CSS file
-                                        "jquery-bubble-popup.css"; generally you don’t need to edit
+                                        "jquery-bubble-popup.css"; generally you don't need to edit
                                         this option, it is only useful if other CSS classes declared
                                         inside the document interfere with the main class of the
-                                        Bubble Popup;in this case, You will need only to choose a
+                                        Bubble Popup; in this case, you will need only to choose a
                                         new valid name for the base class and set this option with
-                                        it, then You need to replace all occurrences of the base
+                                        it, then you need to replace all occurrences of the base
                                         class name "jquerybubblepopup" inside the
-                                        "jquery-bubble-popup.css" file with the new name. </entry>
+                                        "jquery-bubble-popup.css" file with the new name</entry>
                                 </row>
                                 <row>
                                     <entry>themeMargins</entry>
                                     <entry> azure </entry>
                                     <entry>It sets the theme for the Bubble Popup; all the themes
-                                        are saved inside the folder "jquerybubblepopup-theme/" ;
-                                        possible values are:azure, black, blue, green, grey, orange,
-                                        violet, yellow, all-azure, all-black, all-blue, all-green,
-                                        all-grey, all-orange, all-violet, all-yellow.</entry>
+                                        are saved inside the folder "jquerybubblepopup-theme/";
+                                        possible values are: azure, black, blue, green, grey,
+                                        orange, violet, yellow, all-azure, all-black, all-blue,
+                                        all-green, all-grey, all-orange, all-violet,
+                                        all-yellow</entry>
                                 </row>
                                 <row>
                                     <entry>afterShown</entry>
                                     <entry>function(){}</entry>
                                     <entry>It sets a callback function to execute when Bubble Popup
-                                        is opened; You can set it as
+                                        is opened; you can set it as
                                         jQuery('.button').CreateBubblePopup({innerHtml: 'This is a
                                         Bubble Popup!', afterShown: function(){alert('Bubble Popup
                                         is open!');}});</entry>
@@ -1425,14 +1427,14 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                                     <entry>afterHidden</entry>
                                     <entry>function(){}</entry>
                                     <entry>It sets a callback function to execute when Bubble Popup
-                                        is closed.</entry>
+                                        is closed</entry>
                                 </row>
                                 <row>
                                     <entry>hideElementId</entry>
                                     <entry>{}</entry>
-                                    <entry>Insert in the array all IDs of the elements that You want
+                                    <entry>Insert in the array all IDs of the elements that you want
                                         to hide; it is useful if any element interfere with a Bubble
-                                        Popup. By default, it is an empty array.</entry>
+                                        Popup. By default, it is an empty array</entry>
                                 </row>
                             </tbody>
                         </tgroup>
@@ -1443,28 +1445,28 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
     </section>
     <section>
         <title>Creating a New Widget </title>
-        <para>To create a new widget basically takes five steps.  First you have to find the
+        <para>To create a new widget basically takes five steps.  First, you have to find the
             appropriate jQuery plugin or JavaScript function that will satisfy your widget
-            requirements. Secondly one needs to create a Java widget class that extends the widget
-            base. Thirdly you would create the FreeMarker template file that will render the widget on
-            the browser. The fourth step is to create a custom JavaScript would only be necessary in
-            some cases when you need to pass the component id to the jQuery select. Lastly you
-            need to create the spring beans definitions.</para>
-        <para>For our exercise application we will look at adding a spinner widget that will render
+            requirements. Secondly, one needs to create a Java widget class that extends the widget
+            base. Thirdly, you would create the FreeMarker template file that will render the widget
+            on the browser. The fourth step is to create a custom JavaScript, which would only be
+            necessary in some cases when you need to pass the component id to the jQuery select.
+            Lastly, you need to create the spring beans definitions.</para>
+        <para>For our exercise application, we will look at adding a spinner widget that will render
             spinner buttons on an input control to make increasing and decreasing numeric values
             without typing.</para>
         <section>
             <title>jQuery Plugin</title>
-            <para>When choosing the jQuery plugin to use for the spinner widget we had to take the
+            <para>When choosing the jQuery plugin to use for the spinner widget, we had to take the
                 following into consideration. We looked for a plugin that is in a stable release and
                 not a Beta release. We also compare our requirements with the features that the
-                plugin has available. For this example we decided on the Smart Spin plugin. </para>
+                plugin has available. For this example, we decided on the Smart Spin plugin. </para>
             <tip><para>
-                    <emphasis role="bold">Choosing Plugins:</emphasis> When choosing plugins first
-                    have look at the current jQuery libraries like jQuery UI that is already being
-                    imported to see if they might not have a plugin that suits your needs. If
+                    <emphasis role="bold">Choosing Plugins:</emphasis> When choosing plugins, first
+                    have look at the current jQuery libraries (like jQuery UI) that are already
+                    being imported to see if they might not have a plugin that suits your needs. If
                     choosing a new library, remember to include the .js and .css files in the
-                    ‘stylesheets’ and ‘jsFiles’ properties of your view. </para></tip>
+                    'stylesheets' and 'jsFiles' properties of your view. </para></tip>
         </section>
         <section>
             <title> Java Widget Class </title>
@@ -1483,9 +1485,9 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
       super.performFinalize(view, model, parent);
   }
 }    </programlisting>
-            <para>For the spinner widget we will also create a spinner control that extends the
+            <para>For the spinner widget, we will also create a spinner control that extends the
                 org.kuali.rice.krad.uif.control.TextControl. This control will have the spinner
-                widget class as a property that will be used in the control’s template to render the
+                widget class as a property that will be used in the control's template to render the
                 spinner controls.</para>
             <programlisting>public class SpinnerControl extends TextControl {
   private static final long serialVersionUID = -8267606288443759880L;
@@ -1527,7 +1529,7 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
             <title>FreeMarker Template</title>
             <para>Because we extended the TextControl to create the SpinnerControl widget class, we
                 will do the same when creating the template. We will invoke the text control macro
-                to include the standard text control. To render the spinner buttons on the control
+                to include the standard text control. To render the spinner buttons on the control,
                 we use the script macro to call the createSpinner function that will add the spinner
                 plugin on that text field. We pass the specific SpinnerControl id and the component
                 options as parameters.</para>
@@ -1593,50 +1595,49 @@ function createSpinner(id, options) {      
                 <para>Widgets allow developers to produce rich UI functionality</para>
             </listitem>
             <listitem>
-                <para>KRAD already contains the basic and most commonly used widgets and
-                    provides the functionality to configure these widgets to suit your
-                    needs.</para>
+                <para>KRAD already contains the basic and most commonly used widgets and provides
+                    the functionality to configure these widgets to suit your needs</para>
             </listitem>
             <listitem>
-                <para>Examples of widgets that come packaged in the framework include a date
-                    picker, a spinner value selector, breadcrumbs and a lightbox widget.</para>
+                <para>Examples of widgets that come packaged in the framework include a date picker,
+                    a spinner value selector, breadcrumbs, and a lightbox widget</para>
             </listitem>
             <listitem>
-                <para>jQuery plugins can usually be called with one argument which is an object
+                <para>jQuery plugins can usually be called with one argument, which is an object
                     literal of the settings you would like to override. The base widget classes
                     allow you to pass javascript options to these widgets by initializing the
                     templatecomponentOptions map property. The base widget classes can be
-                    overridden and properties can be changed or added to the
-                    componentOptionsMap.</para>
+                    overridden, and properties can be changed or added to the
+                    componentOptionsMap</para>
             </listitem>
             <listitem>
-                <para>The framework allows you to create custom widgets.</para>
+                <para>The framework allows you to create custom widgets</para>
             </listitem>
             <listitem>
                 <para>There are many jQuery plugins available online that can be used to create
                     new widgets</para>
             </listitem>
             <listitem>
-                <para>The main steps of creating a custom widget are :<itemizedlist>
-                    <listitem>
-                        <para> Choose the appropriate jQuery plugin if one is needed </para>
-                    </listitem>
-                    <listitem>
-                        <para>Create widget class by extending
-                            org.kuali.rice.krad.uif.widget.WidgetBase  </para>
-                    </listitem>
-                    <listitem>
-                        <para>Create the template file. </para>
-                    </listitem>
-                    <listitem>
-                        <para>Create the custom JavaScript function that will initialize the
-                            plugin. </para>
-                    </listitem>
-                    <listitem>
-                        <para>Add the spring bean definitions in the Data Dictionary.      
-                        </para>
-                    </listitem>
-                </itemizedlist></para>
+                <para>The main steps of creating a custom widget are:<itemizedlist>
+                        <listitem>
+                            <para> Choose the appropriate jQuery plugin if one is needed </para>
+                        </listitem>
+                        <listitem>
+                            <para>Create widget class by extending
+                                org.kuali.rice.krad.uif.widget.WidgetBase </para>
+                        </listitem>
+                        <listitem>
+                            <para>Create the template file </para>
+                        </listitem>
+                        <listitem>
+                            <para>Create the custom JavaScript function that will initialize the
+                                plugin </para>
+                        </listitem>
+                        <listitem>
+                            <para>Add the spring bean definitions in the Data Dictionary     
+                            </para>
+                        </listitem>
+                    </itemizedlist></para>
             </listitem>
         </itemizedlist>
     </section>

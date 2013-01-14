@@ -385,6 +385,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Header-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Image"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Image-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Space"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Space-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

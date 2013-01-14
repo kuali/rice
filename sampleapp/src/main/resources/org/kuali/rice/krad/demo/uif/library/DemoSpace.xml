@@ -20,37 +20,27 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <!-- MessageField demo -->
-  <bean id="Demo-MessageField-View" parent="ComponentLibraryView">
-    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoMessageField.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.MessageField"/>
-    <property name="docBookAnchor" value="d6813e7355"/>
+  <!-- Space demo -->
+  <bean id="Demo-Space-View" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoSpace.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.Space"/>
+    <property name="docBookAnchor" value="d6813e6909"/>
     <property name="demoGroups">
       <list>
-        <ref bean="Demo-MessageField-Example1"/>
-        <ref bean="Demo-MessageField-Example2"/>
+        <ref bean="Demo-Space-Example1"/>
       </list>
     </property>
   </bean>
 
   <!-- Default -->
-  <bean id="Demo-MessageField-Example1"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Space-Example1"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-MessageField-Example1 start-->
-        <bean parent="Uif-MessageField" p:messageText="Message Field Text"/>
-        <!-- ex:Demo-MessageField-Example1 end-->
-      </list>
-    </property>
-  </bean>
-
-  <!-- Expression text -->
-  <bean id="Demo-MessageField-Example2"  parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-MessageField-Example2 start-->
-        <bean parent="Uif-MessageField" p:messageText="Message Field with expression text: '@{messageField1}'"/>
-        <!-- ex:Demo-MessageField-Example2 end-->
+        <!-- ex:Demo-Space-Example1 start-->
+        <bean parent="Uif-MessageField" p:messageText="Before space"/>
+        <bean parent="Uif-Space"/>
+        <bean parent="Uif-MessageField" p:messageText="After space"/>
+        <!-- ex:Demo-Space-Example1 end-->
       </list>
     </property>
   </bean>

@@ -523,7 +523,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             // Encrypt value if it is a secure field
             if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
                 try {
-                    fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
                     throw new RuntimeException(e);
@@ -858,7 +860,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
             if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
                 try {
-                    fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
                     throw new RuntimeException(e);
@@ -1393,10 +1397,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 if (boAuthzService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, field.getPropertyName())) {
                     AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), field.getPropertyName());
                     Person user = GlobalVariables.getUserSession().getPerson();
-                    String decryptedValue;
+                    String decryptedValue = "";
                     try {
                         String cipherText = StringUtils.removeEnd(field.getPropertyValue(), EncryptionService.ENCRYPTION_POST_PREFIX);
-                        decryptedValue = getEncryptionService().decrypt(cipherText);
+                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                            decryptedValue = getEncryptionService().decrypt(cipherText);
+                        }
                     } catch (GeneralSecurityException e) {
                         throw new RuntimeException("Error decrypting value for business object " + businessObjectClass + " attribute " + field.getPropertyName(), e);
                     }

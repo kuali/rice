@@ -534,6 +534,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     protected HtmlData.AnchorHtmlData generateInitiatorUrl(Person person) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
+        if ( person == null || StringUtils.isBlank(person.getPrincipalId()) ) {
+            return link;
+        }
         if (isRouteLogPopup()) {
             link.setTarget("_blank");
         }
@@ -542,7 +545,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         }
         link.setDisplayText("Initiator Inquiry for User with ID:" + person.getPrincipalId());
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KIM_URL) + "/" +
-                "identityManagementPersonInquiry.do?principalId=" + person.getPrincipalId();
+            "identityManagementPersonInquiry.do?principalId=" + person.getPrincipalId();
         link.setHref(url);
         return link;
     }

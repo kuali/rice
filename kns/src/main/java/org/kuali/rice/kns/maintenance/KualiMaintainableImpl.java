@@ -17,6 +17,7 @@ package org.kuali.rice.kns.maintenance;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kim.api.identity.PersonService;
@@ -159,9 +160,11 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 						// take off the postfix
 						encryptedValue = StringUtils.stripEnd(encryptedValue, EncryptionService.ENCRYPTION_POST_PREFIX);
-						String decryptedValue = getEncryptionService().decrypt(encryptedValue);
+                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                            String decryptedValue = getEncryptionService().decrypt(encryptedValue);
 
-						fieldValues.put(fieldName, decryptedValue);
+						    fieldValues.put(fieldName, decryptedValue);
+                        }
 					}
 					else
 						throw new RuntimeException("The field value for field name " + fieldName

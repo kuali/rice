@@ -81,7 +81,9 @@ public class DisplayInactivationBlockersForm extends KualiForm {
             // check if field is a secure
             if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, primaryKeyFieldName)) {
                 try {
-                	primaryKeyFieldValue = encryptionService.decrypt(primaryKeyFieldValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                	    primaryKeyFieldValue = encryptionService.decrypt(primaryKeyFieldValue);
+                    }
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Unable to decrypt secure field for BO " + businessObjectClassName + " field " + primaryKeyFieldName, e);

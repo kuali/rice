@@ -20,17 +20,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-<bean id="InitiatedDocumentView" parent="Uif-FormView">
+  <bean id="InitiatedDocumentView" parent="Uif-FormView">
     <property name="title" value="The Document you have selected cannot be opened."/>
     <property name="footer">
       <ref bean="InitiatedDocumentFooter"/>
     </property>
-    <property name="breadcrumbs">
-      <bean parent="Uif-Breadcrumbs">
-       <property name="render" value="false"/>
-      </bean>
+    <property name="theme">
+      <bean parent="Uif-ClassicKnsTheme"/>
     </property>
-    <property name="formClass" value="org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm" />
+    <property name="formClass" value="org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm"/>
   </bean>
 
   <bean id="InitiatedDocumentView-KNS" parent="InitiatedDocumentView">
@@ -40,13 +38,13 @@
   </bean>
 
 
-  <bean id="InitiatedDocumentFooter" parent="Uif-FooterBase">
-    <property name="items">
-      <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
-      </list>
-    </property>
+<bean id="InitiatedDocumentFooter" parent="Uif-FooterBase">
+  <property name="items">
+    <list>
+      <bean parent="Uif-PrimaryActionButton" p:methodToCall="close" p:actionLabel="Close" />
+    </list>
+  </property>
 
-  </bean>
+</bean>
 
 </beans>

@@ -120,8 +120,10 @@ class EntityExternalIdentifierBo extends PersistableBusinessObjectBase implement
 		evaluateExternalIdentifierType();
 		if ( encryptionRequired && StringUtils.isNotEmpty(this.externalId) ) {
 			try {
-				this.externalId = CoreApiServiceLocator.getEncryptionService().encrypt(this.externalId);
-				this.decryptionNeeded = true;
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+				    this.externalId = CoreApiServiceLocator.getEncryptionService().encrypt(this.externalId);
+				    this.decryptionNeeded = true;
+                }
 			}
 			catch ( Exception e ) {
 				LOG.info("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
@@ -133,7 +135,9 @@ class EntityExternalIdentifierBo extends PersistableBusinessObjectBase implement
 		evaluateExternalIdentifierType();
 		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
 			try {
-				this.externalId = CoreApiServiceLocator.getEncryptionService().decrypt(this.externalId);
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+				    this.externalId = CoreApiServiceLocator.getEncryptionService().decrypt(this.externalId);
+                }
 			}
 			catch ( Exception e ) {
 				LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
@@ -154,7 +158,9 @@ class EntityExternalIdentifierBo extends PersistableBusinessObjectBase implement
 		evaluateExternalIdentifierType();
 		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
 			try {
-				return CoreApiServiceLocator.getEncryptionService().decrypt(this.externalId);
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+				    return CoreApiServiceLocator.getEncryptionService().decrypt(this.externalId);
+                }
 			}
 			catch ( Exception e ) {
 				LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");

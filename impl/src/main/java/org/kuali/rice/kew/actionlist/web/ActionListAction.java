@@ -117,7 +117,7 @@ public class ActionListAction extends KualiAction {
         headerButtons.add(eb);
         eb = new ExtraButton();
         eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-refresh.gif");
-        eb.setExtraButtonProperty("methodToCall.start");
+        eb.setExtraButtonProperty("methodToCall.refresh");
 
         headerButtons.add(eb);
         eb = new ExtraButton();
@@ -129,7 +129,14 @@ public class ActionListAction extends KualiAction {
         return headerButtons;
     }
 
-
+    @Override
+    public ActionForward refresh(ActionMapping mapping,
+                                 ActionForm form,
+                           		 HttpServletRequest request,
+                           		 HttpServletResponse response) throws Exception {
+        request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
+        return start(mapping, form, request, response);
+    }
 
     @Override
     protected ActionForward defaultDispatch(ActionMapping mapping,

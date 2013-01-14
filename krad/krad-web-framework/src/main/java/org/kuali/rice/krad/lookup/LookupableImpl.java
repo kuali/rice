@@ -261,7 +261,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 if (fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
                     String encryptedValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
                     try {
-                        fieldValue = getEncryptionService().decrypt(encryptedValue);
+                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                            fieldValue = getEncryptionService().decrypt(encryptedValue);
+                        }
                     } catch (GeneralSecurityException e) {
                         LOG.error("Error decrypting value for business object class " + getDataObjectClass() +
                                 " attribute " + fieldName, e);

@@ -695,7 +695,9 @@ public final class FieldUtils {
                 	field.setEncryptedValue(fieldValue.toString());
                 }
                 else {
-                	field.setEncryptedValue(CoreApiServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                	    field.setEncryptedValue(CoreApiServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
+                    }
                 }
             }
             catch (GeneralSecurityException e) {
@@ -1516,14 +1518,19 @@ public final class FieldUtils {
     private static List<Field> constructFieldsForAttributeDefinition(RemotableAttributeField remotableAttributeField) {
         List<Field> fields = new ArrayList<Field>();
         if (remotableAttributeField.getAttributeLookupSettings() != null
-                && remotableAttributeField.getAttributeLookupSettings().isRanged()
-                && (!remotableAttributeField.getDataType().equals(DataType.DATE)
-                    && !remotableAttributeField.getDataType().equals(DataType.DATETIME))) {
+                && remotableAttributeField.getAttributeLookupSettings().isRanged()) {
             // create two fields, one for the "from" and one for the "to"
             AttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
             // Create a pair of range input fields for a ranged attribute
             // the lower bound is prefixed to distinguish it from the upper bound, which retains the original field name
-            String label = StringUtils.defaultString(lookupSettings.getLowerLabel(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
+            String attrLabel;
+            if (StringUtils.isBlank(remotableAttributeField.getLongLabel())) {
+                attrLabel =  remotableAttributeField.getShortLabel();
+            } else {
+                attrLabel =  remotableAttributeField.getLongLabel();
+            }
+            String label = StringUtils.defaultString(lookupSettings.getLowerLabel(), attrLabel
+                + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
             Field lowerField = new Field(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + remotableAttributeField.getName(), label);
             lowerField.setMemberOfRange(true);
             lowerField.setAllowInlineRange(false);
@@ -1531,15 +1538,22 @@ public final class FieldUtils {
             if (lookupSettings.isLowerDatePicker() != null) {
                 lowerField.setDatePicker(lookupSettings.isLowerDatePicker());
             }
+            if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
+                lowerField.setFieldDataType(remotableAttributeField.getDataType().name().toLowerCase());
+            }
             fields.add(lowerField);
 
-            label = StringUtils.defaultString(lookupSettings.getUpperLabel(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
+            label = StringUtils.defaultString(lookupSettings.getUpperLabel(), attrLabel
+                + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
             Field upperField = new Field(remotableAttributeField.getName(), label);
             upperField.setMemberOfRange(true);
             upperField.setAllowInlineRange(false);
             upperField.setRangeFieldInclusive(lookupSettings.isUpperBoundInclusive());
             if (lookupSettings.isUpperDatePicker() != null) {
                 upperField.setDatePicker(lookupSettings.isUpperDatePicker());
+            }
+            if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
+                upperField.setFieldDataType(remotableAttributeField.getDataType().name().toLowerCase());
             }
             fields.add(upperField);
         } else {
@@ -1627,25 +1641,31 @@ public final class FieldUtils {
             quickfinder.setLookupParameters(toMap(field.getLookupParameters()));
             widgets.add(quickfinder);
         }
+        RemotableAttributeLookupSettings.Builder lookupSettings = null;
         if (builder.getDataType().equals(DataType.DATETIME)
                 || builder.getDataType().equals(DataType.DATE)) {
             if (field.isRanged()) {
-                RemotableAttributeLookupSettings.Builder lookupSettings = RemotableAttributeLookupSettings.Builder.create();
+                lookupSettings = RemotableAttributeLookupSettings.Builder.create();
                 lookupSettings.setRanged(field.isRanged());
                 if (field.isDatePicker()) {
                     lookupSettings.setLowerDatePicker(Boolean.TRUE);
                     lookupSettings.setUpperDatePicker(Boolean.TRUE);
                 }
-                builder.setAttributeLookupSettings(lookupSettings);
+                if (ObjectUtils.isNull(field.getRangeFieldInclusive())) {
+                    lookupSettings.setUpperBoundInclusive(true);
+                    lookupSettings.setLowerBoundInclusive(true);
+                }
             }
         }
 
         if (!field.isColumnVisible()) {
-            RemotableAttributeLookupSettings.Builder lookupSettings =
-                    builder.getAttributeLookupSettings() == null
-                            ? RemotableAttributeLookupSettings.Builder.create()
-                            : RemotableAttributeLookupSettings.Builder.create(builder.getAttributeLookupSettings());
+            if (ObjectUtils.isNull(lookupSettings)) {
+                lookupSettings = RemotableAttributeLookupSettings.Builder.create();
+            }
             lookupSettings.setInResults(field.isColumnVisible());
+        }
+
+        if (ObjectUtils.isNotNull(lookupSettings)) {
             builder.setAttributeLookupSettings(lookupSettings);
         }
 

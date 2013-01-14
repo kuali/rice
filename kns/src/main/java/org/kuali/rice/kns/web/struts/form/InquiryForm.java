@@ -229,7 +229,9 @@ public class InquiryForm extends KualiForm {
                         inquiryPrimaryKeys.put(boKey, parameter);
                         if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, boKey)) {
                             try {
-                                inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameterCopy));
+                                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                                    inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameterCopy));
+                                }
                             } catch (GeneralSecurityException e) {
                                 LOG.error("BO class " + businessObjectClassName + " property " + boKey + " should have been encrypted, but there was a problem decrypting it.");
                                 throw e;

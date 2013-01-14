@@ -100,6 +100,7 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
                                     failoverService = ((BusClientFailureProxy)Proxy.getInvocationHandler(failoverService)).getTarget();
                                 }
 								servicesTried.add(endpoint.getServiceConfiguration());
+                                break; // KULRICE-8728: BusClientFailureProxy doesn't try all endpoint options
 							}
 						}									
 						if (failoverService != null) {

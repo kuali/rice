@@ -133,7 +133,9 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
             if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass,
                     keyPropertyName)) {
                 try {
-                    keyPropertyValue = getEncryptionService().decrypt(keyPropertyValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        keyPropertyValue = getEncryptionService().decrypt(keyPropertyValue);
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Data object class "
                             + dataObjectClass

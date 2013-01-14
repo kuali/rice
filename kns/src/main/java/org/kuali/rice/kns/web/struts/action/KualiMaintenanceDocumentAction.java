@@ -778,7 +778,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(maintainable.getBoClass(), keyPropertyName)) {
 					try {
                     	keyValue = StringUtils.removeEnd(keyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
-						keyValue = encryptionService.decrypt(keyValue);
+                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+						    keyValue = encryptionService.decrypt(keyValue);
+                        }
 					}
 					catch (GeneralSecurityException e) {
 						throw new RuntimeException(e);

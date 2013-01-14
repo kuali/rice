@@ -211,7 +211,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             if (getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass, fieldName)) {
                 try {
-                    fieldValue = getEncryptionService().encrypt(fieldValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        fieldValue = getEncryptionService().encrypt(fieldValue);
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Unable to encrypt secure field for locking representation " + e.getMessage());
                     throw new RuntimeException(

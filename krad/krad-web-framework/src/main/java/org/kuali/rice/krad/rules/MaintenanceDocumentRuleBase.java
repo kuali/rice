@@ -344,7 +344,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(
                     inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)) {
                 try {
-                    keyValue = CoreApiServiceLocator.getEncryptionService().encrypt(keyValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        keyValue = CoreApiServiceLocator.getEncryptionService().encrypt(keyValue);
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
                     throw new RuntimeException(e);

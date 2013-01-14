@@ -53,8 +53,8 @@ class StyleRepositoryServiceImplTest {
         }).build()
     }
 
-    static final Style style = createStyle()
-    static final StyleBo styleBo = StyleBo.from(style)
+    private static final Style style = createStyle()
+    private final StyleBo styleBo = StyleBo.from(style)
 
     @Before
     void setupServiceUnderTest() {

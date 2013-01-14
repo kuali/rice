@@ -429,8 +429,18 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 
     @Override
 	public Principal getPrincipal(String principalId) {
-		return getInnerIdentityService().getPrincipal(principalId);
-	}
+        Principal principal = getInnerIdentityService().getPrincipal(principalId);
+        if ( principal == null ) {
+            EntityDefault entity = getEntityDefaultByPrincipalId(principalId);
+            if ( entity != null ) {
+                List<Principal> principals = entity.getPrincipals();
+                if ( principals != null && !principals.isEmpty() ) {
+                    principal = principals.get(0);
+                }
+            }
+        }
+        return principal;
+    }
 
     /**
      * Gets a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} from a string list of principalId.
@@ -462,7 +472,17 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 
     @Override
 	public Principal getPrincipalByPrincipalName(String principalName) {
-		return getInnerIdentityService().getPrincipalByPrincipalName(principalName);
+        Principal principal = getInnerIdentityService().getPrincipalByPrincipalName(principalName);
+        if ( principal == null ) {
+            EntityDefault entity = getEntityDefaultByPrincipalName(principalName);
+            if ( entity != null ) {
+                List<Principal> principals = entity.getPrincipals();
+                if ( principals != null && !principals.isEmpty() ) {
+                    principal = principals.get(0);
+                }
+            }
+        }
+        return principal;
 	}
 
     @Override

@@ -235,12 +235,6 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                 if(field.getMaxLength() == 0) {
                     field.setMaxLength(100);
                 }
-                if(field.isDatePicker() && field.isRanged()) {
-                    Field newDate = FieldUtils.createRangeDateField(field);
-                    List<Field> newFields = new ArrayList<Field>();
-                    newFields.add(newDate);
-                    fixedDocumentAttributeRows.addAll(FieldUtils.wrapFields(newFields));
-                }
                 // prepend all document attribute field names with "documentAttribute."
                 field.setPropertyName(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + field.getPropertyName());
                 if (StringUtils.isNotBlank(field.getLookupParameters())) {

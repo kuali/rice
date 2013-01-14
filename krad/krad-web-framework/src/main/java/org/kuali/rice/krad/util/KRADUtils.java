@@ -526,8 +526,10 @@ public final class KRADUtils {
             if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName)) {
                 try {
-                    propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
-                            EncryptionService.ENCRYPTION_POST_PREFIX;
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
+                                EncryptionService.ENCRYPTION_POST_PREFIX;
+                    }
                 } catch (GeneralSecurityException e) {
                     throw new RuntimeException("Exception while trying to encrypt value for key/value map.", e);
                 }

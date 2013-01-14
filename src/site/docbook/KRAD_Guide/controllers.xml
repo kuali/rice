@@ -90,7 +90,7 @@
         <!-- TODO: Add content here.
             -->
         <section>
-            <title>Connection the Controller with the View</title>
+            <title>Connecting the Controller with the View</title>
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
@@ -98,37 +98,40 @@
     </section>
     <section>
         <title>Dialogs</title>
-        <para>The KRAD framework provides the ability to build modal dialogs into a web application.  Modal dialogs
-          can improve the usability and flow of a web page. Dialogs allow the server-side controller to gather additional
-          information from the user after the form is submitted without having to change page.</para>
-        <para>A common and simple example of a dialog is to confirm with the user before performing a potentially dangerous
-          action. For Example, "Are You Sure, you want to delete?". In this simple example, the question is displayed in
-          a lightbox. The user must select a response, closing the lightbox, before they can interact again with the
-          underlying page contents.</para>
-        <para>KRAD dialogs support even more complex interactions with the user, with multiple components and controls,
-          conditional logic, and rich styling. With KRAD, you can create re-usable dialog group components
-          that enables rich styling (from CSS stylesheets) and user interaction, to pose questions and collect user
-          responses.  The dialogs support images, tables, declarative logic, checkboxes, radio buttons, dropdowns,
-          and input fields (for example, for user to provide a text description, with details for their response choice),
-          or keyboard navigation. Dialogs also have the ability to progressively disclose questions and other UI choices
-          depending on other selections made in the lightbox, to dynamically add to the content and re-size
-          (up to a max, scrolling supported thereafter). Dialogs may be configured to pass the data collected in the form
-          where it is available to the controller code.</para>
+        <para>The KRAD framework provides the ability to build modal dialogs into a web application.
+      Modal dialogs can improve the usability and flow of a web page. Dialogs allow the server-side
+      controller to gather additional information from the user after the form is submitted, without
+      having to change page.</para>
+        <para>A common and simple example of a dialog is to confirm with the user before performing
+      a potentially dangerous action. For Example, "Are you sure you want to delete?". In this
+      simple example, the question is displayed in a lightbox. The user must select a response,
+      which closes the lightbox, before they can interact again with the underlying page
+      contents.</para>
+        <para>KRAD dialogs support even more complex interactions with the user, with multiple
+      components and controls, conditional logic, and rich styling. With KRAD, you can create
+      re-usable dialog group components that enables rich styling (from CSS stylesheets) and user
+      interaction, to pose questions and collect user responses. The dialogs support images, tables,
+      declarative logic, checkboxes, radio buttons, dropdowns, and input fields (for example, for a
+      user to provide a text description, with details for their response choice), or keyboard
+      navigation. Dialogs also have the ability to progressively disclose questions and other UI
+      choices depending on other selections made in the lightbox, to dynamically add to the content
+      and re-size (up to a max, scrolling supported thereafter). Dialogs may be configured to pass
+      the data collected in the form where it is available to the controller code.</para>
         <para>Multiple dialogs may be used on a single view. They can be stacked on each other or invoked separately
         depending on controller programmatic logic.</para>
-        <para>KRAD also provides a canned set of pre-defined dialog groups. These pre-defined dialogs have convenient properties
-          for easy customization. They may also be extended, just like any group, by adding components to the "items"
-          property of the dialogGroup. See section TBD for more information on building out groups.</para>
+        <para>KRAD also provides a canned set of pre-defined dialog groups. These pre-defined
+      dialogs have convenient properties for easy customization. They may also be extended, just
+      like any group, by adding components to the "items" property of the dialogGroup. </para>
       <section>
         <title>Using Dialogs in a View</title>
-        <para>To use a dialog in a view requires the following three setup steps</para>
-        <itemizedlist>
+        <para>To use a dialog in a view requires the following three setup steps:</para>
+        <orderedlist>
           <listitem><para>Define the dialog group (or use a pre-defined dialog group) in the view definition file.</para></listitem>
-          <listitem><para>Declare the dialog group in the dialogList View property (also in the view definition)</para></listitem>
-          <listitem><para>Invoke the dialog from the view controller</para></listitem>
-        </itemizedlist>
-        <para>First, let's take a look at a most simple example. This is one of the pre-defined KRAD dialogs.</para>
-        <!-- TODO: Insert pic here.  -->
+          <listitem><para>Declare the dialog group in the dialogList View property (also in the view definition).</para></listitem>
+          <listitem><para>Invoke the dialog from the view controller.</para></listitem>
+        </orderedlist>
+        <para>First, let's take a look at a very simple example. This is one of the pre-defined KRAD
+        dialogs.</para>
         <figure>
           <title>Header Text Example</title>
           <mediaobject>
@@ -137,7 +140,8 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <para>To use this dialog in a view. Simply declare it in the dialogList property of the view.</para>
+        <para>To use this dialog in a view, simply declare it in the dialogList property of the
+        view:</para>
         <programlisting>
 &lt;bean id="MyTestView" parent="Uif-FormView"&gt;
   &lt;property name="dialogs"&gt;
@@ -145,7 +149,7 @@
         &lt;bean id="mySensitiveDialog" parent="Uif-SensitiveData-DialogGroup"/&gt;
     &lt;/list&gt;
   &lt;/property&gt;</programlisting>
-        <para>And then invoke it in your controller code</para>
+        <para>And then invoke it in your controller code:</para>
         <programlisting>
         // first check if the dialog has already been answered by the user
         if (!hasDialogBeenAnswered("mySensitiveDialog", form)){
@@ -157,26 +161,30 @@
         <para>The code snippet above is from the controller method invoked by the action (set by the methodToCall 
           property on the action). This method is called when an action is performed on the
         page. It uses some methods inherited from UifControllerBase to manage the dialog.</para>
-        <para>The first line of code checks to see if the dialog has been answered by the user during this page interaction.
-        During this first pass, the dialog has not been answered, it hasn't even been displayed yet.  So, showDialog()
-        is called to return to the client and display the dialog.   After the user interacts with the dialog choosing one of the options, we return
-        back to the same controller method again.  This time, the dialog has been answered, so the logic falls through
-        and calls getBooleanDialogResponse() to determine the users response.</para>
+        <para>The first line of code checks to see if the dialog has been answered by the user
+        during this page interaction. During this first pass, the dialog has not been answered, it
+        hasn't even been displayed yet. So, showDialog() is called to return to the client and
+        display the dialog. After the user interacts with the dialog choosing one of the options, we
+        return back to the same controller method again. This time, the dialog has been answered, so
+        the logic falls through and calls getBooleanDialogResponse() to determine the user's
+        response.</para>
       </section>
       <section>
         <title>Creating a Dialog Group For a View</title>
-        <para>Next, let's take a closer look at dialog groups. Any group defined in the view can be used as content in
-          the lightbox. Just add a reference to it in the "dialogs" list property in the view definition. A DialogGroup
-          provides some additionalproperties for convenience, but any group will do. It should be set to hidden unless
-          you want it the group displayed on the main page as well. So the designer has a few options:</para>
+        <para>Next, let's take a closer look at dialog groups. Any group defined in the view can be
+        used as content in the lightbox. Just add a reference to it in the "dialogs" list property
+        in the view definition. A DialogGroup provides some additionalproperties for convenience,
+        but any group will do. It should be set to hidden unless you want the group displayed on the
+        main page as well. So, the designer has a few options:</para>
         <itemizedlist><listitem><para>use a pre-defined KRAD dialog</para></listitem>
-          <listitem><para>customize an existing dialogchange any of the prompt text, the number of option buttons, the value
-          of the option buttons, adds items to the group, add custom styling,...</para></listitem>
+          <listitem><para>customize an existing dialog, changing any of the prompt text, the number of option buttons,
+            the value of the option buttons, adds items to the group, add custom styling,...</para></listitem>
           <listitem><para>create your own custom, hidden group</para></listitem></itemizedlist>
         <para>Here is the bean definition for a DialogGroup. The dialogGroup is a hidden group with some additional
         properties for convenience.</para>
         <itemizedlist><listitem><para>prompt - the  message displayed to the user</para></listitem>
-          <listitem><para>explanation - a textarea input to get additional textual response information. (hidden by default)</para></listitem>
+          <listitem><para>explanation - a textarea input to get additional textual response information (hidden by
+            default)</para></listitem>
           <listitem><para>responseInputField - holds the value chosen by the user</para></listitem>
           <listitem><para>availableResponses - the choices to be displayed in the lightbox (ok/cancel, yes/no/maybe)</para></listitem>
           <listitem><para>reverseButtonOrder - determines the order the responses are displayed</para></listitem></itemizedlist>
@@ -228,24 +236,26 @@
       <section>
         <title>Managing Dialogs from a Controller</title>
         <para>UifControllerBase contains common methods for managing dialogs. </para>
-        <itemizedlist><listitem><para>ModelAndView showDialog(dialogId, form, request, response)showDialog returns the conversation back to the client by
-        displaying the dialog content in a lightbox.</para></listitem>
+        <itemizedlist><listitem><para>ModelAndView showDialog(dialogId, form, request, response) returns the conversation back to
+            the client by displaying the dialog content in a lightbox.</para></listitem>
           <listitem><para>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)Returns whether the dialog has
           been presented to the user during this conversation.</para></listitem>
-          <listitem><para>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)Returns whether the dialog has
-            already been answered by the user during this conversation. This method also performs hasDialogBeenDisplayed()
-            prior to checking the answered status. This method is the preferred choice because it can test for both cases
-            of whether the the dialog has been displayed and whether it has been answered.</para></listitem>
-          <listitem><para>boolean getBooleanDialogResponse(dialogId, form, request, response)
-          If the dialog has already been answered by the user, returns true if user chose affirmative response,
-            false if negative response was chosen. Also returns false if the dialog has not been answered.</para></listitem>
-          <listitem><para>String getStringDialogResponse(dialogId, form, request, response)
-          If the dialog has already been answered by the user, returns the string value of the option chosen by
-          the user</para></listitem></itemizedlist>
+          <listitem><para>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)Returns whether the dialog
+            has already been answered by the user during this conversation. This method also
+            performs hasDialogBeenDisplayed() prior to checking the answered status. This method is
+            the preferred choice because it can test for both cases of whether the dialog has been
+            displayed, and whether it has been answered.</para></listitem>
+          <listitem><para>boolean getBooleanDialogResponse(dialogId, form, request, response) If the dialog has already
+            been answered by the user, returns true if the user chose an affirmative response, false
+            if negative response was chosen. Also returns false if the dialog has not been
+            answered.</para></listitem>
+          <listitem><para>String getStringDialogResponse(dialogId, form, request, response) If the dialog has already
+            been answered by the user, returns the string value of the option chosen by the
+            user.</para></listitem></itemizedlist>
         <para>The DialogManager class encapsulates this functionality and provides additional methods for more detailed
           dialog management.</para>
-        <para>boolean getBooleanDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
-          HttpServletResponse response</para>
+        <para><programlisting>boolean getBooleanDialogResponse(String dialogId, UifFormBase form, HttpServletRequest
+        request, HttpServletResponse response)</programlisting></para>
       </section>
       <section>
         <title>Invoking a Dialog Entirely from the Client</title>
@@ -259,17 +269,17 @@
           <listitem><para>Uif-OK-Cancel-DialogGroup A basic dialog with the header text set as
           "Please Confirm to Continue". The prompt text default is "Would You Like to Continue?". Available responses are
           "OK" and "Cancel"</para></listitem>
-          <listitem><para>Uif-Yes-No-DialogGroup A basic dialog with the header text set to "Please Select".
-          The prompt text default is "Would You Like to Continue? Available responses are "Yes" and "No"</para></listitem>
+          <listitem><para>Uif-Yes-No-DialogGroup A basic dialog with the header text set to "Please Select". The prompt
+            text default is "Would You Like to Continue?". Available responses are "Yes" and
+            "No"</para></listitem>
           <listitem><para>Uif-True-False-DialogGroup A basic dialog with the header text set to "Please select from the
-          values below". The prompt text default is "Would You Like to Continue? Available responses are "True" and "False"
-          </para></listitem>
-          <listitem><para>Uif-SensitiveData-DialogGroup A basic dialog with the header text set to "Warning: Sensitive Data".
-          The prompt text default is ""Potentially sensitive data was found on the document. Do you wish to continue?"
-          Available responses are "Yes" and "No"
-          </para></listitem>
+            values below". The prompt text default is "Would You Like to Continue?". Available
+            responses are "True" and "False" </para></listitem>
+          <listitem><para>Uif-SensitiveData-DialogGroup A basic dialog with the header text set to "Warning: Sensitive
+            Data". The prompt text default is ""Potentially sensitive data was found on the
+            document. Do you wish to continue?". Available responses are "Yes" and "No" </para></listitem>
           <listitem><para>Uif-Checkbox-DialogGroup A basic dialog with the checkbox control for the explanation. The
-          default responses are "OK" and "Cancel".</para>
+            default responses are "OK" and "Cancel"</para>
           </listitem>
           <listitem><para>Uif-RadioButton-DialogGroup A basic dialog with the radio button control for the explanation.
           The default responses are "OK" and "Cancel"</para>

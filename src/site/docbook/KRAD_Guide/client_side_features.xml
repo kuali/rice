@@ -262,9 +262,9 @@
   </section>
   <section>
     <title>Lightbox</title>
-    <para>The recommended way to use lightboxes is through the <link linkend="linkAndLinkField">Uif-Link</link> or
-      the Uif-Dialog beans. For cases where this isn&apos;t possible the following JavaScript functions can be used to
-      open lightboxes.</para>
+    <para>The recommended way to use lightboxes is through the <link linkend="linkAndLinkField"
+        >Uif-Link</link> or the Uif-Dialog beans. For cases where this isn't possible, the following
+      JavaScript functions can be used to open lightboxes.</para>
     <variablelist>
       <varlistentry>
         <term>showLightboxUrl(url)</term>
@@ -289,10 +289,11 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>Each of the three function can accept a second <emphasis role="bold">overrideOptions</emphasis> parameter
-      which allows for additional lightbox styling.  This parameter is optional and should only be used if it is
-      unavoidable since its specific to the underlying implementation which could change.  If possible use the
-      &quot;uif-lightbox&quot; CSS class for styling.</para>
+    <para>Each of the three functions can accept a second <emphasis role="bold"
+        >overrideOptions</emphasis> parameter which allows for additional lightbox styling. This
+      parameter is optional and should only be used if it is unavoidable, since it is specific to
+      the underlying implementation, which could change. If possible use the "uif-lightbox" CSS
+      class for styling.</para>
   </section>
   <section>
     <title>Working in the Client with jQuery </title>
@@ -300,23 +301,25 @@
 <!-- TODO: Add content here -->  </section>
   <section>
     <title>Data Attributes</title>
-    <para>HTML 5 data attributes are a way of adding custom attributes to tags. Data attributes are prefixed with
-        a &apos;data-&apos; prefix e.g &apos;data-role&apos;. JQuery makes data attributes available on the jQuery data object for use
-        in scripting manipulations.
-        Internally, KRAD uses the jQuery data object and data attributes heavily in validation amongst other uses.
-        This can be seen in krad.validate.js.</para>
-    <para>Data attributes are available on all form elements except the radio button.
-        Page elements like image, iframe and links also support data attributes. There are two ways to add data attributes to
-        a control or element. Both these ways involve setting properties in the defining XML configuration files. </para>
-    <para>The first way applies to three data attributes which can be set directly on a component using the property names
-        data-role, data-meta and data-type. These attributes are physically present on the tag for the component on
-        which they have been configured. This can be seen in lines 13 - 15 of the program listing below.
-      </para>
-    <para>The second way is to use the dataAttributes map to set a list of attributes.
-        The map key is the attribute name and the value is the attribute value.
-        Using the map is appropriate when complex attributes need to be set. Complex attributes are those whose values contain
-        &apos;{}&apos;. Data attributes set via this map are not physically present on the tag but are set on the components jQuery
-      data object via an initialization script that runs on page load. This can be seen in lines 5 - 12 of the program listing below.</para>
+    <para>HTML 5 data attributes are a way of adding custom attributes to tags. Data attributes are
+      prefixed with a 'data-' prefix e.g. 'data-role'. JQuery makes data attributes available on the
+      jQuery data object for use in scripting manipulations. Internally, KRAD uses the jQuery data
+      object and data attributes heavily in validation, amongst other uses. This can be seen in
+      krad.validate.js.</para>
+    <para>Data attributes are available on all form elements, except the radio button. Page elements
+      like image, iframe, and links also support data attributes. There are two ways to add data
+      attributes to a control or element. Both these ways involve setting properties in the defining
+      XML configuration files. </para>
+    <para>The first way applies to three data attributes, which can be set directly on a component
+      using the property names data-role, data-meta and data-type. These attributes are physically
+      present on the tag for the component on which they have been configured. This can be seen in
+      lines 13 - 15 of the program listing below. </para>
+    <para>The second way is to use the dataAttributes map to set a list of attributes. The map key
+      is the attribute name, and the value is the attribute value. Using the map is appropriate when
+      complex attributes need to be set. Complex attributes are those whose values contain '{}'.
+      Data attributes set via this map are not physically present on the tag, but are set on the
+      component's jQuery data object via an initialization script that runs on page load. This can
+      be seen in lines 5 - 12 of the program listing below.</para>
     <para/>
     <para>A sample configuration is shown below.</para>
     <programlisting>
@@ -367,9 +370,8 @@
             </itemizedlist></para>
         </listitem>
         <listitem>
-          <para>Component classes include properties for events that are applicable to the
-                        generate HTML element (for example ‘onBlurScript’ for control components)
-                    </para>
+          <para>Component classes include properties for events that are applicable to the generate
+            HTML elements (for example ‘onBlurScript’ for control components) </para>
         </listitem>
         <listitem>
           <para>Some common events include: <itemizedlist>
@@ -396,8 +398,8 @@
             </itemizedlist></para>
         </listitem>
         <listitem>
-          <para>For the event property value, script can be included inline, or
-                        externalized to a JavaScript file and then invoked as a function </para>
+          <para>For the event property value, a script can be included inline, or externalized to a
+            JavaScript file and then invoked as a function </para>
         </listitem>
         <listitem>
           <para>The jQuery object can be referenced by the full name of ‘jQuery’, or the
@@ -415,10 +417,10 @@
                 validation uses the constraints defined on InputFields and AttributeDefinitions to
                 determine if a field is valid. These constraints are converted in the java code to
                 methods and rules used by the jquery.validate.js plugin. </para>
-      <para>When the user has interacted with a field and moved on to the next field,
-                client-side validation is invoked on that field and any validation errors are shown
-                on the screen. When the user goes back to a field to correct it, validation occurs
-                with any change so the user gets immediate feedback on if they fixed their error. </para>
+      <para>When the user has interacted with a field and moved on to the next field, client-side
+        validation is invoked on that field and any validation errors are shown on the screen. When
+        the user goes back to a field to correct it, validation occurs with any change so the user
+        gets immediate feedback on whether they fixed their error. </para>
       <para>The validation messages shown are determined by the messageKey on the constraint
                 for that field. </para>
       <para>By default, client-side validation is on. Client-side validation can be turned
@@ -433,7 +435,7 @@
                 set on the InputFields/AttributeDefinitions for your view. If there are any errors,
                 this method will add them to the MessageMap. The validation mechanism used is
                 functionally equivalent to client-side validation. </para>
-      <para> KRADServiceLocatorWeb.getViewValidationService().validateView(form); </para>
+      <para><programlisting> KRADServiceLocatorWeb.getViewValidationService().validateView(form); </programlisting></para>
     </section>
     <section>
       <title>Validation Messages </title>
@@ -464,9 +466,14 @@
         </listitem>
       </itemizedlist>
       <para>When validation messages are received from the server they are always displayed in a summary at the top of the page and at the sections for which they apply. </para>
-      <para> At the page level, if sections exist, the summary will include the total number of messages on the screen and links to each section which contains the fields/sections that have validation messages. Messages which apply to the entire page are also displayed at this level.  If the page has no sections, the page level summary will include links directly to the fields which have messages.</para>
+      <para>At the page level, if sections exist, the summary will include the total number of
+        messages on the screen and links to each section which contains the fields/sections that
+        have validation messages. Messages which apply to the entire page are also displayed at this
+        level. If the page has no sections, the page level summary will include links directly to
+        the fields which have messages.</para>
       <para>At the section level,  the messages will be links to the fields which they apply - these links will cause the browser to move focus to that field.  Any message beyond the first for a field, will be displayed as a summary; the full message content will be available during field interaction. If the section contains its own subsections which have messages, there will be links to those subsections.</para>
-      <para>At the field level, all applicable messages will be displayed in a tooltip when the field&apos;s control has focus or when the field&apos;s control is being hovered over.</para>
+      <para>At the field level, all applicable messages will be displayed in a tooltip when the
+        field's control has focus or when the field's control is being hovered over.</para>
       <para>When first interacting with a page that has no message summaries, messages will only appear at the field level during client-side validation.  If a summary already exists on the page, these new messages will appear in the summaries as client-side validation occurs.</para>
       <para>When a client-side validation error occurs, the user will see an error icon and appropriate error highlighting on the control which has an error. When the user returns to this field, they will see the error message in a tooltip, and when the user attempts to fix a field that has a client-side error, feedback to the user will be immediate: when the error is fixed the tooltip, icon, and error highlighting will disappear.</para>
       <para>It is important to note that only client-side errors can be resolved in this fashion.  Server-side errors do not produce immediate feedback because they require a server round-trip to determine if they are corrected, therefore, when a user interacts with a field which had a server-side error in attempt to fix it, the field will instead be marked with an icon and highlighting that indicates that the field has been modified with an attempted fix.</para>
@@ -478,27 +485,36 @@
     <title>Ajax Improvements </title>
     <para>Ajax is a group of web development client side technologies which are used to create asynchronous web applications. Web applications can send
       and retrieve data asynchronously without affecting the display of the current page.</para>
-    <para>The ajax calls have been made cleaner.ajaxSubmitForm(), standard submitForm() and methods to do validation before hand have been added.
-      writeHiddenToForm() which was earlier used to write the data as hidden params on the form has been replaced by data-attributes</para>
+    <para>The ajax calls have been cleaned up. ajaxSubmitForm(), standard submitForm() and methods
+      to do validation before hand have been added. writeHiddenToForm(), which was earlier used to
+      write the data as hidden params on the form, has been replaced by data-attributes.</para>
     <itemizedlist>
       <listitem>
-        <para>actionInvokeHandler() - The actionInvokeHandler method checks based on the data-attributes whether it is an ajax submit or a non ajax one and
-            then calls one of the submit methods.</para>
+        <para>actionInvokeHandler() - The actionInvokeHandler method checks based on the
+          data-attributes whether it is an ajax submit, or a non ajax one, and then calls one of the
+          submit methods.</para>
       </listitem>
       <listitem>
-        <para>ajaxSubmitForm() - This in turn calls the ajaxSubmitFormFullOpts method with the validate flag set to false.</para>
+        <para>ajaxSubmitForm() - This, in turn, calls the ajaxSubmitFormFullOpts method with the
+          validate flag set to false.</para>
       </listitem>
       <listitem>
-        <para>validateAndAjaxSubmitForm() - This in turn calls the ajaxSubmitFormFullOpts method with the validate flag set to true.</para>
+        <para>validateAndAjaxSubmitForm() - This, in turn, calls the ajaxSubmitFormFullOpts method
+          with the validate flag set to true.</para>
       </listitem>
       <listitem>
-        <para>ajaxSubmitFormFullOpts() - Submits the form through an ajax submit, the response is the new page html and runs all hidden scripts passed back.
-            It is similar to the old ajaxSubmitForm method but has some additional parameters which allow for providing hooks for successCallback,
-            errorCallback and preSubmitCalls. It also takes a validate flag as well as a returnType. A returnType is used to request data from the
-            server but the server may override it. If the validate flag is set it validates the form and  proceeds only if the form is valid. If a preSubmitcall
-            is specified then it executes that and proceeds if it returns true. If the returnType is not given then it defaults to &quot;update-page&quot; and
-            sets it on the data which is submitted to the server. It then calls the invokeAjaxReturnHandler to determine which handler function to call.
-            The successCallback and errorCallback are handled as they were before in ajaxSubmitForm. The elementToBlock and the lightBox processing also remain the same.</para>
+        <para>ajaxSubmitFormFullOpts() - Submits the form through an ajax submit, the response is
+          the new page html, and runs all hidden scripts passed back. It is similar to the old
+          ajaxSubmitForm method, but has some additional parameters which allow for providing hooks
+          for successCallback, errorCallback and preSubmitCalls. It also takes a validate flag as
+          well as a returnType. A returnType is used to request data from the server, but the server
+          may override it. If the validate flag is set, it validates the form and proceeds only if
+          the form is valid. If a preSubmitcall is specified, then it executes that and proceeds if
+          it returns true. If the returnType is not given, then it defaults to "update-page" and
+          sets it on the data which is submitted to the server. It then calls the
+          invokeAjaxReturnHandler to determine which handler function to call. The successCallback
+          and errorCallback are handled as they were before in ajaxSubmitForm. The elementToBlock
+          and the lightBox processing also remain the same.</para>
       </listitem>
       <listitem>
         <para>submitForm() - This is used for non-ajax calls. This in turn calls the submitFormFullOpts with the validate flag set to false.</para>
@@ -513,7 +529,11 @@
         <para>invokeAjaxReturnHandler - This method iterates over divs in the content that is passed in to determine which handler functions to call. The handler functions are initialized in krad.initialize.js</para>
       </listitem>
     </itemizedlist>
-    <para>As part of the improvements ajax returns were made smarter. This essentially means when sending back an ajax response, we need to write data that is used by the ajax call to determine how the response should be handled. The content is wrapped in a handler that indicates how the ajax call should handle the content. Here is an example of how it is done</para>
+    <para>As part of the improvements, ajax returns were made smarter. This essentially means that
+      when sending back an ajax response, we need to write data that is used by the ajax call to
+      determine how the response should be handled. The content is wrapped in a handler that
+      indicates how the ajax call should handle the content. Here is an example of how it is
+      done:</para>
     <programlisting>
       &lt;div data-handler=&quot;update-title&quot;&gt;
           &lt;div ..&gt; title contents &lt;/div&gt;
@@ -522,19 +542,25 @@
     <para>The following methods have been added to handle the ajax response based on the returnType</para>
     <itemizedlist>
       <listitem>
-        <para>updatePageHandler - Called if the returnType is &quot;update-page&quot;. Finds the page content in the returned content and updates the page, then processes breadcrumbs and hidden scripts. While processing, the page contents are hidden.</para>
+        <para>updatePageHandler - Called if the returnType is "update-page". Finds the page content
+          in the returned content and updates the page, then processes breadcrumbs and hidden
+          scripts. While processing, the page contents are hidden.</para>
       </listitem>
       <listitem>
-        <para>updateViewHandler - Replaces the view with the given content and runs the hidden scripts. Called when the returnType is &quot;update-view&quot;.</para>
+        <para>updateViewHandler - Replaces the view with the given content and runs the hidden
+          scripts. Called when the returnType is "update-view".</para>
       </listitem>
       <listitem>
-        <para>redirectHandler - Called when the returnType is &quot;redirect&quot;. Replaces the contents of the window with those of the redirected URL.</para>
+        <para>redirectHandler - Called when the returnType is "redirect". Replaces the contents of
+          the window with those of the redirected URL.</para>
       </listitem>
       <listitem>
-        <para>updateComponentHandler - Called when the returnType is &quot;update-component&quot;. Retrieves the component with the matching id from the server
-           and replaces a matching _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label and a
-           displayWith marker span has a matching id, that span will be replaced with the label content and removed from the component.  This allows
-           for label and component content separation on fields</para>
+        <para>updateComponentHandler - Called when the returnType is "update-component". Retrieves
+          the component with the matching id from the server, and replaces a matching
+          _refreshWrapper marker span with the same id with the result. In addition, if the result
+          contains a label and a displayWith marker span has a matching id, that span will be
+          replaced with the label content and removed from the component. This allows for label and
+          component content separation on fields.</para>
       </listitem>
     </itemizedlist>
   </section>

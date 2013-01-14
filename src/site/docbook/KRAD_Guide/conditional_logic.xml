@@ -48,12 +48,12 @@
                             to conditionally set a property value</para>
                     </listitem>
                     <listitem>
-                        <para>An expression starts with the delimiter ‘@{‘ and ends with ‘}’</para>
+                        <para>An expression starts with the delimiter '@{' and ends with '}'</para>
                     </listitem>
                     <listitem>
                         <para>A property value can contain a single expression, or several
-                            expressions within other literal text (eg ‘liter text @{expresson} more
-                            @{another expression}’)</para>
+                            expressions within other literal text (eg 'liter text @{expresson} more
+                            @{another expression}')</para>
                     </listitem>
                     <listitem>
                         <para>Expressions are evaluated using the Spring EL engine during the views
@@ -119,21 +119,21 @@
                             </itemizedlist>
                     </listitem>
                     <listitem>
-                        <para>By default an expression term is evaluated against the model object.
-                            For example if our expression is ‘@{field1}’ the expression will
+                        <para>By default, an expression term is evaluated against the model object.
+                            For example, if our expression is '@{field1}', the expression will
                             evaluate the value of field1 on the model. Paths are formed in the usual
                             manner (dot for nested, brackets for lists and maps)</para>
                     </listitem>
                     <listitem>
                         <para>Expression terms can also go against a variable. Variables are
-                            indicated using the ‘#’ prefix (eg ‘@{#variable.property}’). The
+                            indicated using the '#' prefix (eg '@{#variable.property}'). The
                             following variables are available within the UIF (note some of the
                             variables are only available in certain contexts)</para>
                         <itemizedlist>
                                 <listitem>
-                                <para>collectionGroup – For a property on a collection group or any
-                                    component within the group this variable can be used to refer to
-                                    the collection group component instance</para>
+                                <para>collectionGroup – For a property on a collection group, or any
+                                    component within the group, this variable can be used to refer
+                                    to the collection group component instance</para>
                             </listitem>
                                 <listitem>
                                 <para>ConfigProperties – A map of the Rice configuration properties.
@@ -142,9 +142,9 @@
                             </listitem>
                                 <listitem>
                                 <para>component – Refers to the component instance the property is
-                                    configured on. Note when setting a nested property the component
-                                    variable will point to the nested component, not the component
-                                    bean the property tag is belongs to</para>
+                                    configured on. Note when setting a nested property, the
+                                    component variable will point to the nested component, not the
+                                    component bean the property tag belongs to</para>
                             </listitem>
                                 <listitem>
                                 <para>Constants – Constants from the KRADConstants class</para>
@@ -154,32 +154,34 @@
                                     dictionary document entry</para>
                             </listitem>
                             <listitem>
-                                <para>index – When on a component within a collection group line
+                                <para>index – When on a component within a collection group line,
                                     refers to the index of the line the component is being rendered
                                     for</para>
                             </listitem>
                             <listitem>
-                                <para>isAddLine - When on a component within a collection group line
-                                    indicates if the line being rendered is the add line</para>
+                                <para>isAddLine - When on a component within a collection group
+                                    line, indicates if the line being rendered is the add
+                                    line</para>
                             </listitem>
                             <listitem>
-                                <para>line - When on a component within a collection group line
+                                <para>line - When on a component within a collection group line,
                                     refers to the data object for the collection line the component
                                     is being rendered for</para>
                             </listitem>
                             <listitem>
-                                <para>parentLine - Refers to the parent collection line (parent to a sub
-                                    collection) allowing access to the sub collection size with
-                                    ‘@{#parentLine.subCollectionName.size()}’ from within the sub collection.</para>
+                                <para>parentLine - Refers to the parent collection line (parent to a
+                                    sub collection) allowing access to the sub collection size with
+                                    '@{#parentLine.subCollectionName.size()}' from within the sub
+                                    collection</para>
                             </listitem>
                             <listitem>
                                 <para>readOnlyLine - When on a component within a collection group
-                                    line indicates if the line for which the component is being
+                                    line, indicates if the line for which the component is being
                                     rendered for is read-only</para>
                             </listitem>
                             <listitem>
                                 <para>manager – Refers to the layout manager instance for the parent
-                                    group (note if within a nested group the manager instance will
+                                    group (note if within a nested group, the manager instance will
                                     be that of the direct parent)</para>
                             </listitem>
                             <listitem>
@@ -202,7 +204,7 @@
                             </listitem>
                             <listitem>
                                 <para>ViewHelper – The view helper instance configured for the view
-                                    (Note this is a convenient way to create and call custom methods
+                                    (note this is a convenient way to create and call custom methods
                                     from EL)</para>
                             </listitem>
                             </itemizedlist>
@@ -211,7 +213,7 @@
             </section>
         </section>
         <section>
-            <title>Componenet Context</title>
+            <title>Component Context</title>
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
@@ -267,7 +269,7 @@
                                 <listitem>
                                 <para>boolean empty(Object value) – Used to check whether a given
                                     value is empty (null or empty string) (eg
-                                    ‘@{!empty(field1)}’)</para>
+                                    '@{!empty(field1)}')</para>
                             </listitem>
                                 <listitem>
                                 <para>String getName(Class&lt;?&gt; clazz) – Returns the name for a
@@ -307,15 +309,15 @@
                     <listitem>
                         <para>Custom functions can be added to the ViewHelperService implementation
                             and invoked by #ViewHelperService.functionName (for example
-                            “@{#ViewHelper.getLowestAmount(field1, field2, ‘true’)}”)</para>
+                            "@{#ViewHelper.getLowestAmount(field1, field2, 'true')}")</para>
                     </listitem>
                     <listitem>
-                        <para>In addition, for new global functions the ExpressionEvaluatorService
+                        <para>In addition, for new global functions, the ExpressionEvaluatorService
                             can be overridden to register new expression functions</para>
                     </listitem>
                     <listitem>
-                        <para>Finally, recall Spring allows us to call any method on an object we
-                            have a reference to</para>
+                        <para>Finally, recall that Spring allows us to call any method on an object
+                            we have a reference to</para>
                     </listitem>
                 </itemizedlist>
             </section>
@@ -357,7 +359,7 @@
                 <listitem>
                     <para>Some examples of component modifiers in the UIF include the LabelSeparator
                         (pull the label component for a field into a separate group item) and the
-                        MaintenanceCompareModifer (creates a field for the ‘old’ data object)</para>
+                        MaintenanceCompareModifer (creates a field for the 'old' data object)</para>
                 </listitem>
             </itemizedlist>
         </section>
@@ -371,7 +373,7 @@
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
-                    <para>Property replacers can be used to configured a replacement for a component
+                    <para>Property replacers can be used to configur a replacement for a component
                         property based on a condition</para>
                 </listitem>
                 <listitem>
@@ -380,7 +382,7 @@
                 </listitem>
                 <listitem>
                     <para>A property replacer is created using a bean with parent
-                        ‘Uif-ConditionalBeanPropertyReplacer’</para>
+                        'Uif-ConditionalBeanPropertyReplacer'</para>
                 </listitem>
                 <listitem>
                     <para>The following properties are supported by a property replacer:</para>
@@ -392,7 +394,7 @@
                         </listitem>
                             <listitem>
                             <para>condition – The condition (EL expression) to evaluate for the
-                                replacement. If the condtion is true the property value will be
+                                replacement. If the condtion is true, the property value will be
                                 replaced, otherwise it will not be</para>
                         </listitem>
                             <listitem>
@@ -404,7 +406,7 @@
                         </itemizedlist>
                 </listitem>
                 <listitem>
-                    <para>Using property replacers we can do such things as replacing a control
+                    <para>Using property replacers, we can do such things as replacing a control
                         based on a condition, replacing the entire group items list, replacing a
                         layout manager, and so on</para>
                 </listitem>
@@ -434,11 +436,11 @@
                 </listitem>
                 <listitem>
                     <para>The UIF provides a filter implementation that allows filtering of the
-                        collection using an expression. </para>
+                        collection using an expression</para>
                 </listitem>
                 <listitem>
                     <para>To use this filter we create a bean with parent
-                        ‘Uif-ConditionalCollectionFilter’. Then we set the property expression to
+                        'Uif-ConditionalCollectionFilter'. Then we set the property expression to
                         the filtering expression. Lines will only be displayed if the expression
                         evaluates to true for that line</para>
                 </listitem>
@@ -565,7 +567,7 @@
                 <title>Recap</title>
                 <itemizedlist>
                     <listitem>
-                        <para>In code we are not limited to just setting values on existing
+                        <para>In code, we are not limited to just setting values on existing
                             components, but can create new components as well</para>
                     </listitem>
                     <listitem>
@@ -631,8 +633,8 @@
                             by copying an existing component</para>
                     </listitem>
                     <listitem>
-                        <para>By copying a component, we inherit all the state from the
-                            component that was copied</para>
+                        <para>By copying a component, we inherit the state from the component that
+                            was copied</para>
                     </listitem>
                     <listitem>
                         <para>The framework makes extensive use of component copying through

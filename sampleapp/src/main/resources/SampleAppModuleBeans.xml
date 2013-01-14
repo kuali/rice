@@ -184,6 +184,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutGrouping.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAction.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoImage.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoHeader.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
@@ -274,6 +275,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutGroupingResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoActionResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoHeaderResources</value>
 
       </list>
     </property>

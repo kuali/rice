@@ -189,6 +189,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoIframe.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLink.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLabel.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDataTable.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
@@ -284,6 +285,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoIframeResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLabelResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDataTableResources</value>
 
       </list>
     </property>

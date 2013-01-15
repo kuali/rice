@@ -280,6 +280,26 @@
     </property>
   </bean>
 
+  <!--  RuleTemplateService -->
+  <bean id="enRuleTemplateService" class="org.kuali.rice.kew.rule.service.impl.RuleTemplateServiceImpl"
+        lazy-init="true">
+    <property name="ruleTemplateDAO">
+      <ref bean="enRuleTemplateDAO"/>
+    </property>
+    <property name="ruleTemplateAttributeDAO">
+      <ref bean="enRuleTemplateAttributeDAO"/>
+    </property>
+    <property name="ruleTemplateOptionDAO">
+      <ref bean="enRuleTemplateOptionDAO"/>
+    </property>
+    <property name="ruleDAO">
+      <ref bean="enRuleDAO"/>
+    </property>
+    <property name="ruleDelegationDAO">
+      <ref bean="enRuleDelegationDAO"/>
+    </property>
+  </bean>
+
   <bean id="rice.kew.documentOrchestrationQueue" class="org.kuali.rice.kew.impl.action.DocumentOrchestrationQueueImpl"/>
 
   <bean id="rice.kew.actionInvocationQueue" class="org.kuali.rice.kew.impl.action.ActionInvocationQueueImpl"/>
@@ -382,6 +402,7 @@
         <idref local="enRouteNodeService"/>
         <idref local="enBranchService"/>
         <idref local="enExceptionRoutingService"/>
+        <idref local="enRuleTemplateService"/>
         <idref local="rice.kew.documentProcessingQueue"/>
         <idref local="rice.kew.documentOrchestrationQueue"/>
         <idref local="rice.kew.documentAttributeIndexingQueue"/>

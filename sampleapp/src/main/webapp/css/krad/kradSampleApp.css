@@ -950,3 +950,18 @@ div#Demo-TableLayoutDetails-View input[type="text"], div#Demo-TableLayoutTotalin
 div#Demo-TableLayoutGrouping-View input[type="text"]{
     width: 10em;
 }
+
+div#Demo-BoxLayoutManager-View .demo-borderBottom{
+    border-bottom: 1px solid green !important;
+    padding-bottom: 5px;
+}
+
+.demo-outlineItem{
+    background-color: rgba(173,216,230, 0.4);
+    border: 1px dotted white;
+}
+
+.demo-outlineGroup{
+    border: 1px dashed gray;
+}
+

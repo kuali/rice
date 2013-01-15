@@ -166,3 +166,25 @@ function subtractValues(values, startingValue){
     return startingValue;
 }
 
+function showGroupOutlines(button){
+    var groups = jQuery(button).closest(".uif-verticalBoxLayout").find("> .uif-group").not(":first");
+    groups = jQuery(groups).add(jQuery(groups).find(".uif-group"));
+    if(groups.hasClass("demo-outlineGroup")){
+        groups.removeClass("demo-outlineGroup");
+    }
+    else{
+        groups.addClass("demo-outlineGroup");
+    }
+}
+
+function showItemOutlines(button){
+    var groups = jQuery(button).closest(".uif-verticalBoxLayout").find("> .uif-group").not(":first");
+    var items = groups.find(".uif-boxLayoutVerticalItem, .uif-boxLayoutHorizontalItem");
+    if(items.hasClass("demo-outlineItem")){
+        items.removeClass("demo-outlineItem");
+    }
+    else{
+        items.addClass("demo-outlineItem");
+    }
+}
+

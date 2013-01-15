@@ -278,7 +278,7 @@
         <property name="items">
           <list>
             <bean id="ComponentLibrary-ShowNavLink" parent="Uif-ActionLink" p:actionScript="showLibraryNav();"
-                    p:actionLabel=">> Show Library Navigation"/>
+                  p:actionLabel=">> Show Library Navigation"/>
           </list>
         </property>
       </bean>
@@ -472,7 +472,9 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Grid Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayout-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Grid Layout"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManager-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>
@@ -501,11 +503,11 @@
         <bean parent="Uif-Link" p:linkText="Sequence Column"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSequence-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Row Details"
-                      p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutDetails-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutDetails-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Column Calculations"
-                      p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotaling-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotaling-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Row Grouping"
-                      p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutGrouping-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutGrouping-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

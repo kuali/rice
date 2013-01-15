@@ -167,9 +167,9 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Notice after we mark off the pieces of the view we have an area left for content. This
-            is where we can add content with a Group component. This top level group (with view
-            parent) is known as a <emphasis role="bold">Page</emphasis> and has a base bean named 'Uif-Page'. Since
+    <para>Notice after we mark off the pieces of the view we have an area left for content. This is
+      where we can add content with a Group component. This top level group (with view parent) is
+      known as a <emphasis role="bold">Page</emphasis> and has a base bean named 'Uif-Page'. Since
       each item in our view navigation will replace the page contents, we can have multiple Page
       components associated with the view. These page components are thus configured through the
       view's items list (from the Container interface). </para>
@@ -320,8 +320,8 @@
         generates a h tag as well.</para>
     </note>
     <para>The Header content element contains two custom properties. The first of these is the
-                <emphasis role="bold">headerText</emphasis> property. This property gives the text
-            that will display as the header. The second property is <emphasis role="bold">headerLevel</emphasis>.
+        <emphasis role="bold">headerText</emphasis> property. This property gives the text that will
+      display as the header. The second property is <emphasis role="bold">headerLevel</emphasis>.
       This is a string that corresponds to one of the header levels supported by HTML ('h1', 'h2',
       .. 'h6').</para>
     <para>Base bean definitions for the header components are found in
@@ -546,7 +546,8 @@
         </listitem>
         <listitem>
           <para>Since it is common to have footer contents for the view and page, a footer is
-            already initialized and we can simply set the <emphasis role="bold">footer.items</emphasis> property</para>
+            already initialized and we can simply set the <emphasis role="bold"
+              >footer.items</emphasis> property</para>
         </listitem>
         <listitem>
           <para>Common button groups can be configured in a footer definition with an id so that
@@ -885,23 +886,22 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
               <imagedata fileref="../images/KRAD_Guide/labelUnaligned.png"/>
             </imageobject>
           </inlinemediaobject></para>
-        <para>Here the field labels were chosen to be different lengths, which is likely to
-                    happen with real label text. Notice with the variable label length, were the
-                    control begins varies from field to field and thus we do not have alignment
-                    vertically. If we were to put the labels in their own column, the cell width
-                    would expand to cover the longest label, and our controls would all start in the
-                    next column. Thus we would have alignment:</para>
+        <para>Here the field labels were chosen to be different lengths, which is likely to happen
+          with real label text. Notice with the variable label length, were the control begins
+          varies from field to field and thus we do not have alignment vertically. If we were to put
+          the labels in their own column, the cell width would expand to cover the longest label,
+          and our controls would all start in the next column. Thus we would have alignment:</para>
         <para><inlinemediaobject>
             <imageobject>
               <imagedata fileref="../images/KRAD_Guide/labelAligned.png"/>
             </imageobject>
           </inlinemediaobject></para>
         <para>The framework provides the option for doing this through a Component Modifier.
-                    Component modifiers are classes that perform some modification to the component
-                    they are configured on. Each component may have one or more such modifiers
-                    configured. Thus they give us a way to encapsulate some functionality in a piece
-                    of code that can be applied to multiple components, and in addition can be
-                    conditionally applied. Chapter 10 covers this concept in more detail.</para>
+          Component modifiers are classes that perform some modification to the component they are
+          configured on. Each component may have one or more such modifiers configured. Thus they
+          give us a way to encapsulate some functionality in a piece of code that can be applied to
+          multiple components, and in addition can be conditionally applied. Chapter 10 covers this
+          concept in more detail.</para>
         <para>One component modifier provided with KRAD is the LabelFieldSeparateModifier. This
           modifier operates on a group component by iterating through the group items and pulling
           out the label as a separate item. Thus, it appears to the layout manager that we
@@ -1260,9 +1260,10 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
         <listitem>
           <para>CSS styling can be applied to the group items to achieve other layouts. For example,
             using the Fluid styles to make various grids or left/right panels. Instead of adding the
-            style class(s) to each group item, we can use the layout manager properties <emphasis role="bold">itemStyle</emphasis> and
-                            <emphasis role="bold">itemStyleClasses</emphasis>. The layout manager
-                        will then apply them to each item for us</para>
+            style class(s) to each group item, we can use the layout manager properties <emphasis
+              role="bold">itemStyle</emphasis> and <emphasis role="bold"
+            >itemStyleClasses</emphasis>. The layout manager will then apply them to each item for
+            us</para>
         </listitem>
       </itemizedlist>
     </section>
@@ -1520,8 +1521,7 @@ public class Test2Object {
       <title>Collection Object Class</title>
       <para>The collection item class is critical for much of the functionality collection groups
         provide. Therefore, when creating a collection group, we must specify the item class type
-        using the <emphasis role="bold">collectionObjectClass</emphasis>
-                property:</para>
+        using the <emphasis role="bold">collectionObjectClass</emphasis> property:</para>
       <programlisting>
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection"
     p:propertyName="test1Object.test2List"
@@ -1551,7 +1551,9 @@ public class Test2Object {
         collection path is used to key the map, with the actual add line object as the Map value.
         The framework will then take care of setting the binding paths appropriately. You can also
         choose to specify the path for the add line through the collection group. This works similar
-        to specifying other property paths. We can do this by setting the <emphasis role="bold">addLinePropertyName</emphasis> and, if needed, the <emphasis role="bold">addLineBindingInfo</emphasis> properties. As an example, let's assume we want to use our
+        to specifying other property paths. We can do this by setting the <emphasis role="bold"
+          >addLinePropertyName</emphasis> and, if needed, the <emphasis role="bold"
+          >addLineBindingInfo</emphasis> properties. As an example, let's assume we want to use our
         test2Object property to hold the add line:</para>
       <programlisting>
 public class Test1Object {
@@ -1576,7 +1578,8 @@ public class Test1Object {
         Therefore, they must all exist for the add properties type (generally this is the same type
         as the collection items). If it is desired to have a different set of fields for the add
         line (for example, some fields might get defaulted or are not necessary to show until the
-        line has been added), an alternate set of items can be specify using the <emphasis role="bold">addLineItems</emphasis> property. This property holds a list of components
+        line has been added), an alternate set of items can be specify using the <emphasis
+          role="bold">addLineItems</emphasis> property. This property holds a list of components
         similar to the generic group's items property.</para>
       <para>Lastly, the collection group provides a nested Label component for the add line named
           <emphasis role="bold">addLineLabel</emphasis>. This is not used by the collection group
@@ -1636,12 +1639,12 @@ public class Test1Object {
       <para>Example configuration (NOTE : the addLinePlacement does not need to specified if the
         value is &apos;TOP&apos;) : </para>
       <programlisting>
-        &lt;bean id=&quot;Collections-AddViaLightBox-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
+&lt;bean id=&quot;Collections-AddViaLightBox-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
             ...
-            &lt;property name=&quot;addViaLightBox&quot; value=&quot;true&quot; /&gt;
-            &lt;property name=&quot;addLinePlacement&quot; value=&quot;TOP&quot; /&gt;
+    &lt;property name=&quot;addViaLightBox&quot; value=&quot;true&quot; /&gt;
+    &lt;property name=&quot;addLinePlacement&quot; value=&quot;TOP&quot; /&gt;
             ...
-        &lt;/bean&gt;
+&lt;/bean&gt;
       </programlisting>
       <figure>
         <title>Collection Add Via Lightbox Example - TableLayout with TOP add line placement</title>
@@ -1663,11 +1666,12 @@ public class Test1Object {
         others can be added as well. For example, we might choose to have a copy action, or a
         perform detail action. In short, actions can be configured for whatever the functional needs
         are.</para>
-      <para>We specify the line actions using the collection group's <emphasis role="bold">lineActions</emphasis> property. The property holds a list of Action components
-                that are rendered when the collection group <emphasis role="bold">renderLineActions</emphasis> property is true (this property gives us a way to
-                turn off all actions conditionally). Similar to add line, the framework also
-                enforces the condition of the collection group being in editable state (not
-                read-only) before the actions will be rendered.</para>
+      <para>We specify the line actions using the collection group's <emphasis role="bold"
+          >lineActions</emphasis> property. The property holds a list of Action components that are
+        rendered when the collection group <emphasis role="bold">renderLineActions</emphasis>
+        property is true (this property gives us a way to turn off all actions conditionally).
+        Similar to add line, the framework also enforces the condition of the collection group being
+        in editable state (not read-only) before the actions will be rendered.</para>
       <para>Let's configure two buttons for our collection lines. The first button will call a
         server side controller method named 'copyLine', and the second will call a server side
         controller method named 'deleteLine':</para>
@@ -1699,7 +1703,8 @@ public class Test1Object {
       <para>What about if we have an add line, will these actions be rendered for it as well? In
         most cases the actions configured for existing lines do not make sense for the add line
         (consider our case with the copy and delete actions). Therefore the line actions are not
-        rendered for the add line and, instead, a separate property is provided named <emphasis role="bold">addLineActions</emphasis>. The usual action we find here is, of course, the
+        rendered for the add line and, instead, a separate property is provided named <emphasis
+          role="bold">addLineActions</emphasis>. The usual action we find here is, of course, the
         'add' action. This is used to make the server call for adding the line to the collection.
         Let's see how we add this:</para>
       <programlisting>
@@ -1748,9 +1753,11 @@ public class Test1Object {
         validation on the related item before the action can be fired. If the validation fails, a
         message dialog will be displayed informing the user that the item contains errors, and that
         the action will not be executed.</para>
-      <para>We specify the validated line actions using the collection group's <emphasis role="bold">validatedLineActions</emphasis> property. Similar to line actions, the property holds a
-        list of Action components that are rendered when the collection group <emphasis role="bold">renderLineActions</emphasis> property is true (this property gives us a way to
-        turn off all actions conditionally). Example : </para>
+      <para>We specify the validated line actions using the collection group's <emphasis role="bold"
+          >validatedLineActions</emphasis> property. Similar to line actions, the property holds a
+        list of Action components that are rendered when the collection group <emphasis role="bold"
+          >renderLineActions</emphasis> property is true (this property gives us a way to turn off
+        all actions conditionally). Example : </para>
       <programlisting>
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection" p:propertyName="test1Object.test2List"
  p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
@@ -1771,11 +1778,11 @@ public class Test1Object {
         <para>The save actions can be rendered by setting the <emphasis role="bold">renderSaveLineActions</emphasis>
           property to true. Example : </para>
         <programlisting>
-          &lt;bean id=&quot;Collections-SaveLines-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
+&lt;bean id=&quot;Collections-SaveLines-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
           ...
-          &lt;property name=&quot;renderSaveLineActions&quot; value=&quot;true&quot; /&gt;
+ &lt;property name=&quot;renderSaveLineActions&quot; value=&quot;true&quot; /&gt;
           ...
-          &lt;/bean&gt;
+&lt;/bean&gt;
         </programlisting>
       </section>
     </section>
@@ -1788,11 +1795,11 @@ public class Test1Object {
           value of -1 will default to &apos;RIGHT&apos;. </para>
       <para>Example configuration (NOTE : the addLinePlacement does not need to specified if &apos;TOP&apos;)...</para>
       <programlisting>
-        &lt;bean id=&quot;Collections-ActionColumnPlacement-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
+&lt;bean id=&quot;Collections-ActionColumnPlacement-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
             ...
-            &lt;property name=&quot;layoutManager.actionColumnPlacement&quot; value=&quot;3&quot; /&gt;
+ &lt;property name=&quot;layoutManager.actionColumnPlacement&quot; value=&quot;3&quot; /&gt;
             ...
-        &lt;/bean&gt;
+&lt;/bean&gt;
       </programlisting>
       <figure>
         <title>Collection Action Column Placement Example</title>
@@ -1814,8 +1821,8 @@ public class Test1Object {
         within another collection group. So we can just set the sub-collection collection group in
         the parent collection group's items list right? The answer is no. The reason being, these
         nested collection groups need to be treated differently for rendering than the standard
-        collection group items. Therefore, a property named <emphasis role="bold">subCollections</emphasis> is provided for configuring
-                nested collection groups.</para>
+        collection group items. Therefore, a property named <emphasis role="bold"
+          >subCollections</emphasis> is provided for configuring nested collection groups.</para>
       <para>For an example let's first create a Test3Object, and add a list of these objects to our
         Test2Object:</para>
       <programlisting>
@@ -1927,8 +1934,8 @@ public class Test2Object {
         <listitem>
           <para>Collection groups provide data IO at two levels: the individual collection fields,
             and the collection items (data objects). For adding a collection item, we use the add
-            line feature which is enabled by the property <emphasis role="bold">renderAddLine</emphasis> (true by default when the group is
-                        not read-only)</para>
+            line feature which is enabled by the property <emphasis role="bold"
+              >renderAddLine</emphasis> (true by default when the group is not read-only)</para>
         </listitem>
         <listitem>
           <para>The add line data object is not part of the collection until the user performs the
@@ -1943,18 +1950,18 @@ public class Test2Object {
         <listitem>
           <para>By default, the components configured in the items property will be used for the add
             line as well. We can, however, configure a different list of components using the
-              <emphasis role="bold">addLineItems</emphasis>
-                        property</para>
+              <emphasis role="bold">addLineItems</emphasis> property</para>
         </listitem>
         <listitem>
           <para>Collections can be configured to allow the user to add blank editable lines to the
             collection. This way, the user is forced to add the line to the collection before
-            entering data. To enable this feature, the <emphasis role="bold">renderAddBlankLineButton</emphasis> property on CollectionGroup must be set to
+            entering data. To enable this feature, the <emphasis role="bold"
+              >renderAddBlankLineButton</emphasis> property on CollectionGroup must be set to
             true</para>
         </listitem>
         <listitem>
-          <para>Collections can be configured to allow the user to add items to the collection via a modal dialog.
-            To enable this feature the <emphasis role="bold">addViaLightBox</emphasis>
+          <para>Collections can be configured to allow the user to add items to the collection via a
+            modal dialog. To enable this feature the <emphasis role="bold">addViaLightBox</emphasis>
             property on CollectionGroup must be set to true</para>
         </listitem>
         <listitem>
@@ -1962,24 +1969,26 @@ public class Test2Object {
                         add line</para>
         </listitem>
         <listitem>
-          <para>Action fields that perform an action related to an existing line can be
-                        given using the <emphasis role="bold">lineActions</emphasis> property. For the add line, actions are
+          <para>Action fields that perform an action related to an existing line can be given using
+            the <emphasis role="bold">lineActions</emphasis> property. For the add line, actions are
             given using the <emphasis role="bold">addLineActions</emphasis> property. Common
             examples include the 'delete' action for existing lines and the 'add' action for the add
             line</para>
         </listitem>
         <listitem>
           <para>Validated Action fields that perform a validation and an action related to an
-            existing line can be given using the <emphasis role="bold">validatedLineActions</emphasis> property</para>
+            existing line can be given using the <emphasis role="bold"
+              >validatedLineActions</emphasis> property</para>
         </listitem>
         <listitem>
-          <para>The display of the actions is controlled by the property
-            <emphasis role="bold">renderLineActions</emphasis> (by default this is true when the group is not
+          <para>The display of the actions is controlled by the property <emphasis role="bold"
+              >renderLineActions</emphasis> (by default this is true when the group is not
             read-only)</para>
         </listitem>
         <listitem>
-          <para>We can specify the placement of the action column on collection groups using TableLayoutManager
-            by setting the <emphasis role="bold">layoutManager.actionColumnPlacement</emphasis> property</para>
+          <para>We can specify the placement of the action column on collection groups using
+            TableLayoutManager by setting the <emphasis role="bold"
+              >layoutManager.actionColumnPlacement</emphasis> property</para>
         </listitem>
         <listitem>
           <para>Collection group beans can extend the base bean 'Uif-CollectionGroupBase' which
@@ -1999,8 +2008,8 @@ public class Test2Object {
         <listitem>
           <para>Sub-collections are just a collection that is nested, therefore, we use a collection
             group and configure in the same way as a non-nested collection. The only difference is
-            we then add this collection group to the <emphasis role="bold">subCollections</emphasis> property of the parent collection
-                        group</para>
+            we then add this collection group to the <emphasis role="bold">subCollections</emphasis>
+            property of the parent collection group</para>
         </listitem>
         <listitem>
           <para>When configuring the property path for the sub-collection (like the collection
@@ -2105,12 +2114,11 @@ public class Test2Object {
         column. This is a column that will provide a label for each row. Typically the label is
         either a generated sequence (1,2,3…), or uses an identifier property from the collection
         item class (such as a line number or unique identifier). To enable the column, the property
-          <emphasis role="bold">renderSequenceField</emphasis> on the
-                table manger must be set to true (default). We then need to specify where the
-                sequence value should come from. One way of doing this is to allow the framework to
-                create the sequence value for us. This is basically a numbering of each line
-                starting with one. To use autosequencing we set the property generateAutoSequence to
-                true.</para>
+          <emphasis role="bold">renderSequenceField</emphasis> on the table manger must be set to
+        true (default). We then need to specify where the sequence value should come from. One way
+        of doing this is to allow the framework to create the sequence value for us. This is
+        basically a numbering of each line starting with one. To use autosequencing we set the
+        property generateAutoSequence to true.</para>
       <section>
         <title>Row Details Group option</title>
         <para>Table collections can now display additional details on a row. When using this
@@ -2119,9 +2127,6 @@ public class Test2Object {
           below that row. The intended uses of this functionality is for the user to be able to
           discover additional information about that collection item without having to leave the
           page, or hide content that can become large, such as descriptions. </para>
-        <note><para><emphasis role="bold">Currently ONLY readOnly content is officially supported, and
-          any content that relies on javascript functionality is NOT supported in this release.
-        </emphasis></para></note>
         <para>To use a row details group with a Uif-TableCollectionSection (or variation of) you setup the following properties on its <emphasis role="bold">layoutManager</emphasis> (It is <emphasis role="bold">REQUIRED</emphasis> that the layoutManager is using richTable functionality - in other words, it is using the dataTables jQuery plugin to render):
 </para>
         <para><emphasis role="bold">rowDetailsGroup</emphasis> – this can be ANY group or section
@@ -2171,14 +2176,17 @@ public class Test2Object {
         <title>Row Grouping</title>
         <para>Collection row grouping allows for rows of a table collection to be grouped together under a common header when one (or more) of their property values are the same.
 </para>
-        <para>To group lines of a collection, the <emphasis role="bold">groupingPropertyNames</emphasis> property must be set.  In most cases, this will be a single <emphasis role="bold">propertyName</emphasis>, but it can be as many as you want to
+        <para>To group lines of a collection, the <emphasis role="bold"
+            >groupingPropertyNames</emphasis> property must be set. In most cases, this will be a
+          single <emphasis role="bold">propertyName</emphasis>, but it can be as many as you want to
           specify. When there are multiple propertyNames given, they will be sorted and displayed by
           value in the order given in the list (concatenated using a comma to separate the values).
           ALL propertyNames given MUST be a valid property of the collection object for this table
           collection specified by the collection's collectionObjectClass property . </para>
         <para>All propertyNames are relative to the collection line object, and do not need accept
           #lp (or other prefixes). Important note: grouping currently does not allow/ignores the use
-          of the sequenceField property (renderSequenceField should be set to false). The <emphasis role="bold">richTable</emphasis> widget of collections must be have render="true" for
+          of the sequenceField property (renderSequenceField should be set to false). The <emphasis
+            role="bold">richTable</emphasis> widget of collections must be have render="true" for
           grouping to work. </para>
         <para>There are 2 available options to customize the grouping title:
   </para>
@@ -2189,7 +2197,8 @@ public class Test2Object {
           <listitem><para><emphasis role="bold">groupingTitle </emphasis>(string) – <emphasis role="italic">this is a customized title that MUST include SpringEL for values to group by</emphasis>. #lp should be used to reference values of the line in the expression(s) used. The title can be anything as long as it includes some content that is based on line values. Sorting will be based on the full title in alphabetical order. groupingTitle will <emphasis role="bold">always</emphasis> override the settings of groupingPropertyNames and groupingPrefix.</para></listitem>
         </itemizedlist>
         <para>By default, when using grouping, the field you are grouping on is not displayed automatically.  This has to be done in the same way you would display other fields of the line, by adding the field you want to show to items (so displaying the grouping field value or not is up to the developer depending on use case).</para>
-        <para>To enable grouping, simply supply some <emphasis role="bold">groupingPropertyNames</emphasis>. In this example, lines will be grouped by the values
+        <para>To enable grouping, simply supply some <emphasis role="bold"
+            >groupingPropertyNames</emphasis>. In this example, lines will be grouped by the values
           that exist for field1 of the collectionObject. The field1 InputField is also displayed as
           a field of the collection line (but could be omitted if desired).</para>
         <programlisting>
@@ -2236,7 +2245,9 @@ public class Test2Object {
               <imagedata fileref="../images/KRAD_Guide/row_grouping_2.png" scalefit="1"/>
             </imageobject>
           </mediaobject></para>
-        <para>Supplying a groupingPrefix to use for the grouping row title (set on the <emphasis role="bold">layoutManager</emphasis> of the Uif-TableCollectionSection)<programlisting>…
+        <para>Supplying a groupingPrefix to use for the grouping row title (set on the <emphasis
+            role="bold">layoutManager</emphasis> of the
+          Uif-TableCollectionSection)<programlisting>…
 &lt;property name=&quot;layoutManager.groupingPrefix&quot; value=&quot;Lines with value &quot;/&gt;
 …
 
@@ -2246,8 +2257,8 @@ public class Test2Object {
               <imagedata fileref="../images/KRAD_Guide/row_grouping_3.png" scalefit="1"/>
             </imageobject>
           </mediaobject></para>
-        <para>And supplying a <emphasis role="bold">groupingTitle</emphasis> (note that SpringEL is REQUIRED to be used in the groupingTitle property, if used)
-</para>
+        <para>And supplying a <emphasis role="bold">groupingTitle</emphasis> (note that SpringEL is
+          REQUIRED to be used in the groupingTitle property, if used) </para>
         <programlisting>…
 &lt;property name=&quot;layoutManager.groupingTitle&quot; value=&quot;Letter @{#lp.field1} in item&quot;/&gt;
 …
@@ -2263,7 +2274,8 @@ public class Test2Object {
         <para>Collection totaling allows the calculation of column data, and puts this total at the
           bottom of that column in the table's footer. Currently, column calculations only work for
           numeric data. To setup calculations for a collection, the only thing that needs to be
-          provided is a list of column calculations (<emphasis role="bold">ColumnCalculationInfo</emphasis>) you want for each column on the collection's
+          provided is a list of column calculations (<emphasis role="bold"
+            >ColumnCalculationInfo</emphasis>) you want for each column on the collection's
             <emphasis role="bold">layoutManager.columnCalculations</emphasis> property. Columns can
           even have multiple types of calculations per column. </para>
         <para>The following KRAD base beans are available that provide default ColumnCalculationInfo configurations for the most common column calculation operations:
@@ -2296,7 +2308,13 @@ public class Test2Object {
   //return calculation result
 }
 </programlisting>
-        <para>The function's name is used in ColumnCalculationInfo's <emphasis role="bold">calculationFuctionName</emphasis> property.  This property must be specified by name only; parenthesis and parameters CANNOT be included.  The framework automatically passes the array of column values to calculate to the function as the first parameter and data specified by the <emphasis role="bold">calculationFunctionExtraData </emphasis>property as the second parameter.  This data can be <emphasis role="bold">any</emphasis> valid javascript data: int, String, object, etc. </para>
+        <para>The function's name is used in ColumnCalculationInfo's <emphasis role="bold"
+            >calculationFuctionName</emphasis> property. This property must be specified by name
+          only; parenthesis and parameters CANNOT be included. The framework automatically passes
+          the array of column values to calculate to the function as the first parameter and data
+          specified by the <emphasis role="bold">calculationFunctionExtraData </emphasis>property as
+          the second parameter. This data can be <emphasis role="bold">any</emphasis> valid
+          javascript data: int, String, object, etc. </para>
         <para>The calculationFunctionExtraData property is meant to provide options to your calculation function, if needed (our average function, for example, uses calculationFunctionExtraData to pass the number of decimal places to be used in the average).
 </para>
         <para>The settable properties available on <emphasis role="bold">Uif-ColumnCalculationInfo</emphasis> are:
@@ -2552,9 +2570,9 @@ public class Test2Object {
             </itemizedlist>
           </listitem>
           <listitem>
-            <para>Similar to the difference between the two general group layouts
-                        (the grid table based and the box div based), is the difference between the
-                        table and stacked collection layout managers</para>
+            <para>Similar to the difference between the two general group layouts (the grid table
+              based and the box div based), is the difference between the table and stacked
+              collection layout managers</para>
           </listitem>
           <listitem>
             <para>A stacked layout manager renders each collection line in a div. In other words,

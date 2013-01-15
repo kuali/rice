@@ -46,7 +46,7 @@
   	    <td width="33%" align="right" class="thnormal">* Doc Type Name:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].docName" />
 			<kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="name:routeHeader.docActionItem[${ctr}].docName" lookupParameters="routeHeader.docActionItem[${ctr}].docName:name" />
-  	    </td>
+        </td>
   	  </tr> 
   	   <tr>
   	    <td width="33%" align="right" class="thnormal">* Doc Type Label:</td>
@@ -90,13 +90,13 @@
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">Workgroup ID:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].groupId" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.api.group.Group" fieldConversions="groupId:routeHeader.docActionItem[${ctr}].groupId" lookupParameters="routeHeader.docActionItem[${ctr}].groupId:groupId" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="id:routeHeader.docActionItem[${ctr}].groupId" lookupParameters="routeHeader.docActionItem[${ctr}].groupId:id" />
   	    </td>
   	  </tr>
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">Role Name:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].roleName" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Role" fieldConversions="roleName:routeHeader.docActionItem[${ctr}].roleName" lookupParameters="routeHeader.docActionItem[${ctr}].roleName:roleName" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.impl.role.RoleBo" fieldConversions="name:routeHeader.docActionItem[${ctr}].roleName" lookupParameters="routeHeader.docActionItem[${ctr}].roleName:name" />
   	    </td>
   	  </tr>
   	  <tr>
@@ -108,7 +108,7 @@
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">Delegator Workgroup ID:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].delegatorGroupId" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.api.group.Group" fieldConversions="groupId:routeHeader.docActionItem[${ctr}].delegatorGroupId" lookupParameters="routeHeader.docActionItem[${ctr}].delegatorGroupId:groupId" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="id:routeHeader.docActionItem[${ctr}].delegatorGroupId" lookupParameters="routeHeader.docActionItem[${ctr}].delegatorGroupId:id" />
   	    </td>
   	  </tr>
   	  <tr>

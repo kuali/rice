@@ -133,20 +133,21 @@
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Person ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].principalId" />
-	  	      <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.docActionRequest[${ctr}].principalId" lookupParameters="routeHeader.docActionRequest[${ctr}].principalId:principalId" />
+            <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.docActionRequest[${ctr}].principalId"
+                lookupParameters="routeHeader.docActionRequest[${ctr}].principalId:principalId"/>
 	  	    </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Workgroup ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].groupId" />
-	  	      <kul:lookup boClassName="org.kuali.rice.kim.api.group.Group" fieldConversions="groupId:routeHeader.docActionRequest[${ctr}].groupId" lookupParameters="routeHeader.docActionRequest[${ctr}].groupId:groupId" />
-	  	    </td>
+            <kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="id:routeHeader.docActionRequest[${ctr}].groupId" lookupParameters="routeHeader.docActionRequest[${ctr}].groupId:id"/>
+          </td>
 		  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Role Name:</td>
- 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].roleName" />
-			  <kul:lookup boClassName="org.kuali.rice.kim.bo.Role" fieldConversions="roleName:routeHeader.docActionRequest[${ctr}].roleName" lookupParameters="routeHeader.docActionRequest[${ctr}].roleName:roleName" />	  	    
-	  	    </td>
+ 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].roleName"/>
+             <kul:lookup boClassName="org.kuali.rice.kim.impl.role.RoleBo" fieldConversions="name:routeHeader.docActionRequest[${ctr}].roleName" lookupParameters="routeHeader.docActionRequest[${ctr}].roleName:name" />
+           </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Qualified Role Name:</td>

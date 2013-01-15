@@ -102,11 +102,11 @@
   </c:choose>
   
     <%-- KULRICE-8176: KFS Notes/Attachments Tab Functionality for Note Text Error - Visible/Special characters, spaces, or tab --%>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <%-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> --%>
 </head>
 <c:choose>
 	<c:when test="${lookup}" >
-		<body onload="placeFocus();	 
+		<body onload="placeFocus();
 		<c:if test='<%= jspContext.findAttribute("KualiForm") != null %>'>
 			<c:if test='<%= jspContext.findAttribute("KualiForm").getClass() == org.kuali.rice.kns.web.struts.form.LookupForm.class %>'>
 				<c:out value ="${KualiForm.lookupable.extraOnLoad}" />

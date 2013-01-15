@@ -17,6 +17,7 @@ package org.kuali.rice.ken.web.spring;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationChannelBo;
@@ -38,6 +39,8 @@ import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.rule.GenericAttributeContent;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
@@ -232,6 +235,15 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
         // obtain a workflow user object first
         //WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
         String initiatorId = request.getRemoteUser();
+        Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(initiatorId);
+        if (principal == null) {
+            principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(initiatorId);
+        }
+        if (principal == null) {
+            throw new RiceIllegalArgumentException("Could not locate a principal as initiator with the given remoteUser of " + initiatorId);
+        }
+        initiatorId = principal.getPrincipalId();
+        LOG.debug("initiatorId="+initiatorId);
 
         // now construct the workflow document, which will interact with workflow
         WorkflowDocument document;

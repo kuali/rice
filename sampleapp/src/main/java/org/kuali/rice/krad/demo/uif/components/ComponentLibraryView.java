@@ -364,6 +364,7 @@ public class ComponentLibraryView extends FormView {
 
             List<Component> propertiesItems = new ArrayList<Component>();
             Message propertiesMessage = ComponentFactory.getMessage();
+            propertiesMessage.setParseComponents(false);
             propertiesMessage.setMessageText(documentationMessageContent);
             propertiesItems.add(propertiesMessage);
 
@@ -393,6 +394,7 @@ public class ComponentLibraryView extends FormView {
 
                     List<Component> iPropertiesItems = new ArrayList<Component>();
                     Message iPropertiesMessage = ComponentFactory.getMessage();
+                    iPropertiesMessage.setParseComponents(false);
                     iPropertiesMessage.setMessageText(messageContent);
                     iPropertiesItems.add(iPropertiesMessage);
                     iPropertiesGroup.setItems(iPropertiesItems);

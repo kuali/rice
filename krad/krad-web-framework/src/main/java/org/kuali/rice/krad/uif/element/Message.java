@@ -56,10 +56,13 @@ public class Message extends ContentElementBase {
     private List<Component> inlineComponents;
     private List<Component> messageComponentStructure;
 
+    private boolean parseComponents;
+
     public Message() {
         super();
 
         generateSpan = true;
+        parseComponents = true;
     }
 
     /**
@@ -79,7 +82,7 @@ public class Message extends ContentElementBase {
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
 
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
-                    this.getInlineComponents(), view, true);
+                    this.getInlineComponents(), view, parseComponents);
 
             if (messageComponentStructure != null) {
                 for (Component component : messageComponentStructure) {
@@ -253,5 +256,24 @@ public class Message extends ContentElementBase {
         }
 
         super.completeValidation(tracer.getCopy());
+    }
+
+    /**
+     * Indicates if the inline components must be parsed for rich messages
+     *
+     * @return boolean
+     */
+    @BeanTagAttribute(name = "parseComponents")
+    public boolean isParseComponents() {
+        return parseComponents;
+    }
+
+    /**
+     * Sets the parse components flag to indicate if inline components must be parsed for rich messages
+     *
+     * @param parseComponents
+     */
+    public void setParseComponents(boolean parseComponents) {
+        this.parseComponents = parseComponents;
     }
 }

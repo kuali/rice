@@ -60,24 +60,6 @@ public class LookupController extends UifControllerBase {
         return new LookupForm();
     }
 
-    protected void suppressActionsIfNeeded(LookupForm lookupForm) {
-//        try {
-//            // TODO; move to authorizer for lookup view
-//            Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
-//            Person user = GlobalVariables.getUserSession().getPerson();
-//            // check if creating documents is allowed
-//            String documentTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
-//                    .getMaintenanceDocumentTypeName(dataObjectClass);
-//            if ((documentTypeName != null) &&
-//                    !KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName)
-//                            .canInitiate(documentTypeName, user)) {
-//                ((LookupView) lookupForm.getView()).setSuppressActions(true);
-//            }
-//        } catch (ClassNotFoundException e) {
-//            LOG.warn("Unable to load Data Object Class: " + lookupForm.getDataObjectClassName(), e);
-//        }
-    }
-
     /**
      * Invoked to request an lookup view for a data object class
      *
@@ -91,6 +73,13 @@ public class LookupController extends UifControllerBase {
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
+
+        Lookupable lookupable = lookupForm.getLookupable();
+        if (lookupable == null) {
+            LOG.error("Lookupable is null.");
+            throw new RuntimeException("Lookupable is null.");
+        }
+        lookupable.initSuppressAction(lookupForm);
 
         // if request is not a redirect, determine if we need to redirect for an externalizable object lookup
         if (!lookupForm.isRedirectedLookup()) {
@@ -128,7 +117,13 @@ public class LookupController extends UifControllerBase {
     public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
-        suppressActionsIfNeeded(lookupForm);
+
+        Lookupable lookupable = lookupForm.getLookupable();
+        if (lookupable == null) {
+            LOG.error("Lookupable is null.");
+            throw new RuntimeException("Lookupable is null.");
+        }
+        lookupable.initSuppressAction(lookupForm);
 
         Properties props = new Properties();
         props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
@@ -151,9 +146,13 @@ public class LookupController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=clearValues")
     public ModelAndView clearValues(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        suppressActionsIfNeeded(lookupForm);
 
-        Lookupable lookupable = (Lookupable) lookupForm.getLookupable();
+        Lookupable lookupable = lookupForm.getLookupable();
+        if (lookupable == null) {
+            LOG.error("Lookupable is null.");
+            throw new RuntimeException("Lookupable is null.");
+        }
+        lookupable.initSuppressAction(lookupForm);
         lookupForm.setCriteriaFields(lookupable.performClear(lookupForm, lookupForm.getCriteriaFields()));
 
         return getUIFModelAndView(lookupForm);
@@ -166,13 +165,13 @@ public class LookupController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=search")
     public ModelAndView search(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        suppressActionsIfNeeded(lookupForm);
 
         Lookupable lookupable = lookupForm.getLookupable();
         if (lookupable == null) {
             LOG.error("Lookupable is null.");
             throw new RuntimeException("Lookupable is null.");
         }
+        lookupable.initSuppressAction(lookupForm);
 
         // validate search parameters
         lookupable.validateSearchParameters(lookupForm, lookupForm.getCriteriaFields());

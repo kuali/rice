@@ -136,6 +136,16 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
+     * @see org.kuali.rice.krad.lookup.Lookupable#initSuppressAction(org.kuali.rice.krad.web.form.LookupForm)
+     */
+    @Override
+    public void initSuppressAction(LookupForm lookupForm) {
+        LookupViewAuthorizerBase lookupAuthorizer = (LookupViewAuthorizerBase) lookupForm.getView().getAuthorizer();
+        Person user = GlobalVariables.getUserSession().getPerson();
+        ((LookupView) lookupForm.getView()).setSuppressActions(!lookupAuthorizer.canInitiateDocument(lookupForm, user));
+    }
+
+    /**
      * @see org.kuali.rice.krad.lookup.Lookupable#performSearch
      */
     @Override

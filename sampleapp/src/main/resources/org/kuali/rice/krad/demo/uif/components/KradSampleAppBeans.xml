@@ -514,6 +514,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotaling-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Row Grouping"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutGrouping-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Add Line"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionAddLine-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

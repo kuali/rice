@@ -411,6 +411,8 @@
       <list>
         <bean parent="Uif-Link" p:linkText="Checkbox"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CheckboxControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Checkbox Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CheckboxGroupControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="File"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FileControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="KIM Group"

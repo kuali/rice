@@ -149,6 +149,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextAreaControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCheckboxControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCheckboxGroupControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoRadioControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSelectControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoFileControl.xml</value>
@@ -253,6 +254,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextAreaControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCheckboxControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCheckboxGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoRadioControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSelectControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoFileControlResources</value>

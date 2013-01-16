@@ -458,6 +458,8 @@
   <bean id="ComponentLibrary-Nav-Containers" p:headerText="Containers" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
+        <bean parent="Uif-Link" p:linkText="Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Group-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Accordion Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AccordionGroup-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Link Group"
@@ -473,9 +475,9 @@
   <bean id="ComponentLibrary-Nav-LayoutManagers" p:headerText="Layout Managers" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Grid Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>
-        <bean parent="Uif-Link" p:linkText="Grid Layout"
+<!--        <bean parent="Uif-Link" p:linkText="Grid Layout"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>-->
+        <bean parent="Uif-Link" p:linkText="Box Layout"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManager-View&amp;methodToCall=start"/>
       </list>
     </property>
@@ -484,8 +486,10 @@
   <bean id="ComponentLibrary-Nav-Widgets" p:headerText="Widgets" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Breadcrumbs"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>
+<!--        <bean parent="Uif-Link" p:linkText="Breadcrumbs"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>-->
+        <bean parent="Uif-Link" p:linkText="Disclosure"
+                      p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

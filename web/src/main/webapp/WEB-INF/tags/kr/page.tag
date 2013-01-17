@@ -55,6 +55,7 @@
 </c:if>
 
 <head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
 	<script type="text/javascript">
 	<!--
@@ -100,9 +101,6 @@
       </c:forEach>
     </c:otherwise>
   </c:choose>
-  
-    <%-- KULRICE-8176: KFS Notes/Attachments Tab Functionality for Note Text Error - Visible/Special characters, spaces, or tab --%>
-    <%-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> --%>
 </head>
 <c:choose>
 	<c:when test="${lookup}" >

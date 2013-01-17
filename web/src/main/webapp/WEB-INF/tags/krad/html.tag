@@ -24,6 +24,7 @@
 
   <!----------------------------------- #BEGIN HEAD --------------------------------------->
   <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
       <script type="text/javascript">
         <!--

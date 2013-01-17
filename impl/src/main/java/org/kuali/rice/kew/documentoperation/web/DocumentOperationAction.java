@@ -216,7 +216,7 @@ public class DocumentOperationAction extends KewKualiAction {
 			DocOperationIndexedParameter actionRequestOp = (DocOperationIndexedParameter) actionRequestIter.next();
 			int index = actionRequestOp.getIndex().intValue();
 			String opValue = actionRequestOp.getValue();
-			ActionRequestValue actionRequest = docForm.getRouteHeader().getDocActionRequest(index);
+			ActionRequestValue actionRequest = docForm.getActionRequests().get(index);
 			String createDateParamName = "actionRequestCreateDate" + index;
 
 			if (!KewApiConstants.UPDATE.equals(opValue) && !KewApiConstants.DELETE.equals(opValue) && !KewApiConstants.NOOP.equals(opValue)) {
@@ -254,7 +254,7 @@ public class DocumentOperationAction extends KewKualiAction {
 			String opValue = actionTakenOp.getValue();
 
 			String actionDateParamName = "actionTakenActionDate" + index;
-			ActionTakenValue actionTaken = docForm.getRouteHeader().getDocActionTaken(index);
+            ActionTakenValue actionTaken = docForm.getActionsTaken().get(index);
 			if (!KewApiConstants.UPDATE.equals(opValue) && !KewApiConstants.DELETE.equals(opValue) && !KewApiConstants.NOOP.equals(opValue)) {
 				throw new WorkflowServiceErrorException("Action taken operation not defined", new WorkflowServiceErrorImpl("Action taken operation not defined", "docoperation.actiontaken.operation.invalid"));
 			}
@@ -281,8 +281,9 @@ public class DocumentOperationAction extends KewKualiAction {
 			String opValue = actionItemOp.getValue();
 
 			String dateAssignedParamName = "actionItemDateAssigned" + index;
-			ActionItem actionItem = docForm.getRouteHeader().getDocActionItem(index);
-			if (!KewApiConstants.UPDATE.equals(opValue) && !KewApiConstants.DELETE.equals(opValue) && !KewApiConstants.NOOP.equals(opValue)) {
+            ActionItem actionItem =  docForm.getActionItems().get(index);
+
+            if (!KewApiConstants.UPDATE.equals(opValue) && !KewApiConstants.DELETE.equals(opValue) && !KewApiConstants.NOOP.equals(opValue)) {
 				throw new WorkflowServiceErrorException("Action Item operation not defined", new WorkflowServiceErrorImpl("Action Item operation not defined", "docoperation.operation.invalid"));
 			}
 			if (KewApiConstants.UPDATE.equals(opValue)) {
@@ -435,12 +436,14 @@ public class DocumentOperationAction extends KewKualiAction {
 				if(branchStates!=null){
 				   for(int i=0;i<branchStates.size();i++){
 					   BranchState branchState=(BranchState)branchStates.get(i);
-					   BranchState branchStateNew=(BranchState)branchStatesNew.get(i);
-					   if(branchStateNew.getKey()!=null && ! branchStateNew.getKey().trim().equals("")){
-					   branchState.setKey(branchStateNew.getKey());
-					   LOG.debug(branchState.getKey());
-					   branchState.setValue(branchStateNew.getValue());
-					   LOG.debug(branchState.getValue());
+					   if (i < branchStatesNew.size()) {
+					        BranchState branchStateNew=(BranchState)branchStatesNew.get(i);
+					        if(branchStateNew.getKey()!=null && ! branchStateNew.getKey().trim().equals("")){
+					            branchState.setKey(branchStateNew.getKey());
+					            LOG.debug(branchState.getKey());
+					            branchState.setValue(branchStateNew.getValue());
+					            LOG.debug(branchState.getValue());
+                            }
 					   }
 				   }
 				}
@@ -585,7 +588,7 @@ public class DocumentOperationAction extends KewKualiAction {
 			docForm.setCreateDate(RiceConstants.getDefaultDateAndTimeFormat().format(
                     docForm.getRouteHeader().getCreateDate()));
 			docForm.setDateModified(RiceConstants.getDefaultDateAndTimeFormat().format(
-                    docForm.getRouteHeader().getDateLastModified()));
+                    docForm.getRouteHeader().getDateModified()));
 			docForm.setApprovedDate(RiceConstants.getDefaultDateAndTimeFormat().format(
                     docForm.getRouteHeader().getApprovedDate()));
 			docForm.setFinalizedDate(RiceConstants.getDefaultDateAndTimeFormat().format(
@@ -600,128 +603,7 @@ public class DocumentOperationAction extends KewKualiAction {
 
 	public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		String lookupInvocationModule = docForm.getLookupInvocationModule();
 		docForm.getRouteHeader().setDocumentId(docForm.getDocumentId());
-
-		if (lookupInvocationModule != null && !lookupInvocationModule.trim().equals("")) {
-			String lookupField = docForm.getLookupInvocationField();
-			int lookupIndex = new Integer(docForm.getLookupInvocationIndex()).intValue();
-			String networkId = request.getParameter("networkId");
-			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(networkId);
-
-			if (lookupInvocationModule.equals("RouteHeader")) {
-				DocumentRouteHeaderValue routeHeader = docForm.getRouteHeader();
-				if ("initiatorWorkflowId".equals(lookupField)) {
-					routeHeader.setInitiatorWorkflowId(principalId);
-				}
-				if ("documentTypeId".equals(lookupField)) {
-					DocumentType docType = getDocumentTypeService().findByName(request.getParameter("docTypeFullName"));
-					routeHeader.setDocumentTypeId(docType.getDocumentTypeId());
-				}
-			}
-
-			if (lookupInvocationModule.equals("ActionRequest")) {
-				ActionRequestValue actionRequest = docForm.getRouteHeader().getDocActionRequest(lookupIndex);
-				if ("routeMethodName".equals(lookupField)) {
-//					actionRequest.setRouteMethodName(null);
-					String id = request.getParameter("ruleTemplate.ruleTemplateId");
-					if (id != null && !"".equals(id.trim())) {
-						RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(id);
-//						if (ruleTemplate != null) {
-//							actionRequest.setRouteMethodName(ruleTemplate.getName());
-//						}
-					}
-				}
-				if ("workflowId".equals(lookupField)) {
-					actionRequest.setPrincipalId(principalId);
-				}
-				if ("workgroupId".equals(lookupField)) {
-					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionRequest.setGroupId(request.getParameter("workgroupId"));
-					} else {
-						actionRequest.setGroupId(null);
-					}
-				}
-				if ("roleName".equals(lookupField)) {
-					actionRequest.setRoleName(request.getParameter("roleName"));
-				}
-			}
-			if (lookupInvocationModule.equals("ActionTaken")) {
-				ActionTakenValue actionTaken = docForm.getRouteHeader().getDocActionTaken(lookupIndex);
-				if ("workflowId".equals(lookupField)) {
-					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
-					if (principal != null) {
-						actionTaken.setPrincipalId(principal.getPrincipalId());
-					} else {
-						LOG.info("action taken user not found");
-						actionTaken.setPrincipalId(null);
-					}
-				}
-				if ("delegatorPrincipalId".equals(lookupField)) {
-					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
-					if (principal != null) {
-						actionTaken.setDelegatorPrincipalId(principal.getPrincipalId());
-					} else {
-						LOG.info("action taken delegator user not found");
-						actionTaken.setDelegatorPrincipalId(null);
-					}
-				}
-				if ("delegatorGroupId".equals(lookupField)) {
-					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionTaken.setDelegatorGroupId(request.getParameter("workgroupId"));
-					} else {
-						actionTaken.setDelegatorGroupId(null);
-					}
-				}
-			}
-
-			if (lookupInvocationModule.equals("ActionItem")) {
-				ActionItem actionItem = docForm.getRouteHeader().getDocActionItem(lookupIndex);
-				if ("workflowId".equals(lookupField)) {
-					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
-					if (principal != null) {
-						actionItem.setPrincipalId(principal.getPrincipalId());
-					} else {
-						LOG.info("action item user not found");
-						actionItem.setPrincipalId(null);
-					}
-				}
-
-				if ("workgroupId".equals(lookupField)) {
-					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionItem.setGroupId(request.getParameter("workgroupId"));
-					} else {
-						actionItem.setGroupId(null);
-					}
-				}
-				if ("roleName".equals(lookupField)) {
-					actionItem.setRoleName(request.getParameter("roleName"));
-				}
-				if ("delegatorPrincipalId".equals(lookupField)) {
-					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
-					if (principal != null) {
-						actionItem.setDelegatorPrincipalId(principal.getPrincipalId());
-					} else {
-						LOG.info("action item delegator user not found");
-						actionItem.setDelegatorPrincipalId(null);
-					}
-				}
-				if ("delegatorGroupId".equals(lookupField)) {
-					if (request.getParameter("workgroupId") != null && !"".equals(request.getParameter("workgroupId").trim())) {
-						actionItem.setDelegatorGroupId(request.getParameter("workgroupId"));
-					} else {
-						actionItem.setDelegatorGroupId(null);
-					}
-				}
-				if ("docName".equals(lookupField)) {
-					DocumentType docType = getDocumentTypeService().findByName(request.getParameter("docTypeFullName"));
-					actionItem.setDocName(docType.getName());
-					actionItem.setDocLabel(docType.getLabel());
-					actionItem.setDocHandlerURL(docType.getResolvedDocumentHandlerUrl());
-				}
-			}
-		}
-
 		return mapping.findForward("basic");
 	}
 
@@ -766,6 +648,10 @@ public class DocumentOperationAction extends KewKualiAction {
 	public ActionForward blanketApproveDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
+            String blanketApproverUser = docForm.getBlanketApproveUser();
+            if (StringUtils.isBlank(blanketApproverUser)) {
+                throw new WorkflowServiceErrorException("No user was provided in the Blanket Approve User field", new WorkflowServiceErrorImpl("No user was provided in the Blanket Approve User field", "docoperation.operation.invalid"));
+            }
 			String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(docForm.getBlanketApproveUser()).getPrincipalId();
 			Set<String> nodeNames = new HashSet<String>();
 			if (!StringUtils.isBlank(docForm.getBlanketApproveNodes())) {

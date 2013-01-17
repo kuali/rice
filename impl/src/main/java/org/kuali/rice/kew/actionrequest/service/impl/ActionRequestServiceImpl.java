@@ -58,6 +58,7 @@ import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -749,7 +750,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
         if (actionRequest.isGroupRequest()) {
-            if (!actionRequest.getGroup().isActive() && actionRequest.getRouteHeader().getDocumentType().getFailOnInactiveGroup().getPolicyValue()) {
+             Group group = actionRequest.getGroup();
+             if (group == null)  {
+                 throw new RiceRuntimeException("Attempted to save an action request with a non-existent group.");
+             }
+             if (!group.isActive() && actionRequest.getRouteHeader().getDocumentType().getFailOnInactiveGroup().getPolicyValue()) {
         		throw new RiceRuntimeException("Attempted to save an action request with an inactive group.");
         	}
         }

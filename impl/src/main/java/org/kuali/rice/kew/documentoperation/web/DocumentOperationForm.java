@@ -22,13 +22,18 @@ import java.util.Map;
 
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * struts form bean for {@link DocumentOperationAction}.
@@ -61,10 +66,6 @@ public class DocumentOperationForm extends KualiForm {
     private List routeModules;
     private String routeModuleName;
 
-    private String lookupInvocationModule;
-    private String lookupInvocationField;
-    private String lookupInvocationIndex;
-
     //variabes for RouteNodeInstances and branches
     private List routeNodeInstances=ListUtils.lazyList(new ArrayList(),
             new Factory() {
@@ -94,6 +95,10 @@ public class DocumentOperationForm extends KualiForm {
     private String actionInvocationUser;
     private String actionInvocationActionItemId;
     private String actionInvocationActionCode;
+
+    private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+    private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
+    private List<ActionItem> actionItems = new ArrayList<ActionItem>();
 
     public String getAnnotation() {
 		return annotation;
@@ -296,24 +301,30 @@ public class DocumentOperationForm extends KualiForm {
         return actionRequestStatuses;
     }
 
-    public String getLookupInvocationField() {
-        return lookupInvocationField;
+    public  List<ActionRequestValue> getActionRequests() {
+        if (ObjectUtils.isNull(actionRequests) || actionRequests.isEmpty()) {
+            List<ActionRequestValue> actionRequestsList = KEWServiceLocator.getActionRequestService().findByDocumentIdIgnoreCurrentInd(documentId);
+            this.actionRequests = actionRequestsList;
+        }
+        return actionRequests;
     }
-    public void setLookupInvocationField(String lookupInvocationField) {
-        this.lookupInvocationField = lookupInvocationField;
+
+    public  List<ActionTakenValue> getActionsTaken() {
+        if (ObjectUtils.isNull(actionsTaken) || actionsTaken.isEmpty()) {
+            List<ActionTakenValue> actionsTakenList = KEWServiceLocator.getActionTakenService().findByDocumentIdIgnoreCurrentInd(documentId);
+            this.actionsTaken = actionsTakenList;
+        }
+        return actionsTaken;
     }
-    public String getLookupInvocationIndex() {
-        return lookupInvocationIndex;
+
+    public  List<ActionItem> getActionItems() {
+        if (ObjectUtils.isNull(actionItems) || actionItems.isEmpty()) {
+            List<ActionItem> actionItemsList =  (List<ActionItem>)KEWServiceLocator.getActionListService().findByDocumentId(documentId);
+            this.actionItems = actionItemsList;
+        }
+        return actionItems;
     }
-    public void setLookupInvocationIndex(String lookupInvocationIndex) {
-        this.lookupInvocationIndex = lookupInvocationIndex;
-    }
-    public String getLookupInvocationModule() {
-        return lookupInvocationModule;
-    }
-    public void setLookupInvocationModule(String lookupInvocationModule) {
-        this.lookupInvocationModule = lookupInvocationModule;
-    }
+
     public Map getActionTakenCds() {
         return actionTakenCds;
     }

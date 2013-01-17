@@ -43,7 +43,7 @@ public class BranchDAOOjbImpl extends PersistenceBrokerDaoSupport implements Bra
     
     public void deleteBranchStatesById(Long stateId){
     	Criteria criteria = new Criteria();
-        criteria.addEqualTo("branchStateId", stateId);
+        criteria.addEqualTo("stateId", stateId);
         BranchState branchState=(BranchState)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(BranchState.class, criteria));
         getPersistenceBrokerTemplate().delete(branchState);
     }

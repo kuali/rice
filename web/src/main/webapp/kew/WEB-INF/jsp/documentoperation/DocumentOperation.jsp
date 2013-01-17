@@ -52,9 +52,6 @@
 </div>
 
 <html-el:form action="/DocumentOperation.do">
-<html-el:hidden property="lookupInvocationModule" />
-<html-el:hidden property="lookupInvocationField" />
-<html-el:hidden property="lookupInvocationIndex" />
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>

@@ -41,7 +41,7 @@
       <list>
         <!-- ex:Demo-CollectionSequence-Example1 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
-          <property name="headerText" value="Table Layout" />
+          <property name="headerText" value="Auto Sequence" />
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject" />
           <property name="propertyName" value="collection1" />
@@ -66,7 +66,7 @@
       <list>
         <!-- ex:Demo-CollectionSequence-Example2 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
-          <property name="headerText" value="Table Layout" />
+          <property name="headerText" value="Field Sequence" />
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject" />
           <property name="propertyName" value="collection1" />
@@ -90,7 +90,7 @@
       <list>
         <!-- ex:Demo-CollectionSequence-Example3 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
-          <property name="headerText" value="Table Layout" />
+          <property name="headerText" value="No Sequence" />
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject" />
           <property name="propertyName" value="collection1" />

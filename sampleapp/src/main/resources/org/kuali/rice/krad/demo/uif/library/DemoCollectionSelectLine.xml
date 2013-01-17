@@ -33,13 +33,13 @@
     </property>
   </bean>
 
-  <!-- TableLayout -->
+  <!-- Select Line -->
   <bean id="Demo-CollectionSelectLine-Example1"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CollectionSelectLine-Example1 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
-          <property name="headerText" value="Table Layout" />
+          <property name="headerText" value="Collection Select Line" />
           <property name="collectionObjectClass"
                     value="edu.sampleu.demo.kitchensink.UITestObject" />
           <property name="propertyName" value="collection1" />

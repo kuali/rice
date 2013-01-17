@@ -111,6 +111,7 @@ JavascriptKradVariables.prototype = {
      VALIDATION_MESSAGES_CLASS : "uif-validationMessagesList",
      VALIDATION_PAGE_HEADER_CLASS : "uif-pageValidationHeader",
      VALIDATION_SETUP_EVENT : "validationSetup",
+     PAGE_LOAD_EVENT : "pageLoad",
      VIEW_CONTENT_HEADER_CLASS : "Uif-ViewContentWrapper",
      VIEW_STATE : "ViewState",
      WARNING_HIGHLIGHT_SECTION_CLASS : "uif-warningHighlight-section",

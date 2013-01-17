@@ -477,8 +477,8 @@
   <bean id="ComponentLibrary-Nav-LayoutManagers" p:headerText="Layout Managers" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-<!--        <bean parent="Uif-Link" p:linkText="Grid Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>-->
+        <!--        <bean parent="Uif-Link" p:linkText="Grid Layout"
+        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>-->
         <bean parent="Uif-Link" p:linkText="Box Layout"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManager-View&amp;methodToCall=start"/>
       </list>
@@ -488,10 +488,10 @@
   <bean id="ComponentLibrary-Nav-Widgets" p:headerText="Widgets" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-<!--        <bean parent="Uif-Link" p:linkText="Breadcrumbs"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>-->
+        <!--        <bean parent="Uif-Link" p:linkText="Breadcrumbs"
+        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>-->
         <bean parent="Uif-Link" p:linkText="Disclosure"
-                      p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>
@@ -566,8 +566,12 @@
         parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
+        <bean parent="Uif-Link" p:linkText="Disable"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disable-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Progressive Disclosure"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressiveDisclosure-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Conditional Refresh"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConditionalRefresh-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>
@@ -575,8 +579,10 @@
   <bean id="ComponentLibrary-Nav-GeneralFeatures" p:headerText="General Features" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Incident Page"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncedentPage-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Rich Messages"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RichMessages-View&amp;methodToCall=start"/>
+        <!--        <bean parent="Uif-Link" p:linkText="Incident Page"
+        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncidentPage-View&amp;methodToCall=start"/>-->
       </list>
     </property>
   </bean>

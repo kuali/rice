@@ -54,7 +54,7 @@
       <list>
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="Message with [b]bold[/b] and [em]emphasis[/em] and [strong]strong[/strong] inline"/>
+                    value="Message with [b]bold[/b], break,[br/]and [i]italics[/i] inline"/>
         </bean>
         <bean parent="Uif-Message">
           <property name="messageText"
@@ -239,7 +239,7 @@
       <list>
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="Testing link tag [link='http://www.kuali.org']Link[/link]"/>
+                    value="Testing link tag [link='http://www.kuali.org']Kuali Site[/link]"/>
         </bean>
         <bean parent="Uif-Message">
           <property name="messageText"

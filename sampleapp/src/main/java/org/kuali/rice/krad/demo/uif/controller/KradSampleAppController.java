@@ -19,6 +19,7 @@ import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.ViewTheme;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -64,6 +65,17 @@ public class KradSampleAppController extends UifControllerBase {
     public ModelAndView validateView(@ModelAttribute("KualiForm") UifFormBase uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         KRADServiceLocatorWeb.getViewValidationService().validateView(uiTestForm);
+        return getUIFModelAndView(uiTestForm);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addGrowl")
+    public ModelAndView addGrowl(@ModelAttribute("KualiForm") UifFormBase uiTestForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        String extraInfo = (String)request.getParameter("extraInfo");
+        if(extraInfo == null){
+            extraInfo = "none";
+        }
+        GlobalVariables.getMessageMap().addGrowlMessage("Growl Message", "demo.fakeGrowl", extraInfo);
         return getUIFModelAndView(uiTestForm);
     }
 

@@ -32,8 +32,12 @@ jQuery(function () {
     if (jQuery("#renderedInLightBox").length && jQuery("#renderedInLightBox").val() == "true") {
         jQuery(".uif-view").css("padding-top", "0");
     }
-    handleTabSwap("input#Demo-CurrentExampleIndex_control");
+    jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
+        handleTabSwap("input#Demo-CurrentExampleIndex_control");
+    });
 });
+
+
 
 /**
  * Setup call for exhibit tabs, adds a handler for the tabsactivate event to switch the source in the syntaxHighlighter

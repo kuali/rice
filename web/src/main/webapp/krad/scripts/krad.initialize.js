@@ -480,6 +480,7 @@ function setupPage(validate) {
 
     jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
     pageValidatorReady = true;
+    jQuery(document).trigger(kradVariables.PAGE_LOAD_EVENT);
 
     jQuery.watermark.showAll();
 }

@@ -40,7 +40,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxGroupControl-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="CheckboxGroupControl"
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField1" p:label="CheckboxGroupControl"
               p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl"/>
@@ -60,7 +60,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxGroupControl-Example2 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField3" p:label="CheckboxGroupControl"
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField2" p:label="CheckboxGroupControl"
               p:width="auto" p:instructionalText="Choose one of the options">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl">
@@ -84,7 +84,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxGroupControl-Example3 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField4">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField3">
           <property name="control">
             <bean parent="Uif-HorizontalCheckboxesControl">
               <property name="options">
@@ -106,7 +106,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxGroupControl-Example4 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField5">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField4">
           <property name="control">
             <!-- setting the delimiter -->
             <bean parent="Uif-HorizontalCheckboxesControl" p:delimiter="|">

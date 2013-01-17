@@ -64,6 +64,11 @@ public class KradSampleAppForm extends UifFormBase {
     private String inputField24;
     private String inputField25;
 
+    private List<String> checkboxesField1;
+    private List<String> checkboxesField2;
+    private List<String> checkboxesField3;
+    private List<String> checkboxesField4;
+
     private String testPersonId;
     private Person testPerson;
 
@@ -71,6 +76,7 @@ public class KradSampleAppForm extends UifFormBase {
 
     //MessageField
     private String messageField1;
+    private String richMessageField = "[color=green][b]Message[/b][/color]";
 
     // Collections
     private List<UITestObject> collection1 = new ArrayList<UITestObject>();
@@ -674,5 +680,45 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setFakeTotal(String fakeTotal) {
         this.fakeTotal = fakeTotal;
+    }
+
+    public String getRichMessageField() {
+        return richMessageField;
+    }
+
+    public void setRichMessageField(String richMessageField) {
+        this.richMessageField = richMessageField;
+    }
+
+    public List<String> getCheckboxesField1() {
+        return checkboxesField1;
+    }
+
+    public void setCheckboxesField1(List<String> checkboxesField1) {
+        this.checkboxesField1 = checkboxesField1;
+    }
+
+    public List<String> getCheckboxesField2() {
+        return checkboxesField2;
+    }
+
+    public void setCheckboxesField2(List<String> checkboxesField2) {
+        this.checkboxesField2 = checkboxesField2;
+    }
+
+    public List<String> getCheckboxesField3() {
+        return checkboxesField3;
+    }
+
+    public void setCheckboxesField3(List<String> checkboxesField3) {
+        this.checkboxesField3 = checkboxesField3;
+    }
+
+    public List<String> getCheckboxesField4() {
+        return checkboxesField4;
+    }
+
+    public void setCheckboxesField4(List<String> checkboxesField4) {
+        this.checkboxesField4 = checkboxesField4;
     }
 }

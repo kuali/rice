@@ -196,6 +196,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDisclosure.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionAddLine.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionSelectLine.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
@@ -298,6 +299,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDisclosureResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionAddLineResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSelectLineResources</value>
 
       </list>
     </property>

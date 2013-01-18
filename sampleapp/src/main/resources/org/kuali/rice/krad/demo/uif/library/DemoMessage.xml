@@ -41,13 +41,6 @@
         <bean parent="Uif-Message" p:messageText="Default Message"/>
         <bean parent="Uif-InstructionalMessage" p:messageText="InstructionalMessage"/>
         <bean parent="Uif-ConstraintMessage" p:messageText="ConstraintMessage"/>
-        <bean parent="Uif-RequiredMessage" p:messageText="RequiredMessage"/>
-        <bean parent="Uif-RequiredInstructionsMessage"
-              p:messageText="RequiredInstructionsMessage"/>
-        <bean parent="Uif-StateBased-RequiredInstructionsMessage"
-              p:messageText="StateBased-RequiredInstructionsMessage"/>
-        <bean parent="Uif-DialogPrompt" p:messageText="DialogPrompt"/>
-        <bean parent="Uif-ImageCutineMessage" p:messageText="ImageCutineMessage"/>
         <!-- ex:Demo-Message-Example1 end-->
 
       </list>

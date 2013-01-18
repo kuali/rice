@@ -108,6 +108,9 @@
   
   <bean id="GenericPermissionBo-name" parent="GenericPermissionBo-name-parentBean"/>
   <bean id="GenericPermissionBo-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="40"/>
+    </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>

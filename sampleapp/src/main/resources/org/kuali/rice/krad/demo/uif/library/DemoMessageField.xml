@@ -31,6 +31,7 @@
         <ref bean="Demo-MessageField-Example2"/>
         <ref bean="Demo-MessageField-Example3"/>
         <ref bean="Demo-MessageField-Example4"/>
+        <ref bean="Demo-MessageField-Example5"/>
       </list>
     </property>
   </bean>
@@ -83,6 +84,24 @@
           </property>
         </bean>
         <!-- ex:Demo-MessageField-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Message Component Structure text -->
+  <bean id="Demo-MessageField-Example5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MessageField-Example5 start-->
+        <bean parent="Uif-MessageField" p:messageText="This message text will be overwritten by the message component structure">
+          <property name="messageComponentStructure">
+            <list>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Link"/>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Another Kuali Link"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-MessageField-Example5 end-->
       </list>
     </property>
   </bean>

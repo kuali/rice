@@ -64,6 +64,10 @@ public class KradSampleAppForm extends UifFormBase {
     private String inputField24;
     private String inputField25;
 
+    private boolean booleanField1 = false;
+    private boolean booleanField2 = false;
+    private boolean booleanField3 = false;
+
     private List<String> checkboxesField1;
     private List<String> checkboxesField2;
     private List<String> checkboxesField3;
@@ -729,5 +733,29 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setMultiSelectField1(List<String> multiSelectField1) {
         this.multiSelectField1 = multiSelectField1;
+    }
+
+    public boolean isBooleanField1() {
+        return booleanField1;
+    }
+
+    public void setBooleanField1(boolean booleanField1) {
+        this.booleanField1 = booleanField1;
+    }
+
+    public boolean isBooleanField2() {
+        return booleanField2;
+    }
+
+    public void setBooleanField2(boolean booleanField2) {
+        this.booleanField2 = booleanField2;
+    }
+
+    public boolean isBooleanField3() {
+        return booleanField3;
+    }
+
+    public void setBooleanField3(boolean booleanField3) {
+        this.booleanField3 = booleanField3;
     }
 }

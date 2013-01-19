@@ -30,6 +30,7 @@
         <ref bean="Demo-MessageField-Example1"/>
         <ref bean="Demo-MessageField-Example2"/>
         <ref bean="Demo-MessageField-Example3"/>
+        <ref bean="Demo-MessageField-Example4"/>
       </list>
     </property>
   </bean>
@@ -68,5 +69,21 @@
     </property>
   </bean>
 
-
+  <!-- Inline Components text -->
+  <bean id="Demo-MessageField-Example4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MessageField-Example4 start-->
+        <bean parent="Uif-MessageField" p:messageText="This message has two inline components (both are links): [0] and [1]">
+          <property name="inlineComponents">
+            <list>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Link 1"/>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Link 2"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-MessageField-Example4 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

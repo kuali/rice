@@ -104,6 +104,18 @@ public class MessageField extends FieldBase {
     }
 
     /**
+     * Convenience method for setting the message inline components
+     *
+     * @param inlineComponents - inline components for the message
+     */
+    @BeanTagAttribute(name="inlineComponents")
+    public void setInlineComponents(List<Component> inlineComponents) {
+        if (message != null) {
+            message.setInlineComponents(inlineComponents);
+        }
+    }
+
+    /**
      * Nested {@link org.kuali.rice.krad.uif.element.Message} component wrapped in the field
      *
      * @return Message instance

@@ -29,6 +29,7 @@
       <list>
         <ref bean="Demo-MessageField-Example1"/>
         <ref bean="Demo-MessageField-Example2"/>
+        <ref bean="Demo-MessageField-Example3"/>
       </list>
     </property>
   </bean>
@@ -51,6 +52,18 @@
         <!-- ex:Demo-MessageField-Example2 start-->
         <bean parent="Uif-MessageField" p:messageText="Message Field with expression text: '@{messageField1}'"/>
         <!-- ex:Demo-MessageField-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Generate Span -->
+  <bean id="Demo-MessageField-Example3"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MessageField-Example3 start-->
+        <bean parent="Uif-MessageField" p:message.generateSpan="true" p:messageText="This message is wrapped within a span."/>
+        <bean parent="Uif-MessageField" p:message.generateSpan="false" p:messageText="This message is not wrapped within a span."/>
+        <!-- ex:Demo-MessageField-Example3 end-->
       </list>
     </property>
   </bean>

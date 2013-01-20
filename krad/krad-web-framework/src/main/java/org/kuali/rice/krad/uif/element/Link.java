@@ -22,6 +22,8 @@ import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
 import java.util.ArrayList;
@@ -40,10 +42,31 @@ public class Link extends ContentElementBase {
     private String target;
     private String href;
 
+    private boolean openInLightbox;
+
     private LightBox lightBox;
 
     public Link() {
         super();
+    }
+
+    /**
+     * The following updates are done here:
+     *
+     * <ul>
+     * <li>Initialize the nested lightBox widget if open in lightbox is true</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     *      org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        if (openInLightbox && (lightBox == null)) {
+            lightBox = ComponentFactory.getLightBox();
+        }
     }
 
     /**
@@ -113,6 +136,28 @@ public class Link extends ContentElementBase {
      */
     public void setHref(String href) {
         this.href = href;
+    }
+
+    /**
+     * Indicates whether the link URL should be opened in a lightbox
+     *
+     * <p>
+     * If set the target attribute is ignored and the URL is opened in a lightbox instead
+     * </p>
+     *
+     * @return boolean true to open link in a lightbox, false if not (follow standard target attribute)
+     */
+    public boolean isOpenInLightbox() {
+        return openInLightbox;
+    }
+
+    /**
+     * Setter that indicates whether the link should be opened in a lightbox
+     *
+     * @param openInLightbox
+     */
+    public void setOpenInLightbox(boolean openInLightbox) {
+        this.openInLightbox = openInLightbox;
     }
 
     /**

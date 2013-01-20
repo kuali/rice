@@ -1215,9 +1215,8 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
         queryData['queryParameter.' + queryParameters[parameter]] = coerceValue(parameter);
     }
 
-    for (var i = 0; i < queryMethodArgs.length; i++) {
-        var parameter = queryMethodArgs[i];
-        queryData['queryParameter.' + parameter] = coerceValue(parameter);
+    for (var parameter in queryMethodArgs) {
+        queryData['queryParameter.' + queryMethodArgs[parameter]] = coerceValue(parameter);
     }
 
     jQuery.ajax({

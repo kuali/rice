@@ -128,7 +128,7 @@
       </list>
     </property>
     <property name="applyAlternatingRowStyles" value="true"/>
-    <property name="applyDefaultCellWidths" value="true"/>
+    <property name="applyDefaultCellWidths" value="false"/>
     <property name="renderAlternatingHeaderColumns" value="false"/>
     <property name="headerLabelPrototype">
       <bean parent="Uif-Label" p:renderColon="false" p:cssClasses="infoline"/>

@@ -55,6 +55,7 @@
         <includes>
           <include>**/*.xml</include>
           <include>XML/*.*</include>
+          <include>NeustarJSTemplate/*.*</include>
         </includes>
       </resource>
       <resource>

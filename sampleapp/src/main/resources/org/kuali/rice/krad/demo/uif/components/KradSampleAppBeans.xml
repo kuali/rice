@@ -445,6 +445,8 @@
       <list>
         <bean parent="Uif-Link" p:linkText="Action Field"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionField-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Data Field"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataField-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Input Field"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InputField-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Image Field"

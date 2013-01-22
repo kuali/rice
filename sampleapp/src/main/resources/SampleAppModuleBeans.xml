@@ -203,6 +203,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDisable.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoProgressiveDisclosure.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoConditionalRefresh.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDataField.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
@@ -312,7 +313,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDisableResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoProgressiveDisclosureResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoConditionalRefreshResources</value>
-
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDataFieldResources</value>
       </list>
     </property>
   </bean>

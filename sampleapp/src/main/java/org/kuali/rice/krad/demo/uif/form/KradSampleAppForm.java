@@ -21,8 +21,10 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 /**
  * Basic form for the KRAD sample application
@@ -78,6 +80,11 @@ public class KradSampleAppForm extends UifFormBase {
     private Person testPerson;
 
     private String testGroupId;
+    
+    //DataField
+    private String dataField1 = "1001";
+    private String dataField2 = "";
+    private String dataField3 = "My Book Title";
 
     //MessageField
     private String messageField1;
@@ -297,6 +304,30 @@ public class KradSampleAppForm extends UifFormBase {
     /**
      * Below are basic getters and setters for this data object - no javadoc needed *
      */
+
+    public String getDataField1() {
+        return dataField1;
+    }
+
+    public void setDataField1(String dataField1) {
+        this.dataField1 = dataField1;
+    }
+
+    public String getDataField2() {
+        return dataField2;
+    }
+
+    public void setDataField2(String dataField2) {
+        this.dataField2 = dataField2;
+    }
+
+    public String getDataField3() {
+        return dataField3;
+    }
+
+    public void setDataField3(String dataField3) {
+        this.dataField3 = dataField3;
+    }
 
     public String getInputField1() {
         return inputField1;

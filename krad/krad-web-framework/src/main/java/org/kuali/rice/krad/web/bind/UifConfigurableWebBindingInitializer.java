@@ -25,6 +25,7 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -68,5 +69,7 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
         // Use the StringArrayPropertyEditor for string arrays with "," as the
         // separator
         binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(",", false));
+
+        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
     }
 }

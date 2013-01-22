@@ -56,6 +56,44 @@ public class IdentityServiceImplTest extends KIMTestCase {
 		assertEquals("Principal name did not match expected result","kuluser", principal.getPrincipalName());
 	}
 
+    @Test
+    public void testGetPrincipalsByEntityId() {
+        List<Principal> principals = identityService.getPrincipalsByEntityId("1136");
+        assertNotNull("principal must not be null", principals);
+        for (Principal principal: principals) {
+            assertEquals("Principal name did not match expected result","kuluser", principal.getPrincipalName());
+        }
+    }
+
+    @Test
+    public void testGetPrincipalsByEntityIdInactive() {
+        List<Principal> principals = identityService.getPrincipalsByEntityId("1139");
+        assertNotNull("principal must not be null", principals);
+        for (Principal principal: principals) {
+            assertEquals("Principal name did not match expected result","inactiveusernm", principal.getPrincipalName());
+        }
+    }
+
+    @Test
+    public void testGetPrincipalsByEmployeeId() {
+        List<Principal> principals = identityService.getPrincipalsByEmployeeId("0000001138");
+        assertNotNull("principal must not be null", principals);
+        for (Principal principal: principals) {
+            assertEquals("Principal name did not match expected result","activeusernm", principal.getPrincipalName());
+            assertEquals("Entity Id did not match expected result","1138", principal.getEntityId());
+        }
+    }
+
+    @Test
+    public void testGetPrincipalsByEmployeeIdInactive() {
+        List<Principal> principals = identityService.getPrincipalsByEmployeeId("0000001140");
+        assertNotNull("principal must not be null", principals);
+        for (Principal principal: principals) {
+            assertEquals("Principal name did not match expected result","inactiveempid", principal.getPrincipalName());
+            assertEquals("Entity Id did not match expected result","1140", principal.getEntityId());
+        }
+    }
+
 	@Test
 	public void testGetPrincipalByPrincipalName() {
 		Principal principal = identityService.getPrincipalByPrincipalName("kuluser");

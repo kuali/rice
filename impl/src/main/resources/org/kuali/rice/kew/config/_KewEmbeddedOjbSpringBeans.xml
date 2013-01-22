@@ -56,6 +56,26 @@
     <property name="jcdAlias" value="kewDataSource" />
   </bean>
 
+  <bean id="enRuleTemplateDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleTemplateAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateAttributeDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleTemplateOptionDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateOptionDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleDelegationDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
   <bean id="enBranchDAO" class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOOjbImpl" lazy-init="true">
     <property name="jcdAlias" value="kewDataSource" />
   </bean>

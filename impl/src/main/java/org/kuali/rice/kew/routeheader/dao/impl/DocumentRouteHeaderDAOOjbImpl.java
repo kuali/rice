@@ -354,7 +354,21 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
  	 	}
  	 	return appDocId;
  	 }
-    
+
+    public String getAppDocStatus(String documentId) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("documentId", documentId);
+        ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
+        query.setAttributes(new String[] { "appDocStatus" });
+        String appDocStatus = null;
+        Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+        while (iter.hasNext()) {
+            Object[] row = (Object[]) iter.next();
+            appDocStatus = (String)row[0];
+        }
+        return appDocStatus;
+    }
+
     public void save(SearchableAttributeValue searchableAttributeValue) {
     	getPersistenceBrokerTemplate().store(searchableAttributeValue);
     }

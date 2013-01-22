@@ -55,15 +55,6 @@ function changeBranchValue(button,oIndex,iIndex){
     }
  }
 
-// DocumentOperation.jsp
-function configureLookup(lookupableName, invocationModule, invocationField, invocationIndex){
-  document.forms[0].lookupableImplServiceName.value = lookupableName;
-  document.forms[0].lookupInvocationModule.value = invocationModule;
-  document.forms[0].lookupInvocationField.value = invocationField;
-  document.forms[0].lookupInvocationIndex.value = invocationIndex;
-  return post_to_action('DocumentOperation.do', 'performLookup');
-}
-
 function post_to_action(action, methodToCall) {
   document.forms[0].action = action;
   document.forms[0].methodToCall.value = methodToCall;

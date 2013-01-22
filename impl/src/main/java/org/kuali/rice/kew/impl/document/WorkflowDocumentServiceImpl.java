@@ -131,6 +131,15 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	}
 
     @Override
+    public String getApplicationDocumentStatus(String documentId)
+            throws RiceIllegalArgumentException {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        return KEWServiceLocator.getRouteHeaderService().getAppDocStatus(documentId);
+    }
+
+    @Override
     public DocumentSearchResults documentSearch(String principalId, DocumentSearchCriteria criteria) {
         if (criteria == null) {
             throw new RiceIllegalArgumentException("criteria was null");

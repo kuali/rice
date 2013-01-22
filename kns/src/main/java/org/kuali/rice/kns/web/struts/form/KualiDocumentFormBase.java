@@ -35,6 +35,7 @@ import org.kuali.rice.core.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.doctype.DocumentType;
@@ -939,7 +940,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         List<ActionRequest> actionRequestsApprove = new ArrayList<ActionRequest>();;
 
         for (ActionRequest actionRequest: actionRequests) {
-            if  (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
+            if  ((StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) ||
+                    (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()))) {
                 actionRequestsApprove.add(actionRequest);
             }
         }
@@ -953,6 +955,25 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	public void setSuperUserAnnotation(String superUserAnnotation) {
 		this.superUserAnnotation = superUserAnnotation;
 	}
+
+    public boolean isSuperUserActionAvaliable() {
+        List<ActionRequest> actionRequests = getActionRequestsRequiringApproval();
+        boolean hasSingleActionToTake = false;
+        boolean canSuperUserApprove = false;
+        boolean canSuperUserDisapprove = false;
+
+        hasSingleActionToTake =  ( isSuperUserApproveSingleActionRequestAuthorized() &&
+                isStateAllowsApproveSingleActionRequest() &&
+                !actionRequests.isEmpty());
+        if (!hasSingleActionToTake) {
+            canSuperUserApprove = (isSuperUserApproveDocumentAuthorized() && isStateAllowsApproveOrDisapprove());
+        }
+        if (!canSuperUserApprove) {
+            canSuperUserDisapprove = (isSuperUserDisapproveDocumentAuthorized() && isStateAllowsApproveOrDisapprove());
+        }
+
+        return (hasSingleActionToTake || canSuperUserApprove || canSuperUserDisapprove) ;
+    }
 
     public boolean isSuperUserApproveSingleActionRequestAuthorized() {
         String principalId =  GlobalVariables.getUserSession().getPrincipalId();
@@ -1011,7 +1032,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             docTypeId = documentType.getId();
         }
         String principalId =  GlobalVariables.getUserSession().getPrincipalId();
-        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(
+                docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
         return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
                     principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
@@ -1024,7 +1046,14 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	
     public boolean isStateAllowsApproveOrDisapprove() {
         if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
-            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            DocumentStatus status = null;
+            WorkflowDocument document = WorkflowDocumentFactory.loadDocument(GlobalVariables.getUserSession().getPrincipalId(),
+                this.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentId());
+            if (ObjectUtils.isNotNull(document)) {
+                status = document.getStatus();
+            } else {
+                status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            }
             return !(isStateProcessedOrDisapproved(status) ||
                      isStateInitiatedFinalCancelled(status) ||
                      StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
@@ -1035,7 +1064,14 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
     public boolean isStateAllowsApproveSingleActionRequest() {
         if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
-            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            DocumentStatus status = null;
+            WorkflowDocument document = WorkflowDocumentFactory.loadDocument(GlobalVariables.getUserSession().getPrincipalId(),
+                    this.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentId());
+            if (ObjectUtils.isNotNull(document)) {
+                status = document.getStatus();
+            } else {
+                status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            }
             return !(isStateInitiatedFinalCancelled(status));
         } else {
             return false;

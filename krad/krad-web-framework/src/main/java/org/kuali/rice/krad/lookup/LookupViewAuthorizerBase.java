@@ -18,6 +18,7 @@ package org.kuali.rice.krad.lookup;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizerBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -35,6 +36,7 @@ import java.util.Map;
  */
 public class LookupViewAuthorizerBase extends ViewAuthorizerBase {
     private static final long serialVersionUID = 3755133641536256283L;
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupViewAuthorizerBase.class);
 
     /**
      * Override to check the for permissions of type 'Look Up Records' in addition to the open view check
@@ -65,5 +67,32 @@ public class LookupViewAuthorizerBase extends ViewAuthorizerBase {
         }
 
         return canOpen;
+    }
+
+    /**
+     * Check if user is allowed to initiate the document
+     *
+     * @param lookupForm - The lookup form of the document
+     * @param user - user we are authorizing the actions for
+     * @return true if user is authorized to initiate the document, false otherwise
+     */
+    public boolean canInitiateDocument(LookupForm lookupForm, Person user) {
+        boolean canInitiateDocument = false;
+
+        try {
+            Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
+            // check if creating documents is allowed
+            String documentTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
+                    .getMaintenanceDocumentTypeName(dataObjectClass);
+            if ((documentTypeName != null) &&
+                    KRADServiceLocatorWeb.getDocumentDictionaryService().getDocumentAuthorizer(documentTypeName)
+                            .canInitiate(documentTypeName, user)) {
+                canInitiateDocument = true;
+            }
+        } catch (ClassNotFoundException e) {
+            LOG.warn("Unable to load Data Object Class: " + lookupForm.getDataObjectClassName(), e);
+        }
+
+        return canInitiateDocument;
     }
 }

@@ -26,13 +26,13 @@
 	  </tr>
 	  
 	  <c:choose> 
-	   <c:when test="${empty DocumentOperationForm.routeHeader.actionRequests}">
+	   <c:when test="${empty DocumentOperationForm.actionRequests}">
 	     <tr><td class="datacell" colspan="2" align="center" height="15">None</td></tr>
 	   </c:when>
 	   <c:otherwise>
-	 	<logic-el:iterate id="actionRequest" name="DocumentOperationForm" property="routeHeader.actionRequests" indexId="ctr">
-	      <html-el:hidden property="routeHeader.docActionRequest[${ctr}].actionRequestId" />  
-	      <html-el:hidden property="routeHeader.docActionRequest[${ctr}].jrfVerNbr" />  
+	 	<logic-el:iterate id="actionRequest" name="DocumentOperationForm" property="actionRequests" indexId="ctr">
+	      <html-el:hidden property="actionRequests[${ctr}].actionRequestId" />
+	      <html-el:hidden property="actionRequests[${ctr}].jrfVerNbr" />
 	 	  <tr>
 		    <td width="33%" class="headercell3-b-l" align="right"><b> Action Request ID: </b><c:out value="${actionRequest.actionRequestId}" /> </td>
 		    <td width="66%" class="headercell3-b-l">
@@ -42,11 +42,11 @@
 		  </tr>
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">* Document Version:</td>
-		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].docVersion" /></td>
+		    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].docVersion" /></td>
 		  </tr>
 		  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Document ID:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].documentId" /></td>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].documentId" /></td>
 		  </tr>	    
 		  <tr>
 		  	<td width="33%" align="right" class="thnormal">* Route Node Instance ID:</td>
@@ -56,7 +56,7 @@
 	  	        None
 	  	      </c:when>
 	  	      <c:otherwise>
-	  	      	<html-el:text property="routeHeader.docActionRequest[${ctr}].nodeInstance.routeNodeInstanceId" />
+	  	      	<html-el:text property="actionRequests[${ctr}].nodeInstance.routeNodeInstanceId" />
 	  	      </c:otherwise>
 	  	    </c:choose>  	      
 	  	    </td>
@@ -64,7 +64,7 @@
 		  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Action Requested:</td>
 	  	    <td width="66%" class="datacell">
-	  	      <html-el:select property="routeHeader.docActionRequest[${ctr}].actionRequested" value="${actionRequest.actionRequested}"> 
+	  	      <html-el:select property="actionRequests[${ctr}].actionRequested" value="${actionRequest.actionRequested}">
     		    <c:set var="actionRequestCds" value="${DocumentOperationForm.actionRequestCds}"/>
     		    <html-el:options collection="actionRequestCds" property="key" labelProperty="value"/>
   			  </html-el:select>    
@@ -72,16 +72,16 @@
 	  	  </tr>  
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Create Date: </td>
-	  	    <td width="66%" class="datacell"><%-- <html-el:text property="routeHeader.docActionRequest[${ctr}].createDateString" />&nbsp; --%>
+	  	    <td width="66%" class="datacell"><%-- <html-el:text property="actionRequests[${ctr}].createDateString" />&nbsp; --%>
 	  	     <input type='text' name='actionRequestCreateDate<c:out value="${ctr}"/>' value='<c:out value="${actionRequest.createDateString}"/>'>
 	  	      <a href="javascript:addCalendar('actionRequestCreateDate<c:out value="${ctr}"/>', 'Select Date', 'actionRequestCreateDate<c:out value="${ctr}"/>', 'DocumentOperationForm'); showCal('actionRequestCreateDate<c:out value="${ctr}"/>');"><img src="images/cal.gif" width="16" height="16" align="absmiddle" alt="Click Here to select a date"></a>
-	  	      <html-el:hidden property="routeHeader.docActionRequest[${ctr}].createDateString" />
+	  	      <html-el:hidden property="actionRequests[${ctr}].createDateString" />
 	  	   </td>
 	  	  </tr>   	  
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Status:</td>
 	  	    <td width="66%" class="datacell">
-	  	      <html-el:select property="routeHeader.docActionRequest[${ctr}].status" value="${actionRequest.status}"> 
+	  	      <html-el:select property="actionRequests[${ctr}].status" value="${actionRequest.status}">
     		    <c:set var="actionRequestStatuses" value="${DocumentOperationForm.actionRequestStatuses}"/>
     		    <html-el:options collection="actionRequestStatuses" property="key" labelProperty="value"/>
   			  </html-el:select>    
@@ -89,15 +89,15 @@
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Priority:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].priority" size="60" /></td>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].priority" size="60" /></td>
 	  	  </tr>
 	  	  <%--
 	     <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Route Method Name:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].routeMethodName" /><br>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].routeMethodName" /><br>
 		       &nbsp;&nbsp;&nbsp;&nbsp;Route Module&nbsp; 
 		       <c:set var="routeModules" value="${DocumentOperationForm.routeModules}" scope="request" />
-               <html-el:select property="routeModuleName" onchange="document.forms[0].elements['routeHeader.docActionRequest[${ctr}].routeMethodName'].value=this.value" >
+               <html-el:select property="routeModuleName" onchange="document.forms[0].elements['actionRequests[${ctr}].routeMethodName'].value=this.value" >
                  <html-el:options collection="routeModules" labelProperty="value" property="key" filter="false"/>
                </html-el:select><br>	                
                &nbsp;&nbsp;&nbsp;&nbsp;Rule Template&nbsp;<html-el:image property="methodToCall.performLookup" src="images/searchicon.gif" onclick="javascript:configureLookup('RuleTemplateLookupableImplService', 'ActionRequest', 'routeMethodName', '${ctr}');" />		                
@@ -105,80 +105,81 @@
 		  </tr>--%>
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">* Route Level:</td>
-		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].routeLevel" /></td>
+		    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].routeLevel" /></td>
 	      </tr>
 	      <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Responsibility ID:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].responsibilityId" /></td>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].responsibilityId" /></td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Responsibility Description: </td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].responsibilityDesc" /></td>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].responsibilityDesc" /></td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Action Request Parent ID:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].parentActionRequestId" /></td>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].parentActionRequestId" /></td>
 		  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Recipient Type:</td>
 	  	    <td width="66%" class="datacell">
-	  	      <html-el:select property="routeHeader.docActionRequest[${ctr}].recipientTypeCd" value="${actionRequest.recipientTypeCd}"> 
+	  	      <html-el:select property="actionRequests[${ctr}].recipientTypeCd" value="${actionRequest.recipientTypeCd}">
     		    <c:set var="actionRequestRecipientTypes" value="${DocumentOperationForm.actionRequestRecipientTypes}"/>
     		    <html-el:options collection="actionRequestRecipientTypes" property="key" labelProperty="value"/>
   			  </html-el:select> 
-	  	    <%-- <html-el:text property="routeHeader.docActionRequest[${ctr}].recipientTypeCd" />--%>
+	  	    <%-- <html-el:text property="actionRequests[${ctr}].recipientTypeCd" />--%>
 	  	    
 	  	    </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Person ID:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].principalId" />
-	  	      <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.docActionRequest[${ctr}].principalId" lookupParameters="routeHeader.docActionRequest[${ctr}].principalId:principalId" />
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].principalId" />
+            <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:actionRequests[${ctr}].principalId"
+                lookupParameters="actionRequests[${ctr}].principalId:principalId"/>
 	  	    </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Workgroup ID:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].groupId" />
-	  	      <kul:lookup boClassName="org.kuali.rice.kim.api.group.Group" fieldConversions="groupId:routeHeader.docActionRequest[${ctr}].groupId" lookupParameters="routeHeader.docActionRequest[${ctr}].groupId:groupId" />
-	  	    </td>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].groupId" />
+            <kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="id:actionRequests[${ctr}].groupId" lookupParameters="actionRequests[${ctr}].groupId:id"/>
+          </td>
 		  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Role Name:</td>
- 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].roleName" />
-			  <kul:lookup boClassName="org.kuali.rice.kim.bo.Role" fieldConversions="roleName:routeHeader.docActionRequest[${ctr}].roleName" lookupParameters="routeHeader.docActionRequest[${ctr}].roleName:roleName" />	  	    
-	  	    </td>
+ 	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].roleName"/>
+             <kul:lookup boClassName="org.kuali.rice.kim.impl.role.RoleBo" fieldConversions="name:actionRequests[${ctr}].roleName" lookupParameters="actionRequests[${ctr}].roleName:name" />
+           </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Qualified Role Name:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].qualifiedRoleName" /></td>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].qualifiedRoleName" /></td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Qualified Role Label:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].qualifiedRoleNameLabel" /></td>
+	  	    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].qualifiedRoleNameLabel" /></td>
 	  	  </tr>	  
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">Action Taken ID:</td>
-		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].actionTakenId" /></td>
+		    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].actionTakenId" /></td>
 		  </tr>
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">Force Action: </td>
-		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].forceAction" /></td>
+		    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].forceAction" /></td>
 		  </tr>
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">Approve Policy: </td>
-		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].approvePolicy" /></td>
+		    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].approvePolicy" /></td>
 		  </tr>
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">Delegation Type: </td>
-		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].delegationTypeCode" /></td>
+		    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].delegationTypeCode" /></td>
 		  </tr>     
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">Current Indicator: </td>
-		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].currentIndicator" /></td>
+		    <td width="66%" class="datacell"><html-el:text property="actionRequests[${ctr}].currentIndicator" /></td>
 		  </tr>
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">Annotation: </td>
-		    <td width="66%" class="datacell"><html-el:textarea cols="120" rows="1" property="routeHeader.docActionRequest[${ctr}].annotation" /></td>
+		    <td width="66%" class="datacell"><html-el:textarea cols="120" rows="1" property="actionRequests[${ctr}].annotation" /></td>
 		  </tr> 
 		  
 		</logic-el:iterate>

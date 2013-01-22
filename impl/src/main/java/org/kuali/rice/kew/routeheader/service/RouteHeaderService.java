@@ -75,6 +75,15 @@ public interface RouteHeaderService {
     public String getDocumentStatus(String documentId);
 
     public String getAppDocId(String documentId);
+
+    /**
+     *
+     * This method Returns the application document status for the given document id
+     *
+     * @param documentId
+     * @return String
+     */
+    public String getAppDocStatus(String documentId);
     
     /**
      *

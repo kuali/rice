@@ -140,7 +140,8 @@
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.4</slf4j.version>
-    <soa.model.core.version>1.1.0</soa.model.core.version>
+    <soa.model.core.version>1.2.2</soa.model.core.version>
+    <httpclient.version>4.1.2</httpclient.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>3.1.0.RELEASE</spring.version>
     <spring.security.version>3.1.0.RELEASE</spring.security.version>
@@ -1970,6 +1971,13 @@
         <groupId>com.predic8</groupId>
         <artifactId>soa-model-core</artifactId>
         <version>${soa.model.core.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
         <scope>test</scope>
       </dependency>
 

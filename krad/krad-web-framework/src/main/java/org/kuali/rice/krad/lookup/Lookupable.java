@@ -32,6 +32,18 @@ import java.util.Map;
 public interface Lookupable extends ViewHelperService, java.io.Serializable {
 
     /**
+     * Initialize the suppressAction indicator on the LookupForm.
+     *
+     * <p>
+     * The suppress action is set to true if the user is not authorized to initiate these documents.  The indicator
+     * is then used to hide irrelevant actions such as creating a new document or editing existing ones.
+     * </p>
+     *
+     * @param lookupForm on which to initialize the suppressAction indicator
+     */
+    public void initSuppressAction(LookupForm lookupForm);
+
+    /**
      * Invoked to carry out the lookup search based on the given map of key/value search
      * values
      *
@@ -59,6 +71,8 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @param form - lookup form instance containing the lookup data
      * @param searchCriteria - map of criteria where key is search property name and value is
      * search value (which can include wildcards)
+     * @return  boolean true if validation was successful, false if there were errors and the search
+     * should not be performed
      */
     public boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria);
 

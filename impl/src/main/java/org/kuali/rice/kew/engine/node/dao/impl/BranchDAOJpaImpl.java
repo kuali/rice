@@ -66,7 +66,7 @@ public class BranchDAOJpaImpl implements BranchDAO {
 	
 	 protected void deleteBranchStatesById(Long stateId){
 	    	Criteria criteria = new Criteria("BranchState", "branchState");
-	    	criteria.eq("branchStateId", stateId);	        	        
+	    	criteria.eq("stateId", stateId);
 	        BranchState branchState = (BranchState)new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
 	        entityManager.remove(branchState);
 	    }

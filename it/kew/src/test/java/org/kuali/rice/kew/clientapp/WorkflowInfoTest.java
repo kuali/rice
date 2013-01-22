@@ -138,4 +138,21 @@ public class WorkflowInfoTest extends KEWTestCase {
         assertEquals("Incorrect appDocId", appDocIdValue, appDocId);
     }
 
+    @Test
+    public void testGetAppDocStatus() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"),
+                "TestDocumentType");
+        document.saveDocumentData();
+
+        String appDocStatus = KewApiServiceLocator.getWorkflowDocumentService().getApplicationDocumentStatus(document.getDocumentId());
+        assertNull("appDocStatus should be null", appDocStatus);
+
+        String appDocStatusValue = "Approved";
+        document.setApplicationDocumentStatus(appDocStatusValue);
+        document.saveDocumentData();
+
+        appDocStatus = KewApiServiceLocator.getWorkflowDocumentService().getApplicationDocumentStatus(document.getDocumentId());
+        assertEquals("Incorrect appDocStatus", appDocStatusValue, appDocStatus);
+    }
+
 }

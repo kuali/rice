@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.util.NoteType;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import static org.junit.Assert.fail;
 

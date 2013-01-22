@@ -18,7 +18,7 @@ package org.kuali.rice.krad.service;
 import org.junit.Test;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import java.util.ArrayList;
 import java.util.List;

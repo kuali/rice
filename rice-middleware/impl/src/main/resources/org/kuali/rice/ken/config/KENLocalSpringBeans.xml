@@ -271,7 +271,7 @@
             <property name="genericDao"><ref local="kcbGenericDao"/></property>
         </bean>
 
-        <bean id="mailer" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        <bean id="mailer" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
         <property name="serviceName" value="mailer" />
         </bean>
 
@@ -332,7 +332,7 @@
   <bean id="lifecycle" class="org.kuali.rice.ken.core.NotificationLifeCycle" lazy-init="false" depends-on="ojbConfigurer"/>
 
   <bean id="rice.ksb.scheduler"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.scheduler" />
 	</bean>
 </beans>

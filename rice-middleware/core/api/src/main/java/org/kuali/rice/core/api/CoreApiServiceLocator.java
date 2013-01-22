@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.api;
 
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
@@ -28,6 +29,7 @@ public class CoreApiServiceLocator {
 
 	public static final String XML_EXPORTER_SERVICE = "xmlExporterService";
 	public static final String XML_INGESTER_SERVICE = "xmlIngesterService";
+    public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -56,5 +58,9 @@ public class CoreApiServiceLocator {
     public static Mailer getMailer() {
         return getService(CoreConstants.Services.MAILER);
     }
-    
+
+    public static ConfigurationService getKualiConfigurationService() {
+        return getService(KUALI_CONFIGURATION_SERVICE);
+    }
+
 }

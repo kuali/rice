@@ -48,7 +48,7 @@
   </bean>
 
   <bean id="rice.kew.import.styleService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="styleService"/>
 
   <bean id="enEmailContentService"
@@ -57,7 +57,7 @@
         p:styleService-ref="rice.kew.import.styleService"/>
 
   <bean id="rice.kew.import.mailer"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="mailer"/>
 
   <bean id="enActionListEmailService"
@@ -70,7 +70,7 @@
   </bean>
 
   <bean id="rice.kew.import.businessObjectService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="businessObjectService"/>
 
   <bean id="rice.kew.kewTypeRepositoryService" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
@@ -163,7 +163,7 @@
   </bean>
 
   <bean id="rice.kew.import.criteriaLookupService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="criteriaLookupService"/>
   </bean>
 
@@ -186,7 +186,7 @@
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
 
   <bean id="rice.kew.import.xmlImpexRegistry"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="xmlImpexRegistry"/>
 
   <bean id="kewImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Service locator for the KRAD Web module
@@ -42,6 +44,10 @@ public class KNSServiceLocator {
     public static final String MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE = "maintenanceDocumentDictionaryService";
     public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
     public static final String SESSION_DOCUMENT_SERVICE = "knsSessionDocumentService";
+    public static final String WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE = "workflowAttributesPropertyResolutionService";
+    public static final String TRANSACTION_MANAGER = "transactionManager";
+    public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
+    public static final String MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE = "maintenanceDocumentAuthorizationService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -101,5 +107,21 @@ public class KNSServiceLocator {
 
     public static Question getQuestion(String questionName) {
         return (Question) getService(questionName);
+    }
+
+    public static WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
+    	return (WorkflowAttributePropertyResolutionService) getService(WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE);
+    }
+
+    public static PlatformTransactionManager getTransactionManager() {
+	return (PlatformTransactionManager) getService(TRANSACTION_MANAGER);
+    }
+
+    public static TransactionTemplate getTransactionTemplate() {
+	return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
+    }
+
+    public static BusinessObjectAuthorizationService getMaintenanceDocumentAuthorizationService() {
+    	return (BusinessObjectAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
     }
 }

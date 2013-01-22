@@ -25,7 +25,7 @@ import org.kuali.rice.kim.impl.permission.PermissionAttributeBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.krad.kim.PopulateGroupPermissionTypeServiceImpl;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import CustomTagAnnotations
-import BeanTagInfo
+import org.kuali.rice.krad.datadictionary.parse.CustomTagAnnotations
 
 /*
 * Copyright 2006-2012 The Kuali Foundation

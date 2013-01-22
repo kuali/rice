@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
@@ -24,7 +25,6 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -684,7 +684,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         context.put(UifConstants.ContextVariableNames.VIEW, view);
         context.put(UifConstants.ContextVariableNames.VIEW_HELPER, this);
 
-        Map<String, String> properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
+        Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
         context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
         context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
         context.put(UifConstants.ContextVariableNames.UIF_CONSTANTS, UifConstants.class);
@@ -1121,7 +1121,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // add necessary configuration parameters
         if (!updateOnly) {
-            String kradImageLocation = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+            String kradImageLocation = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                     "krad.externalizable.images.url");
             clientStateScript += "setConfigParam('"
                     + UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION
@@ -1129,7 +1129,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     + kradImageLocation
                     + "');";
 
-            String kradURL = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("krad.url");
+            String kradURL = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString("krad.url");
             clientStateScript +=
                     "setConfigParam('" + UifConstants.ClientSideVariables.KRAD_URL + "','" + kradURL + "');";
         }
@@ -2009,7 +2009,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     public ConfigurationService getConfigurationService() {
         if (this.configurationService == null) {
-            this.configurationService = KRADServiceLocator.getKualiConfigurationService();
+            this.configurationService = CoreApiServiceLocator.getKualiConfigurationService();
         }
         return this.configurationService;
     }

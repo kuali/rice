@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -32,8 +33,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-
 
 /**
  * An implementation of the {@link PreferencesService}.
@@ -103,7 +102,7 @@ public class PreferencesServiceImpl implements PreferencesService {
             }
         }
         
-        ConfigurationService kcs = KRADServiceLocator.getKualiConfigurationService();
+        ConfigurationService kcs = CoreApiServiceLocator.getKualiConfigurationService();
 
         boolean isSaveRequired = false;
 

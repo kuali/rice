@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -167,4 +167,22 @@ public interface DataObjectMetaDataService {
      * @return String identifier string for data object
      */
     public String getDataObjectIdentifierString(Object dataObject);
+
+    /**
+     * Determines whether the given data object class has an associated lookup in the local
+     * running application
+     *
+     * @param dataObjectClass data object class to find lookup for
+     * @return boolean true if a lookup exists for the data object class, false if not
+     */
+    public boolean hasLocalLookup(Class<?> dataObjectClass);
+
+    /**
+     * Determines whether the given data object class has an associated inquiry in the local
+     * running application
+     *
+     * @param dataObjectClass data object class to find inquiry for
+     * @return boolean true if a inquiry exists for the data object class, false if not
+     */
+    public boolean hasLocalInquiry(Class<?> dataObjectClass);
 }

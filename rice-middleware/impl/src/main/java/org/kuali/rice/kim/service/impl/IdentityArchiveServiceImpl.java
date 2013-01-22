@@ -25,7 +25,6 @@ import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -53,8 +52,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * This is the default implementation for the IdentityArchiveService.
  * @see IdentityArchiveService
- * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityArchiveServiceImpl implements IdentityArchiveService, InitializingBean, DisposableBean {
 	private static final Logger LOG = Logger.getLogger( IdentityArchiveServiceImpl.class );

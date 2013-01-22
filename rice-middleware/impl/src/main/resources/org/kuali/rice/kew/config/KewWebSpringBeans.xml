@@ -63,7 +63,7 @@
 
   <bean id="documentSearchCriteriaTranslator" class="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslatorImpl"/>
 
-  <bean id="rice.kew.import.enDocumentSearchService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+  <bean id="rice.kew.import.enDocumentSearchService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="enDocumentSearchService"/>
 
   <bean id="documentSearchCriteriaBoLookupableHelperService"
@@ -80,7 +80,7 @@
     <property name="extraOnLoad" value="storeCurrentDocTypeNameOnLoad()"/>
   </bean>
 
-  <bean class="org.kuali.rice.krad.util.spring.NamedOrderedListBean">
+  <bean class="org.kuali.rice.core.framework.util.spring.NamedOrderedListBean">
     <property name="name" value="scriptConfigurationFilePaths" />
     <property name="listItem" value="classpath:org/kuali/rice/kew/dwr-core.xml" />
   </bean>

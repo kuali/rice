@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,7 +130,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setBoService(KRADServiceLocator.getBusinessObjectService());
             this.setBoDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
             this.setDictionaryValidationService(super.getDictionaryValidationService());
-            this.setConfigService(KRADServiceLocator.getKualiConfigurationService());
+            this.setConfigService(CoreApiServiceLocator.getKualiConfigurationService());
             this.setDocumentHelperService(KNSServiceLocator.getDocumentHelperService());
             this.setMaintDocDictionaryService(KNSServiceLocator.getMaintenanceDocumentDictionaryService());
             this.setWorkflowDocumentService(KRADServiceLocatorWeb.getWorkflowDocumentService());

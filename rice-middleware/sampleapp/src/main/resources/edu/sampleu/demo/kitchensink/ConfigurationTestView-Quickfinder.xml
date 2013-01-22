@@ -39,7 +39,7 @@
         <bean parent="GenericTextField" p:label="Lookup"
               p:instructionalText="TravelAccounts lookup (account number should be read only)"
               p:propertyName="field60">
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           <property name="quickfinder.readOnlySearchFields" value="number"/>
           <property name="quickfinder.fieldConversions">
             <map>
@@ -50,7 +50,7 @@
         <bean parent="GenericTextField" p:label="Lookup"
               p:instructionalText="TravelAccounts lookup (account number should NOT be read only)"
               p:propertyName="field90">
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           <property name="quickfinder.fieldConversions">
             <map>
               <entry key="number" value="field90"/>
@@ -71,7 +71,7 @@
               p:instructionalText="auto-query configuration, type a1 or a2 for suggestions" p:propertyName="field61">
           <property name="suggest">
             <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="number"
-                  p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+                  p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"/>
           </property>
         </bean>
 
@@ -121,7 +121,7 @@
             <bean parent="Uif-Suggest" p:render="true" p:sourceQueryMethodResults="true">
               <property name="suggestQuery">
                 <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
-                        "org.kuali.rice.krad.demo.uif.library.TestSuggestClass.getLanguages"/>
+                        "edu.sampleu.demo.TestSuggestClass.getLanguages"/>
               </property>
               <property name="templateOptions">
                 <map merge="true">
@@ -142,7 +142,7 @@
                 <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccounts"
                       p:sortPropertyNames="subAccountName">
                   <property name="queryMethodInvokerConfig.targetObject">
-                    <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+                    <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
                       <property name="serviceName" value="testSuggestService"/>
                     </bean>
                   </property>
@@ -160,7 +160,7 @@
             <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
               <property name="suggestQuery">
                 <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
-                        "org.kuali.rice.krad.demo.uif.library.TestSuggestClass.getAllLanguages"/>
+                        "edu.sampleu.demo.TestSuggestClass.getAllLanguages"/>
               </property>
               <property name="templateOptions">
                 <map>
@@ -179,7 +179,7 @@
             <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
               <property name="suggestQuery">
                 <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
-                        "org.kuali.rice.krad.demo.uif.library.TestSuggestClass.getRichOptions"/>
+                        "edu.sampleu.demo.TestSuggestClass.getRichOptions"/>
               </property>
               <property name="templateOptions">
                 <map>
@@ -241,7 +241,7 @@
             <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
               <property name="suggestQuery">
                 <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
-                        "org.kuali.rice.krad.demo.uif.library.TestSuggestClass.getComplexOptions"/>
+                        "edu.sampleu.demo.TestSuggestClass.getComplexOptions"/>
               </property>
               <property name="templateOptions">
                 <map>

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.kuali.rice.krad.service;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -26,14 +27,17 @@ public class KRADServiceLocator {
     public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
     public static final String NOTE_SERVICE = "noteService";
     public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
-    public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
     public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
     public static final String APPLICATION_ENTITY_MANAGER_FACTORY = "kradApplicationEntityManagerFactory";
     public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
-    public static final String XML_OBJECT_SERIALIZER_IGNORE_MISSING_FIELDS_SERVICE = "xmlObjectSerializerIgnoreMissingFieldsService";
+    public static final String XML_OBJECT_SERIALIZER_IGNORE_MISSING_FIELDS_SERVICE =
+            "xmlObjectSerializerIgnoreMissingFieldsService";
     public static final String SERIALIZER_SERVICE = "businessObjectSerializerService";
     public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
     public static final String KEY_VALUES_SERVICE = "keyValuesService";
+    public static final String MAIL_SERVICE = "mailService";
+    public static final String DB_PLATFORM = "dbPlatform";
+    public static final String INACTIVATEABLE_FROM_TO_SERVICE = "inactivateableFromToService";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -57,10 +61,6 @@ public class KRADServiceLocator {
 
     public static BusinessObjectService getBusinessObjectService() {
         return getService(BUSINESS_OBJECT_SERVICE);
-    }
-
-    public static ConfigurationService getKualiConfigurationService() {
-        return getService(KUALI_CONFIGURATION_SERVICE);
     }
 
     public static EntityManagerFactory getEntityManagerFactory() {
@@ -91,4 +91,15 @@ public class KRADServiceLocator {
         return getService(KEY_VALUES_SERVICE);
     }
 
+    public static final MailService getMailService() {
+        return (MailService) getService(MAIL_SERVICE);
+    }
+
+    public static DatabasePlatform getDatabasePlatform() {
+        return (DatabasePlatform) getService(DB_PLATFORM);
+    }
+
+    public static InactivateableFromToService getInactivateableFromToService() {
+        return (InactivateableFromToService) getService(INACTIVATEABLE_FROM_TO_SERVICE);
+    }
 }

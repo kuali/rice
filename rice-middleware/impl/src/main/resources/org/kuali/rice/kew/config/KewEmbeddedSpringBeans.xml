@@ -41,7 +41,7 @@
         p:cacheManager-ref="kewEmbeddedDistributedCacheManager"/>
 
   <bean id="rice.kew.import.parameterService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="parameterService"/>
 
   <!--  DocumentTypeService -->
@@ -93,7 +93,7 @@
         class="org.kuali.rice.kew.rule.WorkflowRuleAttributeMediatorImpl"/>
 
   <bean id="rice.kew.import.kimRoleService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="kimRoleService"/>
 
   <bean id="peopleFlowRequestGenerator"
@@ -297,7 +297,7 @@
         p:documentAttributeIndexingQueue-ref="rice.kew.documentAttributeIndexingQueue"/>
 
   <bean id="rice.kew.import.dataDictionaryService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="dataDictionaryService"/>
   </bean>
 
@@ -305,7 +305,7 @@
         class="org.kuali.rice.kew.service.impl.BackdoorRestrictionPermissionTypeServiceImpl" />
 
   <bean id="rice.kew.import.persistenceServiceOjb"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="persistenceServiceOjb"/>
   </bean>
 

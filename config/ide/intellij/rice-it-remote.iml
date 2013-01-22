@@ -149,7 +149,7 @@
     <orderEntry type="module" module-name="rice-core-service-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-impl:test-jar:tests:2.2.1-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-ken-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-core-service-web" scope="TEST" />
@@ -160,12 +160,13 @@
     <orderEntry type="module" module-name="rice-location-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" scope="TEST" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" scope="TEST" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-impl:2.2.1-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-krms-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-krms-framework" scope="TEST" />

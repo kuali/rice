@@ -62,31 +62,14 @@
     <property name="dataDictionaryPackages">
       <list>
         <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerInfo.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountInfo.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelRequestDocument.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/SampleAppAttributes.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSample.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSampleMaintenanceDocument.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSample.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSampleMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAccountInquiry.xml</value>
         <value>classpath:edu/sampleu/travel/uif/TestKNSInquiries.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAccountLookup.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAccountTypeLookup.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAccountMaintenance.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/Travel-testView1.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/Travel-testView2.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/FiscalOfficerView.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/FiscalOfficerLookup.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAlternateViews.xml</value>
         <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BookType.xml</value>
         <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BookOrder.xml</value>
         <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Account.xml</value>
@@ -136,35 +119,6 @@
         <value>classpath:edu/sampleu/demo/kitchensink/UifCollectionTotaling.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifGuestUserView.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/TrainingApplicationView.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationView.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/TravelerDetailLookup.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/dataDictionary/TravelerDetail.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/dataDictionary/PrimaryDestination.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/PrimaryDestinationLookup.xml</value>
-
-        <!-- KRAD sample app - component library -->
-        <value>classpath:org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoInputField.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextAreaControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCheckboxControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoRadioControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSelectControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoFileControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSpinnerControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoImageField.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLinkField.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMessageField.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoKIMUserControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoKIMGroupControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoHiddenControl.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLinkGroup.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAccordionGroup.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoActionField.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTabGroup.xml</value>
-        <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
-       <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
 
         <!-- KEW -->
         <value>classpath:edu/sampleu/kew/uif/RuleAttributeInquiry.xml</value>
@@ -191,7 +145,6 @@
         <value>edu.sampleu.bookstore</value>
         <value>edu.sampleu.demo</value>
         <value>edu.sampleu.kew.krad</value>
-        <value>org.kuali.rice.krad.demo.uif</value>
       </list>
     </property>
     <property name="resourceBundleNames">
@@ -208,29 +161,6 @@
         <value>edu.sampleu.demo.kitchensink.UifComponentsViewPx10Resources</value>
         <value>edu.sampleu.demo.kitchensink.UifComponentsViewPx11Resources</value>
         <value>edu.sampleu.demo.course.UifStudentDefinitionsResources</value>
-        <value>edu.sampleu.travel.approval.TravelAuthorizationView</value>
-
-        <!-- KRAD sample app - component library -->
-        <value>org.kuali.rice.krad.demo.uif.components.resources.KradSampleAppResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.PropertiesDescription</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageFieldResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMessageFieldResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkFieldResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextAreaControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCheckboxControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoRadioControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSelectControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoFileControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSpinnerControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoKIMUserControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoKIMGroupControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoHiddenControlResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkGroupResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAccordionGroupResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoActionFieldResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTabGroupResources</value>
       </list>
     </property>
   </bean>
@@ -243,31 +173,7 @@
     <property name="localServiceName" value="SampleAppContext"/>
   </bean>
 
-  <bean id="fiscalOfficerService" class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerTravelAccountServiceImpl"/>
-
-  <alias alias="travelAccountService" name="fiscalOfficerService"/>
-
-  <bean id="fiscalOfficerInfoInquiryViewHelperService"
-        class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerInfoInquiryViewHelperServiceImpl">
-    <property name="dataDictionaryService">
-      <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-        <property name="serviceName" value="dataDictionaryService"/>
-      </bean>
-    </property>
-  </bean>
-
-  <bean id="fiscalOfficerInfoLookupViewHelperService"
-        class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerInfoLookupViewHelperServiceImpl"
-        scope="prototype">
-
-    <property name="dataDictionaryService">
-      <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-        <property name="serviceName" value="dataDictionaryService"/>
-      </bean>
-    </property>
-  </bean>
-
-  <bean id="configurationService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+  <bean id="configurationService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="kualiConfigurationService"/>
   </bean>
 
@@ -275,19 +181,8 @@
     <property name="configurationService" ref="configurationService"/>
   </bean>
 
-  <bean id="fiscalOfficerInfoMaintainable"
-        class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerInfoMaintainableImpl"
-        scope="prototype">
-
-    <property name="dataDictionaryService">
-      <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-        <property name="serviceName" value="dataDictionaryService"/>
-      </bean>
-    </property>
-  </bean>
-
   <bean id="rice.ksb.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="rice.ksb.serviceBus"/>
   </bean>
 
@@ -316,9 +211,9 @@
     <property name="serviceDefinition" ref="DataTableRestServiceTest"/>
   </bean>
 
-  <bean id="testSuggestService" class="org.kuali.rice.krad.demo.uif.library.TestSuggestServiceImpl"/>
+  <bean id="testSuggestService" class="edu.sampleu.demo.TestSuggestServiceImpl"/>
 
-  <bean id="testAttributeQueryService" class="org.kuali.rice.krad.demo.uif.library.TestAttributeQueryServiceImpl"/>
+  <bean id="testAttributeQueryService" class="edu.sampleu.demo.TestAttributeQueryServiceImpl"/>
 
 </beans>
 

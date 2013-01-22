@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -34,6 +34,14 @@
         parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/widget/tabs.ftl"/>
     <property name="templateName" value="uif_tabs"/>
+  </bean>
+
+  <bean id="Uif-Accordion" parent="Uif-Accordion-parentBean"/>
+  <bean id="Uif-Accordion-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Accordion" scope="prototype"
+        parent="Uif-WidgetBase">
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/accordion.ftl"/>
+    <property name="templateName" value="uif_accordion"/>
+    <property name="active" value="false"/>
   </bean>
 
   <bean id="Uif-DatePicker" parent="Uif-DatePicker-parentBean"/>

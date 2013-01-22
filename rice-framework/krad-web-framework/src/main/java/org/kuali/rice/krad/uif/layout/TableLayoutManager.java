@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -416,6 +416,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             if (this.isShowPageTotal()) {
                 view.assignComponentIds(pageTotalLabel);
+                pageTotalLabel.addDataAttribute("role", "pageTotal");
                 groupItems.add(pageTotalLabel);
             }
 
@@ -1794,7 +1795,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Get the groupingPrefix.  The groupingPrefix is used to prefix the generated title (not used when
      * groupingTitle is set directly) when using groupingPropertyNames.
      *
-     * @return
+     * @return String
      */
     @BeanTagAttribute(name = "groupingPrefix")
     public String getGroupingPrefix() {

@@ -39,7 +39,7 @@ import org.kuali.rice.krad.test.document.bo.AccountType2;
 import org.kuali.rice.krad.test.document.bo.AccountType2Parent;
 import org.kuali.rice.krad.test.document.bo.AccountTypeDivergent;
 import org.kuali.rice.krad.test.document.bo.AccountTypeDivergentParent;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import static org.junit.Assert.*;
 

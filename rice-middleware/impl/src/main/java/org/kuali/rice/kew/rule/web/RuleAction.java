@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -27,7 +28,6 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -118,7 +118,7 @@ public class RuleAction extends KewKualiAction {
     }
     protected ConfigurationService getKualiConfigurationService() {
         if (kualiConfigurationService == null) {
-            kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+            kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
         }
         return this.kualiConfigurationService;
     }

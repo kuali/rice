@@ -42,12 +42,12 @@
   <!-- caching start -->
 
   <bean id="rice.location.import.globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="globalCacheManager" />
   </bean>
 
   <bean id="rice.location.import.kualiModuleService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="kualiModuleService" />
   </bean>
 
@@ -57,7 +57,7 @@
   <bean id="locationCacheAdminService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl" p:cacheManager-ref="locationLocalCacheManager" />
 
   <bean id="rice.location.import.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="rice.ksb.serviceBus"/>
   </bean>
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,7 +155,7 @@ public class QuestionPromptForm extends KualiForm {
             }
            
             // KULRICE-8077: PO Quote Limitation of Only 9 Vendors
-            String questionId = request.getParameter(KRADConstants.QUESTION_IMPL_ATTRIBUTE_NAME);
+            String questionId = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
             String questionTextAttributeName = KRADConstants.QUESTION_TEXT_ATTRIBUTE_NAME + questionId;
             
             if (GlobalVariables.getUserSession().retrieveObject(questionTextAttributeName)!=null) {

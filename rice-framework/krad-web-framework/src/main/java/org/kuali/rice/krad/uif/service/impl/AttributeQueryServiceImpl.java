@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -347,7 +347,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      */
     protected ConfigurationService getConfigurationService() {
         if (configurationService == null) {
-            configurationService = KRADServiceLocator.getKualiConfigurationService();
+            configurationService = CoreApiServiceLocator.getKualiConfigurationService();
         }
 
         return configurationService;

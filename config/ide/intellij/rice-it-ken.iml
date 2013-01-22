@@ -37,7 +37,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-impl:2.2.1-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-core-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -178,6 +178,7 @@
     <orderEntry type="module" module-name="rice-location-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" scope="TEST" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" scope="TEST" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />

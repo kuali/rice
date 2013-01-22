@@ -194,12 +194,12 @@
   </bean>
 
   <bean id="rice.krad.import.databaseMessageProvider"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="databaseMessageProvider" />
   </bean>
 
   <bean id="rice.krad.import.resourceMessageProvider"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="resourceMessageProvider" />
   </bean>
 

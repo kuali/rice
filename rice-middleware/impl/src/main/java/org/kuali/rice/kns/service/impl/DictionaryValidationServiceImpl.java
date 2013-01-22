@@ -28,6 +28,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.WorkflowAttributePropertyResolutionService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.document.Document;
@@ -48,6 +49,8 @@ import java.util.regex.Pattern;
 public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service.impl.DictionaryValidationServiceImpl implements DictionaryValidationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
             DictionaryValidationServiceImpl.class);
+
+    protected WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService;
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean, boolean)
@@ -450,5 +453,21 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                 GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
             }
         }
+    }
+
+    /**
+     * gets the locally saved instance of @{link WorkflowAttributePropertyResolutionService}
+     *
+     * <p>If the instance in this class has not been initialized, retrieve it using
+     * {@link KNSServiceLocator#getWorkflowAttributePropertyResolutionService()} and save locally</p>
+     *
+     * @return the locally saved instance of {@code WorkflowAttributePropertyResolutionService}
+     */
+    protected WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
+        if (workflowAttributePropertyResolutionService == null) {
+            workflowAttributePropertyResolutionService =
+                    KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
+        }
+        return workflowAttributePropertyResolutionService;
     }
 }

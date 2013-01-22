@@ -71,14 +71,14 @@
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>TestDataDictionarySearchableAttribute</name>
-			<className>org.kuali.rice.krad.workflow.attribute.DataDictionaryDocumentSearchCustomizer</className>
+			<className>org.kuali.rice.kns.workflow.attribute.DataDictionaryDocumentSearchCustomizer</className>
 			<label>Test Data Dictionary Searchable Attribute</label>
 			<description>DD searchable attribute for testing purposes</description>
 			<type>SearchableAttribute</type>
 		</ruleAttribute>
     <ruleAttribute>
       <name>TravelAccountDocumentAccountNumberAttribute</name>
-      <className>org.kuali.rice.krad.workflow.attribute.KualiXmlSearchableAttributeImpl</className>
+      <className>org.kuali.rice.kns.workflow.attribute.KualiXmlSearchableAttributeImpl</className>
       <label>Account Number Attribute</label>
       <description>The search attribute used to find documents by account number.</description>
       <type>SearchableXmlAttribute</type>

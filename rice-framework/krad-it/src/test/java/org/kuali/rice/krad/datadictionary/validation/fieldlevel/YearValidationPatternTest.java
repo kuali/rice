@@ -17,7 +17,7 @@ package org.kuali.rice.krad.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.validation.fieldlevel.YearValidationPattern;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
                            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
   <bean id="rice.kim.import.globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="globalCacheManager"/>
 
   <cache:annotation-driven cache-manager="rice.kim.import.globalCacheManager"/>
@@ -35,52 +35,52 @@
 	<!-- hack start cannot use GRL to import b/c of Spring Inheritance -->
 
 	<bean id="rice.kim.import.persistenceStructureService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="persistenceStructureService" />
 	</bean>
 	
 	<bean id="rice.kim.import.businessObjectDictionaryService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectDictionaryService" />
 	</bean>
 	
 	<bean id="rice.kim.import.dataDictionaryService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="dataDictionaryService" />
 	</bean>
 	
 	<bean id="rice.kim.import.encryptionService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="encryptionService" />
 	</bean>
 	
 	<bean id="rice.kim.import.lookupService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="lookupService" />
 	</bean>
 	
 	<bean id="rice.kim.import.businessObjectMetaDataService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectMetaDataService" />
 	</bean>
 	
 	<bean id="rice.kim.import.sequenceAccessorService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="sequenceAccessorService" />
 	</bean>
 	
 	<bean id="rice.kim.import.lookupResultsService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="lookupResultsService" />
 	</bean>
 	
 	<bean id="rice.kim.import.businessObjectService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectService" />
 	</bean>
 
   <bean id="rice.kim.import.kimRoleDao"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="kimRoleDao" />
 	</bean>
 

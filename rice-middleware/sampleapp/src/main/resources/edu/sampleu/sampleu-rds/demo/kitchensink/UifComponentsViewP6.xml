@@ -37,21 +37,21 @@
               xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
   <group disclosure.render="false" id="lookups1" layoutManager.orientation="VERTICAL" parent="Uif-VerticalBoxSection">
     <items>
-      <inputField defaultValue="a2" inquiry.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+      <inputField defaultValue="a2" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   instructionalText="Click the link to perform an inquiry on this TravelAccount number" label="Inquiry"
                   parent="GenericTextField" propertyName="field59" readOnly="true">
         <inquiry.inquiryParameters>
           <entry key="field59" value="number"/>
         </inquiry.inquiryParameters>
       </inputField>
-      <inputField defaultValue="a1" inquiry.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+      <inputField defaultValue="a1" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
                   label="Direct Inquiry" parent="GenericTextField" propertyName="field71">
         <inquiry.inquiryParameters>
           <entry key="field71" value="number"/>
         </inquiry.inquiryParameters>
       </inputField>
-      <inputField defaultValue="a1" inquiry.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+      <inputField defaultValue="a1" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   inquiry.viewName="ks_inquiry"
                   instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
                   label="Direct Inquiry with an alternate view" parent="GenericTextField" propertyName="field71">
@@ -67,20 +67,20 @@
           <value>field74</value>
         </propertyNamesForAdditionalDisplay>
         <attributeQuery>
-          <attributeQuery dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" parent="Uif-AttributeQueryConfig"
+          <attributeQuery dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" parent="Uif-AttributeQueryConfig"
                           queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
         </attributeQuery>
       </inputField>
       <inputField instructionalText="click the button to perform a lookup on TravelAccounts" label="Lookup"
                   parent="GenericTextField" propertyName="field60"
-                  quickfinder.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount">
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
         <quickfinder.fieldConversions>
           <entry key="number" value="field60"/>
         </quickfinder.fieldConversions>
       </inputField>
       <inputField instructionalText="click the button to perform a lookup on TravelAccounts"
                   label="Lookup (Return by script)" parent="GenericTextField" propertyName="field90"
-                  quickfinder.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount">
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
         <quickfinder>
           <quickFinder parent="Uif-QuickFinderByScript"/>
         </quickfinder>
@@ -90,7 +90,7 @@
       </inputField>
       <inputField instructionalText="overriden link to display different text - Search Now" label="Lookup"
                   parent="GenericTextField" propertyName="field87"
-                  quickfinder.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   quickfinder.quickfinderAction.actionLabel="Search Now">
         <quickfinder.fieldConversions>
           <entry key="number" value="field87"/>
@@ -100,7 +100,7 @@
                   parent="GenericTextField" propertyName="field61">
         <suggest>
           <suggest parent="Uif-Suggest" render="true" sourcePropertyName="accountTypeCode"
-                   suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccountType"/>
+                   suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
         </suggest>
       </inputField>
     </items>

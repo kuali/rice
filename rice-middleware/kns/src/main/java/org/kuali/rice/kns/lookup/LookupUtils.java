@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -367,7 +367,7 @@ public class LookupUtils {
      */
     @Deprecated
     public static String getBaseLookupUrl(boolean isMultipleValue) {
-        ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+        ConfigurationService kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
     	if ( isMultipleValue ) {
     		if ( BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL == null ) {
     			String lookupUrl = kualiConfigurationService.getPropertyValueAsString(KRADConstants.APPLICATION_URL_KEY);
@@ -395,7 +395,7 @@ public class LookupUtils {
     public static String getBaseInquiryUrl() {
     	if ( BASE_INQUIRY_ACTION_URL == null ) {
 	    	StringBuffer inquiryUrl = new StringBuffer( 
-	    			KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+	    			CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                             KRADConstants.APPLICATION_URL_KEY) );
 			if (inquiryUrl.charAt(inquiryUrl.length()-1) != '/' ) {
 				inquiryUrl.append( '/' );

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.maintenance;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.exception.KualiExceptionIncident;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -98,7 +98,7 @@ public class MaintenanceUtils {
         parameters.put(KRADConstants.PARAMETER_DOC_ID, blockingDocId);
         parameters.put(KRADConstants.PARAMETER_COMMAND, KRADConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
         String blockingUrl = UrlFactory.parameterizeUrl(
-                KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                         KRADConstants.WORKFLOW_URL_KEY) +
                         "/" + KRADConstants.DOC_HANDLER_ACTION, parameters);
         if (MaintenanceUtils.LOG.isDebugEnabled()) {

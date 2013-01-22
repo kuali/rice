@@ -398,4 +398,26 @@
 
   <bean id="documentHelperService" class="org.kuali.rice.kns.service.impl.DocumentHelperServiceImpl"/>
 
+  <bean id="dataObjectMetaDataService" class="org.kuali.rice.kns.service.impl.BusinessObjectMetaDataServiceImpl">
+    <property name="dataDictionaryService">
+      <ref bean="dataDictionaryService"/>
+    </property>
+    <property name="persistenceStructureService">
+      <ref bean="persistenceStructureService"/>
+    </property>
+    <property name="kualiModuleService">
+      <ref bean="kualiModuleService"/>
+    </property>
+    <property name="viewDictionaryService">
+      <ref bean="viewDictionaryService"/>
+    </property>
+  </bean>
+
+  <bean id="workflowAttributesPropertyResolutionService"
+        class="org.kuali.rice.kns.workflow.service.impl.WorkflowAttributePropertyResolutionServiceImpl">
+    <property name="persistenceStructureService">
+      <ref bean="persistenceStructureService"/>
+    </property>
+  </bean>
+
 </beans>

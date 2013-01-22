@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -330,7 +330,7 @@
   </bean>
 
   <bean id="Uif-DocumentStatus" parent="Uif-InputField" p:propertyName="documentHeader.workflowDocument.status"
-        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="workflowDocumentStatus">
+        p:dictionaryObjectEntry="org.kuali.rice.krad.datadictionary.AttributeReference" p:dictionaryAttributeName="workflowDocumentStatus">
     <property name="cssClasses">
           <list merge="true">
             <value>uif-documentStatus</value>
@@ -339,7 +339,7 @@
   </bean>
 
   <bean id="Uif-DocumentInitiatorNetworkId" parent="Uif-InputField" p:propertyName="documentInitiatorNetworkId"
-        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="initiatorNetworkId">
+        p:dictionaryObjectEntry="org.kuali.rice.krad.datadictionary.AttributeReference" p:dictionaryAttributeName="initiatorNetworkId">
     <property name="bindingInfo.bindToForm" value="true"/>
     <property name="cssClasses">
           <list merge="true">
@@ -349,7 +349,7 @@
   </bean>
 
   <bean id="Uif-DocumentCreateDate" parent="Uif-InputField" p:propertyName="documentCreateDate"
-        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="createDate">
+        p:dictionaryObjectEntry="org.kuali.rice.krad.datadictionary.AttributeReference" p:dictionaryAttributeName="createDate">
     <property name="bindingInfo.bindToForm" value="true"/>
     <property name="cssClasses">
           <list merge="true">

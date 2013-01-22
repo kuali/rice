@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -344,7 +344,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(
                     inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)) {
                 try {
-                    keyValue = CoreApiServiceLocator.getEncryptionService().encrypt(keyValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        keyValue = CoreApiServiceLocator.getEncryptionService().encrypt(keyValue);
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
                     throw new RuntimeException(e);
@@ -1305,7 +1307,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     protected final ConfigurationService getConfigService() {
         if (configService == null) {
-            this.configService = KRADServiceLocator.getKualiConfigurationService();
+            this.configService = CoreApiServiceLocator.getKualiConfigurationService();
         }
         return configService;
     }

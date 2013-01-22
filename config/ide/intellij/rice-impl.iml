@@ -10,10 +10,10 @@
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/Attachment.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/AttributeReference.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/Attachment.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/AdHocRouteWorkgroup.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/AdHocRoutePerson.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml</file>
@@ -83,14 +83,14 @@
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/config/RiceServiceRegistrySpringBeans.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/config/RiceServiceSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/Note.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/NoteType.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/config/KRADSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/Note.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/NoteType.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/PessimisticLock.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/config/KRADSpringBeans.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml</file>
-          <file>file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/DataDictionaryBaseTypes.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-web-framework/src/main/resources/org/kuali/rice/krad/datadictionary/DocumentHeader.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -109,6 +109,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -255,6 +256,7 @@
     <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-krms-api" />
     <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />

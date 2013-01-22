@@ -28,6 +28,7 @@ import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -315,25 +316,6 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	}
 
 	/**
-	 * Gets the businessObjectDictionaryService attribute.
-	 * 
-	 * @return Returns the businessObjectDictionaryService.
-	 */
-	public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-		return businessObjectDictionaryService;
-	}
-
-	/**
-	 * Sets the businessObjectDictionaryService attribute value.
-	 * 
-	 * @param businessObjectDictionaryService
-	 *            The BusinessObjectDictionaryService to set.
-	 */
-	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
-		this.businessObjectDictionaryService = businessObjectDictionaryService;
-	}
-
-	/**
 	 * 
 	 * This method retrieves the business object class for a specific attribute
 	 * 
@@ -474,4 +456,61 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		}
 		return fkName;
 	}
+
+    /**
+     * @see org.kuali.rice.krad.service.DataObjectMetaDataService#hasLocalLookup
+     */
+    public boolean hasLocalLookup(Class<?> dataObjectClass) {
+        boolean hasLookup = super.hasLocalLookup(dataObjectClass);
+
+        // if no krad lookup check for kns
+        if (!hasLookup) {
+            Boolean isLookupable = getBusinessObjectDictionaryService().isLookupable(dataObjectClass);
+            if (isLookupable != null) {
+                hasLookup = isLookupable.booleanValue();
+            }
+        }
+
+        return hasLookup;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DataObjectMetaDataService#hasLocalInquiry
+     */
+    public boolean hasLocalInquiry(Class<?> dataObjectClass) {
+        boolean hasInquiry = super.hasLocalInquiry(dataObjectClass);
+
+        // if no krad inquiry check for kns
+        if (!hasInquiry) {
+            Boolean isInquirable = getBusinessObjectDictionaryService().isInquirable(dataObjectClass);
+            if (isInquirable != null) {
+                hasInquiry = isInquirable.booleanValue();
+            }
+        }
+
+        return hasInquiry;
+    }
+
+    /**
+     * Gets the businessObjectDictionaryService attribute.
+     *
+     * @return Returns the businessObjectDictionaryService.
+     */
+    protected BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+        if (businessObjectDictionaryService == null) {
+            businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+        }
+
+        return businessObjectDictionaryService;
+    }
+
+   	/**
+   	 * Sets the businessObjectDictionaryService attribute value.
+   	 *
+   	 * @param businessObjectDictionaryService
+   	 *            The BusinessObjectDictionaryService to set.
+   	 */
+   	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
+   		this.businessObjectDictionaryService = businessObjectDictionaryService;
+   	}
 }

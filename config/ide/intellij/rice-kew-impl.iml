@@ -17,6 +17,7 @@
     <output-test url="file://$MODULE_DIR$/../../../rice-middleware/kew/impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/kew/impl">
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/impl/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kew/impl/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kew/impl/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kew/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kew/impl/src/main/resources" isTestSource="false" />

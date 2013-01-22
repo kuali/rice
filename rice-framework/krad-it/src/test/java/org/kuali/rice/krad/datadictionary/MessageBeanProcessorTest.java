@@ -9,9 +9,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
-import org.kuali.test.KRADTestCase;
-import org.kuali.test.KRADTestConstants;
-import org.kuali.test.TestDictionaryConfig;
+import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestConstants;
+import org.kuali.rice.krad.test.TestDictionaryConfig;
 
 import java.util.List;
 

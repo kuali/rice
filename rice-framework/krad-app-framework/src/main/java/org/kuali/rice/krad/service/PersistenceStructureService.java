@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This interface defines methods that a Persistence Service must provide. PersistenceMetadataService provides access to
- * persistence-layer information about persistable classes.
+ * Defines methods that a Persistence Service must provide. PersistenceMetadataService provides access to
+ * persistence-layer information about persistable classes
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface PersistenceStructureService {
     /**

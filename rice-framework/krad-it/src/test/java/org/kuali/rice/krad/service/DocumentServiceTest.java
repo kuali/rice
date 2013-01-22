@@ -22,7 +22,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.test.document.AccountRequestDocument;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 

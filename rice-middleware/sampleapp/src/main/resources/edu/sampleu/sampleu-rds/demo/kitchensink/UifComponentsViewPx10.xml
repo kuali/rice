@@ -86,7 +86,7 @@
           <value>field74</value>
         </additionalHiddenPropertyNames>
         <attributeQuery>
-          <attributeQuery dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" parent="Uif-AttributeQueryConfig"
+          <attributeQuery dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" parent="Uif-AttributeQueryConfig"
                           queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
         </attributeQuery>
       </inputField>

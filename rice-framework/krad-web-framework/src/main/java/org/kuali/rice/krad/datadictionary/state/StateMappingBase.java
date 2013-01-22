@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 package org.kuali.rice.krad.datadictionary.state;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class StateMappingBase implements StateMapping {
         String message = null;
         if (StringUtils.isNotBlank(state) && this.getStates().contains(state)) {
             if (this.getStateNameMessageKeyMap() != null) {
-                ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
+                ConfigurationService configService = CoreApiServiceLocator.getKualiConfigurationService();
                 String key = this.getStateNameMessageKeyMap().get(state);
                 message = configService.getPropertyValueAsString(key);
             }

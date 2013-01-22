@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,27 +18,26 @@ package org.kuali.rice.krad.exception;
 import org.kuali.rice.core.api.exception.KualiException;
 
 /**
- * This class represents an UnknownDocumentIdException.
- * 
- * 
+ * Represents an UnknownDocumentIdException
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UnknownDocumentIdException extends KualiException {
     private static final long serialVersionUID = -7973140950936642618L;
 
     /**
      * Create an UnknownDocumentIdException with the given message
-     * 
+     *
      * @param message
      */
     public UnknownDocumentIdException(String message) {
         super(message);
 
-
     }
 
     /**
      * Create an UnknownDocumentIdException with the given message and cause
-     * 
+     *
      * @param message
      * @param cause
      */

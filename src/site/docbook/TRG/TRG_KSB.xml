@@ -1798,7 +1798,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       that KSBConfigurer must also be defined in your RiceConfigurer.</para>
 
       <programlisting>&lt;bean id="myapp.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"&gt;
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"&gt;
     &lt;property name="serviceName" value="rice.ksb.serviceBus"/&gt;
 &lt;/bean&gt;
 
@@ -2180,7 +2180,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       technique, you can also publish Rice services on the KSB:</para>
 
       <programlisting>&lt;!-- import a Rice service from the ResourceLoader stack --&gt;
-&lt;bean id="myapp.aRiceService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"&gt;
+&lt;bean id="myapp.aRiceService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"&gt;
     &lt;property name="serviceName" value="aRiceService"/&gt;
 &lt;/bean
 

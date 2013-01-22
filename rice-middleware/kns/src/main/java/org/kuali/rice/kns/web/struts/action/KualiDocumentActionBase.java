@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -347,7 +348,7 @@ public class KualiDocumentActionBase extends KualiAction {
         String command = kualiDocumentFormBase.getCommand();
 
         if (kualiDocumentFormBase.getDocId()!= null && getDocumentService().getByDocumentHeaderId(kualiDocumentFormBase.getDocId()) == null) {
-            ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+            ConfigurationService kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
             StringBuffer sb = new StringBuffer();
             sb.append(kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_URL_KEY));
             sb.append(kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_INITIATED_DOCUMENT_URL_KEY));
@@ -1800,7 +1801,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected ConfigurationService getKualiConfigurationService() {
         if (kualiConfigurationService == null) {
-            kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+            kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
         }
         return this.kualiConfigurationService;
     }

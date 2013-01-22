@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.messages.providers;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.messages.Message;
 import org.kuali.rice.krad.messages.MessageProvider;
 import org.kuali.rice.krad.messages.MessageService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 
@@ -307,7 +307,7 @@ public class ResourceMessageProvider implements MessageProvider {
      * @return List<String> list of bundle names configured for the application
      */
     protected List<String> getResourceBundleNamesForApplication() {
-        String resourceBundleNamesConfig = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String resourceBundleNamesConfig = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 "resourceBundleNames");
         if (StringUtils.isNotBlank(resourceBundleNamesConfig)) {
             String[] resourceBundleNames = StringUtils.split(resourceBundleNamesConfig, ",");

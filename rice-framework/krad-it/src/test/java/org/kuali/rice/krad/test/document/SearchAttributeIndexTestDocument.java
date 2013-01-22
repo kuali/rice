@@ -21,18 +21,16 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
-import org.kuali.rice.krad.workflow.SearchAttributeIndexRequestTest;
 
 /**
  * Mock document for testing how document search carries out indexing 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 @Entity
 @Table(name="TST_SEARCH_ATTR_INDX_TST_DOC_T")
 public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase {
-	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeIndexRequestTest.class);
+	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeIndexTestDocument.class);
 	private static final long serialVersionUID = -2290510385815271758L;
 	@Column(name="RTE_LVL_CNT")
 	private int routeLevelCount = 0;

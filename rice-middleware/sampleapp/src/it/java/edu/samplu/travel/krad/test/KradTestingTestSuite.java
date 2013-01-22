@@ -28,7 +28,6 @@ import org.junit.runners.Suite.SuiteClasses;
         ConfigurationTestViewIT.class,
         ConfigurationTestViewLegacyIT.class,
         DirtyFieldsCheckIT.class,
-        TravelAccountMaintenanceDocumentTest.class,
         UIFComponentValidationRegexPatternIT.class,
         UIFComponentValidationRegexPatternLegacyIT.class,
         UifDataAttributesLegacyIT.class,

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -167,7 +167,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
      * prototype will be created and set as the new property value
      * </p>
      *
-     * @return
+     * @return Component
      */
     @BeanTagAttribute(name = "componentReplacementPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Component getComponentReplacementPrototype() {

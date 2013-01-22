@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -330,7 +329,7 @@ public class Inquiry extends WidgetBase {
     public String createTitleText(Class<?> dataObjectClass) {
         String titleText = "";
 
-        String titlePrefixProp = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String titlePrefixProp = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 INQUIRY_TITLE_PREFIX);
         if (StringUtils.isNotBlank(titlePrefixProp)) {
             titleText += titlePrefixProp + " ";

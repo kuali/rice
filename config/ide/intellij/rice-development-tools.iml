@@ -4,8 +4,8 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../development-tools/src/main/resources/org/kuali/rice/devtools/krad/datadictionary/ReloadingDataDictionarySpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../development-tools/src/main/resources/org/kuali/rice/devtools/pdle/PostDataLoadEncryptionSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-development-tools/src/main/resources/org/kuali/rice/krad/devtools/datadictionary/ReloadingDataDictionarySpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-development-tools/src/main/resources/org/kuali/rice/krad/devtools/pdle/PostDataLoadEncryptionSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -21,11 +21,11 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../development-tools/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/maven-archiver" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.kuali.rice:rice-impl:2.2.1-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -166,6 +166,7 @@
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />

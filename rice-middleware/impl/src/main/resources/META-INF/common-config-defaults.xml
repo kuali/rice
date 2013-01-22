@@ -112,10 +112,7 @@
     <param name="application.url" override="false">${appserver.url}/${app.context.name}</param>
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
-    <param name="krad.url" override="false">${application.url}/kr-krad</param>
-    <param name="rice.server.krad.url" override="false">${rice.server.url}/kr-krad</param>
     <param name="krad.lookup.url" override="false">${krad.url}/lookup</param>
-    <param name="rice.server.krad.lookup.url" override="false">${rice.server.krad.url}/lookup</param>
     <param name="krad.inquiry.url" override="false">${krad.url}/inquiry</param>
     <param name="rice.server.url" override="false">${application.url}</param>
     <param name="workflow.url" override="false">${rice.server.url}/kew</param>
@@ -147,7 +144,6 @@
     <param name="externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
     <param name="kr.externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
     <param name="travel.externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
-    <param name="krad.externalizable.images.url" override="false">${application.url}/krad/images/</param>
 
     <!-- Defined images for specific file types (mime type codes) -->
     <param name="attach.img.application/msword" override="false">word.gif</param>
@@ -233,18 +229,9 @@
 
   <param name="session.document.cache.size" override="false">100</param>
 
-
-	  <param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
-    <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>
-
     <param name="rice.krad.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
 
     <param name="kns.editable.properties.history.size" override="false">20</param>
-
-    <!-- Reloading Dictionary Config -->
-    <param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
-    <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
-    <param name="reload.data.dictionary.interval" override="false">3000</param>
 
     <!-- KSB -->
 
@@ -398,7 +385,7 @@
 	<param name="transactionManager.jndi.location" override="false"></param>
 	<param name="userTransaction.jndi.location" override="false"></param>
 
-	<!-- KRAD -->
+	<!-- KNS -->
 	<param name="rice.kr.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
 	<param name="kr.url" override="false">${application.url}/kr</param>
   <param name="kr.krad.url" override="false">${application.url}/kr-krad</param>
@@ -407,28 +394,6 @@
 	<param name="kradApplication.datasource.jndi.location" override="false"></param>
 	<param name="rice.kr.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kr.expose.services.on.bus" override="false">true</param>
-	<param name="load.data.dictionary" override="false">true</param>=
-	<param name="validate.data.dictionary" override="false">true</param>
-	<param name="validate.data.dictionary.ebo.references" override="false">true</param>
-  <param name="validate.views.onbuild" override="false">false</param>
-	<param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
-  <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
-  <param name="reload.data.dictionary.interval" override="false">3000</param>
-  <param name="maxNumberOfSessionForms" override="false">10</param>
-  <param name="krad.schema.classes">META-INF/krad_schemaclasses.xml</param>
-
-  <!-- list of resource bundle names (full qualified classnames) for application messages (default namespace
-   of KUALI), for messages associated with a namespace use the resourceBundleName configuration on the
-   corresponding ModuleDefinition -->
-  <param name="resourceBundleNames" override="false">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources</param>
-
-  <!-- indicates whether messages from an external repository should bea loaded for data dictionary beans. Enable if
-  external messages are being used for dictionary text. Disable if external messages are not, or to improve startup
-  time in development -->
-  <param name="load.dictionary.external.messages" override="false">true</param>
-
-  <param name="krad.ehcache.config.location" override="false">classpath:org/kuali/rice/krad/config/krad.ehcache.xml</param>
-
   <param name="rice.krad.bos.ignoreMissingFieldsOnDeserialize" override="false"></param>
 
 	<!-- KCB -->
@@ -595,9 +560,6 @@
       enQuickLinksService
       enDocumentLinkService
   </param>
-
-  <param name="rice.krad.componentPublishing.enabled" override="false">false</param>
-  <param name="rice.krad.componentPublishing.delay" override="false">15000</param>
 
   <!-- Valid Date Formats -->
   <param name="STRING_TO_DATE_FORMATS" override="false">MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MM-dd-yyyy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss</param>

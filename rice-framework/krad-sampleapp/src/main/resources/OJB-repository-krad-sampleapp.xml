@@ -448,7 +448,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.krad.demo.travel.account.TravelAccountType" table="TRV_ACCT_TYPE">
+  <class-descriptor class="edu.sampleu.travel.bo.TravelAccountType" table="TRV_ACCT_TYPE">
     <field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="name" column="acct_type_name" jdbc-type="VARCHAR"/>
   </class-descriptor>

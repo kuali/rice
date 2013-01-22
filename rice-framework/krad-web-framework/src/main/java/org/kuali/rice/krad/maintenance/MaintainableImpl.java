@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -211,7 +211,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             if (getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass, fieldName)) {
                 try {
-                    fieldValue = getEncryptionService().encrypt(fieldValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        fieldValue = getEncryptionService().encrypt(fieldValue);
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Unable to encrypt secure field for locking representation " + e.getMessage());
                     throw new RuntimeException(

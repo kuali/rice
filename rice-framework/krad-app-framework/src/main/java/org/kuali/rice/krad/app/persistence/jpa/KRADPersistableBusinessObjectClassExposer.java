@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The class which exposes the names of all KNS business object entities - which are managed
+ * Exposes the names of all KNS business object entities - which are managed
  * by all JPA persistence units
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class KRADPersistableBusinessObjectClassExposer implements
         PersistableBusinessObjectClassExposer {
@@ -51,7 +50,7 @@ public class KRADPersistableBusinessObjectClassExposer implements
 		knsBOs.add(org.kuali.rice.krad.bo.GlobalBusinessObjectDetailBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.LookupResults.class.getName());
 		knsBOs.add(org.kuali.rice.krad.bo.KualiCodeBase.class.getName());
-		knsBOs.add(org.kuali.rice.krad.bo.MultipleValueLookupMetadata.class.getName());
+		knsBOs.add(org.kuali.rice.kns.lookup.MultipleValueLookupMetadata.class.getName());
 		knsBOs.add(NamespaceBo.class.getName());
 		knsBOs.add(org.kuali.rice.krad.bo.Note.class.getName());
 		knsBOs.add(org.kuali.rice.krad.bo.NoteType.class.getName());
@@ -64,7 +63,7 @@ public class KRADPersistableBusinessObjectClassExposer implements
 		knsBOs.add(org.kuali.rice.krad.bo.PersistableBusinessObjectBase.class.getName());
 		knsBOs.add(org.kuali.rice.krad.bo.PersistableBusinessObjectExtensionBase.class.getName());
 		knsBOs.add(org.kuali.rice.krad.document.authorization.PessimisticLock.class.getName());
-		knsBOs.add(org.kuali.rice.krad.bo.SelectedObjectIds.class.getName());
+		knsBOs.add(org.kuali.rice.kns.lookup.SelectedObjectIds.class.getName());
 		knsBOs.add(org.kuali.rice.location.impl.country.CountryBo.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.CountyImpl.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.StateImpl.class.getName());

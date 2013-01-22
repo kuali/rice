@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 
 import java.util.ArrayList;
@@ -46,15 +46,25 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     protected String getRegexString() {
         StringBuilder regex = new StringBuilder();
 
+        if (getPrecision() < 0 || getScale() < 0 || getPrecision() - getScale() < 0){
+            throw new RuntimeException("Precision and scale cannot be negative AND scale cannot be greater than "
+                    + "precision for FixedPointPatternConstraints!");
+        }
+
         if (isAllowNegative()) {
             regex.append("-?");
         }
-        // final patter will be: -?([0-9]{0,p-s}\.[0-9]{1,s}|[0-9]{1,p-s}) where p = precision, s=scale
+        // final pattern will be: -?([0-9]{0,p-s}\.[0-9]{1,s}|[0-9]{1,p-s}) where p = precision, s=scale
+
         regex.append("(");
-        regex.append("[0-9]{0," + (getPrecision() - getScale()) + "}");
+        if(getPrecision() - getScale() > 0){
+            regex.append("[0-9]{0," + (getPrecision() - getScale()) + "}");
+        }
         regex.append("\\.");
         regex.append("[0-9]{1," + getScale() + "}");
-        regex.append("|[0-9]{1," + (getPrecision() - getScale()) + "}");
+        if(getPrecision() - getScale() > 0){
+            regex.append("|[0-9]{1," + (getPrecision() - getScale()) + "}");
+        }
         regex.append(")");
         return regex.toString();
     }
@@ -113,12 +123,12 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     public List<String> getValidationMessageParams() {
         if (validationMessageParams == null) {
             validationMessageParams = new ArrayList<String>();
-            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
+            MessageService messageService = KRADServiceLocatorWeb.getMessageService();
             if (allowNegative) {
-                validationMessageParams.add(configService.getPropertyValueAsString(
+                validationMessageParams.add(messageService.getMessageText(
                         UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegative"));
             } else {
-                validationMessageParams.add(configService.getPropertyValueAsString(
+                validationMessageParams.add(messageService.getMessageText(
                         UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
             }
 

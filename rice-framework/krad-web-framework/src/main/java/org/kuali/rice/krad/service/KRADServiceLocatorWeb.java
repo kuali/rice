@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ public class KRADServiceLocatorWeb {
     }
 
     public static final String DATA_DICTIONARY_REMOTE_FIELD_SERVICE = "dataDictionaryRemoteFieldService";
+    public static final String DATA_DICTIONARY_COMPONENT_PUBLISHER_SERVICE = "dataDictionaryComponentPublisherService";
     public static final String DOCUMENT_DICTIONARY_SERVICE = "documentDictionaryService";
     public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
     public static final String DATA_OBJECT_AUTHORIZATION_SERVICE = "dataObjectAuthorizationService";
@@ -71,6 +72,8 @@ public class KRADServiceLocatorWeb {
     public static final String VIEW_VALIDATION_SERVICE = "viewValidationService";
     public static final String ATTRIBUTE_QUERY_SERVICE = "attributeQueryService";
     public static final String MESSAGE_SERVICE = "messageService";
+    public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
+    public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -182,5 +185,17 @@ public class KRADServiceLocatorWeb {
 
     public static MessageService getMessageService() {
         return getService(MESSAGE_SERVICE);
+    }
+
+    public static DataDictionaryComponentPublisherService getDataDictionaryComponentPublisherService() {
+        return getService(DATA_DICTIONARY_COMPONENT_PUBLISHER_SERVICE);
+    }
+
+    public static PostProcessorService getPostProcessorService() {
+        return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
+    }
+
+    public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
+    	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
     }
 }

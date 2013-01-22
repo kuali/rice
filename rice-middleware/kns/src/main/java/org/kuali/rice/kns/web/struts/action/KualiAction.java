@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,6 @@ import org.kuali.rice.kns.web.struts.form.pojo.PojoForm;
 import org.kuali.rice.kns.web.struts.form.pojo.PojoFormBase;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.exception.AuthorizationException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
@@ -853,7 +852,7 @@ public abstract class KualiAction extends DispatchAction {
         String fullParameter = (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE);
         String conversionFields = StringUtils.substringBetween(fullParameter, KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
 
-        String deploymentBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String deploymentBaseUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.WORKFLOW_URL_KEY);
         String workgroupLookupUrl = deploymentBaseUrl + "/Lookup.do?lookupableImplServiceName=WorkGroupLookupableImplService&methodToCall=start&docFormKey=" + GlobalVariables.getUserSession().addObjectWithGeneratedKey(form);
 
@@ -1157,7 +1156,7 @@ public abstract class KualiAction extends DispatchAction {
 
     public static String getApplicationBaseUrl() {
         if ( applicationBaseUrl == null ) {
-            applicationBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+            applicationBaseUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                     KRADConstants.APPLICATION_URL_KEY);
         }
         return applicationBaseUrl;

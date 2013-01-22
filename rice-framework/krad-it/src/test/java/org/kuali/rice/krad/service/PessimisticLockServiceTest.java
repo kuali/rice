@@ -33,11 +33,10 @@ import org.kuali.rice.krad.test.document.AccountRequestDocument2;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.maintainable.AccountType2MaintainableImpl;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -400,29 +399,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
        	assertCustomLockDescriptorsAreWorking(accountDoc2, AccountRequestDocument2.ACCT_REQ_DOC_2_EDITABLE_FIELDS,
        			AccountRequestDocument2.EDIT_ALL_BUT_REASONS, AccountRequestDocument2.EDIT_REASONS_ONLY);
     }
-    
-    /**
-     * tests the PessimisticLockService's ability to establish pessimistic locks for maintenance documents (via maintainables) that
-     * support custom lock descriptors
-     * 
-     * @throws Exception
-     */
-    @Test
-    public void testPessimisticLockingWithCustomMaintainableLockDescriptors() throws Exception {
-    	MaintenanceDocument maintDoc = (MaintenanceDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountType2MaintenanceDocument");
-    	assertTrue("The AccountType2MaintenanceDocument should be using pessimistic locking", KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary(
-			).getDocumentEntry(maintDoc.getNewMaintainableObject().getDataObjectClass().getSimpleName() + "MaintenanceDocument").getUsePessimisticLocking());
-    	assertTrue("The AccountType2MaintenanceDocument should be using custom lock descriptors", maintDoc.useCustomLockDescriptors());
-    	assertTrue("The AccountType2MaintenanceDocument's new maintainable uses the wrong class",
-    			maintDoc.getNewMaintainableObject() instanceof AccountType2MaintainableImpl);
-    	AccountType2MaintainableImpl newMaint = (AccountType2MaintainableImpl) maintDoc.getNewMaintainableObject();
-    	assertTrue("The AccountType2MaintainableImpl should be using custom lock descriptors", newMaint.useCustomLockDescriptors());
-    	
-    	// Perform the custom lock descriptor unit testing operations.
-       	assertCustomLockDescriptorsAreWorking(maintDoc, AccountType2MaintainableImpl.ACCT_TYPE_2_MAINT_FIELDS_TO_EDIT,
-       			AccountType2MaintainableImpl.EDIT_CODE_ONLY, AccountType2MaintainableImpl.EDIT_NAME_ONLY);
-    }
-    
+
     /**
      * A convenience method for testing the custom lock descriptors of documents (and on the maintainables of maintenance documents).
      * 

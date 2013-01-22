@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -56,7 +57,6 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.impl.DataObjectAuthorizationServiceImpl;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -650,7 +650,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 
 	private ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
-			kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+			kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
 	}

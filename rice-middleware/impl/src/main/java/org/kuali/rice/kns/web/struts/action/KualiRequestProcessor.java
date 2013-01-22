@@ -29,8 +29,7 @@ import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.util.RequestUtils;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -50,8 +49,6 @@ import org.kuali.rice.kns.web.struts.form.pojo.PojoForm;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -67,8 +64,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * This class handles setup of user session and restoring of action form.
@@ -496,7 +491,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 							actionForward = action.execute(mapping, form, request, response);
 						} catch (Exception e) {
                             if (e.getMessage()!= null && e.getMessage().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
-                                ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+                                ConfigurationService kualiConfigurationService = CoreApiServiceLocator
+                                        .getKualiConfigurationService();
                                 StringBuffer sb = new StringBuffer();
                                 sb.append(kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_URL_KEY));
                                 sb.append(kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_INITIATED_DOCUMENT_URL_KEY));
@@ -722,7 +718,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	public PlatformTransactionManager getTransactionManager() {
 		if ( transactionManager == null ) {
-			transactionManager = KRADServiceLocatorInternal.getTransactionManager();
+			transactionManager = KNSServiceLocator.getTransactionManager();
 		}
 		return this.transactionManager;
 	}

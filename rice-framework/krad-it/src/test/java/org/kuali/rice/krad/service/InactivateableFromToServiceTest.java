@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.service;
 
 import org.junit.Ignore;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 
 /**

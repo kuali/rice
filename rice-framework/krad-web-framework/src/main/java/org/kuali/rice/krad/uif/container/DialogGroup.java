@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -364,7 +364,7 @@ public class DialogGroup extends Group {
     }
 
     /**
-     * indicates which approach is used to fill the lightbox content for this dialog.
+     * Indicates which approach is used to fill the lightbox content for this dialog.
      *
      * <p>
      * Two techniques are used for filling the content of the lightbox when displaying this dialog.
@@ -375,7 +375,7 @@ public class DialogGroup extends Group {
      * The default approach is to use a hidden form.
      * </p>
      *
-     * @return
+     * @return boolean
      */
     @BeanTagAttribute(name = "useAjaxCallForContent")
     public boolean isUseAjaxCallForContent() {

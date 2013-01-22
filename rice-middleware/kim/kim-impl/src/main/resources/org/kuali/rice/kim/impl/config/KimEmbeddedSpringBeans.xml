@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -38,15 +38,15 @@
         p:cacheManager-ref="kimEmbeddedDistributedCacheManager"/>
 
   <bean id="rice.kim.import.businessObjectService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="businessObjectService"/>
 
   <bean id="rice.kim.import.kualiConfigurationService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="kualiConfigurationService"/>
 
   <bean id="rice.kim.import.criteriaLookupService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="criteriaLookupService"/>
 
   <!--
@@ -178,11 +178,11 @@
   <bean id="kimModuleConfiguration" parent="kimModuleConfiguration-parentBean"/>
 
   <bean id="rice.kim.import.dataDictionaryService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="dataDictionaryService"/>
 
   <bean id="rice.kim.import.persistenceServiceOjb"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="persistenceServiceOjb"/>
 
   <bean id="uiDocumentServiceDAO" class="org.kuali.rice.kim.service.dao.impl.UiDocumentServiceDAOJdbcImpl"

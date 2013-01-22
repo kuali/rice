@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.krad.test.document.bo.Account;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import static org.junit.Assert.assertTrue;
 

@@ -16,8 +16,8 @@
 package org.kuali.rice.kim.util;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
@@ -43,7 +43,7 @@ public final class KimCommonUtilsInternal {
 	}
 
 	public static String getKimBasePath(){
-		String kimBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+		String kimBaseUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KimConstants.KimUIConstants.KIM_URL_KEY);
 		if (!kimBaseUrl.endsWith(KimConstants.KimUIConstants.URL_SEPARATOR)) {
 			kimBaseUrl = kimBaseUrl + KimConstants.KimUIConstants.URL_SEPARATOR;

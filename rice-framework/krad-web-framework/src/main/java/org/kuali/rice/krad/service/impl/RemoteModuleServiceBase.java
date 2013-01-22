@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
@@ -49,7 +50,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public abstract class RemoteModuleServiceBase implements ModuleService {
     protected static final Logger LOG = Logger.getLogger(RemoteModuleServiceBase.class);
 
@@ -208,8 +211,8 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         public static final String remoteKradBaseLookupUrl;
 
         static {
-            remoteKradBaseLookupUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_SERVER_LOOKUP_URL_KEY);
-            localKradBaseLookupUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
+            remoteKradBaseLookupUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_SERVER_LOOKUP_URL_KEY);
+            localKradBaseLookupUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
         }
     }
 
@@ -254,7 +257,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
             Map<String, String> parameters) {
         Properties urlParameters = new Properties();
 
-        String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String riceBaseUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.KUALI_RICE_URL_KEY);
         String lookupUrl = riceBaseUrl;
         if (!lookupUrl.endsWith("/")) {
@@ -447,7 +450,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
 
     @Deprecated
     protected String getInquiryUrl(Class inquiryBusinessObjectClass) {
-        String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String riceBaseUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.KUALI_RICE_URL_KEY);
         String inquiryUrl = riceBaseUrl;
         if (!inquiryUrl.endsWith("/")) {
@@ -529,7 +532,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
 
     protected ConfigurationService getKualiConfigurationService() {
         if (this.kualiConfigurationService == null) {
-            this.kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+            this.kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
         }
 
         return this.kualiConfigurationService;

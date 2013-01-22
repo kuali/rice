@@ -5,8 +5,8 @@ import org.kuali.rice.krad.test.TestDictionaryBean;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.InquiryView;
-import org.kuali.test.KRADTestCase;
-import org.kuali.test.TestDictionaryConfig;
+import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.test.TestDictionaryConfig;
 
 import java.util.List;
 import java.util.Map;

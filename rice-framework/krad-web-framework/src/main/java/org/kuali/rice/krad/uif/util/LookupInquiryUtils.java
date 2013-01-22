@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -72,8 +71,10 @@ public class LookupInquiryUtils {
 				&& KRADServiceLocatorWeb.getDataObjectAuthorizationService()
 						.attributeValueNeedsToBeEncryptedOnFormsAndLinks(lookupObjectClass, propertyName)) {
 			try {
-				parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
-						+ EncryptionService.ENCRYPTION_POST_PREFIX;
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+				    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
+					    	+ EncryptionService.ENCRYPTION_POST_PREFIX;
+                }
 			}
 			catch (GeneralSecurityException e) {
 				LOG.error("Unable to encrypt value for property name: " + propertyName);
@@ -85,7 +86,7 @@ public class LookupInquiryUtils {
 	}
 
     public static String getBaseLookupUrl() {
-        return KRADServiceLocator.getKualiConfigurationService().
+        return CoreApiServiceLocator.getKualiConfigurationService().
                 getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
     }
 

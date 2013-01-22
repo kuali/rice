@@ -163,7 +163,7 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="field14">
           <property name="quickfinder.id" value="UifCompView-SecureWidget"/>
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           <property name="quickfinder.fieldConversions" value="number:field60"/>
           <property name="quickfinder.componentSecurity.viewAuthz" value="true"/>
         </bean>

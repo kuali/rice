@@ -34,8 +34,8 @@ import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kns.workflow.attribute.QualifierResolverBase;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.workflow.attribute.QualifierResolverBase;
 
 import java.util.ArrayList;
 import java.util.Collections;

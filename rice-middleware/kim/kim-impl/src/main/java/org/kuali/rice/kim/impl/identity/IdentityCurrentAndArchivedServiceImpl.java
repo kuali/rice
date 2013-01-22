@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,17 +112,19 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     	EntityNamePrincipalName name = getInnerIdentityService().getDefaultNamesForPrincipalId(principalId);
     	if(name == null || ObjectUtils.isNull(name.getDefaultName()) || StringUtils.isBlank(name.getPrincipalName()) || StringUtils.isBlank(name.getDefaultName().getCompositeName())) {
     		EntityDefault defaultEntity = this.getEntityDefaultByPrincipalId(principalId);
-			EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();
-			for(Principal principal : defaultEntity.getPrincipals()) {
-				nameBuilder.setPrincipalName(principal.getPrincipalName());
-			}
-			nameBuilder.setDefaultName(EntityName.Builder.create(defaultEntity.getName()));
-			if (StringUtils.isBlank(defaultEntity.getName().getCompositeName())) {
-				String formattedName = (defaultEntity.getName().getLastName() + ", " + defaultEntity.getName().getFirstName() + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName())).trim();
-				nameBuilder.getDefaultName().setCompositeName(formattedName);
-			}
-			return nameBuilder.build();
-    	}
+            if (defaultEntity != null) {
+                EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();
+                for(Principal principal : defaultEntity.getPrincipals()) {
+                    nameBuilder.setPrincipalName(principal.getPrincipalName());
+                }
+                nameBuilder.setDefaultName(EntityName.Builder.create(defaultEntity.getName()));
+                if (StringUtils.isBlank(defaultEntity.getName().getCompositeName())) {
+                    String formattedName = (defaultEntity.getName().getLastName() + ", " + defaultEntity.getName().getFirstName() + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName())).trim();
+                    nameBuilder.getDefaultName().setCompositeName(formattedName);
+                }
+                return nameBuilder.build();
+            }
+        }
 		return name;
 	}
 

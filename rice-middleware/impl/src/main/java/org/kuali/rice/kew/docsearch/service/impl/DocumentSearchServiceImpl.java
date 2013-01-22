@@ -59,7 +59,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.io.IOException;
@@ -747,7 +746,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     public ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
-			kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+			kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
 	}

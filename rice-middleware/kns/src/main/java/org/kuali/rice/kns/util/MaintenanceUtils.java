@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
@@ -34,7 +35,6 @@ import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
@@ -369,7 +369,7 @@ public final class MaintenanceUtils {
 
     private static ConfigurationService getKualiConfigurationService() {
         if (kualiConfigurationService == null) {
-            kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+            kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
         }
         return kualiConfigurationService;
     }

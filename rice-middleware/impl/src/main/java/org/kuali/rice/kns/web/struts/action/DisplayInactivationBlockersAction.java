@@ -25,7 +25,6 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.InactivationBlockingDisplayService;
-import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -47,7 +46,8 @@ public class DisplayInactivationBlockersAction extends KualiAction {
 	public ActionForward displayAllInactivationBlockers(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DisplayInactivationBlockersForm displayInactivationBlockersForm = (DisplayInactivationBlockersForm) form;
 		DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-		InactivationBlockingDisplayService inactivationBlockingDisplayService = KRADServiceLocatorInternal.getInactivationBlockingDisplayService();
+		InactivationBlockingDisplayService inactivationBlockingDisplayService = KRADServiceLocatorWeb
+                .getInactivationBlockingDisplayService();
 		
 		Class blockedBoClass = Class.forName(displayInactivationBlockersForm.getBusinessObjectClassName());
 		BusinessObject blockedBo = (BusinessObject) blockedBoClass.newInstance();

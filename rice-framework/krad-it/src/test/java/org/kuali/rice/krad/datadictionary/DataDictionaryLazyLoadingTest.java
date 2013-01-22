@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 

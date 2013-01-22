@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.rules;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
@@ -49,7 +50,6 @@ import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -57,7 +57,6 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.RouteToCompletionUtil;
-import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -633,7 +632,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     protected ConfigurationService getKualiConfigurationService() {
         if (kualiConfigurationService == null) {
-            kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+            kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
         }
         return kualiConfigurationService;
     }

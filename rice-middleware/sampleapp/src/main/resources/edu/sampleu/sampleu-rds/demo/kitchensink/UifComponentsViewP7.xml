@@ -57,7 +57,7 @@
       </inputField>
     </items>
   </collectionGroup>
-  <collectionGroup collectionLookup.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+  <collectionGroup collectionLookup.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                    collectionLookup.fieldConversions="number:field1,name:field2,subAccount:field3,subAccountName:field4"
                    collectionLookup.render="true" collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
                    headertext="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on"

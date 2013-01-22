@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="rice-krad-sampleapp:war exploded">
-    <output-path>$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/target/rice-krad-sampleapp-2.2.1-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/target/rice-krad-sampleapp-2.3.0-SNAPSHOT</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="rice-krad-sampleapp/web/Web" />
       <element id="directory" name="WEB-INF">
@@ -40,6 +40,7 @@
           <element id="module-output" name="rice-edl-impl" />
         </element>
       </element>
+      <element id="artifact" artifact-name="rice-web:war exploded" />
     </root>
   </artifact>
 </component>

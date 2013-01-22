@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.web.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
@@ -56,7 +56,7 @@ public class UifFormManager implements Serializable {
         this.sessionForms = new HashMap<String, UifFormBase>();
 
         String maxNumberOfSessionFormsConfig =
-                KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("maxNumberOfSessionForms");
+                CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString("maxNumberOfSessionForms");
         if (StringUtils.isNotBlank(maxNumberOfSessionFormsConfig)) {
             maxNumberOfSessionForms = Integer.parseInt(maxNumberOfSessionFormsConfig);
         }

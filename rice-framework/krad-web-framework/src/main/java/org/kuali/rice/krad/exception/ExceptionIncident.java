@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.exception;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.KualiException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -25,12 +25,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class contains the exception incident information, exception, form and
+ * Contains the exception incident information, exception, form and
  * session user. It is constructed and saved into the HTTP Request for passing to the
  * jsp when an exception occurs.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class ExceptionIncident implements KualiExceptionIncident {
     private static final Logger LOG = Logger.getLogger(ExceptionIncident.class);
@@ -201,9 +200,9 @@ public class ExceptionIncident implements KualiExceptionIncident {
             String lm=String.format("ENTRY");
             LOG.trace(lm);
         }
-        String app = KRADServiceLocator.getKualiConfigurationService().
+        String app = CoreApiServiceLocator.getKualiConfigurationService().
 				getPropertyValueAsString("application.id");
-        String env= KRADServiceLocator.getKualiConfigurationService().
+        String env= CoreApiServiceLocator.getKualiConfigurationService().
                 getPropertyValueAsString("environment");
         String format="%s:%s:%s:%s";
         String componentName=properties.get(COMPONENT_NAME);

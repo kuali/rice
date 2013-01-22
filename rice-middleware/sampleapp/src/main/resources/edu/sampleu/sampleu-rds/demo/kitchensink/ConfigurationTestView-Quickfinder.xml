@@ -47,7 +47,7 @@
     <items>
       <inputField instructionalText="TravelAccounts lookup (account number should be read only)" label="Lookup"
                   parent="GenericTextField" propertyName="field60"
-                  quickfinder.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   quickfinder.readOnlySearchFields="number">
         <quickfinder.fieldConversions>
           <entry key="number" value="field60"/>
@@ -55,7 +55,7 @@
       </inputField>
       <inputField instructionalText="TravelAccounts lookup (account number should NOT be read only)" label="Lookup"
                   parent="GenericTextField" propertyName="field90"
-                  quickfinder.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount">
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
         <quickfinder.fieldConversions>
           <entry key="number" value="field90"/>
         </quickfinder.fieldConversions>
@@ -69,7 +69,7 @@
                   parent="Uif-InputField" propertyName="field61">
         <suggest>
           <suggest parent="Uif-Suggest" render="true" sourcePropertyName="number"
-                   suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+                   suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"/>
         </suggest>
       </inputField>
       <inputField instructionalText="view helper method configuration, type a1 or a2 for suggestions" label="Suggest 2"
@@ -109,7 +109,7 @@
           <suggest parent="Uif-Suggest" render="true" sourceQueryMethodResults="true">
             <suggestQuery>
               <attributeQuery parent="Uif-AttributeQueryConfig"
-                              queryMethodInvokerConfig.staticMethod="org.kuali.rice.krad.demo.uif.library.TestSuggestClass.getLanguages"/>
+                              queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.TestSuggestClass.getLanguages"/>
             </suggestQuery>
             <templateOptions merge="true">
               <entry key="minLength" value="0"/>
@@ -125,7 +125,7 @@
               <attributeQuery parent="Uif-AttributeQueryConfig" queryMethodToCall="retrieveTravelAccounts"
                               sortPropertyNames="subAccountName">
                 <queryMethodInvokerConfig.targetObject>
-                  <spring:bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+                  <spring:bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
                     <spring:property name="serviceName" value="testSuggestService"/>
                   </spring:bean>
                 </queryMethodInvokerConfig.targetObject>
@@ -140,7 +140,7 @@
           <suggest parent="Uif-Suggest" render="true" retrieveAllSuggestions="true">
             <suggestQuery>
               <attributeQuery parent="Uif-AttributeQueryConfig"
-                              queryMethodInvokerConfig.staticMethod="org.kuali.rice.krad.demo.uif.library.TestSuggestClass.getAllLanguages"/>
+                              queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.TestSuggestClass.getAllLanguages"/>
             </suggestQuery>
             <templateOptions>
               <entry key="minLength" value="0"/>
@@ -155,7 +155,7 @@
           <suggest parent="Uif-Suggest" render="true" retrieveAllSuggestions="true">
             <suggestQuery>
               <attributeQuery parent="Uif-AttributeQueryConfig"
-                              queryMethodInvokerConfig.staticMethod="org.kuali.rice.krad.demo.uif.library.TestSuggestClass.getRichOptions"/>
+                              queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.TestSuggestClass.getRichOptions"/>
             </suggestQuery>
             <templateOptions>
               <entry key="minLength" value="0"/>
@@ -208,7 +208,7 @@
           <suggest parent="Uif-Suggest" render="true" retrieveAllSuggestions="true">
             <suggestQuery>
               <attributeQuery parent="Uif-AttributeQueryConfig"
-                              queryMethodInvokerConfig.staticMethod="org.kuali.rice.krad.demo.uif.library.TestSuggestClass.getComplexOptions"/>
+                              queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.TestSuggestClass.getComplexOptions"/>
             </suggestQuery>
             <templateOptions>
               <entry key="minLength" value="0"/>

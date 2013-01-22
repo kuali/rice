@@ -115,12 +115,22 @@
   </bean>
   <bean id="TravelRequest-accountType" parent="TravelRequest-accountType-parentBean"/>
 
-  <bean id="TravelRequest-accountType-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
-    <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.krad.demo.travel.account.TravelAccountType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
-    </property>
+  <bean id="TravelRequest-accountType-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="accountType"/>
     <property name="required" value="false"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Code"/>
+    <property name="maxLength" value="3"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="3"/>
+    </property>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="3"/>
+    </property>
+    <property name="label" value="Travel Account Type Code"/>
   </bean>
 
   <bean id="TravelRequest-travelAccounts.number" parent="TravelRequest-travelAccounts.number-parentBean"/>

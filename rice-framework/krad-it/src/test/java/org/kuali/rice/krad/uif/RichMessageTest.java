@@ -32,7 +32,7 @@ import org.kuali.rice.krad.uif.util.KeyMessage;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import java.util.ArrayList;
 import java.util.List;

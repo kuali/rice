@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.web.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.io.Serializable;
@@ -76,14 +76,13 @@ public class ExtraButton implements Serializable {
 	public void setExtraButtonSource(String extraButtonSource) {
 		if (StringUtils.isNotBlank(extraButtonSource)) {
 			this.extraButtonSource = extraButtonSource
-					.replace(
-							"${kr.externalizable.images.url}",
-							KRADServiceLocator
+					.replace("${kr.externalizable.images.url}",
+							CoreApiServiceLocator
 									.getKualiConfigurationService()
 									.getPropertyValueAsString(KRADConstants.EXTERNALIZABLE_IMAGES_URL_KEY))
 					.replace(
 							"${externalizable.images.url}",
-							KRADServiceLocator
+							CoreApiServiceLocator
 									.getKualiConfigurationService()
 									.getPropertyValueAsString(KRADConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
 		}

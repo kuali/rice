@@ -153,7 +153,7 @@
     <items>
       <inputField label="Field 1" parent="Uif-InputField" propertyName="field14"
                   quickfinder.componentSecurity.viewAuthz="true"
-                  quickfinder.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   quickfinder.fieldConversions="number:field60" quickfinder.id="UifCompView-SecureWidget"/>
     </items>
   </group>

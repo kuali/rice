@@ -5,6 +5,7 @@
     <output-test url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework">
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/src/main/resources" isTestSource="false" />
@@ -12,6 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

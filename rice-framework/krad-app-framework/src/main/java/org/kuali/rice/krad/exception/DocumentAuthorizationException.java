@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,16 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * This class represents an exception that is thrown when a given user is not authorized to take a given action on the given
- * document type.
- * 
- * 
+ * Represents an exception that is thrown when a given user is not authorized to take a given action on the given
+ * document type
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentAuthorizationException extends AuthorizationException {
 
     /**
      * Constructs a DocumentAuthorizationException for a specific document rather than a documentType.
-     * 
+     *
      * @param userId
      * @param action
      * @param documentId
@@ -38,9 +38,12 @@ public class DocumentAuthorizationException extends AuthorizationException {
     public DocumentAuthorizationException(String userId, String action, String documentId) {
         this(userId, action, documentId, Collections.<String, Object>emptyMap());
     }
-    
-    public DocumentAuthorizationException(String userId, String action, String documentId, Map<String, Object> requestAuthDetails) {
-        super(userId, action, documentId, "user '" + userId + "' is not authorized to " + action + " document '" + documentId + "'", requestAuthDetails);
+
+    public DocumentAuthorizationException(String userId, String action, String documentId,
+            Map<String, Object> requestAuthDetails) {
+        super(userId, action, documentId,
+                "user '" + userId + "' is not authorized to " + action + " document '" + documentId + "'",
+                requestAuthDetails);
     }
 
     /**

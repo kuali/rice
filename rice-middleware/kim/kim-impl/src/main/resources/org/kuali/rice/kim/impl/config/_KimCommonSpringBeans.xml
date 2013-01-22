@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@
   </bean>
 
   <bean id="rice.kim.import.globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="globalCacheManager"/>
 
   <cache:annotation-driven cache-manager="rice.kim.import.globalCacheManager"/>
@@ -53,11 +53,11 @@
         p:cacheManager-ref="kimLocalCacheManager"/>
 
   <bean id="rice.kim.import.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="rice.ksb.serviceBus"/>
 
   <bean id="rice.kim.import.kualiModuleService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="kualiModuleService"/>
 
   <bean id="kimServiceExporter"

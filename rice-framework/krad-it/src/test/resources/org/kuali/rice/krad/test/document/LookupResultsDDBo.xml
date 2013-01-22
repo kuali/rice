@@ -19,7 +19,7 @@
   <bean id="LookupResultsDDBo" parent="LookupResultsDDBo-parentBean"/>
 
   <bean id="LookupResultsDDBo-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.krad.lookup.LookupResultsDDBo"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kns.lookup.LookupResultsDDBo"/>
     <property name="titleAttribute" value="someValue"/>
     <property name="objectLabel" value="Lookup Results DD BO"/>
     <property name="primaryKeys">

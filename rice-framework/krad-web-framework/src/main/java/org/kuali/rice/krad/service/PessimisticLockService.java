@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This is the service interface for documents to use the Pessimistic Locking mechanism
+ * Service interface for documents to use the Pessimistic Locking mechanism
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface PessimisticLockService {
 
@@ -87,6 +86,15 @@ public interface PessimisticLockService {
      */
     public List<PessimisticLock> getPessimisticLocksForDocument(String documentNumber);
 
+    /**
+     * Return all locks associated with the given session id
+     *
+     * @param sessionId - the session id
+     * @return an empty list of no locks are found or the list of {@link PessimisticLock} objects
+     * found for the given sessionId
+     */
+    public List<PessimisticLock> getPessimisticLocksForSession(String sessionId);
+    
     /**
      * This method is used to identify who is an admin user for {@link PessimisticLock} objects
      *

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 
 import java.util.ArrayList;
@@ -65,20 +65,18 @@ public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatte
     }
 
     /**
-     * This overridden method ...
-     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
     @Override
     public List<String> getValidationMessageParams() {
         if (validationMessageParams == null) {
             validationMessageParams = new ArrayList<String>();
-            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
+            MessageService messageService = KRADServiceLocatorWeb.getMessageService();
             if (allowNegative) {
-                validationMessageParams.add(configService.getPropertyValueAsString(
+                validationMessageParams.add(messageService.getMessageText(
                         UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegative"));
             } else {
-                validationMessageParams.add(configService.getPropertyValueAsString(
+                validationMessageParams.add(messageService.getMessageText(
                         UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
             }
         }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.messages.MessageService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
@@ -526,8 +525,10 @@ public final class KRADUtils {
             if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName)) {
                 try {
-                    propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
-                            EncryptionService.ENCRYPTION_POST_PREFIX;
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
+                                EncryptionService.ENCRYPTION_POST_PREFIX;
+                    }
                 } catch (GeneralSecurityException e) {
                     throw new RuntimeException("Exception while trying to encrypt value for key/value map.", e);
                 }
@@ -629,9 +630,9 @@ public final class KRADUtils {
      * @return true if the deploy environment is production, false otherwise
      */
     public static boolean isProductionEnvironment() {
-        return KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        return CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.PROD_ENVIRONMENT_CODE_KEY).equalsIgnoreCase(
-                KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                         KRADConstants.ENVIRONMENT_KEY));
     }
 

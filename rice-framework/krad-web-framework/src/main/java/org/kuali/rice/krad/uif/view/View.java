@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,7 +119,7 @@ public class View extends ContainerBase {
     @RequestParameter
     private String currentPageId;
 
-    private NavigationGroup navigation;
+    private Group navigation;
 
     private Class<?> formClass;
     private String defaultBindingObjectPath;
@@ -620,7 +620,7 @@ public class View extends ContainerBase {
      * @return NavigationGroup
      */
     @BeanTagAttribute(name = "navigation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public NavigationGroup getNavigation() {
+    public Group getNavigation() {
         return this.navigation;
     }
 
@@ -629,7 +629,7 @@ public class View extends ContainerBase {
      *
      * @param navigation
      */
-    public void setNavigation(NavigationGroup navigation) {
+    public void setNavigation(Group navigation) {
         this.navigation = navigation;
     }
 
@@ -1632,7 +1632,7 @@ public class View extends ContainerBase {
     /**
      * The theme which contains stylesheets for this view
      *
-     * @return
+     * @return ViewTheme
      */
     @BeanTagAttribute(name = "theme", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ViewTheme getTheme() {

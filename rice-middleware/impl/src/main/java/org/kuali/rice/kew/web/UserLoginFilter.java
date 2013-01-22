@@ -17,6 +17,7 @@ package org.kuali.rice.kew.web;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -31,7 +32,6 @@ import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthenticationException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -216,7 +216,7 @@ public class UserLoginFilter implements Filter {
     
     private ConfigurationService getKualiConfigurationService() {
     	if (this.kualiConfigurationService == null) {
-    		this.kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+    		this.kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();
     	}
     	
     	return this.kualiConfigurationService;

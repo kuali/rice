@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.hibernate.collection.PersistentBag;
 import org.hibernate.proxy.HibernateProxy;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.cache.CopiedObject;
 import org.kuali.rice.core.web.format.CollectionFormatter;
@@ -46,6 +48,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.util.Collection;
 import java.util.Iterator;
@@ -53,7 +56,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class contains various Object, Proxy, and serialization utilities.
+ * Contains various Object, Proxy, and serialization utilities
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ObjectUtils {
     private static final Logger LOG = Logger.getLogger(ObjectUtils.class);
@@ -468,6 +473,21 @@ public final class ObjectUtils {
             propertyValue = formatter.convertFromPresentationFormat(propertyValue);
         }
 
+        // KULRICE-8412 Changes so that values passed back through via the URL such as
+        // lookups are decrypted where applicable
+        if (propertyValue instanceof String) {
+            String propVal = (String)propertyValue;
+            if (propVal.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                EncryptionService es = CoreApiServiceLocator.getEncryptionService();
+                try {
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        propertyValue = (Object) es.decrypt(StringUtils.stripEnd(propVal, EncryptionService.ENCRYPTION_POST_PREFIX));
+                    }
+                } catch (GeneralSecurityException gse) {
+                    gse.printStackTrace();
+                }
+            }
+        }
         // set property in the object
         PropertyUtils.setNestedProperty(bo, propertyName, propertyValue);
     }

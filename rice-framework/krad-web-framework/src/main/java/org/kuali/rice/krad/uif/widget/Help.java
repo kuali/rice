@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,15 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 
 import java.text.MessageFormat;
@@ -145,10 +144,10 @@ public class Help extends WidgetBase {
             // make sure that we are the component's native help and not a misconfigured standalone help bean.
             if ((parent instanceof Helpable) && (((Helpable) parent).getHelp() == this)) {
                 helpTitle = MessageFormat.format(
-                        KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                        CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                                 "help.icon.title.tag.with.field.label"), ((Helpable) parent).getHelpTitle());
             } else {
-                helpTitle = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                helpTitle = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                         "help.icon.title.tag");
             }
 

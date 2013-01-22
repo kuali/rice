@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,10 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * This class represents an exception that is thrown when a given user is not authorized to take a given action on the given
- * document type.
- * 
- * 
+ * Represents an exception that is thrown when a given user is not authorized to take a given action on the given
+ * document type
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeAuthorizationException extends AuthorizationException {
     private static final long serialVersionUID = 1548057953855152103L;
@@ -32,8 +32,9 @@ public class DocumentTypeAuthorizationException extends AuthorizationException {
     public DocumentTypeAuthorizationException(String userId, String action, String documentType) {
         this(userId, action, documentType, Collections.<String, Object>emptyMap());
     }
-    
-    public DocumentTypeAuthorizationException(String userId, String action, String documentType, Map<String, Object> requestAuthDetails) {
+
+    public DocumentTypeAuthorizationException(String userId, String action, String documentType,
+            Map<String, Object> requestAuthDetails) {
         super(userId, action, documentType, requestAuthDetails);
     }
 

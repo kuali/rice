@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -261,7 +261,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 if (fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
                     String encryptedValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
                     try {
-                        fieldValue = getEncryptionService().decrypt(encryptedValue);
+                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                            fieldValue = getEncryptionService().decrypt(encryptedValue);
+                        }
                     } catch (GeneralSecurityException e) {
                         LOG.error("Error decrypting value for business object class " + getDataObjectClass() +
                                 " attribute " + fieldName, e);

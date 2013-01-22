@@ -41,7 +41,7 @@
   </bean>
 
   <bean id="rice.krms.import.globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="globalCacheManager"/>
 
   <cache:annotation-driven cache-manager="rice.krms.import.globalCacheManager"/>
@@ -52,7 +52,7 @@
         p:cacheManager-ref="krmsLocalCacheManager"/>
 
   <bean id="rice.krms.import.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="rice.ksb.serviceBus"/>
   </bean>
 
@@ -131,7 +131,7 @@
 
   <!-- default type services -->
 
-  <bean id="configurationService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+  <bean id="configurationService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="kualiConfigurationService"/>
   </bean>
 

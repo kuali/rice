@@ -52,6 +52,14 @@
             <artifactId>rice-it-internal-tools</artifactId>
         </dependency>
 
+      <dependency>
+          <groupId>org.kuali.rice</groupId>
+          <version>${project.version}</version>
+          <artifactId>rice-it-krad</artifactId>
+          <scope>test</scope>
+          <type>test-jar</type>
+      </dependency>
+
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-core</artifactId>

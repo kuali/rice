@@ -17,13 +17,13 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.document.BOContainingPerson;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class InquiryTest extends KRADTestCase{
         inquiry.setReadOnly(true);
         inquiry.setInquiryLink(new Link());
         inquiry.setDirectInquiryAction(new Action());
-        String baseInquiryUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String baseInquiryUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.APPLICATION_URL_KEY);
         inquiry.setBaseInquiryUrl(baseInquiryUrl);
         Map<String, String> params = new HashMap<String, String>();

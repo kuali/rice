@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,7 @@ import java.beans.PropertyDescriptor;
  * Pulled this logic out of the org.kuali.rice.krad.workflow.service.impl.WorkflowAttributePropertyResolutionServiceImpl
  * since it wasn't really service logic at all, just util logic.
  *
- * @author James Renfro
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataTypeUtil {
 

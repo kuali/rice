@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
@@ -233,7 +233,7 @@ public class LocationModuleService extends ModuleServiceBase {
 
     @Override
     protected String getInquiryUrl(Class inquiryBusinessObjectClass) {
-        String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String riceBaseUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.KUALI_RICE_URL_KEY);
         String inquiryUrl = riceBaseUrl;
         if (!inquiryUrl.endsWith("/")) {
@@ -254,7 +254,7 @@ public class LocationModuleService extends ModuleServiceBase {
             Map<String, String> parameters) {
         Properties urlParameters = new Properties();
 
-        String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String riceBaseUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.KUALI_RICE_URL_KEY);
         String lookupUrl = riceBaseUrl;
         if (!lookupUrl.endsWith("/")) {

@@ -17,6 +17,7 @@ package org.kuali.rice.ken.web.spring;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.ken.exception.ErrorList;
@@ -25,7 +26,6 @@ import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,7 +66,7 @@ public class BaseSendNotificationController extends MultiActionController {
     
     protected static NamespaceService getNamespaceService() {
         if ( namespaceService == null ) {
-            namespaceService = KRADServiceLocatorInternal.getNamespaceService();
+            namespaceService = CoreServiceApiServiceLocator.getNamespaceService();
         }
         return namespaceService;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 package org.kuali.rice.kns.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import org.kuali.rice.krad.datadictionary.SortDefinition;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
@@ -159,7 +159,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
             throw new IllegalArgumentException("invalid (blank) menubar");
         }
         // TODO: catch exception if service locator call fails
-        ConfigurationService kualiConfigurationservice = KRADServiceLocator.getKualiConfigurationService();
+        ConfigurationService kualiConfigurationservice = CoreApiServiceLocator.getKualiConfigurationService();
         this.menubar = menubar.replace("${kr.externalizable.images.url}",
                 kualiConfigurationservice.getPropertyValueAsString(KRADConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}",
                 kualiConfigurationservice.getPropertyValueAsString(

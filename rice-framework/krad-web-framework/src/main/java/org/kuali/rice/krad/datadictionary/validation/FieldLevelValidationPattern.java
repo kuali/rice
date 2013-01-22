@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.regex.Pattern;
 
@@ -34,7 +34,7 @@ abstract public class FieldLevelValidationPattern extends ValidationPattern {
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
-        return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        return (String) CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 "validationPatternRegex." + getPatternTypeName());
     }
 

@@ -37,38 +37,29 @@
     <property name="initializeDataDictionary" value="true"/>
     <property name="dataDictionaryPackages">
       <list>
-        <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerInfo.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountInfo.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/TravelRequestDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/SampleAppAttributes.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSample.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSampleMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSample.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSampleMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAccountInquiry.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TestKNSInquiries.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAccountLookup.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAccountTypeLookup.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAccountMaintenance.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/Travel-testView1.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/Travel-testView2.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/FiscalOfficerView.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/FiscalOfficerLookup.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/TravelAlternateViews.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationView.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/TravelerDetailLookup.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/dataDictionary/TravelerDetail.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/dataDictionary/PrimaryDestination.xml</value>
-        <value>classpath:edu/sampleu/travel/approval/PrimaryDestinationLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficer.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerInfo.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficer-Extension.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerView.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccount.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountInfo.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountExtension.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountType.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountUseRate.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountInquiry.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountTypeLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountMaintenance.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAlternateViews.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelAuthorizationDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelAuthorizationView.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelerDetailLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/datadictionary/TravelerDetail.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/datadictionary/PrimaryDestination.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/PrimaryDestinationLookup.xml</value>
 
         <!-- KRAD sample app - component library -->
         <value>classpath:org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml</value>
@@ -104,9 +95,7 @@
     </property>
     <property name="resourceBundleNames">
       <list>
-        <value>edu.sampleu.travel.approval.TravelAuthorizationView</value>
-
-        <!-- KRAD sample app - component library -->
+        <value>org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationView</value>
         <value>org.kuali.rice.krad.demo.uif.components.resources.KradSampleAppResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.PropertiesDescription</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
@@ -147,7 +136,7 @@
   <bean id="fiscalOfficerInfoInquiryViewHelperService"
         class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerInfoInquiryViewHelperServiceImpl">
     <property name="dataDictionaryService">
-      <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+      <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
         <property name="serviceName" value="dataDictionaryService"/>
       </bean>
     </property>
@@ -158,13 +147,13 @@
         scope="prototype">
 
     <property name="dataDictionaryService">
-      <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+      <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
         <property name="serviceName" value="dataDictionaryService"/>
       </bean>
     </property>
   </bean>
 
-  <bean id="configurationService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+  <bean id="configurationService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="kualiConfigurationService"/>
   </bean>
 
@@ -173,14 +162,14 @@
         scope="prototype">
 
     <property name="dataDictionaryService">
-      <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+      <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
         <property name="serviceName" value="dataDictionaryService"/>
       </bean>
     </property>
   </bean>
 
   <bean id="rice.ksb.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="rice.ksb.serviceBus"/>
   </bean>
 

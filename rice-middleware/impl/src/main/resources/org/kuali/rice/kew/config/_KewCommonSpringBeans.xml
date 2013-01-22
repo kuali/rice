@@ -42,7 +42,7 @@
   </bean>
 
   <bean id="rice.kew.import.globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="globalCacheManager"/>
 
   <cache:annotation-driven cache-manager="rice.kew.import.globalCacheManager"/>
@@ -52,11 +52,11 @@
         p:cacheManager-ref="kewLocalCacheManager"/>
 
   <bean id="rice.kew.import.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="rice.ksb.serviceBus"/>
 
   <bean id="rice.kew.import.kualiModuleService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="kualiModuleService"/>
   </bean>
 

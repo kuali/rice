@@ -17,12 +17,12 @@ package org.kuali.rice.edl.impl.components;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.w3c.dom.Document;
@@ -30,7 +30,6 @@ import org.w3c.dom.Element;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 	
 	protected String constructRedirectUrl(Document dom, Element configElement, EDLContext edlContext) {
 		StringBuilder buf = new StringBuilder(30);
-		buf.append(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+		buf.append(CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.APPLICATION_URL_KEY));
 		buf.append("/kr/").append(KRADConstants.LOOKUP_ACTION);
 		
@@ -157,7 +156,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 
 	protected String constructReturnUrl(Document dom, Element configElement, EDLContext edlContext) {
 		StringBuilder baseUrl = new StringBuilder(30);
-		baseUrl.append(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+		baseUrl.append(CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 KRADConstants.APPLICATION_URL_KEY));
 		baseUrl.append("/kew/EDocLite");
 		

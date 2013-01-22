@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -36,7 +36,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +116,7 @@ public class UifControllerHelper {
         modelAndView.addObject(KRADConstants.USER_SESSION_KEY, request.getSession().getAttribute(
                 KRADConstants.USER_SESSION_KEY));
 
-        Map<String, String> properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
+        Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
         modelAndView.addObject(UifParameters.CONFIG_PROPERTIES, properties);
     }
 

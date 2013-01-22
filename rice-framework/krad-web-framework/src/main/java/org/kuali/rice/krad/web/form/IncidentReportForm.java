@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.krad.web.form;
 
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import java.io.PrintWriter;
@@ -76,8 +75,8 @@ public class IncidentReportForm extends UifFormBase {
      * @return the email subject
      */
     public String createEmailSubject() {
-        String app = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("application.id");
-        String env = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("environment");
+        String app = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString("application.id");
+        String env = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString("environment");
         String format = "%s:%s:%s:%s";
         String subject = String.format(format, app, env, (incidentViewId == null) ? "" : incidentViewId,
                 truncateString(exceptionMessage, 180));

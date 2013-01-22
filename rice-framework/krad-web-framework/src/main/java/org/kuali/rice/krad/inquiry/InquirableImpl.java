@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,7 +133,9 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
             if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass,
                     keyPropertyName)) {
                 try {
-                    keyPropertyValue = getEncryptionService().decrypt(keyPropertyValue);
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        keyPropertyValue = getEncryptionService().decrypt(keyPropertyValue);
+                    }
                 } catch (GeneralSecurityException e) {
                     LOG.error("Data object class "
                             + dataObjectClass

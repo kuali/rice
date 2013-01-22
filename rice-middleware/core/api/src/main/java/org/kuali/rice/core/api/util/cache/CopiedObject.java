@@ -22,12 +22,13 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
-
 /**
- * Container class to simplify getting both a deepCopied object and its size returned from a single call to deepCopy.
+ * Container class to simplify getting both a deepCopied object and its size returned
+ * from a single call to deepCopy
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CopiedObject<T extends Serializable> {
-    //private Serializable content;
     private byte[] content;
     private int size;
     private int oldSize;

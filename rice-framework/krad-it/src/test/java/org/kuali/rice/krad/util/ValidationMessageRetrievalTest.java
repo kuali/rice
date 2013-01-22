@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
-import org.kuali.test.KRADTestCase;
+import org.kuali.rice.krad.test.KRADTestCase;
 import org.springframework.util.AutoPopulatingList;
 
 import static org.junit.Assert.assertEquals;

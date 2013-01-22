@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -229,7 +229,9 @@ public class InquiryForm extends KualiForm {
                         inquiryPrimaryKeys.put(boKey, parameter);
                         if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, boKey)) {
                             try {
-                                inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameterCopy));
+                                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                                    inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameterCopy));
+                                }
                             } catch (GeneralSecurityException e) {
                                 LOG.error("BO class " + businessObjectClassName + " property " + boKey + " should have been encrypted, but there was a problem decrypting it.");
                                 throw e;

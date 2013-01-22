@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -87,26 +87,6 @@
     <property name="businessObjectService" ref="rice.kew.import.businessObjectService"/>
     <property name="kewTypeRepositoryService" ref="rice.kew.kewTypeRepositoryService"/>
     <property name="responsibilityIdService" ref="enResponsibilityIdService"/>
-  </bean>
-
-  <!--  RuleTemplateService -->
-  <bean id="enRuleTemplateService" class="org.kuali.rice.kew.rule.service.impl.RuleTemplateServiceImpl"
-        lazy-init="true">
-    <property name="ruleTemplateDAO">
-      <ref bean="enRuleTemplateDAO"/>
-    </property>
-    <property name="ruleTemplateAttributeDAO">
-      <ref bean="enRuleTemplateAttributeDAO"/>
-    </property>
-    <property name="ruleTemplateOptionDAO">
-      <ref bean="enRuleTemplateOptionDAO"/>
-    </property>
-    <property name="ruleDAO">
-      <ref bean="enRuleDAO"/>
-    </property>
-    <property name="ruleDelegationDAO">
-      <ref bean="enRuleDelegationDAO"/>
-    </property>
   </bean>
 
   <!--  RuleDelegationService -->

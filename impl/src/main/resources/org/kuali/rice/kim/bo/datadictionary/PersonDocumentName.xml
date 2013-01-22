@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,10 +18,11 @@
 -->
   <bean id="DocName" parent="DocName-parentBean"/>
 
-  <bean id="DocName-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentName" p:titleAttribute="nameCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocName-inquiryDefinition" p:lookupDefinition-ref="DocName-lookupDefinition">
+  <bean id="DocName-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentName" p:titleAttribute="nameCode" p:objectLabel="Person Name" p:inquiryDefinition-ref="DocName-inquiryDefinition" p:lookupDefinition-ref="DocName-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocName-firstName"/>
+        <ref bean="DocName-middleName"/>
         <ref bean="DocName-lastName"/>
         <ref bean="DocName-nameSuffix"/>
         <ref bean="DocName-namePrefix"/>
@@ -34,6 +35,18 @@
 
   <bean id="DocName-firstName" parent="DocName-firstName-parentBean"/>
   <bean id="DocName-firstName-parentBean" parent="AttributeDefinition" abstract="true" p:name="firstName" p:forceUppercase="true" p:label="First Name" p:shortLabel="First Name" p:maxLength="40" p:required="true">
+    <property name="validationPattern">
+
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="40" />
+
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+  </bean>
+
+  <bean id="DocName-middleName" parent="DocName-middleName-parentBean"/>
+  <bean id="DocName-middleName-parentBean" parent="AttributeDefinition" abstract="true" p:name="middleName" p:forceUppercase="true" p:label="Middle Name" p:shortLabel="Middle Name" p:maxLength="40" p:required="false">
     <property name="validationPattern">
 
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="40" />
@@ -110,7 +123,8 @@
               <bean parent="FieldDefinition" p:attributeName="nameCode"/>
               <bean parent="FieldDefinition" p:attributeName="namePrefix"/>
               <bean parent="FieldDefinition" p:attributeName="firstName"/>
-        	  <bean parent="FieldDefinition" p:attributeName="lastName"/>
+              <bean parent="FieldDefinition" p:attributeName="middleName"/>
+              <bean parent="FieldDefinition" p:attributeName="lastName"/>
               <bean parent="FieldDefinition" p:attributeName="nameSuffix"/>
             </list>
           </property>

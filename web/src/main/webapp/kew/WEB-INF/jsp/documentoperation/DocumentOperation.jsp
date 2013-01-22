@@ -1,6 +1,6 @@
 <%--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -52,9 +52,6 @@
 </div>
 
 <html-el:form action="/DocumentOperation.do">
-<html-el:hidden property="lookupInvocationModule" />
-<html-el:hidden property="lookupInvocationField" />
-<html-el:hidden property="lookupInvocationIndex" />
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>

@@ -1,6 +1,6 @@
 <#--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@
         <@krad.template component=element.upperGroup/>
 
         <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
-            <#local group=element.context['parent']/>
+
 
             ${headerOpenTag}
             <span class="uif-headerText-span">
@@ -46,7 +46,12 @@
                     ${element.headerText}
                 </#if>
             </span>
-            <@krad.template component=group.help/>
+
+            <#if element.context['parent']?has_content>
+                <#local group=element.context['parent']/>
+                <@krad.template component=group.help/>
+            </#if>
+
         ${headerCloseTag}
 
         <#-- right group -->

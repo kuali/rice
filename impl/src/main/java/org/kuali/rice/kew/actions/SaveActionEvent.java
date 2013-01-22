@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.actions;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -27,6 +28,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.krad.util.KRADConstants;
 
 
 import java.util.List;
@@ -66,8 +68,10 @@ public class SaveActionEvent extends ActionTakenEvent {
     		return "Document is not in a state to be saved";
     	}
     	// check state before checking kim
-    	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
-    		return "User is not authorized to Save document";
+        if (!StringUtils.equals(getPrincipal().getPrincipalName(), KRADConstants.SYSTEM_USER)) {
+    	    if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+    		    return "User is not authorized to Save document";
+            }
     	}
     	return "";
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,23 +18,49 @@
 -->
 <rules>
 
-  <!-- Rules for changes to packages
-      Uses regex to match.
-  -->
-  <rule name="maint_doc_moved_packages">
-    <!--<pattern>-->
-    <!--<match></match>-->
-    <!--<replacement></replacement>-->
-    <!--</pattern>-->
-  </rule>
-
   <!-- Rules for any changes to the fully qualified class name
         Uses regex to match.
   -->
   <rule name="maint_doc_classname_changes" alsoRenameClass="true">
     <pattern>
-      <match>org\.kuali\.rice\.kns\.bo\.CampusImpl</match>
+      <match>org.kuali.rice.kns.bo.CampusImpl</match>
       <replacement>org.kuali.rice.location.impl.campus.CampusBo</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kns.bo.Parameter</match>
+      <replacement>org.kuali.rice.coreservice.impl.parameter.ParameterBo</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kew.rule.RuleDelegation</match>
+      <replacement>org.kuali.rice.kew.rule.RuleDelegationBo</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kns.bo.CampusTypeImpl</match>
+      <replacement>org.kuali.rice.location.impl.campus.CampusTypeBo</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kns.bo.Namespace</match>
+      <replacement>org.kuali.rice.coreservice.impl.namespace.NamespaceBo</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kns.bo.ParameterDetailType</match>
+      <replacement>org.kuali.rice.coreservice.impl.component.ComponentBo</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kns.bo.CountryImpl</match>
+      <replacement>org.kuali.rice.location.impl.country.CountryBo</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kim.bo.impl.GenericPermission</match>
+      <replacement>org.kuali.rice.kim.impl.permission.GenericPermissionBo</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kns.bo.KualiCodeBase</match>
+      <replacement>org.kuali.rice.krad.bo.KualiCodeBase</replacement>
+    </pattern>
+    <pattern>
+      <match>org.kuali.rice.kim.bo.impl.PersonImpl</match>
+      <replacement>org.kuali.rice.kim.impl.identity.PersonImpl</replacement>
     </pattern>
   </rule>
 
@@ -59,27 +85,226 @@
       </pattern>
     </pattern>
     <pattern>
-      <class>*</class>
+      <class>org.kuali.rice.coreservice.impl.parameter.ParameterBo</class>
       <pattern>
-        <match>boNotes</match>
+        <match>parameterNamespaceCode</match>
+        <replacement>namespaceCode</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterDetailTypeCode</match>
+        <replacement>componentCode</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterName</match>
+        <replacement>name</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterApplicationNamespaceCode</match>
+        <replacement>applicationId</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterValue</match>
+        <replacement>value</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterDescription</match>
+        <replacement>description</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterConstraintCode</match>
+        <replacement>evaluationOperatorCode</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterWorkgroupName</match>
         <replacement></replacement>
       </pattern>
       <pattern>
-        <match>autoIncrementSet</match>
+        <match>parameterDetailType</match>
         <replacement></replacement>
+      </pattern>
+      <pattern>
+        <match>parameterNamespace</match>
+        <replacement>namespace</replacement>
       </pattern>
     </pattern>
-  </rule>
-
-  <!-- Rules specifying the Maintainable Impl class for a specific maintainable class
-       Uses XPath to match maintainable, can use wildcards
-  -->
-  <rule name="maint_doc_impl_classes">
     <pattern>
-      <maintainable>org.kuali.rice.location.impl.campus.CampusBo</maintainable>
-      <maintainableImpl>org.kuali.rice.location.web.campus.CampusMaintainableImpl</maintainableImpl>
+      <class>org.kuali.rice.kew.rule.RuleDelegationBo</class>
+      <pattern>
+        <match>delegationType</match>
+        <replacement>delegationTypeCode</replacement>
+      </pattern>
+      <pattern>
+        <match>delegationRuleBaseValues</match>
+        <replacement>delegationRule</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.kew.rule.RuleBaseValues</class>
+      <pattern>
+        <match>ruleBaseValuesId</match>
+        <replacement>id</replacement>
+      </pattern>
+      <pattern>
+        <match>previousVersionId</match>
+        <replacement>previousRuleId</replacement>
+      </pattern>
+      <pattern>
+        <match>activeInd</match>
+        <replacement>active</replacement>
+      </pattern>
+      <pattern>
+        <match>routeHeaderId</match>
+        <replacement>documentId</replacement>
+      </pattern>
+      <pattern>
+        <match>toDate</match>
+        <replacement>toDateValue</replacement>
+      </pattern>
+      <pattern>
+        <match>fromDate</match>
+        <replacement>fromDateValue</replacement>
+      </pattern>
+      <pattern>
+        <match>activeInd</match>
+        <replacement>active</replacement>
+      </pattern>
+      <pattern>
+        <match>activeInd</match>
+        <replacement>active</replacement>
+      </pattern>
+      <pattern>
+        <match>ignorePrevious</match>
+        <replacement>forceAction</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.kew.rule.bo.RuleTemplateBo</class>
+      <pattern>
+        <match>ruleTemplateId</match>
+        <replacement>id</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.location.impl.campus.CampusTypeBo</class>
+      <pattern>
+        <match>campusTypeCode</match>
+        <replacement>code</replacement>
+      </pattern>
+      <pattern>
+        <match>campusTypeName</match>
+        <replacement>name</replacement>
+      </pattern>
+      <pattern>
+        <match>dataObjectMaintenanceCodeActiveIndicator</match>
+        <replacement></replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.coreservice.impl.namespace.NamespaceBo</class>
+      <pattern>
+        <match>applicationNamespaceCode</match>
+        <replacement>applicationId</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.coreservice.impl.component.ComponentBo</class>
+      <pattern>
+        <match>parameterNamespaceCode</match>
+        <replacement>namespaceCode</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterDetailTypeCode</match>
+        <replacement>code</replacement>
+      </pattern>
+      <pattern>
+        <match>parameterDetailTypeName</match>
+        <replacement>name</replacement>
+      </pattern>
+      <pattern>
+        <match>virtualDetailType</match>
+        <replacement></replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.location.impl.country.CountryBo</class>
+      <pattern>
+        <match>postalCountryCode</match>
+        <replacement>code</replacement>
+      </pattern>
+      <pattern>
+        <match>alternatePostalCountryCode</match>
+        <replacement>alternateCode</replacement>
+      </pattern>
+      <pattern>
+        <match>postalCountryName</match>
+        <replacement>name</replacement>
+      </pattern>
+      <pattern>
+        <match>postalCountryRestrictedIndicator</match>
+        <replacement>restricted</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.kim.impl.permission.GenericPermissionBo</class>
+      <pattern>
+        <match>permissionId</match>
+        <replacement>id</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.kew.doctype.bo.DocumentType</class>
+      <pattern>
+        <match>routeHeaderId</match>
+        <replacement>documentId</replacement>
+      </pattern>
+      <pattern>
+        <match>actualServiceNamespace</match>
+        <replacement>actualApplicationId</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.kew.rule.PersonRuleResponsibility</class>
+      <pattern>
+        <match>ruleResponsibilityKey</match>
+        <replacement>id</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.kew.rule.GroupRuleResponsibility</class>
+      <pattern>
+        <match>ruleResponsibilityKey</match>
+        <replacement>id</replacement>
+      </pattern>
+    </pattern>
+    <pattern>
+      <class>org.kuali.rice.kew.rule.RoleRuleResponsibility</class>
+      <pattern>
+        <match>ruleResponsibilityKey</match>
+        <replacement>id</replacement>
+      </pattern>
     </pattern>
   </rule>
 
-
+  <!-- Rules for any changes Dates from the format YYYY-MM-DD to other format.  The
+       text in the replacement section will be added to the end of the date.
+       i.e 2010-05-09  will become 2010-05-09 00:00:00.0
+  -->
+  <rule name="maint_doc_date_changes">
+    <pattern>
+      <match>fromDateValue</match>
+      <replacement>00:00:00.0</replacement>
+    </pattern>
+    <pattern>
+      <match>toDateValue</match>
+      <replacement>00:00:00.0</replacement>
+    </pattern>
+    <pattern>
+      <match>activeFromDate</match>
+      <replacement>00:00:00 GMT-08:00</replacement>
+    </pattern>
+    <pattern>
+      <match>activeToDate</match>
+      <replacement>00:00:00 GMT-08:00</replacement>
+    </pattern>
+  </rule>
 </rules>

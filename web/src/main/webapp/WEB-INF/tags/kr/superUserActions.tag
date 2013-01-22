@@ -1,18 +1,20 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<c:if test="${KualiForm.superUserAuthorized && not empty KualiForm.actionRequests}">
+<%@ attribute name="showTab" required="false" description="used to decide if the tab should be open by default"%>
+<c:if test="${KualiForm.superUserAuthorized && KualiForm.superUserActionAvaliable}">
 <c:set var="tabTitle"><bean:message key="superuser.tab.label" /></c:set>
 <c:set var="actionLabel"><bean:message key="superuser.action.column.label" /></c:set>
 <c:set var="requestedLabel"><bean:message key="superuser.requested.column.label" /></c:set>
 <c:set var="timeLabel"><bean:message key="superuser.time.column.label" /></c:set>
 <c:set var="annotationLabel"><bean:message key="superuser.annotation.column.label" /></c:set>
-
-<kul:tab tabTitle="${tabTitle}"
-	     defaultOpen="true"
+<c:set var="tabOpenBydefault" value="true" />
+<c:if test="${not empty showTab}"><c:set var="tabOpenBydefault" value="${showTab}" /></c:if>
+  <kul:tab tabTitle="${tabTitle}"
+	     defaultOpen="${tabOpenBydefault}"
 	     tabErrorKey="superuser.errors"
 	     transparentBackground="${transparentBackground}">
 	<div class="tab-container" align=center id="G4">
-		<c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && KualiForm.stateAllowsApproveSingleActionRequest}">
-	    	<h3>${tabTitle}</h3>
+    <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && KualiForm.stateAllowsApproveSingleActionRequest && not empty KualiForm.actionRequestsRequiringApproval}">
+     	<h3>${tabTitle}</h3>
 	    <table cellpadding="0" cellspacing="0" class="datatable" summary="view/add notes">
 			<tbody>
 			<tr>
@@ -46,21 +48,24 @@
 		    </tbody>
         </table>
     </c:if>
-        <div style="vertical-align: top;">
-           	<label for="superUserAnnotation" style="vertical-align: top;">Annotation<span style="color: red; vertical-align: top;">*</span></label>
-           	<html:textarea property="superUserAnnotation" rows="5" cols="100" styleId="superUserAnnotation" />
-       	</div>
+    <br>
+    <c:if test="${KualiForm.superUserActionAvaliable}">
+    <div style="vertical-align: top;">
+      <label for="superUserAnnotation" style="vertical-align: top;">Annotation<span style="color: red; vertical-align: top;">*</span></label>
+      <html:textarea property="superUserAnnotation" rows="5" cols="100" styleId="superUserAnnotation" />
+    </div>
     <div>
-          <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && KualiForm.stateAllowsApproveSingleActionRequest}">
-            <html-el:image property="methodToCall.takeSuperUserActions" src="${ConfigProperties.kew.url}/images/buttonsmall_takeselected.gif" style="border-style:none;" align="absmiddle" />
-          </c:if>
-          <c:if test="${KualiForm.superUserApproveDocumentAuthorized && KualiForm.stateAllowsApproveOrDisapprove && not empty KualiForm.actionRequestsRequiringApproval}">
-            <html-el:image property="methodToCall.superUserApprove" src="${ConfigProperties.kew.url}/images/buttonsmall_approvedoc.gif" style="border-style:none;" align="absmiddle" />
-          </c:if>
-          <c:if test="${KualiForm.superUserDisapproveDocumentAuthorized && KualiForm.stateAllowsApproveOrDisapprove && not empty KualiForm.actionRequestsRequiringApproval}">
-            <html-el:image property="methodToCall.superUserDisapprove" src="${ConfigProperties.kew.url}/images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />
-          </c:if>
-        </div>
-	</div>
-</kul:tab>
+      <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && KualiForm.stateAllowsApproveSingleActionRequest && not empty KualiForm.actionRequestsRequiringApproval}">
+        <html-el:image property="methodToCall.takeSuperUserActions" src="${ConfigProperties.kew.url}/images/buttonsmall_takeselected.gif" style="border-style:none;" align="absmiddle" />
+      </c:if>
+      <c:if test="${KualiForm.superUserApproveDocumentAuthorized && KualiForm.stateAllowsApproveOrDisapprove}">
+        <html-el:image property="methodToCall.superUserApprove" src="${ConfigProperties.kew.url}/images/buttonsmall_approvedoc.gif" style="border-style:none;" align="absmiddle" />
+      </c:if>
+      <c:if test="${KualiForm.superUserDisapproveDocumentAuthorized && KualiForm.stateAllowsApproveOrDisapprove}">
+        <html-el:image property="methodToCall.superUserDisapprove" src="${ConfigProperties.kew.url}/images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />
+      </c:if>
+    </div>
+    </c:if>
+  </div>
+  </kul:tab>
 </c:if>

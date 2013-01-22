@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -316,6 +316,35 @@ public interface IdentityService {
     @WebResult(name = "ret")
     List<Principal> getPrincipals( @WebParam(name="principalIds") List<String> principalIds)  ;
 
+    /**
+     * Gets a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} from an entityId.
+     *
+     * <p>
+     *   This method will only return principals that exist.
+     * </p>
+     *
+     * @param entityId the unique id to retrieve the principals by. cannot be null.
+     * @return a list of {@link org.kuali.rice.kim.api.identity.principal.Principal}
+     * @throws RiceIllegalArgumentException if the entityId is blank
+     */
+    @WebMethod(operationName = "getPrincipalsByEntityId")
+    @WebResult(name = "principals")
+    List<Principal> getPrincipalsByEntityId( @WebParam(name="entityId") String entityId)  ;
+
+    /**
+     * Gets a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} from an employeeId
+     *
+     * <p>
+     *   This method will only return principals that exist.
+     * </p>
+     *
+     * @param employeeId the employee id to retrieve the principals by. cannot be null.
+     * @return a list of {@link org.kuali.rice.kim.api.identity.principal.Principal}
+     * @throws RiceIllegalArgumentException if the employeeId is blank
+     */
+    @WebMethod(operationName = "getPrincipalsByEmployeeId")
+    @WebResult(name = "principals")
+    List<Principal> getPrincipalsByEmployeeId( @WebParam(name="employeeId") String employeeId)  ;
 
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.principal.Principal} from an principalName.

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -416,6 +416,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             if (this.isShowPageTotal()) {
                 view.assignComponentIds(pageTotalLabel);
+                pageTotalLabel.addDataAttribute("role", "pageTotal");
                 groupItems.add(pageTotalLabel);
             }
 
@@ -897,13 +898,19 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         // If Overflow is greater than 0 then calculate the col span for the last item in the overflowed row
-        if(items.size() % getNumberOfDataColumns() > 0){
+        if (items.size() % getNumberOfDataColumns() > 0) {
             //get the last line item
-            Field field = items.get(items.size()-1);
-            field.setColSpan(1+(numberOfDataColumns-(items.size()%numberOfDataColumns)));
-            rowCount = ((items.size()/getNumberOfDataColumns())+1);
-        } else{
-            rowCount = items.size()/getNumberOfDataColumns();
+            Field field = items.get(items.size() - 1);
+
+            int colSize = 0;
+            for (Field f : items) {
+                colSize += f.getColSpan();
+            }
+
+            field.setColSpan(1 + (numberOfDataColumns - (colSize % numberOfDataColumns)));
+            rowCount = ((items.size() / getNumberOfDataColumns()) + 1);
+        } else {
+            rowCount = items.size() / getNumberOfDataColumns();
         }
         return rowCount;
     }
@@ -1788,7 +1795,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Get the groupingPrefix.  The groupingPrefix is used to prefix the generated title (not used when
      * groupingTitle is set directly) when using groupingPropertyNames.
      *
-     * @return
+     * @return String
      */
     @BeanTagAttribute(name = "groupingPrefix")
     public String getGroupingPrefix() {

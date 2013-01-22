@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 -->
   <bean id="GenericPermissionBo" parent="GenericPermissionBo-parentBean"/>
 
-  <bean id="GenericPermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.GenericPermissionBo" p:titleAttribute="id" p:objectLabel="Permission" p:inquiryDefinition-ref="GenericPermissionBo-inquiryDefinition" p:lookupDefinition-ref="GenericPermissionBo-lookupDefinition">
+  <bean id="GenericPermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.GenericPermissionBo" p:titleAttribute="id" p:objectLabel="Generic Permission" p:inquiryDefinition-ref="GenericPermissionBo-inquiryDefinition" p:lookupDefinition-ref="GenericPermissionBo-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="GenericPermissionBo-id"/>
@@ -108,6 +108,9 @@
   
   <bean id="GenericPermissionBo-name" parent="GenericPermissionBo-name-parentBean"/>
   <bean id="GenericPermissionBo-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="40"/>
+    </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>

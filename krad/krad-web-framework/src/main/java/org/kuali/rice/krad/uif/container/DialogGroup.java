@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
@@ -86,6 +87,37 @@ public class DialogGroup extends Group {
     }
 
     /**
+     * Process rich message content that may be in the options, by creating and initializing the richOptions
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        // set the messageTest to the promptText
+        prompt.setMessageText(promptText);
+
+        // hide or show explanation
+        explanation.setRender(displayExplanation);
+
+        // add options to checkbox
+        if (responseInputField.getControl() != null && responseInputField.getControl() instanceof MultiValueControl) {
+            MultiValueControl multiValueControl = (MultiValueControl) responseInputField.getControl();
+
+            if (reverseButtonOrder) {
+                // reverse the button order (without changing original list)
+                List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
+                Collections.reverse(buttonList);
+                multiValueControl.setOptions(buttonList);
+            } else {
+                multiValueControl.setOptions(availableResponses);
+            }
+        }
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
     @Override
@@ -103,7 +135,8 @@ public class DialogGroup extends Group {
      * The following actions are performed:
      *
      * <ul>
-     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection</li>
+     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection if they
+     * are not already present</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
@@ -113,28 +146,27 @@ public class DialogGroup extends Group {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-            // move dialogGroup custom properties into the items property.
-            // where they will be rendered by group.jsp
-            List<Component> myItems = new ArrayList<Component>();
-            List<? extends Component> items = getItems();
+        // move dialogGroup custom properties into the items property.
+        // where they will be rendered by group.jsp
+        List<Component> newItems = new ArrayList<Component>();
+        List<? extends Component> items = getItems();
 
-            // do not add the custom properties if they are already present
-            if(!(items.contains(prompt))){
-                myItems.add(prompt);
-            }
+        // do not add the custom properties if they are already present
+        if (!(items.contains(prompt))) {
+            newItems.add(prompt);
+        }
 
-            if(!(items.contains(explanation))){
-                myItems.add(explanation);
-            }
+        if (!(items.contains(explanation))) {
+            newItems.add(explanation);
+        }
 
-            myItems.addAll(getItems());
+        newItems.addAll(getItems());
 
-            if(!(items.contains(responseInputField))){
-                myItems.add(responseInputField);
-            }
+        if (!(items.contains(responseInputField))) {
+            newItems.add(responseInputField);
+        }
 
-            this.setItems(myItems);
-
+        this.setItems(newItems);
     }
 
     /**
@@ -163,24 +195,6 @@ public class DialogGroup extends Group {
             setProgressiveRenderViaAJAX(useAjaxCallForContent);
             setProgressiveRender("");
             setRender(false);
-        }
-        // set the messageTest to the promptText
-        prompt.setMessageText(promptText);
-
-        // hide or show explanation
-        explanation.setRender(displayExplanation);
-
-        // add options to checkbox
-        if (responseInputField.getControl() != null && responseInputField.getControl() instanceof MultiValueControl) {
-            MultiValueControl multiValueControl = (MultiValueControl) responseInputField.getControl();
-            if (reverseButtonOrder) {
-                // reverse the button order (without changing original list)
-                List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
-                Collections.reverse(buttonList);
-                multiValueControl.setOptions(buttonList);
-            } else {
-                multiValueControl.setOptions(availableResponses);
-            }
         }
     }
 
@@ -350,7 +364,7 @@ public class DialogGroup extends Group {
     }
 
     /**
-     * indicates which approach is used to fill the lightbox content for this dialog.
+     * Indicates which approach is used to fill the lightbox content for this dialog.
      *
      * <p>
      * Two techniques are used for filling the content of the lightbox when displaying this dialog.
@@ -361,7 +375,7 @@ public class DialogGroup extends Group {
      * The default approach is to use a hidden form.
      * </p>
      *
-     * @return
+     * @return boolean
      */
     @BeanTagAttribute(name = "useAjaxCallForContent")
     public boolean isUseAjaxCallForContent() {

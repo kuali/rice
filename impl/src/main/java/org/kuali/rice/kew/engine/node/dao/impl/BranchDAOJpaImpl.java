@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class BranchDAOJpaImpl implements BranchDAO {
 	
 	 protected void deleteBranchStatesById(Long stateId){
 	    	Criteria criteria = new Criteria("BranchState", "branchState");
-	    	criteria.eq("branchStateId", stateId);	        	        
+	    	criteria.eq("stateId", stateId);
 	        BranchState branchState = (BranchState)new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
 	        entityManager.remove(branchState);
 	    }

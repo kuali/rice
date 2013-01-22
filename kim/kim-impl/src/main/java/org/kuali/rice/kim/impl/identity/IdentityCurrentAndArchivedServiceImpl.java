@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,17 +112,19 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     	EntityNamePrincipalName name = getInnerIdentityService().getDefaultNamesForPrincipalId(principalId);
     	if(name == null || ObjectUtils.isNull(name.getDefaultName()) || StringUtils.isBlank(name.getPrincipalName()) || StringUtils.isBlank(name.getDefaultName().getCompositeName())) {
     		EntityDefault defaultEntity = this.getEntityDefaultByPrincipalId(principalId);
-			EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();
-			for(Principal principal : defaultEntity.getPrincipals()) {
-				nameBuilder.setPrincipalName(principal.getPrincipalName());
-			}
-			nameBuilder.setDefaultName(EntityName.Builder.create(defaultEntity.getName()));
-			if (StringUtils.isBlank(defaultEntity.getName().getCompositeName())) {
-				String formattedName = defaultEntity.getName().getLastName() + ", " + defaultEntity.getName().getFirstName() + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName());
-				nameBuilder.getDefaultName().setCompositeName(formattedName);
-			}
-			return nameBuilder.build();
-    	}
+            if (defaultEntity != null) {
+                EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();
+                for(Principal principal : defaultEntity.getPrincipals()) {
+                    nameBuilder.setPrincipalName(principal.getPrincipalName());
+                }
+                nameBuilder.setDefaultName(EntityName.Builder.create(defaultEntity.getName()));
+                if (StringUtils.isBlank(defaultEntity.getName().getCompositeName())) {
+                    String formattedName = (defaultEntity.getName().getLastName() + ", " + defaultEntity.getName().getFirstName() + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName())).trim();
+                    nameBuilder.getDefaultName().setCompositeName(formattedName);
+                }
+                return nameBuilder.build();
+            }
+        }
 		return name;
 	}
 
@@ -427,8 +429,18 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 
     @Override
 	public Principal getPrincipal(String principalId) {
-		return getInnerIdentityService().getPrincipal(principalId);
-	}
+        Principal principal = getInnerIdentityService().getPrincipal(principalId);
+        if ( principal == null ) {
+            EntityDefault entity = getEntityDefaultByPrincipalId(principalId);
+            if ( entity != null ) {
+                List<Principal> principals = entity.getPrincipals();
+                if ( principals != null && !principals.isEmpty() ) {
+                    principal = principals.get(0);
+                }
+            }
+        }
+        return principal;
+    }
 
     /**
      * Gets a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} from a string list of principalId.
@@ -460,8 +472,42 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 
     @Override
 	public Principal getPrincipalByPrincipalName(String principalName) {
-		return getInnerIdentityService().getPrincipalByPrincipalName(principalName);
+        Principal principal = getInnerIdentityService().getPrincipalByPrincipalName(principalName);
+        if ( principal == null ) {
+            EntityDefault entity = getEntityDefaultByPrincipalName(principalName);
+            if ( entity != null ) {
+                List<Principal> principals = entity.getPrincipals();
+                if ( principals != null && !principals.isEmpty() ) {
+                    principal = principals.get(0);
+                }
+            }
+        }
+        return principal;
 	}
+
+    @Override
+    public List<Principal> getPrincipalsByEntityId(String entityId) {
+        List<Principal> principals = getInnerIdentityService().getPrincipalsByEntityId(entityId);
+        if ( principals == null ) {
+            EntityDefault entity = getIdentityArchiveService().getEntityDefaultFromArchive(entityId);
+            if (entity != null && entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+                principals = entity.getPrincipals();
+            }
+        }
+        return principals;
+    }
+
+    @Override
+    public List<Principal> getPrincipalsByEmployeeId(String employeeId) {
+        List<Principal> principals = getInnerIdentityService().getPrincipalsByEmployeeId(employeeId);
+        if ( principals == null ) {
+            EntityDefault entity = getIdentityArchiveService().getEntityDefaultFromArchive(employeeId);
+            if (entity != null && entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+                principals = entity.getPrincipals();
+            }
+        }
+        return principals;
+    }
 
     @Override
 	public Principal getPrincipalByPrincipalNameAndPassword(

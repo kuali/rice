@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,21 +88,19 @@ public class Image extends ContentElementBase {
     }
 
     /**
-     * Performs the final lifecycle phase for this element.
-     *
-     * <p>
      * Performs the following steps
+     *
      * <ul>
      * <li>Set the caption header text on the caption header</li>
      * <li>Set the cutline text on the cutline message</li>
      * </ul>
-     * </p>
      *
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     * org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
 
         if (StringUtils.isNotBlank(captionHeaderText)) {
             captionHeader.setHeaderText(captionHeaderText);

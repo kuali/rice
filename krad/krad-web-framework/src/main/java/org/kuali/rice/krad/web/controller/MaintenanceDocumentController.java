@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             createDocument(form);
         } else {
             LOG.error("docHandler called with invalid parameters");
-            throw new IllegalStateException("docHandler called with invalid parameters");
+            throw new IllegalArgumentException("docHandler called with invalid parameters");
         }
         // * end copy/paste from the base
 
@@ -125,7 +125,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             setupMaintenance(form, request, KRADConstants.MAINTENANCE_NEW_ACTION);
         } else {
             LOG.error("We should never have gotten to here");
-            throw new IllegalStateException("docHandler called with invalid parameters");
+            throw new IllegalArgumentException("docHandler called with invalid parameters");
         }
 
         return getUIFModelAndView(form);

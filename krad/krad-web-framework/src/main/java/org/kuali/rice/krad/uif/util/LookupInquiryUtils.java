@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,8 +72,10 @@ public class LookupInquiryUtils {
 				&& KRADServiceLocatorWeb.getDataObjectAuthorizationService()
 						.attributeValueNeedsToBeEncryptedOnFormsAndLinks(lookupObjectClass, propertyName)) {
 			try {
-				parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
-						+ EncryptionService.ENCRYPTION_POST_PREFIX;
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+				    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
+					    	+ EncryptionService.ENCRYPTION_POST_PREFIX;
+                }
 			}
 			catch (GeneralSecurityException e) {
 				LOG.error("Unable to encrypt value for property name: " + propertyName);

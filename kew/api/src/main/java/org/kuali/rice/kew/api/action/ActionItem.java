@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,7 @@
  */
 package org.kuali.rice.kew.api.action;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
@@ -33,6 +24,17 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.w3c.dom.Element;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 
 @XmlRootElement(name = ActionItem.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -551,6 +553,15 @@ public final class ActionItem
 
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return equalsExcludeFields(obj, Constants.excludeFields);
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCodeExcludeFields(Constants.excludeFields);
+    }
 
     /**
      * Defines some internal constants used on this class.
@@ -561,6 +572,17 @@ public final class ActionItem
         final static String ROOT_ELEMENT_NAME = "actionItem";
         final static String TYPE_NAME = "ActionItemType";
 
+
+        final static Collection<String> excludeFields;
+
+        static {
+            excludeFields = Collections.unmodifiableCollection( (Collection<String>)
+                    CollectionUtils.union(
+                            Collections.singletonList("dateTimeAssigned"),
+                            getDefaultHashCodeEqualsExcludeFields()
+                    )
+            );
+        }
     }
 
 

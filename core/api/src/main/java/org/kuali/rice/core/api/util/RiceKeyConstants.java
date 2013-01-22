@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,10 @@ public final class RiceKeyConstants {
     public static final String ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE = "error.adhoc.invalid.workgroupNamespaceCode";
     public static final String ERROR_UNAUTHORIZED_ADHOC_WORKGROUP_ID = "error.adhoc.unauthorized.workgroup";
     public static final String MESSAGE_ADHOC_ANNOTATION = "message.adhoc.annotation";
+    
+    //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
+    public static final String ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE_MISSING="error.adhoc.invalid.workgroup.namespace.missing";
+    public static final String ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE= "error.adhoc.invalid.workgroup.namespace";
 
     public static final String ERROR_SECURE_FIELD = "error.secureField";
     public static final String ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT = "error.send.note.notification.recipient";
@@ -126,6 +130,7 @@ public final class RiceKeyConstants {
 
     public static final String WARNING_MAINTENANCE_LOCKED = "warning.maintenance.locked";
     public static final String ERROR_VERSION_MISMATCH = "error.version.mismatch";
+    public static final String UNABLE_TO_GET_DATA_FROM_XML = "unable.to.get.data.from.xml";
 
     public static final String MESSAGE_CANCELLED = "message.cancelled";
     public static final String MESSAGE_RELOADED = "message.document.reloaded";
@@ -174,6 +179,7 @@ public final class RiceKeyConstants {
     public static final String ERROR_EXIST_PRINCIPAL_NAME = "error.exist.principalName";
     public static final String ERROR_ASSIGN_ROLE = "error.assign.role";
     public static final String ERROR_ASSIGN_GROUP = "error.assign.group";
+    public static final String ERROR_ASSIGN_GROUP_INVALID = "error.assign.group.invalid";
     public static final String ERROR_ASSIGN_PERMISSION = "error.assign.perimssion";
     public static final String ERROR_ASSIGN_RESPONSIBILITY = "error.assign.responsibility";
     public static final String ERROR_POPULATE_GROUP = "error.populate.group";

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class ContextBusRule extends MaintenanceDocumentRuleBase {
         if (isEditAction) {
             ContextDefinition contextInDatabase = getContextBoService().getContextByNameAndNamespace(newContext.getName(), newContext
                     .getNamespace());
-            if (!contextInDatabase.getId().equals(newContext.getId())) { // if ID is the same, it's not a duplicate
+            if ((contextInDatabase != null) && !contextInDatabase.getId().equals(newContext.getId())) { // if ID is the same, it's not a duplicate
                 this.putFieldError(KRMSPropertyConstants.Context.NAME, "error.context.duplicateNameNamespace");
                 return false;
             }

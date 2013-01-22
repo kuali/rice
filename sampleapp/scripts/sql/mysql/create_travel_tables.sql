@@ -1,5 +1,5 @@
 --
--- Copyright 2005-2012 The Kuali Foundation
+-- Copyright 2005-2013 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -276,22 +276,10 @@ CREATE  TABLE IF NOT EXISTS TRVL_EXP_T
 CREATE TABLE IF NOT EXISTS TRVL_PER_DIEM_T
     (
        ID                BIGINT(19) NOT NULL,
-       TRIP_TYP_CD       VARCHAR(3) NOT NULL,
+       TRIP_TYP_CD       VARCHAR(45) NULL,
        COUNTRY           VARCHAR(100) NULL,
        COUNTRY_NM        VARCHAR(100) NULL,
-       COUNTY_CD         VARCHAR(100) NULL,
        PRI_DEST          VARCHAR(100) NULL,
-       SSN_BGN_DT        DATE NULL,
-       EFFECT_FROM_DT    DATE NULL,
-       EFFECT_TO_DT      DATE DEFAULT NULL NULL,
-       LOAD_DT           DATE DEFAULT NULL NULL,
-       SSN_BGN_MONTH_DAY VARCHAR(5) DEFAULT NULL NULL,
-       BKFST             BIGINT(19) NULL,
-       LUNCH             BIGINT(19) NULL,
-       DIN               BIGINT(19) NULL,
-       LODGING           DECIMAL(19, 2) DEFAULT 0 NULL,
-       INC               DECIMAL(19, 2) DEFAULT 0 NULL,
-       MEALS_INC         DECIMAL(19, 2) DEFAULT 0 NULL,
        ACTV_IND          VARCHAR(1) NOT NULL,
        VER_NBR           DECIMAL(8, 0) DEFAULT 1 NOT NULL,
        OBJ_ID            VARCHAR(36) NOT NULL,
@@ -417,6 +405,10 @@ CREATE TABLE IF NOT EXISTS TRVL_AUTH_DOC_T
      PRIMARY_DEST_CNTRY_ST   VARCHAR(100) NULL,
      PRIMARY_DEST_CNTY       VARCHAR(100) NULL,
      EXP_LMT                 DECIMAL(19, 2) DEFAULT 0 NULL,
+     SPEC_CIRC_TA_WHY        VARCHAR(1) DEFAULT '0',
+     SPEC_CIRC_TA            VARCHAR(255) NULL,
+     SPEC_CIRC_TA_DOC_WHY    VARCHAR(1) DEFAULT '0',
+     SPEC_CIRC_TA_DOC        VARCHAR(255) NULL,
      MEAL_WITHOUT_LODGING    VARCHAR(255) NULL,
      TRIP_DESC               VARCHAR(255) NULL,
      DELINQUENT_TR_EXCEPTION VARCHAR(1) NULL,
@@ -426,6 +418,7 @@ CREATE TABLE IF NOT EXISTS TRVL_AUTH_DOC_T
      CELL_PH_NUM             VARCHAR(20) NULL,
      RGN_FAMIL               VARCHAR(255) NULL,
      CTZN_CNTRY_CD           VARCHAR(255) NULL,
+     TRPT_MODE_CD            VARCHAR(20) NULL,
      FDOC_NXT_EXP_NBR        DECIMAL(7, 0) NULL,
      VER_NBR                 DECIMAL(8, 0) DEFAULT 1 NOT NULL,
      OBJ_ID                  VARCHAR(36) NOT NULL,
@@ -443,16 +436,11 @@ CREATE TABLE IF NOT EXISTS TRVL_PER_DIEM_ID_SEQ
 ALTER TABLE TRVL_PER_DIEM_ID_SEQ auto_increment = 1000
 /
 
-
-
 CREATE TABLE IF NOT EXISTS TRVL_ID_SEQ
 (
 	id bigint(19) not null auto_increment, primary key (id)
 ) ENGINE MyISAM
 /
-
-
-
 
 
 

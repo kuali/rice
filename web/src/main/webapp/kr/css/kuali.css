@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,11 +118,13 @@ input
 	padding-left: 20px;
 }
 
+/* KULRICE-8076: Error message runs over in margin */
 .left-errmsg-tab
 {
 	text-align: left;
 	padding-left: 20px;
-	width: 100%;
+	padding-right: 20px;
+	width: auto;
 }
 
 .left

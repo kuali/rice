@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.question.Question;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
-
+import org.kuali.rice.krad.util.GlobalVariables;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
@@ -47,20 +47,20 @@ public class QuestionPromptForm extends KualiForm {
     private String docNum;
 
     /**
-	 * @return the docNum
-	 */
-	public String getDocNum() {
-		return this.docNum;
-	}
+     * @return the docNum
+     */
+    public String getDocNum() {
+        return this.docNum;
+    }
 
-	/**
-	 * @param docNum the docNum to set
-	 */
-	public void setDocNum(String docNum) {
-		this.docNum = docNum;
-	}
+    /**
+     * @param docNum the docNum to set
+     */
+    public void setDocNum(String docNum) {
+        this.docNum = docNum;
+    }
 
-	/**
+    /**
      * @return boolean
      */
     public String getShowReasonField() {
@@ -153,8 +153,16 @@ public class QuestionPromptForm extends KualiForm {
             if (kualiQuestion == null) {
                 throw new RuntimeException("question implementation not found: " + request.getParameter(KRADConstants.QUESTION_IMPL_ATTRIBUTE_NAME));
             }
-
-
+           
+            // KULRICE-8077: PO Quote Limitation of Only 9 Vendors
+            String questionId = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
+            String questionTextAttributeName = KRADConstants.QUESTION_TEXT_ATTRIBUTE_NAME + questionId;
+            
+            if (GlobalVariables.getUserSession().retrieveObject(questionTextAttributeName)!=null) {
+                this.setQuestionText((String)GlobalVariables.getUserSession().retrieveObject(questionTextAttributeName));
+                GlobalVariables.getUserSession().removeObject(questionTextAttributeName);
+            }
+           
             // some questions types default these so we should default if not
             // present in request
             if (questionText == null) {

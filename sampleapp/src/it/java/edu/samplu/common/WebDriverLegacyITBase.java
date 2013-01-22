@@ -170,6 +170,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
     }
     
+    protected void assertElementPresentByLinkText(String linkText) {
+        driver.findElement(By.linkText(linkText));
+    }
+    
     protected void assertElementPresent(String locator) {
         driver.findElement(By.cssSelector(locator));
     }
@@ -326,6 +330,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected boolean isElementPresentByXpath(String locator) {
         return isElementPresent(By.xpath(locator));
+    }
+    
+    protected boolean isElementPresentByLinkText(String locator) {
+        return isElementPresent(By.linkText(locator));
     }
     
     protected void open(String url) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -53,6 +53,26 @@
   </bean>
 
   <bean id="enRuleAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleTemplateDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleTemplateAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateAttributeDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleTemplateOptionDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateOptionDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
+  <bean id="enRuleDelegationDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOOjbImpl" lazy-init="true">
     <property name="jcdAlias" value="kewDataSource" />
   </bean>
 

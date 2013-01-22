@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,6 +80,8 @@ public class Inquiry extends WidgetBase {
     private boolean adjustInquiryParameters;
     private BindingInfo fieldBindingInfo;
 
+    private boolean parentIsReadOnly;
+
     public Inquiry() {
         super();
 
@@ -101,8 +103,11 @@ public class Inquiry extends WidgetBase {
         // set render to false until we find an inquiry class
         setRender(false);
 
+        // used to determine whether a normal or direct inquiry should be enabled
+        parentIsReadOnly = parent.isReadOnly();
+
         // Do checks for inquiry when read only
-        if (isReadOnly()) {
+        if (parentIsReadOnly) {
             if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath())) {
                 return;
             }
@@ -116,7 +121,7 @@ public class Inquiry extends WidgetBase {
         }
 
         // Do checks for direct inquiry when editable
-        if (!isReadOnly() && parent instanceof InputField) {
+        if (!parentIsReadOnly && parent instanceof InputField) {
             if (!enableDirectInquiry) {
                 return;
             }
@@ -215,7 +220,7 @@ public class Inquiry extends WidgetBase {
         }
 
         // configure inquiry when read only
-        if (isReadOnly()) {
+        if (parentIsReadOnly) {
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
                 String parameterName = inquiryParameter.getKey();
 
@@ -272,9 +277,8 @@ public class Inquiry extends WidgetBase {
 
             setRender(true);
         }
-
         // configure direct inquiry when editable
-        if (!isReadOnly()) {
+        else {
             // Direct inquiry
             String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
 

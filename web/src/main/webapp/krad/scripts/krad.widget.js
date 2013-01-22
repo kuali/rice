@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /** Navigation */
 
 /**
@@ -868,9 +867,41 @@ function createTree(divId, options) {
     });
 }
 
+function createAccordion(id, options, active){
+    if(active == false){
+        active = "false";
+    }
+
+    options = options || {};
+    options = jQuery.extend({
+        active: active,
+        heightStyle: "content",
+        collapsible: true
+    }, options);
+
+    jQuery("#" + id + " > ul").accordion(options);
+    //jQuery("#id > ul").accordion("option", "active", active);
+}
+
 // Creates tabs for the tabs div id specified, this div is created by tabGroup
-function createTabs(id, options) {
-    jQuery("#" + id + "_tabs").tabs(options);
+function createTabs(id, options, position) {
+    var tabs = jQuery("#" + id + "_tabs").tabs(options);
+
+    if(position == "BOTTOM"){
+        tabs.addClass( "ui-tabs-bottom" );
+        jQuery( ".ui-tabs-bottom .ui-tabs-nav, .ui-tabs-bottom .ui-tabs-nav > *" )
+                    .removeClass( "ui-corner-all ui-corner-top" )
+                    .addClass( "ui-corner-bottom" );
+        jQuery( ".ui-tabs-bottom .ui-tabs-nav" ).appendTo( ".ui-tabs-bottom" );
+    }
+    else if(position == "RIGHT"){
+        tabs.addClass('ui-tabs-vertical ui-tabs-vertical-right ui-helper-clearfix');
+        tabs.find("li").removeClass('ui-corner-top').addClass('ui-corner-right');
+    }
+    else if(position == "LEFT"){
+        tabs.addClass( "ui-tabs-vertical ui-tabs-vertical-left ui-helper-clearfix" );
+        tabs.find("li").removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+    }
 }
 
 /**
@@ -948,7 +979,7 @@ function createReorderer(divId, options) {
  * @param options - options for the spinner
  */
 function createSpinner(id, options) {
-    jQuery("#" + id).spinit(options);
+    jQuery("#" + id).spinner(options);
 }
 
 /**
@@ -1184,9 +1215,8 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
         queryData['queryParameter.' + queryParameters[parameter]] = coerceValue(parameter);
     }
 
-    for (var i = 0; i < queryMethodArgs.length; i++) {
-        var parameter = queryMethodArgs[i];
-        queryData['queryParameter.' + parameter] = coerceValue(parameter);
+    for (var parameter in queryMethodArgs) {
+        queryData['queryParameter.' + queryMethodArgs[parameter]] = coerceValue(parameter);
     }
 
     jQuery.ajax({

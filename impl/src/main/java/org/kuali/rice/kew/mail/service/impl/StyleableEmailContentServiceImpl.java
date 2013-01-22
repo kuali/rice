@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -349,79 +349,79 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
      */
     @Override
 	public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
-    	
-    	LOG.info("Starting generation of immediate email reminder...");
-    	LOG.info("Action Id: " + actionItem.getId() +
+        if (user != null) {
+            LOG.info("Starting generation of immediate email reminder...");
+       	    LOG.info("Action Id: " + actionItem.getId() +
     			 ";  ActionRequestId: " + actionItem.getActionRequestId() + 
     			 ";  Action Item Principal Id: " + actionItem.getPrincipalId());
-    	LOG.info("User Principal Id: " + user.getPrincipalId());
-        // change style name based on documentType when configurable email style on document is implemented...
-        String styleSheet = documentType.getCustomEmailStylesheet();
-        LOG.debug(documentType.getName() + " style: " + styleSheet);
-        if (styleSheet == null) {
-            styleSheet = globalEmailStyleSheet;
-        }
-
-        LOG.info("generateImmediateReminder using style sheet: "+ styleSheet + " for Document Type " + documentType.getName());
-//        return generateReminderForActionItems(user, actionItems, "immediateReminder", styleSheet);
-        DocumentBuilder db = getDocumentBuilder(false);
-        Document doc = db.newDocument();
-        Element element = doc.createElement("immediateReminder");
-        setStandardAttributes(element);
-        doc.appendChild(element);
-
-        try {
-            addObjectXML(doc, user, element, "user");
-//            addActionItem(doc, actionItem, user, node);
-            Node node = element;
-            if (node == null) {
-                node = doc;
+            LOG.info("User Principal Id: " + user.getPrincipalId());
+            // change style name based on documentType when configurable email style on document is implemented...
+            String styleSheet = documentType.getCustomEmailStylesheet();
+            LOG.debug(documentType.getName() + " style: " + styleSheet);
+            if (styleSheet == null) {
+                styleSheet = globalEmailStyleSheet;
             }
 
-            Element root = doc.createElement("actionItem");
-            // append the custom body and subject if they exist
+            LOG.info("generateImmediateReminder using style sheet: "+ styleSheet + " for Document Type " + documentType.getName());
+            // return generateReminderForActionItems(user, actionItems, "immediateReminder", styleSheet);
+            DocumentBuilder db = getDocumentBuilder(false);
+            Document doc = db.newDocument();
+            Element element = doc.createElement("immediateReminder");
+            setStandardAttributes(element);
+            doc.appendChild(element);
+
             try {
-                CustomEmailAttribute customEmailAttribute = getCustomEmailAttribute(user, actionItem);
-                if (customEmailAttribute != null) {
-                    String customBody = customEmailAttribute.getCustomEmailBody();
-                    if (!org.apache.commons.lang.StringUtils.isEmpty(customBody)) {
-                        Element bodyElement = doc.createElement("customBody");
-                        bodyElement.appendChild(doc.createTextNode(customBody));
-                        root.appendChild(bodyElement);
-                    }
-                    String customEmailSubject = customEmailAttribute.getCustomEmailSubject();
-                    if (!org.apache.commons.lang.StringUtils.isEmpty(customEmailSubject)) {
-                        Element subjectElement = doc.createElement("customSubject");
-                        subjectElement.appendChild(doc.createTextNode(customEmailSubject));
-                        root.appendChild(subjectElement);
-                    }
+                addObjectXML(doc, user, element, "user");
+                // addActionItem(doc, actionItem, user, node);
+                Node node = element;
+                if (node == null) {
+                    node = doc;
                 }
-            } catch (Exception e) {
-                LOG.error("Error when checking for custom email body and subject.", e);
-            }
-            Person person = KimApiServiceLocator.getPersonService().getPerson(actionItem.getPrincipalId());
-            DocumentRouteHeaderValue header = getRouteHeader(actionItem);
-            // keep adding stuff until we have all the xml we need to formulate the message :/
-            addObjectXML(doc, actionItem, root, "actionItem");
-            addObjectXML(doc, person, root, "actionItemPerson");
-            addTextElement(doc, root, "actionItemPrincipalId", person.getPrincipalId());
-            addTextElement(doc, root, "actionItemPrincipalName", person.getPrincipalName());
-            addDocumentHeaderXML(doc, header, root, "doc");
-            addObjectXML(doc, header.getInitiatorPrincipal(), root, "docInitiator");
-            addTextElement(doc, root, "docInitiatorDisplayName", header.getInitiatorDisplayName());
-            addObjectXML(doc, header.getDocumentType(), root, "documentType");
 
-            node.appendChild(root);
-        } catch (Exception e) {
-            String message = "Error generating immediate reminder XML for action item: " + actionItem;
-            LOG.error(message, e);
-            throw new WorkflowRuntimeException(e);
+                Element root = doc.createElement("actionItem");
+                // append the custom body and subject if they exist
+                try {
+                    CustomEmailAttribute customEmailAttribute = getCustomEmailAttribute(user, actionItem);
+                    if (customEmailAttribute != null) {
+                        String customBody = customEmailAttribute.getCustomEmailBody();
+                        if (!org.apache.commons.lang.StringUtils.isEmpty(customBody)) {
+                            Element bodyElement = doc.createElement("customBody");
+                            bodyElement.appendChild(doc.createTextNode(customBody));
+                            root.appendChild(bodyElement);
+                        }
+                        String customEmailSubject = customEmailAttribute.getCustomEmailSubject();
+                        if (!org.apache.commons.lang.StringUtils.isEmpty(customEmailSubject)) {
+                            Element subjectElement = doc.createElement("customSubject");
+                            subjectElement.appendChild(doc.createTextNode(customEmailSubject));
+                            root.appendChild(subjectElement);
+                        }
+                    }
+                } catch (Exception e) {
+                    LOG.error("Error when checking for custom email body and subject.", e);
+                }
+                Person person = KimApiServiceLocator.getPersonService().getPerson(actionItem.getPrincipalId());
+                DocumentRouteHeaderValue header = getRouteHeader(actionItem);
+                // keep adding stuff until we have all the xml we need to formulate the message :/
+                addObjectXML(doc, actionItem, root, "actionItem");
+                addObjectXML(doc, person, root, "actionItemPerson");
+                addTextElement(doc, root, "actionItemPrincipalId", person.getPrincipalId());
+                addTextElement(doc, root, "actionItemPrincipalName", person.getPrincipalName());
+                addDocumentHeaderXML(doc, header, root, "doc");
+                addObjectXML(doc, header.getInitiatorPrincipal(), root, "docInitiator");
+                addTextElement(doc, root, "docInitiatorDisplayName", header.getInitiatorDisplayName());
+                addObjectXML(doc, header.getDocumentType(), root, "documentType");
+
+                node.appendChild(root);
+            } catch (Exception e) {
+                String message = "Error generating immediate reminder XML for action item: " + actionItem;
+                LOG.error(message, e);
+                throw new WorkflowRuntimeException(e);
+            }
+            LOG.info("Leaving generation of immeidate email reminder...");
+            return generateEmailContent(styleSheet, doc);
         }
-        LOG.info("Leaving generation of immeidate email reminder...");
-    	/**
-    	 * End IU customization
-    	 */
-        return generateEmailContent(styleSheet, doc);
+        LOG.info("Skipping generation of immediate email reminder due to the user being null");
+        return null;
     }
     
     /**
@@ -447,14 +447,14 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     	
     		// replace with actual XML
     		docContentElement.appendChild(documentContentElement);
-    	} else {
-    		// in this case it means that the XML is encrypted, unfortunately, we have no way to decrypt it since
-    		// the key is stored in the client application.  We will just include the doc content since none of our
-    		// current IU clients will be using this feature right away
+        } else {
+            // in this case it means that the XML is encrypted, unfortunately, we have no way to decrypt it since
+            // the key is stored in the client application.  We will just include the doc content since none of our
+            // current IU clients will be using this feature right away
 
-    		// remove the old, bad text content
-    		docContentElement.removeChild(docContentElement.getFirstChild());
-    	}
+            // remove the old, bad text content
+            docContentElement.removeChild(docContentElement.getFirstChild());
+        }
     	
     	if (LOG.isDebugEnabled()) {
             LOG.debug(XmlJotter.jotNode(element));

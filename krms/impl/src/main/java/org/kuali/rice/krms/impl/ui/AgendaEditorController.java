@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2192,10 +2192,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 }
             }
         } else { // no parent, it is the root
-            parentNode.getChildren().clear();
-            agendaEditor.getAgendaItemLine().getRule().getPropositionTree().setRootElement(null);
-            agendaEditor.getAgendaItemLine().getRule().setPropId(null);
-            agendaEditor.getAgendaItemLine().getRule().setProposition(null);
+            if (ObjectUtils.isNotNull(parentNode)) {
+                parentNode.getChildren().clear();
+                agendaEditor.getAgendaItemLine().getRule().getPropositionTree().setRootElement(null);
+                agendaEditor.getAgendaItemLine().getRule().setPropId(null);
+                agendaEditor.getAgendaItemLine().getRule().setProposition(null);
+            } else {
+                GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.noneHighlighted");
+            }
         }
 
         agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(false);

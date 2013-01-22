@@ -24,6 +24,7 @@ import static org.junit.Assert.*
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
 import org.junit.Ignore
 import org.junit.BeforeClass
+import groovy.sql.Sql
 
 /**
  * Test for the quickstart archetype.  Executes maven commands.
@@ -38,7 +39,7 @@ class QuickStartTest {
      * determines the basedir for generating projects
      */
     @BeforeClass
-    static void setupBaseDir() {
+    public static void setupBaseDir() {
         basedir = System.getProperty("basedir")
         if (basedir == null) {
             final String userDir = System.getProperty("user.dir")
@@ -50,9 +51,12 @@ class QuickStartTest {
      * creates the directory to generate the projects in
      */
     @Before
-    void createTargetDir() {
+    public void createTargetDir() {
         targetDir = new File(basedir + "/target/projects")
         if (!targetDir.exists()) {
+            targetDir.mkdir()
+        } else {
+            removeTargetDir()
             targetDir.mkdir()
         }
         //println targetDir
@@ -62,7 +66,7 @@ class QuickStartTest {
      * parses the test config
      */
     @Before
-    void setConfig() {
+    public void setConfig() {
         config = new JAXBConfigImpl("classpath:META-INF/config-test-config.xml")
         config.parseConfig()
 
@@ -76,8 +80,8 @@ class QuickStartTest {
      * deletes the directory to generate the projects in
      */
     @After
-    void removeTargetDir() {
-        if (!targetDir.exists()) {
+    public void removeTargetDir() {
+        if (targetDir == null || !targetDir.exists()) {
             return
         }
 
@@ -99,8 +103,29 @@ class QuickStartTest {
     def getDatasourceUrl() { config.getProperty("datasource.url") }
     def getDatasourceUsername() { config.getProperty("datasource.username") }
     def getDatasourcePassword() { config.getProperty("datasource.password") }
+    def getDatasourceDriver() { config.getProperty("datasource.driver.name") }
     def getJettyPort() { config.getProperty("unittest.jetty.server1.port") }
     def getArchetypeVersion() { config.getProperty("rice.version") }
+
+    //this is a hack to fix the quartz tables...  once an embedded db is supported we should use that.
+    def fixQuartzTriggerTable() {
+        def sql = null;
+
+        try {
+            sql = Sql.newInstance( getDatasourceUrl(), getDatasourceUsername(), getDatasourcePassword(), getDatasourceDriver() )
+            sql.execute("DELETE FROM KRSB_QRTZ_LOCKS")
+
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('CALENDAR_ACCESS')")
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('JOB_ACCESS')")
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('MISFIRE_ACCESS')")
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('STATE_ACCESS')")
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('TRIGGER_ACCESS')")
+        } finally {
+            if (sql != null) {
+                sql.close();
+            }
+        }
+    }
 
     private OutputAwareMvnContext createStandardContext() {
         return new OutputAwareMvnContextImpl(
@@ -134,9 +159,11 @@ class QuickStartTest {
     private executeMaven(context) {
         try {
             new OutputAwareMvnExecutor().execute(context)
-        } finally {
-            //println context.stdOutWriter
-            //println context.stdErrWriter
+        } catch (Throwable t) {
+            //debugging info
+            println context.stdOutWriter
+            System.err.println context.stdErrWriter
+            throw t;
         }
     }
 
@@ -198,9 +225,12 @@ class QuickStartTest {
         properties["datasource_password"] = getDatasourcePassword()
 
         //turn on integration tests, set jetty.port for integration test run
-        properties["goals"] = "clean install -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
+        properties["goals"] = "clean install -X -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
         context.projectProperties = properties
         context.properties = properties.keySet() as List
+
+        //fixme: remove when we support embedded db
+        fixQuartzTriggerTable();
 
         executeMaven(context)
 

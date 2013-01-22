@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class BranchDAOOjbImpl extends PersistenceBrokerDaoSupport implements Bra
     
     public void deleteBranchStatesById(Long stateId){
     	Criteria criteria = new Criteria();
-        criteria.addEqualTo("branchStateId", stateId);
+        criteria.addEqualTo("stateId", stateId);
         BranchState branchState=(BranchState)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(BranchState.class, criteria));
         getPersistenceBrokerTemplate().delete(branchState);
     }

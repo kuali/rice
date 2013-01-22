@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -646,7 +646,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			}
 			else {
 				LOG.error("Illegal State: document is not a maintenance document");
-				throw new IllegalStateException("Document is not a maintenance document");
+				throw new IllegalArgumentException("Document is not a maintenance document");
 			}
 		}
 		else if (KewApiConstants.INITIATE_COMMAND.equals(kualiMaintenanceForm.getCommand())) {
@@ -655,7 +655,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		}
 		else {
 			LOG.error("We should never have gotten to here");
-			throw new IllegalStateException("docHandler called with invalid parameters");
+			throw new IllegalArgumentException("docHandler called with invalid parameters");
 		}
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
@@ -778,7 +778,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(maintainable.getBoClass(), keyPropertyName)) {
 					try {
                     	keyValue = StringUtils.removeEnd(keyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
-						keyValue = encryptionService.decrypt(keyValue);
+                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+						    keyValue = encryptionService.decrypt(keyValue);
+                        }
 					}
 					catch (GeneralSecurityException e) {
 						throw new RuntimeException(e);

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,6 +123,11 @@ public class QuickFinder extends WidgetBase {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
+
+        // TODO: add flag to enable quick finder when the input field (parent) is read-only
+        if (parent.isReadOnly()) {
+            setRender(false);
+        }
 
         if (!isRender()) {
             return;
@@ -631,7 +636,7 @@ public class QuickFinder extends WidgetBase {
     /**
      * TODO: not implemented currently
      *
-     * @return
+     * @return Boolean
      */
     @BeanTagAttribute(name = "supplementalActionsEnabled")
     public Boolean getSupplementalActionsEnabled() {
@@ -645,7 +650,7 @@ public class QuickFinder extends WidgetBase {
     /**
      * TODO: not implemented currently
      *
-     * @return
+     * @return Boolean
      */
     @BeanTagAttribute(name = "disabledSearchButtons")
     public Boolean getDisableSearchButtons() {
@@ -659,7 +664,7 @@ public class QuickFinder extends WidgetBase {
     /**
      * TODO: not implemented currently
      *
-     * @return
+     * @return Boolean
      */
     @BeanTagAttribute(name = "headerBarEnabled")
     public Boolean getHeaderBarEnabled() {

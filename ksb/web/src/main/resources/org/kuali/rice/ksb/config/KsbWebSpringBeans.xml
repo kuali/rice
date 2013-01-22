@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="rice.ksb.Constants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
+  <bean id="rice.ksb.Constants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
 		<property name="constantClass" value="org.kuali.rice.ksb.util.KSBConstants"/>
 	</bean>
 	
@@ -101,5 +101,42 @@
   	<property name="moduleConfiguration" ref="rice.ksb.moduleConfiguration"/>
     <property name="kualiModuleService" ref="rice.ksb.import.kualiModuleService" />
   </bean>
+
+  <bean id="rice.ksb.serviceBusAdminService"
+        class="org.kuali.rice.ksb.impl.bus.ServiceBusAdminServiceImpl">
+  </bean>
+
+  <bean id="rice.ksb.serviceBusAdmin.serviceDefinition" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+    p:serviceNameSpaceURI="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }"
+    p:jaxWsService="true"
+    p:busSecurity="true"
+    p:priority="10"
+    p:serviceVersion="${rice.version}"
+    p:servicePath="#{ T(org.kuali.rice.ksb.api.KsbApiConstants).SERVICE_PATH_SOAP }" />
+
+  <bean id="rice.kew.serviceBusAdminService.exporter" parent="ksbServiceExporter" lazy-init="false">
+    <property name="serviceDefinition">
+      <bean parent="rice.ksb.serviceBusAdmin.serviceDefinition">
+        <property name="service">
+          <ref bean="rice.ksb.serviceBusAdminService"/>
+        </property>
+        <property name="localServiceName" value="serviceBusAdminService"/>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="ksbServiceExporter"
+        class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
+        abstract="true"
+        p:serviceBus-ref="rice.ksbService.import.serviceBus"/>
+
+  <bean id="rice.ksbService.import.serviceBus"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="rice.ksb.serviceBus"/>
+  </bean>
+
+  <bean id="rice.core.config.propertyPlaceholderConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+        p:properties="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}"/>
 
 </beans>

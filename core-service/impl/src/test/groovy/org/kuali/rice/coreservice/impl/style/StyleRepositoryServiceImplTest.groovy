@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,8 +53,7 @@ class StyleRepositoryServiceImplTest {
         }).build()
     }
 
-    static final Style style = createStyle()
-    static final StyleBo styleBo = StyleBo.from(style)
+    private static final Style style = createStyle()
 
     @Before
     void setupServiceUnderTest() {
@@ -99,6 +98,8 @@ class StyleRepositoryServiceImplTest {
 
     @Test
     void testGetStyle_valid() {
+        def styleBo = StyleBo.from(style)
+        setupServiceUnderTest()
         daoMock.demand.getStyle(1) { styleName -> styleBo }
         injectStyleDaoIntoStyleRepositoryService()
 
@@ -134,6 +135,8 @@ class StyleRepositoryServiceImplTest {
 
     @Test
     void testSaveStyle_modify() {
+        def styleBo = StyleBo.from(style)
+        setupServiceUnderTest()
         def builder = Style.Builder.create(styleBo)
         builder.setActive(false)
         def styleModified = builder.build()
@@ -151,5 +154,37 @@ class StyleRepositoryServiceImplTest {
 
         verifyMocks()
 
+    }
+    @Test
+    void testGetStyle_valid_afterModify() {
+        def styleBo = StyleBo.from(style)
+        setupServiceUnderTest()
+        def builder = Style.Builder.create(styleBo)
+        builder.setActive(false)
+        def styleModified = builder.build()
+        assert !styleModified.active
+
+        def savedStyle = styleBo
+        daoMock.demand.getStyle(1) { styleName -> savedStyle }
+        daoMock.demand.saveStyle(2) { styleToSave -> savedStyle = styleToSave }
+        daoMock.demand.getStyle(1) { styleName -> savedStyle }
+
+        injectStyleDaoIntoStyleRepositoryService()
+
+        styleRepositoryService.saveStyle(styleModified)
+        assertTrue styleModified == styleRepositoryService.getStyle(styleModified.name);
+
+        verifyMocks()
+        // getStyle_valid test after SaveStyle_modify
+        styleBo = StyleBo.from(style)
+        setupServiceUnderTest()
+        daoMock.demand.getStyle(1) { styleName -> styleBo }
+        injectStyleDaoIntoStyleRepositoryService()
+
+        def style = styleRepositoryService.getStyle(NAME)
+        assertTrue style != null
+        assertEquals style, createStyle()
+
+        verifyMocks()
     }
 }

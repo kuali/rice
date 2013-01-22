@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ public class UifPropertyPaths {
     public static final String EXPRESSION_GRAPH = "expressionGraph";
     public static final String ID = "id";
     public static final String FACTORY_ID = "factoryId";
+    public static final String HEADER_TEXT = "headerText";
     public static final String NEW_COLLECTION_LINES = "newCollectionLines";
     public static final String OBJECT_ID = "objectId";
     public static final String PROPERTY_EXPRESSIONS = "propertyExpressions";

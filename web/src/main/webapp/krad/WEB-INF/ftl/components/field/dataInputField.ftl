@@ -1,6 +1,6 @@
 <#--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@
 
                 <span id="${field.id}_control" class="uif-readOnlyContent">
                     <#-- render inquiry if enabled -->
-                    <#if field.inquiry.render>
+                    <#if field.inquiry?has_content && field.inquiry.render>
                         <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
                           readOnly=field.readOnly/>
                     <#else>

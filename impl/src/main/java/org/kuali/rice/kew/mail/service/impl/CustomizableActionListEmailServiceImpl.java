@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,9 +85,11 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         // line based on DocumentType
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
         Person person = KimApiServiceLocator.getPersonService().getPerson(actionItem.getPrincipalId());
-        EmailContent content = getEmailContentGenerator().generateImmediateReminder(person, actionItem, document.getDocumentType());
-        sendEmail(person, new EmailSubject(content.getSubject()),
+        if (person != null) {
+            EmailContent content = getEmailContentGenerator().generateImmediateReminder(person, actionItem, document.getDocumentType());
+            sendEmail(person, new EmailSubject(content.getSubject()),
                         new EmailBody(content.getBody()), document.getDocumentType());
+        }
     }
 
     @Override

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -232,7 +232,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             if (parameterName.contains(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
                 String[] value = parameters.get(parameterName);
                 if (ArrayUtils.isNotEmpty(value)) {
-                    documentAttributeFieldValues.put(parameterName, StringUtils.join(value, " " + SearchOperator.OR.op() + " "));
+                    if ( parameters.containsKey(parameterName + KRADConstants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION)) {
+                        documentAttributeFieldValues.put(parameterName, "Y");
+                    }   else {
+                        documentAttributeFieldValues.put(parameterName, StringUtils.join(value, " " + SearchOperator.OR.op() + " "));
+                    }
                 }
             }
         }
@@ -530,6 +534,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     protected HtmlData.AnchorHtmlData generateInitiatorUrl(Person person) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
+        if ( person == null || StringUtils.isBlank(person.getPrincipalId()) ) {
+            return link;
+        }
         if (isRouteLogPopup()) {
             link.setTarget("_blank");
         }
@@ -538,7 +545,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         }
         link.setDisplayText("Initiator Inquiry for User with ID:" + person.getPrincipalId());
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KIM_URL) + "/" +
-                "identityManagementPersonInquiry.do?principalId=" + person.getPrincipalId();
+            "identityManagementPersonInquiry.do?principalId=" + person.getPrincipalId();
         link.setHref(url);
         return link;
     }

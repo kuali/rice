@@ -22,7 +22,7 @@
     <users xmlns="ns:workflow/User"
            xsi:schemaLocation="ns:workflow/User resource:User">
     <!-- BEGIN: Generate Users -->
-    <#list 0..userCnt?number as cnt>
+    <#list userCntBegin?number..userCnt?number as cnt>
         <user>
             <principalId>${userPrefix}${cnt}</principalId>
             <principalName>${userPrefix}${cnt}</principalName>

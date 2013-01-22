@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -526,8 +526,10 @@ public final class KRADUtils {
             if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName)) {
                 try {
-                    propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
-                            EncryptionService.ENCRYPTION_POST_PREFIX;
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
+                                EncryptionService.ENCRYPTION_POST_PREFIX;
+                    }
                 } catch (GeneralSecurityException e) {
                     throw new RuntimeException("Exception while trying to encrypt value for key/value map.", e);
                 }

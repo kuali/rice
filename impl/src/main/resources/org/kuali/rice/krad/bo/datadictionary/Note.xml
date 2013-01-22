@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -108,7 +108,8 @@
     <property name="shortLabel" value="Note Text"/>
     <property name="maxLength" value="800"/>
     <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+      <!-- KULRICE-8176: KFS Notes or Attachments Tab Functionality for Note Text Error - Visible or Special characters, spaces, or tabs -->
+      <bean parent="UTF8AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="required" value="true"/>
     <property name="control">

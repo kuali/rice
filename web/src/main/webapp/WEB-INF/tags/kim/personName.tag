@@ -26,8 +26,9 @@
             <th>&nbsp;</th> 
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.nameCode}" noColon="true" />
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.namePrefix}" noColon="true" />
-            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.firstName}" noColon="true" /> 
-            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.lastName}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.firstName}" noColon="true" />
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.middleName}" noColon="true" />
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.lastName}" noColon="true" />
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.nameSuffix}" noColon="true" />
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.dflt}" noColon="true" /> 
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.active}" noColon="true" /> 
@@ -55,8 +56,13 @@
                     <div align="center">                
                       <kul:htmlControlAttribute property="newName.firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity}" />
                     </div>
-                </td>                
-                <td align="left" valign="middle" class="infoline">
+                </td>
+              <td class="infoline">
+                <div align="center">
+                  <kul:htmlControlAttribute property="newName.middleName" attributeEntry="${docNameAttributes.middleName}" readOnly="${readOnlyEntity}" />
+                </div>
+              </td>
+              <td align="left" valign="middle" class="infoline">
                     <div align="center"><kul:htmlControlAttribute property="newName.lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity}" />
                     </div>
                 </td>
@@ -89,7 +95,8 @@
                 <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].nameCode"  attributeEntry="${docNameAttributes.nameCode}"  readOnlyAlternateDisplay="${fn:escapeXml(name.entityNameType.name)}" readOnly="${readOnlyEntity or !canModify}" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].namePrefix" attributeEntry="${docNameAttributes.namePrefix}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
-				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].middleName" attributeEntry="${docNameAttributes.middleName}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].nameSuffix" attributeEntry="${docNameAttributes.nameSuffix}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].dflt" attributeEntry="${docNameAttributes.dflt}" readOnly="${readOnlyEntity or !canModify}" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].active" attributeEntry="${docNameAttributes.active}" readOnly="${readOnlyEntity or !canModify}" />

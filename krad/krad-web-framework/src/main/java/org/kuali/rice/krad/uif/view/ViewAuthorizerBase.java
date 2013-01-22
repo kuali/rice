@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -307,7 +307,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canPerformAction(View view, ViewModel model, Action action, String actionEvent,
             String actionId, Person user) {
         // check action authz flag is set
-        if (!((ActionSecurity)action.getComponentSecurity()).isPerformActionAuthz()) {
+        if (!action.getActionSecurity().isPerformActionAuthz()) {
             return true;
         }
 
@@ -345,7 +345,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canEditLineField(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Field field, String propertyName, Person user) {
         // check edit line field authz flag is set
-        if (!((FieldSecurity) field.getComponentSecurity()).isEditInLineAuthz()) {
+        if (!field.getFieldSecurity().isEditInLineAuthz()) {
             return true;
         }
 
@@ -361,7 +361,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canViewLineField(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Field field, String propertyName, Person user) {
         // check view line field authz flag is set
-        if (!((FieldSecurity) field.getComponentSecurity()).isViewInLineAuthz()) {
+        if (!field.getFieldSecurity().isViewInLineAuthz()) {
             return true;
         }
 
@@ -378,7 +378,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             String collectionPropertyName, Object line, Action action, String actionEvent, String actionId,
             Person user) {
         // check perform line action authz flag is set
-        if (!((ActionSecurity)action.getComponentSecurity()).isPerformLineActionAuthz()) {
+        if (!action.getActionSecurity().isPerformLineActionAuthz()) {
             return true;
         }
 

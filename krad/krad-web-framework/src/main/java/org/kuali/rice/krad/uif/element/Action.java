@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.DataFieldSecurity;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -149,10 +150,12 @@ public class Action extends ContentElementBase {
      */
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
+
         disabledExpression = this.getPropertyExpression("disabled");
         if (disabledExpression != null) {
             ExpressionEvaluatorService expressionEvaluatorService =
                     KRADServiceLocatorWeb.getExpressionEvaluatorService();
+
             disabledExpression = expressionEvaluatorService.replaceBindingPrefixes(view, this, disabledExpression);
             disabled = (Boolean) expressionEvaluatorService.evaluateExpression(model, this.getContext(),
                     disabledExpression);
@@ -261,6 +264,7 @@ public class Action extends ContentElementBase {
      */
     protected void setupRefreshAction(View view) {
         // if refresh property or id is given, make return type update component
+        // TODO: what if the refresh id is the page id? we should set the return type as update page
         if (StringUtils.isNotBlank(refreshPropertyName) || StringUtils.isNotBlank(refreshId)) {
             ajaxReturnType = UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey();
         }
@@ -599,6 +603,15 @@ public class Action extends ContentElementBase {
     }
 
     /**
+     * Action Security object that indicates what authorization (permissions) exist for the action
+     *
+     * @return ActionSecurity instance
+     */
+    public ActionSecurity getActionSecurity() {
+        return (ActionSecurity) super.getComponentSecurity();
+    }
+
+    /**
      * Override to assert a {@link ActionSecurity} instance is set
      *
      * @param componentSecurity - instance of ActionSecurity
@@ -778,7 +791,7 @@ public class Action extends ContentElementBase {
      * on the action field (button)
      *
      * @return String disabled reason text
-     * @see {@link #isDisabled()}
+     * @see #isDisabled()
      */
     @BeanTagAttribute(name = "disabledReason")
     public String getDisabledReason() {

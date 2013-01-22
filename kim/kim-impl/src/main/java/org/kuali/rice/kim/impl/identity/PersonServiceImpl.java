@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -448,9 +448,11 @@ public class PersonServiceImpl implements PersonService {
 							// if that type needs to be encrypted, encrypt the value in the criteria map
 							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
 								try {
-									criteria.put(key, 
-											CoreApiServiceLocator.getEncryptionService().encrypt(criteria.get(key))
-											);
+                                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+									    criteria.put(key,
+										    	CoreApiServiceLocator.getEncryptionService().encrypt(criteria.get(key))
+										    	);
+                                    }
 								} catch (GeneralSecurityException ex) {
 									LOG.error("Unable to encrypt value for external ID search of type " + extIdTypeCode, ex );
 								}								

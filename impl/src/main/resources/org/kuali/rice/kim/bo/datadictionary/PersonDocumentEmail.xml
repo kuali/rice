@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 -->
   <bean id="DocEmail" parent="DocEmail-parentBean"/>
 
-  <bean id="DocEmail-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentEmail" p:titleAttribute="emailTypeCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocEmail-inquiryDefinition" p:lookupDefinition-ref="DocEmail-lookupDefinition">
+  <bean id="DocEmail-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentEmail" p:titleAttribute="emailTypeCode" p:objectLabel="Person Email" p:inquiryDefinition-ref="DocEmail-inquiryDefinition" p:lookupDefinition-ref="DocEmail-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocEmail-emailAddress"/>

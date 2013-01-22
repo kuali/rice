@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -265,7 +265,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			EntityEmployment employmentInformation = entity.getEmployment();
 			if ( employmentInformation != null ) {
 				employeeStatusCode = unNullify( employmentInformation.getEmployeeStatus() != null ? employmentInformation.getEmployeeStatus().getCode() : null);
-				employeeTypeCode = unNullify( employmentInformation.getEmployeeType() != null ? employmentInformation.getEmployeeStatus().getCode() : null);
+				employeeTypeCode = unNullify( employmentInformation.getEmployeeType() != null ? employmentInformation.getEmployeeType().getCode() : null);
 				primaryDepartmentCode = unNullify( employmentInformation.getPrimaryDepartmentCode() );
 				employeeId = unNullify( employmentInformation.getEmployeeId() );
 				if ( employmentInformation.getBaseSalaryAmount() != null ) {

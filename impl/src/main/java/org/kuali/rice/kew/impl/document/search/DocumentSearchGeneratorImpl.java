@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.ResultSet;
@@ -134,7 +135,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
                 documentAttributeNameForSQL = documentAttributeName.replaceFirst(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX, "");
             }
             List<String> searchValues = documentAttributeValues.get(documentAttributeName);
-            if (CollectionUtils.isEmpty(searchValues)) {
+            if (CollectionUtils.isEmpty(searchValues) || documentAttributeName.contains(KRADConstants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION)) {
                 continue;
             }
 

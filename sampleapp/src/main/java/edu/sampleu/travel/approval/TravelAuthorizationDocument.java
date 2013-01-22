@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,14 @@
 package edu.sampleu.travel.approval;
 
 import edu.sampleu.travel.approval.dataobject.PrimaryDestination;
+import edu.sampleu.travel.approval.dataobject.TravelerDetail;
+import edu.sampleu.travel.approval.dataobject.TravelAdvance;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Travel authorization transactional document.
@@ -36,18 +40,34 @@ import java.util.Date;
 public class TravelAuthorizationDocument extends TransactionalDocumentBase {
 
     private String travelDocumentIdentifier;
-    private String tripTypeCode;
     private Date tripBegin;
     private Date tripEnd;
     private String tripDescription;
-    private Boolean primaryDestinationIndicator = false;
+    private String tripTypeCode;
 
+    // Traveler section
+    private Integer travelerDetailId;
+    private TravelerDetail travelerDetail;
+
+    // Primary Destination section
     private Integer primaryDestinationId;
-    private String primaryDestinationName;
-    private String primaryDestinationCountryState;
-    private String primaryDestinationCounty;
-
     private PrimaryDestination primaryDestination;
+    
+    // Travel Advance 
+    private List<TravelAdvance> travelAdvanceList ;
+
+    // Special Circumstances
+    private KualiDecimal expenseLimit;
+    private Boolean questionForTaWhy;
+    private String questionForTa;
+    private Boolean questionForTaDocWhy;
+    private String questionForTaDoc;
+
+    // Emergency Contact
+    private String cellPhoneNumber;
+    private String regionFamiliarity;
+    private String citizenshipCountryCode;
+    private String transportationModeCode;
 
     public TravelAuthorizationDocument() {
         super();
@@ -77,32 +97,6 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
      */
     public void setTravelDocumentIdentifier(String travelDocumentIdentifier) {
         this.travelDocumentIdentifier = travelDocumentIdentifier;
-    }
-
-    /**
-     * Returns the trip type code.
-     *
-     * <p>
-     * Gets the trip type code.
-     * </p>
-     *
-     * @return String - trip type code
-     */
-    public String getTripTypeCode() {
-        return tripTypeCode;
-    }
-
-    /**
-     * Initializes the trip type code.
-     *
-     * <p>
-     * Sets the trip type code.
-     * </p>
-     *
-     * @param tripTypeCode - trip type code
-     */
-    public void setTripTypeCode(String tripTypeCode) {
-        this.tripTypeCode = tripTypeCode;
     }
 
     /**
@@ -184,6 +178,32 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     }
 
     /**
+     * Initializes the trip type.
+     *
+     * <p>
+     * Sets the trip type.
+     * </p>
+     *
+     * @param tripTypeCode - trip type
+     */
+    public void setTripTypeCode(String tripTypeCode) {
+        this.tripTypeCode = tripTypeCode;
+    }
+
+    /**
+     * Returns the trip type.
+     *
+     * <p>
+     * Gets the trip type.
+     * </p>
+     *
+     * @return String - trip type
+     */
+    public String getTripTypeCode() {
+        return tripTypeCode;
+    }
+
+    /**
      * Returns the destination id.
      *
      * <p>
@@ -210,107 +230,56 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     }
 
     /**
-     * Returns whether the destination is indicated.
+     * Returns the traveler detail id.
      *
      * <p>
-     * Gets the primary destination indicator flag.
+     * Gets the primary key for the traveler.
      * </p>
      *
-     * @return Boolean - primary destination indicator flag
+     * @return Integer - traveler detail id
      */
-    public Boolean getPrimaryDestinationIndicator() {
-        return primaryDestinationIndicator;
+    public Integer getTravelerDetailId() {
+        return travelerDetailId;
     }
 
     /**
-     * Initializes the primary destination flag.
+     * Initializes the traveler detail id.
      *
      * <p>
-     * Sets the flag whether a primary destination is indicated.
+     * Sets the traveler detail id.
      * </p>
      *
-     * @param primaryDestinationIndicator - primary destination indicator
+     * @param travelerDetailId - integer of primary destination id
      */
-    public void setPrimaryDestinationIndicator(Boolean primaryDestinationIndicator) {
-        this.primaryDestinationIndicator = primaryDestinationIndicator;
+    public void setTravelerDetailId(Integer travelerDetailId) {
+        this.travelerDetailId = travelerDetailId;
     }
 
     /**
-     * Returns primary destination name.
+     * Returns the nested traveler detail.
      *
      * <p>
-     * Gets the name of the primary destination
+     * Gets the traveler detail object.
      * </p>
      *
-     * @return String - primary destination name
+     * @return TravelerDetail - traveler detail
      */
-    public String getPrimaryDestinationName() {
-        return primaryDestinationName;
+
+    public TravelerDetail getTravelerDetail() {
+        return travelerDetail;
     }
 
     /**
-     * Initializes the primary destination name.
+     * Initializes the nested traveler detail object.
      *
      * <p>
-     *    Sets the name for the primary destination.
+     * Sets the traveler detail.
      * </p>
      *
-     * @param primaryDestinationName - primary destination name
+     * @param travelerDetail - traveler detail object
      */
-    public void setPrimaryDestinationName(String primaryDestinationName) {
-        this.primaryDestinationName = primaryDestinationName;
-    }
-
-    /**
-     * Returns primary destination state.
-     *
-     * <p>
-     * Gets the state of the primary destination
-     * </p>
-     *
-     * @return String - primary destination state
-     */
-    public String getPrimaryDestinationCountryState() {
-        return primaryDestinationCountryState;
-    }
-
-    /**
-     * Initializes the primary destination state.
-     *
-     * <p>
-     * Sets the state for the primary destination.
-     * </p>
-     *
-     * @param primaryDestinationCountryState - primary destination state
-     */
-    public void setPrimaryDestinationCountryState(String primaryDestinationCountryState) {
-        this.primaryDestinationCountryState = primaryDestinationCountryState;
-    }
-
-    /**
-     * Returns primary destination county.
-     *
-     * <p>
-     * Gets the county of the primary destination
-     * </p>
-     *
-     * @return String - primary destination county
-     */
-    public String getPrimaryDestinationCounty() {
-        return primaryDestinationCounty;
-    }
-
-    /**
-     * Initializes the primary destination county.
-     *
-     * <p>
-     * Sets the county for the primary destination.
-     * </p>
-     *
-     * @param primaryDestinationCounty - primary destination county
-     */
-    public void setPrimaryDestinationCounty(String primaryDestinationCounty) {
-        this.primaryDestinationCounty = primaryDestinationCounty;
+    public void setTravelerDetail(TravelerDetail travelerDetail) {
+        this.travelerDetail = travelerDetail;
     }
 
     /**
@@ -338,4 +307,265 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     public void setPrimaryDestination(PrimaryDestination primaryDestination) {
         this.primaryDestination = primaryDestination;
     }
+
+    /**
+     * Returns travel advance collection.
+     *
+     * <p>
+     * Gets the travel advance collection.
+     * </p>
+     *
+     * @return List<TravelAdvance> - travel advance collection
+     */
+    public List<TravelAdvance> getTravelAdvanceList() {
+        return travelAdvanceList;
+    }
+
+    /**
+     * Initializes travel advance collection.
+     *
+     * <p>
+     * Sets the travel advance collection.
+     * </p>
+     *
+     * @param travelAdvanceList - travel advance collection
+     */
+    public void setTravelAdvanceList(List<TravelAdvance> travelAdvanceList) {
+        this.travelAdvanceList = travelAdvanceList;
+    }
+
+    /**
+     * Returns the cell phone number.
+     *
+     * <p>
+     * Gets the emergency contact cell phone number.
+     * </p>
+     *
+     * @return String - cell phone number
+     */
+    public String getCellPhoneNumber() {
+        return cellPhoneNumber;
+    }
+
+    /**
+     * Initializes the cell phone number.
+     *
+     * <p>
+     * Sets the emergency contact cell phone number.
+     * </p>
+     *
+     * @param cellPhoneNumber - string of the cell phone number
+     */
+    public void setTravelerDetailId(String cellPhoneNumber) {
+        this.cellPhoneNumber = cellPhoneNumber;
+    }
+
+    /**
+     * Returns the region familiarity.
+     *
+     * <p>
+     * Gets the emergency contact region familiarity.
+     * </p>
+     *
+     * @return String - region familiarity
+     */
+    public String getRegionFamiliarity() {
+        return regionFamiliarity;
+    }
+
+    /**
+     * Initializes the region familiarity.
+     *
+     * <p>
+     * Sets the emergency contact region familiarity.
+     * </p>
+     *
+     * @param regionFamiliarity - string of the region familiarity
+     */
+    public void setRegionFamiliarity(String regionFamiliarity) {
+        this.regionFamiliarity = regionFamiliarity;
+    }
+
+    /**
+     * Returns the citizenship country code.
+     *
+     * <p>
+     * Gets the emergency contact citizenship country code.
+     * </p>
+     *
+     * @return String - citizenship country code
+     */
+    public String getCitizenshipCountryCode() {
+        return citizenshipCountryCode;
+    }
+
+    /**
+     * Initializes the citizenship country code.
+     *
+     * <p>
+     * Sets the emergency contact citizenship country code.
+     * </p>
+     *
+     * @param citizenshipCountryCode - string of the citizenship country code
+     */
+    public void setCitizenshipCountryCode(String citizenshipCountryCode) {
+        this.citizenshipCountryCode = citizenshipCountryCode;
+    }
+
+    /**
+     * Returns the transportation mode code.
+     *
+     * <p>
+     * Gets the emergency contact transportation mode cpde.
+     * </p>
+     *
+     * @return String - transportation mode code
+     */
+    public String getTransportationModeCode() {
+        return transportationModeCode;
+    }
+
+    /**
+     * Initializes the transportation mode code.
+     *
+     * <p>
+     * Sets the emergency contact transportation mode code.
+     * </p>
+     *
+     * @param transportationModeCode - string of the transportation mode code
+     */
+    public void setTransportationModeCode(String transportationModeCode) {
+        this.transportationModeCode = transportationModeCode;
+    }
+
+    /**
+     * Returns the expense limit.
+     *
+     * <p>
+     * Gets the special circumstance expense limit.
+     * </p>
+     *
+     * @return KualiDecimal - expense limit
+     */
+    public KualiDecimal getExpenseLimit() {
+        return expenseLimit;
+    }
+
+    /**
+     * Initializes the expense limit.
+     *
+     * <p>
+     * Sets the special circumstance expense limit.
+     * </p>
+     *
+     * @param expenseLimit - kuali decimal of the expense limit
+     */
+    public void setExpenseLimit(KualiDecimal expenseLimit) {
+        this.expenseLimit = expenseLimit;
+    }
+
+    /**
+     * Returns the questions for TA why.
+     *
+     * <p>
+     * Gets the special circumstance questions for TA why.
+     * </p>
+     *
+     * @return Boolean - questionForTaWhy
+     */
+    public Boolean getQuestionForTaWhy() {
+        return questionForTaWhy;
+    }
+
+    /**
+     * Initializes the questions for TA why.
+     *
+     * <p>
+     * Sets the special circumstance questions for TA why.
+     * </p>
+     *
+     * @param questionForTaWhy - boolean of the questions for TA why
+     */
+    public void setQuestionForTaWhy(Boolean questionForTaWhy) {
+        this.questionForTaWhy = questionForTaWhy;
+    }
+
+    /**
+     * Returns the questions for TA.
+     *
+     * <p>
+     * Gets the special circumstance questions for TA.
+     * </p>
+     *
+     * @return String - questions for TA
+     */
+    public String getQuestionForTa() {
+        return questionForTa;
+    }
+
+    /**
+     * Initializes the questions for TA.
+     *
+     * <p>
+     * Sets the special circumstance questions for TA.
+     * </p>
+     *
+     * @param questionForTa - string of the questions for TA
+     */
+    public void setQuestionForTa(String questionForTa) {
+        this.questionForTa = questionForTa;
+    }
+
+    /**
+     * Returns the questions for TA document why.
+     *
+     * <p>
+     * Gets the special circumstance questions for TA document why.
+     * </p>
+     *
+     * @return Boolean - questionForTaDocWhy
+     */
+    public Boolean getQuestionForTaDocWhy() {
+        return questionForTaDocWhy;
+    }
+
+    /**
+     * Initializes the questions for TA document why.
+     *
+     * <p>
+     * Sets the special circumstance questions for TA document why.
+     * </p>
+     *
+     * @param questionForTaDocWhy - boolean of the questions for TA document why
+     */
+    public void setQuestionForTaDocWhy(Boolean questionForTaDocWhy) {
+        this.questionForTaDocWhy = questionForTaDocWhy;
+    }
+
+    /**
+     * Returns the questions for TA document.
+     *
+     * <p>
+     * Gets the special circumstance questions for TA document.
+     * </p>
+     *
+     * @return String - questions for TA document
+     */
+    public String getQuestionForTaDoc() {
+        return questionForTaDoc;
+    }
+
+    /**
+     * Initializes the questions for TA document.
+     *
+     * <p>
+     * Sets the special circumstance questions for TA document.
+     * </p>
+     *
+     * @param questionForTaDoc - string of the questions for TA document
+     */
+    public void setQuestionForTaDoc(String questionForTaDoc) {
+        this.questionForTaDoc = questionForTaDoc;
+    }
+
 }

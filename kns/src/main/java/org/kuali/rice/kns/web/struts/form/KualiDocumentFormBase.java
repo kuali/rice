@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.kuali.rice.core.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.doctype.DocumentType;
@@ -46,6 +47,8 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.kns.web.ui.HeaderField;
@@ -57,7 +60,6 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.service.SessionDocumentService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
@@ -189,13 +191,16 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             // populate workflowDocument in documentHeader, if needed
         	// KULRICE-4444 Obtain Document Header using the Workflow Service to minimize overhead
             try {
-                SessionDocumentService sessionDocumentService = KRADServiceLocatorWeb.getSessionDocumentService();
+                SessionDocumentService sessionDocumentService = KNSServiceLocator.getSessionDocumentService();
             	workflowDocument = sessionDocumentService.getDocumentFromSession( GlobalVariables.getUserSession(), getDocument().getDocumentNumber());
          	 	if ( workflowDocument == null)
          	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
-         	 		Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KRADConstants.SYSTEM_USER);
+                    Person person = GlobalVariables.getUserSession().getPerson();
+                    if (ObjectUtils.isNull(person)) {
+                        person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KRADConstants.SYSTEM_USER);
+                    }
          	 		workflowDocument = KRADServiceLocatorWeb.getWorkflowDocumentService().loadWorkflowDocument(getDocument().getDocumentNumber(), person);
          	 	 	sessionDocumentService.addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
          	 	 	if (workflowDocument == null)
@@ -935,7 +940,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         List<ActionRequest> actionRequestsApprove = new ArrayList<ActionRequest>();;
 
         for (ActionRequest actionRequest: actionRequests) {
-            if  (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
+            if  ((StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) ||
+                    (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()))) {
                 actionRequestsApprove.add(actionRequest);
             }
         }
@@ -949,6 +955,25 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	public void setSuperUserAnnotation(String superUserAnnotation) {
 		this.superUserAnnotation = superUserAnnotation;
 	}
+
+    public boolean isSuperUserActionAvaliable() {
+        List<ActionRequest> actionRequests = getActionRequestsRequiringApproval();
+        boolean hasSingleActionToTake = false;
+        boolean canSuperUserApprove = false;
+        boolean canSuperUserDisapprove = false;
+
+        hasSingleActionToTake =  ( isSuperUserApproveSingleActionRequestAuthorized() &&
+                isStateAllowsApproveSingleActionRequest() &&
+                !actionRequests.isEmpty());
+        if (!hasSingleActionToTake) {
+            canSuperUserApprove = (isSuperUserApproveDocumentAuthorized() && isStateAllowsApproveOrDisapprove());
+        }
+        if (!canSuperUserApprove) {
+            canSuperUserDisapprove = (isSuperUserDisapproveDocumentAuthorized() && isStateAllowsApproveOrDisapprove());
+        }
+
+        return (hasSingleActionToTake || canSuperUserApprove || canSuperUserDisapprove) ;
+    }
 
     public boolean isSuperUserApproveSingleActionRequestAuthorized() {
         String principalId =  GlobalVariables.getUserSession().getPrincipalId();
@@ -1007,7 +1032,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             docTypeId = documentType.getId();
         }
         String principalId =  GlobalVariables.getUserSession().getPrincipalId();
-        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(
+                docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
         return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
                     principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
@@ -1020,7 +1046,14 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	
     public boolean isStateAllowsApproveOrDisapprove() {
         if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
-            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            DocumentStatus status = null;
+            WorkflowDocument document = WorkflowDocumentFactory.loadDocument(GlobalVariables.getUserSession().getPrincipalId(),
+                this.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentId());
+            if (ObjectUtils.isNotNull(document)) {
+                status = document.getStatus();
+            } else {
+                status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            }
             return !(isStateProcessedOrDisapproved(status) ||
                      isStateInitiatedFinalCancelled(status) ||
                      StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
@@ -1031,7 +1064,14 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
     public boolean isStateAllowsApproveSingleActionRequest() {
         if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
-            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            DocumentStatus status = null;
+            WorkflowDocument document = WorkflowDocumentFactory.loadDocument(GlobalVariables.getUserSession().getPrincipalId(),
+                    this.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentId());
+            if (ObjectUtils.isNotNull(document)) {
+                status = document.getStatus();
+            } else {
+                status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            }
             return !(isStateInitiatedFinalCancelled(status));
         } else {
             return false;

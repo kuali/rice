@@ -1,0 +1,55 @@
+/**
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.tweet,
+.query {
+    font: 120% Georgia, serif;
+    color: #085258;
+}
+
+.tweet_list {
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    border-radius: 0.5em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+    background-color: #8ADEE2;
+}
+
+.tweet_list li {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.5em;
+    list-style-type: none;
+}
+
+.tweet_list li a {
+    color: #0C717A;
+}
+
+.tweet_list .tweet_even {
+    background-color: #91E5E7;
+}
+
+.tweet_list .tweet_avatar {
+    padding-right: .5em;
+    float: left;
+}
+
+.tweet_list .tweet_avatar img {
+    vertical-align: middle;
+}

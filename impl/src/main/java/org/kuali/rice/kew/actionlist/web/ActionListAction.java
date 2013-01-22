@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,6 +75,7 @@ import java.util.*;
 public class ActionListAction extends KualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListAction.class);
+    protected static final String MAX_ACTION_ITEM_DATE_FORMAT = "yyyy-MM-dd hh:mm:ss.S";
 
     private static final String ACTION_LIST_KEY = "actionList";
     private static final String ACTION_LIST_PAGE_KEY = "actionListPage";
@@ -116,7 +117,7 @@ public class ActionListAction extends KualiAction {
         headerButtons.add(eb);
         eb = new ExtraButton();
         eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-refresh.gif");
-        eb.setExtraButtonProperty("methodToCall.start");
+        eb.setExtraButtonProperty("methodToCall.refresh");
 
         headerButtons.add(eb);
         eb = new ExtraButton();
@@ -128,7 +129,14 @@ public class ActionListAction extends KualiAction {
         return headerButtons;
     }
 
-
+    @Override
+    public ActionForward refresh(ActionMapping mapping,
+                                 ActionForm form,
+                           		 HttpServletRequest request,
+                           		 HttpServletResponse response) throws Exception {
+        request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
+        return start(mapping, form, request, response);
+    }
 
     @Override
     protected ActionForward defaultDispatch(ActionMapping mapping,
@@ -263,9 +271,19 @@ public class ActionListAction extends KualiAction {
                 form.setOutBoxEmpty(actionList.isEmpty());
             } else {
 
-                    SimpleDateFormat dFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+                    SimpleDateFormat dFormatter = new SimpleDateFormat(MAX_ACTION_ITEM_DATE_FORMAT);
                     if (actionList == null) {
-                        setCountAndMaxDate(request,principalId,actionListSrv);
+                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+                        if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
+                            if (countAndMaxDate.isEmpty()) {
+                                countAndMaxDate.add(0, new Date(0));
+                                countAndMaxDate.add(1, 0);
+                            } else {
+                                countAndMaxDate.set(0, new Date(0));
+                            }
+                        }
+                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
+                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
                         // fetch the action list
                         actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
 
@@ -274,7 +292,17 @@ public class ActionListAction extends KualiAction {
                         // force a refresh... usually based on filter change or parameter specifying refresh needed
                         actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
                         request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                        setCountAndMaxDate(request,principalId,actionListSrv);
+                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+                        if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
+                            if (countAndMaxDate.isEmpty()) {
+                                countAndMaxDate.add(0, new Date(0));
+                                countAndMaxDate.add(1, 0);
+                            } else {
+                                countAndMaxDate.set(0, new Date(0));
+                            }
+                        }
+                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
+                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
 
                     }else if (refreshList(request,principalId)){
                         actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
@@ -365,28 +393,37 @@ public class ActionListAction extends KualiAction {
     }
 
     private boolean refreshList(HttpServletRequest request,String principalId ){
-        int count = 0;
-        Date maxActionItemDateAssigned = null;
         List<Object> maxActionItemDateAssignedAndCount = KEWServiceLocator.getActionListService().getMaxActionItemDateAssignedAndCountForUser(
                 principalId);
-        maxActionItemDateAssigned = (Date) maxActionItemDateAssignedAndCount.get(0);
-        count = (Integer) maxActionItemDateAssignedAndCount.get(1);
-        int previousCount = Integer.parseInt(request.getSession().getAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY).toString());
-        SimpleDateFormat dFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+        int count = (Integer) maxActionItemDateAssignedAndCount.get(1);
+        int previousCount = 0;
+        Object actionItemCountFromSession = request.getSession().getAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY);
+        if ( actionItemCountFromSession != null ) {
+            previousCount = Integer.parseInt(actionItemCountFromSession.toString());
+        }
+        SimpleDateFormat dFormatter = new SimpleDateFormat(MAX_ACTION_ITEM_DATE_FORMAT);
+        Date maxActionItemDateAssigned = (Date) maxActionItemDateAssignedAndCount.get(0);
+        if ( maxActionItemDateAssigned == null ) {
+            maxActionItemDateAssigned = new Date(0);
+        }
         Date previousMaxActionItemDateAssigned= null;
-        Date maxActionItemDateAssignedParsed = null;
         try{
-            previousMaxActionItemDateAssigned = dFormatter.parse(request.getSession().getAttribute(
-                MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY).toString());
+            Object dateAttributeFromSession = request.getSession().getAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY);
+            if ( dateAttributeFromSession != null ) {
+                previousMaxActionItemDateAssigned = dFormatter.parse(dateAttributeFromSession.toString());
+            }
         } catch (ParseException e){
-            e.printStackTrace();
+            LOG.warn( MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY + " in session did not have expected date format.  "
+                    + "Was: " + request.getSession().getAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY), e );
         }
         if(previousCount!= count){
-            request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, maxActionItemDateAssigned);
+            request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(
+                    maxActionItemDateAssigned));
             request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, count);
             return true;
-        }else if(previousMaxActionItemDateAssigned.compareTo(maxActionItemDateAssigned)!=0){
-            request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(maxActionItemDateAssigned).toString());
+        }else if(previousMaxActionItemDateAssigned == null || previousMaxActionItemDateAssigned.compareTo(maxActionItemDateAssigned)!=0){
+            request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(
+                    maxActionItemDateAssigned));
             request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, count);
             return true;
         } else{

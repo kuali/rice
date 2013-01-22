@@ -55,6 +55,7 @@
 </c:if>
 
 <head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
 	<script type="text/javascript">
 	<!--
@@ -137,7 +138,7 @@ jQuery(function(){
 </head>
 <c:choose>
 	<c:when test="${lookup}" >
-		<body onload="placeFocus();	 
+		<body onload="placeFocus();
 		<c:if test='<%= jspContext.findAttribute("KualiForm") != null %>'>
 			<c:if test='<%= jspContext.findAttribute("KualiForm").getClass() == org.kuali.rice.kns.web.struts.form.LookupForm.class %>'>
 				<c:out value ="${KualiForm.lookupable.extraOnLoad}" />

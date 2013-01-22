@@ -24,6 +24,7 @@ import java.io.Serializable;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -31,7 +32,6 @@ import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -103,8 +103,12 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		serviceDef.validate();
 		KsbApiServiceLocator.getServiceBus().publishService(serviceDef, true);
 
-		KSBJavaService exploderAsService = (KSBJavaService) MessageServiceNames.getServiceAsynchronously(new QName("KEW", "exploader"), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId()));
-		exploderAsService.invoke("");
+        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
+        String applicationId = routeHeader.getDocumentType().getApplicationId();
+
+        KSBJavaService exploderAsService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(
+                "KEW", "exploader"), null, null, routeHeader.getDocumentId(), null);
+        exploderAsService.invoke("");
 		TestUtilities.waitForExceptionRouting();
 
 		// the document should be in exception routing now

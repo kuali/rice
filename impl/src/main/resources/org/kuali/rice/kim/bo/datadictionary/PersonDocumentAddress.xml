@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 
   <bean id="DocAddress" parent="DocAddress-parentBean"/>
 
-  <bean id="DocAddress-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentAddress" p:titleAttribute="addressTypeCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocAddress-inquiryDefinition" p:lookupDefinition-ref="DocAddress-lookupDefinition">
+  <bean id="DocAddress-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentAddress" p:titleAttribute="addressTypeCode" p:objectLabel="Person Address" p:inquiryDefinition-ref="DocAddress-inquiryDefinition" p:lookupDefinition-ref="DocAddress-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocAddress-line2"/>

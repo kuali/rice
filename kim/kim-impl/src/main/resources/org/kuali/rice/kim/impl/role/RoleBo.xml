@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
   <bean id="RoleBo" parent="RoleBo-parentBean"/>
 
   <bean id="RoleBo-parentBean" abstract="true" parent="BusinessObjectEntry"
-        p:businessObjectClass="org.kuali.rice.kim.impl.role.RoleBo" p:titleAttribute="id" p:objectLabel="Names"
+        p:businessObjectClass="org.kuali.rice.kim.impl.role.RoleBo" p:titleAttribute="id" p:objectLabel="Role"
         p:inquiryDefinition-ref="RoleBo-inquiryDefinition" p:lookupDefinition-ref="RoleBo-lookupDefinition">
     <!--<property name="exporterClass" value="org.kuali.rice.kim.impl.jaxb.KimImporterAndExporter" />-->
     <property name="attributes">

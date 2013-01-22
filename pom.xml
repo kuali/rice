@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
     limitations under the License.
 
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -29,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.2.1-SNAPSHOT</version>
+  <version>2.3.0-SNAPSHOT</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -141,7 +140,8 @@
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.4</slf4j.version>
-    <soa.model.core.version>1.1.0</soa.model.core.version>
+    <soa.model.core.version>1.2.2</soa.model.core.version>
+    <httpclient.version>4.1.2</httpclient.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>3.1.0.RELEASE</spring.version>
     <spring.security.version>3.1.0.RELEASE</spring.security.version>
@@ -815,6 +815,33 @@
           <groupId>org.kuali.maven.plugins</groupId>
           <artifactId>maven-http-plugin</artifactId>
           <version>${plugin.http.version}</version>
+        </plugin>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+        	<groupId>org.eclipse.m2e</groupId>
+        	<artifactId>lifecycle-mapping</artifactId>
+        	<version>1.0.0</version>
+        	<configuration>
+        		<lifecycleMappingMetadata>
+        			<pluginExecutions>
+        				<pluginExecution>
+        					<pluginExecutionFilter>
+        						<groupId>org.codehaus.gmaven</groupId>
+        						<artifactId>gmaven-plugin</artifactId>
+        						<versionRange>[1.4,)</versionRange>
+        						<goals>
+        							<goal>generateStubs</goal>
+        							<goal>compile</goal>
+        							<goal>testCompile</goal>
+        						</goals>
+        					</pluginExecutionFilter>
+        					<action>
+        						<ignore></ignore>
+        					</action>
+        				</pluginExecution>
+        			</pluginExecutions>
+        		</lifecycleMappingMetadata>
+        	</configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -1947,6 +1974,13 @@
         <scope>test</scope>
       </dependency>
 
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
+        <scope>test</scope>
+      </dependency>
+
       <!-- Added dependency to improve spring bean loading e.g KualiDefaultListableBeanFactory in rice-core-framework -->
       <dependency>
         <groupId>javax.inject</groupId>
@@ -1969,9 +2003,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/rice/tags/rice-2.2.0</connection>
-    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/tags/rice-2.2.0</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/tags/rice-2.2.0</url>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/trunk</connection>
+    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/trunk</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/trunk</url>
   </scm>
 
 </project>

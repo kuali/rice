@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,6 +75,15 @@ public interface RouteHeaderService {
     public String getDocumentStatus(String documentId);
 
     public String getAppDocId(String documentId);
+
+    /**
+     *
+     * This method Returns the application document status for the given document id
+     *
+     * @param documentId
+     * @return String
+     */
+    public String getAppDocStatus(String documentId);
     
     /**
      *

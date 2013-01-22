@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -733,7 +733,8 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Complete the response directly and launch lightbox with dialog content upon returning back to the client.
+     * Complete the response directly and launch lightbox with dialog content upon returning back to the client. If it
+     * is an ajax request then set the ajaxReturnType and set the updateComponentId to the dialogId.
      *
      * <p>
      * Need to build up the view/component properly as we would if we returned normally back to the DispatcherServlet
@@ -755,7 +756,7 @@ public abstract class UifControllerBase {
 
         // if the dialog is being invoked sever side via ajax set the ajaxReturnType to update-dialog
         // and set the updateComponentId to the dialogId
-        if(form.isAjaxRequest()) {
+        if (form.isAjaxRequest()) {
             form.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATEDIALOG.getKey());
             form.setUpdateComponentId(dialogId);
         }

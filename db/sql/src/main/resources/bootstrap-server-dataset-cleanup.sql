@@ -1,5 +1,5 @@
 --
--- Copyright 2005-2012 The Kuali Foundation
+-- Copyright 2005-2013 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -259,6 +259,10 @@ delete from krim_prncpl_t where prncpl_id not in ('1', 'admin', 'notsys')
 /
 
 delete from krim_role_perm_t where role_perm_id = '856'
+/
+
+-- delete the assignment of the recall from routing permission for KULRICE-7687
+delete from krim_role_perm_t where role_perm_id = '862'
 /
 
 -- #####################

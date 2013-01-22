@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,8 +138,10 @@ class IdentityServiceImplTest {
         EntityNameBo firstEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: true, firstName: "John", lastName: "Smith", nameType: firstEntityNameType, nameCode: "namecodeone");
         EntityEmploymentTypeBo firstEmploymentType = new EntityEmploymentTypeBo(code: "employmenttypecodeone");
         EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
-        EntityEmploymentBo firstEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone", entityAffiliation: firstEntityAffiliationBo, entityAffiliationId: "affiliationidone", employeeType: firstEmploymentType, employeeTypeCode: "employmenttypecodeone", employeeStatus: firstEmploymentStatus, employeeStatusCode: "employmentstatusone", active: true);
-        EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
+        EntityEmploymentBo firstEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone", entityAffiliation: firstEntityAffiliationBo, entityAffiliationId: "affiliationidone", employeeType: firstEmploymentType, employeeTypeCode: "employmenttypecodeone", employeeStatus: firstEmploymentStatus, employeeStatusCode: "employmentstatusone", active: true, employeeId: "emplIdOne");
+        List<EntityEmploymentBo> firstEmplymentBos = new ArrayList<EntityEmploymentBo>();
+        firstEmplymentBos.add(firstEntityEmploymentBo);
+        EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals, employmentInformation: firstEmplymentBos);
 
         EntityPrivacyPreferencesBo secondEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "BBB", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
         EntityBioDemographicsBo secondEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "BBB", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
@@ -166,8 +168,10 @@ class IdentityServiceImplTest {
         EntityNameBo secondEntityNameBo = new EntityNameBo(entityId: "BBB", id: "nameidtwo", active: true, firstName: "Bill", lastName: "Wright", nameType: secondEntityNameType, nameCode: "namecodetwo");
         EntityEmploymentTypeBo secondEmploymentType = new EntityEmploymentTypeBo(code: "employmenttypecodetwo");
         EntityEmploymentStatusBo secondEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatustwo");
-        EntityEmploymentBo secondEntityEmploymentBo = new EntityEmploymentBo(entityId: "BBB", id: "employmentidtwo", entityAffiliation: secondEntityAffiliationBo, entityAffiliationId: "affiliationidtwo", employeeType: secondEmploymentType, employeeTypeCode: "employmenttypecodetwo", employeeStatus: secondEmploymentStatus, employeeStatusCode: "employmentstatustwo", active: true);
-        EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
+        EntityEmploymentBo secondEntityEmploymentBo = new EntityEmploymentBo(entityId: "BBB", id: "employmentidtwo", entityAffiliation: secondEntityAffiliationBo, entityAffiliationId: "affiliationidtwo", employeeType: secondEmploymentType, employeeTypeCode: "employmenttypecodetwo", employeeStatus: secondEmploymentStatus, employeeStatusCode: "employmentstatustwo", active: true, employeeId: "emplIdTwo");
+        List<EntityEmploymentBo> secondEmplymentBos = new ArrayList<EntityEmploymentBo>();
+        secondEmplymentBos.add(secondEntityEmploymentBo);
+        EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals, employmentInformation: secondEmplymentBos);
 
         for (bo in [firstEntityBo, secondEntityBo]) {
             sampleEntities.put(bo.id, bo)
@@ -413,6 +417,95 @@ class IdentityServiceImplTest {
 
         mockBoService.verify(boService);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPrincipalsByEntityIdWithEmptyEntityIdFails() {
+        List<Principal> principals = identityService.getPrincipalsByEntityId("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPrincipalsByEntityIdWithNullEntityIdFails() {
+        List<Principal> principals = identityService.getPrincipalsByEntityId(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPrincipalsByEmployeeIdWithEmptyEmployeeIdFails() {
+        List<Principal> principals = identityService.getPrincipalsByEmployeeId("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPrincipalsByEmployeeIdWithNullEmployeeIdFails() {
+        List<Principal> principals = identityService.getPrincipalsByEmployeeId(null);
+    }
+
+    @Test
+    public void testGetPrincipalsByEmployeeIdSucceeds() {
+
+        mockBoService.demand.findMatching(1..2) {
+            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+                for (EntityEmploymentBo entityEmploymentBo in entityBo.employmentInformation) {
+                    if (entityEmploymentBo.employeeId.equals(map.get("employeeId")))
+                    {
+                        Collection<EntityEmploymentBo> entityEmploymentBos = new ArrayList<EntityEmploymentBo>();
+                        entityEmploymentBos.add(entityEmploymentBo);
+                        return entityEmploymentBos;
+                    }
+                }
+
+                for (PrincipalBo principalBo in samplePrincipals.values()) {
+                    if (principalBo.entityId.equals(map.get("entityId"))
+                        && principalBo.active)
+                    {
+                        Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
+                        principals.add(principalBo);
+                        return principals;
+                    }
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        String employeeId = "emplIdOne";
+        String id = "P1";
+        String entityId = 'AAA'
+        EntityEmployment sampleEntityEmployment = EntityEmploymentBo.to(sampleEntityEmployments.get(entityId));
+        Principal samplePrincipal = PrincipalBo.to(samplePrincipals.get(id));
+
+        List<Principal> principals = identityService.getPrincipalsByEmployeeId(employeeId);
+        Assert.assertNotNull(principals);
+        for (Principal p : principals) {
+            Assert.assertEquals(samplePrincipal.getPrincipalId(), p.getPrincipalId());
+        }
+        mockBoService.verify(boService);
+    }
+
+    @Test
+    public void testGetPrincipalsByEntityIdSucceeds() {
+        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
+                if (principalBo.entityId.equals(map.get("entityId"))
+                        && principalBo.active)
+                {
+                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
+                    principals.add(principalBo);
+                    return principals;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        String entityId = "AAA";
+        String id = "P1";
+        Principal samplePrincipal = PrincipalBo.to(samplePrincipals.get(id));
+        List<Principal> principals = identityService.getPrincipalsByEntityId(entityId);
+        for (Principal p : principals) {
+            Assert.assertEquals(samplePrincipal.getEntityId(), p.getEntityId());
+        }
+        mockBoService.verify(boService);
+    }
+
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddPrincipalToEntityWithNullPrincipalFails()

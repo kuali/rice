@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package edu.sampleu.travel.workflow;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -63,10 +64,8 @@ public class TravelAccountRulesEngineExecutor implements RulesEngineExecutor {
 
         Facts.Builder factsBuilder = Facts.Builder.create();
 
-        try {
+        if(StringUtils.isNotEmpty(subsidizedPercentStr)) {
             factsBuilder.addFact("Subsidized Percent", Double.valueOf(subsidizedPercentStr));
-        } catch (NumberFormatException e) {
-            factsBuilder.addFact("Subsidized Percent", 0);
         }
         factsBuilder.addFact("Account Type Code", accountTypeCode);
         factsBuilder.addFact("Initiator Principal ID", initiator);

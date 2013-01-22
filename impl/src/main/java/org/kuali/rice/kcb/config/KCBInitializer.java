@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,10 +40,8 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
     private Trigger messageProcessingTrigger;
     private JobDetail messageProcessingJobDetail;
     protected Scheduler scheduler;
-    
-	/**
-     * @see org.springframework.beans.factory.BeanFactoryAware#setBeanFactory(org.springframework.beans.factory.BeanFactory)
-     */
+
+    @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
     }
@@ -66,9 +64,8 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
         this.messageProcessingJobDetail = messageProcessingJobDetail;
     }
 
-    /**
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         GlobalKCBServiceLocator.init(beanFactory);
         // kill the reference, our job is done
@@ -93,6 +90,7 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
 		}
 	}
 
+    @Override
     public void destroy() throws Exception {
         // prevent anything from accessing our services after the module has been destroyed/shutdown
         // our module's lifecycle is tied to the Spring context lifecycle for now

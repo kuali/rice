@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
     limitations under the License.
 
 -->
-
 #set ( $packageDir = $package.replace('.', '/') )
 
 <!--
@@ -77,6 +76,7 @@
     <rice.version>${project.version}</rice.version>
     <jaxb-impl.version>${jaxb-impl.version}</jaxb-impl.version>
     <servlet-api.version>${servlet-api.version}</servlet-api.version>
+    <jaxb-impl.version>${jaxb-impl.version}</jaxb-impl.version>
 
     <!--plugin versions -->
     <!--
@@ -559,6 +559,12 @@
       <artifactId>junit</artifactId>
       <version>\${junit.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>\${jaxb-impl.version}</version>
     </dependency>
 
   </dependencies>

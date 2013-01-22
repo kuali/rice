@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
@@ -28,6 +29,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.util.List;
 
 /**
  * This class is used to handle session timeouts where {@link PessimisticLock} objects should
@@ -39,35 +41,36 @@ import org.kuali.rice.krad.util.ObjectUtils;
 public class KualiHttpSessionListener implements HttpSessionListener {
 
     /**
-     *  EMPTY METHOD IMPLEMENTATION
+     *  HttpSession hook for additional setup method when sessions are created
+     *
+     * @param se - the HttpSessionEvent containing the session
+     *
+     *  @see javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)
      */
     public void sessionCreated(HttpSessionEvent se) {
         // no operation required at this time
     }
 
     /**
-     * This method checks for the existence of a document based on session variables and deletes any locks
-     * associated with the document that belong to the current user
+     * HttpSession hook for additional cleanup when sessions are destroyed
+     *
+     * @param se - the HttpSessionEvent containing the session
      * 
      * @see javax.servlet.http.HttpSessionListener#sessionDestroyed(javax.servlet.http.HttpSessionEvent)
      */
     public void sessionDestroyed(HttpSessionEvent se) {
-        String documentNumber = (String) se.getSession().getAttribute(KRADConstants.DOCUMENT_HTTP_SESSION_KEY);
-        if (StringUtils.isNotBlank(documentNumber)) {
-            try {
-                // document service needs the usersession to operate but we need the document from document service to verify it exists
-                GlobalVariables.setUserSession((UserSession)se.getSession().getAttribute(KRADConstants.USER_SESSION_KEY));
-                Document document = KRADServiceLocatorWeb.getDocumentService().getByDocumentHeaderId(documentNumber);
-                if (ObjectUtils.isNotNull(document)) {
-                    KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getPerson());
-                }
-            } catch (WorkflowException e) {
-                throw new RuntimeException(e);
-            } finally {
-                GlobalVariables.setUserSession(null);
-            }
-           
-        }
+        releaseLocks();
+    }
+
+    /**
+     * Remove any locks that the user has for this session
+     */
+    private void releaseLocks() {
+        String sessionId = GlobalVariables.getUserSession().getKualiSessionId();
+        List<PessimisticLock> locks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForSession(sessionId);
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, user);
     }
 
 }

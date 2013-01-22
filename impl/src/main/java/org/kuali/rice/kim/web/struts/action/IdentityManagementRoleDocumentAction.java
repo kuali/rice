@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,10 +155,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         setKimType(roleDocumentForm.getRoleDocument().getRoleTypeId(), roleDocumentForm);
 
-        Role role = KimApiServiceLocator.getRoleService().getRole(roleDocumentForm.getRoleDocument().getRoleId());
-        getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
-
         getUiDocumentService().setDelegationMembersInDocument(roleDocumentForm.getRoleDocument());
+        getUiDocumentService().setMembersInDocument(roleDocumentForm.getRoleDocument());
+
         roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
         roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
 

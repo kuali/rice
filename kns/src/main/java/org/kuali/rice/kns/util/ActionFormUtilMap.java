@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -199,7 +199,9 @@ public class ActionFormUtilMap extends HashMap {
         }
 
         try {
-            encrypted = CoreApiServiceLocator.getEncryptionService().encrypt(value);
+            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                encrypted = CoreApiServiceLocator.getEncryptionService().encrypt(value);
+            }
         }
         catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt value in action form: " + e.getMessage());

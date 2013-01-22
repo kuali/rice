@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -34,8 +35,11 @@ import javax.script.ScriptException;
  */
 //TODO: this should really be renamed since it is no longer using apache BSF
 public class BSFRuleExpression implements RuleExpression {
+    private static final Logger LOG = Logger.getLogger(BSFRuleExpression.class);
+
     public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
         org.kuali.rice.kew.api.rule.RuleContract ruleDefinition = rule.getDefinition();
+        String name = "" + ruleDefinition.getName();
         String type = ruleDefinition.getRuleExpressionDef().getType();
         String lang = parseLang(type, "groovy");
         String expression = ruleDefinition.getRuleExpressionDef().getExpression();
@@ -46,7 +50,9 @@ public class BSFRuleExpression implements RuleExpression {
             declareBeans(engine, rule, context);
             result = (RuleExpressionResult) engine.eval(expression);
         } catch (ScriptException e) {
-            throw new RiceIllegalStateException("Error evaluating " + type + " expression: '" + expression + "'", e);
+            String details =  ( e.getLineNumber() >= 0 ?  " line: " + e.getLineNumber() + " column: " + e.getColumnNumber() : "" );
+            LOG.debug("Error evaluating rule '" + name + "' " + type +  " expression" + details + ": '" + expression + "'" + details, e);
+            throw new RiceIllegalStateException("Error evaluating rule '" + name + "' " + type + " expression" + details, e);
         }
         if (result == null) {
             return new RuleExpressionResult(rule, false);

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * Widget used for configuring tab options, use componentOptions for most options.
@@ -26,7 +27,17 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 public class Tabs extends WidgetBase{
 	private static final long serialVersionUID = 2L;
 
+    private UifConstants.Position position = UifConstants.Position.TOP;
+
     public Tabs() {
         super();
+    }
+
+    public UifConstants.Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(UifConstants.Position position) {
+        this.position = position;
     }
 }

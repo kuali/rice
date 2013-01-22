@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -261,22 +261,34 @@ public class DialogTestViewUifController extends UifControllerBase {
         return getUIFModelAndView(form, "DialogView-Page1");
     }
 
-    //KULRICE-8319
+    /**
+     * Test method for a controller that invokes a dialog to test expression evaluation.
+     *
+     * @param form - test form
+     * @param result - Spring form binding result
+     * @param request - http request
+     * @param response - http response
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(params = "methodToCall=" + "testExpressionDialog")
-        public ModelAndView testExpressionDialog(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
-                HttpServletRequest request, HttpServletResponse response) throws Exception {
-            String dialog4 = "schedulingConfirmDialog";
-            if (!hasDialogBeenAnswered(dialog4,form)){
-             form.setField3("TestVal");
-             return showDialog(dialog4, form, request, response);
-            }
+    public ModelAndView testExpressionDialog(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String dialog4 = "schedulingConfirmDialog";
+        if (!hasDialogBeenAnswered(dialog4, form)) {
+            // set the value for field3 which will be evaluated
+            form.setField3("TestVal");
+
+            // redirect back to client to display lightbox
+            return showDialog(dialog4, form, request, response);
+        }
 
         // clear dialog history so they can press the button again
         form.getDialogManager().removeDialog(dialog4);
+
         // reload page1
         return getUIFModelAndView(form, "DialogView-Page1");
-        }
-
+    }
 
     /**
      * Test method for a controller that invokes a dialog lightbox.

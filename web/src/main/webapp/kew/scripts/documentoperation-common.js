@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,15 +54,6 @@ function changeBranchValue(button,oIndex,iIndex){
        alert("please select 'update' radio button first before deleting a certain branch state!");
     }
  }
-
-// DocumentOperation.jsp
-function configureLookup(lookupableName, invocationModule, invocationField, invocationIndex){
-  document.forms[0].lookupableImplServiceName.value = lookupableName;
-  document.forms[0].lookupInvocationModule.value = invocationModule;
-  document.forms[0].lookupInvocationField.value = invocationField;
-  document.forms[0].lookupInvocationIndex.value = invocationIndex;
-  return post_to_action('DocumentOperation.do', 'performLookup');
-}
 
 function post_to_action(action, methodToCall) {
   document.forms[0].action = action;

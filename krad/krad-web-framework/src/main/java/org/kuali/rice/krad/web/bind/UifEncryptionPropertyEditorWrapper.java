@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,9 +45,14 @@ public class UifEncryptionPropertyEditorWrapper extends PropertyEditorSupport{
     public String getAsText() {
         try {
             if (propertyEditor != null) {
-                return CoreApiServiceLocator.getEncryptionService().encrypt(propertyEditor.getAsText());
+                if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                    return CoreApiServiceLocator.getEncryptionService().encrypt(propertyEditor.getAsText());
+                }
             }
-            return CoreApiServiceLocator.getEncryptionService().encrypt(getValue());
+            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                return CoreApiServiceLocator.getEncryptionService().encrypt(getValue());
+            }
+            return null;
         } catch (GeneralSecurityException e) {
             LOG.error("Unable to encrypt value");
             throw new RuntimeException("Unable to encrypt value.");
@@ -57,7 +62,10 @@ public class UifEncryptionPropertyEditorWrapper extends PropertyEditorSupport{
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
         try {
-            String value = CoreApiServiceLocator.getEncryptionService().decrypt(text);
+            String value = "";
+            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                value = CoreApiServiceLocator.getEncryptionService().decrypt(text);
+            }
             if (propertyEditor != null) {
                 propertyEditor.setAsText(value);
             } else {

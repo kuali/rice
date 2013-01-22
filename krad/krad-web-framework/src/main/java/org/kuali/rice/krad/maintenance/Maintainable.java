@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.kuali.rice.krad.maintenance;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 
 import java.util.List;
@@ -80,6 +81,25 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      * @param dataObjectClass - class for maintenance data object
      */
     public void setDataObjectClass(Class dataObjectClass);
+
+    /**
+     * Indicates whether the object can be locked
+     *
+     * <p>
+     * If this method is overridden, most likely  getPersistableBusinessObject() should be
+     * overridden as well.
+     * </p>
+     *
+     * @return true if maintenance is lockable, false otherwise
+     */
+    public boolean isLockable();
+
+    /**
+     * Returns the persistable business object or null if none exists.
+     *
+     * @return persistable buisness object
+     */
+    public PersistableBusinessObject getPersistableBusinessObject();
 
     /**
      * Returns the type of maintenance action this maintainable has been configured with

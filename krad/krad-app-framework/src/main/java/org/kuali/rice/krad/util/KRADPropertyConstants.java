@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +89,7 @@ public final class KRADPropertyConstants {
 	public static final String OWNED_BY_PRINCIPAL_ID = "ownedByPrincipalIdentifier";
 	public static final String OWNED_BY_USER = "ownedByUser";
 	public static final String PERCENT = "percent";
+    public static final String SESSION_ID = "sessionId";
 	public static final String TWO_DIGIT_TEXT_CODE = "twoDigitTextCode";
 	public static final String TYPE = "type";
 	public static final String UNIVERSAL_USER = "person";
@@ -107,6 +108,10 @@ public final class KRADPropertyConstants {
     public static final String POSTAL_ZIP_CODE = "postalZipCode";
     public static final String POSTAL_STATE_CODE = "postalStateCode";
     public static final String POSTAL_CODE = "postalCode";
+    
+    //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
+    public static final String RECIPIENT_NAMESPACE_CODE = "recipientNamespaceCode";
+    public static final String RECIPIENT_NAME="recipientName";
     
 	private KRADPropertyConstants() {
 		throw new UnsupportedOperationException("do not call");

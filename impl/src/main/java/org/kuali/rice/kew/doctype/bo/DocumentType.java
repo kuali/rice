@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -619,7 +619,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return policies;
     }
 
-    public List<ApplicationDocumentStatus> getValidApplicationStatuses() {
+    public List<ApplicationDocumentStatus> getValidApplicationStatuses()  {
+        if((ObjectUtils.isNull(this.validApplicationStatuses) || this.validApplicationStatuses.isEmpty())
+                && ObjectUtils.isNotNull(getParentDocType()) && isAppDocStatusInUse()) {
+            return getParentDocType().getValidApplicationStatuses();
+       }
         return this.validApplicationStatuses;
     }
 
@@ -635,6 +639,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      * @return the application document status categories for this document type
      */
     public List<ApplicationDocumentStatusCategory> getApplicationStatusCategories() {
+        if((ObjectUtils.isNull(this.validApplicationStatuses) || this.validApplicationStatuses.isEmpty())
+                && ObjectUtils.isNotNull(getParentDocType()) && isAppDocStatusInUse()) {
+            return getParentDocType().getApplicationStatusCategories();
+        }
         return applicationStatusCategories;
     }
 

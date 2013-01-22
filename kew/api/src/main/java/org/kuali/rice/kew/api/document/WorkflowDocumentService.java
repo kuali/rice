@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -254,6 +254,20 @@ public interface WorkflowDocumentService {
     @WebMethod(operationName = "getApplicationDocumentId")
     @WebResult(name = "applicationDocumentId")
 	String getApplicationDocumentId(@WebParam(name = "documentId") String documentId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Gets a value application document status of a {@link org.kuali.rice.kew.api.document.Document} with the given documentId
+     *
+     * @param documentId the unique id of the Document
+     *
+     * @return the value of the applicationDocumentStatus for the {@link org.kuali.rice.kew.api.document.Document} with the given documentId
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getApplicationDocumentStatus")
+    @WebResult(name = "applicationDocumentStatus")
+    String getApplicationDocumentStatus(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
 
     /**

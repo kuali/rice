@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -374,7 +374,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @return
      * @see org.kuali.rice.krad.uif.element.Action#getSuccessCallback()
      */
     @BeanTagAttribute(name = "successCallback")
@@ -391,7 +390,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @return
      * @see org.kuali.rice.krad.uif.element.Action#getErrorCallback()
      */
     @BeanTagAttribute(name = "errorCallback")

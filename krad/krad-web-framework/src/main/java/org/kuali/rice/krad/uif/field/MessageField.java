@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,31 @@ public class MessageField extends FieldBase {
     }
 
     /**
-     * Nested @{link org.kuali.rice.krad.uif.element.Message} component wrapped in the field
+     * Convenience method for setting the message inline components
+     *
+     * @param inlineComponents - inline components for the message
+     */
+    @BeanTagAttribute(name="inlineComponents")
+    public void setInlineComponents(List<Component> inlineComponents) {
+        if (message != null) {
+            message.setInlineComponents(inlineComponents);
+        }
+    }
+
+    /**
+     * Convenience method for setting the message component structure
+     *
+     * @param messageComponentStructure - message component structure for the message
+     */
+    @BeanTagAttribute(name="messageComponentStructure")
+    public void setMessageComponentStructure(List<Component> messageComponentStructure) {
+        if (message != null) {
+            message.setMessageComponentStructure(messageComponentStructure);
+        }
+    }
+
+    /**
+     * Nested {@link org.kuali.rice.krad.uif.element.Message} component wrapped in the field
      *
      * @return Message instance
      */

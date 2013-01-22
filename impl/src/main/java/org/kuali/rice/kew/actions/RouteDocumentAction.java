@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,10 +119,18 @@ public class RouteDocumentAction extends ActionTakenEvent {
             try {
                 String oldStatus = getRouteHeader().getDocRouteStatus();
                 getRouteHeader().markDocumentEnroute();
-                
+
                 if (((ProcessDefinitionBo)getRouteHeader().getDocumentType().getProcesses().get(0)).getInitialRouteNode() == null) {
                     getRouteHeader().setApprovedDate(new Timestamp(System.currentTimeMillis()));
+
+                    notifyStatusChange(getRouteHeader().getDocRouteStatus(), oldStatus);
+                    oldStatus = getRouteHeader().getDocRouteStatus();
+
                     getRouteHeader().markDocumentProcessed();
+
+                    notifyStatusChange(getRouteHeader().getDocRouteStatus(), oldStatus);
+                    oldStatus = getRouteHeader().getDocRouteStatus();
+
                     getRouteHeader().markDocumentFinalized();
                 }
 

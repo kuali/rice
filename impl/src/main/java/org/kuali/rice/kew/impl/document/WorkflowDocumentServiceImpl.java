@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,6 +129,15 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
  	 	return KEWServiceLocator.getRouteHeaderService().getAppDocId(documentId);
  	}
+
+    @Override
+    public String getApplicationDocumentStatus(String documentId)
+            throws RiceIllegalArgumentException {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        return KEWServiceLocator.getRouteHeaderService().getAppDocStatus(documentId);
+    }
 
     @Override
     public DocumentSearchResults documentSearch(String principalId, DocumentSearchCriteria criteria) {

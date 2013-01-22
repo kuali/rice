@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,9 @@ import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
  */
 public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
 
+    private String travelerFirstName;
+    private String travelerLastName;
+
     public TravelAuthorizationForm() {
         super();
     }
@@ -47,5 +50,21 @@ public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
     @Override
     protected String getDefaultDocumentTypeName() {
         return "TravelAuthorization";
+    }
+
+    public void setTravelerFirstName(String travelerFirstName) {
+        this.travelerFirstName = travelerFirstName;
+    }
+
+    public String getTravelerFirstName() {
+        return travelerFirstName;
+    }
+
+    public void setTravelerLastName(String travelerLastName) {
+        this.travelerLastName = travelerLastName;
+    }
+
+    public String getTravelerLastName() {
+        return travelerLastName;
     }
 }

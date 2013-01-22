@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
@@ -24,8 +26,12 @@ import org.kuali.rice.kim.document.IdentityManagementKimDocument;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.persistence.Transient;
+import javax.xml.ws.WebServiceException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -95,12 +101,16 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	}
 
 	public List<KimAttributeField> getDefinitions() {
-		if (definitions == null || definitions.isEmpty()) {
-	        KimTypeService kimTypeService = getKimTypeService(getKimType());
+		if (this.definitions == null || this.definitions.isEmpty()) {
+            this.definitions = Collections.emptyList();
+            KimTypeService kimTypeService = getKimTypeService(getKimType());
 	        if(kimTypeService!=null) {
-	        	this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getId());
-            } else {
-                this.definitions = Collections.emptyList();
+                try {
+	        	  this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getId());
+                } catch (WebServiceException e) {
+                    GlobalVariables.getMessageMap().putWarning("document.qualifier", "error.document.maintenance.group.remoteAttributesNotAvailable");
+                    LOG.warn("Not able to retrieve attribute definitions via KimTypeservice from remote system for KIM Type: " + kimType.getName(), e);
+                }
             }
 		}
 		return this.definitions;

@@ -49,6 +49,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnDocumentReadyScript();
 
+    /**
+     * Setter for the components onDocumentReady script
+     *
+     * @param onDocumentReadyScript
+     */
+    public void setOnDocumentReadyScript(String onDocumentReadyScript);
+
 	/**
 	 * Script that should be executed when the component's onUnload event is
 	 * fired
@@ -57,6 +64,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnUnloadScript();
 
+    /**
+     * Setter for the components onUnload script
+     *
+     * @param onUnloadScript
+     */
+    public void setOnUnloadScript(String onUnloadScript);
+
 	/**
 	 * Script that should be executed when the component's onClose event is
 	 * fired
@@ -64,6 +78,13 @@ public interface ScriptEventSupport {
 	 * @return String JavaScript code
 	 */
 	public String getOnCloseScript();
+
+    /**
+     * Setter for the components onClose script
+     *
+     * @param onCloseScript
+     */
+    public void setOnCloseScript(String onCloseScript);
 
 	/**
 	 * Script that should be executed when the component's onBlur event is fired
@@ -87,6 +108,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnChangeScript();
 
+    /**
+     * Setter for the components onChange script
+     *
+     * @param onChangeScript
+     */
+    public void setOnChangeScript(String onChangeScript);
+
 	/**
 	 * Script that should be executed when the component's onClick event is
 	 * fired
@@ -94,6 +122,13 @@ public interface ScriptEventSupport {
 	 * @return String JavaScript code
 	 */
 	public String getOnClickScript();
+
+    /**
+     * Setter for the components onClick script
+     *
+     * @param onClickScript
+     */
+    public void setOnClickScript(String onClickScript);
 
 	/**
 	 * Script that should be executed when the component's onDblClick event is
@@ -103,6 +138,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnDblClickScript();
 
+    /**
+     * Setter for the components onDblClick script
+     *
+     * @param onDblClickScript
+     */
+    public void setOnDblClickScript(String onDblClickScript);
+
 	/**
 	 * Script that should be executed when the component's onFocus event is
 	 * fired
@@ -110,6 +152,13 @@ public interface ScriptEventSupport {
 	 * @return String JavaScript code
 	 */
 	public String getOnFocusScript();
+
+    /**
+     * Setter for the components onFocus script
+     *
+     * @param onFocusScript
+     */
+    public void setOnFocusScript(String onFocusScript);
 
 	/**
 	 * Script that should be executed when the component's onSubmit event is
@@ -119,6 +168,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnSubmitScript();
 
+    /**
+     * Setter for the components onSubmit script
+     *
+     * @param onSubmitScript
+     */
+    public void setOnSubmitScript(String onSubmitScript);
+
 	/**
 	 * Script that should be executed when the component's onKeyPress event is
 	 * fired
@@ -126,6 +182,13 @@ public interface ScriptEventSupport {
 	 * @return String JavaScript code
 	 */
 	public String getOnKeyPressScript();
+
+    /**
+     * Setter for the components onKeyPress script
+     *
+     * @param onKeyPressScript
+     */
+    public void setOnKeyPressScript(String onKeyPressScript);
 
 	/**
 	 * Script that should be executed when the component's onKeyUp event is
@@ -135,6 +198,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnKeyUpScript();
 
+    /**
+     * Setter for the components onKeyUp script
+     *
+     * @param onKeyUpScript
+     */
+    public void setOnKeyUpScript(String onKeyUpScript);
+
 	/**
 	 * Script that should be executed when the component's onKeyDown event is
 	 * fired
@@ -142,6 +212,13 @@ public interface ScriptEventSupport {
 	 * @return String JavaScript code
 	 */
 	public String getOnKeyDownScript();
+
+    /**
+     * Setter for the components onKeyDown script
+     *
+     * @param onKeyDownScript
+     */
+    public void setOnKeyDownScript(String onKeyDownScript);
 
 	/**
 	 * Script that should be executed when the component's onMouseOver event is
@@ -151,6 +228,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnMouseOverScript();
 
+    /**
+     * Setter for the components onMouseOver script
+     *
+     * @param onMouseOverScript
+     */
+    public void setOnMouseOverScript(String onMouseOverScript);
+
 	/**
 	 * Script that should be executed when the component's onMouseOut event is
 	 * fired
@@ -158,6 +242,13 @@ public interface ScriptEventSupport {
 	 * @return String JavaScript code
 	 */
 	public String getOnMouseOutScript();
+
+    /**
+     * Setter for the components onMouseOut script
+     *
+     * @param onMouseOutScript
+     */
+    public void setOnMouseOutScript(String onMouseOutScript);
 
 	/**
 	 * Script that should be executed when the component's onMouseUp event is
@@ -167,6 +258,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnMouseUpScript();
 
+    /**
+     * Setter for the components onMouseUp script
+     *
+     * @param onMouseUpScript
+     */
+    public void setOnMouseUpScript(String onMouseUpScript);
+
 	/**
 	 * Script that should be executed when the component's onMouseDown event is
 	 * fired
@@ -175,6 +273,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnMouseDownScript();
 
+    /**
+     * Setter for the components onMouseDown script
+     *
+     * @param onMouseDownScript
+     */
+    public void setOnMouseDownScript(String onMouseDownScript);
+
 	/**
 	 * Script that should be executed when the component's onMouseMove event is
 	 * fired
@@ -182,5 +287,12 @@ public interface ScriptEventSupport {
 	 * @return String JavaScript code
 	 */
 	public String getOnMouseMoveScript();
+
+    /**
+     * Setter for the components onMouseMove script
+     *
+     * @param onMouseMoveScript
+     */
+    public void setOnMouseMoveScript(String onMouseMoveScript);
 
 }

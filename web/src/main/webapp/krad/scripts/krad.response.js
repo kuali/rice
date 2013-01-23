@@ -84,6 +84,15 @@ KradResponse.prototype = {
         var id = dataAttr.updatecomponentid;
         var component = jQuery("#" + id + "_update", content);
 
+        // remove old stuff
+        if (jQuery("#" + id + "_errors").length) {
+            jQuery("#" + id + "_errors").remove();
+        }
+
+        jQuery("input[data-for='" + id + "']").each(function () {
+            jQuery(this).remove();
+        });
+
         // replace component
         if (jQuery("#" + id).length) {
             jQuery("#" + id).replaceWith(component.html());

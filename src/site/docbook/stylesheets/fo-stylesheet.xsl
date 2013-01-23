@@ -20,4 +20,7 @@
 	<xsl:import href="appendix.xsl"/>
 	<xsl:import href="xref.xsl"/>
 	<xsl:import href="titlepage.xsl"/>
+    <xsl:attribute-set name="monospace.verbatim.properties">
+        <xsl:attribute name="wrap-option">wrap</xsl:attribute>
+    </xsl:attribute-set>
 </xsl:stylesheet>

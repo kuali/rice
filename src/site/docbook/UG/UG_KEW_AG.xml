@@ -87,9 +87,12 @@
                         Action Taken Id are required<itemizedlist>
                             <listitem><para>User - Enter initiator's network Id</para></listitem>
                             <listitem><para>Action Taken Id - Enter an entry's action taken Id</para></listitem>
+                            <listitem><para>Node Name - Enter a node name</para></listitem>
                         </itemizedlist></para></listitem>
                     <listitem><para>Queue Document Move - Move document forward or backward; information of Node Name is required
                         <itemizedlist>
+                            <listitem><para>User - Enter initiator's network Id</para></listitem>
+                            <listitem><para>Action Taken Id - Enter an entry's action taken Id</para></listitem>
                             <listitem><para>Node Name - Enter a node name</para></listitem>
                         </itemizedlist></para>
                         </listitem>

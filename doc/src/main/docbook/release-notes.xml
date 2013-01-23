@@ -36,7 +36,7 @@
         <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link
                 xlink:href="http://kuali.org/rice/download"
             >http://kuali.org/rice/download</link>.</para>
-        <para>There are three differient distributions of Rice available: source, binary and server.
+        <para>There are three different distributions of Rice available: source, binary and server.
             Please read the Installation Guide for more details on each of these
             distributions.</para>
         <para>Documentation for this release can be found at at <link

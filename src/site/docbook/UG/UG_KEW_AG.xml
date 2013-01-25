@@ -92,7 +92,8 @@
                                     <para>Action Taken Id - Enter an entry's action taken Id</para>
                                 </listitem>
                                 <listitem>
-                                    <para>Node Names - Enter a node name</para>
+                                    <para>Node Names - Enter a comma separated list of node
+                                        names</para>
                                 </listitem>
                             </itemizedlist></para></listitem>
                     <listitem><para>Queue Document Move - Move document forward or backward; User, Action Taken Id, and Node Names
@@ -104,7 +105,8 @@
                                     <para>Action Taken Id - Enter an entry's action taken Id</para>
                                 </listitem>
                                 <listitem>
-                                    <para>Node Names - Enter a node name</para>
+                                    <para>Node Names - Enter a comma separated list of node
+                                        names</para>
                                 </listitem>
                             </itemizedlist></para>
                         </listitem>

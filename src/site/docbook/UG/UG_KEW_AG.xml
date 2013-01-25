@@ -83,27 +83,46 @@
                     <listitem><para>Queue Document - Requeuing and reprocessing the document by the engine</para></listitem>
                     <listitem><para>Index Searchable Attributes - Update searchable data of the document</para></listitem>
                     <listitem><para>Queue Document Requeuer - Refresh document and regenerate request of current node</para></listitem>
-                    <listitem><para>Queue Document Blanket Approve - Move document of blanket approve forward; information of User and 
-                        Action Taken Id are required<itemizedlist>
-                            <listitem><para>User - Enter initiator's network Id</para></listitem>
-                            <listitem><para>Action Taken Id - Enter an entry's action taken Id</para></listitem>
-                            <listitem><para>Node Name - Enter a node name</para></listitem>
-                        </itemizedlist></para></listitem>
-                    <listitem><para>Queue Document Move - Move document forward or backward; information of Node Name is required
-                        <itemizedlist>
-                            <listitem><para>User - Enter initiator's network Id</para></listitem>
-                            <listitem><para>Action Taken Id - Enter an entry's action taken Id</para></listitem>
-                            <listitem><para>Node Name - Enter a node name</para></listitem>
-                        </itemizedlist></para>
+                    <listitem><para>Queue Document Blanket Approve - Move blanket approve document forward; User, Action Taken Id,
+                            and Node Names are required<itemizedlist>
+                                <listitem>
+                                    <para>User - Enter initiator's network Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Action Taken Id - Enter an entry's action taken Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Node Names - Enter a comma separated list of node
+                                        names</para>
+                                </listitem>
+                            </itemizedlist></para></listitem>
+                    <listitem><para>Queue Document Move - Move document forward or backward; User, Action Taken Id, and Node Names
+                            are required <itemizedlist>
+                                <listitem>
+                                    <para>User - Enter initiator's network Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Action Taken Id - Enter an entry's action taken Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Node Names - Enter a comma separated list of node
+                                        names</para>
+                                </listitem>
+                            </itemizedlist></para>
                         </listitem>
-                    <listitem><para>Queue Action Invocation - Reassign action request based on initiator, entry ID, and action code; 
-                        information of User, Action Item Id, and Action Code are required
-                        <itemizedlist>
-                            <listitem><para>User - Enter initiator's network Id</para></listitem>
-                            <listitem><para>Action Item Id - Enter an entry's action item Id</para></listitem>
-                            <listitem><para>Action Code - A, F, K, or C; A for Approve, F for FYI, K for acknowledge, and C for Complete</para>
-                            </listitem>
-                        </itemizedlist></para></listitem>
+                    <listitem><para>Queue Action Invocation - Reassign action request based on initiator, entry ID, and action
+                            code; User, Action Item Id, and Action Code are required <itemizedlist>
+                                <listitem>
+                                    <para>User - Enter initiator's network Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Action Item Id - Enter an entry's action item Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Action Code - A, F, K, or C; A for Approve, F for FYI, K
+                                        for acknowledge, and C for Complete</para>
+                                </listitem>
+                            </itemizedlist></para></listitem>
                 </itemizedlist></para>
         </sect2>
         <sect2>

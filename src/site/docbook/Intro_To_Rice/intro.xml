@@ -41,9 +41,8 @@
         <para>The Rice Standalone Server is built on the client-server model and is provided as a
             web archive file (WAR). The Standalone version allows client applications to be
             configured to interface with the Rice server. </para>
-        <para>The designers of Kuali Rice built it with a modular architecture where each module
-            performs a specific function that offers services to applications. The Rice architecture
-            has five major modules:<itemizedlist>
+        <para>Rice is designed with a modular architecture where each module performs a specific
+            function that offers services to applications. The Rice architecture has five major modules:<itemizedlist>
                 <listitem>
                     <para>Kuali Service Bus (KSB)</para>
                 </listitem>

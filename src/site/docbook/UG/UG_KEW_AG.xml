@@ -43,7 +43,7 @@
             <title>Initial Screen</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/DocOp_Ex9.png"/>
+                    <imagedata fileref="../images/DocOp_Ex9.png" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -74,7 +74,7 @@
                 <title>Document Actions</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_DocumentActions.png"/>
+                        <imagedata fileref="../images/DocOp_DocumentActions.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -131,7 +131,7 @@
                 <title>Document</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_Ex8.png"/>
+                        <imagedata fileref="../images/DocOp_Ex8.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -166,7 +166,7 @@
                 <title>Action Requests</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_ActionRequest.png"/>
+                        <imagedata fileref="../images/DocOp_ActionRequest.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -210,7 +210,7 @@
                 <title>Actions Taken</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_ActionsTaken.png"/>
+                        <imagedata fileref="../images/DocOp_ActionsTaken.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -238,7 +238,7 @@
                 <title>Action Items</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_ActionItems.png"/>
+                        <imagedata fileref="../images/DocOp_ActionItems.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -269,7 +269,7 @@
                 <title>Route Node Instances</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_RouteNode.png"/>
+                        <imagedata fileref="../images/DocOp_RouteNode.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -296,7 +296,7 @@
                 <title>Branch States</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_Ex6.png"/>
+                        <imagedata fileref="../images/DocOp_Ex6.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -317,7 +317,7 @@
                 <title>Annotation</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_Ex7.png"/>
+                        <imagedata fileref="../images/DocOp_Ex7.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>

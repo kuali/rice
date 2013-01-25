@@ -40,14 +40,10 @@
     enterprise workflow functionality and with customizable and configurable
     user interfaces that have a clean and universal look and feel.</para>
 
-    <para>On the server side, Kuali Rice is implemented as a group of services
-    within a Servlet container. It can also run as a module within a web
-    server such as Apache. Kuali Rice implements the Java Servlet
-    specification from Sun Microsystems. This allows developers to design
-    software that adds dynamic content to web servers using the Java
-    programming language. Servlets are a server side technology that responds
-    to web clients (typically web browsers) through a request/response
-    paradigm.</para>
+    <para>On the server side, Kuali Rice is implemented as a group of services within a Servlet
+      container. This allows developers to design software that adds dynamic content to web servers
+      using the Java programming language. Servlets are a server side technology that responds to
+      web clients (typically web browsers) through a request/response paradigm.</para>
 
     <para>On the client side, Kuali Rice has a flexible framework of pieces
     that can be included in a Rice client application.</para>

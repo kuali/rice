@@ -53,34 +53,26 @@
     client applications to be configured to interface with the Rice
     server.</para>
 
-    <para>The designers of Kuali Rice built it with a modular architecture
-    where each module performs a specific function that offers services to
-    applications. The Rice architecture has six major modules:<itemizedlist>
+    <para>Rice is designed it with a modular architecture where each module performs a specific
+      function that offers services to applications. The Rice architecture has six major modules:<itemizedlist>
         <listitem>
           <para>Kuali Service Bus (KSB)</para>
         </listitem>
-
         <listitem>
           <para>Kuali Enterprise Workflow (KEW)</para>
         </listitem>
-
         <listitem>
           <para>Kuali Enterprise Notification (KEN)</para>
         </listitem>
-
         <listitem>
           <para>Kuali Identity Management (KIM)</para>
         </listitem>
-
         <listitem>
           <para>Kuali Nervous System (KNS)</para>
         </listitem>
-
         <listitem>
-          <para>Kuali Rapid Application Development (KRAD, will eventually
-          replace KNS)</para>
+          <para>Kuali Rapid Application Development (KRAD, will eventually replace KNS)</para>
         </listitem>
-
         <listitem>
           <para>Kuali Rules Management System (KRMS)</para>
         </listitem>

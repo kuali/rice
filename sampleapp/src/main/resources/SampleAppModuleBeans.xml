@@ -179,6 +179,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMustOccurConstraint.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoPrerequisiteConstraint.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDialogGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutDetails.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutTotaling.xml</value>
@@ -289,6 +290,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMustOccurConstraintResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPrerequisiteConstraintResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDialogGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSequenceResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutDetailsResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutTotalingResources</value>

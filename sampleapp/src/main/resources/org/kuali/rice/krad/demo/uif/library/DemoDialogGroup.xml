@@ -60,10 +60,10 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example3 start-->
-        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('dialogGroupWithQuestion');" p:actionLabel="Show Yes/No Dialog"/>
-        <bean id="dialogGroupWithQuestion" parent="Uif-DialogGroup">
-          <property name="headerText" value="Question About Dialog Boxes"/>
-          <property name="promptText" value="Do you like dialog boxes?"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('preDefinedDialogOkCancel');" p:actionLabel="Show OK/Cancel Dialog"/>
+        <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup">
+          <property name="headerText" value="Confirmation Needed"/>
+          <property name="promptText" value="Please confirm that you wish to do something."/>
         </bean>
         <!-- ex:Demo-DialogGroup-Example3 end-->
       </list>
@@ -73,14 +73,43 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example4 start-->
-        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('preDefinedDialogOkCancel');" p:actionLabel="Show OK/Cancel Dialog"/>
-        <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup">
-          <property name="headerText" value="Confirmation Needed"/>
-          <property name="promptText" value="Please confirm that you wish to do something."/>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('radioButtonDialog');" p:actionLabel="Show Radio Button Dialog"/>
+        <bean id="radioButtonDialog" parent="Uif-RadioButton-DialogGroup">
+          <property name="headerText" value="Select an Item"/>
+          <property name="promptText" value="Please select the value you wish to use."/>
+          <property name="explanation">
+            <bean parent="Uif-DialogExplanation" p:render="true">
+              <property name="control">
+                <bean parent="Uif-VerticalRadioControl">
+                  <property name="options">
+                    <list>
+                      <bean parent="Uif-KeyLabelPair" p:key="1" p:value="1"/>
+                      <bean parent="Uif-KeyLabelPair" p:key="2" p:value="2"/>
+                      <bean parent="Uif-KeyLabelPair" p:key="3" p:value="3"/>
+                    </list>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+          </property>
         </bean>
         <!-- ex:Demo-DialogGroup-Example4 end-->
       </list>
     </property>
   </bean>
+  <!--<bean id="Demo-DialogGroup-ExampleX" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!- - ex:Demo-DialogGroup-ExampleX start- ->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('dialogGroupWithQuestion');" p:actionLabel="Show Yes/No Dialog"/>
+        <bean id="dialogGroupWithQuestion" parent="Uif-DialogGroup">
+          <property name="headerText" value="Question About Dialog Boxes"/>
+          <property name="promptText" value="Do you like dialog boxes?"/>
+        </bean>
+        <!- - ex:Demo-DialogGroup-ExampleX end- ->
+      </list>
+    </property>
+  </bean>-->
+
 
 </beans>

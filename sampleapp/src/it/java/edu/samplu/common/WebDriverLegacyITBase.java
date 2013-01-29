@@ -173,6 +173,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
     }
     
+    protected void assertElementPresentByLinkText(String linkText) {
+        driver.findElement(By.linkText(linkText));
+    }
+    
     protected void assertElementPresent(String locator) {
         driver.findElement(By.cssSelector(locator));
     }

@@ -78,7 +78,7 @@ class ParentChildResourceLoader implements ResourceLoader {
 	}
 
 	/**
-	 * Just stopes the internal child resource loader.
+	 * Just stops the internal child resource loader.
 	 * 
 	 * @see org.kuali.rice.core.api.lifecycle.Lifecycle#stop()
 	 */
@@ -139,11 +139,6 @@ class ParentChildResourceLoader implements ResourceLoader {
 		return this.name;
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.api.resourceloader.ResourceLoader#getContents(java.lang.String, boolean)
-	 */
 	@Override
 	public String getContents(String indent, boolean servicePerLine) {
 		StringBuilder contents = new StringBuilder();

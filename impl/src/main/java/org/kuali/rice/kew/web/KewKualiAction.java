@@ -25,7 +25,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A base action class for KEW screens.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

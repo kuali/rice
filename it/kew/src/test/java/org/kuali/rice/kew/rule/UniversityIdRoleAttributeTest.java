@@ -32,8 +32,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.xml.sax.InputSource;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */

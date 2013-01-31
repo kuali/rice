@@ -15,21 +15,19 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.struts.Globals;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.KualiExceptionIncident;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * This is a description of what this class does - ewestfal don't forget to fill
- * this in.
- * 
+ * Utility methods for use with the incident report functionality.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */

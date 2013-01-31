@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.kew.api.action;
 
+import org.kuali.rice.core.api.mo.common.Coded;
+
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.kuali.rice.core.api.mo.common.Coded;
-
 /**
- * TODO...
+ * An enumeration which indicates valid actions that can be taken against workflow documents.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @XmlRootElement(name = "actionType")

@@ -25,9 +25,9 @@ import org.kuali.rice.core.api.mo.common.Coded;
 import java.util.EnumSet;
 
 /**
- * TODO...
+ * An enumeration representing valid workflow document statuses.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @XmlRootElement(name = "documentStatus")

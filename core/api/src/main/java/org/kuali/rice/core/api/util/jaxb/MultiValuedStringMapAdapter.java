@@ -79,13 +79,6 @@ public class MultiValuedStringMapAdapter extends XmlAdapter<MultiValuedStringMap
 		return Collections.unmodifiableMap(resultMap);
 	}
 
-    /**
-    * Created by IntelliJ IDEA.
-    * User: ewestfal
-    * Date: 7/29/11
-    * Time: 2:49 PM
-    * To change this template use File | Settings | File Templates.
-    */
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "MultiValuedStringMapEntryType")
     public static final class MultiValuedStringMapEntry implements Serializable {
@@ -128,13 +121,6 @@ public class MultiValuedStringMapAdapter extends XmlAdapter<MultiValuedStringMap
 
     }
 
-    /**
-    * Created by IntelliJ IDEA.
-    * User: ewestfal
-    * Date: 7/29/11
-    * Time: 2:49 PM
-    * To change this template use File | Settings | File Templates.
-    */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "MultiValuedStringMapEntryListType")
     public static class MultiValuedStringMapEntryList extends AbstractDataTransferObject {
@@ -156,9 +142,6 @@ public class MultiValuedStringMapAdapter extends XmlAdapter<MultiValuedStringMap
             this.entries = new ArrayList<MultiValuedStringMapEntry>(entries);
         }
 
-        /**
-         * @return the attribute
-         */
         public List<MultiValuedStringMapEntry> getEntries() {
             if (this.entries == null) {
                 return Collections.emptyList();

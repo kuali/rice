@@ -21,10 +21,10 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.List;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A Spring bean which can be used to register {@code XmlLoader} and {@code XmlExporter} with the core
+ * {@code XmlImpexRegistry}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class XmlImpexRegistrationBean implements InitializingBean, DisposableBean {
 

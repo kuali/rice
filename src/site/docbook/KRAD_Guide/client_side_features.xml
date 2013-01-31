@@ -196,7 +196,9 @@
 ...
 &lt;bean parent=&quot;Uif-PrimaryActionButton&quot; p:actionLabel=&quot;Action Button&quot; <emphasis role="bold">p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;</emphasis>/&gt;
 </programlisting>
-    <para>Example of both the <emphasis role="bold">enableWhenChangedPropertyNames </emphasis>and <emphasis role="bold">evaluateDisabledOnKeyUp</emphasis> in action; when field52 has anything typed in, then enable this control for field54 immediately.</para>
+    <para>Example of both the <emphasis role="bold">enabledWhenChangedPropertyNames </emphasis>and
+        <emphasis role="bold">evaluateDisabledOnKeyUp</emphasis> in action; when field52 has
+      anything typed in, then enable this control for field54 immediately.</para>
     <programlisting> &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field54&quot;&gt;
                 &lt;property name=&quot;control&quot;&gt;
                   &lt;bean parent=&quot;Uif-TextControl&quot; p:disabled=&quot;true&quot; p:enabledWhenChangedPropertyNames=&quot;field52&quot;

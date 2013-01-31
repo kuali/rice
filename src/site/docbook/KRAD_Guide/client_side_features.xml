@@ -149,7 +149,8 @@
                         changes </para>
         </listitem>
         <listitem>
-          <para>For this cases, KRAD provides an easier configuration with the <emphasis role="bold">refreshWhenChanged</emphasis> property </para>
+          <para>For this cases, KRAD provides an easier configuration with the <emphasis role="bold"
+              >refreshWhenChangedPropertyNames</emphasis> property </para>
         </listitem>
         <listitem>
           <para>This property is configured on the component that should be refreshed. The

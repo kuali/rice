@@ -15,23 +15,23 @@
  */
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 
+import javax.xml.namespace.QName;
+
 /**
- * Managers service endpoints that are exported from this application
- * @author ewestfal
+ * Manages service endpoints that are exported from this application
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ServiceExportManager {
-	
-	Object getService(QName serviceName);
-	
-	QName getServiceName(String url);
-	
-	void exportService(ServiceDefinition serviceDefinition);
-	
-	void removeService(QName serviceName);
-	
+
+    Object getService(QName serviceName);
+
+    QName getServiceName(String url);
+
+    void exportService(ServiceDefinition serviceDefinition);
+
+    void removeService(QName serviceName);
+
 }

@@ -31,6 +31,7 @@
         <ref bean="Demo-DialogGroup-Example2"/>
         <ref bean="Demo-DialogGroup-Example3"/>
         <ref bean="Demo-DialogGroup-Example4"/>
+        <ref bean="Demo-DialogGroup-Example5"/>
       </list>
     </property>
   </bean>
@@ -38,11 +39,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example1 start-->
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group" p:actionScript="showLightboxComponent('dialogGroupFromHidden');"/>
-        <bean id="dialogGroupFromHidden" parent="Uif-DialogGroup">
-          <property name="headerText" value="Question"/>
-          <property name="promptText" value="Did you mean to open this dialog?"/>
-        </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('dialogGroupFromHidden');"/>
+        <bean id="dialogGroupFromHidden" parent="Uif-DialogGroup"/>
         <!-- ex:Demo-DialogGroup-Example1 end-->
       </list>
     </property>
@@ -51,7 +49,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example2 start-->
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from HTML" p:actionScript="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
         <!-- ex:Demo-DialogGroup-Example2 end-->
       </list>
     </property>
@@ -60,11 +58,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example3 start-->
-        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('preDefinedDialogOkCancel');" p:actionLabel="Show OK/Cancel Dialog"/>
-        <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup">
-          <property name="headerText" value="Confirmation Needed"/>
-          <property name="promptText" value="Please confirm that you wish to do something."/>
-        </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('preDefinedDialogOkCancel');"/>
+        <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup"/>
         <!-- ex:Demo-DialogGroup-Example3 end-->
       </list>
     </property>
@@ -73,10 +68,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example4 start-->
-        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('radioButtonDialog');" p:actionLabel="Show Radio Button Dialog"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('radioButtonDialog');"/>
         <bean id="radioButtonDialog" parent="Uif-RadioButton-DialogGroup">
-          <property name="headerText" value="Select an Item"/>
-          <property name="promptText" value="Please select the value you wish to use."/>
           <property name="explanation">
             <bean parent="Uif-DialogExplanation" p:render="true">
               <property name="control">
@@ -94,6 +87,51 @@
           </property>
         </bean>
         <!-- ex:Demo-DialogGroup-Example4 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-DialogGroup-Example5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DialogGroup-Example5 start-->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('progressiveDialogGroup');"/>
+        <bean id="progressiveDialogGroup" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+          <property name="hidden" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-Label"/>
+              <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
+              <bean parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean id="progressiveDialogLongText" parent="Uif-Label"/>
+                  </list>
+                </property>
+              </bean>
+              <bean id="progressiveDialogGroupInputField4" parent="Uif-InputField" p:label="Progressive Disclose" p:width="auto" p:propertyName="inputField4">
+                <property name="control">
+                  <bean parent="Uif-VerticalRadioControl">
+                    <property name="options">
+                      <list>
+                        <bean parent="Uif-KeyLabelPair" p:key="hide" p:value="Hide Group" />
+                        <bean parent="Uif-KeyLabelPair" p:key="show" p:value="Show Group" />
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+              <bean id="progressiveDialogRenderedSection" parent="Uif-HorizontalBoxSection" p:progressiveRender="inputField4 eq 'show'" p:disclosure.render="false">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-Label"/>
+                  </list>
+                </property>
+              </bean>
+              <bean id="progressiveDialogAdditionalText" parent="Uif-Label"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DialogGroup-Example5 end-->
       </list>
     </property>
   </bean>

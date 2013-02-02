@@ -32,6 +32,8 @@
         <ref bean="Demo-DialogGroup-Example3"/>
         <ref bean="Demo-DialogGroup-Example4"/>
         <ref bean="Demo-DialogGroup-Example5"/>
+        <!--<ref bean="Demo-DialogGroup-Example6"/>-->
+        <ref bean="Demo-DialogGroup-Example7"/>
       </list>
     </property>
   </bean>
@@ -135,19 +137,24 @@
       </list>
     </property>
   </bean>
-  <!--<bean id="Demo-DialogGroup-ExampleX" parent="Uif-VerticalBoxSection">
+  <!--<bean id="Demo-DialogGroup-Example6" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!- - ex:Demo-DialogGroup-ExampleX start- ->
-        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('dialogGroupWithQuestion');" p:actionLabel="Show Yes/No Dialog"/>
-        <bean id="dialogGroupWithQuestion" parent="Uif-DialogGroup">
-          <property name="headerText" value="Question About Dialog Boxes"/>
-          <property name="promptText" value="Do you like dialog boxes?"/>
-        </bean>
-        <!- - ex:Demo-DialogGroup-ExampleX end- ->
+        <!- - ex:Demo-DialogGroup-Example6 start- ->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('ImageDialog');"/>
+        <bean id="ImageDialog" parent="Uif-ImageField" p:hidden="true" p:fieldLabel.render="false"
+              p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
+        <!- - ex:Demo-DialogGroup-Example6 end- ->
       </list>
     </property>
   </bean>-->
-
-
+  <bean id="Demo-DialogGroup-Example7" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DialogGroup-Example7 start-->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxUrl('http://kuali.org');"/>
+        <!-- ex:Demo-DialogGroup-Example7 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

@@ -1073,6 +1073,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
             jQuery('#tmpForm_' + componentId).replaceWith(jQuery('#' + componentId).detach());
             jQuery('#' + componentId).css('display', cssDisplay);
+            jQuery('#renderedInLightBox').val(false);
         }});
     } else {
         // reattach component to KualiForm after fancybox closes
@@ -1082,6 +1083,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
             jQuery('#tmpForm_' + componentId).replaceWith(parent.jQuery('#' + componentId).detach());
             jQuery('#' + componentId).css('display', cssDisplay);
+            jQuery('#renderedInLightBox').val(false);
         }});
     }
 

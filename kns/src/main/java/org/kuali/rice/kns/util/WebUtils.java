@@ -311,10 +311,19 @@ public class WebUtils {
 	public static void saveMimeOutputStreamAsFile(HttpServletResponse response, String contentType,
 			ByteArrayOutputStream byteArrayOutputStream, String fileName) throws IOException {
 
+        // If there are quotes in the name, we should replace them to avoid issues.
+        // The filename will be wrapped with quotes below when it is set in the header
+        String updateFileName;
+        if(fileName.contains("\"")) {
+            updateFileName = fileName.replaceAll("\"", "");
+        } else {
+            updateFileName =  fileName;
+        }
+
 		// set response
 		response.setContentType(contentType);
-		response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
-		response.setHeader("Expires", "0");
+        response.setHeader("Content-disposition", "attachment; filename=\"" + updateFileName + "\"");
+        response.setHeader("Expires", "0");
 		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");
 		response.setContentLength(byteArrayOutputStream.size());
@@ -338,10 +347,19 @@ public class WebUtils {
 	public static void saveMimeInputStreamAsFile(HttpServletResponse response, String contentType,
 			InputStream inStream, String fileName, int fileSize) throws IOException {
 
+        // If there are quotes in the name, we should replace them to avoid issues.
+        // The filename will be wrapped with quotes below when it is set in the header
+        String updateFileName;
+        if(fileName.contains("\"")) {
+            updateFileName = fileName.replaceAll("\"", "");
+        } else {
+            updateFileName =  fileName;
+        }
+
 		// set response
 		response.setContentType(contentType);
-		response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
-		response.setHeader("Expires", "0");
+        response.setHeader("Content-disposition", "attachment; filename=\"" + updateFileName + "\"");
+        response.setHeader("Expires", "0");
 		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");
 		response.setContentLength(fileSize);

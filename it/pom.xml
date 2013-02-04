@@ -48,7 +48,6 @@
     <maven.surefire.skip>true</maven.surefire.skip>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <graph.skip>true</graph.skip>
-    <jetty.version>7.4.5.v20110725</jetty.version>
   </properties>
 
   <dependencyManagement>

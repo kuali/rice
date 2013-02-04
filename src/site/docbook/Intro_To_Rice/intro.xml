@@ -53,7 +53,7 @@
     client applications to be configured to interface with the Rice
     server.</para>
 
-    <para>Rice is designed it with a modular architecture where each module performs a specific
+    <para>Rice is designed with a modular architecture where each module performs a specific
       function that offers services to applications. The Rice architecture has six major modules:<itemizedlist>
         <listitem>
           <para>Kuali Service Bus (KSB)</para>

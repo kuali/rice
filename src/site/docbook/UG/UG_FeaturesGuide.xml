@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?> 
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,7 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
--->
+--> 
 <chapter xml:id="UG_FeaturesGuide" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>High-Level Features Guide</title>
     <para>This document is planned as a high level overview of what the various modules of Rice have to 

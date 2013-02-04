@@ -97,7 +97,7 @@
                                 </listitem>
                             </itemizedlist></para></listitem>
                     <listitem><para>Queue Document Move - Move document forward or backward; User, Action Taken Id, and Node Names
-                            are required <itemizedlist>
+                            are required<itemizedlist>
                                 <listitem>
                                     <para>User - Enter initiator's network Id</para>
                                 </listitem>

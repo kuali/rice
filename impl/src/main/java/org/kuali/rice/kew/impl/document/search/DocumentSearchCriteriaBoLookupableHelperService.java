@@ -886,6 +886,15 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         }
         populateCustomColumns(customColumns, searchResult);
 
+        // if there is an action custom column, always put that before any other field
+        for (Column column : customColumns){
+            if (column.getColumnTitle().equals(KRADConstants.ACTIONS_COLUMN_TITLE)){
+                newColumns.add(0, column);
+                customColumns.remove(column);
+                break;
+            }
+        }
+
         // now merge the custom columns into the standard columns right before the route log (if the route log column wasn't removed!)
         if (newColumns.isEmpty() || !StandardResultField.ROUTE_LOG.isFieldNameValid(newColumns.get(newColumns.size() - 1).getPropertyName())) {
             newColumns.addAll(customColumns);
@@ -911,6 +920,16 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                     attributeValue = new KualiPercent((BigDecimal)attributeValue);
                 }
                 customColumn.setPropertyValue(formatter.format(attributeValue).toString());
+
+                //populate the custom column columnAnchor because it is used for determining if the result field is displayed
+                //as static string or links
+                HtmlData anchor = customColumn.getColumnAnchor();
+                if (anchor != null && anchor instanceof HtmlData.AnchorHtmlData){
+                    HtmlData.AnchorHtmlData anchorHtml = (HtmlData.AnchorHtmlData)anchor;
+                    if (StringUtils.isEmpty(anchorHtml.getHref()) && StringUtils.isEmpty(anchorHtml.getTitle())){
+                        customColumn.setColumnAnchor(new HtmlData.AnchorHtmlData(formatter.format(attributeValue).toString(), documentAttribute.getName()));
+                    }
+                }
             }
         }
     }

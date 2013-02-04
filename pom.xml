@@ -1953,9 +1953,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/rice/trunk</connection>
-    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/trunk</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/trunk</url>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/sandbox/branches/rice-2.2-split</connection>
+    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/sandbox/branches/rice-2.2-split</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/sandbox/branches/rice-2.2-split</url>
   </scm>
 
 </project>

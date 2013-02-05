@@ -113,7 +113,7 @@
       <element name="authorizer" type="c:ShortStringType" minOccurs="0">
         <annotation>
             <documentation>
-                The class or service name of the DocumentTypePermissionService delegate used to authorize routing actions
+                The class or service name of the DocumentTypeAuthorizer used to authorize routing actions
             </documentation>
         </annotation>
       </element>

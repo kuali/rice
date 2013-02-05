@@ -360,6 +360,6 @@
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Authorizes users to take the Complete action on documents routed to them."
         NM="Take Requested Complete Action" NMSPC_CD="KUALI"
-        OBJ_ID="D0C288607975E015E0406E0AC31D23C6" PERM_ID="KR1000"
+        OBJ_ID="D0C2892F47EB9142E0406E0AC31D23D6" PERM_ID="KR1000"
         PERM_TMPL_ID="8" VER_NBR="1"/>
 </dataset>

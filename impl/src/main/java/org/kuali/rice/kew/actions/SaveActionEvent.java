@@ -69,7 +69,7 @@ public class SaveActionEvent extends ActionTakenEvent {
     	}
     	// check state before checking kim
         if (!StringUtils.equals(getPrincipal().getPrincipalName(), KRADConstants.SYSTEM_USER)) {
-    	    if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+    	    if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader())) {
     		    return "User is not authorized to Save document";
             }
     	}

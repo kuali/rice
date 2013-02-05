@@ -521,11 +521,11 @@ public class DocumentTypeTest extends KEWTestCase {
     	// The expected field values from the test XML files.
     	String[][] expectedValues = { {"TestWithMostParams1", "TestParent01", "A test of doc type parameters.", "TestWithMostParams1",
     			"mocks.MockPostProcessor", "KR-WKFLW:TestWorkgroup", null, "any", "KR-WKFLW:TestWorkgroup",
-    			"KR-WKFLW:TestWorkgroup", "_blank", "_blank", "_blank", "_blank", "_blank", "TestCl1", "false"},
+    			"KR-WKFLW:TestWorkgroup", "_blank", "_blank", "_blank", "_blank", "_blank", "TestCl1", "false", "a.doc.type.authorizer"},
     								{"TestWithMostParams1", "AnotherParent", "Another test of most parameters.",
     			"AntoherTestWithMostParams", "org.kuali.rice.kew.postprocessor.DefaultPostProcessor", "KR-WKFLW:WorkflowAdmin",
     			"KR-WKFLW:WorkflowAdmin", null, "KR-WKFLW:WorkflowAdmin", "KR-WKFLW:WorkflowAdmin", "_nothing", "_nothing",
-    			"_nothing", "_nothing", "_nothing", "KEW", "true"}
+    			"_nothing", "_nothing", "_nothing", "KEW", "true", "a.parent.authorizer"}
     	};
     	// Ingest each document type, and test the properties of each one.
     	for (int i = 0; i < expectedValues.length; i++) {
@@ -543,7 +543,8 @@ public class DocumentTypeTest extends KEWTestCase {
         	    	docType.getUnresolvedDocHandlerUrl(), docType.getUnresolvedHelpDefinitionUrl(),
         	    	docType.getUnresolvedDocSearchHelpUrl(),
         	    	docType.getNotificationFromAddress(), docType.getCustomEmailStylesheet(),
-        	    	docType.getApplicationId(), docType.getActive().toString()  			
+        	    	docType.getApplicationId(), docType.getActive().toString(),
+                    docType.getAuthorizer()
         	};
         	// Compare the expected field values with the actual ones.
     		for (int j = 0; j < expectedValues[i].length; j++) {

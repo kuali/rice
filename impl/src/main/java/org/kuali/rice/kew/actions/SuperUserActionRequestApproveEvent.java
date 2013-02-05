@@ -20,16 +20,16 @@ import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,19 +73,14 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         setActionRequest(actionRequest);
 
         actionRequestCode = actionRequest.getActionRequested();
-        //This has been set up for all of the actions, but this class only does approvals
-        if (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionRequestCode)) {
-            this.setActionTakenCode(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD);
-        } else if (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequestCode)) {
-            this.setActionTakenCode(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD);
-        } else if (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestCode)) {
-            this.setActionTakenCode(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD);
-        } else if (KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequestCode)) {
-            this.setActionTakenCode(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD);
-        } else {
+
+        ActionType suActionType = ActionType.toSuperUserActionType(ActionType.fromCode(actionRequestCode, true));
+        if (suActionType == null) {
             //TODO this should be checked
             LOG.error("Invalid SU delegation action request code: " + actionRequestCode);
             throw new RuntimeException("Invalid SU delegation action request code: " + actionRequestCode);
+        } else {
+            this.setActionTakenCode(suActionType.getCode());
         }
     }
 

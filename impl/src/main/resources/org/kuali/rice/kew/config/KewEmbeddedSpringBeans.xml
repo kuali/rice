@@ -192,7 +192,7 @@
   <bean id="rice.kew.workflowDocumentService" class="org.kuali.rice.kew.impl.document.WorkflowDocumentServiceImpl"/>
 
   <bean id="enDocumentTypePermissionService"
-        class="org.kuali.rice.kew.doctype.service.impl.DocumentTypePermissionServiceImpl"/>
+        class="org.kuali.rice.kew.doctype.service.impl.DocumentTypePermissionServiceAuthorizerImpl"/>
 
   <!--  DocumentSecurityService -->
   <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl">

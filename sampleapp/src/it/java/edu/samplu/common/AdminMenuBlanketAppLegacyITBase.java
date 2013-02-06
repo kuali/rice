@@ -32,7 +32,7 @@ public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
      * blanket approve document, returning docId as a String
      * @return docId
      */
-    public abstract String blanketApprove() throws Exception;
+//    public abstract String blanketApprove() throws Exception;
 
     @Override
     protected String getMenuLinkLocator() {
@@ -44,14 +44,14 @@ public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
         return AdminMenuLegacyITBase.CREATE_NEW_LOCATOR;
     }
 
-    @Test
-    public void testBlanketApprove() throws Exception {
-        gotoCreateNew();
-        String docId = blanketApprove();
-        blanketApproveTest();
-        assertDocFinal(docId);
-        passed();
-    }
+//    @Test
+//    public void testBlanketApprove() throws Exception {
+//        gotoCreateNew();
+//        String docId = blanketApprove();
+//        blanketApproveTest();
+//        assertDocFinal(docId);
+//        passed();
+//    }
 
     protected void assertBlanketApproveButtonsPresent() {
         assertElementPresentByName("methodToCall.route");

@@ -15,28 +15,29 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Test;
+
 import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
+import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 
 /**
- * tests that user 'admin', on blanket approving a new Campus Type maintenance document, results in a final document
+ * tests that user 'admin', on blanket approving a new group maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeBlanketAppLegacyIT extends AdminMenuBlanketAppLegacyITBase {
-
-    @Override
-    public String blanketApprove() throws Exception {
-        String docId = waitForDocId();
-        assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type " + ITUtil.DTS_TWO);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", ITUtil.DTS_TWO);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis " + ITUtil.DTS_TWO);
-        return docId;
-    }
-
+public class IdentityGroupBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
+  
     @Override
     protected String getLinkLocator() {
-        return "Campus Type";
+        return "Group";
+    }
+
+    @Test
+    public void blanketApprove() throws Exception {
+        gotoMenuLinkLocator();
+        super.testIdentityGroupBlanketApprove();
+
     }
 }
+ 

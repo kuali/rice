@@ -18,6 +18,7 @@ package edu.samplu.admin.test;
 import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
 import edu.samplu.common.ITUtil;
 import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -26,24 +27,17 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryBlanketAppLegacyIT extends AdminMenuBlanketAppLegacyITBase {
+public class LocationCountryBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
 
     @Override
     public String getLinkLocator() {
         return "Country";
     }
 
-    @Override
-    public String blanketApprove() throws InterruptedException{
-        String docId = waitForDocId();
-        assertBlanketApproveButtonsPresent();
-        String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-        String countryName = "Validation Test Country " + ITUtil.DTS + " " + twoUpperCaseLetters ;
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", countryName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", twoUpperCaseLetters);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoUpperCaseLetters);
-        return docId;
+    @Test
+    public void blanketApprove() throws Exception{
+        gotoMenuLinkLocator();
+        super.testLocationCountryBlanketApprove();  
     }
 }
  

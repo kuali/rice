@@ -15,30 +15,26 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Test;
+
 import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
+import edu.samplu.common.ITUtil;
 
 /**
- * tests that user 'admin', on blanket approving a new Campus maintenance document, results in a final document
+ * tests that user 'admin', on blanket approving a new Document Type maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCampusBlanketAppLegacyIT extends AdminMenuBlanketAppLegacyITBase {
-    
+public class WorkFlowDocTypeBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
+
     @Override
     protected String getLinkLocator() {
-        return "Campus";
+        return "Document Type";
     }
 
-   @Override
-   public String blanketApprove() throws Exception {
-       String docId = waitForDocId();
-       waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus");
-       assertBlanketApproveButtonsPresent();
-       waitAndTypeByName("document.newMaintainableObject.code", "VTC");
-       waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus");
-       waitAndTypeByName("document.newMaintainableObject.shortName", "VTC");
-       selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
-       return docId;
+    @Test
+    public void blanketApprove() throws Exception {
+       gotoMenuLinkLocator();
+       super.testWorkFlowDocTypeBlanketApprove();
     }
 }
- 

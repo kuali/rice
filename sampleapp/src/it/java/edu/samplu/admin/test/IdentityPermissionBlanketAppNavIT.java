@@ -17,26 +17,26 @@ package edu.samplu.admin.test;
 
 import org.junit.Test;
 
+import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
+import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
- * tests that user 'admin', on blanket approving a new State maintenance document, results in a final document
+ * tests that user 'admin', on blanket approving a new Permission maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationStateBlanketAppwDIT extends WebDriverLegacyITBase {
-    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=State&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.location.impl.state.StateBo&docFormKey=88888888&returnLocation=" +
-            ITUtil.PORTAL_URL + "&hideReturnLink=true";
-   
+public class IdentityPermissionBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
+
     @Override
-    public String getTestUrl() {
-        return TEST_URL;
+    protected String getLinkLocator() {
+        return "Permission";
     }
+
     @Test
-   public void testLocationStateBlanketApprove() throws Exception {
-      super.testLocationStateBlanketApprove();     
+    public void blanketApprove() throws Exception {
+        gotoMenuLinkLocator();
+        super.testIdentityPermissionBlanketApprove();
     }
 }
  

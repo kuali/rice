@@ -15,6 +15,7 @@
  */
 package edu.samplu.common;
 
+import org.apache.commons.lang.RandomStringUtils;
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static org.junit.Assert.assertEquals;
 
@@ -26,7 +27,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -42,6 +42,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.Select;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import static com.thoughtworks.selenium.SeleneseTestBase.fail;
+import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.support.ui.Select;
 
 /**
@@ -62,7 +74,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected boolean passed = false;
     static ChromeDriverService chromeDriverService;
 
-    public @Rule TestName testName= new TestName();
+    public @Rule
+    TestName testName = new TestName();
 
     String sessionId = null;
 
@@ -73,12 +86,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     @BeforeClass
     public static void createAndStartService() throws Exception {
         chromeDriverService = WebDriverUtil.createAndStartService();
-        if (chromeDriverService != null) chromeDriverService.start();
+        if (chromeDriverService != null)
+            chromeDriverService.start();
     }
 
     /**
      * Setup the WebDriver test, login and load the tested web page
-     *
+     * 
      * @throws Exception
      */
     @Before
@@ -88,11 +102,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
                 user = System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
             } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
-                String userResponse = getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString().trim()));
-                user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
+                String userResponse = getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY)
+                        + "?test=" + this.toString().trim()));
+                user = userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
             }
-            driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + getTestUrl(), getClass().getSimpleName(), testName);
-            this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
+            driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + getTestUrl(), getClass()
+                    .getSimpleName(), testName);
+            this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
         } catch (Exception e) {
             fail("Exception in setUp " + e.getMessage());
             e.printStackTrace();
@@ -103,11 +119,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     @After
     public void tearDown() throws Exception {
         try {
-//            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
-//                SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
-//            }
+            //            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
+            //                SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+            //            }
             if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
-                getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString() + "&user=" + user));
+                getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
+                        + this.toString() + "&user=" + user));
             }
         } catch (Exception e) {
             System.out.println("Exception in tearDown " + e.getMessage());
@@ -119,31 +136,32 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                     driver.quit();
                 }
             } else {
-                System.out.println("WebDriver is null, if using saucelabs, has sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
+                System.out
+                        .println("WebDriver is null, if using saucelabs, has sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
             }
         }
     }
 
-   protected String getHTML(String urlToRead) {
-      URL url;
-      HttpURLConnection conn;
-      BufferedReader rd;
-      String line;
-      String result = "";
-      try {
-         url = new URL(urlToRead);
-         conn = (HttpURLConnection) url.openConnection();
-         conn.setRequestMethod("GET");
-         rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-         while ((line = rd.readLine()) != null) {
-            result += line;
-         }
-         rd.close();
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-      return result;
-   }
+    protected String getHTML(String urlToRead) {
+        URL url;
+        HttpURLConnection conn;
+        BufferedReader rd;
+        String line;
+        String result = "";
+        try {
+            url = new URL(urlToRead);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            while ((line = rd.readLine()) != null) {
+                result += line;
+            }
+            rd.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     protected void passed() {
         passed = true;
@@ -152,35 +170,35 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void assertElementPresentByName(String name) {
         driver.findElement(By.name(name));
     }
-    
-    protected void assertElementPresentByName(String name,String message) {
-        try{
-                driver.findElement(By.name(name));
-        }catch(Exception e){
-                Assert.fail(name+ " not present "+ message);
+
+    protected void assertElementPresentByName(String name, String message) {
+        try {
+            driver.findElement(By.name(name));
+        } catch (Exception e) {
+            Assert.fail(name + " not present " + message);
         }
     }
 
     protected void assertElementPresentByXpath(String locator) {
         driver.findElement(By.xpath(locator));
     }
-    
-    protected void assertElementPresentByXpath(String locator,String message) {
-        try{
-                driver.findElement(By.xpath(locator));
-        }catch(Exception e){
-                Assert.fail(locator+ " not present "+ message);                
+
+    protected void assertElementPresentByXpath(String locator, String message) {
+        try {
+            driver.findElement(By.xpath(locator));
+        } catch (Exception e) {
+            Assert.fail(locator + " not present " + message);
         }
     }
-    
+
     protected void assertElementPresentByLinkText(String linkText) {
         driver.findElement(By.linkText(linkText));
     }
-    
+
     protected void assertElementPresent(String locator) {
         driver.findElement(By.cssSelector(locator));
     }
-    
+
     protected void assertTextPresent(String text) {
         assertTextPresent(text, "");
     }
@@ -193,15 +211,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void blanketApproveTest() throws InterruptedException {
         ITUtil.checkForIncidentReport(driver.getPageSource(), "methodToCall.blanketApprove", "");
-        waitAndClickByName("methodToCall.blanketApprove", "No blanket approve button does the user " + getUserName() + " have permission?");
+        waitAndClickByName("methodToCall.blanketApprove", "No blanket approve button does the user " + getUserName()
+                + " have permission?");
         Thread.sleep(2000);
 
-        if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size()>0) {
+        if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
             String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
-                if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size()>0) { // not present if errors are at the bottom of the page (see left-errmsg below)
-                    errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+                if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
+                    errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
+                            By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
                 }
 
                 //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
@@ -229,10 +249,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         WebDriverUtil.checkForIncidentReport(driver, locator, message);
     }
 
-    protected void clearText(By by)  throws InterruptedException {
+    protected void clearText(By by) throws InterruptedException {
         driver.findElement(by).clear();
     }
-    
+
     protected void clearText(String selector) throws InterruptedException {
         clearText(By.cssSelector(selector));
     }
@@ -244,44 +264,44 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void clearTextByXpath(String locator) throws InterruptedException {
         clearText(By.xpath(locator));
     }
-    
+
     protected String getAttribute(By by, String attribute) throws InterruptedException {
         waitFor(by);
         return driver.findElement(by).getAttribute(attribute);
     }
-    
+
     /**
      * Get value of any attribute by using element name
-     *
-     *@param name name of an element
-     *@param attribute the name of an attribute whose value is to be retrieved
-    */
-    protected String getAttributeByName(String name,String attribute) throws InterruptedException {
-        return getAttribute(By.name(name),attribute);
+     * 
+     * @param name name of an element
+     * @param attribute the name of an attribute whose value is to be retrieved
+     */
+    protected String getAttributeByName(String name, String attribute) throws InterruptedException {
+        return getAttribute(By.name(name), attribute);
     }
-    
+
     /**
      * Get value of any attribute by using element xpath
-     *
-     *@param locator locating mechanism of an element
-     *@param attribute the name of an attribute whose value is to be retrieved
-    */
-    protected String getAttributeByXpath(String locator,String attribute) throws InterruptedException {
-        return getAttribute(By.xpath(locator),attribute);
+     * 
+     * @param locator locating mechanism of an element
+     * @param attribute the name of an attribute whose value is to be retrieved
+     */
+    protected String getAttributeByXpath(String locator, String attribute) throws InterruptedException {
+        return getAttribute(By.xpath(locator), attribute);
     }
-           
+
     protected String getBaseUrlString() {
         return ITUtil.getBaseUrlString();
     }
 
-    protected String getText(By by)  throws InterruptedException {
+    protected String getText(By by) throws InterruptedException {
         return driver.findElement(by).getText();
     }
 
     protected String getTextByName(String name) throws InterruptedException {
         return getText(By.name(name));
     }
-    
+
     protected String getText(String locator) throws InterruptedException {
         return getText(By.cssSelector(locator));
     }
@@ -303,16 +323,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     /**
-     * Handles simple nested frame content; validates that a frame and nested frame exists before switching to it
+     * Handles simple nested frame content; validates that a frame and nested frame exists before
+     * switching to it
      */
     protected void gotoNestedFrame() {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.switchTo().defaultContent();
-        if(driver.findElements(By.xpath("//iframe")).size() > 0) {
+        if (driver.findElements(By.xpath("//iframe")).size() > 0) {
             WebElement containerFrame = driver.findElement(By.xpath("//iframe"));
             driver.switchTo().frame(containerFrame);
         }
-        if(driver.findElements(By.xpath("//iframe")).size() > 0) {
+        if (driver.findElements(By.xpath("//iframe")).size() > 0) {
             WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
             driver.switchTo().frame(contentFrame);
         }
@@ -320,25 +341,25 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected boolean isElementPresent(By by) {
-        return (driver.findElements(by)).size()>0;
+        return (driver.findElements(by)).size() > 0;
     }
-    
+
     protected boolean isElementPresent(String locator) {
-        return (driver.findElements(By.cssSelector(locator))).size()>0;
+        return (driver.findElements(By.cssSelector(locator))).size() > 0;
     }
-    
+
     protected boolean isElementPresentByName(String name) {
         return isElementPresent(By.name(name));
     }
-    
+
     protected boolean isElementPresentByXpath(String locator) {
         return isElementPresent(By.xpath(locator));
     }
-    
+
     protected boolean isElementPresentByLinkText(String locator) {
         return isElementPresent(By.linkText(locator));
     }
-    
+
     protected void open(String url) {
         driver.get(url);
     }
@@ -354,15 +375,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             }
         }
     }
-    
+
     protected void selectTopFrame() {
         driver.switchTo().defaultContent();
     }
-    
+
     protected void selectWindow(String locator) {
         driver.switchTo().window(locator);
     }
-    
+
     protected void close() {
         driver.close();
     }
@@ -391,19 +412,27 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
         selectFrame("iframeportlet");
         waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.DTS_TWO);
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number", "1234567890");
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
+        waitAndTypeByName(
+                "newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number",
+                "1234567890");
+        waitAndTypeByName(
+                "newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
 
         waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");
 
         waitForElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
 
-        assertEquals("1234567890", getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number","value"));
-        assertEquals("2", getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId","value"));
+        assertEquals(
+                "1234567890",
+                getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number",
+                        "value"));
+        assertEquals("2",
+                getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId", "value"));
 
         waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
         Thread.sleep(3000);
-        assertEquals(Boolean.FALSE,isElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
+        assertEquals(Boolean.FALSE,
+                isElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
         passed();
     }
 
@@ -414,7 +443,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitAndCreateNew() throws InterruptedException {
         waitAndClickByXpath("//img[@alt='create new']");
-//        waitAndClickByXpath("//a[@title='Create a new record']");
+        //        waitAndClickByXpath("//a[@title='Create a new record']");
     }
 
     protected void waitAndEdit() throws InterruptedException {
@@ -427,16 +456,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitAndSearch() throws InterruptedException {
         waitAndClickByXpath("//input[@value='search']");
-//        waitAndClickByXpath("//input[@name='methodToCall.search']");
-//        waitAndClick("input[alt='search']");
-//        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        //        waitAndClickByXpath("//input[@name='methodToCall.search']");
+        //        waitAndClick("input[alt='search']");
+        //        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
     }
 
     protected String waitForDocId() throws InterruptedException {
         waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         return driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
     }
-    
+
     protected void waitForElementPresent(String locator) throws InterruptedException {
         waitFor(By.cssSelector(locator));
     }
@@ -444,7 +473,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitForElementPresentByXpath(String locator) throws InterruptedException {
         waitFor(By.xpath(locator));
     }
-    
+
     protected void waitForElementPresentByName(String name) throws InterruptedException {
         waitFor(By.name(name));
     }
@@ -454,16 +483,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitForTitleToEqualKualiPortalIndex(String message) throws InterruptedException {
-            Thread.sleep(2000);
-// This started failing in CI....
-//        boolean failed = false;
-//        for (int second = 0;; second++) {
-//            Thread.sleep(1000);
-//            if (second >= 60) failed = true;
-//            try { if (failed || ITUtil.KUALI_PORTAL_TITLE.equals(driver.getTitle())) break; } catch (Exception e) {}
-//        }
-//        WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
-//        if (failed) fail("timeout of " + 60 + " seconds " + message);
+        Thread.sleep(2000);
+        // This started failing in CI....
+        //        boolean failed = false;
+        //        for (int second = 0;; second++) {
+        //            Thread.sleep(1000);
+        //            if (second >= 60) failed = true;
+        //            try { if (failed || ITUtil.KUALI_PORTAL_TITLE.equals(driver.getTitle())) break; } catch (Exception e) {}
+        //        }
+        //        WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
+        //        if (failed) fail("timeout of " + 60 + " seconds " + message);
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {
@@ -479,16 +508,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitFor(By by, String message) throws InterruptedException {
-//        for (int second = 0;; second++) {
-            Thread.sleep(1000);
+        //        for (int second = 0;; second++) {
+        Thread.sleep(1000);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
-//            if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
-            try { driver.findElement(by);
-                //break;
-            } catch (Exception e) {}
+        //            if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
+        try {
+            driver.findElement(by);
+            //break;
+        } catch (Exception e) {}
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-//        }
+        //        }
     }
 
     protected void waitAndClick(By by) throws InterruptedException {
@@ -500,7 +530,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             (driver.findElement(by)).click();
         } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl() );
+            fail(e.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
             e.printStackTrace();
         }
     }
@@ -510,7 +540,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndClickByLinkText(String text) throws InterruptedException {
-        waitAndClick(By.linkText(text),"");
+        waitAndClick(By.linkText(text), "");
     }
 
     protected void waitAndClickByLinkText(String text, String message) throws InterruptedException {
@@ -523,12 +553,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitAndClickByXpath(String xpath) throws InterruptedException {
         waitAndClick(By.xpath(xpath));
-    }    
+    }
 
     protected void waitAndClickByName(String name, String message) throws InterruptedException {
         waitAndClick(By.name(name), message);
     }
-    
+
     protected void waitAndClickByXpath(String xpath, String message) throws InterruptedException {
         waitAndClick(By.xpath(xpath), message);
     }
@@ -538,54 +568,54 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + " unable to type text '" + text + "' current url " + driver.getCurrentUrl()
-                    + "\n" + ITUtil.deLinespace(driver.getPageSource())
-            );
+            fail(e.getMessage() + " " + by.toString() + " unable to type text '" + text + "' current url "
+                    + driver.getCurrentUrl()
+                    + "\n" + ITUtil.deLinespace(driver.getPageSource()));
             e.printStackTrace();
         }
     }
-    
+
     protected void waitAndType(By by, String text, String message) throws InterruptedException {
         waitFor(by, "");
         try {
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message + " current url " + driver.getCurrentUrl()
-                    + "\n" + ITUtil.deLinespace(driver.getPageSource())
-            );
+            fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
+                    + " current url " + driver.getCurrentUrl()
+                    + "\n" + ITUtil.deLinespace(driver.getPageSource()));
             e.printStackTrace();
         }
     }
-    
+
     protected void waitAndType(String selector, String text) throws InterruptedException {
         waitAndType(By.cssSelector(selector), text);
     }
-    
+
     protected void waitAndTypeByXpath(String locator, String text) throws InterruptedException {
         waitAndType(By.xpath(locator), text);
     }
-    
+
     protected void waitAndTypeByXpath(String locator, String text, String message) throws InterruptedException {
         waitAndType(By.xpath(locator), text, message);
     }
-    
+
     protected void waitAndTypeByName(String name, String text) throws InterruptedException {
         waitAndType(By.name(name), text);
     }
-    
+
     protected void selectByXpath(String locator, String selectText) throws InterruptedException {
         select(By.xpath(locator), selectText);
     }
-    
+
     protected void selectByName(String name, String selectText) throws InterruptedException {
         select(By.name(name), selectText);
     }
-    
-    protected void select(By by, String selectText)  throws InterruptedException {
+
+    protected void select(By by, String selectText) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
-        for(WebElement option : options){
-            if(option.getText().equals(selectText)){
+        for (WebElement option : options) {
+            if (option.getText().equals(selectText)) {
                 option.click();
                 break;
             }
@@ -600,11 +630,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectOption(By.name(locator), optionValue);
     }
 
-    protected void selectOption(By by, String optionValue)  throws InterruptedException {
+    protected void selectOption(By by, String optionValue) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
-        for(WebElement option : options){
-            if(option.getAttribute("value").equals(optionValue)){
+        for (WebElement option : options) {
+            if (option.getAttribute("value").equals(optionValue)) {
                 option.click();
                 break;
             }
@@ -615,35 +645,35 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
         String[] optionValues = new String[options.size()];
-        int counter=0;
-        for(WebElement option : options){
+        int counter = 0;
+        for (WebElement option : options) {
             optionValues[counter] = option.getAttribute("value");
             counter++;
         }
         return optionValues;
     }
-    
+
     protected String[] getSelectOptionsByName(String name) throws InterruptedException {
         return getSelectOptions(By.name(name));
     }
-    
+
     protected String[] getSelectOptionsByXpath(String locator) throws InterruptedException {
         return getSelectOptions(By.xpath(locator));
     }
-    
+
     protected int getCssCount(String selector) {
         return getCssCount(By.cssSelector(selector));
     }
-    
+
     protected int getCssCount(By by) {
         return (driver.findElements(by)).size();
     }
-    
+
     protected void checkErrorMessageItem(String message)
     {
         final String error_locator = "//li[@class='uif-errorMessageItem']";
         assertElementPresentByXpath(error_locator);
-        String errorText=null;
+        String errorText = null;
         try {
             errorText = getTextByXpath(error_locator);
         } catch (InterruptedException e) {
@@ -652,7 +682,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         if (errorText != null && errorText.contains("errors")) {
             Assert.fail(errorText + message);
         }
-               
+
     }
 
     protected boolean isVisible(String locator) {
@@ -666,7 +696,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected boolean isVisibleByXpath(String locator) {
         return isVisible(By.xpath(locator));
     }
-    
+
     protected void waitNotVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= 60) {
@@ -679,12 +709,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
             Thread.sleep(1000);
         }
-    }   
+    }
 
     protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
         waitNotVisible(By.xpath(locator));
-    }   
-    
+    }
+
     protected void waitIsVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= 60) {
@@ -696,26 +726,31 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
     }
-    
+
     protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
         boolean failed = false;
         for (int second = 0;; second++) {
-            if (second >= 60) failed = true;                 
-            try { if (failed || (driver.findElements(By.cssSelector(elementLocator))).size()>0) break; } catch (Exception e) {}
+            if (second >= 60)
+                failed = true;
+            try {
+                if (failed || (driver.findElements(By.cssSelector(elementLocator))).size() > 0)
+                    break;
+            } catch (Exception e) {}
             Thread.sleep(1000);
         }
         checkForIncidentReport(elementLocator); // after timeout to be sure page is loaded
-        if (failed) fail("timeout of 60 seconds waiting for " + elementLocator + " " + message + " " + driver.getCurrentUrl());
+        if (failed)
+            fail("timeout of 60 seconds waiting for " + elementLocator + " " + message + " " + driver.getCurrentUrl());
     }
-    
+
     protected void waitIsVisible(String locator) throws InterruptedException {
-       waitIsVisible(By.cssSelector(locator));
+        waitIsVisible(By.cssSelector(locator));
     }
-    
+
     protected void waitIsVisibleByXpath(String locator) throws InterruptedException {
         waitIsVisible(By.xpath(locator));
     }
-    
+
     protected void colapseExpandByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
@@ -731,7 +766,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
     }
-    
+
     public void switchToWindow(String title) {
         Set<String> windows = driver.getWindowHandles();
 
@@ -742,74 +777,73 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             }
         }
     }
-    
-    public String [] getAllWindowTitles() {        
+
+    public String[] getAllWindowTitles() {
         return (String[]) driver.getWindowHandles().toArray();
     }
-    
-    
-    protected void check(By by)  throws InterruptedException {
-        WebElement element =driver.findElement(by);
-        if(!element.isSelected()){
+
+    protected void check(By by) throws InterruptedException {
+        WebElement element = driver.findElement(by);
+        if (!element.isSelected()) {
             element.click();
         }
     }
-    
+
     protected void checkByName(String name) throws InterruptedException {
         check(By.name(name));
     }
-    
+
     protected void checkByXpath(String locator) throws InterruptedException {
         check(By.xpath(locator));
     }
 
-    protected void uncheck(By by)  throws InterruptedException {
-        WebElement element =driver.findElement(by);
-        if(element.isSelected()){
+    protected void uncheck(By by) throws InterruptedException {
+        WebElement element = driver.findElement(by);
+        if (element.isSelected()) {
             element.click();
         }
     }
-    
+
     protected void uncheckByName(String name) throws InterruptedException {
         uncheck(By.name(name));
     }
-    
+
     protected void uncheckByXpath(String locator) throws InterruptedException {
         uncheck(By.xpath(locator));
     }
-    
+
     protected void fireEvent(String name, String event) {
-        ((JavascriptExecutor)driver).executeScript(
-                "var elements=document.getElementsByName(\""+name+"\");"+
-                "for (var i = 0; i < elements.length; i++){"+
-                        "elements[i]."+event+"();}"
-                        );
+        ((JavascriptExecutor) driver).executeScript(
+                "var elements=document.getElementsByName(\"" + name + "\");" +
+                        "for (var i = 0; i < elements.length; i++){" +
+                        "elements[i]." + event + "();}"
+                );
     }
-    
+
     protected void fireEvent(String name, String value, String event) {
-        ((JavascriptExecutor)driver).executeScript(
-                "var elements=document.getElementsByName(\""+name+"\");"+
-                "for (var i = 0; i < elements.length; i++){"+
-                        "if(elements[i].value=='"+value+"')"+
-                        "elements[i]."+event+"();}"
-                        );
+        ((JavascriptExecutor) driver).executeScript(
+                "var elements=document.getElementsByName(\"" + name + "\");" +
+                        "for (var i = 0; i < elements.length; i++){" +
+                        "if(elements[i].value=='" + value + "')" +
+                        "elements[i]." + event + "();}"
+                );
     }
-    
-    public void fireMouseOverEventByName(String name) {    
+
+    public void fireMouseOverEventByName(String name) {
         this.fireMouseOverEvent(By.name(name));
     }
-    
-    public void fireMouseOverEventByXpath(String locator) {    
+
+    public void fireMouseOverEventByXpath(String locator) {
         this.fireMouseOverEvent(By.xpath(locator));
     }
-    
-    public void fireMouseOverEvent(By by) {    
+
+    public void fireMouseOverEvent(By by) {
         Actions builder = new Actions(driver);
         Actions hover = builder.moveToElement(driver.findElement(by));
         hover.perform();
-   
+
     }
-    
+
     protected Boolean isTextPresent(String text)
     {
         if (driver.getPageSource().contains(text)) {
@@ -817,12 +851,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
         return Boolean.FALSE;
     }
-    
+
     protected void testAgendaEditRuleRefreshIT() throws Exception {
         selectFrame("iframeportlet");
         waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  waitAndClick("id=32");
         Thread.sleep(3000);
-        waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']", "Does user have edit permissions?"); // waitAndClick("id=194_line0");
+        waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']",
+                "Does user have edit permissions?"); // waitAndClick("id=194_line0");
         checkForIncidentReport("");
         Thread.sleep(3000);
         waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']"); // waitAndClick("//li[@id='473_node_0_parent_root']/a");
@@ -844,20 +879,21 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             waitAndClick("button.kr-refresh-button");
         }
     }
-    
+
     protected void assertBlanketApproveButtonsPresent() {
         assertElementPresentByName("methodToCall.route");
         assertElementPresentByName("methodToCall.save");
-        assertElementPresentByName("methodToCall.blanketApprove", "Blanket Approve button not present does " + user + " have permssion?");
+        assertElementPresentByName("methodToCall.blanketApprove", "Blanket Approve button not present does " + user
+                + " have permssion?");
         assertElementPresentByName("methodToCall.close");
         assertElementPresentByName("methodToCall.cancel");
     }
 
     protected void assertDocFinal(String docId) throws InterruptedException {
         waitFor(By.linkText("spreadsheet"));
-        if(isElementPresent(By.linkText(docId))){
+        if (isElementPresent(By.linkText(docId))) {
             assertEquals("FINAL", getDocStatus());
-        }else{
+        } else {
             assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
             assertEquals("FINAL", getDocStatus());
         }
@@ -866,10 +902,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     private String getDocStatus() {
         return driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText();
     }
-    
+
     protected String configNameSpaceBlanketApprove() throws Exception {
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace "
+                + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "VTN" + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
@@ -877,9 +914,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
         return docId;
     }
-  
-     protected void testConfigNamespaceBlanketApprove() throws Exception {
-        open(ITUtil.getBaseUrlString()+getTestUrl());
+
+    protected void testConfigNamespaceBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = configNameSpaceBlanketApprove();
@@ -887,636 +924,683 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertDocFinal(docId);
         passed();
     }
-     
-     protected void testConfigParamaterBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
-         assertBlanketApproveButtonsPresent();
-         assertEquals("", getTextByName("methodToCall.cancel"));
-         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", "KR-NS - Kuali Nervous System");
-         
-         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-         waitAndClickByXpath(componentLookUp);
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitAndClickByLinkText("return value");
 
-         String parameterName = "ValidationTestParameter"+ITUtil.DTS;
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", parameterName);
-         waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']",
-                 "Validation Test Parameter Description" + ITUtil.DTS);
-         selectByXpath("//select[@id='document.newMaintainableObject.parameterTypeCode']", "Document Validation");
-         waitAndClickByXpath("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
+    protected void testConfigParamaterBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
+        assertBlanketApproveButtonsPresent();
+        assertEquals("", getTextByName("methodToCall.cancel"));
+        selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", "KR-NS - Kuali Nervous System");
 
-         waitForPageToLoad();
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-          
-     protected void testCreateNewCancel() throws Exception
-     {
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         testCancelConfirmation();
-     }
-     
-     protected void testCreateDocType() throws Exception {
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
-         waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-         String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Creating new Document Type");
-         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-         waitAndClickByXpath(parentDocType);
-         waitForPageToLoad();
-         Thread.sleep(2000);
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitForPageToLoad();
-         waitAndClickByLinkText("return value");
-         String docTypeName = "TestDocType" + ITUtil.DTS;
-         waitForElementPresentByXpath("//input[@id='document.newMaintainableObject.name']");
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");
-         //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "TestDocument Label");
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']", "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
-         
-         waitAndClickByXpath("//*[@name='methodToCall.route' and @alt='submit']");
-         checkForIncidentReport();
-         waitForPageToLoad();
-         driver.switchTo().defaultContent();
-               
-         waitAndClickByXpath("//a[@title='Document Search']");
-         waitForPageToLoad();
-         selectFrame("iframeportlet");
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         Thread.sleep(2000);
-         
-         assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")).getText());
-         
-     }
-     
-     protected void testIdentityGroupBlanketApprove() throws Exception
-     {
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-                
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group " + ITUtil.DTS_TWO);
-         assertBlanketApproveButtonsPresent();
-         selectByXpath("//select[@id='document.groupNamespace']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
-         waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS_TWO);
-         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitAndClickByLinkText("return value");
-         waitAndClickByName("methodToCall.addMember.anchorAssignees");
-         waitForPageToLoad();
-               
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testIdentityPermissionBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission " + ITUtil.DTS_TWO);
-         assertBlanketApproveButtonsPresent();
-         waitAndTypeByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
-         selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
-         selectByXpath("//select[@name='document.newMaintainableObject.templateId']", AdminMenuLegacyITBase.LABEL_KUALI_DEFAULT);
-         waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']","ValidationTestPermission" + ITUtil.DTS_TWO);
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testIdentityPersonBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
-          assertBlanketApproveButtonsPresent();
-         waitAndTypeByXpath("//input[@id='document.principalName']", "principal"+ RandomStringUtils.randomAlphabetic(3).toLowerCase());
-         selectByName("newAffln.affiliationTypeCode", "Affiliate");
-         selectByName("newAffln.campusCode", "BX - BLGTN OFF CAMPUS");
-         selectByName("newAffln.campusCode", "BL - BLOOMINGTON");
-         assertElementPresentByName("newAffln.dflt");
-         waitAndClickByName("newAffln.dflt");
-         waitAndClickByName("methodToCall.addAffln.anchor");
-         waitAndClickByName("methodToCall.toggleTab.tabContact");
-         selectByName("newName.namePrefix", "Mr");
-         waitAndTypeByName("newName.firstName", "First");
-         waitAndTypeByName("newName.lastName", "Last");
-         selectByName("newName.nameSuffix", "Mr");
-         waitAndClickByName("newName.dflt");
-         waitAndClickByName("methodToCall.addName.anchor");
-         waitForPageToLoad();
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testIdentityResponsibilityBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
-         assertBlanketApproveButtonsPresent();
-         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + ITUtil.DTS_TWO);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + ITUtil.DTS_TWO);
-         waitAndClickByXpath("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
-         waitAndClickByXpath("//input[@id='document.newMaintainableObject.required']");
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testIdentityRoleBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
-         waitAndClickByLinkText("return value", "No return value link");
-        
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role " + ITUtil.DTS_TWO);
-         assertBlanketApproveButtonsPresent();
-         selectByXpath("//select[@id='document.roleNamespace']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
-         waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + ITUtil.DTS_TWO, "No Role Name input to type in.");
-         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
-         waitAndClickByLinkText("return value", "No return value link");
-         waitAndClickByName("methodToCall.addMember.anchorAssignees");
-         waitForPageToLoad();
-         blanketApproveTest();
-         assertDocFinal(docId);
-         
-     }
-     
-     protected void testLocationCampusBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus");
-         assertBlanketApproveButtonsPresent();
-         waitAndTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
-         waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + ITUtil.DTS);
-         waitAndTypeByName("document.newMaintainableObject.shortName", "VTC");
-         selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
-         blanketApproveTest();
-         assertDocFinal(docId);
-      }
-     
-     protected void testLocationCountryBlanketApprove() throws InterruptedException{
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         assertBlanketApproveButtonsPresent();
-         String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-         String countryName = "Validation Test Country " + ITUtil.DTS + " " + twoUpperCaseLetters ;
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", countryName);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", twoUpperCaseLetters);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoUpperCaseLetters);       
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testLocationCountyBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
-         assertBlanketApproveButtonsPresent();
-         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-         waitAndClickByXpath(countryLookUp);
-         waitAndTypeByName("code", "US");        
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitAndClickByLinkText("return value");
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
-         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-         waitAndClickByXpath(stateLookUp);
-         waitAndTypeByName("code", "IN");
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitAndClickByLinkText("return value");
-         String countyName = "Validation Test County"+ITUtil.DTS;
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countyName);
-         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");        
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testLocationPostBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");
-         assertBlanketApproveButtonsPresent();
-         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-         waitAndClickByXpath(countryLookUp);
-         waitAndTypeByName("code", "US");
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitAndClickByLinkText("return value");
-         String code = RandomStringUtils.randomNumeric(5);
-         waitAndTypeByXpath( "//input[@id='document.newMaintainableObject.code']", code);
-         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-         waitAndClickByXpath(stateLookUp);
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitAndClickByXpath("//table[@id='row']/tbody/tr[4]/td[1]/a");
-         String cityName = "Validation Test Postal Code "+code;
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.cityName']", cityName);  
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testLocationStateBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
-         assertBlanketApproveButtonsPresent();
-         //waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
-         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-         waitAndClickByXpath(countryLookUp);
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitAndClickByLinkText("return value");
-         String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", code);
-         String state =  "Validation Test State " + code;
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",state);
-         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");   
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testReferenceCampusTypeBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         assertBlanketApproveButtonsPresent();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type " + ITUtil.DTS_TWO);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2));
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + ITUtil.DTS_TWO); 
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }   
-     
-     protected void testWorkFlowDocTypeBlanketApprove() throws Exception {
-         open(ITUtil.getBaseUrlString()+getTestUrl());
-         selectFrame("iframeportlet");
-         waitAndCreateNew();
-         String docId = waitForDocId();
-         assertBlanketApproveButtonsPresent();
-         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type " + ITUtil.DTS);
-         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-         waitAndClickByXpath(parentDocType);
-         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-         waitAndClickByLinkText("return value");
-         String docTypeName = "DocType" + ITUtil.DTS;
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");
-         //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "Workflow Maintenance Document Type Document");
-         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']", "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
-         blanketApproveTest();
-         assertDocFinal(docId);
-     }
-     
-     protected void testVerifyAddDeleteNoteLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         waitAndClick("div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
-         waitForElementPresent("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-         waitAndClickByName("newCollectionLines['document.notes'].noteText");
-         waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
-         waitAndClick("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-         waitForElementPresentByName("document.notes[0].noteText");
+        String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(componentLookUp);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByLinkText("return value");
 
-         assertEquals("Test note", getTextByXpath("//pre"));
-         waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-         assertEquals(Boolean.FALSE, isElementPresentByName("document.notes[0].noteText"));
-         passed();
-     }
-     
-     protected void testVerifyAdHocRecipientsLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         waitAndClickByLinkText("Fiscal Officer Accounts");
+        String parameterName = "ValidationTestParameter" + ITUtil.DTS;
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", parameterName);
+        waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']",
+                "Validation Test Parameter Description" + ITUtil.DTS);
+        selectByXpath("//select[@id='document.newMaintainableObject.parameterTypeCode']", "Document Validation");
+        waitAndClickByXpath("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
 
-         assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRoutePersons'].actionRequested\"]");
-         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRoutePersons'].name\" and @type=\"text\"]");
+        waitForPageToLoad();
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
 
-         assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].actionRequested\"]");
-         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']");
-         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']");
-         passed();
-     }
-     
-     protected void testVerifyButtonsLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         assertElementPresentByXpath("//button[contains(.,'ubmit')]");
-         assertElementPresentByXpath("//button[contains(.,'ave')]");
-         assertElementPresentByXpath("//button[contains(.,'lanket approve')]");
-         assertElementPresentByXpath("//button[contains(.,'lose')]");
-         assertElementPresentByXpath("//a[contains(.,'ancel')]");
-         passed();
-     }
-     
-     protected void testVerifyConstraintText() throws Exception {
-         selectFrame("iframeportlet");
-         assertEquals("* indicates required field", getText("div.uif-boxLayout.uif-horizontalBoxLayout.clearfix > span.uif-message.uif-requiredInstructionsMessage.uif-boxLayoutHorizontalItem"));
-         
-         assertEquals("Must not be more than 10 characters", getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-         
-         assertEquals("Must not be more than 10 characters", getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Sub Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-         
-         assertEquals("Must not be more than 10 characters", getText("div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-         passed();
-     }
-     
-     protected void testVerifyDisclosures() throws Exception {
-         selectFrame("iframeportlet");
-         assertElementPresentByXpath("//span[contains(text(),'Document Overview')]");
-         assertElementPresentByXpath("//span[contains(text(),'Document Overview')]");
-         assertElementPresentByXpath("//span[contains(text(),'Account Information')]");
-         assertElementPresentByXpath("//span[contains(text(),'Fiscal Officer Accounts')]");
-         assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
-         assertElementPresentByXpath("//span[contains(text(),'Ad Hoc Recipients')]");
-         assertElementPresentByXpath("//span[contains(text(),'Route Log')]");
+    protected void testCreateNewCancel() throws Exception
+    {
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        testCancelConfirmation();
+    }
 
-         colapseExpandByXpath("//span[contains(text(),'Document Overview')]//img",
-                 "//label[contains(text(),'Organization Document Number')]");
-         colapseExpandByXpath("//span[contains(text(),'Account Information')]//img",
-                 "//label[contains(text(),'Travel Account Type Code')]");
-         colapseExpandByXpath("//span[contains(text(),'Fiscal Officer Accounts')]//img",
-                 "//a[contains(text(),'Lookup/Add Multiple Lines')]");
+    protected void testCreateDocType() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
+                "save button does not exist on the page");
+        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Creating new Document Type");
+        String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(parentDocType);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClickByLinkText("return value");
+        String docTypeName = "TestDocType" + ITUtil.DTS;
+        waitForElementPresentByXpath("//input[@id='document.newMaintainableObject.name']");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']",
+                "${kr.url}/maintenance.do?methodToCall=docHandler");
+        //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "TestDocument Label");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
+                "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
 
-         expandColapseByXpath("//span[contains(text(),'Notes and Attachments')]//img", "//label[contains(text(),'Note Text')]");
-         expandColapseByXpath("//span[contains(text(),'Ad Hoc Recipients')]", "//span[contains(text(),'Ad Hoc Group Requests')]");
+        waitAndClickByXpath("//*[@name='methodToCall.route' and @alt='submit']");
+        checkForIncidentReport();
+        waitForPageToLoad();
+        driver.switchTo().defaultContent();
 
-         // Handle frames
-         waitAndClickByXpath("//span[contains(text(),'Route Log')]//img");
-         selectFrame("routeLogIFrame");
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
 
-         waitIsVisibleByXpath("//img[@alt='refresh']");
+        assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")).getText());
 
-         // relative=top iframeportlet might look weird but either alone results in something not found.
-         selectTopFrame();
-         selectFrame("iframeportlet");
-         waitAndClickByXpath("//span[contains(text(),'Route Log')]//img");
-         selectFrame("routeLogIFrame");
+    }
 
-         waitNotVisibleByXpath("//img[@alt='refresh']");
-         passed();
-     }
-     
-     protected void testVerifyDocumentOverviewLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         assertTextPresent("Document Overview");
-         assertElementPresentByXpath("//input[@name='document.documentHeader.documentDescription']");
-         assertElementPresentByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']");
-         assertElementPresentByXpath("//textarea[@name='document.documentHeader.explanation']");
-         passed();
-     }
-     
-     protected void testVerifyExpandCollapse() throws Exception {
-         selectFrame("iframeportlet");
-         assertElementPresentByXpath("//button[contains(@class, 'uif-expandDisclosuresButton')]");
-         assertElementPresentByXpath("//button[contains(@class, 'uif-collapseDisclosuresButton')]");
-         passed();
-     }
-     
-     protected void testVerifyFieldsLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @type='text' and @size=10 and @maxlength=10]");
-         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.extension.accountTypeCode' and @type='text' and @size=2 and @maxlength=3]");
-         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subAccount' and @type='text' and @size=10 and @maxlength=10]");
-         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @size=6 and @maxlength=20]");
-         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @type='text' and @size=5 and @maxlength=10]");
-         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number\" and @type='text' and @size=10 and @maxlength=10]");
-         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId\" and @type='text' and @size=5 and @maxlength=10]");
-         passed();
-     }
-     
-     protected void testVerifyHeaderFieldsLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         assertElementPresentByXpath("//div[contains(@class, 'uif-documentNumber')]");
-         assertElementPresentByXpath("//div[contains(@class, 'uif-documentInitiatorNetworkId')]");
-         assertElementPresentByXpath("//div[contains(@class, 'uif-documentStatus')]");
-         assertElementPresentByXpath("//div[contains(@class, 'uif-documentCreateDate')]");
-         passed();
-     }
-     
-     protected void testVerifyLookupAddMultipleLinesLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         assertElementPresentByXpath("//a[contains(text(),'Lookup/Add Multiple Lines')]");
-         passed();
-     }
-     
-     protected void testVerifyNotesAndAttachments() throws Exception {
-         selectFrame("iframeportlet");
-         waitAndClickByXpath("//span[contains(text(),'Notes and Attachments')]");
-         waitForElementPresentByXpath("//button[@title='Add a Note']");
-         assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
-         assertElementPresentByXpath("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]");
-         assertElementPresentByXpath("//input[@name='attachmentFile']");
-         //assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]");
-         passed();
-     }
-     
-     protected void testVerifyQuickfinderIconsLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         assertTextPresent("Document Overview");
-         assertElementPresentByXpath("//*[@id='quickfinder1']");
-         assertElementPresentByXpath("//*[@id='quickfinder2']");
-         assertElementPresentByXpath("//*[@id='quickfinder3']");
-         assertElementPresentByXpath("//*[@id='quickfinder4_add']");
-         // TODO it would be better to test that the image isn't 404
-         passed();
-     }
-     protected void testVerifyRouteLog() throws Exception {
-         selectFrame("iframeportlet");
-         waitAndClickByLinkText("Route Log");
-         waitForElementPresent("//iframe[contains(@src,'RouteLog.do')]");
-         passed();
-     }
-     
-     protected void testVerifySave() throws Exception {
-         selectFrame("iframeportlet");
-         waitAndTypeByName("document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
-         waitAndClickByName("document.newMaintainableObject.dataObject.number");
-         waitAndTypeByName("document.newMaintainableObject.dataObject.number", "1234567890");
-         waitAndTypeByName("document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
-         waitAndTypeByName("document.newMaintainableObject.dataObject.subAccount", "a1");
-         waitAndClick("button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
-         Thread.sleep(2000);
+    protected void testIdentityGroupBlanketApprove() throws Exception
+    {
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group "
+                + ITUtil.DTS_TWO);
+        assertBlanketApproveButtonsPresent();
+        selectByXpath("//select[@id='document.groupNamespace']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS_TWO);
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByLinkText("return value");
+        waitAndClickByName("methodToCall.addMember.anchorAssignees");
+        waitForPageToLoad();
+
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testIdentityPermissionBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']",
+                "Validation Test Permission " + ITUtil.DTS_TWO);
+        assertBlanketApproveButtonsPresent();
+        waitAndTypeByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
+        selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']",
+                AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        selectByXpath("//select[@name='document.newMaintainableObject.templateId']",
+                AdminMenuLegacyITBase.LABEL_KUALI_DEFAULT);
+        waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']", "ValidationTestPermission"
+                + ITUtil.DTS_TWO);
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testIdentityPersonBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
+        assertBlanketApproveButtonsPresent();
+        waitAndTypeByXpath("//input[@id='document.principalName']", "principal"
+                + RandomStringUtils.randomAlphabetic(3).toLowerCase());
+        selectByName("newAffln.affiliationTypeCode", "Affiliate");
+        selectByName("newAffln.campusCode", "BX - BLGTN OFF CAMPUS");
+        selectByName("newAffln.campusCode", "BL - BLOOMINGTON");
+        assertElementPresentByName("newAffln.dflt");
+        waitAndClickByName("newAffln.dflt");
+        waitAndClickByName("methodToCall.addAffln.anchor");
+        waitAndClickByName("methodToCall.toggleTab.tabContact");
+        selectByName("newName.namePrefix", "Mr");
+        waitAndTypeByName("newName.firstName", "First");
+        waitAndTypeByName("newName.lastName", "Last");
+        selectByName("newName.nameSuffix", "Mr");
+        waitAndClickByName("newName.dflt");
+        waitAndClickByName("methodToCall.addName.anchor");
+        waitForPageToLoad();
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testIdentityResponsibilityBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']",
+                "Validation Test Responsibility " + ITUtil.DTS_TWO);
+        assertBlanketApproveButtonsPresent();
+        selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']",
+                AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility "
+                + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + ITUtil.DTS_TWO);
+        waitAndClickByXpath("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
+        waitAndClickByXpath("//input[@id='document.newMaintainableObject.required']");
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testIdentityRoleBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
+        waitAndClickByLinkText("return value", "No return value link");
+
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role "
+                + ITUtil.DTS_TWO);
+        assertBlanketApproveButtonsPresent();
+        selectByXpath("//select[@id='document.roleNamespace']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + ITUtil.DTS_TWO,
+                "No Role Name input to type in.");
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
+        waitAndClickByLinkText("return value", "No return value link");
+        waitAndClickByName("methodToCall.addMember.anchorAssignees");
+        waitForPageToLoad();
+        blanketApproveTest();
+        assertDocFinal(docId);
+
+    }
+
+    protected void testLocationCampusBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus");
+        assertBlanketApproveButtonsPresent();
+        waitAndTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + ITUtil.DTS);
+        waitAndTypeByName("document.newMaintainableObject.shortName", "VTC");
+        selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testLocationCountryBlanketApprove() throws InterruptedException {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        assertBlanketApproveButtonsPresent();
+        String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
+        String countryName = "Validation Test Country " + ITUtil.DTS + " " + twoUpperCaseLetters;
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", countryName);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", twoUpperCaseLetters);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoUpperCaseLetters);
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testLocationCountyBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
+        assertBlanketApproveButtonsPresent();
+        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(countryLookUp);
+        waitAndTypeByName("code", "US");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByLinkText("return value");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2)
+                .toUpperCase());
+        String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(stateLookUp);
+        waitAndTypeByName("code", "IN");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByLinkText("return value");
+        String countyName = "Validation Test County" + ITUtil.DTS;
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countyName);
+        waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testLocationPostBlanketApprove() throws Exception {
+        //         open(ITUtil.getBaseUrlString()+getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");
+        assertBlanketApproveButtonsPresent();
+        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(countryLookUp);
+        waitAndTypeByName("code", "US");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByLinkText("return value");
+        String code = RandomStringUtils.randomNumeric(5);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", code);
+        String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(stateLookUp);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath("//table[@id='row']/tbody/tr[4]/td[1]/a");
+        String cityName = "Validation Test Postal Code " + code;
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.cityName']", cityName);
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testLocationStateBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
+        assertBlanketApproveButtonsPresent();
+        //waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
+        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(countryLookUp);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByLinkText("return value");
+        String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", code);
+        String state = "Validation Test State " + code;
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", state);
+        waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testReferenceCampusTypeBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        assertBlanketApproveButtonsPresent();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type "
+                + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + ITUtil.DTS_TWO);
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testWorkFlowDocTypeBlanketApprove() throws Exception {
+//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        assertBlanketApproveButtonsPresent();
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']",
+                "Validation Test Document Type " + ITUtil.DTS);
+        String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(parentDocType);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByLinkText("return value");
+        String docTypeName = "DocType" + ITUtil.DTS;
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']",
+                "${kr.url}/maintenance.do?methodToCall=docHandler");
+        //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']",
+                "Workflow Maintenance Document Type Document");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
+                "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void testVerifyAddDeleteNoteLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndClick("div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
+        waitForElementPresent("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
+        waitAndClickByName("newCollectionLines['document.notes'].noteText");
+        waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
+        waitAndClick("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
+        waitForElementPresentByName("document.notes[0].noteText");
+
+        assertEquals("Test note", getTextByXpath("//pre"));
+        waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
+        assertEquals(Boolean.FALSE, isElementPresentByName("document.notes[0].noteText"));
+        passed();
+    }
+
+    protected void testVerifyAdHocRecipientsLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndClickByLinkText("Fiscal Officer Accounts");
+
+        assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRoutePersons'].actionRequested\"]");
+        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRoutePersons'].name\" and @type=\"text\"]");
+
+        assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].actionRequested\"]");
+        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']");
+        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']");
+        passed();
+    }
+
+    protected void testVerifyButtonsLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        assertElementPresentByXpath("//button[contains(.,'ubmit')]");
+        assertElementPresentByXpath("//button[contains(.,'ave')]");
+        assertElementPresentByXpath("//button[contains(.,'lanket approve')]");
+        assertElementPresentByXpath("//button[contains(.,'lose')]");
+        assertElementPresentByXpath("//a[contains(.,'ancel')]");
+        passed();
+    }
+
+    protected void testVerifyConstraintText() throws Exception {
+        selectFrame("iframeportlet");
+        assertEquals(
+                "* indicates required field",
+                getText("div.uif-boxLayout.uif-horizontalBoxLayout.clearfix > span.uif-message.uif-requiredInstructionsMessage.uif-boxLayoutHorizontalItem"));
+
+        assertEquals(
+                "Must not be more than 10 characters",
+                getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
+
+        assertEquals(
+                "Must not be more than 10 characters",
+                getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Sub Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
+
+        assertEquals(
+                "Must not be more than 10 characters",
+                getText("div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
+        passed();
+    }
+
+    protected void testVerifyDisclosures() throws Exception {
+        selectFrame("iframeportlet");
+        assertElementPresentByXpath("//span[contains(text(),'Document Overview')]");
+        assertElementPresentByXpath("//span[contains(text(),'Document Overview')]");
+        assertElementPresentByXpath("//span[contains(text(),'Account Information')]");
+        assertElementPresentByXpath("//span[contains(text(),'Fiscal Officer Accounts')]");
+        assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
+        assertElementPresentByXpath("//span[contains(text(),'Ad Hoc Recipients')]");
+        assertElementPresentByXpath("//span[contains(text(),'Route Log')]");
+
+        colapseExpandByXpath("//span[contains(text(),'Document Overview')]//img",
+                "//label[contains(text(),'Organization Document Number')]");
+        colapseExpandByXpath("//span[contains(text(),'Account Information')]//img",
+                "//label[contains(text(),'Travel Account Type Code')]");
+        colapseExpandByXpath("//span[contains(text(),'Fiscal Officer Accounts')]//img",
+                "//a[contains(text(),'Lookup/Add Multiple Lines')]");
+
+        expandColapseByXpath("//span[contains(text(),'Notes and Attachments')]//img",
+                "//label[contains(text(),'Note Text')]");
+        expandColapseByXpath("//span[contains(text(),'Ad Hoc Recipients')]",
+                "//span[contains(text(),'Ad Hoc Group Requests')]");
+
+        // Handle frames
+        waitAndClickByXpath("//span[contains(text(),'Route Log')]//img");
+        selectFrame("routeLogIFrame");
+
+        waitIsVisibleByXpath("//img[@alt='refresh']");
+
+        // relative=top iframeportlet might look weird but either alone results in something not found.
+        selectTopFrame();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//span[contains(text(),'Route Log')]//img");
+        selectFrame("routeLogIFrame");
+
+        waitNotVisibleByXpath("//img[@alt='refresh']");
+        passed();
+    }
+
+    protected void testVerifyDocumentOverviewLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        assertTextPresent("Document Overview");
+        assertElementPresentByXpath("//input[@name='document.documentHeader.documentDescription']");
+        assertElementPresentByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']");
+        assertElementPresentByXpath("//textarea[@name='document.documentHeader.explanation']");
+        passed();
+    }
+
+    protected void testVerifyExpandCollapse() throws Exception {
+        selectFrame("iframeportlet");
+        assertElementPresentByXpath("//button[contains(@class, 'uif-expandDisclosuresButton')]");
+        assertElementPresentByXpath("//button[contains(@class, 'uif-collapseDisclosuresButton')]");
+        passed();
+    }
+
+    protected void testVerifyFieldsLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @type='text' and @size=10 and @maxlength=10]");
+        assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.extension.accountTypeCode' and @type='text' and @size=2 and @maxlength=3]");
+        assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subAccount' and @type='text' and @size=10 and @maxlength=10]");
+        assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @size=6 and @maxlength=20]");
+        assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @type='text' and @size=5 and @maxlength=10]");
+        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number\" and @type='text' and @size=10 and @maxlength=10]");
+        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId\" and @type='text' and @size=5 and @maxlength=10]");
+        passed();
+    }
+
+    protected void testVerifyHeaderFieldsLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        assertElementPresentByXpath("//div[contains(@class, 'uif-documentNumber')]");
+        assertElementPresentByXpath("//div[contains(@class, 'uif-documentInitiatorNetworkId')]");
+        assertElementPresentByXpath("//div[contains(@class, 'uif-documentStatus')]");
+        assertElementPresentByXpath("//div[contains(@class, 'uif-documentCreateDate')]");
+        passed();
+    }
+
+    protected void testVerifyLookupAddMultipleLinesLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        assertElementPresentByXpath("//a[contains(text(),'Lookup/Add Multiple Lines')]");
+        passed();
+    }
+
+    protected void testVerifyNotesAndAttachments() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//span[contains(text(),'Notes and Attachments')]");
+        waitForElementPresentByXpath("//button[@title='Add a Note']");
+        assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
+        assertElementPresentByXpath("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]");
+        assertElementPresentByXpath("//input[@name='attachmentFile']");
+        //assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]");
+        passed();
+    }
+
+    protected void testVerifyQuickfinderIconsLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        assertTextPresent("Document Overview");
+        assertElementPresentByXpath("//*[@id='quickfinder1']");
+        assertElementPresentByXpath("//*[@id='quickfinder2']");
+        assertElementPresentByXpath("//*[@id='quickfinder3']");
+        assertElementPresentByXpath("//*[@id='quickfinder4_add']");
+        // TODO it would be better to test that the image isn't 404
+        passed();
+    }
+
+    protected void testVerifyRouteLog() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndClickByLinkText("Route Log");
+        waitForElementPresent("//iframe[contains(@src,'RouteLog.do')]");
+        passed();
+    }
+
+    protected void testVerifySave() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
+        waitAndClickByName("document.newMaintainableObject.dataObject.number");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number", "1234567890");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.subAccount", "a1");
+        waitAndClick("button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
+        Thread.sleep(2000);
         // checkErrorMessageItem(" also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
-         passed();
-      }
-     
-     protected void testVerifySubsidizedPercentWatermarkLegacy() throws Exception {
-         selectFrame("iframeportlet");
-         // May be blowing up due to multiple locators
-         //assertTrue(isElementPresent("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @placeholder='##.##   ']"));
-         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent']");
-         passed();
-     }
-     
-     private void testLookUp() throws Exception {
-         waitForPageToLoad();
-         selectFrame("iframeportlet");
-         // Mixed capitalization
-         waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
-         waitAndClickByLinkText("edit", "edit button not present does user " + user + " have permission?");
-         checkForIncidentReport("submit");
-         assertTextPresent("ubmit");
-         assertTextPresent("ave");
-         assertTextPresent("pprove");
-         assertTextPresent("lose");
-         assertTextPresent("ancel");
-              
-     }
-     
-     protected void agendaLookupAssertions() throws Exception {
-         testLookUp();
-         assertTextPresent("Rules");
-         waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
-         passed();
-     }
-     
-     protected void testAttributeDefinitionLookUp() throws Exception {
-         waitForPageToLoad();
-         selectFrame("iframeportlet");
-         waitAndClickByXpath("//button[contains(.,'earch')]");
-         Thread.sleep(3000);
-         waitForPageToLoad();
-         driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
-         waitAndClickByLinkText("1000");
-         waitForPageToLoad();
+        passed();
+    }
 
-         driver.findElement(By.tagName("body")).getText().contains("Attribute Inquiry");
-         driver.findElement(By.tagName("body")).getText().contains("KRMS Attributes");
-         driver.findElement(By.tagName("body")).getText().contains("Attribute Label");
-         driver.findElement(By.tagName("body")).getText().contains("1000");
-         driver.findElement(By.tagName("body")).getText().contains("peopleFlowId");
-         driver.findElement(By.tagName("body")).getText().contains("KR-RULE");
-         driver.findElement(By.tagName("body")).getText().contains("PeopleFlow");
-//         selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
-//         waitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
-//         Thread.sleep(500);
-//         waitAndClick("css=button:contains(cancel)");
+    protected void testVerifySubsidizedPercentWatermarkLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        // May be blowing up due to multiple locators
+        //assertTrue(isElementPresent("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @placeholder='##.##   ']"));
+        assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent']");
+        passed();
+    }
 
- // AttributeDefinition's don't have actions (yet)
-//         waitAndClick("id=u80");
-//         waitForPageToLoad();
-//         waitAndClick("id=u86");
-//         waitForPageToLoad();
-//         selectWindow("null");
-//         waitAndClick("xpath=(//input[@name='imageField'])[2]");
-//         waitForPageToLoad();
-         passed();
-     }
-     
-     protected void contextLookupAssertions() throws Exception{
-         testLookUp();
-         assertTextPresent("Notes and Attachments");
-         waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
-         passed();
-     }
-     
-     protected void testCreateNewAgenda() throws Exception {
-         selectFrame("iframeportlet");
-         selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");
-         String agendaName = "Agenda Date :"+ Calendar.getInstance().getTime().toString();
-         waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
-         waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
-         fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
-         fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
-         waitForElementPresentByName("document.newMaintainableObject.dataObject.agenda.typeId");                
-         selectByName("document.newMaintainableObject.dataObject.agenda.typeId", "Campus Agenda");
-         waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
-         waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
-         waitAndClickByXpath("//div[2]/button");
-         waitForPageToLoad();    
-         waitAndClickByXpath("//div[2]/button[3]");
-         waitForPageToLoad();
-         selectTopFrame();
-         waitAndClickByXpath("(//input[@name='imageField'])[2]");
-         passed();
-     }
-     
-     protected void testPeopleFlow() throws Exception {
-         selectFrame("iframeportlet");
-         //Click Main Menu and Create New
-//         waitAndCreateNew();
-//         waitForPageToLoad();
-         waitAndClickByLinkText("Create New");
-//         waitAndClick(By.linkText("Create New"));
-         //Save docId
-         waitForElementPresent("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
-         String docId = getText("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
-          
-         
-         driver.findElement(By.name("document.documentHeader.documentDescription")).clear();
-         driver.findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
-         new Select(driver.findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode"))).selectByVisibleText("KUALI - Kuali Systems");
-         driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-         driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + ITUtil.DTS);
-         
-         //Add Row1
-         driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-         driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("kr");
-         driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
-         Thread.sleep(3000);
-         //Add Row2
-         driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-         driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("admin");
-         driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
-         Thread.sleep(3000);
-         
-         //Blanket approve
-         driver.findElement(By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button")).click();
-         Thread.sleep(5000);
-         //Close the Doc
-//         driver.findElement(By.id("uif-close")).click();
-//         Thread.sleep(3000);
-         
-         
-         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
-         driver.findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
-         Thread.sleep(5000);
-         
-         selectFrame("iframeportlet");
-         driver.findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
-         Thread.sleep(5000);
-         assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
-         driver.switchTo().defaultContent();
-         driver.findElement(By.name("imageField")).click();
+    private void testLookUp() throws Exception {
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        // Mixed capitalization
+        waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
+        waitAndClickByLinkText("edit", "edit button not present does user " + user + " have permission?");
+        checkForIncidentReport("submit");
+        assertTextPresent("ubmit");
+        assertTextPresent("ave");
+        assertTextPresent("pprove");
+        assertTextPresent("lose");
+        assertTextPresent("ancel");
 
-     }
-     
-     protected void testTermLookupAssertions() throws Exception{
-         testLookUp();
-         assertTextPresent("Term Parameters");
-         waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
-         passed();
-     }
-     
-     protected void testTermSpecificationLookupAssertions() throws Exception{
-         testLookUp();
-         assertTextPresent("Context");
-         waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
-         passed();
-      }
+    }
+
+    protected void agendaLookupAssertions() throws Exception {
+        testLookUp();
+        assertTextPresent("Rules");
+        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        passed();
+    }
+
+    protected void testAttributeDefinitionLookUp() throws Exception {
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//button[contains(.,'earch')]");
+        Thread.sleep(3000);
+        waitForPageToLoad();
+        driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
+        waitAndClickByLinkText("1000");
+        waitForPageToLoad();
+
+        driver.findElement(By.tagName("body")).getText().contains("Attribute Inquiry");
+        driver.findElement(By.tagName("body")).getText().contains("KRMS Attributes");
+        driver.findElement(By.tagName("body")).getText().contains("Attribute Label");
+        driver.findElement(By.tagName("body")).getText().contains("1000");
+        driver.findElement(By.tagName("body")).getText().contains("peopleFlowId");
+        driver.findElement(By.tagName("body")).getText().contains("KR-RULE");
+        driver.findElement(By.tagName("body")).getText().contains("PeopleFlow");
+        //         selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
+        //         waitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
+        //         Thread.sleep(500);
+        //         waitAndClick("css=button:contains(cancel)");
+
+        // AttributeDefinition's don't have actions (yet)
+        //         waitAndClick("id=u80");
+        //         waitForPageToLoad();
+        //         waitAndClick("id=u86");
+        //         waitForPageToLoad();
+        //         selectWindow("null");
+        //         waitAndClick("xpath=(//input[@name='imageField'])[2]");
+        //         waitForPageToLoad();
+        passed();
+    }
+
+    protected void contextLookupAssertions() throws Exception {
+        testLookUp();
+        assertTextPresent("Notes and Attachments");
+        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        passed();
+    }
+
+    protected void testCreateNewAgenda() throws Exception {
+        selectFrame("iframeportlet");
+        selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");
+        String agendaName = "Agenda Date :" + Calendar.getInstance().getTime().toString();
+        waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
+        waitForElementPresentByName("document.newMaintainableObject.dataObject.agenda.typeId");
+        selectByName("document.newMaintainableObject.dataObject.agenda.typeId", "Campus Agenda");
+        waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
+        waitAndClickByXpath("//div[2]/button");
+        waitForPageToLoad();
+        waitAndClickByXpath("//div[2]/button[3]");
+        waitForPageToLoad();
+        selectTopFrame();
+        waitAndClickByXpath("(//input[@name='imageField'])[2]");
+        passed();
+    }
+
+    protected void testPeopleFlow() throws Exception {
+        selectFrame("iframeportlet");
+        //Click Main Menu and Create New
+        //         waitAndCreateNew();
+        //         waitForPageToLoad();
+        waitAndClickByLinkText("Create New");
+        //         waitAndClick(By.linkText("Create New"));
+        //Save docId
+        waitForElementPresent("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
+        String docId = getText("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
+
+        driver.findElement(By.name("document.documentHeader.documentDescription")).clear();
+        driver.findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
+        new Select(driver.findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode")))
+                .selectByVisibleText("KUALI - Kuali Systems");
+        driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
+        driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys(
+                "Document Name" + ITUtil.DTS);
+
+        //Add Row1
+        driver.findElement(
+                By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
+        driver.findElement(
+                By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName"))
+                .sendKeys("kr");
+        driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
+        Thread.sleep(3000);
+        //Add Row2
+        driver.findElement(
+                By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
+        driver.findElement(
+                By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName"))
+                .sendKeys("admin");
+        driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
+        Thread.sleep(3000);
+
+        //Blanket approve
+        driver.findElement(
+                By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button"))
+                .click();
+        Thread.sleep(5000);
+        //Close the Doc
+        //         driver.findElement(By.id("uif-close")).click();
+        //         Thread.sleep(3000);
+
+        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
+        driver.findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
+        Thread.sleep(5000);
+
+        selectFrame("iframeportlet");
+        driver.findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
+        Thread.sleep(5000);
+        assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        driver.switchTo().defaultContent();
+        driver.findElement(By.name("imageField")).click();
+
+    }
+
+    protected void testTermLookupAssertions() throws Exception {
+        testLookUp();
+        assertTextPresent("Term Parameters");
+        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        passed();
+    }
+
+    protected void testTermSpecificationLookupAssertions() throws Exception {
+        testLookUp();
+        assertTextPresent("Context");
+        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        passed();
+    }
+
 }

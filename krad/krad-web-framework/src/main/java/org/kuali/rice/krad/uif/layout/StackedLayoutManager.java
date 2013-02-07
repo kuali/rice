@@ -76,6 +76,8 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
 
     private List<Group> stackedGroups;
 
+    private boolean actionsInLineGroup;
+
     public StackedLayoutManager() {
         super();
 
@@ -185,17 +187,22 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         }
 
         // stack all fields (including sub-collections) for the group
-        List<Field> groupFields = new ArrayList<Field>();
+        List<Component> groupFields = new ArrayList<Component>();
         groupFields.addAll(lineFields);
         groupFields.addAll(subCollectionFields);
 
-        lineGroup.setItems(groupFields);
-
         // set line actions on group footer
         if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly() && (lineGroup.getFooter() != null)) {
-            lineGroup.getFooter().setItems(actions);
+
+            // add the actions to the line group if isActionsInLineGroup flag is true
+            if (isActionsInLineGroup()) {
+                groupFields.addAll(actions);
+            }else{
+                lineGroup.getFooter().setItems(actions);
+            }
         }
 
+        lineGroup.setItems(groupFields);
         stackedGroups.add(lineGroup);
     }
 
@@ -472,4 +479,22 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         this.stackedGroups = stackedGroups;
     }
 
+    /**
+     * Flag that indicates whether actions will be added in the same group as the line items instead of in the
+     * footer of the line group
+     *
+     * @return boolean
+     */
+    public boolean isActionsInLineGroup() {
+        return actionsInLineGroup;
+    }
+
+    /**
+     * Set flag to add actions in the same group as the line items
+     *
+     * @param actionsInLineGroup
+     */
+    public void setActionsInLineGroup(boolean actionsInLineGroup) {
+        this.actionsInLineGroup = actionsInLineGroup;
+    }
 }

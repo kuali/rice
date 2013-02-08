@@ -688,7 +688,7 @@ public abstract class UifControllerBase {
      * @return boolean - true if user chose affirmative response, false if negative response was chosen
      */
     protected boolean getBooleanDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
         DialogManager dm = form.getDialogManager();
         if (!dm.hasDialogBeenAnswered(dialogId)) {
             showDialog(dialogId, form, request, response);
@@ -718,7 +718,7 @@ public abstract class UifControllerBase {
      * @throws Exception
      */
     protected String getStringDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
         DialogManager dm = form.getDialogManager();
         if (!dm.hasDialogBeenAnswered(dialogId)) {
             showDialog(dialogId, form, request, response);
@@ -749,7 +749,7 @@ public abstract class UifControllerBase {
      * @throws Exception
      */
     protected ModelAndView showDialog(String dialogId, UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
         // js script to invoke lightbox: runs onDocumentReady
         form.setLightboxScript("openLightboxOnLoad('" + dialogId + "');");
         form.getDialogManager().addDialog(dialogId, form.getMethodToCall());
@@ -781,7 +781,7 @@ public abstract class UifControllerBase {
      */
     @RequestMapping(params = "methodToCall=returnFromLightbox")
     public ModelAndView returnFromLightbox(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         String newMethodToCall = "";
         
         // Save user responses from dialog

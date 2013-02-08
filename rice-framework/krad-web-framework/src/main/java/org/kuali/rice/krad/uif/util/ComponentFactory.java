@@ -73,6 +73,7 @@ import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.LightBox;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,6 +125,8 @@ public class ComponentFactory {
     protected static final String GROUP = "Uif-GroupBase";
     protected static final String VERTICAL_BOX_GROUP = "Uif-VerticalBoxGroup";
     protected static final String HORIZONTAL_BOX_GROUP = "Uif-HorizontalBoxGroup";
+    protected static final String VERTICAL_BOX_SECTION = "Uif-VerticalBoxSection";
+    protected static final String HORIZONTAL_BOX_SECTION = "Uif-HorizontalBoxSection";
     protected static final String PAGE_GROUP = "Uif-Page";
     protected static final String GROUP_GRID_LAYOUT = "Uif-GridSection";
     protected static final String GROUP_BODY_ONLY = "Uif-BoxGroupBase";
@@ -145,6 +148,8 @@ public class ComponentFactory {
     protected static final String HELP_ACTION = "Uif-HelpAction";
     protected static final String IMAGE_CAPTION_HEADER = "Uif-ImageCaptionHeader";
     protected static final String IMAGE_CUTLINE_MESSAGE = "Uif-ImageCutineMessage";
+
+    protected static final String LIGHTBOX = "Uif-LightBox";
 
     private static Map<String, Component> cache = new HashMap<String, Component>();
 
@@ -709,24 +714,34 @@ public class ComponentFactory {
         switch (controlType) {
             case CHECKBOX:
                 control = getCheckboxControl();
+                break;
             case CHECKBOXGROUP:
                 control = getCheckboxGroupControl();
+                break;
             case FILE:
                 control = getFileControl();
+                break;
             case GROUP:
                 control = getGroupControl();
+                break;
             case HIDDEN:
                 control = getHiddenControl();
+                break;
             case RADIOGROUP:
                 control = getRadioGroupControl();
+                break;
             case SELECT:
                 control = getSelectControl();
+                break;
             case TEXTAREA:
                 control = getTextAreaControl();
+                break;
             case TEXT:
                 control = getTextControl();
+                break;
             case USER:
                 control = getUserControl();
+                break;
         }
 
         return control;
@@ -892,6 +907,24 @@ public class ComponentFactory {
      */
     public static Group getHorizontalBoxGroup() {
         return (Group) getNewComponentInstance(HORIZONTAL_BOX_GROUP);
+    }
+
+    /**
+     * Gets the vertical box section
+     *
+     * @return Group group
+     */
+    public static Group getVerticalBoxSection() {
+        return (Group) getNewComponentInstance(VERTICAL_BOX_SECTION);
+    }
+
+    /**
+     * Gets the horizontal box section
+     *
+     * @return Group group
+     */
+    public static Group getHorizontalBoxSection() {
+        return (Group) getNewComponentInstance(HORIZONTAL_BOX_SECTION);
     }
 
     /**
@@ -1063,5 +1096,14 @@ public class ComponentFactory {
      */
     public static Message getImageCutlineMessage() {
         return (Message) getNewComponentInstance(IMAGE_CUTLINE_MESSAGE);
+    }
+
+    /**
+     * Gets the default lightbox configuration
+     *
+     * @return Lightbox component
+     */
+    public static LightBox getLightBox() {
+        return (LightBox) getNewComponentInstance(LIGHTBOX);
     }
 }

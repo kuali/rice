@@ -15,18 +15,20 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
+import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.PropertyValue;
+import org.springframework.util.StringUtils;
 
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -179,6 +181,23 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     }
 
     @Override
+    protected BeanWrapperImpl getBeanWrapperForPropertyPath(String propertyPath) {
+        BeanWrapperImpl beanWrapper = super.getBeanWrapperForPropertyPath(propertyPath);
+
+        PropertyTokenHolder tokens = getPropertyNameTokens(propertyPath);
+        String canonicalName = tokens.canonicalName;
+
+        int pos = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(canonicalName);
+        if (pos != -1) {
+            canonicalName = canonicalName.substring(0, pos);
+        }
+
+        copyCustomEditorsTo(beanWrapper, canonicalName);
+
+        return beanWrapper;
+    }
+
+    @Override
     public Object getPropertyValue(String propertyName) throws BeansException {
         registerEditorFromView(propertyName);
         return super.getPropertyValue(propertyName);
@@ -208,5 +227,54 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         //TODO clear cache?
         model = (ViewModel) object;
         super.setWrappedInstance(object);
+    }
+
+    /**
+     * Parse the given property name into the corresponding property name tokens.
+     *
+     * @param propertyName the property name to parse
+     * @return representation of the parsed property tokens
+     */
+    private PropertyTokenHolder getPropertyNameTokens(String propertyName) {
+        PropertyTokenHolder tokens = new PropertyTokenHolder();
+        String actualName = null;
+        List<String> keys = new ArrayList<String>(2);
+        int searchIndex = 0;
+        while (searchIndex != -1) {
+            int keyStart = propertyName.indexOf(PROPERTY_KEY_PREFIX, searchIndex);
+            searchIndex = -1;
+            if (keyStart != -1) {
+                int keyEnd = propertyName.indexOf(PROPERTY_KEY_SUFFIX, keyStart + PROPERTY_KEY_PREFIX.length());
+                if (keyEnd != -1) {
+                    if (actualName == null) {
+                        actualName = propertyName.substring(0, keyStart);
+                    }
+                    String key = propertyName.substring(keyStart + PROPERTY_KEY_PREFIX.length(), keyEnd);
+                    if ((key.startsWith("'") && key.endsWith("'")) || (key.startsWith("\"") && key.endsWith("\""))) {
+                        key = key.substring(1, key.length() - 1);
+                    }
+                    keys.add(key);
+                    searchIndex = keyEnd + PROPERTY_KEY_SUFFIX.length();
+                }
+            }
+        }
+        tokens.actualName = (actualName != null ? actualName : propertyName);
+        tokens.canonicalName = tokens.actualName;
+        if (!keys.isEmpty()) {
+            tokens.canonicalName += PROPERTY_KEY_PREFIX +
+                    StringUtils.collectionToDelimitedString(keys, PROPERTY_KEY_SUFFIX + PROPERTY_KEY_PREFIX) +
+                    PROPERTY_KEY_SUFFIX;
+            tokens.keys = StringUtils.toStringArray(keys);
+        }
+        return tokens;
+    }
+
+    private static class PropertyTokenHolder {
+
+        public String canonicalName;
+
+        public String actualName;
+
+        public String[] keys;
     }
 }

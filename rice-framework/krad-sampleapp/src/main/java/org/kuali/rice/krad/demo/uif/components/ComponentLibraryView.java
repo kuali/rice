@@ -70,7 +70,7 @@ public class ComponentLibraryView extends FormView {
     private String largeExampleFieldId;
 
     public static enum ExampleSize {
-        SMALL, LARGE;
+        SMALL, LARGE, XLARGE, WINDOW;
     }
 
     private ExampleSize exampleSize;
@@ -163,7 +163,8 @@ public class ComponentLibraryView extends FormView {
         exhibit.setDemoSourceCode(sourceCode);
         exhibit.setDemoGroups(this.getDemoGroups());
 
-        if (this.getExampleSize() != null && this.getExampleSize().equals(ExampleSize.LARGE)) {
+        if (this.getExampleSize() != null &&
+                (this.getExampleSize().equals(ExampleSize.LARGE) || this.getExampleSize().equals(ExampleSize.XLARGE))) {
             exhibit.getTabGroup().addStyleClass("demo-noTabs");
             Group headerRightGroup = view.getPage().getHeader().getRightGroup();
             for (Component item : headerRightGroup.getItems()) {
@@ -182,6 +183,10 @@ public class ComponentLibraryView extends FormView {
                     item.setRender(true);
                 }
             }
+        }
+
+        if(this.getExampleSize() != null && this.getExampleSize().equals(ExampleSize.XLARGE)){
+            this.addStyleClass("demo-xLargeLibraryView");
         }
 
         //Add detailsGroup and exhibit to page
@@ -359,6 +364,7 @@ public class ComponentLibraryView extends FormView {
 
             List<Component> propertiesItems = new ArrayList<Component>();
             Message propertiesMessage = ComponentFactory.getMessage();
+            propertiesMessage.setParseComponents(false);
             propertiesMessage.setMessageText(documentationMessageContent);
             propertiesItems.add(propertiesMessage);
 
@@ -388,6 +394,7 @@ public class ComponentLibraryView extends FormView {
 
                     List<Component> iPropertiesItems = new ArrayList<Component>();
                     Message iPropertiesMessage = ComponentFactory.getMessage();
+                    iPropertiesMessage.setParseComponents(false);
                     iPropertiesMessage.setMessageText(messageContent);
                     iPropertiesItems.add(iPropertiesMessage);
                     iPropertiesGroup.setItems(iPropertiesItems);

@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifControllerHandlerInterceptor implements HandlerInterceptor {
+    public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     private static final Logger LOG = Logger.getLogger(UifControllerHandlerInterceptor.class);
 
     /**

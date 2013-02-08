@@ -25,6 +25,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
@@ -105,6 +106,16 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         setDataObjectClass(lookupView.getDataObjectClassName());
 
         super.performInitialization(view, model);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.lookup.Lookupable#initSuppressAction(org.kuali.rice.krad.web.form.LookupForm)
+     */
+    @Override
+    public void initSuppressAction(LookupForm lookupForm) {
+        LookupViewAuthorizerBase lookupAuthorizer = (LookupViewAuthorizerBase) lookupForm.getView().getAuthorizer();
+        Person user = GlobalVariables.getUserSession().getPerson();
+        ((LookupView) lookupForm.getView()).setSuppressActions(!lookupAuthorizer.canInitiateDocument(lookupForm, user));
     }
 
     /**

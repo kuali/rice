@@ -407,4 +407,19 @@ public interface ViewModel extends Serializable {
      * @param ajaxReturnType
      */
     public void setAjaxReturnType(String ajaxReturnType);
+
+    /**
+     * A generic map for framework pieces (such as component modifiers) that need to dynamically store
+     * data to the form
+     *
+     * @return Map<String, Object>
+     */
+    public Map<String, Object> getExtensionData();
+
+    /**
+     * Setter for the generic extension data map
+     *
+     * @param extensionData
+     */
+    public void setExtensionData(Map<String, Object> extensionData);
 }

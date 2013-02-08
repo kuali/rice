@@ -35,6 +35,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Rice module configurer for KRAD
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class KRADConfigurer extends ModuleConfigurer implements SmartApplicationListener {
 
     private DataSource applicationDataSource;

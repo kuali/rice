@@ -125,6 +125,8 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected String updateComponentId;
 
+    protected Map<String, Object> extensionData;
+
     public UifFormBase() {
         formKey = generateFormKey();
         defaultsApplied = false;
@@ -139,6 +141,7 @@ public class UifFormBase implements ViewModel {
         selectedCollectionLines = new HashMap<String, Set<String>>();
         addedCollectionItems = new ArrayList();
         dialogManager = new DialogManager();
+        extensionData = new HashMap<String, Object>();
     }
 
     /**
@@ -877,6 +880,19 @@ public class UifFormBase implements ViewModel {
         this.dialogManager = dialogManager;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getExtensionData()
+     */
+    public Map<String, Object> getExtensionData() {
+        return extensionData;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setExtensionData(java.util.Map<java.lang.String,java.lang.Object>)
+     */
+    public void setExtensionData(Map<String, Object> extensionData) {
+        this.extensionData = extensionData;
+    }
 
     /**
      * The {@code List} that contains all newly added items for the collections on the model

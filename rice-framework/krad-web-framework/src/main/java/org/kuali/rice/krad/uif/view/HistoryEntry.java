@@ -62,6 +62,10 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     public String toParam() {
         viewId = (StringUtils.isNotBlank(viewId)) ? viewId : "null";
         pageId = (StringUtils.isNotBlank(pageId)) ? pageId : "null";
+        title = (StringUtils.isNotBlank(title)) ? title : "null";
+        url = (StringUtils.isNotBlank(url)) ? url : "null";
+        formKey = (StringUtils.isNotBlank(formKey)) ? formKey : "null";
+
         return viewId
                 + History.VAR_TOKEN
                 + pageId

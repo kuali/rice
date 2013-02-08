@@ -70,7 +70,7 @@
 
                 <span id="${field.id}_control" class="uif-readOnlyContent">
                     <#-- render inquiry if enabled -->
-                    <#if field.inquiry.render>
+                    <#if field.inquiry?has_content && field.inquiry.render>
                         <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
                           readOnly=field.readOnly/>
                     <#else>

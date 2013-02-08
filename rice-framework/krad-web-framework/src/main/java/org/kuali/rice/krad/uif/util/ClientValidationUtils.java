@@ -380,10 +380,20 @@ public class ClientValidationUtils {
      */
     private static List<String> parseOutFields(String statement) {
         List<String> fieldNames = new ArrayList<String>();
-        String[] splits = StringUtils.splitByWholeSeparator(statement, "coerceValue('");
+        String[] splits = StringUtils.splitByWholeSeparator(statement, "coerceValue(");
         for (String s : splits) {
+            //must be a coerceValue param and not preceding content from the split, always starts with "'"
+            if(!s.startsWith("'")){
+                continue;
+            }
+
+            s = s.substring(1);
             String fieldName = StringUtils.substringBefore(s, "'");
-            fieldNames.add(fieldName);
+            //Only add field name once for this condition check
+            if(fieldNames.contains(fieldName)){
+                fieldNames.add(fieldName);
+            }
+
         }
         return fieldNames;
     }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/../../../krad-development-tools" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../krad-it" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../krad-sampleapp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../krad-service-impl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../krad-web" charset="UTF-8" />
+  </component>
+</project>
+

@@ -30,18 +30,13 @@
     <property name="objectLabel" value="Travel Account Extension"/>
   </bean>
 
-<!-- Attribute Definitions -->
-
+  <!-- Attribute Definitions -->
 
   <bean id="TravelAccountExtension-number" parent="TravelAccountExtension-number-parentBean"/>
-
   <bean id="TravelAccountExtension-number-parentBean" abstract="true" parent="TravelAccount-number">
   </bean>
-  <bean id="TravelAccountExtension-accountTypeCode" parent="TravelAccountExtension-accountTypeCode-parentBean"/>
 
+  <bean id="TravelAccountExtension-accountTypeCode" parent="TravelAccountExtension-accountTypeCode-parentBean"/>
   <bean id="TravelAccountExtension-accountTypeCode-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
-    <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.demo.travel.account.AccountTypeKeyValues" p:includeKeyInLabel="false"/>
-    </property>
   </bean>
 </beans>

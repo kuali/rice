@@ -19,7 +19,7 @@
 
   <param name="config.location">classpath:org/kuali/rice/standalone/config/standalone-config-defaults.xml</param>
 
-  <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources,edu.sampleu.SampleApplicationResources</param>
+  <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources,KradSampleAppResources</param>
 
   <param name="module.name">krad-sampleapp</param>
   <param name="application.id">KRAD-SAMPLEAPP</param>
@@ -38,5 +38,5 @@
   <param name="config.location">${alt.config.location}</param>
   <param name="version">${project.name} :: ${project.version} :: ${kuali.build.timestamp}</param>
 
-  <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources,edu.sampleu.SampleModuleResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
+  <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources,KradSampleAppResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
 </config>

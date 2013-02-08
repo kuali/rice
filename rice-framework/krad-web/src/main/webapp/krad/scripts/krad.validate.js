@@ -798,7 +798,7 @@ function displayHeaderMessageCount(sectionId, sectionData) {
         setupImages();
     }
 
-    if (sectionHeader.length) {
+    if (sectionHeader.length && sectionData && sectionData.messageTotal) {
 
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
         var image = "";

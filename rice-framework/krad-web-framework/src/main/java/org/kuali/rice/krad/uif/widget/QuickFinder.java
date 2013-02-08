@@ -124,6 +124,11 @@ public class QuickFinder extends WidgetBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
+        // TODO: add flag to enable quick finder when the input field (parent) is read-only
+        if (parent.isReadOnly()) {
+            setRender(false);
+        }
+
         if (!isRender()) {
             return;
         }

@@ -1391,7 +1391,10 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
       for (; k < elements.length && clock['now']() < endTime; k++) {
         var cs = elements[k];
         var className = cs.className;
-        if (className.indexOf('prettyprint') >= 0) {
+        /* Kuali customization begin - allows multiple syntax highlighter on same view/between refreshes etc**/
+        if (className.indexOf('prettyprint') >= 0  && !jQuery(cs).data('prettified')) {
+          jQuery(cs).data('prettified', true);
+        /* Kuali customization end **/
           // If the classes includes a language extensions, use it.
           // Language extensions can be specified like
           //     <pre class="prettyprint lang-cpp">

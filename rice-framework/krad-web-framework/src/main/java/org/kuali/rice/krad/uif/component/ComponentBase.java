@@ -304,6 +304,25 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                 this.setStyle("display: none;");
             }
         }
+
+        // setup refresh timer
+
+
+        // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer
+        // to the onDocumentReadyScript
+        if (refreshTimer > 0) {
+            String timerScript = getOnDocumentReadyScript();
+
+            if (StringUtils.isBlank(this.methodToCallOnRefresh)) {
+                this.methodToCallOnRefresh = "refresh";
+            }
+
+            timerScript = (null == timerScript) ? "" : timerScript;
+            timerScript = "refreshComponentUsingTimer('" + this.id + "','"
+                    + this.methodToCallOnRefresh + "'," + refreshTimer + ");" + timerScript;
+
+            setOnDocumentReadyScript(timerScript);
+        }
     }
 
     /**
@@ -935,9 +954,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onLoad script
-     *
-     * @param onLoadScript
+     * @see ScriptEventSupport#setOnLoadScript(java.lang.String)
      */
     public void setOnLoadScript(String onLoadScript) {
         this.onLoadScript = onLoadScript;
@@ -948,27 +965,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "onDocumentReadyScript")
     public String getOnDocumentReadyScript() {
-        String onDocScript = this.onDocumentReadyScript;
-        // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer to the onDocumentReadyScript.
-        // if the refreshTimer property is set then the methodToCallOnRefresh should also be set.
-        if (refreshTimer > 0) {
-            onDocScript = (null == onDocScript) ? "" : onDocScript;
-            onDocScript = "refreshComponentUsingTimer('"
-                    + this.id
-                    + "','"
-                    + this.methodToCallOnRefresh
-                    + "',"
-                    + refreshTimer
-                    + ");"
-                    + onDocScript;
-        }
-        return onDocScript;
+        return this.onDocumentReadyScript;
     }
 
     /**
-     * Setter for the components onDocumentReady script
-     *
-     * @param onDocumentReadyScript
+     * @see ScriptEventSupport#setOnDocumentReadyScript(java.lang.String)
      */
     public void setOnDocumentReadyScript(String onDocumentReadyScript) {
         this.onDocumentReadyScript = onDocumentReadyScript;
@@ -983,9 +984,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onUnload script
-     *
-     * @param onUnloadScript
+     * @see ScriptEventSupport#setOnUnloadScript(java.lang.String)
      */
     public void setOnUnloadScript(String onUnloadScript) {
         this.onUnloadScript = onUnloadScript;
@@ -1000,9 +999,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onClose script
-     *
-     * @param onCloseScript
+     * @see ScriptEventSupport#setOnCloseScript(java.lang.String)
      */
     public void setOnCloseScript(String onCloseScript) {
         this.onCloseScript = onCloseScript;
@@ -1017,9 +1014,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onBlur script
-     *
-     * @param onBlurScript
+     * @see ScriptEventSupport#setOnBlurScript(java.lang.String)
      */
     public void setOnBlurScript(String onBlurScript) {
         this.onBlurScript = onBlurScript;
@@ -1034,9 +1029,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onChange script
-     *
-     * @param onChangeScript
+     * @see ScriptEventSupport#setOnChangeScript(java.lang.String)
      */
     public void setOnChangeScript(String onChangeScript) {
         this.onChangeScript = onChangeScript;
@@ -1051,9 +1044,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onClick script
-     *
-     * @param onClickScript
+     * @see ScriptEventSupport#setOnClickScript(java.lang.String)
      */
     public void setOnClickScript(String onClickScript) {
         this.onClickScript = onClickScript;
@@ -1068,9 +1059,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onDblClick script
-     *
-     * @param onDblClickScript
+     * @see ScriptEventSupport#setOnDblClickScript(java.lang.String)
      */
     public void setOnDblClickScript(String onDblClickScript) {
         this.onDblClickScript = onDblClickScript;
@@ -1085,9 +1074,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onFocus script
-     *
-     * @param onFocusScript
+     * @see ScriptEventSupport#setOnFocusScript(java.lang.String)
      */
     public void setOnFocusScript(String onFocusScript) {
         this.onFocusScript = onFocusScript;
@@ -1102,9 +1089,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onSubmit script
-     *
-     * @param onSubmitScript
+     * @see ScriptEventSupport#setOnSubmitScript(java.lang.String)
      */
     public void setOnSubmitScript(String onSubmitScript) {
         this.onSubmitScript = onSubmitScript;
@@ -1119,9 +1104,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onKeyPress script
-     *
-     * @param onKeyPressScript
+     * @see ScriptEventSupport#setOnKeyPressScript(java.lang.String)
      */
     public void setOnKeyPressScript(String onKeyPressScript) {
         this.onKeyPressScript = onKeyPressScript;
@@ -1136,9 +1119,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onKeyUp script
-     *
-     * @param onKeyUpScript
+     * @see ScriptEventSupport#setOnKeyUpScript(java.lang.String)
      */
     public void setOnKeyUpScript(String onKeyUpScript) {
         this.onKeyUpScript = onKeyUpScript;
@@ -1153,9 +1134,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onKeyDown script
-     *
-     * @param onKeyDownScript
+     * @see ScriptEventSupport#setOnKeyDownScript(java.lang.String)
      */
     public void setOnKeyDownScript(String onKeyDownScript) {
         this.onKeyDownScript = onKeyDownScript;
@@ -1170,9 +1149,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onMouseOver script
-     *
-     * @param onMouseOverScript
+     * @see ScriptEventSupport#setOnMouseOverScript(java.lang.String)
      */
     public void setOnMouseOverScript(String onMouseOverScript) {
         this.onMouseOverScript = onMouseOverScript;
@@ -1187,9 +1164,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onMouseOut script
-     *
-     * @param onMouseOutScript
+     * @see ScriptEventSupport#setOnMouseOutScript(java.lang.String)
      */
     public void setOnMouseOutScript(String onMouseOutScript) {
         this.onMouseOutScript = onMouseOutScript;
@@ -1204,9 +1179,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onMouseUp script
-     *
-     * @param onMouseUpScript
+     * @see ScriptEventSupport#setOnMouseUpScript(java.lang.String)
      */
     public void setOnMouseUpScript(String onMouseUpScript) {
         this.onMouseUpScript = onMouseUpScript;
@@ -1221,9 +1194,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onMouseDown script
-     *
-     * @param onMouseDownScript
+     * @see ScriptEventSupport#setOnMouseDownScript(java.lang.String)
      */
     public void setOnMouseDownScript(String onMouseDownScript) {
         this.onMouseDownScript = onMouseDownScript;
@@ -1238,9 +1209,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components onMouseMove script
-     *
-     * @param onMouseMoveScript
+     * @see ScriptEventSupport#setOnMouseMoveScript(java.lang.String)
      */
     public void setOnMouseMoveScript(String onMouseMoveScript) {
         this.onMouseMoveScript = onMouseMoveScript;

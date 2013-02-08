@@ -1074,6 +1074,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
             jQuery('#tmpForm_' + componentId).replaceWith(jQuery('#' + componentId).detach());
             jQuery('#' + componentId).css('display', cssDisplay);
+            jQuery('#renderedInLightBox').val(false);
         }});
     } else {
         // reattach component to KualiForm after fancybox closes
@@ -1083,6 +1084,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
             jQuery('#tmpForm_' + componentId).replaceWith(parent.jQuery('#' + componentId).detach());
             jQuery('#' + componentId).css('display', cssDisplay);
+            jQuery('#renderedInLightBox').val(false);
         }});
     }
 
@@ -1312,10 +1314,13 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
             //find the totalsBlocks in the column footer cell, and calculate the appropriate totals
             jQuery("div[data-role='totalsBlock']", cell).each(function () {
                 var totalDiv = jQuery(this).find("div[data-role='total']");
-                var skipTotal = totalDiv.data("skipTotal");
+                var skipTotal = totalDiv.data("skiptotal");
 
                 if(!skipTotal && totalDiv.length){
                     calculateTotal(totalDiv, 0, aaData.length, columns[c], aaData, aiDisplay);
+                }
+
+                if(totalDiv.length){
                     hasTotalsInFooter = true;
                 }
 
@@ -1471,7 +1476,7 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
  * @param aiDisplay the rows display order
  */
 function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay) {
-    if (totalDiv.length && totalDiv.is(":visible") && totalDiv.data("function")) {
+    if (totalDiv.length && totalDiv.data("function")) {
         var totalType = totalDiv.data("role");
         var dataIndex = currentColumn;
         var functionName = totalDiv.data("function");

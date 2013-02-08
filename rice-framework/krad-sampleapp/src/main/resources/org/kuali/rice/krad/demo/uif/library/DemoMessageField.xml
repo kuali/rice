@@ -24,11 +24,14 @@
   <bean id="Demo-MessageField-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoMessageField.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.MessageField"/>
-    <property name="docBookAnchor" value=""/>
+    <property name="docBookAnchor" value="d6813e7355"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-MessageField-Example1"/>
         <ref bean="Demo-MessageField-Example2"/>
+        <ref bean="Demo-MessageField-Example3"/>
+        <ref bean="Demo-MessageField-Example4"/>
+        <ref bean="Demo-MessageField-Example5"/>
       </list>
     </property>
   </bean>
@@ -55,5 +58,51 @@
     </property>
   </bean>
 
+  <!-- Generate Span -->
+  <bean id="Demo-MessageField-Example3"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MessageField-Example3 start-->
+        <bean parent="Uif-MessageField" p:message.generateSpan="true" p:messageText="This message is wrapped within a span."/>
+        <bean parent="Uif-MessageField" p:message.generateSpan="false" p:messageText="This message is not wrapped within a span."/>
+        <!-- ex:Demo-MessageField-Example3 end-->
+      </list>
+    </property>
+  </bean>
 
+  <!-- Inline Components text -->
+  <bean id="Demo-MessageField-Example4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MessageField-Example4 start-->
+        <bean parent="Uif-MessageField" p:messageText="This message has two inline components (both are links): [0] and [1]">
+          <property name="inlineComponents">
+            <list>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Link 1"/>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Link 2"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-MessageField-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Message Component Structure text -->
+  <bean id="Demo-MessageField-Example5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MessageField-Example5 start-->
+        <bean parent="Uif-MessageField" p:messageText="This message text will be overwritten by the message component structure">
+          <property name="messageComponentStructure">
+            <list>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Link"/>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Another Kuali Link"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-MessageField-Example5 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

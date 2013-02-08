@@ -20,6 +20,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.KeepExpression;
@@ -220,7 +221,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     protected String buildLineHeaderText(Object line, Group lineGroup) {
         // check for expression on summary title
         if (KRADServiceLocatorWeb.getExpressionEvaluatorService().containsElPlaceholder(summaryTitle)) {
-            lineGroup.getPropertyExpressions().put("title", summaryTitle);
+            lineGroup.getPropertyExpressions().put(UifPropertyPaths.HEADER_TEXT, summaryTitle);
             return null;
         }
 

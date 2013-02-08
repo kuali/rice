@@ -1111,6 +1111,7 @@
     </property>
     <property name="displayExplanation" value="false"/>
     <property name="reverseButtonOrder" value="false"/>
+    <property name="forceSessionPersistence" value="true"/>
     <property name="prompt">
       <bean parent="Uif-DialogPrompt"/>
     </property>
@@ -1118,13 +1119,7 @@
       <bean parent="Uif-DialogExplanation"/>
     </property>
     <property name="responseInputField">
-      <bean parent="Uif-DialogResponse">
-        <!-- <property name="cssClasses">
-          <list merge="true">
-            <value>uif-action uif-primaryActionButton uif-boxLayoutHorizontalItem</value>
-          </list>
-        </property>-->
-      </bean>
+      <bean parent="Uif-DialogResponse"/>
     </property>
     <property name="cssClasses">
       <list merge="true">
@@ -1141,7 +1136,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-DialogExplanation" parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+  <bean id="Uif-DialogExplanation" parent="Uif-InputField" p:propertyName="dialogExplanation"
+        p:bindingInfo.bindToForm="true" p:render="false">
     <property name="control">
       <bean parent="Uif-TextAreaControl"/>
     </property>
@@ -1152,9 +1148,10 @@
     </property>
   </bean>
 
-  <bean id="Uif-DialogResponse" parent="Uif-InputField" p:propertyName="dialogResponse">
+  <bean id="Uif-DialogResponse" parent="Uif-InputField" p:propertyName="dialogResponse"
+        p:bindingInfo.bindToForm="true">
     <property name="control">
-      <bean parent="Uif-HorizontalCheckboxesControl">
+      <bean parent="Uif-HorizontalRadioControl">
         <property name="options">
           <list>
             <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>

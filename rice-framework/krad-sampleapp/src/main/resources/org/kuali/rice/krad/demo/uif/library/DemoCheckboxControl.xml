@@ -31,10 +31,7 @@
         <ref bean="Demo-CheckboxControl-Example2"/>
         <ref bean="Demo-CheckboxControl-Example3"/>
         <ref bean="Demo-CheckboxControl-Example4"/>
-        <ref bean="Demo-CheckboxControl-Example6"/>
-        <ref bean="Demo-CheckboxControl-Example7"/>
-        <ref bean="Demo-CheckboxControl-Example8"/>
-        <ref bean="Demo-CheckboxControl-Example9"/>
+        <ref bean="Demo-CheckboxControl-Example5"/>
       </list>
     </property>
   </bean>
@@ -54,18 +51,14 @@
     </property>
   </bean>
 
-  <!-- CheckboxExampleControl with optionsFinder set-->
+  <!-- Disabled CheckboxControl -->
   <bean id="Demo-CheckboxControl-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxControl-Example2 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="CheckboxGroupControl"
-              p:width="auto">
+        <bean parent="Uif-InputField" p:propertyName="inputField2">
           <property name="control">
-            <bean parent="Uif-VerticalCheckboxesControl"/>
-          </property>
-          <property name="optionsFinder">
-            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+            <bean parent="Uif-CheckboxControl" p:disabled="true" p:checkboxLabel="Add me to your mailing list"/>
           </property>
         </bean>
         <!-- ex:Demo-CheckboxControl-Example2 end-->
@@ -73,71 +66,11 @@
     </property>
   </bean>
 
-  <!-- CheckboxGroupControl with keyvalue set-->
+  <!-- evaluateDisabledOnKeyUp Flag -->
   <bean id="Demo-CheckboxControl-Example3" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxControl-Example3 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="CheckboxGroupControl"
-              p:width="auto" p:instructionalText="Choose one of the options">
-          <property name="control">
-            <bean parent="Uif-VerticalCheckboxesControl">
-              <property name="options">
-                <list>
-                  <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Check 1"/>
-                  <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Check 2"/>
-                </list>
-              </property>
-            </bean>
-          </property>
-        </bean>
-        <!-- ex:Demo-CheckboxControl-Example3 end-->
-      </list>
-    </property>
-  </bean>
-
-  <!-- Disabled CheckboxControl -->
-  <bean id="Demo-CheckboxControl-Example4" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-CheckboxControl-Example4 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField2">
-          <property name="control">
-            <bean parent="Uif-CheckboxControl" p:disabled="true" p:checkboxLabel="Add me to your mailing list"/>
-          </property>
-        </bean>
-        <!-- ex:Demo-CheckboxControl-Example4 end-->
-      </list>
-    </property>
-  </bean>
-
-  <!-- Horizontal CheckboxControl input value-->
-  <bean id="Demo-CheckboxControl-Example6" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-CheckboxControl-Example6 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField2">
-          <property name="control">
-            <bean parent="Uif-HorizontalCheckboxesControl" p:delimiter=";">
-              <property name="options">
-                <list>
-                  <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Check 1"/>
-                  <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Check 2"/>
-                </list>
-              </property>
-            </bean>
-          </property>
-        </bean>
-        <!-- ex:Demo-CheckboxControl-Example6 end-->
-      </list>
-    </property>
-  </bean>
-
-  <!-- evaluateDisabledOnKeyUp Flag -->
-  <bean id="Demo-CheckboxControl-Example7" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-CheckboxControl-Example7 start-->
         <bean parent="Uif-InputField" p:propertyName="inputField1">
           <property name="control">
             <bean parent="Uif-TextControl"/>
@@ -149,16 +82,16 @@
                   p:evaluateDisabledOnKeyUp="true" p:checkboxLabel="Add me to your mailing list"/>
           </property>
         </bean>
-        <!-- ex:Demo-CheckboxControl-Example7 end-->
+        <!-- ex:Demo-CheckboxControl-Example3 end-->
       </list>
     </property>
   </bean>
 
   <!-- enabledWhenChangedPropertyNames -->
-  <bean id="Demo-CheckboxControl-Example8" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CheckboxControl-Example4" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-CheckboxControl-Example8 start-->
+        <!-- ex:Demo-CheckboxControl-Example4 start-->
         <bean parent="Uif-InputField" p:propertyName="inputField3"
               p:instructionalText="Type in a value to enable the checkbox">
           <property name="control">
@@ -171,16 +104,16 @@
                   p:checkboxLabel="Add me to your mailing list"/>
           </property>
         </bean>
-        <!-- ex:Demo-CheckboxControl-Example8 end-->
+        <!-- ex:Demo-CheckboxControl-Example4 end-->
       </list>
     </property>
   </bean>
 
   <!-- disabledWhenChangedPropertyNames -->
-  <bean id="Demo-CheckboxControl-Example9" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CheckboxControl-Example5" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-CheckboxControl-Example9 start-->
+        <!-- ex:Demo-CheckboxControl-Example5 start-->
         <bean parent="Uif-InputField" p:propertyName="inputField5"
               p:instructionalText="Type in a value to enable the checkbox">
           <property name="control">
@@ -193,7 +126,7 @@
                   p:checkboxLabel="Add me to your mailing list"/>
           </property>
         </bean>
-        <!-- ex:Demo-CheckboxControl-Example9 end-->
+        <!-- ex:Demo-CheckboxControl-Example5 end-->
       </list>
     </property>
   </bean>

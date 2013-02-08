@@ -20,7 +20,7 @@
     <name>Rice KRAD Application Framework</name>
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>rice-krad</artifactId>
+        <artifactId>rice-framework</artifactId>
         <groupId>org.kuali.rice</groupId>
         <version>2.3.0-SNAPSHOT</version>
     </parent>

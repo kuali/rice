@@ -69,17 +69,18 @@ public class Label extends ContentElementBase {
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
 
-        if (richLabelMessage == null
-                && labelText != null
-                && labelText.contains(KRADConstants.MessageParsing.LEFT_TOKEN)
-                &&
+        if (richLabelMessage == null && labelText != null &&
+                labelText.contains(KRADConstants.MessageParsing.LEFT_TOKEN) &&
                 labelText.contains(KRADConstants.MessageParsing.RIGHT_TOKEN)) {
             Message message = ComponentFactory.getMessage();
             view.assignComponentIds(message);
+
             message.setMessageText(labelText);
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
+
             view.getViewHelperService().performComponentInitialization(view, model, message);
+
             this.setRichLabelMessage(message);
         }
     }

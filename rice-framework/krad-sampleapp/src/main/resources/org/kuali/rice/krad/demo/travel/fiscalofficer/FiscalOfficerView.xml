@@ -26,9 +26,6 @@
   <bean id="FiscalOfficer-InquiryView" parent="Uif-FormView">
     <property name="id" value="FiscalOfficer-InquiryView" />
     <property name="headerText" value="Fiscal Officer Inquiry" />
-    <property name="navigation">
-      <ref bean="testViewMenu" />
-    </property>
     <property name="entryPageId" value="page1" />
     <property name="items">
       <list>

@@ -90,7 +90,6 @@ public class Message extends ContentElementBase {
                 }
             }
         }
-
     }
 
     /**
@@ -99,7 +98,8 @@ public class Message extends ContentElementBase {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-        //Message needs to be aware of its own parent because it now contains content that can have validation
+
+        // message needs to be aware of its own parent because it now contains content that can have validation
         this.addDataAttribute("parent", parent.getId());
     }
 

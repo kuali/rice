@@ -96,7 +96,6 @@
     <property name="resourceBundleNames">
       <list>
         <value>org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationView</value>
-        <value>org.kuali.rice.krad.demo.uif.components.resources.KradSampleAppResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.PropertiesDescription</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageFieldResources</value>
@@ -171,6 +170,16 @@
   <bean id="rice.ksb.serviceBus"
         class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="rice.ksb.serviceBus"/>
+  </bean>
+
+  <bean id="dataTableRestServiceTest" class="org.kuali.rice.krad.demo.uif.library.DataTableRestServiceTestImpl"/>
+
+  <bean id="DataTableRestServiceTest" class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">
+    <property name="serviceNameSpaceURI" value="KR-SAP"/>
+    <property name="service" ref="dataTableRestServiceTest"/>
+    <property name="resourceClass"
+              value="org.kuali.rice.krad.demo.uif.library.DataTableRestServiceTestImpl"/>
+    <property name="localServiceName" value="dataTableRestServiceTest"/>
   </bean>
 
   <bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">

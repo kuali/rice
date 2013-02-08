@@ -34,6 +34,8 @@
         <ref bean="Demo-DialogGroup-Example5"/>
         <!--<ref bean="Demo-DialogGroup-Example6"/>-->
         <ref bean="Demo-DialogGroup-Example7"/>
+        <ref bean="Demo-DialogGroup-Example8"/>
+        <ref bean="Demo-DialogGroup-Example9"/>
       </list>
     </property>
   </bean>
@@ -154,6 +156,42 @@
         <!-- ex:Demo-DialogGroup-Example7 start-->
         <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxUrl('http://kuali.org');"/>
         <!-- ex:Demo-DialogGroup-Example7 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-DialogGroup-Example8" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DialogGroup-Example8 start-->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('AjaxDialog');"/>
+        <bean id="AjaxDialog" parent="Uif-True-False-DialogGroup"
+              p:progressiveRenderViaAJAX="true" p:progressiveRender="@{#form.renderedInLightBox}" p:hidden="true"/>
+        <!-- ex:Demo-DialogGroup-Example8 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-DialogGroup-Example9" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DialogGroup-Example9 start-->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('SimpleGroup');" />
+        <bean id="SimpleGroup" parent="Uif-VerticalBoxSection">
+          <property name="hidden" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-Label" />
+              <bean parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-Label" />
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-DialogResponse"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DialogGroup-Example9 end-->
       </list>
     </property>
   </bean>

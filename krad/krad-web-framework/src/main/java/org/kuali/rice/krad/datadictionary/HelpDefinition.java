@@ -36,7 +36,7 @@ import java.io.Serializable;
  * parameterName: name of the parameter that has the path to the help page
  * parameterDetailType: detail type of the parameter that has the path to the help page
  */
-@BeanTag(name = "helpDefinition")
+@BeanTag(name = "helpDefinition-bean")
 public class HelpDefinition extends DataDictionaryDefinitionBase implements Serializable {
     private static final long serialVersionUID = -6869646654597012863L;
 

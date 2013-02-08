@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "spinner", parent = "Uif-Spinner")
+@BeanTag(name = "spinner-bean", parent = "Uif-Spinner")
 public class Spinner extends WidgetBase {
     private static final long serialVersionUID = -659830874214415990L;
 

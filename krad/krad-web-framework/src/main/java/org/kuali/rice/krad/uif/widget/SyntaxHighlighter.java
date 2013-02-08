@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.view.View;
@@ -32,7 +33,7 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "syntaxHighlighter", parent = "Uif-SyntaxHighlighter")
+@BeanTag(name = "syntaxHighlighter-bean", parent = "Uif-SyntaxHighlighter")
 public class SyntaxHighlighter extends WidgetBase {
 
     private Header header;
@@ -48,6 +49,7 @@ public class SyntaxHighlighter extends WidgetBase {
         super.performFinalize(view, model, parent);
     }
 
+    @BeanTagAttribute(name="header")
     public Header getHeader() {
         return header;
     }
@@ -61,6 +63,7 @@ public class SyntaxHighlighter extends WidgetBase {
      *
      * @return String
      */
+    @BeanTagAttribute(name="sourceCode")
     public String getSourceCode() {
         return sourceCode;
     }
@@ -83,6 +86,7 @@ public class SyntaxHighlighter extends WidgetBase {
      *
      * @return String
      */
+    @BeanTagAttribute(name="pluginCssClass")
     public String getPluginCssClass() {
         return pluginCssClass;
     }

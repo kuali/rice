@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "hiddenControl", parent = "Uif-HiddenControl")
+@BeanTag(name = "hiddenControl-bean", parent = "Uif-HiddenControl")
 public class HiddenControl extends ControlBase {
 	private static final long serialVersionUID = -8428898303430923425L;
 

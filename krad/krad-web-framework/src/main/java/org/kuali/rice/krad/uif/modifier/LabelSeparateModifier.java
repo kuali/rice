@@ -33,7 +33,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "labelSeparator-modifier", parent = "Uif-LabelSeparator-Modifier")
+@BeanTag(name = "labelSeparator-modifier-bean", parent = "Uif-LabelSeparator-Modifier")
 public class LabelSeparateModifier extends ComponentModifierBase {
 	private static final long serialVersionUID = -4304947796868636298L;
 

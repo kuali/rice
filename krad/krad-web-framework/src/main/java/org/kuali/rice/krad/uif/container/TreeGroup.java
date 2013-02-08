@@ -40,9 +40,9 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "treeGroup", parent = "Uif-TreeGroup"),
-        @BeanTag(name = "treeSection", parent = "Uif-TreeSection"),
-        @BeanTag(name = "treeSubSection", parent = "Uif-TreeSubSection")})
+@BeanTags({@BeanTag(name = "treeGroup-bean", parent = "Uif-TreeGroup"),
+        @BeanTag(name = "treeSection-bean", parent = "Uif-TreeSection"),
+        @BeanTag(name = "treeSubSection-bean", parent = "Uif-TreeSubSection")})
 public class TreeGroup extends Group implements DataBinding {
     private static final long serialVersionUID = 5841343037089286740L;
 

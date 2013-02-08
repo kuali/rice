@@ -23,20 +23,23 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
+ * ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
+ * the KualiConfigurationService
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "configurationBasedRegexPatternConstraint"),
-        @BeanTag(name = "phoneNumberPatternConstraint", parent = "phoneNumberPatternConstraint"),
-        @BeanTag(name = "timePatternConstraint", parent = "TimePatternConstraint"),
-        @BeanTag(name = "time24HPatternConstraint", parent = "Time24HPatternConstraint"),
-        @BeanTag(name = "urlPatternConstraint", parent = "UrlPatternConstraint"),
-        @BeanTag(name = "noWhitespacePatternConstraint", parent = "NoWhitespacePatternConstraint"),
-        @BeanTag(name = "javaClassPatternConstraint", parent = "JavaClassPatternConstraint"),
-        @BeanTag(name = "emailAddressPatternConstraint", parent = "EmailAddressPatternConstraint"),
-        @BeanTag(name = "timestampPatternConstraint", parent = "TimestampPatternConstraint"),
-        @BeanTag(name = "yearPatternConstraint", parent = "YearPatternConstraint"),
-        @BeanTag(name = "monthPatternConstraint", parent = "MonthPatternConstraint"),
-        @BeanTag(name = "zipcodePatternConstraint", parent = "ZipcodePatternConstraint")})
+@BeanTags({@BeanTag(name = "configurationBasedRegexPatternConstraint-bean"),
+        @BeanTag(name = "phoneNumberPatternConstraint-bean", parent = "PhoneNumberPatternConstraint"),
+        @BeanTag(name = "timePatternConstraint-bean", parent = "TimePatternConstraint"),
+        @BeanTag(name = "time24HPatternConstraint-bean", parent = "Time24HPatternConstraint"),
+        @BeanTag(name = "urlPatternConstraint-bean", parent = "UrlPatternConstraint"),
+        @BeanTag(name = "noWhitespacePatternConstraint-bean", parent = "NoWhitespacePatternConstraint"),
+        @BeanTag(name = "javaClassPatternConstraint-bean", parent = "JavaClassPatternConstraint"),
+        @BeanTag(name = "emailAddressPatternConstraint-bean", parent = "EmailAddressPatternConstraint"),
+        @BeanTag(name = "timestampPatternConstraint-bean", parent = "TimestampPatternConstraint"),
+        @BeanTag(name = "yearPatternConstraint-bean", parent = "YearPatternConstraint"),
+        @BeanTag(name = "monthPatternConstraint-bean", parent = "MonthPatternConstraint"),
+        @BeanTag(name = "zipcodePatternConstraint-bean", parent = "ZipcodePatternConstraint")})
 public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternConstraint {
     protected String patternTypeKey;
 
@@ -60,6 +63,9 @@ public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternCo
     }
 
     /**
+     * MessageKey in used in this class have the patternTypeKey appended to the VALIDATION_MSG_KEY_PREFIX by default,
+     * if it is not explicitly set to something else
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override

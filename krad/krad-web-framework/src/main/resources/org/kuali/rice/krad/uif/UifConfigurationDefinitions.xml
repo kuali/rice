@@ -68,7 +68,7 @@
 
   <bean id="Uif-CompareConfig" class="org.kuali.rice.krad.uif.modifier.ComparableInfo" scope="prototype"/>
 
-  <bean id="Uif-KeyLabelPair" class="org.kuali.rice.core.api.util.ConcreteKeyValue" scope="prototype"/>
+  <bean id="Uif-KeyLabelPair" class="org.kuali.rice.krad.uif.util.UifKeyValue" scope="prototype"/>
 
   <bean id="Uif-ColumnCalculationInfo" class="org.kuali.rice.krad.uif.util.ColumnCalculationInfo" scope="prototype"
         abstract="true">

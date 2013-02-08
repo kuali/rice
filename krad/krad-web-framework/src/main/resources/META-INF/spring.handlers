@@ -1,1 +1,1 @@
-http\://www.kuali.org/schema2 = org.kuali.rice.krad.datadictionary.parse.CustomNamespace
+http\://www.kuali.org/schema = org.kuali.rice.krad.datadictionary.parse.CustomNamespace

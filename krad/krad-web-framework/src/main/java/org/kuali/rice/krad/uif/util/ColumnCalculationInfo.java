@@ -26,11 +26,11 @@ import org.kuali.rice.krad.uif.field.MessageField;
  * of table collection.  This functionality can only be used when the dataTables plugin is being used
  * (richTable.render="true" for TableLayoutManager)
  */
-@BeanTags({@BeanTag(name = "columnCalculationInfo", parent = "Uif-ColumnCalculationInfo"),
-        @BeanTag(name = "columnCalculationInfo-sum", parent = "Uif-ColumnCalculationInfo-Sum"),
-        @BeanTag(name = "columnCalculationInfo-average", parent = "Uif-ColumnCalculationInfo-Average"),
-        @BeanTag(name = "columnCalculationInfo-max", parent = "Uif-ColumnCalculationInfo-Max"),
-        @BeanTag(name = "columnCalculationInfo-min", parent = "Uif-ColumnCalculationInfo-Min")})
+@BeanTags({@BeanTag(name = "columnCalculationInfo-bean", parent = "Uif-ColumnCalculationInfo"),
+        @BeanTag(name = "columnCalculationInfo-sum-bean", parent = "Uif-ColumnCalculationInfo-Sum"),
+        @BeanTag(name = "columnCalculationInfo-average-bean", parent = "Uif-ColumnCalculationInfo-Average"),
+        @BeanTag(name = "columnCalculationInfo-max-bean", parent = "Uif-ColumnCalculationInfo-Max"),
+        @BeanTag(name = "columnCalculationInfo-min-bean", parent = "Uif-ColumnCalculationInfo-Min")})
 public class ColumnCalculationInfo extends UifDictionaryBeanBase {
     private Integer columnNumber;
     private String propertyName;

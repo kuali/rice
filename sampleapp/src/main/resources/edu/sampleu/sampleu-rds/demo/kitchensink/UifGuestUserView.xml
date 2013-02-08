@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,46 +16,25 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm"
-            headertext="View that can be opened by guests without login." id="UifGuestUserView" parent="Uif-FormView">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="View that can be opened by guests without login." id="UifGuestUserView">
     <items>
-      <ref bean="UifGuestUserView-Page"/>
+      <spring:ref bean="UifGuestUserView-Page"/>
     </items>
     <theme>
-      <viewTheme parent="Uif-ClassicKnsTheme"/>
+      <classicKnsTheme-bean/>
     </theme>
-  </formView>
-  <pageGroup headertext="Guest View" id="UifGuestUserView-Page" parent="Uif-Page">
+  </formView-bean>
+  <page-bean headertext="Guest View" id="UifGuestUserView-Page">
     <items>
-      <ref bean="UifGuestUserView-Section1"/>
+      <spring:ref bean="UifGuestUserView-Section1"/>
     </items>
-  </pageGroup>
-  <group headertext="Guest user test view input fields" id="UifGuestUserView-Section1"
-         layoutManager.orientation="VERTICAL" parent="Uif-Disclosure-VerticalBoxSection">
+  </page-bean>
+  <disclosure-verticalBoxSection-bean headertext="Guest user test view input fields" id="UifGuestUserView-Section1" layoutManager.orientation="VERTICAL">
     <items>
-      <inputField instructionalText="Field1" label="Field1" parent="GenericTextField" propertyName="field1"/>
-      <inputField instructionalText="Field2" label="Field2" parent="GenericTextField" propertyName="field2"/>
-      <inputField instructionalText="Field3" label="Field3" parent="GenericTextField" propertyName="field3"/>
+      <inputField-bean instructionalText="Field1" label="Field1" parent="GenericTextField" propertyName="field1"/>
+      <inputField-bean instructionalText="Field2" label="Field2" parent="GenericTextField" propertyName="field2"/>
+      <inputField-bean instructionalText="Field3" label="Field3" parent="GenericTextField" propertyName="field3"/>
     </items>
-  </group>
+  </disclosure-verticalBoxSection-bean>
 </spring:beans>

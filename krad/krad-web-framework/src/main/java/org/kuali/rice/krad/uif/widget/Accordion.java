@@ -15,9 +15,13 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 /**
  * Accordion widget class used to create an accordion based layout
  */
+@BeanTag(name = "accordion-bean", parent = "Uif-Accordion")
 public class Accordion extends WidgetBase {
 
     private static final long serialVersionUID = 8156445677141475527L;
@@ -29,6 +33,7 @@ public class Accordion extends WidgetBase {
      *
      * @return the accordion item that is open by default, "false" if no items open
      */
+    @BeanTagAttribute(name = "active")
     public String getActive() {
         return active;
     }

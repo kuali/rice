@@ -22,7 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "validDataPatternConstraint")
+@BeanTag(name = "validDataPatternConstraint-bean")
 public abstract class ValidDataPatternConstraint extends ValidCharactersConstraint {
 
     /**

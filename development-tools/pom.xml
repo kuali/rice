@@ -41,6 +41,8 @@
   </profiles>
   <properties>
     <generateReports>false</generateReports>
+    <!-- Default this to the location that works for Unix and Windows -->
+    <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
   </properties>
   <dependencies>
     <dependency>
@@ -91,5 +93,14 @@
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.sun</groupId>
+      <artifactId>tools</artifactId>
+      <scope>system</scope>
+      <version>1.6</version>
+      <systemPath>${tools.jar.path}</systemPath>
+    </dependency>
+
   </dependencies>
 </project>

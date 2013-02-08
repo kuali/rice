@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "searchingTypeDefinition")
+@BeanTag(name = "searchingTypeDefinition-bean")
 public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = -8779609937539520677L;
 

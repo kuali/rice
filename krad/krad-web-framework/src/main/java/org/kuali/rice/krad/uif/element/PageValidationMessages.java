@@ -21,7 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  * ValidationMessages for logic and options specific to pages
  * TODO this class is currently a placeholder for possible future functionality (ex. flatValidationMessages)
  */
-@BeanTag(name = "pageValidationMessages", parent = "Uif-PageValidationMessages")
+@BeanTag(name = "pageValidationMessages-bean", parent = "Uif-PageValidationMessages")
 public class PageValidationMessages extends GroupValidationMessages {
 
 }

@@ -34,8 +34,8 @@ import java.util.Set;
  * @see Group
  */
 @BeanTags(
-        {@BeanTag(name = "tabGroup", parent = "Uif-TabGroup"), @BeanTag(name = "tabSection", parent = "Uif-TabSection"),
-                @BeanTag(name = "tabSubSection", parent = "Uif-TabSubSection")})
+        {@BeanTag(name = "tabGroup-bean", parent = "Uif-TabGroup"), @BeanTag(name = "tabSection-bean", parent = "Uif-TabSection"),
+                @BeanTag(name = "tabSubSection-bean", parent = "Uif-TabSubSection")})
 public class TabGroup extends Group {
     private static final long serialVersionUID = 3L;
 

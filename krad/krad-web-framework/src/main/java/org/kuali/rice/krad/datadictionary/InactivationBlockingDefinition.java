@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "inactivationBlockingDefinition")
+@BeanTag(name = "inactivationBlockingDefinition-bean")
 public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase implements InactivationBlockingMetadata {
     private static final long serialVersionUID = -8765429636173190984L;
 

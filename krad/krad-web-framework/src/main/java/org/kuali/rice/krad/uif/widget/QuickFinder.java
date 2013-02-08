@@ -40,9 +40,9 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "quickFinder", parent = "Uif-QuickFinder"),
-        @BeanTag(name = "quickFinderByScript", parent = "Uif-QuickFinderByScript"),
-        @BeanTag(name = "collectionQuickFinder", parent = "Uif-CollectionQuickFinder")})
+@BeanTags({@BeanTag(name = "quickFinder-bean", parent = "Uif-QuickFinder"),
+        @BeanTag(name = "quickFinderByScript-bean", parent = "Uif-QuickFinderByScript"),
+        @BeanTag(name = "collectionQuickFinder-bean", parent = "Uif-CollectionQuickFinder")})
 public class QuickFinder extends WidgetBase {
     private static final long serialVersionUID = 3302390972815386785L;
 

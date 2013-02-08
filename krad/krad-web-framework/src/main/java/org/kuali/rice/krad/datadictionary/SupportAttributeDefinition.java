@@ -35,7 +35,7 @@ import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
  * identifier when true, only the field marked as an identifier will be passed in as a lookup parameter
  * at most one supportAttribute for each relationship should be defined as identifier="true"
  */
-@BeanTag(name = "supportAttributeDefinition")
+@BeanTag(name = "supportAttributeDefinition-bean")
 public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
     private static final long serialVersionUID = -1719022365280776405L;
 

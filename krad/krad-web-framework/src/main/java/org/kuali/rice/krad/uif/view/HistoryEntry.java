@@ -30,7 +30,7 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "historyEntry", parent = "Uif-HistoryEntry")
+@BeanTag(name = "historyEntry-bean", parent = "Uif-HistoryEntry")
 public class HistoryEntry extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -8310916657379268794L;
 

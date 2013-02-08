@@ -32,7 +32,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="viewPresentationController")
+@BeanTag(name = "viewPresentationController-bean")
 public class ViewPresentationControllerBase implements ViewPresentationController, Serializable {
     private static final long serialVersionUID = -3199587372204398503L;
 

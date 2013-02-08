@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,94 +16,92 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <group disclosure.render="false" id="lookups1" layoutManager.orientation="VERTICAL" parent="Uif-VerticalBoxSection">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <verticalBoxSection-bean disclosure.render="false" id="lookups1" layoutManager.orientation="VERTICAL">
     <items>
-      <inputField defaultValue="a2" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
-                  instructionalText="Click the link to perform an inquiry on this TravelAccount number" label="Inquiry"
-                  parent="GenericTextField" propertyName="field59" readOnly="true">
-        <inquiry.inquiryParameters>
-          <entry key="field59" value="number"/>
-        </inquiry.inquiryParameters>
-      </inputField>
-      <inputField defaultValue="a1" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
-                  instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
-                  label="Direct Inquiry" parent="GenericTextField" propertyName="field71">
-        <inquiry.inquiryParameters>
-          <entry key="field71" value="number"/>
-        </inquiry.inquiryParameters>
-      </inputField>
-      <inputField defaultValue="a1" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
-                  inquiry.viewName="ks_inquiry"
-                  instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
-                  label="Direct Inquiry with an alternate view" parent="GenericTextField" propertyName="field71">
-        <inquiry.inquiryParameters>
-          <entry key="field71" value="number"/>
-        </inquiry.inquiryParameters>
-      </inputField>
-      <inputField defaultValue="a3"
-                  instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
-                  label="Ajax Field Query" parent="GenericTextField" propertyName="field72">
+      <inputField-bean defaultValue="a2" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" parent="GenericTextField" propertyName="field59" readOnly="true">
+        <spring:property name="inquiry.inquiryParameters">
+          <spring:map>
+            <spring:entry key="field59" value="number"/>
+          </spring:map>
+        </spring:property>
+      </inputField-bean>
+      <inputField-bean inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" parent="GenericTextField" propertyName="field70">
+        <spring:property name="inquiry.inquiryParameters">
+          <spring:map>
+            <spring:entry key="field70" value="number"/>
+          </spring:map>
+        </spring:property>
+      </inputField-bean>
+      <inputField-bean inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" inquiry.viewName="ks_inquiry" parent="GenericTextField" propertyName="field71">
+        <spring:property name="inquiry.inquiryParameters">
+          <spring:map>
+            <spring:entry key="field71" value="number"/>
+          </spring:map>
+        </spring:property>
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field72">
         <propertyNamesForAdditionalDisplay>
-          <value>field73</value>
-          <value>field74</value>
+          <spring:value>field73</spring:value>
+          <spring:value>field74</spring:value>
         </propertyNamesForAdditionalDisplay>
         <attributeQuery>
-          <attributeQuery dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" parent="Uif-AttributeQueryConfig"
-                          queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
+          <attributeQueryConfig-bean dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
         </attributeQuery>
-      </inputField>
-      <inputField instructionalText="click the button to perform a lookup on TravelAccounts" label="Lookup"
-                  parent="GenericTextField" propertyName="field60"
-                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
-        <quickfinder.fieldConversions>
-          <entry key="number" value="field60"/>
-        </quickfinder.fieldConversions>
-      </inputField>
-      <inputField instructionalText="click the button to perform a lookup on TravelAccounts"
-                  label="Lookup (Return by script)" parent="GenericTextField" propertyName="field90"
-                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field76">
+        <propertyNamesForAdditionalDisplay>
+          <spring:value>field77</spring:value>
+          <spring:value>field78</spring:value>
+        </propertyNamesForAdditionalDisplay>
+        <attributeQuery>
+          <attributeQueryConfig-bean queryFieldMapping="field76:number" queryMethodArgumentFieldList="number" queryMethodToCall="retrieveTravelAccounts" returnFieldMapping="name:field77,subAccountName:field78"/>
+        </attributeQuery>
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field79">
+        <propertyNamesForAdditionalDisplay>
+          <spring:value>field80</spring:value>
+          <spring:value>field81</spring:value>
+        </propertyNamesForAdditionalDisplay>
+        <attributeQuery>
+          <attributeQueryConfig-bean queryFieldMapping="field79:number" queryMethodArgumentFieldList="number" queryMethodToCall="retrieveTravelAccountsByNumber" returnFieldMapping="name:field80,subAccountName:field81">
+            <spring:property name="queryMethodInvokerConfig.targetObject">
+              <spring:bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+                    <spring:property name="serviceName" value="testAttributeQueryService"/>
+                  </spring:bean>
+            </spring:property>
+          </attributeQueryConfig-bean>
+        </attributeQuery>
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field60" quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
+        <spring:property name="quickfinder.fieldConversions">
+          <spring:map>
+            <spring:entry key="number" value="field60"/>
+          </spring:map>
+        </spring:property>
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field90" quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
         <quickfinder>
-          <quickFinder parent="Uif-QuickFinderByScript"/>
+          <quickFinderByScript-bean/>
         </quickfinder>
-        <quickfinder.fieldConversions>
-          <entry key="number" value="field90"/>
-        </quickfinder.fieldConversions>
-      </inputField>
-      <inputField instructionalText="overriden link to display different text - Search Now" label="Lookup"
-                  parent="GenericTextField" propertyName="field87"
-                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
-                  quickfinder.quickfinderAction.actionLabel="Search Now">
-        <quickfinder.fieldConversions>
-          <entry key="number" value="field87"/>
-        </quickfinder.fieldConversions>
-      </inputField>
-      <inputField instructionalText="for example, type ea or ca to see a suggestion" label="Suggest"
-                  parent="GenericTextField" propertyName="field61">
+        <spring:property name="quickfinder.fieldConversions">
+          <spring:map>
+            <spring:entry key="number" value="field90"/>
+          </spring:map>
+        </spring:property>
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field87" quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
+        <spring:property name="quickfinder.fieldConversions">
+          <spring:map>
+            <spring:entry key="number" value="field87"/>
+          </spring:map>
+        </spring:property>
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field61">
         <suggest>
-          <suggest parent="Uif-Suggest" render="true" sourcePropertyName="accountTypeCode"
-                   suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
+          <suggest-bean render="true" sourcePropertyName="accountTypeCode" suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
         </suggest>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
+  </verticalBoxSection-bean>
 </spring:beans>

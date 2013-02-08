@@ -29,8 +29,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "verticalRadioControl", parent = "Uif-VerticalRadioControl"),
-        @BeanTag(name = "horizontalRadioControl", parent = "Uif-HorizontalRadioControl")})
+@BeanTags({@BeanTag(name = "verticalRadioControl-bean", parent = "Uif-VerticalRadioControl"),
+        @BeanTag(name = "horizontalRadioControl-bean", parent = "Uif-HorizontalRadioControl")})
 public class RadioGroupControl extends MultiValueControlBase {
     private static final long serialVersionUID = 8800478332086081970L;
     private List<String> fieldsetClasses;

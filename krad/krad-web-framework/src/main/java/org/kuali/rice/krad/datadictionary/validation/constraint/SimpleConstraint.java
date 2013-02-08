@@ -26,8 +26,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "simpleContraint", parent = "SimpleConstraint"),
-        @BeanTag(name = "requiredConstraint", parent = "RequiredConstraint")})
+@BeanTags({@BeanTag(name = "simpleContraint-bean", parent = "SimpleConstraint"),
+        @BeanTag(name = "requiredConstraint-bean", parent = "RequiredConstraint")})
 public class SimpleConstraint extends BaseConstraint implements ExistenceConstraint, RangeConstraint, LengthConstraint {
 
     private Boolean required;

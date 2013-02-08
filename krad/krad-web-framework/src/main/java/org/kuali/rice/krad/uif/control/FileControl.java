@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * Represents a HTML File control, generally rendered as an input control with
@@ -23,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "fileControl", parent = "Uif-FileControl")
+@BeanTag(name = "fileControl-bean", parent = "Uif-FileControl")
 public class FileControl extends ControlBase implements SizedControl {
     private static final long serialVersionUID = -5919326390841646189L;
 
@@ -36,6 +37,7 @@ public class FileControl extends ControlBase implements SizedControl {
     /**
      * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
      */
+    @BeanTagAttribute(name = "size")
     public int getSize() {
         return this.size;
     }

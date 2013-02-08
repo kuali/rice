@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,305 +16,218 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView formClass="edu.sampleu.demo.kitchensink.UifDialogTestForm" headertext="Dialog Test View" id="DialogTestView"
-            parent="Uif-FormView">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean formClass="edu.sampleu.demo.kitchensink.UifDialogTestForm" headertext="Dialog Test View" id="DialogTestView">
     <items>
-      <pageGroup id="DialogView-Page1" parent="UifCompViewPageWithFooter">
+      <page-bean id="DialogView-Page1" parent="UifCompViewPageWithFooter">
         <items>
-          <group parent="DialogTestView-SampleDialogs"/>
-          <group parent="DialogTestView-MainGroup"/>
-          <imageField id="myImage" parent="ImageDialog"/>
+          <group-bean parent="DialogTestView-SampleDialogs"/>
+          <group-bean parent="DialogTestView-MainGroup"/>
+          <imageField-bean id="myImage" parent="ImageDialog"/>
+          <dialogGroup-bean parent="schedulingConfirmDialog-Group"/>
         </items>
         <footer>
-          <group id="DialogTestView-FormFooter" parent="Uif-FooterBase">
+          <footer-bean id="DialogTestView-FormFooter">
             <items>
-              <action actionLabel="Tell Me A Story" id="myPrimaryButton" methodToCall="save"
-                      parent="Uif-PrimaryActionButton" performClientSideValidation="true"/>
-              <action actionLabel="Close" id="mySecondaryButton" methodToCall="closeMe"
-                      parent="Uif-SecondaryActionButton"/>
-              <action actionLabel="Cancel" methodToCall="cancel" parent="Uif-ActionLink"/>
+              <primaryActionButton-bean actionLabel="Tell Me A Story" id="myPrimaryButton" methodToCall="save" performClientSideValidation="true"/>
+              <secondaryActionButton-bean actionLabel="Close" id="mySecondaryButton" methodToCall="closeMe"/>
+              <actionLink-bean actionLabel="Cancel" methodToCall="cancel"/>
             </items>
-          </group>
+          </footer-bean>
         </footer>
-      </pageGroup>
-      <pageGroup id="DialogView-Page2" parent="UifCompViewPageWithFooter">
+      </page-bean>
+      <page-bean id="DialogView-Page2" parent="UifCompViewPageWithFooter">
         <items>
-          <group id="endPage" parent="DialogTestView-EndGroup"/>
+          <group-bean id="endPage" parent="DialogTestView-EndGroup"/>
         </items>
         <footer>
-          <group id="DialogTestView-Page2Footer" parent="Uif-FooterBase">
+          <footer-bean id="DialogTestView-Page2Footer">
             <items>
-              <action actionLabel="Go Back" id="page2PrimaryButton" methodToCall="goBack"
-                      parent="Uif-PrimaryActionButton" performClientSideValidation="true"/>
-              <action actionLabel="Cancel" methodToCall="cancel" parent="Uif-ActionLink"/>
+              <primaryActionButton-bean actionLabel="Go Back" id="page2PrimaryButton" methodToCall="goBack" performClientSideValidation="true"/>
+              <actionLink-bean actionLabel="Cancel" methodToCall="cancel"/>
             </items>
-          </group>
+          </footer-bean>
         </footer>
-      </pageGroup>
+      </page-bean>
     </items>
     <dialogs>
-      <dialogGroup id="chooseAuthorDialog" parent="ChooseAuthor-DialogGroup"/>
-      <dialogGroup id="chooseEastmanBookDialog" parent="EastmanBooks-DialogGroup"/>
-      <dialogGroup id="chooseSeussBookDialog" parent="SeussBooks-DialogGroup"/>
-      <dialogGroup id="myRestart" parent="RestartYesNo"/>
-      <dialogGroup id="mySensitiveDialog" parent="Uif-SensitiveData-DialogGroup"/>
-      <dialogGroup id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup"
-                   promptText="Would you like to continue?"/>
-      <dialogGroup id="preDefinedDialogTrueFalse" parent="DTV-preDefinedDialogTrueFalse"/>
-      <dialogGroup id="sampleRadioButtonDialog" parent="Uif-RadioButton-DialogGroup" promptText="Select"/>
-      <group id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
-      <group id="myRegularGroup" parent="DTV-SampleGroup"/>
-      <dialogGroup id="extendedDialogGroup" parent="DTV-ExtendedDialog"/>
-      <group id="myHiddenGroupDialog" parent="myHiddenGroup"/>
+      <dialogGroup-bean id="chooseAuthorDialog" parent="ChooseAuthor-DialogGroup"/>
+      <dialogGroup-bean id="chooseEastmanBookDialog" parent="EastmanBooks-DialogGroup"/>
+      <dialogGroup-bean id="chooseSeussBookDialog" parent="SeussBooks-DialogGroup"/>
+      <dialogGroup-bean id="myRestart" parent="RestartYesNo"/>
+      <sensitiveData-dialogGroup-bean id="mySensitiveDialog"/>
+      <ok-cancel-dialogGroup-bean id="preDefinedDialogOkCancel" promptText="Would you like to continue?"/>
+      <dialogGroup-bean id="preDefinedDialogTrueFalse" parent="DTV-preDefinedDialogTrueFalse"/>
+      <radioButton-dialogGroup-bean id="sampleRadioButtonDialog" promptText="Select"/>
+      <group-bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
+      <group-bean id="myRegularGroup" parent="DTV-SampleGroup"/>
+      <dialogGroup-bean id="extendedDialogGroup" parent="DTV-ExtendedDialog"/>
+      <dialogGroup-bean id="schedulingConfirmDialog" parent="schedulingConfirmDialog-Group"/>
+      <group-bean id="myHiddenGroupDialog" parent="myHiddenGroup"/>
     </dialogs>
     <theme>
-      <viewTheme parent="Uif-KradTheme"/>
+      <kradTheme-bean/>
     </theme>
-  </formView>
-  <formView id="DialogTestView_KNS" parent="DialogTestView">
+  </formView-bean>
+  <formView-bean id="DialogTestView_KNS" parent="DialogTestView">
     <theme>
-      <viewTheme parent="Uif-ClassicKnsTheme"/>
+      <classicKnsTheme-bean/>
     </theme>
-  </formView>
-  <group id="DialogTestView-SampleDialogs" parent="Uif-Disclosure-HorizontalBoxSection" title="Sample Dialogs">
+  </formView-bean>
+  <disclosure-horizontalBoxSection-bean id="DialogTestView-SampleDialogs" title="Sample Dialogs">
     <items>
-      <inputField defaultValue="false" instructionalText="show/hide dialog content" label="See dialog"
-                  onChangeScript="jQuery('#chooseAuthorDialog').toggle();" parent="Uif-InputField"
-                  propertyName="bField1">
+      <inputField-bean defaultValue="false" instructionalText="show/hide dialog content" label="See dialog" onChangeScript="jQuery('#chooseAuthorDialog').toggle();" propertyName="bField1">
         <control>
-          <checkboxControl parent="Uif-CheckboxControl"/>
+          <checkboxControl-bean/>
         </control>
-      </inputField>
-      <action actionLabel="Lightbox from hidden group" actionScript="showLightboxComponent('chooseAuthorDialog');"
-              parent="Uif-PrimaryActionButton"/>
-      <action actionLabel="Lightbox from hidden group with overrides"
-              actionScript="showLightboxComponent('chooseAuthorDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"
-              parent="Uif-PrimaryActionButton"/>
-      <action actionLabel="Lightbox from HTML"
-              actionScript="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"
-              parent="Uif-PrimaryActionButton"/>
-      <action actionLabel="Predefined OK/Cancel" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP"
-              methodToCall="doOkCancelExample" parent="Uif-PrimaryActionButton" performClientSideValidation="true"/>
-      <action actionLabel="Radio Buttons" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP"
-              methodToCall="doRadioDialogExample" parent="Uif-PrimaryActionButton" performClientSideValidation="true"/>
-      <action actionLabel="Lightbox from hidden group with progressive rendering"
-              actionScript="showLightboxComponent('myProgressiveDialog');" parent="Uif-PrimaryActionButton"/>
-      <action actionLabel="Lightbox from hidden image" actionScript="showLightboxComponent('myImage');"
-              parent="Uif-PrimaryActionButton"/>
-      <action actionLabel="Lightbox from URL" actionScript="showLightboxUrl('http://kuali.org');"
-              parent="Uif-PrimaryActionButton"/>
-      <action actionLabel="Client Ajax Dialog" actionScript="showLightboxComponent('preDefinedDialogTrueFalse');"
-              parent="Uif-PrimaryActionButton"/>
-      <action actionLabel="Regular Group" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP"
-              methodToCall="doRegularGroupAsDialog" parent="Uif-PrimaryActionButton"
-              performClientSideValidation="true"/>
-      <action actionLabel="Extended Dialog" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP"
-              methodToCall="doExtendedDialog" parent="Uif-PrimaryActionButton" performClientSideValidation="true"/>
-      <action actionLabel="Displays Response in LightBox" displayResponseInLightBox="true" focusOnIdAfterSubmit="FIRST"
-              jumpToIdAfterSubmit="TOP" methodToCall="doResponseInLightBox" parent="Uif-PrimaryActionButton"
-              performClientSideValidation="true"/>
+      </inputField-bean>
+      <primaryActionButton-bean actionLabel="Lightbox from hidden group" actionScript="showLightboxComponent('chooseAuthorDialog');"/>
+      <primaryActionButton-bean actionLabel="Lightbox from hidden group with overrides" actionScript="showLightboxComponent('chooseAuthorDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
+      <primaryActionButton-bean actionLabel="Lightbox from HTML" actionScript="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
+      <primaryActionButton-bean actionLabel="Predefined OK/Cancel" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP" methodToCall="doOkCancelExample" performClientSideValidation="true"/>
+      <primaryActionButton-bean actionLabel="Radio Buttons" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP" methodToCall="doRadioDialogExample" performClientSideValidation="true"/>
+      <primaryActionButton-bean actionLabel="Lightbox from hidden group with progressive rendering" actionScript="showLightboxComponent('myProgressiveDialog');"/>
+      <primaryActionButton-bean actionLabel="Lightbox from hidden image" actionScript="showLightboxComponent('myImage');"/>
+      <primaryActionButton-bean actionLabel="Lightbox from URL" actionScript="showLightboxUrl('http://kuali.org');"/>
+      <primaryActionButton-bean actionLabel="Client Ajax Dialog" actionScript="showLightboxComponent('preDefinedDialogTrueFalse');"/>
+      <primaryActionButton-bean actionLabel="Regular Group" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP" methodToCall="doRegularGroupAsDialog" performClientSideValidation="true"/>
+      <primaryActionButton-bean actionLabel="Expression dialog" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP" methodToCall="testExpressionDialog"/>
+      <primaryActionButton-bean actionLabel="Extended Dialog" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP" methodToCall="doExtendedDialog" performClientSideValidation="true"/>
+      <primaryActionButton-bean actionLabel="Displays Response in LightBox" displayResponseInLightBox="true" focusOnIdAfterSubmit="FIRST" jumpToIdAfterSubmit="TOP" methodToCall="doResponseInLightBox" performClientSideValidation="true"/>
     </items>
-  </group>
-  <group headertext="Storybook Corner" id="DialogTestView-MainGroup" parent="Uif-VerticalBoxSection">
+  </disclosure-horizontalBoxSection-bean>
+  <verticalBoxSection-bean headertext="Storybook Corner" id="DialogTestView-MainGroup">
     <items>
-      <message messageText="This is a storytelling section. Pick you story as you go!" parent="Uif-Message"/>
-      <inputField defaultValue="This is a test" id="statusMsg" parent="Uif-InputField" propertyName="field1"
-                  style="border:1px; font-size:2em">
+      <message-bean messageText="This is a storytelling section. Pick you story as you go!"/>
+      <inputField-bean defaultValue="This is a test" id="statusMsg" propertyName="field1" style="border:1px; font-size:2em">
         <control>
-          <textAreaControl parent="Uif-TextAreaControl" readOnly="true"/>
+          <textAreaControl-bean readOnly="true"/>
         </control>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group headertext="The end." id="DialogTestView-EndGroup" parent="Uif-VerticalBoxSection">
+  </verticalBoxSection-bean>
+  <verticalBoxSection-bean headertext="The end." id="DialogTestView-EndGroup">
     <items>
-      <inputField defaultValue="Hope you enjoyed the story." id="endMsg" parent="Uif-InputField" propertyName="field3"
-                  style="border:1px; font-size:2em">
+      <inputField-bean defaultValue="Hope you enjoyed the story." id="endMsg" propertyName="field3" style="border:1px; font-size:2em">
         <control>
-          <textAreaControl parent="Uif-TextAreaControl" readOnly="true"/>
+          <textAreaControl-bean readOnly="true"/>
         </control>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <dialogGroup headertext="Choose an Author" id="ChooseAuthor-DialogGroup" parent="Uif-DialogGroup"
-               promptText="Choose an Author">
+  </verticalBoxSection-bean>
+  <dialogGroup-bean headertext="Choose an Author" id="ChooseAuthor-DialogGroup" promptText="Choose an Author">
     <availableResponses>
-      <spring:bean parent="Uif-KeyLabelPair">
-        <spring:property name="key" value="Y"/>
-        <spring:property name="value" value="P. D. Eastman"/>
-      </spring:bean>
-      <spring:bean parent="Uif-KeyLabelPair">
-        <spring:property name="key" value="N"/>
-        <spring:property name="value" value="Dr. Seuss"/>
-      </spring:bean>
+      <keyLabelPair-bean key="Y" value="P. D. Eastman"/>
+      <keyLabelPair-bean key="N" value="Dr. Seuss"/>
     </availableResponses>
-  </dialogGroup>
-  <dialogGroup headertext="Which Book You Like To Read?" id="SeussBooks-DialogGroup"
-               parent="Uif-RadioButton-DialogGroup" promptText="Which Book You Like To Read?">
+  </dialogGroup-bean>
+  <radioButton-dialogGroup-bean headertext="Which Book You Like To Read?" id="SeussBooks-DialogGroup" promptText="Which Book You Like To Read?">
     <explanation>
-      <inputField parent="Uif-DialogExplanation" render="true">
+      <dialogExplanation-bean render="true">
         <control>
-          <radioGroupControl parent="Uif-VerticalRadioControl">
+          <verticalRadioControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="Green Eggs and Ham"/>
-                <spring:property name="value" value="Green Eggs and Ham"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="Cat in the Hat"/>
-                <spring:property name="value" value="Cat in the Hat"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="The Grinch Who Stole Christmas"/>
-                <spring:property name="value" value="The Grinch Who Stole Christmas"/>
-              </spring:bean>
+              <keyLabelPair-bean key="Green Eggs and Ham" value="Green Eggs and Ham"/>
+              <keyLabelPair-bean key="Cat in the Hat" value="Cat in the Hat"/>
+              <keyLabelPair-bean key="The Grinch Who Stole Christmas" value="The Grinch Who Stole Christmas"/>
             </options>
-          </radioGroupControl>
+          </verticalRadioControl-bean>
         </control>
-      </inputField>
+      </dialogExplanation-bean>
     </explanation>
     <availableResponses>
-      <spring:bean parent="Uif-KeyLabelPair">
-        <spring:property name="key" value="O"/>
-        <spring:property name="value" value="OK"/>
-      </spring:bean>
+      <keyLabelPair-bean key="O" value="OK"/>
     </availableResponses>
-  </dialogGroup>
-  <dialogGroup headertext="Which Book You Like To Read?" id="EastmanBooks-DialogGroup"
-               parent="Uif-RadioButton-DialogGroup">
+  </radioButton-dialogGroup-bean>
+  <radioButton-dialogGroup-bean headertext="Which Book You Like To Read?" id="EastmanBooks-DialogGroup">
     <explanation>
-      <inputField parent="Uif-DialogExplanation" render="true">
+      <dialogExplanation-bean render="true">
         <control>
-          <radioGroupControl parent="Uif-VerticalRadioControl">
+          <verticalRadioControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="Are You My Mother?"/>
-                <spring:property name="value" value="Are You My Mother?"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="Go, Dog. Go!"/>
-                <spring:property name="value" value="Go, Dog. Go!"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="The Alphabet Book"/>
-                <spring:property name="value" value="The Alphabet Book"/>
-              </spring:bean>
+              <keyLabelPair-bean key="Are You My Mother?" value="Are You My Mother?"/>
+              <keyLabelPair-bean key="Go, Dog. Go!" value="Go, Dog. Go!"/>
+              <keyLabelPair-bean key="The Alphabet Book" value="The Alphabet Book"/>
             </options>
-          </radioGroupControl>
+          </verticalRadioControl-bean>
         </control>
-      </inputField>
+      </dialogExplanation-bean>
     </explanation>
     <availableResponses>
-      <spring:bean parent="Uif-KeyLabelPair">
-        <spring:property name="key" value="O"/>
-        <spring:property name="value" value="OK"/>
-      </spring:bean>
+      <keyLabelPair-bean key="O" value="OK"/>
     </availableResponses>
-  </dialogGroup>
-  <dialogGroup id="RestartYesNo" parent="Uif-Yes-No-DialogGroup" promptText="Would you like to start over?"/>
-  <group header.cssClasses="uif-dialogHeader" headertext="A Custom Hidden Group" hidden="true" id="myHiddenGroup"
-         parent="Uif-VerticalBoxSection">
+  </radioButton-dialogGroup-bean>
+  <yes-no-dialogGroup-bean id="RestartYesNo" promptText="Would you like to start over?"/>
+  <verticalBoxSection-bean header.cssClasses="uif-dialogHeader" headertext="A Custom Hidden Group" hidden="true" id="myHiddenGroup">
     <header>
-      <header parent="Uif-HeaderThree"/>
+      <headerThree-bean/>
     </header>
     <items merge="true">
-      <messageField messageText="Your Name Here!" parent="Uif-MessageField"/>
-      <messageField messageText="Your Name Here!" parent="Uif-MessageField"/>
-      <action actionLabel="OK" actionScript="jQuery.fancybox.close();" parent="Uif-PrimaryActionButton"/>
+      <messageField-bean messageText="Your Name Here!"/>
+      <primaryActionButton-bean actionLabel="OK" actionScript="jQuery.fancybox.close();"/>
     </items>
     <cssClasses merge="true">
-      <value>uif-dialogGroup</value>
+      <spring:value>uif-dialogGroup</spring:value>
     </cssClasses>
-  </group>
-  <imageField fieldLabel.render="false" hidden="true" id="ImageDialog" parent="Uif-ImageField"
-              source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
-  <group headertext="Title" hidden="true" id="Progressive-DialogGroup" layoutManager.orientation="VERTICAL"
-         parent="Uif-VerticalBoxSection">
+  </verticalBoxSection-bean>
+  <dialogGroup-bean headertext="Mark as Ready for Scheduling" hidden="true" id="schedulingConfirmDialog-Group" promptText="">
     <items>
-      <label labelText="This is always displayed" parent="Uif-Label"/>
-      <help externalHelpUrl="http://www.kuali.org/" parent="Uif-Help"/>
-      <group parent="Uif-VerticalBoxSection">
+      <dataField-bean fieldLabel.style="font-weight:bold;" label="Course Offerings" propertyName="field2"/>
+      <messageField-bean fieldLabel.style="font-weight:bold;" label="Activity Offerings" messageText="All contained in the course offerings(@{field3})"/>
+    </items>
+  </dialogGroup-bean>
+  <imageField-bean fieldLabel.render="false" hidden="true" id="ImageDialog" source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
+  <verticalBoxSection-bean headertext="Title" hidden="true" id="Progressive-DialogGroup" layoutManager.orientation="VERTICAL">
+    <items>
+      <label-bean labelText="This is always displayed"/>
+      <help-bean externalHelpUrl="http://www.kuali.org/"/>
+      <verticalBoxSection-bean>
         <items>
-          <label labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."
-                 parent="Uif-Label"/>
+          <label-bean labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."/>
         </items>
-      </group>
-      <inputField label="Progressive Disclose" parent="Uif-InputField" propertyName="field4" width="auto">
+      </verticalBoxSection-bean>
+      <inputField-bean label="Progressive Disclose" propertyName="field4" width="auto">
         <control>
-          <radioGroupControl parent="Uif-VerticalRadioControl">
+          <verticalRadioControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="hide"/>
-                <spring:property name="value" value="Hide Group"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="show"/>
-                <spring:property name="value" value="Show Group"/>
-              </spring:bean>
+              <keyLabelPair-bean key="hide" value="Hide Group"/>
+              <keyLabelPair-bean key="show" value="Show Group"/>
             </options>
-          </radioGroupControl>
+          </verticalRadioControl-bean>
         </control>
-      </inputField>
-      <group disclosure.render="false" headertext="Group" parent="Uif-HorizontalBoxSection"
-             progressiveRender="field4 eq 'show'">
+      </inputField-bean>
+      <horizontalBoxSection-bean disclosure.render="false" headertext="Group" progressiveRender="field4 eq 'show'">
         <items>
-          <label labelText="This section is Progressively rendered." parent="Uif-Label"/>
+          <label-bean labelText="This section is Progressively rendered."/>
         </items>
-      </group>
-      <label labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."
-             parent="Uif-Label"/>
+      </horizontalBoxSection-bean>
+      <label-bean labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."/>
     </items>
-  </group>
-  <dialogGroup id="DTV-ExtendedDialog" parent="Uif-DialogGroup" promptText="Adding some custom items to a Dialog">
+  </verticalBoxSection-bean>
+  <dialogGroup-bean id="DTV-ExtendedDialog" promptText="Adding some custom items to a Dialog">
     <items>
-      <label labelText="This is always displayed" parent="Uif-Label"/>
-      <help externalHelpUrl="http://www.kuali.org/" parent="Uif-Help"/>
-      <inputField label="Field5" parent="GenericTextField" propertyName="field5"/>
-      <group parent="Uif-VerticalBoxSection">
+      <label-bean labelText="This is always displayed"/>
+      <help-bean externalHelpUrl="http://www.kuali.org/"/>
+      <inputField-bean label="Field5" parent="GenericTextField" propertyName="field5"/>
+      <verticalBoxSection-bean>
         <items>
-          <label labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."
-                 parent="Uif-Label"/>
-          <label labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."
-                 parent="Uif-Label"/>
+          <label-bean labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."/>
+          <label-bean labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."/>
         </items>
-      </group>
+      </verticalBoxSection-bean>
     </items>
-  </dialogGroup>
-  <group hidden="true" id="DTV-SampleGroup" parent="Uif-VerticalBoxSection">
+  </dialogGroup-bean>
+  <verticalBoxSection-bean hidden="true" id="DTV-SampleGroup">
     <items>
-      <label labelText="This group does not inherit from Uif-DialogGroup" parent="Uif-Label"/>
-      <group parent="Uif-VerticalBoxSection">
+      <label-bean labelText="This group does not inherit from Uif-DialogGroup"/>
+      <verticalBoxSection-bean>
         <items>
-          <label labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."
-                 parent="Uif-Label"/>
-          <label labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."
-                 parent="Uif-Label"/>
+          <label-bean labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."/>
+          <label-bean labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc."/>
         </items>
-      </group>
-      <inputField parent="Uif-DialogResponse"/>
+      </verticalBoxSection-bean>
+      <dialogResponse-bean/>
     </items>
-  </group>
-  <dialogGroup hidden="true" id="DTV-preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup"
-               progressiveRender="@{#form.renderedInLightBox}" progressiveRenderViaAJAX="true"
-               promptText="Is this a correct statement?"/>
+  </verticalBoxSection-bean>
+  <true-false-dialogGroup-bean hidden="true" id="DTV-preDefinedDialogTrueFalse" progressiveRender="@{#form.renderedInLightBox}" progressiveRenderViaAJAX="true" promptText="Is this a correct statement?"/>
 </spring:beans>

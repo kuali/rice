@@ -55,9 +55,9 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "richTable", parent = "Uif-RichTable"),
-        @BeanTag(name = "pagedRichTable", parent = "Uif-PagedRichTable"),
-        @BeanTag(name = "scrollableRichTable", parent = "Uif-ScrollableRichTable")})
+@BeanTags({@BeanTag(name = "richTable-bean", parent = "Uif-RichTable"),
+        @BeanTag(name = "pagedRichTable-bean", parent = "Uif-PagedRichTable"),
+        @BeanTag(name = "scrollableRichTable-bean", parent = "Uif-ScrollableRichTable")})
 public class RichTable extends WidgetBase {
     private static final long serialVersionUID = 4671589690877390070L;
 

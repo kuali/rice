@@ -36,8 +36,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "datePatternConstraint", parent = "DatePatternConstraint"),
-        @BeanTag(name = "basicDatePatternConstraint", parent = "BasicDatePatternConstraint")})
+@BeanTags({@BeanTag(name = "datePatternConstraint-bean", parent = "DatePatternConstraint"),
+        @BeanTag(name = "basicDatePatternConstraint-bean", parent = "BasicDatePatternConstraint")})
 public class DatePatternConstraint extends ValidDataPatternConstraint {
 
     private List<String> allowedFormats;

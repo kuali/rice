@@ -57,8 +57,8 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "compareFieldCreate-modifier", parent = "Uif-CompareFieldCreate-Modifier"),
-        @BeanTag(name = "maintenanceCompare-modifier", parent = "Uif-MaintenanceCompare-Modifier")})
+@BeanTags({@BeanTag(name = "compareFieldCreate-modifier-bean", parent = "Uif-CompareFieldCreate-Modifier"),
+        @BeanTag(name = "maintenanceCompare-modifier-bean", parent = "Uif-MaintenanceCompare-Modifier")})
 public class CompareFieldCreateModifier extends ComponentModifierBase {
     private static final Logger LOG = Logger.getLogger(CompareFieldCreateModifier.class);
 

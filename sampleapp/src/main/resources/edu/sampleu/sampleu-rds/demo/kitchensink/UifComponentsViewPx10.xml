@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,193 +16,146 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-  ~ Copyright 2006-2012 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p"
-              xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <group disclosure.render="false" headertext="Fields created by Fetching Remotable Fields" id="remotableFieldsGroup"
-         parent="Uif-VerticalBoxSection">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <verticalBoxSection-bean disclosure.render="false" id="remotableFieldsGroup">
     <items>
-      <remoteFieldsHolder fetchingMethodToCall="retrieveRemoteFields" parent="Uif-RemotableFieldsPlaceholderConfig"
-                          propertyName="remoteFieldValuesMap"/>
-      <fieldGroup group.instructionalText="Remote fields pulled into a Field Group" parent="Uif-HorizontalFieldGroup">
+      <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields" propertyName="remoteFieldValuesMap"/>
+      <horizontalFieldGroup-bean id="remotableFields-Group1">
         <items>
-          <remoteFieldsHolder fetchingMethodToCall="retrieveRemoteFields" parent="Uif-RemotableFieldsPlaceholderConfig"
-                              propertyName="remoteFieldValuesMap2"/>
+          <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields" propertyName="remoteFieldValuesMap2"/>
         </items>
-      </fieldGroup>
+      </horizontalFieldGroup-bean>
     </items>
-  </group>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
-                   headertext="Collection Group Remote Fields" id="remotableFieldsCollection"
-                   instructionalText="A collection group that has remote fields." layoutManager.richTable.render="false"
-                   layoutManager.sequencePropertyName="field1" layoutManager.suppressLineWrapping="true"
-                   parent="Uif-Disclosure-TableCollectionSection" propertyName="list1">
+  </verticalBoxSection-bean>
+  <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" id="remotableFieldsCollection" layoutManager.richTable.render="false" layoutManager.sequencePropertyName="field1" layoutManager.suppressLineWrapping="true" propertyName="list1">
     <items>
-      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
-      <remoteFieldsHolder fetchingMethodToCall="retrieveRemoteFields" parent="Uif-RemotableFieldsPlaceholderConfig"
-                          propertyName="remoteFieldValuesMap"/>
-      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+      <inputField-bean propertyName="field3" required="true"/>
+      <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields" propertyName="remoteFieldValuesMap"/>
+      <inputField-bean propertyName="field4" required="true"/>
     </items>
-  </collectionGroup>
-  <group disclosure.render="false" headertext="Various configuration and feature examples" id="miscGroup"
-         parent="Uif-VerticalBoxSection">
+  </disclosure-tableCollectionSection-bean>
+  <verticalBoxSection-bean disclosure.render="false" id="miscGroup">
     <header>
-      <header parent="Uif-SectionHeader"/>
+      <sectionHeader-bean/>
     </header>
     <items>
-      <inputField instructionalText="Field that is being set to read only by request" label="Field 1"
-                  parent="GenericTextField" propertyName="field91" readOnly="false" required="true">
+      <inputField-bean parent="GenericTextField" propertyName="field91" readOnly="false" required="true">
         <control>
-          <textControl parent="Uif-TextControl"/>
+          <textControl-bean/>
         </control>
-      </inputField>
-      <inputField instructionalText="Field using a custom property editor" label="Field 2" parent="GenericTextField"
-                  propertyEditorClass="edu.sampleu.demo.kitchensink.UITestPropertyEditor"
-                  propertyName="uiTestObject.field3">
+      </inputField-bean>
+      <inputField-bean id="uiTestObject-Field3" parent="GenericTextField" propertyEditorClass="edu.sampleu.demo.kitchensink.UITestPropertyEditor" propertyName="uiTestObject.field3">
         <control>
-          <textControl parent="Uif-TextControl"/>
+          <textControl-bean/>
         </control>
-      </inputField>
-      <inputField defaultValue="a3"
-                  instructionalText="Progressively renders a field when a hidden field is populated by a field query"
-                  label="Field Query w Progressive" parent="GenericTextField" propertyName="field72">
+      </inputField-bean>
+      <inputField-bean defaultValue="a3" parent="GenericTextField" propertyName="field72">
         <additionalHiddenPropertyNames>
-          <value>field73</value>
-          <value>field74</value>
+          <spring:value>field73</spring:value>
+          <spring:value>field74</spring:value>
         </additionalHiddenPropertyNames>
         <attributeQuery>
-          <attributeQuery dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" parent="Uif-AttributeQueryConfig"
-                          queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
+          <attributeQueryConfig-bean dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
         </attributeQuery>
-      </inputField>
-      <inputField label="See This?" parent="Uif-InputField" progressiveRender="@{!#empty(field73)}"
-                  propertyName="bField1">
+      </inputField-bean>
+      <inputField-bean progressiveRender="@{!#empty(field73)}" propertyName="bField1">
         <control>
-          <checkboxControl parent="Uif-CheckboxControl"/>
+          <checkboxControl-bean/>
         </control>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group disclosure.render="false" headertext="Tooltip examples" id="toolTipGroup" parent="Uif-VerticalBoxSection">
+  </verticalBoxSection-bean>
+  <verticalBoxSection-bean disclosure.render="false" id="toolTipGroup">
     <header>
-      <header parent="Uif-SectionHeader">
+      <sectionHeader-bean>
         <toolTip>
-          <tooltip parent="Uif-Tooltip" tooltipContent="This is a header tooltip"/>
+          <tooltip-bean/>
         </toolTip>
-      </header>
+      </sectionHeader-bean>
     </header>
     <items>
-      <inputField exclusiveMin="2"
-                  instructionalText="Hover mouse over label or select control to display tooltip. Default tooltip should not display when field contains a message."
-                  label="Field 1" parent="GenericTextField" propertyName="field1" readOnly="false" required="false">
+      <inputField-bean exclusiveMin="2" parent="GenericTextField" propertyName="field1" readOnly="false" required="false">
         <fieldLabel>
-          <label parent="Uif-Label">
+          <label-bean>
             <toolTip>
-              <tooltip parent="Uif-Tooltip"
-                       tooltipContent="&lt;p&gt;Example of HTML rich tooltip content.&lt;p&gt;&lt;p&gt;&lt;font color=&quot;#660033&quot;&gt;&lt;a href=&quot;http://www.vegabit.com/jquery_bubble_popup_v2/#examples&quot; target=&quot;_blank&quot;&gt;jQuery Bubble Popup&lt;/a&gt;&lt;/font&gt;&lt;/p&gt;"/>
+              <tooltip-bean/>
             </toolTip>
-          </label>
+          </label-bean>
         </fieldLabel>
         <control>
-          <textControl parent="Uif-TextControl">
+          <textControl-bean>
             <toolTip>
-              <tooltip onMouseHover="true" parent="Uif-TooltipFocus" tooltipContent="This tooltip is @{field134}."/>
+              <tooltipFocus-bean onMouseHover="true"/>
             </toolTip>
-          </textControl>
+          </textControl-bean>
         </control>
-      </inputField>
-      <inputField instructionalText="Mouse over control tooltip" label="Field 2" parent="GenericTextField"
-                  propertyName="field2" readOnly="false" required="false">
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field2" readOnly="false" required="false">
         <control>
-          <textControl parent="Uif-TextControl">
+          <textControl-bean>
             <toolTip>
-              <tooltip parent="Uif-Tooltip"
-                       tooltipContent="This is a tool-tip with different position and tail options">
+              <tooltip-bean>
                 <templateOptions merge="true">
-                  <entry key="position" value="right"/>
-                  <entry key="align" value="center"/>
-                  <entry key="tail" value="{ align:'center', hidden: true }"/>
+                  <spring:entry key="position" value="right"/>
+                  <spring:entry key="align" value="center"/>
+                  <spring:entry key="tail" value="{ align:'center', hidden: true }"/>
                 </templateOptions>
-              </tooltip>
+              </tooltip-bean>
             </toolTip>
-          </textControl>
+          </textControl-bean>
         </control>
-      </inputField>
-      <inputField defaultValue="4" label="Select Control" parent="GenericTextField" propertyName="field119"
-                  width="auto">
+      </inputField-bean>
+      <inputField-bean defaultValue="4" parent="GenericTextField" propertyName="field119" width="auto">
         <control>
-          <selectControl parent="Uif-DropdownControl">
+          <dropdownControl-bean>
             <toolTip>
-              <tooltip parent="Uif-Tooltip" tooltipContent="This is a Select Control tooltip"/>
+              <tooltip-bean/>
             </toolTip>
-          </selectControl>
+          </dropdownControl-bean>
         </control>
         <optionsFinder>
           <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
         </optionsFinder>
-      </inputField>
-      <inputField label="Multi Select Control" parent="GenericTextField" propertyName="field120" width="auto">
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field120" width="auto">
         <control>
-          <selectControl options-ref="test-options" parent="Uif-MultiSelectControl" size="3">
+          <multiSelectControl-bean options-ref="test-options" size="3">
             <toolTip>
-              <tooltip parent="Uif-Tooltip" tooltipContent="This is a Multi Select Control tooltip"/>
+              <tooltip-bean/>
             </toolTip>
-          </selectControl>
+          </multiSelectControl-bean>
         </control>
-      </inputField>
-      <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
-                       headertext="Collection with tooltips" layoutManager.numberOfColumns="4"
-                       layoutManager.renderSequenceField="false" parent="Uif-Disclosure-TableCollectionSection"
-                       propertyName="list2">
+      </inputField-bean>
+      <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" id="toolTipGroup-TableCollection1" layoutManager.numberOfColumns="4" layoutManager.renderSequenceField="false" propertyName="list2">
         <items>
-          <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-          <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
-          <messageField label="Features" messageText="Hover 1" parent="Uif-MessageField">
+          <inputField-bean propertyName="field1" required="true"/>
+          <inputField-bean propertyName="field2" required="true"/>
+          <messageField-bean id="TableCollection1-Hover1">
             <toolTip>
-              <tooltip onMouseHover="true" parent="Uif-TooltipFocus"
-                       tooltipContent="@{#line.field1} and @{#line.field2}"/>
+              <tooltipFocus-bean onMouseHover="true"/>
             </toolTip>
-          </messageField>
-          <messageField label="Features" messageText="Hover 2" parent="Uif-MessageField">
+          </messageField-bean>
+          <messageField-bean id="TableCollection1-Hover2">
             <toolTip>
-              <tooltip onMouseHover="true" parent="Uif-TooltipFocus"
-                       tooltipContent="@{#line.field3} and @{#line.field4}"/>
+              <tooltipFocus-bean onMouseHover="true"/>
             </toolTip>
-          </messageField>
+          </messageField-bean>
         </items>
-      </collectionGroup>
+      </disclosure-tableCollectionSection-bean>
     </items>
-  </group>
-  <group headertext="Data Table - Ajax Source" id="UifCompDataTable"
-         instructionalText="Standard section with a DataTable (builds table using Ajax source) with infinite scrolling enabled"
-         parent="Uif-VerticalBoxSection">
+  </verticalBoxSection-bean>
+  <verticalBoxSection-bean id="UifCompDataTable">
     <items>
-      <dataTable ajaxSource="@{#ConfigProperties['serviceServletUrl']}dataTableRestServiceTest/TableData"
-                 parent="Uif-DataTable">
-        <richTable.templateOptions merge="true">
-          <entry key="aoColumns"
-                 value="[                                 {'sTitle':'Course Id', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Course Name', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Credits', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Subject', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Dept', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Professor', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Days', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Fee', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Min Credits', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Grading', 'bSortable':true, 'bSearchable':false}                             ]"/>
-          <entry key="'bScrollInfinite'" value="true"/>
-          <entry key="'bScrollCollapse'" value="true"/>
-          <entry key="'sScrollY'" value="200px"/>
-        </richTable.templateOptions>
-      </dataTable>
+      <dataTable-bean ajaxSource="@{#ConfigProperties['serviceServletUrl']}dataTableRestServiceTest/TableData">
+        <spring:property name="richTable.templateOptions">
+          <spring:map merge="true">
+            <spring:entry key="aoColumns" value="[                                 {'sTitle':'Course Id', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Course Name', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Credits', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Subject', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Dept', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Professor', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Days', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Fee', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Min Credits', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Grading', 'bSortable':true, 'bSearchable':false}                             ]"/>
+            <spring:entry key="'bScrollInfinite'" value="true"/>
+            <spring:entry key="'bScrollCollapse'" value="true"/>
+            <spring:entry key="'sScrollY'" value="200px"/>
+          </spring:map>
+        </spring:property>
+      </dataTable-bean>
     </items>
-  </group>
+  </verticalBoxSection-bean>
 </spring:beans>

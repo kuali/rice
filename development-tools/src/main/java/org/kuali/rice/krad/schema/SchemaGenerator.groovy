@@ -1,3 +1,5 @@
+package org.kuali.rice.krad.schema
+
 /**
  * Copyright 2005-2013 The Kuali Foundation
  *
@@ -14,7 +16,6 @@
  * limitations under the License.
  */
 import org.kuali.rice.krad.datadictionary.parse.CustomTagAnnotations
-import org.kuali.rice.krad.datadictionary.parse.BeanTagInfo
 
 /*
 * Copyright 2006-2012 The Kuali Foundation
@@ -31,6 +32,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagInfo
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-CustomTagAnnotations.generateSchemaFile();
+ResourceBundle doc = ResourceBundle.getBundle("org.kuali.rice.devtools.krad.documentation.PropertiesDescription");
+CustomTagAnnotations.generateSchemaFile(doc);
 
 

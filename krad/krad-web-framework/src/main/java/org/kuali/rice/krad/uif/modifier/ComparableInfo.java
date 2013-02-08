@@ -40,7 +40,7 @@ import java.io.Serializable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.modifier.CompareFieldCreateModifier
  */
-@BeanTag(name = "compareConfig", parent = "Uif-CompareConfig")
+@BeanTag(name = "compareConfig-bean", parent = "Uif-CompareConfig")
 public class ComparableInfo extends UifDictionaryBeanBase implements Serializable, Ordered  {
 	private static final long serialVersionUID = -5926058412202550266L;
 

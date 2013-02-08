@@ -27,7 +27,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "attributeSecurity")
+@BeanTag(name = "attributeSecurity-bean")
 public class AttributeSecurity extends UifDictionaryBeanBase {
     private static final long serialVersionUID = -7923499408946975318L;
 

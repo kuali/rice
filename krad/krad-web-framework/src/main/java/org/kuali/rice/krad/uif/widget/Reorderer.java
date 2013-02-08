@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "reorderer", parent = "Uif-Reorderer")
+@BeanTag(name = "reorderer-bean", parent = "Uif-Reorderer")
 public class Reorderer extends WidgetBase {
     private static final long serialVersionUID = 6142957061046219120L;
 

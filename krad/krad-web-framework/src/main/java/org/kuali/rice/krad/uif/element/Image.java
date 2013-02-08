@@ -34,10 +34,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "image", parent = "Uif-Image"),
-        @BeanTag(name = "helpImage", parent = "Uif-HelpImage"),
-        @BeanTag(name = "quickLookupImage", parent = "Uif-QuickLookupImage"),
-        @BeanTag(name = "directInquiryImage", parent = "Uif-DirectInquiryImage")})
+@BeanTags({@BeanTag(name = "image-bean", parent = "Uif-Image"),
+        @BeanTag(name = "helpImage-bean", parent = "Uif-HelpImage"),
+        @BeanTag(name = "quickLookupImage-bean", parent = "Uif-QuickLookupImage"),
+        @BeanTag(name = "directInquiryImage-bean", parent = "Uif-DirectInquiryImage")})
 public class Image extends ContentElementBase {
     private static final long serialVersionUID = -3911849875276940507L;
 

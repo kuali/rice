@@ -35,8 +35,6 @@
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <kuali.testjar.phase>none</kuali.testjar.phase>
     <kuali.generate.reports>false</kuali.generate.reports>
-    <!-- Default this to the location that works for Unix and Windows -->
-    <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
   </properties>
 
   <build>
@@ -271,6 +269,12 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>rice-development-tools</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rice-krms-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -338,14 +342,6 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.sun</groupId>
-      <artifactId>tools</artifactId>
-      <scope>system</scope>
-      <version>1.6</version>
-      <systemPath>${tools.jar.path}</systemPath>
     </dependency>
 
   </dependencies>

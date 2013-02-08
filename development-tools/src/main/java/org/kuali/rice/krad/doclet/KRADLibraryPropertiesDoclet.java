@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.uif.library.tools;
+package org.kuali.rice.krad.doclet;
 
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
@@ -105,7 +105,7 @@ public class KRADLibraryPropertiesDoclet {
         // TODO : remove hard coding of filepath
         try {
             prop.store(new FileOutputStream("C:/Java/Projects/Rice/Trunk/sampleapp/src/main/resources/"
-                    + "org/kuali/rice/krad/demo/uif/library/resources/PropertiesDescription.properties"), null);
+                    + "org/kuali/rice/devtools/krad/documentation/PropertiesDescription.properties"), null);
         } catch (IOException e) {
             e.printStackTrace();
         }

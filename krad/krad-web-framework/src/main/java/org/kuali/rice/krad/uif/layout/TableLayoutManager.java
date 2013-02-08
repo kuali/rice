@@ -62,7 +62,7 @@ import java.util.TreeMap;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "tableCollectionLayout", parent = "Uif-TableCollectionLayout")
+@BeanTag(name = "tableCollectionLayout-bean", parent = "Uif-TableCollectionLayout")
 public class TableLayoutManager extends GridLayoutManager implements CollectionLayoutManager {
     private static final long serialVersionUID = 3622267585541524208L;
 

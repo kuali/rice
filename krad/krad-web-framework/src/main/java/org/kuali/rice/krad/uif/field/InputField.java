@@ -80,21 +80,21 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "inputField", parent = "Uif-InputField"),
-        @BeanTag(name = "inputField-labelTop", parent = "Uif-InputField-LabelTop"),
-        @BeanTag(name = "inputField-labelRight", parent = "Uif-InputField-LabelRight"),
-        @BeanTag(name = "checkboxInputField", parent = "Uif-CheckboxInputField"),
-        @BeanTag(name = "dialogResponse", parent = "Uif-DialogResponse"),
-        @BeanTag(name = "dialogExplanation", parent = "Uif-DialogExplanation"),
-        @BeanTag(name = "documentNumber", parent = "Uif-DocumentNumber"),
-        @BeanTag(name = "documentStatus", parent = "Uif-DocumentStatus"),
-        @BeanTag(name = "documentInitiatorNetworkId", parent = "Uif-DocumentInitiatorNetworkId"),
-        @BeanTag(name = "documentCreateDate", parent = "Uif-DocumentCreateDate"),
-        @BeanTag(name = "documentTemplateNumber", parent = "Uif-DocumentTemplateNumber"),
-        @BeanTag(name = "documentDescription", parent = "Uif-DocumentDescription"),
-        @BeanTag(name = "documentExplaination", parent = "Uif-DocumentExplaination"),
-        @BeanTag(name = "organizationDocumentNumber", parent = "Uif-OrganizationDocumentNumber"),
-        @BeanTag(name = "selectCollectionItemField", parent = "Uif-SelectCollectionItemField")})
+@BeanTags({@BeanTag(name = "inputField-bean", parent = "Uif-InputField"),
+        @BeanTag(name = "inputField-labelTop-bean", parent = "Uif-InputField-LabelTop"),
+        @BeanTag(name = "inputField-labelRight-bean", parent = "Uif-InputField-LabelRight"),
+        @BeanTag(name = "checkboxInputField-bean", parent = "Uif-CheckboxInputField"),
+        @BeanTag(name = "dialogResponse-bean", parent = "Uif-DialogResponse"),
+        @BeanTag(name = "dialogExplanation-bean", parent = "Uif-DialogExplanation"),
+        @BeanTag(name = "documentNumber-bean", parent = "Uif-DocumentNumber"),
+        @BeanTag(name = "documentStatus-bean", parent = "Uif-DocumentStatus"),
+        @BeanTag(name = "documentInitiatorNetworkId-bean", parent = "Uif-DocumentInitiatorNetworkId"),
+        @BeanTag(name = "documentCreateDate-bean", parent = "Uif-DocumentCreateDate"),
+        @BeanTag(name = "documentTemplateNumber-bean", parent = "Uif-DocumentTemplateNumber"),
+        @BeanTag(name = "documentDescription-bean", parent = "Uif-DocumentDescription"),
+        @BeanTag(name = "documentExplaination-bean", parent = "Uif-DocumentExplaination"),
+        @BeanTag(name = "organizationDocumentNumber-bean", parent = "Uif-OrganizationDocumentNumber"),
+        @BeanTag(name = "selectCollectionItemField-bean", parent = "Uif-SelectCollectionItemField")})
 public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -3703656713706343840L;
 
@@ -621,6 +621,21 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
+     * Get the class of the optionsFinder being used by this InputField
+     *
+     * @return the class of the set optionsFinder, if not set or not applicable, returns null
+     */
+    @BeanTagAttribute(name = "optionsFinderClass")
+    public Class<? extends KeyValuesFinder> getOptionsFinderClass(){
+        if(this.optionsFinder != null){
+            return this.optionsFinder.getClass();
+        }
+        else{
+            return null;
+        }
+    }
+
+    /**
      * Setter that takes in the class name for the options finder and creates a
      * new instance to use as the finder for the input field
      *
@@ -839,7 +854,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the dependency constraints for this input field
      */
-    @BeanTagAttribute(name = "dependencyConstraint", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "dependencyConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PrerequisiteConstraint> getDependencyConstraints() {
         return this.dependencyConstraints;
     }

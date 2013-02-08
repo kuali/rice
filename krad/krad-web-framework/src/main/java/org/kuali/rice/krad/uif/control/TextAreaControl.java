@@ -29,10 +29,10 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "textAreaControl", parent = "Uif-TextAreaControl"),
-        @BeanTag(name = "smallTextAreaControl", parent = "Uif-SmallTextAreaControl"),
-        @BeanTag(name = "mediumTextAreaControl", parent = "Uif-MediumTextAreaControl"),
-        @BeanTag(name = "largeTextAreaControl", parent = "Uif-LargeTextAreaControl")})
+@BeanTags({@BeanTag(name = "textAreaControl-bean", parent = "Uif-TextAreaControl"),
+        @BeanTag(name = "smallTextAreaControl-bean", parent = "Uif-SmallTextAreaControl"),
+        @BeanTag(name = "mediumTextAreaControl-bean", parent = "Uif-MediumTextAreaControl"),
+        @BeanTag(name = "largeTextAreaControl-bean", parent = "Uif-LargeTextAreaControl")})
 public class TextAreaControl extends ControlBase {
     private static final long serialVersionUID = -4664558047325456844L;
 

@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary.parse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
@@ -27,6 +30,7 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.SystemPropertyUtils;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -43,12 +47,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.net.URL;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 /**
@@ -60,6 +64,7 @@ import java.util.Set;
 public class CustomTagAnnotations {
     // Logger
     private static final Log LOG = LogFactory.getLog(CustomTagAnnotations.class);
+    private static final String BEAN_SUFFIX = "-bean";
 
     private static Map<String, Map<String, BeanTagAttributeInfo>> attributeProperties;
     private static Map<String, BeanTagInfo> beanTags;
@@ -68,26 +73,32 @@ public class CustomTagAnnotations {
     /**
      * Loads the list of class that have an associated custom schema.
      */
-    private static void loadCustomTagClasses(){
-        try{
+    private static void loadCustomTagClasses() {
+        try {
             customTagClasses = findTagClasses("org.kuali.rice.krad");
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    private static List<Class<?>> findTagClasses(String basePackage) throws IOException, ClassNotFoundException
-    {
+    /**
+     * Finds all the classes which have a BeanTag or BeanTags annotation
+     *
+     * @param basePackage the package to start in
+     * @return classes which have BeanTag or BeanTags annotation
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private static List<Class<?>> findTagClasses(String basePackage) throws IOException, ClassNotFoundException {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
 
         List<Class<?>> classes = new ArrayList<Class<?>>();
-        String resolvedBasePackage =
-                ClassUtils.convertClassNameToResourcePath(SystemPropertyUtils.resolvePlaceholders(basePackage));
+        String resolvedBasePackage = ClassUtils.convertClassNameToResourcePath(SystemPropertyUtils.resolvePlaceholders(
+                basePackage));
         String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
-                                   resolvedBasePackage + "/" + "**/*.class";
+                resolvedBasePackage + "/" + "**/*.class";
         Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
         for (Resource resource : resources) {
             if (resource.isReadable()) {
@@ -100,25 +111,34 @@ public class CustomTagAnnotations {
         return classes;
     }
 
-    private static boolean isBeanTag(MetadataReader metadataReader)
-    {
-        try{
-            try{
+    /**
+     * Returns true if the metadataReader representing the class has a BeanTag or BeanTags annotation
+     *
+     * @param metadataReader MetadataReader representing the class to analyze
+     * @return true if BeanTag or BeanTags annotation is present
+     */
+    private static boolean isBeanTag(MetadataReader metadataReader) {
+        try {
+            try {
                 Class c = Class.forName(metadataReader.getClassMetadata().getClassName());
                 if (c.getAnnotation(BeanTag.class) != null || c.getAnnotation(BeanTags.class) != null) {
                     return true;
                 }
-            }
-            catch(Throwable e){
+            } catch (Throwable e) {
                 //skip
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
         }
         return false;
     }
 
-    public static Document generateSchemaFile(){
+    /**
+     * Generate the custom schema for KRAD based on the custom tag annotations on KRAD classes
+     *
+     * @param doc the RescourceBundle containing the documentation
+     * @return the
+     */
+    public static void generateSchemaFile(ResourceBundle doc) {
         Map<String, Map<String, BeanTagInfo>> nameTagMap = new HashMap<String, Map<String, BeanTagInfo>>();
         Map<String, BeanTagInfo> beanMap = CustomTagAnnotations.getBeanTags();
         BeanTagInfo infos[] = new BeanTagInfo[beanMap.values().size()];
@@ -135,16 +155,16 @@ public class CustomTagAnnotations {
             String tag = tags[i];
             Map<String, BeanTagInfo> existingTags = nameTagMap.get(name);
 
-            if(existingTags == null){
+            if (existingTags == null) {
                 existingTags = new HashMap<String, BeanTagInfo>();
             }
 
-            if(infos[i].isDefaultTag() || existingTags.isEmpty()){
+            if (infos[i].isDefaultTag() || existingTags.isEmpty()) {
                 infos[i].setDefaultTag(true);
                 existingTags.put("default", infos[i]);
             }
 
-            if(infos[i].getParent() != null){
+            if (infos[i].getParent() != null) {
                 existingTags.put(infos[i].getParent(), infos[i]);
             }
 
@@ -152,106 +172,296 @@ public class CustomTagAnnotations {
         }
 
         try {
+
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document;
             document = builder.newDocument();
 
+            //set up base schema tag
             Element schema = document.createElement("xsd:schema");
             schema.setAttribute("xmlns", "http://www.kuali.org/schema");
             schema.setAttribute("targetNamespace", "http://www.kuali.org/schema");
             schema.setAttribute("elementFormDefault", "qualified");
             schema.setAttribute("attributeFormDefault", "unqualified");
-            schema.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
 
+            schema.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+            schema.setAttribute("xmlns:spring", "http://www.springframework.org/schema/beans");
+            schema.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            schema.setAttribute("xsi:schemaLocation",
+                    "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+                            + " http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd");
+
+            //add spring import
+            Element springImport = document.createElement("xsd:import");
+            springImport.setAttribute("namespace", "http://www.springframework.org/schema/beans");
+            schema.appendChild(springImport);
+
+            //add special basic list type
+            Element basicListType = document.createElement("xsd:complexType");
+            basicListType.setAttribute("name", "basicList-type");
+
+            Element basicListSequence = document.createElement("xsd:sequence");
+            Element basicListElement = document.createElement("xsd:element");
+            basicListElement.setAttribute("minOccurs", "0");
+            basicListElement.setAttribute("maxOccurs", "unbounded");
+            basicListElement.setAttribute("ref", "spring:value");
+
+            Element basicListMergeAttribute = document.createElement("xsd:attribute");
+            basicListMergeAttribute.setAttribute("name", "merge");
+            basicListMergeAttribute.setAttribute("type", "xsd:boolean");
+
+            basicListSequence.appendChild(basicListElement);
+            basicListType.appendChild(basicListSequence);
+            basicListType.appendChild(basicListMergeAttribute);
+            schema.appendChild(basicListType);
+
+            //init variables
             List<Element> types = new ArrayList<Element>();
             List<Element> elements = new ArrayList<Element>();
             Set<String> classKeys = nameTagMap.keySet();
-            for (String className: classKeys) {
+            Map<String, Element> elementObjects = new HashMap<String, Element>();
+
+            //create/init default element object types
+            for (String className : classKeys) {
+                Class clazz = Class.forName(className);
+
+                while (!clazz.equals(Object.class)) {
+                    //add tag to interface object elements
+                    for (Class currentInterface : clazz.getInterfaces()) {
+                        if (currentInterface.getName().startsWith("org.kuali")) {
+                            Element elementObject = document.createElement("xsd:complexType");
+                            elementObject.setAttribute("name", currentInterface.getName());
+
+                            Element choice = document.createElement("xsd:choice");
+                            choice.setAttribute("minOccurs", "0");
+                            choice.setAttribute("maxOccurs", "unbounded");
+                            Element springBean = document.createElement("xsd:element");
+                            springBean.setAttribute("ref", "spring:bean");
+                            Element springRef = document.createElement("xsd:element");
+                            springRef.setAttribute("ref", "spring:ref");
+
+                            choice.appendChild(springRef);
+                            choice.appendChild(springBean);
+                            elementObject.appendChild(choice);
+                            elementObjects.put(currentInterface.getName(), elementObject);
+                        }
+                    }
+
+                    //add tag to class object elements
+                    Element elementObject = document.createElement("xsd:complexType");
+                    elementObject.setAttribute("name", clazz.getName());
+
+                    Element choice = document.createElement("xsd:choice");
+                    choice.setAttribute("minOccurs", "0");
+                    choice.setAttribute("maxOccurs", "unbounded");
+                    Element springBean = document.createElement("xsd:element");
+                    springBean.setAttribute("ref", "spring:bean");
+                    Element springRef = document.createElement("xsd:element");
+                    springRef.setAttribute("ref", "spring:ref");
+
+                    choice.appendChild(springRef);
+                    choice.appendChild(springBean);
+                    elementObject.appendChild(choice);
+                    elementObjects.put(clazz.getName(), elementObject);
+
+                    //process next superClass
+                    clazz = clazz.getSuperclass();
+                }
+
+            }
+
+            //get the attributes of componentBase (component sub-types create an extension to this)
+            Map<String, BeanTagAttributeInfo> componentAttributes = getAttributes(ComponentBase.class);
+
+            List<Element> componentAttributeElements = new ArrayList<Element>();
+
+            //Create types for each element
+            for (String className : classKeys) {
                 Map<String, BeanTagInfo> tagMap = nameTagMap.get(className);
+                Class clazz = Class.forName(className);
                 BeanTagInfo typeInfo = tagMap.get("default");
                 String currentType = typeInfo.getTag();
+                boolean isComponentBase = currentType.equals("componentBase" + BEAN_SUFFIX);
+                boolean isComponent = Component.class.isAssignableFrom(clazz);
 
                 Element complexType = document.createElement("xsd:complexType");
                 complexType.setAttribute("name", currentType + "-type");
-                Element sequence = document.createElement("xsd:all");
+
+                Element complexContent = null;
+                Element extension = null;
+                if (isComponent) {
+                    complexContent = document.createElement("xsd:complexContent");
+                    extension = document.createElement("xsd:extension");
+                    extension.setAttribute("base", "componentAttributes-type");
+                    complexContent.appendChild(extension);
+                    complexType.appendChild(complexContent);
+                }
+
+                Element sequence = document.createElement("xsd:choice");
+                sequence.setAttribute("minOccurs", "0");
+                sequence.setAttribute("maxOccurs", "unbounded");
 
                 List<Element> attributeProperties = new ArrayList<Element>();
                 Map<String, BeanTagAttributeInfo> attributes = getAttributes(typeInfo.getBeanClass());
 
-                if(attributes != null && !attributes.isEmpty()){
-                    for(BeanTagAttributeInfo aInfo: attributes.values()){
-                        boolean useAttribute = false;
+                if (attributes != null && !attributes.isEmpty()) {
+                    for (BeanTagAttributeInfo aInfo : attributes.values()) {
+
+                        boolean useAttribute = true;
+                        boolean appendListAttributes = false;
+
+                        //default to anyType
                         String attrType = "xsd:anyType";
 
-                        if(aInfo.getType().equals(BeanTagAttribute.AttributeType.SINGLEVALUE)){
-                            useAttribute = true;
+                        //Process each type of content below by setting a type and special processing flags
+                        if (aInfo.getType().equals(BeanTagAttribute.AttributeType.SINGLEVALUE)) {
                             attrType = "xsd:string";
+                        } else if (aInfo.getType().equals(BeanTagAttribute.AttributeType.SINGLEBEAN)) {
+                            String attributeClass = aInfo.getValueType().getName();
+                            if (elementObjects.containsKey(attributeClass)) {
+                                attrType = attributeClass;
+                            }
+                        } else if (aInfo.getType().equals(BeanTagAttribute.AttributeType.LISTVALUE) || aInfo.getType()
+                                .equals(BeanTagAttribute.AttributeType.SETVALUE)) {
+                            appendListAttributes = true;
+                            attrType = "basicList-type";
+                        } else if (aInfo.getType().equals(BeanTagAttribute.AttributeType.MAPVALUE) || aInfo.getType()
+                                .equals(BeanTagAttribute.AttributeType.MAPBEAN) ||
+                                aInfo.getType().equals(BeanTagAttribute.AttributeType.MAP2BEAN)) {
+                            appendListAttributes = true;
+                            attrType = "spring:mapType";
+                        } else if (aInfo.getType().equals(BeanTagAttribute.AttributeType.LISTBEAN) || aInfo.getType()
+                                .equals(BeanTagAttribute.AttributeType.SETBEAN)) {
+                            useAttribute = false;
+                            appendListAttributes = true;
+                            attrType = "spring:listOrSetType";
                         }
 
-                        if(aInfo.getType().equals(BeanTagAttribute.AttributeType.SINGLEBEAN)){
-                            useAttribute = true;
+                        //create the element and documentation
+                        Element element = document.createElement("xsd:element");
+                        element.setAttribute("name", aInfo.getName());
+                        element.setAttribute("minOccurs", "0");
+                        element.setAttribute("maxOccurs", "1");
+                        element.appendChild(getDocAnnotation(document, doc, className, aInfo.getName(),
+                                aInfo.getValueType().getName()));
+
+                        //if this is a list it may require extra processing to add the merge attribute
+                        if (appendListAttributes) {
+                            Element extensionType = getListExtension(document, aInfo, attrType);
+                            if (extensionType != null) {
+                                element.appendChild(extensionType);
+                            } else {
+                                element.setAttribute("type", attrType);
+                            }
+                        } else {
+                            element.setAttribute("type", attrType);
                         }
 
-                        if(aInfo.getType().equals(BeanTagAttribute.AttributeType.LISTVALUE) ||
-                                aInfo.getType().equals(BeanTagAttribute.AttributeType.SETVALUE)){
-                            useAttribute = true;
-                            attrType = "xsd:anyType";
+                        sequence.appendChild(element);
+
+                        //skip to avoid duplication in children of component for same named attributes
+                        if (isComponent && componentAttributes.containsValue(aInfo) && !isComponentBase) {
+                            continue;
                         }
 
-                        if(useAttribute){
+                        //only append attributes for properties that can be input as string values
+                        if (useAttribute) {
                             Element attribute = document.createElement("xsd:attribute");
                             attribute.setAttribute("name", aInfo.getName());
-                            //attribute.setAttribute("type", attrType);
+                            attribute.appendChild(getDocAnnotation(document, doc, className, aInfo.getName(),
+                                    aInfo.getValueType().getName()));
                             attributeProperties.add(attribute);
                         }
-
-                        Element elementAttribute = document.createElement("xsd:element");
-                        elementAttribute.setAttribute("name", aInfo.getName());
-                        elementAttribute.setAttribute("type", attrType);
-                        elementAttribute.setAttribute("minOccurs", "0");
-                        sequence.appendChild(elementAttribute);
                     }
                 }
 
-                complexType.appendChild(sequence);
+                //spring:property element
+                Element nestedPropertiesElement = document.createElement("xsd:element");
+                nestedPropertiesElement.setAttribute("ref", "spring:property");
+                nestedPropertiesElement.setAttribute("minOccurs", "0");
+                nestedPropertiesElement.setAttribute("maxOccurs", "unbounded");
+                sequence.appendChild(nestedPropertiesElement);
 
-                Element parentAttribute = document.createElement("xsd:attribute");
-                parentAttribute.setAttribute("name", "parent");
-                parentAttribute.setAttribute("type", "xsd:string");
-                attributeProperties.add(parentAttribute);
+                //extension for attributes if this is a sub-class of component
+                if (isComponent) {
+                    extension.appendChild(sequence);
+                } else {
+                    complexType.appendChild(sequence);
+                }
+
+                //add parent to base types (ie, not component child classes)
+                if (!isComponent || isComponentBase) {
+                    Element parentAttribute = document.createElement("xsd:attribute");
+                    parentAttribute.setAttribute("name", "parent");
+                    parentAttribute.setAttribute("type", "xsd:string");
+                    attributeProperties.add(parentAttribute);
+                }
+
+                //add anyAttribute to allow any arbitrary attribute (ie, dot notation nested property)
                 Element anyAttribute = document.createElement("xsd:anyAttribute");
                 anyAttribute.setAttribute("processContents", "skip");
                 attributeProperties.add(anyAttribute);
 
-                for(Element attribute: attributeProperties){
-                    complexType.appendChild(attribute);
+                //do not append attributes here if componentBase (it will get its attributes through extension only)
+                if (isComponentBase) {
+                    componentAttributeElements = attributeProperties;
+                } else {
+                    for (Element attribute : attributeProperties) {
+                        if (isComponent) {
+                            extension.appendChild(attribute);
+                        } else {
+                            complexType.appendChild(attribute);
+                        }
+                    }
                 }
 
                 types.add(complexType);
 
-                Element defaultElement = document.createElement("xsd:element");
-                defaultElement.setAttribute("name", typeInfo.getTag());
-                defaultElement.setAttribute("type", currentType + "-type");
-                elements.add(defaultElement);
+                //add all tag types to relevant element objects
+                appendElementObjects(document, elementObjects, clazz, tagMap);
 
+                //create the tag type element for the currentType
+                Element typeElement = document.createElement("xsd:element");
+                typeElement.setAttribute("name", typeInfo.getTag());
+                typeElement.setAttribute("type", currentType + "-type");
+                typeElement.appendChild(getDocAnnotation(document, doc, className, null, null));
+                elements.add(typeElement);
+
+                //generate the remaining tag type elements for the rest of the tags of this class
                 Set<String> tagKeys = tagMap.keySet();
-                for(String key: tagKeys){
+                for (String key : tagKeys) {
                     String tag = tagMap.get(key).getTag();
-                    if(!tag.equals(currentType)){
+                    if (!tag.equals(currentType)) {
                         Element element = document.createElement("xsd:element");
                         element.setAttribute("name", tag);
                         element.setAttribute("type", currentType + "-type");
+                        element.appendChild(getDocAnnotation(document, doc, className, null, null));
                         elements.add(element);
                     }
                 }
             }
 
-            for(Element element: elements){
+            //add component attributes type for extension
+            Element componentAttributesType = document.createElement("xsd:complexType");
+            componentAttributesType.setAttribute("name", "componentAttributes-type");
+            for (Element attribute : componentAttributeElements) {
+                componentAttributesType.appendChild(attribute);
+            }
+            schema.appendChild(componentAttributesType);
+
+            //add all elementObjects
+            for (String objectName : elementObjects.keySet()) {
+                schema.appendChild(elementObjects.get(objectName));
+            }
+
+            //add all elements
+            for (Element element : elements) {
                 schema.appendChild(element);
             }
 
-            for(Element type: types){
+            //add all types
+            for (Element type : types) {
                 schema.appendChild(type);
             }
 
@@ -268,9 +478,183 @@ public class CustomTagAnnotations {
             e.printStackTrace();
         }
 
-        return null;
+    }
 
+    /**
+     * Fill in the relevant element objects with the tags that are valid for the clazz type passed in
+     *
+     * @param document the Document
+     * @param elementObjects the elementObject map containing the preinitialized elementObjects to fill in
+     * @param clazz the class to be analyzed
+     * @param tagMap the map of tags to be added to the relevant element object types
+     */
+    private static void appendElementObjects(Document document, Map<String, Element> elementObjects, Class clazz,
+            Map<String, BeanTagInfo> tagMap) {
+        Element elementObject = elementObjects.get(clazz.getName());
+        Set<String> tagKeys = tagMap.keySet();
 
+        while (!clazz.equals(Object.class)) {
+            List<String> added = new ArrayList<String>();
+            //add tag to interface object elements
+            for (Class currentInterface : clazz.getInterfaces()) {
+                if (currentInterface.getName().startsWith("org.kuali")) {
+                    elementObject = elementObjects.get(currentInterface.getName());
+                    for (String key : tagKeys) {
+                        String tag = tagMap.get(key).getTag();
+                        if (!added.contains(tag)) {
+                            added.add(tag);
+                            Element iRef = document.createElement("xsd:element");
+                            iRef.setAttribute("ref", tag);
+                            elementObject.getChildNodes().item(0).appendChild(iRef);
+                        }
+                    }
+                }
+            }
+
+            //add tag to class object elements
+            elementObject = elementObjects.get(clazz.getName());
+            added = new ArrayList<String>();
+            for (String key : tagKeys) {
+                String tag = tagMap.get(key).getTag();
+                if (!added.contains(tag)) {
+                    added.add(tag);
+                    Element ref = document.createElement("xsd:element");
+                    ref.setAttribute("ref", tag);
+                    elementObject.getChildNodes().item(0).appendChild(ref);
+
+                }
+            }
+
+            //process next superClass
+            clazz = clazz.getSuperclass();
+        }
+    }
+
+    /**
+     * Get the documentation annonation element for the class or property information passed in
+     *
+     * @param document the document
+     * @param doc the ResourceBundle documentation resource
+     * @param className name of the class to get documentation for.  If property and property type are not supplied,
+     * returns the class documentation Element
+     * @param property (optional) when supplied with propertyType the Element returned will be the property documentation
+     * @param propertyType (optional) must be supplied with property, the property's type
+     * @return xsd:annotation Element representing the documentation for the class/property
+     */
+    private static Element getDocAnnotation(Document document, ResourceBundle doc, String className, String property,
+            String propertyType) {
+        try {
+            Class clazz = Class.forName(className);
+
+            Element annotation = document.createElement("xsd:annotation");
+            Element documentation = document.createElement("xsd:documentation");
+            documentation.setAttribute("source", clazz.getName());
+            documentation.setAttribute("xml:lang", "en");
+
+            String content = "documentation not available";
+
+            if (property == null || propertyType == null) {
+                if (doc.containsKey(clazz.getName())) {
+                    content = "Backing Class: " + className + "\n\n" + doc.getString(clazz.getName());
+                }
+            } else {
+                int begin = 0;
+                int end = propertyType.length();
+
+                if (propertyType.lastIndexOf('.') != -1) {
+                    begin = propertyType.lastIndexOf('.') + 1;
+                }
+
+                if (propertyType.indexOf('<') != -1) {
+                    end = propertyType.indexOf('<');
+                }
+                String key = clazz.getName() + "|" + property + "|" + propertyType.substring(begin, end);
+
+                if (doc.containsKey(key)) {
+                    content = doc.getString(key);
+                } else {
+                    //find the documentation content for this property on a parent class
+                    boolean foundContent = false;
+                    while (!clazz.equals(Object.class) && !foundContent) {
+                        for (Class currentInterface : clazz.getInterfaces()) {
+                            if (currentInterface.getName().startsWith("org.kuali")) {
+                                key = currentInterface.getName() + "|" + property + "|" + propertyType.substring(begin,
+                                        end);
+                                foundContent = doc.containsKey(key) && StringUtils.isNotBlank(doc.getString(key));
+                            }
+                        }
+
+                        if (foundContent) {
+                            break;
+                        }
+
+                        key = clazz.getName() + "|" + property + "|" + propertyType.substring(begin, end);
+                        foundContent = doc.containsKey(key) && StringUtils.isNotBlank(doc.getString(key));
+                        clazz = clazz.getSuperclass();
+                    }
+
+                    if (foundContent) {
+                        content = doc.getString(key);
+                    }
+                }
+            }
+            content = content.replaceAll("\\<li\\>", "\n-");
+            content = content.replaceAll("\\<\\\\ol\\>", "\n");
+            content = content.replaceAll("\\<\\\\ul\\>", "\n");
+            content = content.replaceAll("\\<.*?\\>", "");
+            content = content.replaceAll("\\{\\@code\\s(.*?)\\}", "$1");
+            content = content.replaceAll("\\{\\@link\\s(.*?)\\}", "$1");
+            content = content.replaceAll("\\{\\@see\\s(.*?)\\}", "$1");
+            CDATASection cdata = document.createCDATASection(content);
+            documentation.appendChild(cdata);
+
+            //append doc
+            annotation.appendChild(documentation);
+
+            return annotation;
+        } catch (Exception e) {
+            throw new RuntimeException("class not found ", e);
+        }
+    }
+
+    /**
+     * Get the extension for a list type, this essentially adds the merge attribute onto list and map types
+     *
+     * @param document the document
+     * @param aInfo attribute info for this element
+     * @param attrType the xsd attribute type for this element
+     * @return element with an extension that adds the merge attribute
+     */
+    private static Element getListExtension(Document document, BeanTagAttributeInfo aInfo, String attrType) {
+        Element complexType = document.createElement("xsd:complexType");
+        Element simpleContent = document.createElement("xsd:complexContent");
+        Element extension = document.createElement("xsd:extension");
+
+        if (aInfo.getGenericType() instanceof ParameterizedType
+                && ((ParameterizedType) aInfo.getGenericType()).getActualTypeArguments().length == 1) {
+            String genericParam = ((ParameterizedType) aInfo.getGenericType()).getActualTypeArguments()[0].toString();
+            if (genericParam.contains("org.kuali") && !genericParam.contains("<")) {
+                extension.setAttribute("base", genericParam.substring(genericParam.indexOf("org.kuali")));
+            }
+        }
+
+        if(!extension.hasAttribute("base") && (attrType.equals("spring:mapType") || attrType.equals("spring:listOrSetType"))){
+            extension.setAttribute("base", attrType);
+        }
+
+        Element mergeAttribute = document.createElement("xsd:attribute");
+        mergeAttribute.setAttribute("name", "merge");
+        mergeAttribute.setAttribute("type", "xsd:boolean");
+
+        extension.appendChild(mergeAttribute);
+        simpleContent.appendChild(extension);
+        complexType.appendChild(simpleContent);
+
+        if (extension.hasAttribute("base")) {
+            return complexType;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -315,7 +699,7 @@ public class CustomTagAnnotations {
     private static Map<String, BeanTagAttributeInfo> getAttributes(Class<?> tagClass) {
         Map<String, BeanTagAttributeInfo> entries = new HashMap<String, BeanTagAttributeInfo>();
 
-        try{
+        try {
             // Search the methods of the class using reflection for the attribute annotation
             Method methods[] = tagClass.getMethods();
             for (int i = 0; i < methods.length; i++) {
@@ -324,12 +708,13 @@ public class CustomTagAnnotations {
                     BeanTagAttributeInfo info = new BeanTagAttributeInfo();
                     info.setName(getFieldName(methods[i].getName()));
                     info.setType(attribute.type());
+                    info.setValueType(methods[i].getReturnType());
+                    info.setGenericType(methods[i].getGenericReturnType());
                     validateBeanAttributes(tagClass.getName(), attribute.name(), entries);
                     entries.put(attribute.name(), info);
                 }
             }
-        }
-        catch(Throwable e){
+        } catch (Throwable e) {
             //skip bad entry
         }
 
@@ -355,28 +740,26 @@ public class CustomTagAnnotations {
         for (int i = 0; i < customTagClasses.size(); i++) {
             BeanTag[] annotations = new BeanTag[1];
             BeanTag tag = customTagClasses.get(i).getAnnotation(BeanTag.class);
-            if(tag != null){
+            if (tag != null) {
                 //single tag case
                 annotations[0] = tag;
-            }
-            else{
+            } else {
                 //multi-tag case
                 BeanTags tags = customTagClasses.get(i).getAnnotation(BeanTags.class);
-                if(tags != null){
+                if (tags != null) {
                     annotations = tags.value();
-                }
-                else{
+                } else {
                     //TODO throw exception instead?
                     continue;
                 }
             }
 
-            for(int j = 0; j < annotations.length; j++){
+            for (int j = 0; j < annotations.length; j++) {
                 BeanTag annotation = annotations[j];
                 BeanTagInfo info = new BeanTagInfo();
                 info.setTag(annotation.name());
 
-                if(j == 0){
+                if (j == 0) {
                     info.setDefaultTag(true);
                 }
 

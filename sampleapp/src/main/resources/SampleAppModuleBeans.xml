@@ -255,7 +255,7 @@
 
         <!-- KRAD sample app - component library -->
         <value>org.kuali.rice.krad.demo.uif.components.resources.KradSampleAppResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.PropertiesDescription</value>
+        <value>org.kuali.rice.devtools.krad.documentation.PropertiesDescription</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMessageFieldResources</value>

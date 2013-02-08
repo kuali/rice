@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "growls", parent = "Uif-Growls")
+@BeanTag(name = "growls-bean", parent = "Uif-Growls")
 public class Growls extends WidgetBase {
     private static final long serialVersionUID = -8701090110933484411L;
 

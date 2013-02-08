@@ -35,7 +35,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  * attributeToHighlightOnFail (String)
  * displayFieldName (String)
  */
-@BeanTag(name = "referenceDefinition")
+@BeanTag(name = "referenceDefinition-bean")
 public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 1737968024207302931L;
 

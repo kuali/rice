@@ -30,8 +30,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "verticalCheckboxesControl", parent = "Uif-VerticalCheckboxesControl"),
-        @BeanTag(name = "horizontalCheckboxesControl", parent = "Uif-HorizontalCheckboxesControl")})
+@BeanTags({@BeanTag(name = "verticalCheckboxesControl-bean", parent = "Uif-VerticalCheckboxesControl"),
+        @BeanTag(name = "horizontalCheckboxesControl-bean", parent = "Uif-HorizontalCheckboxesControl")})
 public class CheckboxGroupControl extends MultiValueControlBase {
     private static final long serialVersionUID = 8800478332086081970L;
 

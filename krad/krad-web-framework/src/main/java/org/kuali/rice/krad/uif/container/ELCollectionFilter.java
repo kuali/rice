@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "conditionalCollectionFilter", parent = "Uif-ConditionalCollectionFilter")
+@BeanTag(name = "conditionalCollectionFilter-bean", parent = "Uif-ConditionalCollectionFilter")
 public class ELCollectionFilter implements CollectionFilter {
     private static final long serialVersionUID = 3273495753269940272L;
 

@@ -57,10 +57,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "stackedCollectionLayout", parent = "Uif-StackedCollectionLayoutBase"),
-        @BeanTag(name = "stackedCollectionLayout-withGridItems", parent = "Uif-StackedCollectionLayout-WithGridItems"),
-        @BeanTag(name = "stackedCollectionLayout-withBoxItems", parent = "Uif-StackedCollectionLayout-WithBoxItems"),
-        @BeanTag(name = "stackedCollectionLayout-list", parent = "Uif-StackedCollectionLayout-List")})
+@BeanTags({@BeanTag(name = "stackedCollectionLayout-bean", parent = "Uif-StackedCollectionLayoutBase"),
+        @BeanTag(name = "stackedCollectionLayout-withGridItems-bean", parent = "Uif-StackedCollectionLayout-WithGridItems"),
+        @BeanTag(name = "stackedCollectionLayout-withBoxItems-bean", parent = "Uif-StackedCollectionLayout-WithBoxItems"),
+        @BeanTag(name = "stackedCollectionLayout-list-bean", parent = "Uif-StackedCollectionLayout-List")})
 public class StackedLayoutManager extends LayoutManagerBase implements CollectionLayoutManager {
     private static final long serialVersionUID = 4602368505430238846L;
 

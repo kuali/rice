@@ -30,7 +30,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "workflowAttributes")
+@BeanTag(name = "workflowAttributes-bean")
 public class WorkflowAttributes extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 6435015497886060280L;
 

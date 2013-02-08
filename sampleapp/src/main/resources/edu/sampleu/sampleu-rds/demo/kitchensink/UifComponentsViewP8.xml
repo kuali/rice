@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,125 +16,99 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <group headertext="Button/Link Levels" id="Demo-ButtonLevels" parent="Uif-HorizontalBoxSection">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <horizontalBoxSection-bean id="Demo-ButtonLevels">
     <items>
-      <group headertext="Primary" parent="Uif-VerticalBoxSubSection">
+      <verticalBoxSubSection-bean id="Demo-Primary">
         <items>
-          <action actionLabel="Normal" actionScript="alert('You clicked a button');" parent="Uif-PrimaryActionButton"/>
-          <action actionLabel="Normal" actionScript="alert('You clicked a button');" disabled="true"
-                  parent="Uif-PrimaryActionButton"/>
-          <action actionLabel="Small" actionScript="alert('You clicked a button');"
-                  parent="Uif-PrimaryActionButton-Small"/>
-          <action actionLabel="Small" actionScript="alert('You clicked a button');" disabled="true"
-                  parent="Uif-PrimaryActionButton-Small"/>
+          <primaryActionButton-bean actionScript="alert('You clicked a button');" id="Demo-Primary-Action1"/>
+          <primaryActionButton-bean actionScript="alert('You clicked a button');" disabled="true" id="Demo-Primary-Action2"/>
+          <primaryActionButton-small-bean actionScript="alert('You clicked a button');" id="Demo-Primary-Action3"/>
+          <primaryActionButton-small-bean actionScript="alert('You clicked a button');" disabled="true" id="Demo-Primary-Action4"/>
         </items>
-      </group>
-      <group headertext="Secondary" parent="Uif-VerticalBoxSubSection">
+      </verticalBoxSubSection-bean>
+      <verticalBoxSubSection-bean id="Demo-Secondary">
         <items>
-          <action actionLabel="Normal" actionScript="alert('You clicked a button');"
-                  parent="Uif-SecondaryActionButton"/>
-          <action actionLabel="Normal" actionScript="alert('You clicked a button');" disabled="true"
-                  parent="Uif-SecondaryActionButton"/>
-          <action actionLabel="Small" actionScript="alert('You clicked a button');"
-                  parent="Uif-SecondaryActionButton-Small"/>
-          <action actionLabel="Small" actionScript="alert('You clicked a button');" disabled="true"
-                  parent="Uif-SecondaryActionButton-Small"/>
+          <secondaryActionButton-bean actionScript="alert('You clicked a button');" id="Demo-Secondary-Action1"/>
+          <secondaryActionButton-bean actionScript="alert('You clicked a button');" disabled="true" id="Demo-Secondary-Action2"/>
+          <secondaryActionButton-small-bean actionScript="alert('You clicked a button');" id="Demo-Secondary-Action3"/>
+          <secondaryActionButton-small-bean actionScript="alert('You clicked a button');" disabled="true" id="Demo-Secondary-Action4"/>
         </items>
-      </group>
-      <group headertext="Links" parent="Uif-VerticalBoxSubSection">
+      </verticalBoxSubSection-bean>
+      <verticalBoxSubSection-bean id="Demo-Links">
         <items>
-          <action actionLabel="Action link" actionScript="alert('You clicked a link');" parent="Uif-ActionLink"/>
+          <actionLink-bean actionScript="alert('You clicked a link');" id="Demo-Links-Action1"/>
         </items>
-      </group>
+      </verticalBoxSubSection-bean>
     </items>
-  </group>
-  <group headertext="H3 Header Title" id="Demo-HeaderLevels" parent="Uif-VerticalBoxSection">
+  </horizontalBoxSection-bean>
+  <verticalBoxSection-bean id="Demo-HeaderLevels">
     <items>
-      <group headertext="H4 Header Title" parent="Uif-VerticalBoxSubSection">
+      <verticalBoxSubSection-bean id="Demo-HeaderLevel1">
         <items>
-          <group headertext="H5 Header Title" parent="Uif-VerticalBoxGroup">
+          <verticalBoxGroup-bean id="Demo-HeaderLevel2">
             <header>
-              <header parent="Uif-HeaderFive"/>
+              <headerFive-bean/>
             </header>
             <items>
-              <group headertext="H6 Header Title" parent="Uif-VerticalBoxGroup">
+              <verticalBoxGroup-bean id="Demo-HeaderLevel3">
                 <header>
-                  <header parent="Uif-HeaderSix"/>
+                  <headerSix-bean/>
                 </header>
-              </group>
+              </verticalBoxGroup-bean>
             </items>
-          </group>
+          </verticalBoxGroup-bean>
         </items>
-      </group>
+      </verticalBoxSubSection-bean>
     </items>
-  </group>
-  <group headertext="H3 Header Title" id="Demo-Disclosure-HeaderLevels" parent="Uif-Disclosure-VerticalBoxSection">
+  </verticalBoxSection-bean>
+  <disclosure-verticalBoxSection-bean id="Demo-Disclosure-HeaderLevels">
     <items>
-      <group headertext="H4 Header Title" parent="Uif-Disclosure-VerticalBoxSubSection">
+      <disclosure-verticalBoxSubSection-bean id="Demo-Disclosure-HeaderLevel1">
         <items>
-          <group disclosure.render="true" headertext="H5 Header Title" parent="Uif-VerticalBoxGroup">
+          <verticalBoxGroup-bean disclosure.render="true" id="Demo-Disclosure-HeaderLevel2">
             <cssClasses merge="true">
-              <value>uif-disclosure</value>
+              <spring:value>uif-disclosure</spring:value>
             </cssClasses>
             <header>
-              <header parent="Uif-HeaderFive"/>
+              <headerFive-bean/>
             </header>
             <items>
-              <group disclosure.render="true" headertext="H6 Header Title" parent="Uif-VerticalBoxGroup">
+              <verticalBoxGroup-bean disclosure.render="true" id="Demo-Disclosure-HeaderLevel3">
                 <cssClasses merge="true">
-                  <value>uif-disclosure</value>
+                  <spring:value>uif-disclosure</spring:value>
                 </cssClasses>
                 <header>
-                  <header parent="Uif-HeaderSix"/>
+                  <headerSix-bean/>
                 </header>
-              </group>
+              </verticalBoxGroup-bean>
             </items>
-          </group>
+          </verticalBoxGroup-bean>
         </items>
-      </group>
+      </disclosure-verticalBoxSubSection-bean>
     </items>
-  </group>
-  <group headertext="Header Groups Demo" id="Demo-HeaderGroups" parent="Uif-VerticalBoxSection">
-    <header.upperGroup>
-      <group parent="Uif-HeaderUpperGroup">
+  </disclosure-verticalBoxSection-bean>
+  <verticalBoxSection-bean id="Demo-HeaderGroups">
+    <spring:property name="header.upperGroup">
+      <headerUpperGroup-bean>
         <items>
-          <message messageText="Upper Group" parent="Uif-Message"/>
+          <message-bean id="Demo-HeaderGroups-Message1"/>
         </items>
-      </group>
-    </header.upperGroup>
-    <header.rightGroup>
-      <group parent="Uif-HeaderRightGroup">
+      </headerUpperGroup-bean>
+    </spring:property>
+    <spring:property name="header.rightGroup">
+      <headerRightGroup-bean>
         <items>
-          <message messageText="Right Group" parent="Uif-Message"/>
+          <message-bean id="Demo-HeaderGroups-Message2"/>
         </items>
-      </group>
-    </header.rightGroup>
-    <header.lowerGroup>
-      <group parent="Uif-HeaderLowerGroup">
+      </headerRightGroup-bean>
+    </spring:property>
+    <spring:property name="header.lowerGroup">
+      <headerLowerGroup-bean>
         <items>
-          <message messageText="Lower Group" parent="Uif-Message"/>
+          <message-bean id="Demo-HeaderGroups-Message3"/>
         </items>
-      </group>
-    </header.lowerGroup>
-  </group>
+      </headerLowerGroup-bean>
+    </spring:property>
+  </verticalBoxSection-bean>
 </spring:beans>

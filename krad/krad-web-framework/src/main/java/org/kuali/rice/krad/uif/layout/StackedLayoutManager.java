@@ -199,6 +199,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
                 groupFields.addAll(actions);
             }else{
                 lineGroup.getFooter().setItems(actions);
+                lineGroup.setRenderFooter(false);
             }
         }
 

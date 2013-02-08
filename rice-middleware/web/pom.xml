@@ -107,6 +107,13 @@
               </includes>
             </resource>
           </webResources>
+
+          <overlays>
+            <overlay>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>rice-krad-web</artifactId>
+            </overlay>
+          </overlays>
         </configuration>
       </plugin>
       <plugin>

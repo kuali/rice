@@ -39,6 +39,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -150,6 +151,7 @@ public class CustomTagAnnotations {
             e.printStackTrace();
         }
 
+        //generate name-tag map
         for (int i = 0; i < infos.length; i++) {
             String name = infos[i].getBeanClass().getName();
             String tag = tags[i];
@@ -172,49 +174,14 @@ public class CustomTagAnnotations {
         }
 
         try {
-
+            //schema building begins
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document;
             document = builder.newDocument();
 
-            //set up base schema tag
-            Element schema = document.createElement("xsd:schema");
-            schema.setAttribute("xmlns", "http://www.kuali.org/schema");
-            schema.setAttribute("targetNamespace", "http://www.kuali.org/schema");
-            schema.setAttribute("elementFormDefault", "qualified");
-            schema.setAttribute("attributeFormDefault", "unqualified");
-
-            schema.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
-            schema.setAttribute("xmlns:spring", "http://www.springframework.org/schema/beans");
-            schema.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            schema.setAttribute("xsi:schemaLocation",
-                    "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
-                            + " http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd");
-
-            //add spring import
-            Element springImport = document.createElement("xsd:import");
-            springImport.setAttribute("namespace", "http://www.springframework.org/schema/beans");
-            schema.appendChild(springImport);
-
-            //add special basic list type
-            Element basicListType = document.createElement("xsd:complexType");
-            basicListType.setAttribute("name", "basicList-type");
-
-            Element basicListSequence = document.createElement("xsd:sequence");
-            Element basicListElement = document.createElement("xsd:element");
-            basicListElement.setAttribute("minOccurs", "0");
-            basicListElement.setAttribute("maxOccurs", "unbounded");
-            basicListElement.setAttribute("ref", "spring:value");
-
-            Element basicListMergeAttribute = document.createElement("xsd:attribute");
-            basicListMergeAttribute.setAttribute("name", "merge");
-            basicListMergeAttribute.setAttribute("type", "xsd:boolean");
-
-            basicListSequence.appendChild(basicListElement);
-            basicListType.appendChild(basicListSequence);
-            basicListType.appendChild(basicListMergeAttribute);
-            schema.appendChild(basicListType);
+            //initialize top level schema element
+            Element schema = initializeSchemaElement(document);
 
             //init variables
             List<Element> types = new ArrayList<Element>();
@@ -222,54 +189,8 @@ public class CustomTagAnnotations {
             Set<String> classKeys = nameTagMap.keySet();
             Map<String, Element> elementObjects = new HashMap<String, Element>();
 
-            //create/init default element object types
-            for (String className : classKeys) {
-                Class clazz = Class.forName(className);
-
-                while (!clazz.equals(Object.class)) {
-                    //add tag to interface object elements
-                    for (Class currentInterface : clazz.getInterfaces()) {
-                        if (currentInterface.getName().startsWith("org.kuali")) {
-                            Element elementObject = document.createElement("xsd:complexType");
-                            elementObject.setAttribute("name", currentInterface.getName());
-
-                            Element choice = document.createElement("xsd:choice");
-                            choice.setAttribute("minOccurs", "0");
-                            choice.setAttribute("maxOccurs", "unbounded");
-                            Element springBean = document.createElement("xsd:element");
-                            springBean.setAttribute("ref", "spring:bean");
-                            Element springRef = document.createElement("xsd:element");
-                            springRef.setAttribute("ref", "spring:ref");
-
-                            choice.appendChild(springRef);
-                            choice.appendChild(springBean);
-                            elementObject.appendChild(choice);
-                            elementObjects.put(currentInterface.getName(), elementObject);
-                        }
-                    }
-
-                    //add tag to class object elements
-                    Element elementObject = document.createElement("xsd:complexType");
-                    elementObject.setAttribute("name", clazz.getName());
-
-                    Element choice = document.createElement("xsd:choice");
-                    choice.setAttribute("minOccurs", "0");
-                    choice.setAttribute("maxOccurs", "unbounded");
-                    Element springBean = document.createElement("xsd:element");
-                    springBean.setAttribute("ref", "spring:bean");
-                    Element springRef = document.createElement("xsd:element");
-                    springRef.setAttribute("ref", "spring:ref");
-
-                    choice.appendChild(springRef);
-                    choice.appendChild(springBean);
-                    elementObject.appendChild(choice);
-                    elementObjects.put(clazz.getName(), elementObject);
-
-                    //process next superClass
-                    clazz = clazz.getSuperclass();
-                }
-
-            }
+            //fill in elementObjects will placeholder content to be filled out by the tag processing
+            initializeElementObjects(document, classKeys, elementObjects);
 
             //get the attributes of componentBase (component sub-types create an extension to this)
             Map<String, BeanTagAttributeInfo> componentAttributes = getAttributes(ComponentBase.class);
@@ -442,42 +363,171 @@ public class CustomTagAnnotations {
                 }
             }
 
-            //add component attributes type for extension
-            Element componentAttributesType = document.createElement("xsd:complexType");
-            componentAttributesType.setAttribute("name", "componentAttributes-type");
-            for (Element attribute : componentAttributeElements) {
-                componentAttributesType.appendChild(attribute);
-            }
-            schema.appendChild(componentAttributesType);
-
-            //add all elementObjects
-            for (String objectName : elementObjects.keySet()) {
-                schema.appendChild(elementObjects.get(objectName));
-            }
-
-            //add all elements
-            for (Element element : elements) {
-                schema.appendChild(element);
-            }
-
-            //add all types
-            for (Element type : types) {
-                schema.appendChild(type);
-            }
-
-            document.appendChild(schema);
-
-            File file = new File("./krad_schema.xsd");
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-            transformer.transform(new DOMSource(document), new StreamResult(new FileWriter(file)));
+            //fill in the schema with the collected pieces and write it out
+            fillAndWriteSchema(document, schema, elements, types, elementObjects, componentAttributeElements);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * Initializes the schema element with necessary content and appends some additional elements
+     *
+     * @param document
+     * @return the schema element
+     */
+    private static Element initializeSchemaElement(Document document) {
+        //set up base schema tag
+        Element schema = document.createElement("xsd:schema");
+        schema.setAttribute("xmlns", "http://www.kuali.org/schema");
+        schema.setAttribute("targetNamespace", "http://www.kuali.org/schema");
+        schema.setAttribute("elementFormDefault", "qualified");
+        schema.setAttribute("attributeFormDefault", "unqualified");
+
+        schema.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+        schema.setAttribute("xmlns:spring", "http://www.springframework.org/schema/beans");
+        schema.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        schema.setAttribute("xsi:schemaLocation",
+                "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+                        + " http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd");
+
+        //add spring import
+        Element springImport = document.createElement("xsd:import");
+        springImport.setAttribute("namespace", "http://www.springframework.org/schema/beans");
+        schema.appendChild(springImport);
+
+        //add special basic list type
+        Element basicListType = document.createElement("xsd:complexType");
+        basicListType.setAttribute("name", "basicList-type");
+
+        Element basicListSequence = document.createElement("xsd:sequence");
+        Element basicListElement = document.createElement("xsd:element");
+        basicListElement.setAttribute("minOccurs", "0");
+        basicListElement.setAttribute("maxOccurs", "unbounded");
+        basicListElement.setAttribute("ref", "spring:value");
+
+        Element basicListMergeAttribute = document.createElement("xsd:attribute");
+        basicListMergeAttribute.setAttribute("name", "merge");
+        basicListMergeAttribute.setAttribute("type", "xsd:boolean");
+
+        basicListSequence.appendChild(basicListElement);
+        basicListType.appendChild(basicListSequence);
+        basicListType.appendChild(basicListMergeAttribute);
+        schema.appendChild(basicListType);
+
+        return schema;
+    }
+
+    /**
+     * Fills in the schema with the content passed in
+     *
+     * @param document the document to generate elements with
+     * @param schema the schema to fill in
+     * @param elements the elements
+     * @param types the element types
+     * @param elementObjects the backing element objects (represent java classes)
+     * @param componentAttributeElements a list of elements that are xsd:attribute, representing attributes of the
+     * component type (used for extension)
+     * @throws TransformerException
+     * @throws IOException
+     */
+    private static void fillAndWriteSchema(Document document, Element schema, List<Element> elements,
+            List<Element> types, Map<String, Element> elementObjects,
+            List<Element> componentAttributeElements) throws TransformerException, IOException {
+        //add component attributes type for extension
+        Element componentAttributesType = document.createElement("xsd:complexType");
+        componentAttributesType.setAttribute("name", "componentAttributes-type");
+        for (Element attribute : componentAttributeElements) {
+            componentAttributesType.appendChild(attribute);
+        }
+        schema.appendChild(componentAttributesType);
+
+        //add all elementObjects
+        for (String objectName : elementObjects.keySet()) {
+            schema.appendChild(elementObjects.get(objectName));
+        }
+
+        //add all elements
+        for (Element element : elements) {
+            schema.appendChild(element);
+        }
+
+        //add all types
+        for (Element type : types) {
+            schema.appendChild(type);
+        }
+
+        document.appendChild(schema);
+
+        File file = new File("./krad_schema.xsd");
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+        transformer.transform(new DOMSource(document), new StreamResult(new FileWriter(file)));
+    }
+
+    /**
+     * Initializes an Element object for every org.kuali class in the classKeys set, to be filled in later by
+     * appendElementObjects
+     *
+     * @param document the document
+     * @param classKeys the classKeys which represent the class names
+     * @param elementObjects the map to be initialized with the Elements created by this method
+     * @throws ClassNotFoundException
+     */
+    private static void initializeElementObjects(Document document, Set<String> classKeys,
+            Map<String, Element> elementObjects) throws ClassNotFoundException {
+        //create/init default element object types
+        for (String className : classKeys) {
+            Class clazz = Class.forName(className);
+
+            while (!clazz.equals(Object.class)) {
+                //add tag to interface object elements
+                for (Class currentInterface : clazz.getInterfaces()) {
+                    if (currentInterface.getName().startsWith("org.kuali")) {
+                        Element elementObject = document.createElement("xsd:complexType");
+                        elementObject.setAttribute("name", currentInterface.getName());
+
+                        Element choice = document.createElement("xsd:choice");
+                        choice.setAttribute("minOccurs", "0");
+                        choice.setAttribute("maxOccurs", "unbounded");
+                        Element springBean = document.createElement("xsd:element");
+                        springBean.setAttribute("ref", "spring:bean");
+                        Element springRef = document.createElement("xsd:element");
+                        springRef.setAttribute("ref", "spring:ref");
+
+                        choice.appendChild(springRef);
+                        choice.appendChild(springBean);
+                        elementObject.appendChild(choice);
+                        elementObjects.put(currentInterface.getName(), elementObject);
+                    }
+                }
+
+                //add tag to class object elements
+                Element elementObject = document.createElement("xsd:complexType");
+                elementObject.setAttribute("name", clazz.getName());
+
+                Element choice = document.createElement("xsd:choice");
+                choice.setAttribute("minOccurs", "0");
+                choice.setAttribute("maxOccurs", "unbounded");
+                Element springBean = document.createElement("xsd:element");
+                springBean.setAttribute("ref", "spring:bean");
+                Element springRef = document.createElement("xsd:element");
+                springRef.setAttribute("ref", "spring:ref");
+
+                choice.appendChild(springRef);
+                choice.appendChild(springBean);
+                elementObject.appendChild(choice);
+                elementObjects.put(clazz.getName(), elementObject);
+
+                //process next superClass
+                clazz = clazz.getSuperclass();
+            }
+
+        }
     }
 
     /**
@@ -537,7 +587,8 @@ public class CustomTagAnnotations {
      * @param doc the ResourceBundle documentation resource
      * @param className name of the class to get documentation for.  If property and property type are not supplied,
      * returns the class documentation Element
-     * @param property (optional) when supplied with propertyType the Element returned will be the property documentation
+     * @param property (optional) when supplied with propertyType the Element returned will be the property
+     * documentation
      * @param propertyType (optional) must be supplied with property, the property's type
      * @return xsd:annotation Element representing the documentation for the class/property
      */
@@ -638,7 +689,8 @@ public class CustomTagAnnotations {
             }
         }
 
-        if(!extension.hasAttribute("base") && (attrType.equals("spring:mapType") || attrType.equals("spring:listOrSetType"))){
+        if (!extension.hasAttribute("base") && (attrType.equals("spring:mapType") || attrType.equals(
+                "spring:listOrSetType"))) {
             extension.setAttribute("base", attrType);
         }
 

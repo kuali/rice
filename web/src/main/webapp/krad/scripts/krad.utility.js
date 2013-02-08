@@ -485,27 +485,36 @@ function clearHiddens() {
  */
 function coerceValue(name) {
     var value = "";
+
     var nameSelect = "[name='" + escapeName(name) + "']";
-    if (jQuery(nameSelect + ":checkbox").length == 1) {
-        value = jQuery(nameSelect + ":checked").val();
+
+    // when group is opened in lightbox make sure to get the value from field in the lightbox
+    // if that field is in the lightbox
+    var parent = document;
+    if (jQuery(nameSelect, jQuery(".fancybox-wrap")).length) {
+        parent = jQuery(".fancybox-wrap");
     }
-    else if(jQuery(nameSelect + ":checkbox").length > 1){
+
+    if (jQuery(nameSelect + ":checkbox", parent).length == 1) {
+        value = jQuery(nameSelect + ":checked", parent).val();
+    }
+    else if(jQuery(nameSelect + ":checkbox", parent).length > 1){
         value = [];
-        jQuery(nameSelect + ":checked").each(function(){
+        jQuery(nameSelect + ":checked", parent).each(function(){
             value.push(jQuery(this).val());
         });
     }
-    else if (jQuery(nameSelect + ":radio").length) {
-        value = jQuery(nameSelect + ":checked").val();
+    else if (jQuery(nameSelect + ":radio", parent).length) {
+        value = jQuery(nameSelect + ":checked", parent).val();
     }
-    else if (jQuery(nameSelect).length) {
-        if (jQuery(nameSelect).hasClass("watermark")) {
-            jQuery.watermark.hide(nameSelect);
-            value = jQuery(nameSelect).val();
-            jQuery.watermark.show(nameSelect);
+    else if (jQuery(nameSelect, parent).length) {
+        if (jQuery(nameSelect, parent).hasClass("watermark")) {
+            jQuery.watermark.hide(nameSelect, parent);
+            value = jQuery(nameSelect, parent).val();
+            jQuery.watermark.show(nameSelect, parent);
         }
         else {
-            value = jQuery(nameSelect).val();
+            value = jQuery(nameSelect, parent).val();
         }
     }
 

@@ -36,6 +36,7 @@
         <ref bean="Demo-DialogGroup-Example7"/>
         <ref bean="Demo-DialogGroup-Example8"/>
         <ref bean="Demo-DialogGroup-Example9"/>
+        <ref bean="Demo-DialogGroup-Example10"/>
       </list>
     </property>
   </bean>
@@ -195,4 +196,21 @@
       </list>
     </property>
   </bean>
+  <bean id="Demo-DialogGroup-Example10" parent="Uif-VerticalBoxSection">
+  <property name="items">
+    <list>
+      <!-- ex:Demo-DialogGroup-Example10 start-->
+      <bean parent="Uif-PrimaryActionButton" p:actionScript="showLightboxComponent('ExpressionDialog');"/>
+      <bean id="ExpressionDialog" parent="Uif-DialogGroup">
+        <property name="hidden" value="true"/>
+        <property name="items">
+          <list>
+            <bean parent="Uif-MessageField" p:fieldLabel.style="font-weight:bold;"/>
+          </list>
+        </property>
+      </bean>
+      <!-- ex:Demo-DialogGroup-Example10 end-->
+    </list>
+  </property>
+</bean>
 </beans>

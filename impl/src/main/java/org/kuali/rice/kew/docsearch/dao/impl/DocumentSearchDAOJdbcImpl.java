@@ -124,7 +124,7 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
      * @param criteria the criteria in which to check for a max results value
      * @return the maximum number of results that should be returned from a document search
      */
-    protected int getMaxResultCap(DocumentSearchCriteria criteria) {
+    public int getMaxResultCap(DocumentSearchCriteria criteria) {
         int systemLimit = KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP;
         String resultCapValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KewApiConstants.DOC_SEARCH_RESULT_CAP);
         if (StringUtils.isNotBlank(resultCapValue)) {
@@ -155,7 +155,7 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
         return maxResults;
     }
 
-    protected int getFetchMoreIterationLimit() {
+    public int getFetchMoreIterationLimit() {
         int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
         String fetchMoreLimitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KewApiConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
         if (!StringUtils.isBlank(fetchMoreLimitValue)) {

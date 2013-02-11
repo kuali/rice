@@ -16,6 +16,9 @@
 package org.kuali.rice.kew.doctype;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -45,9 +48,11 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 	@Test
 	public void canBlanketApprove() throws Exception {
 		DocumentType testDocType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
-		Principal ewestfalPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
+        Principal ewestfalPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(ewestfalPrincipal.getPrincipalId(), "TestDocumentType");
+        document.route("routing test doc");
 		assertNotNull(testDocType);
-		assertTrue("ewestfal should be a blanket approver", service.canBlanketApprove(ewestfalPrincipal.getPrincipalId(), testDocType, KewApiConstants.ROUTE_HEADER_INITIATED_CD, ewestfalPrincipal.getPrincipalId()));
+		assertTrue("ewestfal should be a blanket approver", service.canBlanketApprove(ewestfalPrincipal.getPrincipalId(), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId())));
 		
 		// TODO set up actual KIM permissions in DB and verify this permission works
 	}

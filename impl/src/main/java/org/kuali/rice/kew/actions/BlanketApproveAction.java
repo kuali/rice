@@ -108,7 +108,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
             return "No request for the user is compatible with the BlanketApprove Action";
         }
     	// check state before checking kim
-        if (! KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentType(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(getPrincipal().getPrincipalId(), getRouteHeader())) {
             return "User is not authorized to BlanketApprove document";
         }
         return "";

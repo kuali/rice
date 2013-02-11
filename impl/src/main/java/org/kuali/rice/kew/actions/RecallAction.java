@@ -178,10 +178,7 @@ public class RecallAction extends ReturnToPreviousNodeAction {
         }
 
 
-        if (!KEWServiceLocator.getDocumentTypePermissionService().canRecall(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentId(),
-                                                                            getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(),
-                                                                            getRouteHeader().getDocRouteStatus(), getRouteHeader().getApplicationDocumentStatus(),
-                                                                            getRouteHeader().getInitiatorPrincipalId())) {
+        if (!KEWServiceLocator.getDocumentTypePermissionService().canRecall(getPrincipal().getPrincipalId(), getRouteHeader())) {
             return "User is not authorized to Recall document";
         }
         return "";

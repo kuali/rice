@@ -57,4 +57,10 @@ public interface DocumentTypeContract extends Identifiable, Versioned {
 
     String getUnresolvedDocHandlerUrl();
 
+    /**
+     * @since 2.1.3
+     * @return the custom DocumentTypePermissionService class or service name configured for the doc type
+     */
+    String getAuthorizer();
+
 }

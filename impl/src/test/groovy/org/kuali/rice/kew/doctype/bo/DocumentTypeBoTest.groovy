@@ -135,12 +135,13 @@ class DocumentTypeBoTest {
             def boolean current = true
             def String blanketApproveGroupId = "fakeblanketapprovegroupid"
             def String superUserGroupId = "fakesuperusergroupid"
-            def Map<DocumentTypePolicy, String> getPolicies() {
-               def policies = new HashMap<DocumentTypePolicy, String>();
+            def Map<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> getPolicies() {
+               def policies = new HashMap<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String>();
                policies.put(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.DEFAULT_APPROVE, "true")
                policies
             }
             def List<DocumentTypeAttribute> documentTypeAttributes = Collections.EMPTY_LIST
+            def String authorizer = "fakeDocumentTypeAuthorizer"
         }).build()
     }
 }

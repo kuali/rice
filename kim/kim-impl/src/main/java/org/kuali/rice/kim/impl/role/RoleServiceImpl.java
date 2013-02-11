@@ -1177,6 +1177,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         List<String> attributesForExactMatch = getQualifiersForExactMatch(role.getKimTypeId(), roleTypeService);
                         if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
                             qualificationForExactMatch = populateQualifiersForExactMatch(qualification, attributesForExactMatch);
+                            if (qualificationForExactMatch.isEmpty()) {
+                                // None of the attributes passed into principalHasRole matched attribute qualifiers on
+                                // the roleTypeService.  In this case we want to skip the remaining processing and
+                                // go onto the next role.
+                                continue;
+                            }
                         }
                     }
                 }

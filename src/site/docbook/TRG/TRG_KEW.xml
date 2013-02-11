@@ -2782,6 +2782,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                                     documents) go through.</entry>
                             </row>
                             <row>
+                                <entry>authorizer</entry>
+                                <entry>A component that gets called during the routing process to perform authorization
+                                    checks.  Applications can customize this component on a per-doctype basis.</entry>
+                            </row>
+                            <row>
                                 <entry>superUserGroupName</entry>
                                 <entry>The name of a workgroup whose members are the super users of
                                     this Document Type. Super users of this Document Type can
@@ -5010,6 +5015,45 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             </section>
         </section>
         <section>
+            <title>Document Type Authorizer</title>
+            <para>The Document Type Authorizer is a component that gets called during the routing process to perform authorization
+                  checks.  Applications can customize this component, for example to introduce custom role qualifiers or permission details,
+                  on a per-doctype basis by registering a custom <programlisting>org.kuali.rice.kew.framework.document.security.DocumentTypeAuthorizer</programlisting>
+                  implementation.
+            </para>
+            <para>The DocumentTypeAuthorizer will be called to make the following checks:
+                <itemizedlist>
+                    <listitem>
+                        <para>canInitiate</para>
+                    </listitem>
+                    <listitem>
+                        <para>canBlanketApprove</para>
+                    </listitem>
+                    <listitem>
+                        <para>canCancel</para>
+                    </listitem>
+                    <listitem>
+                        <para>canRecall</para>
+                    </listitem>
+                    <listitem>
+                        <para>canSave</para>
+                    </listitem>
+                    <listitem>
+                        <para>canRoute</para>
+                    </listitem>
+                    <listitem>
+                        <para>canSuperUserApproveSingleActionRequest</para>
+                    </listitem>
+                    <listitem>
+                        <para>canSuperUserApproveDocument</para>
+                    </listitem>
+                    <listitem>
+                        <para>canSuperUserDisapproveDocument</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect2>
+        <sect2>
             <title>Document Type Policies</title>
             <para>Document Type Policies affect workflow routing behavior.</para>
             <para>Current Document Type polices:<itemizedlist>
@@ -5473,6 +5517,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         called throughout the routing process and handles a set of standard events
                         that all eDocs (electronic documents) go through. </para>
                 </listitem>
+                <listitem>
+                    <para><emphasis role="bold">DocumentType Authorizer</emphasis> - A component that gets
+                        called during the routing process to perform authorization checks.  Applications
+                        can customize this component on a per-doctype basis.</para>
+                </listitem>
             </itemizedlist></para>
         <para>These components are contained in a Document Type that is defined in XML. A Document
             Type is the prototype for eDocs. Below is the Document Type configuration that explains
@@ -5486,6 +5535,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             &lt;description>Add/Modify Workflow rules&lt;/description>
             &lt;label>Add/Modify Workflow rules&lt;/label>
             &lt;postProcessorName>your.package.routetemplate.RulePostProcessor&lt;/postProcessorName>
+            &lt;authorizer>your.package.CustomDocumentTypeAuthorizer&lt;/authorizer>
             &lt;superUserGroupName>WorkflowAdmin&lt;/superUserGroupName>
             &lt;blanketApproveGroupName>IU-WORKFLOW-RULE-BLANKET-APPROVERS&lt;/blanketApproveGroupName>
             &lt;defaultExceptionGroupName>YOUR_EXCEPTION_TEAM&lt;/defaultExceptionGroupName>
@@ -5568,6 +5618,12 @@ document.routeDocument("user inputted annotation");
                     travel through routing.</para>
             </section>
             <section>
+                <title>DocumentTypeAuthorizer Class</title>
+                <programlisting>&lt;authorizer>your.package.CustomDocumentTypeAuthorizer&lt;/authorizer></programlisting>
+                <para>The element above determines which class to use for the DocumentType Authorizer for this
+                    particular Document Type. This component performs authorization checks as the eDoc travels through routing.</para>
+            </sect3>
+            <sect3>
                 <title>Managed Workgroups</title>
                 <programlisting>&lt;superUserWorkgroupName>WorkflowAdmin&lt;/superUserWorkgroupName>
 &lt;blanketApproveWorkgroupName>WorkgroupBlanketApprovers&lt;/blanketApproveWorkgroupName>

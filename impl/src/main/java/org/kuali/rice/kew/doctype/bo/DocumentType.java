@@ -162,6 +162,12 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     @Column(name = "APPL_ID")
     private String actualApplicationId;
 
+    /**
+     * @since 2.1.3
+     */
+    @Column(name = "AUTHORIZER")
+    private String authorizer;
+
 
     /* these two fields are for the web tier lookupable
      * DocumentType is doing double-duty as a web/business tier object
@@ -1736,6 +1742,23 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return workgroupId;
     }
 
+    @Override
+    public String getAuthorizer() {
+        String result = authorizer;
+
+        if (StringUtils.isBlank(result)) {
+            if (getParentDocType() != null) {
+                return getParentDocType().getAuthorizer();
+            }
+        }
+
+        return result;
+    }
+
+    public void setAuthorizer(String authorizer) {
+        this.authorizer = authorizer;
+    }
+
     public static org.kuali.rice.kew.api.doctype.DocumentType to(DocumentType documentTypeBo) {
         if (documentTypeBo == null) {
             return null;
@@ -1786,6 +1809,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             
         }
         ebo.setDocumentTypePolicies(policies);
+        ebo.setAuthorizer(dt.getAuthorizer());
         return ebo;
     }
 }

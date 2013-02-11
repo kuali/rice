@@ -1251,11 +1251,12 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "annotation") String annotation)
             throws RiceIllegalArgumentException, InvalidActionTakenException;
 
-    // TODO  finish javadoc
     /**
+     * Initiates the process of document attribute indexing for the document with the given id.
+     * Calling this method does not trigger processing of the workflow engine, though it may occur
+     * asynchronously or synchronously depending on configuration of the implementation.
      *
-     *
-     * @param documentId the unique id of the document to delete
+     * @param documentId the unique id of the document for which to initiate indexing
      *
      * @throws RiceIllegalArgumentException if {@code documentId} is null
      */

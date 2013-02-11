@@ -58,7 +58,7 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "inquiry", parent = "Uif-Inquiry")
+@BeanTag(name = "inquiry-bean", parent = "Uif-Inquiry")
 public class Inquiry extends WidgetBase {
     private static final long serialVersionUID = -2154388007867302901L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Inquiry.class);

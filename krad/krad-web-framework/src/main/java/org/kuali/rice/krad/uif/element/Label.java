@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "label", parent = "Uif-Label")
+@BeanTag(name = "label-bean", parent = "Uif-Label")
 public class Label extends ContentElementBase {
     private static final long serialVersionUID = -6491546893195180114L;
 

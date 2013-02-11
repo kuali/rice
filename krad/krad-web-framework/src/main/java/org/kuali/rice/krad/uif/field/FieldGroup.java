@@ -34,9 +34,9 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "fieldGroup", parent = "Uif-FieldGroupBase"),
-        @BeanTag(name = "verticalFieldGroup", parent = "Uif-VerticalFieldGroup"),
-        @BeanTag(name = "horizontalFieldGroup", parent = "Uif-HorizontalFieldGroup")})
+@BeanTags({@BeanTag(name = "fieldGroup-bean", parent = "Uif-FieldGroupBase"),
+        @BeanTag(name = "verticalFieldGroup-bean", parent = "Uif-VerticalFieldGroup"),
+        @BeanTag(name = "horizontalFieldGroup-bean", parent = "Uif-HorizontalFieldGroup")})
 public class FieldGroup extends FieldBase {
     private static final long serialVersionUID = -505654043702442196L;
 

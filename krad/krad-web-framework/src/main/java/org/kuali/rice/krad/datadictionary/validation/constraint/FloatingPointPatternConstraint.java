@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "floatingPointPatternConstraint", parent = "FloatingPointPatternConstraint")
+@BeanTag(name = "floatingPointPatternConstraint-bean", parent = "FloatingPointPatternConstraint")
 public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatternConstraint {
 
     protected boolean allowNegative;

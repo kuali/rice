@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,60 +16,36 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView entryPageId="ConfigurationTestView-ProgressiveRender-Page"
-            formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" growlMessagingEnabled="true"
-            headertext="Configuration Test View" id="ConfigurationTestView" namespaceCode="KR-NS" parent="Uif-FormView"
-            viewHelperServiceClass="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean entryPageId="ConfigurationTestView-ProgressiveRender-Page" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" growlMessagingEnabled="true" headertext="Configuration Test View" id="ConfigurationTestView" namespaceCode="KR-NS" viewHelperServiceClass="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl">
     <navigation>
-      <ref bean="ConfigurationTestView-Menu"/>
+      <spring:ref bean="ConfigurationTestView-Menu"/>
     </navigation>
     <items>
-      <ref bean="ConfigurationTestView-ProgressiveRender-Page"/>
-      <ref bean="ConfigurationTestView-Help-Page"/>
-      <ref bean="ConfigurationTestView-Quickfinder-Page"/>
+      <spring:ref bean="ConfigurationTestView-ProgressiveRender-Page"/>
+      <spring:ref bean="ConfigurationTestView-Help-Page"/>
+      <spring:ref bean="ConfigurationTestView-Quickfinder-Page"/>
     </items>
     <theme>
-      <viewTheme parent="Uif-KradTheme"/>
+      <kradTheme-bean/>
     </theme>
-    <additionalCssFiles>
-      <value>css/sampleapp.css</value>
+    <additionalCssFiles merge="true">
+      <spring:value>css/sampleapp.css</spring:value>
     </additionalCssFiles>
     <help>
-      <help externalHelpUrl="http://www.kuali.org" parent="Uif-Help" tooltipHelpContent="View help"/>
+      <help-bean externalHelpUrl="http://www.kuali.org" tooltipHelpContent="View help"/>
     </help>
-  </formView>
-  <formView id="ConfigurationTestView_KNS" parent="ConfigurationTestView">
+  </formView-bean>
+  <formView-bean id="ConfigurationTestView_KNS" parent="ConfigurationTestView">
     <theme>
-      <viewTheme parent="Uif-ClassicKnsTheme"/>
+      <classicKnsTheme-bean/>
     </theme>
-  </formView>
-  <navigationGroup id="ConfigurationTestView-Menu" parent="Uif-TabNavigationGroup">
+  </formView-bean>
+  <tabNavigationGroup-bean id="ConfigurationTestView-Menu">
     <items>
-      <action actionLabel="Page 1" navigateToPageId="ConfigurationTestView-ProgressiveRender-Page"
-              parent="Uif-NavigationActionLink"/>
-      <action actionLabel="Help" navigateToPageId="ConfigurationTestView-Help-Page" parent="Uif-NavigationActionLink"/>
-      <action actionLabel="Lookup Widgets" navigateToPageId="ConfigurationTestView-Quickfinder-Page"
-              parent="Uif-NavigationActionLink"/>
+      <navigationActionLink-bean actionLabel="Page 1" navigateToPageId="ConfigurationTestView-ProgressiveRender-Page"/>
+      <navigationActionLink-bean actionLabel="Help" navigateToPageId="ConfigurationTestView-Help-Page"/>
+      <navigationActionLink-bean actionLabel="Lookup Widgets" navigateToPageId="ConfigurationTestView-Quickfinder-Page"/>
     </items>
-  </navigationGroup>
+  </tabNavigationGroup-bean>
 </spring:beans>

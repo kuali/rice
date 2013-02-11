@@ -20,7 +20,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupBo;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in.
+ * Represents a rule responsibility which points to a group.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

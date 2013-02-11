@@ -72,6 +72,7 @@
 		<documentType>
 			<name>AnotherParent</name>
 			<label>AnotherParent</label>
+            <authorizer>a.parent.authorizer</authorizer>
 		</documentType>
 	</documentTypes>
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">

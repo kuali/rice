@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "documentValuePathGroup")
+@BeanTag(name = "documentValuePathGroup-bean")
 public class DocumentValuePathGroup extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 6285682208264817105L;
 

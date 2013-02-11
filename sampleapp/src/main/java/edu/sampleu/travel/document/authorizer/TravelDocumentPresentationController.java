@@ -23,7 +23,7 @@ import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentati
 import org.kuali.rice.krad.document.Document;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * Presentation controller for the travel document.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

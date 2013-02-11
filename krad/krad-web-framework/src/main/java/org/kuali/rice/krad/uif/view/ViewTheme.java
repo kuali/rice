@@ -30,9 +30,9 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags(
-        {@BeanTag(name = "viewTheme", parent = "Uif-ViewTheme"), @BeanTag(name = "baseTheme", parent = "Uif-BaseTheme"),
-                @BeanTag(name = "classicKnsTheme", parent = "Uif-ClassicKnsTheme"),
-                @BeanTag(name = "kradTheme", parent = "Uif-KradTheme")})
+        {@BeanTag(name = "viewTheme-bean", parent = "Uif-ViewTheme"), @BeanTag(name = "baseTheme-bean", parent = "Uif-BaseTheme"),
+                @BeanTag(name = "classicKnsTheme-bean", parent = "Uif-ClassicKnsTheme"),
+                @BeanTag(name = "kradTheme-bean", parent = "Uif-KradTheme")})
 public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 7063256242857896580L;
 

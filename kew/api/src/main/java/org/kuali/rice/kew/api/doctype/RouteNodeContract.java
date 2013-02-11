@@ -21,8 +21,6 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
- * TODO ewestfal don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RouteNodeContract extends Identifiable, Versioned {

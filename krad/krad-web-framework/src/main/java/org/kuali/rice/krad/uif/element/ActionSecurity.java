@@ -24,7 +24,7 @@ import org.kuali.rice.krad.uif.field.FieldSecurity;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="actionSecurity")
+@BeanTag(name = "actionSecurity-bean")
 public class ActionSecurity extends FieldSecurity {
     private static final long serialVersionUID = 585138507596582667L;
 

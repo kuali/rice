@@ -68,8 +68,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "propertyReplacer", parent = "Uif-ConditionalBeanPropertyReplacer"),
-        @BeanTag(name = "conditionalBeanPropertyReplacer", parent = "Uif-ConditionalBeanPropertyReplacer")})
+@BeanTags({@BeanTag(name = "propertyReplacer-bean", parent = "Uif-ConditionalBeanPropertyReplacer"),
+        @BeanTag(name = "conditionalBeanPropertyReplacer-bean", parent = "Uif-ConditionalBeanPropertyReplacer")})
 public class PropertyReplacer extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -8405429643299461398L;
 

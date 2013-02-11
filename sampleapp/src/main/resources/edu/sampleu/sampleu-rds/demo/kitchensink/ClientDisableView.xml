@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,230 +16,219 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="Client-side Disable"
-            id="ClientDisableView" parent="Uif-FormView">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="Client-side Disable" id="ClientDisableView">
     <items>
-      <pageGroup parent="Uif-Page">
+      <page-bean>
         <items>
-          <ref bean="Demo-DisableSection1"/>
-          <ref bean="Demo-DisableSection2"/>
-          <ref bean="Demo-DisableSection3"/>
-          <ref bean="Demo-DisableSection4"/>
+          <spring:ref bean="Demo-DisableSection1"/>
+          <spring:ref bean="Demo-DisableSection2"/>
+          <spring:ref bean="Demo-DisableSection3"/>
+          <spring:ref bean="Demo-DisableSection4"/>
+          <spring:ref bean="Demo-DisableSection5"/>
         </items>
-      </pageGroup>
+      </page-bean>
     </items>
+    <footer>
+      <formFooter-bean/>
+    </footer>
     <theme>
-      <viewTheme parent="Uif-KradTheme"/>
+      <kradTheme-bean/>
     </theme>
-  </formView>
-  <formView id="RichMessagesView_KNS" parent="ClientDisableView">
+  </formView-bean>
+  <formView-bean id="RichMessagesView_KNS" parent="ClientDisableView">
     <theme>
-      <viewTheme parent="Uif-ClassicKnsTheme"/>
+      <classicKnsTheme-bean/>
     </theme>
-  </formView>
-  <group headertext="Basic Functionality" id="Demo-DisableSection1" parent="Uif-HorizontalBoxSection">
+  </formView-bean>
+  <horizontalBoxSection-bean headertext="Basic Functionality" id="Demo-DisableSection1">
     <items>
-      <inputField instructionalText="Click option to disable and enable" label="Choose" parent="Uif-InputField"
-                  propertyName="field118" width="auto">
+      <inputField-bean instructionalText="Click option to disable and enable" label="Choose" propertyName="field118" width="auto">
         <control>
-          <radioGroupControl parent="Uif-VerticalRadioControl">
+          <verticalRadioControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="enable"/>
-                <spring:property name="value" value="Enable"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="disable"/>
-                <spring:property name="value" value="Disable"/>
-              </spring:bean>
+              <keyLabelPair-bean key="enable" value="Enable"/>
+              <keyLabelPair-bean key="disable" value="Disable"/>
             </options>
-          </radioGroupControl>
+          </verticalRadioControl-bean>
         </control>
-      </inputField>
-      <inputField parent="Uif-InputField" propertyName="field2">
+      </inputField-bean>
+      <inputField-bean propertyName="field2">
         <control>
-          <textControl disabled="@{#form.field118 eq 'disable'}" parent="Uif-TextControl"/>
+          <textControl-bean disabled="@{#form.field118 eq 'disable'}"/>
         </control>
-      </inputField>
-      <inputField parent="Uif-InputField" propertyName="field3">
+      </inputField-bean>
+      <inputField-bean propertyName="field3">
         <control>
-          <textAreaControl disabled="@{#form.field118 eq 'disable'}" parent="Uif-TextAreaControl"/>
+          <textAreaControl-bean disabled="@{#form.field118 eq 'disable'}"/>
         </control>
-      </inputField>
-      <inputField label="Field 3" parent="Uif-InputField-LabelTop" propertyName="field3">
+      </inputField-bean>
+      <inputField-labelTop-bean label="Field 3" propertyName="field3">
         <control>
-          <selectControl disabled="@{#form.field118 eq 'disable'}" parent="Uif-DropdownControl"/>
-        </control>
-        <optionsFinder>
-          <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues">
-            <spring:property name="blankOption" value="true"/>
-          </spring:bean>
-        </optionsFinder>
-      </inputField>
-      <inputField label="Field 4" parent="Uif-InputField-LabelTop" propertyName="field114">
-        <control>
-          <selectControl disabled="@{#form.field118 eq 'disable'}" parent="Uif-MultiSelectControl"/>
+          <dropdownControl-bean disabled="@{#form.field118 eq 'disable'}"/>
         </control>
         <optionsFinder>
-          <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues">
-            <spring:property name="blankOption" value="true"/>
-          </spring:bean>
+          <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
         </optionsFinder>
-      </inputField>
-      <inputField instructionalText="RadioGroupControl using an optionsFinder" label="Radio 1"
-                  parent="Uif-InputField-LabelTop" propertyName="field117" width="auto">
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean label="Field 4" propertyName="field114">
         <control>
-          <radioGroupControl disabled="@{#form.field118 eq 'disable'}" parent="Uif-VerticalRadioControl"/>
+          <multiSelectControl-bean disabled="@{#form.field118 eq 'disable'}"/>
+        </control>
+        <optionsFinder>
+          <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+        </optionsFinder>
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean instructionalText="RadioGroupControl using an optionsFinder" label="Radio 1" propertyName="field117" width="auto">
+        <control>
+          <verticalRadioControl-bean disabled="@{#form.field118 eq 'disable'}"/>
         </control>
         <optionsFinder>
           <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
         </optionsFinder>
-      </inputField>
-      <inputField defaultValue="true"
-                  instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by             default"
-                  label="Checkbox" parent="Uif-InputField-LabelTop" propertyName="bField1">
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean defaultValue="true" instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by             default" label="Checkbox" propertyName="bField1">
         <control>
-          <checkboxControl checkboxLabel="Checkbox Label" disabled="@{#form.field118 eq 'disable'}"
-                           parent="Uif-CheckboxControl"/>
+          <checkboxControl-bean checkboxLabel="Checkbox Label" disabled="@{#form.field118 eq 'disable'}"/>
         </control>
-      </inputField>
-      <inputField instructionalText="CheckboxGroupControl using an optionsFinder" label="Checkboxes 1"
-                  parent="Uif-InputField-LabelTop" propertyName="field115" width="auto">
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean instructionalText="CheckboxGroupControl using an optionsFinder" label="Checkboxes 1" propertyName="field115" width="auto">
         <control>
-          <spring:bean parent="Uif-VerticalCheckboxesControl">
-            <spring:property name="disabled" value="@{#form.field118 eq 'disable'}"/>
-          </spring:bean>
+          <verticalCheckboxesControl-bean disabled="@{#form.field118 eq 'disable'}"/>
         </control>
         <optionsFinder>
           <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
         </optionsFinder>
-      </inputField>
-      <action actionLabel="Action Button" actionScript="alert('You clicked a button');"
-              disabled="@{#form.field118 eq 'disable'}" parent="Uif-PrimaryActionButton"/>
-      <action actionLabel="Action Link" actionScript="alert('You clicked a Link');"
-              disabled="@{#form.field118 eq 'disable'}" parent="Uif-ActionLink"/>
+      </inputField-labelTop-bean>
+      <primaryActionButton-bean actionLabel="Action Button" actionScript="alert('You clicked a button');" disabled="@{#form.field118 eq 'disable'}"/>
+      <actionLink-bean actionLabel="Action Link" actionScript="alert('You clicked a Link');" disabled="@{#form.field118 eq 'disable'}"/>
     </items>
-  </group>
-  <group headertext="Enable/Disable OnChange" id="Demo-DisableSection2" parent="Uif-VerticalBoxSection">
+  </horizontalBoxSection-bean>
+  <verticalBoxSection-bean headertext="Enable/Disable OnChange" id="Demo-DisableSection2">
     <items>
-      <fieldGroup label="Enable Button OnChange" parent="Uif-HorizontalFieldGroup">
+      <horizontalFieldGroup-bean label="Enable Button OnChange">
         <items>
-          <inputField parent="Uif-InputField" propertyName="field50">
+          <inputField-bean propertyName="field50">
             <control>
-              <textControl parent="Uif-TextControl"/>
+              <textControl-bean/>
             </control>
-          </inputField>
-          <action actionLabel="Action Button" actionScript="alert('You clicked a button');" disabled="true"
-                  enabledWhenChangedPropertyNames="field50" parent="Uif-PrimaryActionButton"/>
+          </inputField-bean>
+          <primaryActionButton-bean actionLabel="Action Button" actionScript="alert('You clicked a button');" disabled="true" enabledWhenChangedPropertyNames="field50"/>
         </items>
-      </fieldGroup>
-      <fieldGroup label="Disable Button OnChange" parent="Uif-HorizontalFieldGroup">
+      </horizontalFieldGroup-bean>
+      <horizontalFieldGroup-bean label="Disable Button OnChange">
         <items>
-          <inputField parent="Uif-InputField" propertyName="field51">
+          <inputField-bean propertyName="field51">
             <control>
-              <textControl parent="Uif-TextControl"/>
+              <textControl-bean/>
             </control>
-          </inputField>
-          <action actionLabel="Action Button" actionScript="alert('You clicked a button');" disabled="false"
-                  disabledWhenChangedPropertyNames="field51" parent="Uif-PrimaryActionButton"/>
+          </inputField-bean>
+          <primaryActionButton-bean actionLabel="Action Button" actionScript="alert('You clicked a button');" disabled="false" disabledWhenChangedPropertyNames="field51"/>
         </items>
-      </fieldGroup>
+      </horizontalFieldGroup-bean>
     </items>
-  </group>
-  <group headertext="evaluateDisabledOnKeyUp Flag" id="Demo-DisableSection3" parent="Uif-VerticalBoxSection">
+  </verticalBoxSection-bean>
+  <verticalBoxSection-bean headertext="evaluateDisabledOnKeyUp Flag" id="Demo-DisableSection3">
     <items>
-      <fieldGroup label="Enable Control onKeyUp" parent="Uif-HorizontalFieldGroup">
+      <horizontalFieldGroup-bean label="Enable Control onKeyUp">
         <items>
-          <inputField parent="Uif-InputField" propertyName="field52">
+          <inputField-bean propertyName="field52">
             <control>
-              <textControl parent="Uif-TextControl"/>
+              <textControl-bean/>
             </control>
-          </inputField>
-          <inputField parent="Uif-InputField" propertyName="field54">
+          </inputField-bean>
+          <inputField-bean propertyName="field54">
             <control>
-              <textControl disabled="true" ensabledConditionControlNames="field52" evaluateDisabledOnKeyUp="true"
-                           parent="Uif-TextControl"/>
+              <textControl-bean disabled="true" ensabledConditionControlNames="field52" evaluateDisabledOnKeyUp="true"/>
             </control>
-          </inputField>
+          </inputField-bean>
         </items>
-      </fieldGroup>
-      <fieldGroup label="Type disable" parent="Uif-HorizontalFieldGroup">
+      </horizontalFieldGroup-bean>
+      <horizontalFieldGroup-bean label="Type disable">
         <items>
-          <inputField
-                  instructionalText="Type disable to disable                       the first button onKeyUp and the second button onChange - demonstrated for side by side comparison"
-                  parent="Uif-InputField" propertyName="field53">
+          <inputField-bean instructionalText="Type disable to disable                       the first button onKeyUp and the second button onChange - demonstrated for side by side comparison" propertyName="field53">
             <control>
-              <textControl parent="Uif-TextControl"/>
+              <textControl-bean/>
             </control>
-          </inputField>
-          <action actionLabel="Action Button (keyUp)" actionScript="alert('You clicked a button');"
-                  disabled="@{#form.field53 eq 'disable'}" evaluateDisabledOnKeyUp="true"
-                  parent="Uif-PrimaryActionButton"/>
-          <action actionLabel="Action Button (change)" actionScript="alert('You clicked a button');"
-                  disabled="@{#form.field53 eq 'disable'}" parent="Uif-PrimaryActionButton"/>
+          </inputField-bean>
+          <primaryActionButton-bean actionLabel="Action Button (keyUp)" actionScript="alert('You clicked a button');" disabled="@{#form.field53 eq 'disable'}" evaluateDisabledOnKeyUp="true"/>
+          <primaryActionButton-bean actionLabel="Action Button (change)" actionScript="alert('You clicked a button');" disabled="@{#form.field53 eq 'disable'}"/>
         </items>
-      </fieldGroup>
+      </horizontalFieldGroup-bean>
     </items>
-  </group>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="In Collections"
-                   id="Demo-DisableSection4" layoutManager.numberOfColumns="4"
-                   layoutManager.sequencePropertyName="field1" parent="Uif-TableCollectionSection" propertyName="list1">
+  </verticalBoxSection-bean>
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="In Collections" id="Demo-DisableSection4" layoutManager.numberOfColumns="4" layoutManager.sequencePropertyName="field1" propertyName="list1">
     <items>
-      <inputField label="Disable/Enable" parent="Uif-InputField" propertyName="field1" required="true">
+      <inputField-bean label="Disable/Enable" propertyName="field1" required="true">
         <control>
-          <selectControl parent="Uif-DropdownControl">
+          <dropdownControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="enable"/>
-                <spring:property name="value" value="Enable"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="disable"/>
-                <spring:property name="value" value="Disable"/>
-              </spring:bean>
+              <keyLabelPair-bean key="enable" value="Enable"/>
+              <keyLabelPair-bean key="disable" value="Disable"/>
             </options>
-          </selectControl>
+          </dropdownControl-bean>
         </control>
-      </inputField>
-      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2">
+      </inputField-bean>
+      <inputField-bean label="Field 2" propertyName="field2">
         <control>
-          <textControl disabled="@{#lp.field1 eq 'disable'}" parent="Uif-TextControl"/>
+          <textControl-bean disabled="@{#lp.field1 eq 'disable'}"/>
         </control>
-      </inputField>
-      <inputField constraintText="Disabled when field2 is 10" label="Field 3" parent="Uif-InputField"
-                  propertyName="field3">
+      </inputField-bean>
+      <inputField-bean constraintText="Disabled when field2 is 10" label="Field 3" propertyName="field3">
         <control>
-          <textControl disabled="@{#lp.field1 eq 'disable' or #lp.field2 eq '10'}" parent="Uif-TextControl"/>
+          <textControl-bean disabled="@{#lp.field1 eq 'disable' or #lp.field2 eq '10'}"/>
         </control>
-      </inputField>
+      </inputField-bean>
     </items>
     <addLineActions>
-      <action disabled="true" parent="Uif-AddLineAction">
+      <addLineAction-bean disabled="true">
         <enabledWhenChangedPropertyNames>
-          <value>#lp.field2</value>
-          <value>#lp.field3</value>
+          <spring:value>#lp.field2</spring:value>
+          <spring:value>#lp.field3</spring:value>
         </enabledWhenChangedPropertyNames>
-      </action>
+      </addLineAction-bean>
     </addLineActions>
-  </collectionGroup>
+  </tableCollectionSection-bean>
+  <horizontalBoxSection-bean headertext="Disabled for List backed fields/properties" id="Demo-DisableSection5" instructionalText="Some   examples are not client-side examples in this section (testing purposes)">
+    <items>
+      <inputField-labelTop-bean instructionalText="Make selections to disable the following controls" label="Checkboxes 1" propertyName="stringList2" width="auto">
+        <control>
+          <verticalCheckboxesControl-bean/>
+        </control>
+        <optionsFinder>
+          <spring:bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+        </optionsFinder>
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean constraintText="Disabled when Option 1 is selected" label="TestField" propertyName="field10">
+        <control>
+          <textControl-bean disabled="@{#listContains(stringList2, 1)}"/>
+        </control>
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean constraintText="Disabled when Option 2 and Option 3 is selected" label="TestField" propertyName="field11">
+        <control>
+          <textControl-bean disabled="@{#listContains(stringList2, {'2','3'})}"/>
+        </control>
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean constraintText="Disabled when no options selected" label="TestField" propertyName="field12">
+        <control>
+          <textControl-bean disabled="@{#emptyList(stringList2)}"/>
+        </control>
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean constraintText="Disabled when property 'list2' has toString(overridden at the object level)                       values: 'ABCD' and '1234'.  This has no js/client equivalent functionality." label="TestField" propertyName="field13">
+        <control>
+          <textControl-bean disabled="@{#listContains(list2, {'ABCD','1234'})}"/>
+        </control>
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean constraintText="Disabled when property 'intList' has value 1 and 4" label="TestField" propertyName="field14">
+        <control>
+          <textControl-bean disabled="@{#listContains(intList, {1,4})}"/>
+        </control>
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean constraintText="Disabled when property 'doubleList' has value 2.2 and 3.3" label="TestField" propertyName="field14">
+        <control>
+          <textControl-bean disabled="@{#listContains(doubleList, {2.2,3.3})}"/>
+        </control>
+      </inputField-labelTop-bean>
+    </items>
+  </horizontalBoxSection-bean>
 </spring:beans>

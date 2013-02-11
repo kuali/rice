@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A Key Values finder which produces a list of all Rule Attributes in the KEW database.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

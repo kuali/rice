@@ -35,7 +35,7 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "kimPersonControl", parent = "Uif-KimPersonControl")
+@BeanTag(name = "kimPersonControl-bean", parent = "Uif-KimPersonControl")
 public class UserControl extends TextControl {
     private static final long serialVersionUID = 7468340793076585869L;
 

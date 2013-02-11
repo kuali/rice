@@ -37,7 +37,7 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "bindingInfo", parent = "Uif-BindingInfo")
+@BeanTag(name = "bindingInfo-bean", parent = "Uif-BindingInfo")
 public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -7389398061672136091L;
 

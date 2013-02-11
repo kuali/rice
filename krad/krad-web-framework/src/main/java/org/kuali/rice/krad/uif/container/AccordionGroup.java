@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Accordion;
@@ -27,6 +29,11 @@ import java.util.Set;
 /**
  * Accordion group class used to stack groups by there header titles in an accordion layout
  */
+@BeanTags({@BeanTag(name = "accordionGroup-bean", parent = "Uif-AccordionGroup"),
+        @BeanTag(name = "accordionSection-bean", parent = "Uif-AccordionSection"),
+        @BeanTag(name = "accordionSubSection-bean", parent = "Uif-AccordionSubSection"),
+        @BeanTag(name = "disclosure-accordionSection-bean", parent = "Uif-Disclosure-AccordionSection"),
+        @BeanTag(name = "disclosure-accordionSubSection-bean", parent = "Uif-Disclosure-AccordionSubSection")})
 public class AccordionGroup extends Group {
 
     private static final long serialVersionUID = 7230145606607506418L;

@@ -40,14 +40,14 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@BeanTag(name = "whenConstraint", parent = "WhenConstraint")
+@BeanTag(name = "whenConstraint-bean", parent = "WhenConstraint")
 public class WhenConstraint implements Constraint {
     protected List<Object> values;
     protected String valuePath;
     protected Constraint constraint;
 
     /**
-     * gets the list of values defined for this constraint
+     * List of values to check for this constraint
      *
      * @return a list of values for which to activate the associated constraint
      */
@@ -66,7 +66,22 @@ public class WhenConstraint implements Constraint {
     }
 
     /**
-     * gets the value defined for this constraint
+     * The value to check for this when constraint.  This is a convenience method that is the first value of the
+     * values array.
+     *
+     * @return the first value checking on, otherwise null
+     */
+    public Object getValue(){
+        if(values != null && !values.isEmpty()){
+            return values.get(0);
+        }
+        else{
+            return null;
+        }
+    }
+
+    /**
+     * Sets a single value to check for this constraint.  This is a convenience method.
      *
      * @param value - a values for which to activate the associated constraint
      */
@@ -76,7 +91,7 @@ public class WhenConstraint implements Constraint {
     }
 
     /**
-     * gets a path that can retrieve an attributes value
+     * Path that can retrieve an attributes value
      *
      * @return a string representation of specifically which attribute (at some depth) is being accessed
      */
@@ -95,9 +110,9 @@ public class WhenConstraint implements Constraint {
     }
 
     /**
-     * gets the constraint to apply to the field when the {@code WhenConstraint} value/values match
+     * The constraint to apply to the field when the {@code WhenConstraint} value/values match
      *
-     * @return
+     * @return the constraint
      */
     @BeanTagAttribute(name = "constraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Constraint getConstraint() {

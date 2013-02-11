@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "fixedPointPatternConstraint", parent = "FixedPointPatternConstraint")
+@BeanTag(name = "fixedPointPatternConstraint-bean", parent = "FixedPointPatternConstraint")
 public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
 
     protected boolean allowNegative;

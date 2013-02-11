@@ -24,6 +24,7 @@
 			<description>A test of doc type parameters.</description>
 			<label>TestWithMostParams1</label>
 			<postProcessorName>mocks.MockPostProcessor</postProcessorName>
+            <authorizer>a.doc.type.authorizer</authorizer>
 			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<blanketApprovePolicy>any</blanketApprovePolicy>
 			<reportingGroupName namespace="KR-WKFLW">TestWorkgroup</reportingGroupName>

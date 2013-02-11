@@ -26,5 +26,6 @@ import java.util.List;
 public interface DocumentSearchDAO {
 
     public DocumentSearchResults.Builder findDocuments(DocumentSearchGenerator docSearchGenerator, DocumentSearchCriteria criteria, boolean criteriaModified, List<RemotableAttributeField> searchFields);
-
+    public int getMaxResultCap(DocumentSearchCriteria criteria);
+    public int getFetchMoreIterationLimit();
 }

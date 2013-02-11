@@ -22,6 +22,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
@@ -203,13 +204,35 @@ public class UifControllerHelper {
         if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest()) {
             String refreshComponentId = form.getUpdateComponentId();
 
+            View postedView = form.getPostedView();
+
+            // check if the component is nested in a box layout in order to reapply the layout item style
+            boolean boxLayoutHorizontalItem = false;
+            boolean boxLayoutVerticalItem = false;
+
+            if (form.isUpdateComponentRequest()) {
+                Component postedComponent = ComponentUtils.findNestedComponentById(postedView, refreshComponentId);
+                if (postedComponent.getCssClasses().contains("uif-boxLayoutHorizontalItem")){
+                    boxLayoutHorizontalItem = true;
+                }else if (postedComponent.getCssClasses().contains("uif-boxLayoutVerticalItem")){
+                    boxLayoutVerticalItem = true;
+                }
+            }
+
             // get a new instance of the component
             Component comp = ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
 
-            View postedView = form.getPostedView();
-
             // run lifecycle and update in view
             postedView.getViewHelperService().performComponentLifecycle(postedView, form, comp, refreshComponentId);
+
+            // add the layout item style that should happen in the parent BoxLayoutManager
+            // and is skipped in a child component refresh
+            if (boxLayoutHorizontalItem) {
+                comp.addStyleClass("uif-boxLayoutHorizontalItem");
+            } else if (boxLayoutVerticalItem) {
+                comp.addStyleClass("uif-boxLayoutVerticalItem");
+            }
+
 
             // regenerate server message content for page
             postedView.getCurrentPage().getValidationMessages().generateMessages(false, postedView, form,

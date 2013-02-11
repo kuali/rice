@@ -36,7 +36,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "actionField", parent = "Uif-ActionField")
+@BeanTag(name = "actionField-bean", parent = "Uif-ActionField")
 public class ActionField extends FieldBase {
     private static final long serialVersionUID = -8495752159848603102L;
 

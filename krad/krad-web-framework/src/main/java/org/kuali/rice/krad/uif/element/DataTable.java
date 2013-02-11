@@ -41,7 +41,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "dataTable", parent = "Uif-DataTable")
+@BeanTag(name = "dataTable-bean", parent = "Uif-DataTable")
 public class DataTable extends ContentElementBase {
     private static final long serialVersionUID = 6201998559169962349L;
 

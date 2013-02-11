@@ -23,7 +23,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "searchingAttribute")
+@BeanTag(name = "searchingAttribute-bean")
 public class SearchingAttribute extends WorkflowAttributeMetadata {
     private static final long serialVersionUID = -612461988789474893L;
 

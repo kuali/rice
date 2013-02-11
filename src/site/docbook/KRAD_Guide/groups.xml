@@ -1616,7 +1616,7 @@ public class Test1Object {
         <title>Collection Add Blank Line Example - TableLayout with TOP add line placement</title>
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/KRAD_Guide/KRAD_Collection_AddBlank.png" scalefit="1"/>
+            <imagedata fileref="../images/KRAD_Guide/KRAD_Collection_AddBlank.png" contentwidth="400"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -1805,7 +1805,7 @@ public class Test1Object {
         <title>Collection Action Column Placement Example</title>
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/KRAD_Guide/KRAD_Collection_ActionColumnPlacement.PNG" scalefit="1"/>
+            <imagedata fileref="../images/KRAD_Guide/KRAD_Collection_ActionColumnPlacement.PNG" contentwidth="400"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -2167,7 +2167,7 @@ public class Test2Object {
           <title>Row Details</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/rowDetails.png" scalefit="1"/>
+              <imagedata fileref="../images/KRAD_Guide/rowDetails.png" contentwidth="400"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -2223,7 +2223,7 @@ public class Test2Object {
 </programlisting>
         <para>Which results in a table that looks like this:<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/row_grouping_1.png" scalefit="1"/>
+              <imagedata fileref="../images/KRAD_Guide/row_grouping_1.png" contentwidth="400"/>
             </imageobject>
           </mediaobject></para>
         <para>Alternatively, if we supply multiple property names, we can group lines based on
@@ -2242,7 +2242,7 @@ public class Test2Object {
         <para>This results in a table that looks like this (this table also has column totaling
           turned on, this is covered in the next section):<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/row_grouping_2.png" scalefit="1"/>
+              <imagedata fileref="../images/KRAD_Guide/row_grouping_2.png" contentwidth="400"/>
             </imageobject>
           </mediaobject></para>
         <para>Supplying a groupingPrefix to use for the grouping row title (set on the <emphasis
@@ -2254,7 +2254,7 @@ public class Test2Object {
 </programlisting></para>
         <para>Results in a table that looks like this:<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/row_grouping_3.png" scalefit="1"/>
+              <imagedata fileref="../images/KRAD_Guide/row_grouping_3.png" contentwidth="400"/>
             </imageobject>
           </mediaobject></para>
         <para>And supplying a <emphasis role="bold">groupingTitle</emphasis> (note that SpringEL is
@@ -2265,7 +2265,7 @@ public class Test2Object {
 </programlisting>
         <para>Results in a table that looks like this:<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/row_grouping_4.png" scalefit="1"/>
+              <imagedata fileref="../images/KRAD_Guide/row_grouping_4.png" contentwidth="400"/>
             </imageobject>
           </mediaobject></para>
       </section>
@@ -2361,7 +2361,7 @@ public class Test2Object {
 </programlisting>
         <para>Which results in a table that looks like this:<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/column_calc_1.png" scalefit="1"/>
+              <imagedata fileref="../images/KRAD_Guide/column_calc_1.png" contentwidth="400"/>
             </imageobject>
           </mediaobject></para>
         <para>To enable calculations for a collection that also has row grouping, we would do the
@@ -2390,7 +2390,7 @@ public class Test2Object {
 </programlisting></para>
         <para>Which results in a table that looks like this:<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/column_calc_2.png" scalefit="1"/>
+              <imagedata fileref="../images/KRAD_Guide/column_calc_2.png" contentwidth="400"/>
             </imageobject>
           </mediaobject></para>
         <para>The TableCollection's TableLayoutManager also has a few options related to
@@ -2419,7 +2419,7 @@ public class Test2Object {
 </programlisting>
         <para>Which results in a table that looks like this:<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/column_calc_3.png" scalefit="1"/>
+              <imagedata fileref="../images/KRAD_Guide/column_calc_3.png" contentwidth="400"/>
             </imageobject>
           </mediaobject></para>
       </section>

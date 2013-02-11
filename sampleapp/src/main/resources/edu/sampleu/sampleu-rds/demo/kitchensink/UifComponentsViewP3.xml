@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,259 +16,230 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <group disclosure.render="false" id="minMaxSection" parent="Uif-HorizontalBoxSection">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <horizontalBoxSection-bean disclosure.render="false" id="minMaxSection">
     <items>
-      <inputField maxLength="5" minLength="2" parent="GenericTextField" propertyName="field9"/>
-      <inputField exclusiveMin="2" inclusiveMax="50" parent="GenericTextField" propertyName="field10">
+      <inputField-bean maxLength="5" minLength="2" parent="GenericTextField" propertyName="field9"/>
+      <inputField-bean exclusiveMin="2" inclusiveMax="50" parent="GenericTextField" propertyName="field10">
         <validCharactersConstraint>
-          <numericPatternConstraint parent="NumericPatternConstraint"/>
+          <numericPatternConstraint-bean/>
         </validCharactersConstraint>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group disclosure.render="false" id="requiredSection" parent="Uif-HorizontalBoxSection">
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean disclosure.render="false" id="requiredSection">
     <items>
-      <inputField control.disabled="true" parent="GenericTextField" propertyName="field2" required="true"/>
-      <inputField parent="GenericTextArea" propertyName="field3" required="true"/>
-      <inputField parent="GenericRadio" propertyName="field4" required="true"/>
-      <inputField fieldLabel.requiredMessagePlacement="RIGHT" parent="GenericSelection" propertyName="field5"
-                  required="true"/>
+      <inputField-bean control.disabled="true" parent="GenericTextField" propertyName="field2" required="true"/>
+      <inputField-bean parent="GenericTextArea" propertyName="field3" required="true"/>
+      <inputField-bean parent="GenericRadio" propertyName="field4" required="true"/>
+      <inputField-bean fieldLabel.requiredMessagePlacement="RIGHT" parent="GenericSelection" propertyName="field5" required="true"/>
     </items>
-  </group>
-  <group disclosure.render="false" id="preReqSection" parent="Uif-HorizontalBoxSection">
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean disclosure.render="false" id="preReqSection">
     <items>
-      <inputField label="Field A" parent="GenericTextField" propertyName="field6">
-        <dependencyConstraint>
-          <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field7"/>
-          <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field8"/>
-        </dependencyConstraint>
-      </inputField>
-      <inputField label="Field B" parent="GenericTextField" propertyName="field7"/>
-      <inputField label="Field C" parent="GenericTextField" propertyName="field8">
-        <dependencyConstraint>
-          <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field6"/>
-        </dependencyConstraint>
-      </inputField>
+      <inputField-bean label="Field A" parent="GenericTextField" propertyName="field6">
+        <dependencyConstraints>
+          <prerequisiteConstraint-bean propertyName="field7"/>
+          <prerequisiteConstraint-bean propertyName="field8"/>
+        </dependencyConstraints>
+      </inputField-bean>
+      <inputField-bean label="Field B" parent="GenericTextField" propertyName="field7"/>
+      <inputField-bean label="Field C" parent="GenericTextField" propertyName="field8">
+        <dependencyConstraints>
+          <prerequisiteConstraint-bean propertyName="field6"/>
+        </dependencyConstraints>
+      </inputField-bean>
     </items>
-  </group>
-  <group disclosure.render="false" id="mustOccursSection" parent="Uif-HorizontalBoxSection">
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean disclosure.render="false" id="mustOccursSection">
     <items>
-      <ref bean="moGroup1"/>
-      <ref bean="moGroup2"/>
-      <ref bean="moGroup3"/>
+      <spring:ref bean="moGroup1"/>
+      <spring:ref bean="moGroup2"/>
+      <spring:ref bean="moGroup3"/>
     </items>
-  </group>
-  <group disclosure.render="false" id="moGroup1" parent="Uif-HorizontalBoxSection">
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean disclosure.render="false" id="moGroup1">
     <items>
-      <inputField parent="GenericTextField" propertyName="field11"/>
-      <inputField parent="GenericTextField" propertyName="field12"/>
-      <inputField parent="GenericTextField" propertyName="field13"/>
-      <inputField parent="GenericTextField" propertyName="field14">
+      <inputField-bean parent="GenericTextField" propertyName="field11"/>
+      <inputField-bean parent="GenericTextField" propertyName="field12"/>
+      <inputField-bean parent="GenericTextField" propertyName="field13"/>
+      <inputField-bean parent="GenericTextField" propertyName="field14">
         <mustOccurConstraints>
-          <mustOccurConstraint max="2" min="1" parent="MustOccurConstraint">
+          <mustOccurConstraint-bean max="2" min="1">
             <prerequisiteConstraints>
-              <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field11"/>
+              <prerequisiteConstraint-bean propertyName="field11"/>
             </prerequisiteConstraints>
             <mustOccurConstraints>
-              <mustOccurConstraint max="2" min="2" parent="MustOccurConstraint">
+              <mustOccurConstraint-bean max="2" min="2">
                 <prerequisiteConstraints>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field12"/>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field13"/>
+                  <prerequisiteConstraint-bean propertyName="field12"/>
+                  <prerequisiteConstraint-bean propertyName="field13"/>
                 </prerequisiteConstraints>
-              </mustOccurConstraint>
+              </mustOccurConstraint-bean>
             </mustOccurConstraints>
-          </mustOccurConstraint>
+          </mustOccurConstraint-bean>
         </mustOccurConstraints>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group disclosure.render="false" id="moGroup2" parent="Uif-HorizontalBoxSection">
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean disclosure.render="false" id="moGroup2">
     <items>
-      <inputField parent="GenericTextField" propertyName="field15"/>
-      <inputField parent="GenericTextField" propertyName="field16"/>
-      <inputField parent="GenericTextField" propertyName="field17"/>
-      <inputField parent="GenericTextField" propertyName="field18">
+      <inputField-bean parent="GenericTextField" propertyName="field15"/>
+      <inputField-bean parent="GenericTextField" propertyName="field16"/>
+      <inputField-bean parent="GenericTextField" propertyName="field17"/>
+      <inputField-bean parent="GenericTextField" propertyName="field18">
         <mustOccurConstraints>
-          <mustOccurConstraint max="1" min="1" parent="MustOccurConstraint">
+          <mustOccurConstraint-bean max="1" min="1">
             <prerequisiteConstraints>
-              <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field15"/>
+              <prerequisiteConstraint-bean propertyName="field15"/>
             </prerequisiteConstraints>
             <mustOccurConstraints>
-              <mustOccurConstraint max="2" min="2" parent="MustOccurConstraint">
+              <mustOccurConstraint-bean max="2" min="2">
                 <prerequisiteConstraints>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field16"/>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field17"/>
+                  <prerequisiteConstraint-bean propertyName="field16"/>
+                  <prerequisiteConstraint-bean propertyName="field17"/>
                 </prerequisiteConstraints>
-              </mustOccurConstraint>
+              </mustOccurConstraint-bean>
             </mustOccurConstraints>
-          </mustOccurConstraint>
+          </mustOccurConstraint-bean>
         </mustOccurConstraints>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group disclosure.render="false" id="moGroup3" parent="Uif-HorizontalBoxSection">
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean disclosure.render="false" id="moGroup3">
     <items>
-      <inputField parent="GenericTextField" propertyName="field19"/>
-      <inputField parent="GenericTextField" propertyName="field20"/>
-      <inputField parent="GenericTextField" propertyName="field21"/>
-      <inputField parent="GenericTextField" propertyName="field22"/>
-      <inputField parent="GenericTextField" propertyName="field23">
+      <inputField-bean parent="GenericTextField" propertyName="field19"/>
+      <inputField-bean parent="GenericTextField" propertyName="field20"/>
+      <inputField-bean parent="GenericTextField" propertyName="field21"/>
+      <inputField-bean parent="GenericTextField" propertyName="field22"/>
+      <inputField-bean parent="GenericTextField" propertyName="field23">
         <mustOccurConstraints>
-          <mustOccurConstraint max="2" min="1" parent="MustOccurConstraint">
+          <mustOccurConstraint-bean max="2" min="1">
             <mustOccurConstraints>
-              <mustOccurConstraint max="2" min="1" parent="MustOccurConstraint">
+              <mustOccurConstraint-bean max="2" min="1">
                 <prerequisiteConstraints>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field19"/>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field20"/>
+                  <prerequisiteConstraint-bean propertyName="field19"/>
+                  <prerequisiteConstraint-bean propertyName="field20"/>
                 </prerequisiteConstraints>
-              </mustOccurConstraint>
-              <mustOccurConstraint max="2" min="2" parent="MustOccurConstraint">
+              </mustOccurConstraint-bean>
+              <mustOccurConstraint-bean max="2" min="2">
                 <prerequisiteConstraints>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field21"/>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field22"/>
+                  <prerequisiteConstraint-bean propertyName="field21"/>
+                  <prerequisiteConstraint-bean propertyName="field22"/>
                 </prerequisiteConstraints>
-              </mustOccurConstraint>
+              </mustOccurConstraint-bean>
             </mustOccurConstraints>
-          </mustOccurConstraint>
+          </mustOccurConstraint-bean>
         </mustOccurConstraints>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group disclosure.render="false" id="caseConstraintSection" layoutManager.orientation="VERTICAL"
-         parent="Uif-VerticalBoxSection">
+  </horizontalBoxSection-bean>
+  <verticalBoxSection-bean disclosure.render="false" id="caseConstraintSection" layoutManager.orientation="VERTICAL">
     <items>
-      <inputField parent="Uif-InputField" propertyName="field24" width="auto">
+      <inputField-bean propertyName="field24" width="auto">
         <control>
-          <radioGroupControl id="caseConstraintSection-VerticalRadioControl" parent="Uif-VerticalRadioControl">
+          <verticalRadioControl-bean id="caseConstraintSection-VerticalRadioControl">
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="case1"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="case2"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="case3"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="case4"/>
-              </spring:bean>
+              <keyLabelPair-bean key="case1"/>
+              <keyLabelPair-bean key="case2"/>
+              <keyLabelPair-bean key="case3"/>
+              <keyLabelPair-bean key="case4"/>
             </options>
-          </radioGroupControl>
+          </verticalRadioControl-bean>
         </control>
-      </inputField>
-      <ref bean="ccSection1"/>
-      <ref bean="ccSection2"/>
-      <ref bean="ccSection3"/>
-      <ref bean="ccSection4"/>
+      </inputField-bean>
+      <spring:ref bean="ccSection1"/>
+      <spring:ref bean="ccSection2"/>
+      <spring:ref bean="ccSection3"/>
+      <spring:ref bean="ccSection4"/>
     </items>
-  </group>
-  <group disclosure.render="false" id="ccSection1" layoutManager.orientation="VERTICAL" parent="Uif-VerticalBoxSection">
+  </verticalBoxSection-bean>
+  <verticalBoxSection-bean disclosure.render="false" id="ccSection1" layoutManager.orientation="VERTICAL">
     <items>
-      <inputField parent="GenericTextField" propertyName="field25">
+      <inputField-bean parent="GenericTextField" propertyName="field25">
         <caseConstraint>
-          <caseConstriant parent="CaseConstraint" propertyName="field24">
+          <caseConstriant-bean propertyName="field24">
             <whenConstraint>
-              <whenConstraint parent="WhenConstraint">
+              <whenConstraint-bean>
                 <values>
-                  <value>case1</value>
-                  <value>case2</value>
+                  <spring:value>case1</spring:value>
+                  <spring:value>case2</spring:value>
                 </values>
                 <constraint>
-                  <simpleContraint parent="RequiredConstraint"/>
+                  <requiredConstraint-bean/>
                 </constraint>
-              </whenConstraint>
-              <whenConstraint parent="WhenConstraint" value="case2">
+              </whenConstraint-bean>
+              <whenConstraint-bean value="case2">
                 <constraint>
-                  <alphaNumericPatternConstraint parent="AlphaNumericPatternConstraint"/>
+                  <alphaNumericPatternConstraint-bean/>
                 </constraint>
-              </whenConstraint>
+              </whenConstraint-bean>
             </whenConstraint>
-          </caseConstriant>
+          </caseConstriant-bean>
         </caseConstraint>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group disclosure.render="false" id="ccSection2" layoutManager.orientation="VERTICAL" parent="Uif-VerticalBoxSection">
+  </verticalBoxSection-bean>
+  <verticalBoxSection-bean disclosure.render="false" id="ccSection2" layoutManager.orientation="VERTICAL">
     <items>
-      <inputField parent="GenericTextField" propertyName="field26">
+      <inputField-bean parent="GenericTextField" propertyName="field26">
         <caseConstraint>
-          <caseConstriant parent="CaseConstraint" propertyName="field24">
+          <caseConstriant-bean propertyName="field24">
             <whenConstraint>
-              <whenConstraint parent="WhenConstraint" value="case3">
+              <whenConstraint-bean value="case3">
                 <constraint>
-                  <simpleContraint inclusiveMax="500" maxLength="3" parent="SimpleConstraint"/>
+                  <simpleContraint-bean inclusiveMax="500" maxLength="3"/>
                 </constraint>
-              </whenConstraint>
+              </whenConstraint-bean>
             </whenConstraint>
-          </caseConstriant>
+          </caseConstriant-bean>
         </caseConstraint>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group disclosure.render="false" id="ccSection3" parent="Uif-HorizontalBoxSection">
+  </verticalBoxSection-bean>
+  <horizontalBoxSection-bean disclosure.render="false" id="ccSection3">
     <items>
-      <inputField parent="GenericTextField" propertyName="field27">
+      <inputField-bean parent="GenericTextField" propertyName="field27">
         <caseConstraint>
-          <caseConstriant parent="CaseConstraint" propertyName="field24">
+          <caseConstriant-bean propertyName="field24">
             <whenConstraint>
-              <whenConstraint parent="WhenConstraint" value="case4">
+              <whenConstraint-bean value="case4">
                 <constraint>
-                  <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="field28"/>
+                  <prerequisiteConstraint-bean propertyName="field28"/>
                 </constraint>
-              </whenConstraint>
+              </whenConstraint-bean>
             </whenConstraint>
-          </caseConstriant>
+          </caseConstriant-bean>
         </caseConstraint>
-      </inputField>
-      <inputField parent="GenericTextField" propertyName="field28"/>
+      </inputField-bean>
+      <inputField-bean parent="GenericTextField" propertyName="field28"/>
     </items>
-  </group>
-  <group disclosure.render="false" id="ccSection4" parent="Uif-HorizontalBoxSection">
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean disclosure.render="false" id="ccSection4">
     <items>
-      <inputField parent="GenericTextField" propertyName="field31"/>
-      <inputField parent="GenericTextField" propertyName="field32"/>
-      <inputField parent="GenericTextField" propertyName="field33">
+      <inputField-bean parent="GenericTextField" propertyName="field31"/>
+      <inputField-bean parent="GenericTextField" propertyName="field32"/>
+      <inputField-bean parent="GenericTextField" propertyName="field33">
         <caseConstraint>
-          <caseConstriant operator="has_value" parent="CaseConstraint" propertyName="field31">
+          <caseConstriant-bean operator="has_value" propertyName="field31">
             <whenConstraint>
-              <whenConstraint parent="WhenConstraint" value="true">
+              <whenConstraint-bean value="true">
                 <constraint>
-                  <caseConstriant operator="not_equals" parent="CaseConstraint" propertyName="field32">
+                  <caseConstriant-bean operator="not_equals" propertyName="field32">
                     <whenConstraint>
-                      <whenConstraint parent="WhenConstraint" value="A">
+                      <whenConstraint-bean value="A">
                         <constraint>
-                          <simpleContraint parent="RequiredConstraint"/>
+                          <requiredConstraint-bean/>
                         </constraint>
-                      </whenConstraint>
+                      </whenConstraint-bean>
                     </whenConstraint>
-                  </caseConstriant>
+                  </caseConstriant-bean>
                 </constraint>
-              </whenConstraint>
+              </whenConstraint-bean>
             </whenConstraint>
-          </caseConstriant>
+          </caseConstriant-bean>
         </caseConstraint>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
+  </horizontalBoxSection-bean>
 </spring:beans>

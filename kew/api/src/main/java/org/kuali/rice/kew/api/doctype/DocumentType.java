@@ -61,6 +61,7 @@ import java.util.Map;
         DocumentType.Elements.POLICIES,
         DocumentType.Elements.DOCUMENT_TYPE_ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        DocumentType.Elements.AUTHORIZER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentType extends AbstractDataTransferObject implements DocumentTypeContract {
@@ -125,7 +126,13 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     @XmlElementWrapper(name = Elements.DOCUMENT_TYPE_ATTRIBUTES, required = false)
     @XmlElement(name = Elements.DOCUMENT_TYPE_ATTRIBUTE, required = false)
     private final List<DocumentTypeAttribute> documentTypeAttributes;
-    
+
+    /**
+     * @since 2.1.3
+     */
+    @XmlElement(name = Elements.AUTHORIZER, required = false)
+    private final String authorizer;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -153,6 +160,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         this.policies = null;
         this.versionNumber = null;
         this.documentTypeAttributes = null;
+        this.authorizer = null;
     }
 
     private DocumentType(Builder builder) {
@@ -186,6 +194,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
             }
         }
         this.documentTypeAttributes = Collections.unmodifiableList(tempAttributes);
+        this.authorizer = builder.getAuthorizer();
     }
 
     @Override
@@ -284,6 +293,15 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     }
 
     /**
+     * @since 2.1.3
+     * @
+     */
+    @Override
+    public String getAuthorizer() {
+        return this.authorizer;
+    }
+
+    /**
      * A builder which can be used to construct {@link DocumentType} instances. Enforces the
      * constraints of the {@link DocumentTypeContract}.
      */
@@ -310,6 +328,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         private Map<DocumentTypePolicy, String> policies;
         private List<DocumentTypeAttribute.Builder> documentTypeAttributes;
         private Long versionNumber;
+        private String authorizer;
 
         private Builder(String name) {
             setName(name);
@@ -352,6 +371,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
                 builder.setDocumentTypeAttributes(tempAttrs);
             }
             builder.setVersionNumber(contract.getVersionNumber());
+            builder.setAuthorizer(contract.getAuthorizer());
             return builder;
         }
 
@@ -454,6 +474,15 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
             return this.versionNumber;
         }
 
+        /**
+         * @since 2.1.3
+         * @
+         */
+        @Override
+        public String getAuthorizer() {
+            return this.authorizer;
+        }
+
         public void setId(String id) {
             this.id = id;
         }
@@ -532,6 +561,10 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         public void setVersionNumber(Long versionNumber) {
             this.versionNumber = versionNumber;
         }
+
+        public void setAuthorizer(String authorizer) {
+            this.authorizer = authorizer;
+        }
     }
 
     /**
@@ -566,6 +599,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         final static String POLICIES = "policies";
         final static String DOCUMENT_TYPE_ATTRIBUTES = "documentTypeAttributes";
         final static String DOCUMENT_TYPE_ATTRIBUTE = "documentTypeAttribute";
+        final static String AUTHORIZER = "authorizer";
     }
 
     public static class Cache {

@@ -38,15 +38,15 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "message", parent = "Uif-Message"),
-        @BeanTag(name = "instructionalMessage", parent = "Uif-InstructionalMessage"),
-        @BeanTag(name = "constraintMessage", parent = "Uif-ConstraintMessage"),
-        @BeanTag(name = "requiredMessage", parent = "Uif-RequiredMessage"),
-        @BeanTag(name = "requiredInstructionsMessage", parent = "Uif-RequiredInstructionsMessage"),
-        @BeanTag(name = "stateBased-requiredInstructionsMessage",
+@BeanTags({@BeanTag(name = "message-bean", parent = "Uif-Message"),
+        @BeanTag(name = "instructionalMessage-bean", parent = "Uif-InstructionalMessage"),
+        @BeanTag(name = "constraintMessage-bean", parent = "Uif-ConstraintMessage"),
+        @BeanTag(name = "requiredMessage-bean", parent = "Uif-RequiredMessage"),
+        @BeanTag(name = "requiredInstructionsMessage-bean", parent = "Uif-RequiredInstructionsMessage"),
+        @BeanTag(name = "stateBased-requiredInstructionsMessage-bean",
                 parent = "Uif-StateBased-RequiredInstructionsMessage"),
-        @BeanTag(name = "dialogPrompt", parent = "Uif-DialogPrompt"),
-        @BeanTag(name = "imageCutineMessage", parent = "Uif-ImageCutineMessage")})
+        @BeanTag(name = "dialogPrompt-bean", parent = "Uif-DialogPrompt"),
+        @BeanTag(name = "imageCutineMessage-bean", parent = "Uif-ImageCutineMessage")})
 public class Message extends ContentElementBase {
     private static final long serialVersionUID = 4090058533452450395L;
 

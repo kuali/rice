@@ -26,8 +26,8 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "alphaNumericPatternConstraint", parent="AlphaNumericPatternConstraint"),
-        @BeanTag(name = "alphaNumericWithBasicPunc", parent="AlphaNumericWithBasicPunc")})
+@BeanTags({@BeanTag(name = "alphaNumericPatternConstraint-bean", parent="AlphaNumericPatternConstraint"),
+        @BeanTag(name = "alphaNumericWithBasicPunc-bean", parent="AlphaNumericWithBasicPunc")})
 public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     protected boolean lowerCase = false;
     protected boolean upperCase = false;

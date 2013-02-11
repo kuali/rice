@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "help", parent = "Uif-Help")
+@BeanTag(name = "help-bean", parent = "Uif-Help")
 public class Help extends WidgetBase {
 	private static final long serialVersionUID = -1514436681476297241L;
 

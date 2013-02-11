@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,352 +16,239 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView formClass="edu.sampleu.demo.kitchensink.TrainingApplicationForm"
-            headertext="Kuali University Student Application Form" id="Training-CollegeApplicationView"
-            parent="Uif-FormView">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean formClass="edu.sampleu.demo.kitchensink.TrainingApplicationForm" headertext="Kuali University Student Application Form" id="Training-CollegeApplicationView">
     <items>
-      <ref bean="Training-CollegeApplicationPage"/>
+      <spring:ref bean="Training-CollegeApplicationPage"/>
     </items>
     <theme>
-      <viewTheme parent="Uif-KradTheme"/>
+      <kradTheme-bean/>
     </theme>
-  </formView>
-  <formView id="Training-CollegeApplicationView_KNS" parent="Training-CollegeApplicationView">
+  </formView-bean>
+  <formView-bean id="Training-CollegeApplicationView_KNS" parent="Training-CollegeApplicationView">
     <theme>
-      <viewTheme parent="Uif-ClassicKnsTheme"/>
+      <classicKnsTheme-bean/>
     </theme>
-  </formView>
-  <pageGroup headertext="Application Info" id="Training-CollegeApplicationPage" parent="Uif-Page">
+  </formView-bean>
+  <page-bean headertext="Application Info" id="Training-CollegeApplicationPage">
     <items>
-      <group parent="Training-CampusInfo"/>
-      <group parent="Training-StudentInfo"/>
-      <group parent="Training-StudentAddress"/>
-      <collectionGroup parent="Training-StudentReferences"/>
-      <collectionGroup parent="Training-PreviousEducation"/>
-      <message messageText="Click [0] to get a full list of additional documents required." parent="Uif-Message">
+      <group-bean parent="Training-CampusInfo"/>
+      <group-bean parent="Training-StudentInfo"/>
+      <group-bean parent="Training-StudentAddress"/>
+      <collectionGroup-bean parent="Training-StudentReferences"/>
+      <collectionGroup-bean parent="Training-PreviousEducation"/>
+      <message-bean messageText="Click [0] to get a full list of additional documents required.">
         <inlineComponents>
-          <link href="http://www.kuali.org" linkText="here" parent="Uif-Link"/>
+          <link-bean href="http://www.kuali.org" linkText="here"/>
         </inlineComponents>
-      </message>
+      </message-bean>
     </items>
     <footer>
-      <group parent="Uif-FooterBase">
+      <footer-bean>
         <items>
-          <action actionLabel="Submit" methodToCall="submit" parent="Uif-PrimaryActionButton"
-                  performClientSideValidation="true" preSubmitCall="return confirm('Submit?');"
-                  render="@{!#view.readOnly}" successCallback="alert('Submit Successful')"/>
-          <action actionLabel="Clear all" actionScript="clearAll()" parent="Uif-ActionLink"
-                  render="@{!#view.readOnly}"/>
+          <primaryActionButton-bean actionLabel="Submit" methodToCall="submit" performClientSideValidation="true" preSubmitCall="return confirm('Submit?');" render="@{!#view.readOnly}" successCallback="alert('Submit Successful')"/>
+          <actionLink-bean actionLabel="Clear all" actionScript="clearAll()" render="@{!#view.readOnly}"/>
         </items>
-      </group>
+      </footer-bean>
     </footer>
-  </pageGroup>
-  <group headertext="Term and College Information" id="Training-CampusInfo" parent="Uif-HorizontalBoxSection">
+  </page-bean>
+  <horizontalBoxSection-bean headertext="Term and College Information" id="Training-CampusInfo">
     <items>
-      <inputField label="Term" parent="Uif-InputField-LabelTop" propertyName="term" required="true">
+      <inputField-labelTop-bean label="Term" propertyName="term" required="true">
         <control>
-          <selectControl parent="Uif-DropdownControl">
+          <dropdownControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value=""/>
-                <spring:property name="value" value=""/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="fall"/>
-                <spring:property name="value" value="Fall"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="spring"/>
-                <spring:property name="value" value="Spring"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="summer"/>
-                <spring:property name="value" value="Summer"/>
-              </spring:bean>
+              <keyLabelPair-bean key="" value=""/>
+              <keyLabelPair-bean key="fall" value="Fall"/>
+              <keyLabelPair-bean key="spring" value="Spring"/>
+              <keyLabelPair-bean key="summer" value="Summer"/>
             </options>
-          </selectControl>
+          </dropdownControl-bean>
         </control>
-      </inputField>
-      <inputField label="College" parent="Uif-InputField-LabelTop" propertyName="college" required="true">
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean label="College" propertyName="college" required="true">
         <control>
-          <selectControl parent="Uif-DropdownControl">
+          <dropdownControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value=""/>
-                <spring:property name="value" value=""/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="art"/>
-                <spring:property name="value" value="Art"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="bus"/>
-                <spring:property name="value" value="Business"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="csc"/>
-                <spring:property name="value" value="Computer Science"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="hist"/>
-                <spring:property name="value" value="History"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="math"/>
-                <spring:property name="value" value="Math"/>
-              </spring:bean>
+              <keyLabelPair-bean key="" value=""/>
+              <keyLabelPair-bean key="art" value="Art"/>
+              <keyLabelPair-bean key="bus" value="Business"/>
+              <keyLabelPair-bean key="csc" value="Computer Science"/>
+              <keyLabelPair-bean key="hist" value="History"/>
+              <keyLabelPair-bean key="math" value="Math"/>
             </options>
-          </selectControl>
+          </dropdownControl-bean>
         </control>
-      </inputField>
-      <inputField label="Campus" parent="Uif-InputField-LabelTop"
-                  progressiveRender="@{#dp.college eq 'art' or #dp.college eq 'csc'}" propertyName="campus">
+      </inputField-labelTop-bean>
+      <inputField-labelTop-bean label="Campus" progressiveRender="@{#dp.college eq 'art' or #dp.college eq 'csc'}" propertyName="campus">
         <control>
-          <selectControl parent="Uif-DropdownControl">
+          <dropdownControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value=""/>
-                <spring:property name="value" value=""/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="east"/>
-                <spring:property name="value" value="East Campus"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="west"/>
-                <spring:property name="value" value="West Campus"/>
-              </spring:bean>
+              <keyLabelPair-bean key="" value=""/>
+              <keyLabelPair-bean key="east" value="East Campus"/>
+              <keyLabelPair-bean key="west" value="West Campus"/>
             </options>
-          </selectControl>
+          </dropdownControl-bean>
         </control>
         <caseConstraint>
-          <caseConstriant parent="CaseConstraint" propertyName="college">
+          <caseConstriant-bean propertyName="college">
             <whenConstraint>
-              <whenConstraint parent="WhenConstraint">
+              <whenConstraint-bean>
                 <values>
-                  <value>art</value>
-                  <value>csc</value>
+                  <spring:value>art</spring:value>
+                  <spring:value>csc</spring:value>
                 </values>
                 <constraint>
-                  <simpleContraint parent="RequiredConstraint"/>
+                  <requiredConstraint-bean/>
                 </constraint>
-              </whenConstraint>
+              </whenConstraint-bean>
             </whenConstraint>
-          </caseConstriant>
+          </caseConstriant-bean>
         </caseConstraint>
-      </inputField>
+      </inputField-labelTop-bean>
     </items>
-  </group>
-  <group headertext="About Me" id="Training-StudentInfo" instructionalText="Please fill out this form [b]completely[/b]"
-         parent="Uif-HorizontalBoxSection">
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean headertext="About Me" id="Training-StudentInfo" instructionalText="Please fill out this form [b]completely[/b]">
     <items>
-      <ref bean="Training-StudentInfo-Group1"/>
-      <ref bean="Training-StudentInfo-Group2"/>
+      <spring:ref bean="Training-StudentInfo-Group1"/>
+      <spring:ref bean="Training-StudentInfo-Group2"/>
     </items>
-  </group>
-  <group id="Training-StudentInfo-Group1" parent="Uif-GridGroup">
+  </horizontalBoxSection-bean>
+  <gridGroup-bean id="Training-StudentInfo-Group1">
     <items>
-      <inputField label="First Name" parent="Uif-InputField" propertyName="firstName" required="true">
+      <inputField-bean label="First Name" propertyName="firstName" required="true">
         <validCharactersConstraint>
-          <alphaPatternConstraint parent="AlphaPatternConstraint"/>
+          <alphaPatternConstraint-bean/>
         </validCharactersConstraint>
-      </inputField>
-      <inputField label="Last Name" parent="Uif-InputField" propertyName="lastName" required="true">
+      </inputField-bean>
+      <inputField-bean label="Last Name" propertyName="lastName" required="true">
         <validCharactersConstraint>
-          <alphaPatternConstraint parent="AlphaPatternConstraint"/>
+          <alphaPatternConstraint-bean/>
         </validCharactersConstraint>
-      </inputField>
-      <inputField label="Email Address" parent="Uif-InputField" propertyName="email" required="true">
+      </inputField-bean>
+      <inputField-bean label="Email Address" propertyName="email" required="true">
         <validCharactersConstraint>
-          <spring:bean parent="EmailAddressPatternConstraint"/>
+          <emailAddressPatternConstraint-bean/>
         </validCharactersConstraint>
-      </inputField>
-      <inputField parent="Uif-InputField" propertyName="emailList">
+      </inputField-bean>
+      <inputField-bean propertyName="emailList">
         <control>
-          <checkboxControl checkboxLabel="Add me to your mailing list" parent="Uif-CheckboxControl"/>
+          <checkboxControl-bean checkboxLabel="Add me to your mailing list"/>
         </control>
-      </inputField>
+      </inputField-bean>
     </items>
-  </group>
-  <group id="Training-StudentInfo-Group2" parent="Uif-GridGroup">
+  </gridGroup-bean>
+  <gridGroup-bean id="Training-StudentInfo-Group2">
     <items>
-      <inputField label="Gender" parent="Uif-InputField" propertyName="gender" required="true">
+      <inputField-bean label="Gender" propertyName="gender" required="true">
         <control>
-          <radioGroupControl parent="Uif-HorizontalRadioControl">
+          <horizontalRadioControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="male"/>
-                <spring:property name="value" value="Male"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="female"/>
-                <spring:property name="value" value="Female"/>
-              </spring:bean>
+              <keyLabelPair-bean key="male" value="Male"/>
+              <keyLabelPair-bean key="female" value="Female"/>
             </options>
-          </radioGroupControl>
+          </horizontalRadioControl-bean>
         </control>
-      </inputField>
-      <inputField label="Date of Birth" parent="Uif-InputField" propertyName="dob" required="true">
+      </inputField-bean>
+      <inputField-bean label="Date of Birth" propertyName="dob" required="true">
         <control>
-          <textControl parent="Uif-DateControl"/>
-        </control>
-        <validCharactersConstraint>
-          <dataPatternConstraint parent="BasicDatePatternConstraint"/>
-        </validCharactersConstraint>
-      </inputField>
-      <inputField
-              instructionalText="Please select the [link='http://kuali.org']ethnicity/race(s)[/link] you most closely identify yourself as"
-              label="Race/Ethnicity" parent="Uif-InputField" propertyName="ethnicity"
-              readOnlyDisplayReplacement="@{ethnicity.toString()}" required="true">
-        <control>
-          <spring:bean parent="Uif-VerticalCheckboxesControl">
-            <spring:property name="options">
-              <spring:list>
-                <spring:bean parent="Uif-KeyLabelPair">
-                  <spring:property name="key" value="black"/>
-                  <spring:property name="value" value="Black"/>
-                </spring:bean>
-                <spring:bean parent="Uif-KeyLabelPair">
-                  <spring:property name="key" value="amIn"/>
-                  <spring:property name="value" value="American Indian / Alaska Native"/>
-                </spring:bean>
-                <spring:bean parent="Uif-KeyLabelPair">
-                  <spring:property name="key" value="asian"/>
-                  <spring:property name="value" value="Asian / Pacific Islander"/>
-                </spring:bean>
-                <spring:bean parent="Uif-KeyLabelPair">
-                  <spring:property name="key" value="hispanic"/>
-                  <spring:property name="value" value="Hispanic"/>
-                </spring:bean>
-                <spring:bean parent="Uif-KeyLabelPair">
-                  <spring:property name="key" value="white"/>
-                  <spring:property name="value" value="Non-hispanic White"/>
-                </spring:bean>
-                <spring:bean parent="Uif-KeyLabelPair">
-                  <spring:property name="key" value="other"/>
-                  <spring:property name="value" value="Other. Specify: [id=Training-OtherEthnicity]"/>
-                </spring:bean>
-              </spring:list>
-            </spring:property>
-          </spring:bean>
-        </control>
-      </inputField>
-    </items>
-  </group>
-  <inputField id="Training-OtherEthnicity" parent="Uif-InputField" propertyName="otherEthnicity"/>
-  <group headertext="Address" id="Training-StudentAddress" parent="Uif-GridSection">
-    <items>
-      <inputField label="Address 1" parent="Uif-InputField" propertyName="address1" required="true">
-        <validCharactersConstraint>
-          <alphaNumericPatternConstraint parent="AlphaNumericWithBasicPunc"/>
-        </validCharactersConstraint>
-      </inputField>
-      <inputField label="Address 2" parent="Uif-InputField" propertyName="address2">
-        <validCharactersConstraint>
-          <alphaNumericPatternConstraint parent="AlphaNumericWithBasicPunc"/>
-        </validCharactersConstraint>
-        <dependencyConstraint>
-          <prerequisiteConstraint parent="PrerequisiteConstraint" propertyName="address1"/>
-        </dependencyConstraint>
-      </inputField>
-      <inputField label="City" parent="Uif-InputField" propertyName="city" required="true">
-        <validCharactersConstraint>
-          <alphaPatternConstraint parent="AlphaPatternConstraint"/>
-        </validCharactersConstraint>
-      </inputField>
-      <inputField label="State" maxLength="2" minLength="2" parent="Uif-InputField" propertyName="state"
-                  required="true">
-        <validCharactersConstraint>
-          <alphaPatternConstraint parent="AlphaPatternConstraint"/>
-        </validCharactersConstraint>
-      </inputField>
-      <inputField constraintText="Only [color=red]digits[/color] allowed." label="Zip" maxLength="10" minLength="5"
-                  parent="Uif-InputField" propertyName="zip" required="true">
-        <validCharactersConstraint>
-          <spring:bean parent="ZipcodePatternConstraint"/>
-        </validCharactersConstraint>
-      </inputField>
-    </items>
-  </group>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.TrainingApplicationReference"
-                   headertext="References" id="Training-StudentReferences"
-                   instructionalText="Please list any references we can contact"
-                   layoutManager.addLineGroup.layoutManager.numberOfColumns="8"
-                   layoutManager.generateAutoSequence="true" layoutManager.separateAddLine="true"
-                   parent="Uif-TableCollectionSection" propertyName="references">
-    <items>
-      <inputField label="Name" parent="Uif-InputField" propertyName="name" required="true"/>
-      <inputField label="Phone" parent="Uif-InputField" propertyName="phone" required="true">
-        <control>
-          <textControl parent="Uif-TextControl" watermarkText="###-###-####"/>
+          <dateControl-bean/>
         </control>
         <validCharactersConstraint>
-          <spring:bean parent="PhoneNumberPatternConstraint"/>
+          <basicDatePatternConstraint-bean/>
         </validCharactersConstraint>
-      </inputField>
-      <inputField label="Address" parent="Uif-InputField" propertyName="address">
+      </inputField-bean>
+      <inputField-bean instructionalText="Please select the [link='http://kuali.org']ethnicity/race(s)[/link] you most closely identify yourself as" label="Race/Ethnicity" propertyName="ethnicity" readOnlyDisplayReplacement="@{ethnicity.toString()}" required="true">
         <control>
-          <textAreaControl parent="Uif-TextAreaControl"/>
-        </control>
-      </inputField>
-      <inputField label="Relationship" parent="Uif-InputField" propertyName="relationship" required="true">
-        <control>
-          <selectControl parent="Uif-DropdownControl">
+          <verticalCheckboxesControl-bean>
             <options>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="friend"/>
-                <spring:property name="value" value="Friend"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="co-worker"/>
-                <spring:property name="value" value="Co-Worker"/>
-              </spring:bean>
-              <spring:bean parent="Uif-KeyLabelPair">
-                <spring:property name="key" value="teacher"/>
-                <spring:property name="value" value="Teacher"/>
-              </spring:bean>
+              <keyLabelPair-bean key="black" value="Black"/>
+              <keyLabelPair-bean key="amIn" value="American Indian / Alaska Native"/>
+              <keyLabelPair-bean key="asian" value="Asian / Pacific Islander"/>
+              <keyLabelPair-bean key="hispanic" value="Hispanic"/>
+              <keyLabelPair-bean key="white" value="Non-hispanic White"/>
+              <keyLabelPair-bean key="other" value="Other. Specify: [id=Training-OtherEthnicity]"/>
             </options>
-          </selectControl>
+          </verticalCheckboxesControl-bean>
         </control>
-      </inputField>
+      </inputField-bean>
     </items>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.TrainingApplicationPreviousEducation"
-                   headertext="Previous Education" id="Training-PreviousEducation"
-                   layoutManager.summaryFields="course,university" layoutManager.summaryTitle="Course"
-                   parent="Uif-Disclosure-StackedCollectionSection" propertyName="previousEducation">
+  </gridGroup-bean>
+  <inputField-bean id="Training-OtherEthnicity" propertyName="otherEthnicity"/>
+  <gridSection-bean headertext="Address" id="Training-StudentAddress">
     <items>
-      <inputField label="University" parent="Uif-InputField" propertyName="university" required="true"/>
-      <inputField label="College" parent="Uif-InputField" propertyName="college" required="true"/>
-      <inputField label="Course" parent="Uif-InputField" propertyName="course" required="true"/>
-      <inputField label="Completion Date" parent="Uif-InputField" propertyName="completionDate">
+      <inputField-bean label="Address 1" propertyName="address1" required="true">
+        <validCharactersConstraint>
+          <alphaNumericWithBasicPunc-bean/>
+        </validCharactersConstraint>
+      </inputField-bean>
+      <inputField-bean label="Address 2" propertyName="address2">
+        <validCharactersConstraint>
+          <alphaNumericWithBasicPunc-bean/>
+        </validCharactersConstraint>
+        <dependencyConstraints>
+          <prerequisiteConstraint-bean propertyName="address1"/>
+        </dependencyConstraints>
+      </inputField-bean>
+      <inputField-bean label="City" propertyName="city" required="true">
+        <validCharactersConstraint>
+          <alphaPatternConstraint-bean/>
+        </validCharactersConstraint>
+      </inputField-bean>
+      <inputField-bean label="State" maxLength="2" minLength="2" propertyName="state" required="true">
+        <validCharactersConstraint>
+          <alphaPatternConstraint-bean/>
+        </validCharactersConstraint>
+      </inputField-bean>
+      <inputField-bean constraintText="Only [color=red]digits[/color] allowed." label="Zip" maxLength="10" minLength="5" propertyName="zip" required="true">
+        <validCharactersConstraint>
+          <zipcodePatternConstraint-bean/>
+        </validCharactersConstraint>
+      </inputField-bean>
+    </items>
+  </gridSection-bean>
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.TrainingApplicationReference" headertext="References" id="Training-StudentReferences" instructionalText="Please list any references we can contact" layoutManager.addLineGroup.layoutManager.numberOfColumns="8" layoutManager.generateAutoSequence="true" layoutManager.separateAddLine="true" propertyName="references">
+    <items>
+      <inputField-bean label="Name" propertyName="name" required="true"/>
+      <inputField-bean label="Phone" propertyName="phone" required="true">
         <control>
-          <textControl parent="Uif-DateControl"/>
+          <textControl-bean watermarkText="###-###-####"/>
         </control>
         <validCharactersConstraint>
-          <dataPatternConstraint parent="BasicDatePatternConstraint"/>
+          <phoneNumberPatternConstraint-bean/>
         </validCharactersConstraint>
-      </inputField>
+      </inputField-bean>
+      <inputField-bean label="Address" propertyName="address">
+        <control>
+          <textAreaControl-bean/>
+        </control>
+      </inputField-bean>
+      <inputField-bean label="Relationship" propertyName="relationship" required="true">
+        <control>
+          <dropdownControl-bean>
+            <options>
+              <keyLabelPair-bean key="friend" value="Friend"/>
+              <keyLabelPair-bean key="co-worker" value="Co-Worker"/>
+              <keyLabelPair-bean key="teacher" value="Teacher"/>
+            </options>
+          </dropdownControl-bean>
+        </control>
+      </inputField-bean>
     </items>
-  </collectionGroup>
+  </tableCollectionSection-bean>
+  <disclosure-stackedCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.TrainingApplicationPreviousEducation" headertext="Previous Education" id="Training-PreviousEducation" layoutManager.summaryFields="course,university" layoutManager.summaryTitle="Course" propertyName="previousEducation">
+    <items>
+      <inputField-bean label="University" propertyName="university" required="true"/>
+      <inputField-bean label="College" propertyName="college" required="true"/>
+      <inputField-bean label="Course" propertyName="course" required="true"/>
+      <inputField-bean label="Completion Date" propertyName="completionDate">
+        <control>
+          <dateControl-bean/>
+        </control>
+        <validCharactersConstraint>
+          <basicDatePatternConstraint-bean/>
+        </validCharactersConstraint>
+      </inputField-bean>
+    </items>
+  </disclosure-stackedCollectionSection-bean>
 </spring:beans>

@@ -24,8 +24,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "genericField", parent = "Uif-CustomTemplateField"),
-        @BeanTag(name = "customTemplateField", parent = "Uif-CustomTemplateField")})
+@BeanTags({@BeanTag(name = "genericField-bean", parent = "Uif-CustomTemplateField"),
+        @BeanTag(name = "customTemplateField-bean", parent = "Uif-CustomTemplateField")})
 public class GenericField extends FieldBase {
     private static final long serialVersionUID = -7756170771822430903L;
 

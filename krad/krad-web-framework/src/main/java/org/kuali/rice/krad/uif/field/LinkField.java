@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "linkField", parent = "Uif-LinkField")
+@BeanTag(name = "linkField-bean", parent = "Uif-LinkField")
 public class LinkField extends FieldBase {
     private static final long serialVersionUID = -1908504471910271148L;
 

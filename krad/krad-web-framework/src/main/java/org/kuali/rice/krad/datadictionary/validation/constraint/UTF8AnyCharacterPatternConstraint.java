@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "utf8AnyCharacterPatternConstraint", parent = "UTF8AnyCharacterPatternConstraint")
+@BeanTag(name = "utf8AnyCharacterPatternConstraint-bean", parent = "UTF8AnyCharacterPatternConstraint")
 public class UTF8AnyCharacterPatternConstraint extends ValidCharactersPatternConstraint {
     protected boolean allowWhitespace = false;
     protected boolean omitNewline = false;

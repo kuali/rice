@@ -36,7 +36,7 @@ import java.util.List;
  * @see org.kuali.rice.krad.uif.element.Image
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "imageField", parent = "Uif-ImageField")
+@BeanTag(name = "imageField-bean", parent = "Uif-ImageField")
 public class ImageField extends FieldBase {
     private static final long serialVersionUID = -7994212503770623408L;
 

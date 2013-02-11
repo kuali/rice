@@ -35,8 +35,8 @@ import java.util.Map;
  * @see StateMapping
  * @since 2.2
  */
-@BeanTags({@BeanTag(name = "stateMapping", parent = "StateMapping"),
-        @BeanTag(name = "workflowStateMapping", parent = "workflowStateMapping")})
+@BeanTags({@BeanTag(name = "stateMapping-bean", parent = "StateMapping"),
+        @BeanTag(name = "workflowStateMapping-bean", parent = "workflowStateMapping")})
 public class StateMappingBase implements StateMapping {
 
     private Map<String, String> stateNameMessageKeyMap;

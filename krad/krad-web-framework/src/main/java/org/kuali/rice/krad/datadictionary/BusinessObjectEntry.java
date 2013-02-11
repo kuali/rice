@@ -28,7 +28,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "businessObjectEntry")
+@BeanTag(name = "businessObjectEntry-bean")
 public class BusinessObjectEntry extends DataObjectEntry {
 
     protected Class<? extends BusinessObject> baseBusinessObjectClass;

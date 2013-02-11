@@ -41,22 +41,22 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "header", parent = "Uif-HeaderBase"), @BeanTag(name = "headerOne", parent = "Uif-HeaderOne"),
-        @BeanTag(name = "headerTwo", parent = "Uif-HeaderTwo"),
-        @BeanTag(name = "headerThree", parent = "Uif-HeaderThree"),
-        @BeanTag(name = "headerFour", parent = "Uif-HeaderFour"),
-        @BeanTag(name = "headerFive", parent = "Uif-HeaderFive"),
-        @BeanTag(name = "headerSix", parent = "Uif-HeaderSix"),
-        @BeanTag(name = "viewHeader", parent = "Uif-ViewHeader"),
-        @BeanTag(name = "pageHeader", parent = "Uif-PageHeader"),
-        @BeanTag(name = "sectionHeader", parent = "Uif-SectionHeader"),
-        @BeanTag(name = "subSectionHeader", parent = "Uif-SubSectionHeader"),
-        @BeanTag(name = "subCollectionHeader", parent = "Uif-SubCollectionHeader"),
-        @BeanTag(name = "editablePageHeader", parent = "Uif-EditablePageHeader"),
-        @BeanTag(name = "readOnlyPageHeader", parent = "Uif-ReadOnlyPageHeader"),
-        @BeanTag(name = "imageCaptionHeader", parent = "Uif-ImageCaptionHeader"),
-        @BeanTag(name = "documentViewHeader", parent = "Uif-DocumentViewHeader"),
-        @BeanTag(name = "lookupPageHeader", parent = "Uif-LookupPageHeader")})
+@BeanTags({@BeanTag(name = "header-bean", parent = "Uif-HeaderBase"), @BeanTag(name = "headerOne-bean", parent = "Uif-HeaderOne"),
+        @BeanTag(name = "headerTwo-bean", parent = "Uif-HeaderTwo"),
+        @BeanTag(name = "headerThree-bean", parent = "Uif-HeaderThree"),
+        @BeanTag(name = "headerFour-bean", parent = "Uif-HeaderFour"),
+        @BeanTag(name = "headerFive-bean", parent = "Uif-HeaderFive"),
+        @BeanTag(name = "headerSix-bean", parent = "Uif-HeaderSix"),
+        @BeanTag(name = "viewHeader-bean", parent = "Uif-ViewHeader"),
+        @BeanTag(name = "pageHeader-bean", parent = "Uif-PageHeader"),
+        @BeanTag(name = "sectionHeader-bean", parent = "Uif-SectionHeader"),
+        @BeanTag(name = "subSectionHeader-bean", parent = "Uif-SubSectionHeader"),
+        @BeanTag(name = "subCollectionHeader-bean", parent = "Uif-SubCollectionHeader"),
+        @BeanTag(name = "editablePageHeader-bean", parent = "Uif-EditablePageHeader"),
+        @BeanTag(name = "readOnlyPageHeader-bean", parent = "Uif-ReadOnlyPageHeader"),
+        @BeanTag(name = "imageCaptionHeader-bean", parent = "Uif-ImageCaptionHeader"),
+        @BeanTag(name = "documentViewHeader-bean", parent = "Uif-DocumentViewHeader"),
+        @BeanTag(name = "lookupPageHeader-bean", parent = "Uif-LookupPageHeader")})
 public class Header extends ContentElementBase {
     private static final long serialVersionUID = -6950408292923393244L;
 

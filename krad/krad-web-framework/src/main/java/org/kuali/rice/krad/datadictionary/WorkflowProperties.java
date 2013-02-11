@@ -27,7 +27,7 @@ import java.util.List;
  * specify which document properties should be serialized during the document serialization
  * process.
  */
-@BeanTag(name = "workflowProperties")
+@BeanTag(name = "workflowProperties-bean")
 public class WorkflowProperties implements Serializable {
     private static final long serialVersionUID = 1L;
 

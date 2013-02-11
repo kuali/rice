@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A class with general utility constants and methods used by the Model Object generator.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

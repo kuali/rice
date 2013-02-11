@@ -49,7 +49,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "lookupView", parent = "Uif-LookupView")
+@BeanTag(name = "lookupView-bean", parent = "Uif-LookupView")
 public class LookupView extends FormView {
     private static final long serialVersionUID = 716926008488403616L;
 

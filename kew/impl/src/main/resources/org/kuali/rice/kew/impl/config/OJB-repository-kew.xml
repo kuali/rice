@@ -380,6 +380,7 @@
     <field-descriptor column="HELP_DEF_URL" name="unresolvedHelpDefinitionUrl" jdbc-type="VARCHAR"/>
     <field-descriptor column="DOC_SEARCH_HELP_URL" name="unresolvedDocSearchHelpUrl" jdbc-type="VARCHAR"/>
     <field-descriptor column="POST_PRCSR" name="postProcessorName" jdbc-type="VARCHAR"/>
+    <field-descriptor column="AUTHORIZER" name="authorizer" jdbc-type="VARCHAR"/>
     <field-descriptor column="GRP_ID" name="workgroupId" jdbc-type="VARCHAR"/>
     <field-descriptor column="BLNKT_APPR_GRP_ID" name="blanketApproveWorkgroupId" jdbc-type="VARCHAR"/>
     <field-descriptor column="BLNKT_APPR_PLCY" name="blanketApprovePolicy" jdbc-type="VARCHAR"/>

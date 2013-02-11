@@ -25,11 +25,11 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "formView", parent = "Uif-FormView"),
-        @BeanTag(name = "formView-knsTheme", parent = "Uif-FormView-KnsTheme"),
-        @BeanTag(name = "incidentReportView", parent = "Uif-IncidentReportView"),
-        @BeanTag(name = "initiatedDocumentView", parent = "InitiatedDocumentView"),
-        @BeanTag(name = "initiatedDocumentView-KNS", parent = "InitiatedDocumentView-KNS")})
+@BeanTags({@BeanTag(name = "formView-bean", parent = "Uif-FormView"),
+        @BeanTag(name = "formView-knsTheme-bean", parent = "Uif-FormView-KnsTheme"),
+        @BeanTag(name = "incidentReportView-bean", parent = "Uif-IncidentReportView"),
+        @BeanTag(name = "initiatedDocumentView-bean", parent = "InitiatedDocumentView"),
+        @BeanTag(name = "initiatedDocumentView-KNS-bean", parent = "InitiatedDocumentView-KNS")})
 public class FormView extends View {
     private static final long serialVersionUID = -3291164284675273147L;
 

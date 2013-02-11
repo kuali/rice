@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "checkboxControl", parent = "Uif-CheckboxControl")
+@BeanTag(name = "checkboxControl-bean", parent = "Uif-CheckboxControl")
 public class CheckboxControl extends ControlBase implements ValueConfiguredControl {
     private static final long serialVersionUID = -1397028958569144230L;
 

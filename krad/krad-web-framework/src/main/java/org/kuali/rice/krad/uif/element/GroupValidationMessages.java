@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * ValidationMessages for logic and options specific to groups
  */
-@BeanTag(name = "groupValidationMessages", parent = "Uif-GroupValidationMessages")
+@BeanTag(name = "groupValidationMessages-bean", parent = "Uif-GroupValidationMessages")
 public class GroupValidationMessages extends ValidationMessages {
     private static final long serialVersionUID = -5389990220206079052L;
 

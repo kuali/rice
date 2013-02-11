@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="history")
+@BeanTag(name = "history-bean")
 public class History implements Serializable {
     private static final long serialVersionUID = -8279297694371557335L;
     private static final Logger LOG = Logger.getLogger(History.class);

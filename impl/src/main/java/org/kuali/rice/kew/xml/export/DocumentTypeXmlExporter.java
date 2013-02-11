@@ -99,6 +99,9 @@ public class DocumentTypeXmlExporter implements XmlExporter {
             renderer.renderTextElement(docTypeElement, APPLICATION_ID, documentType.getActualApplicationId());
         }
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
+
+        renderer.renderTextElement(docTypeElement, AUTHORIZER, documentType.getAuthorizer());
+
         Group superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup != null) {
         	Element superUserGroupElement = renderer.renderTextElement(docTypeElement, SUPER_USER_GROUP_NAME, superUserWorkgroup.getName().trim());

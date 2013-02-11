@@ -44,9 +44,9 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "boxLayout", parent = "Uif-BoxLayoutBase"),
-        @BeanTag(name = "horizontalBoxLayout", parent = "Uif-HorizontalBoxLayout"),
-        @BeanTag(name = "verticalBoxLayout", parent = "Uif-VerticalBoxLayout")})
+@BeanTags({@BeanTag(name = "boxLayout-bean", parent = "Uif-BoxLayoutBase"),
+        @BeanTag(name = "horizontalBoxLayout-bean", parent = "Uif-HorizontalBoxLayout"),
+        @BeanTag(name = "verticalBoxLayout-bean", parent = "Uif-VerticalBoxLayout")})
 public class BoxLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = 4467342272983290044L;
 

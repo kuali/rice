@@ -504,6 +504,19 @@ public class DocumentTypeXmlParser {
             throw xpee;
         }
 
+        // set the DocumentTypeAuthorizer
+        try {
+            if (XmlHelper.pathExists(xpath, "./" + AUTHORIZER, documentTypeNode)) {
+                String authorizer = (String) getXPath().evaluate("./" + AUTHORIZER, documentTypeNode, XPathConstants.STRING);
+                if (StringUtils.isNotBlank(authorizer)) {
+                    documentType.setAuthorizer(authorizer);
+                }
+            }
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining document type authorizer", xpee);
+            throw xpee;
+        }
+
         // set the document handler URL on the document type
         try {
             /*

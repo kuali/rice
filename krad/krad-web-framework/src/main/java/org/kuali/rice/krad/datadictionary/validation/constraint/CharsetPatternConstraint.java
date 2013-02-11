@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "charsetPatternConstraint", parent = "CharsetPatternConstraint")
+@BeanTag(name = "charsetPatternConstraint-bean", parent = "CharsetPatternConstraint")
 public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
     protected String validChars;
 

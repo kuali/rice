@@ -73,6 +73,7 @@ public final class XmlConstants {
     public static final String SERVICE_NAMESPACE = "serviceNamespace";
     public static final String APPLICATION_ID = "applicationId";
     public static final String POST_PROCESSOR_NAME = "postProcessorName";
+    public static final String AUTHORIZER = "authorizer";
     public static final String SUPER_USER_WORKGROUP_NAME = "superUserWorkgroupName";
     public static final String SUPER_USER_GROUP_NAME = "superUserGroupName";
     public static final String BLANKET_APPROVE_WORKGROUP_NAME = "blanketApproveWorkgroupName";

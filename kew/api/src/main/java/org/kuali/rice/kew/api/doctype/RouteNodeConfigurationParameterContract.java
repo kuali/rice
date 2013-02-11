@@ -19,8 +19,6 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.util.KeyValue;
 
 /**
- * TODO ewestfal don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RouteNodeConfigurationParameterContract extends Identifiable, KeyValue {

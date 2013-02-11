@@ -1865,6 +1865,8 @@ public final class FieldUtils {
         column.setPropertyName(attributeField.getName());
         if (attributeField.getDataType() == DataType.MARKUP) {
             column.setEscapeXMLValue(false);
+            // since the field is a markup type, set the action href
+            column.setColumnAnchor(new AnchorHtmlData());
         } else {
             column.setEscapeXMLValue(true);
         }

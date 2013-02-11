@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "dataObjectEntry")
+@BeanTag(name = "dataObjectEntry-bean")
 public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccurConstrainable {
 
     protected String name;

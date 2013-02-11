@@ -100,12 +100,12 @@ public class AdHocAction extends ActionTakenEvent {
     	if (recipient != null) {
     		if (recipient instanceof KimPrincipalRecipient) {
     			KimPrincipalRecipient principalRecipient = (KimPrincipalRecipient)recipient;
-    			if (!KEWServiceLocator.getDocumentTypePermissionService().canReceiveAdHocRequest(principalRecipient.getPrincipalId(), getRouteHeader().getDocumentType(), actionRequested)) {
+    			if (!KEWServiceLocator.getDocumentTypePermissionService().canReceiveAdHocRequest(principalRecipient.getPrincipalId(), getRouteHeader(), actionRequested)) {
     				return "The principal '" + principalRecipient.getPrincipal().getPrincipalName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}
     		} else if (recipient instanceof KimGroupRecipient) {
     			Group group = ((KimGroupRecipient)recipient).getGroup();
-    			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getId(), getRouteHeader().getDocumentType(), actionRequested)) {
+    			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getId(), getRouteHeader(), actionRequested)) {
     				return "The group '" + group.getName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}
     		} else {

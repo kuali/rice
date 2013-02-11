@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -15,246 +16,194 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!--
-
-    Copyright 2005-2012 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView entryPageId="Demo-RowDetails-Page" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm"
-            headertext="Row Details Demo" id="Demo-RowDetails" parent="Uif-FormView">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean entryPageId="Demo-RowDetails-Page" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="Row Details Demo" id="Demo-RowDetails">
     <theme>
-      <viewTheme parent="Uif-KradTheme"/>
+      <kradTheme-bean/>
     </theme>
     <footer>
-      <group parent="Uif-FormFooter"/>
+      <formFooter-bean/>
     </footer>
     <items>
-      <pageGroup id="Demo-RowDetails-Page" parent="Uif-Page">
+      <page-bean id="Demo-RowDetails-Page">
         <items>
-          <ref bean="Demo-RowDetails-Section6"/>
-          <ref bean="Demo-RowDetails-Section1"/>
-          <ref bean="Demo-RowDetails-Section2"/>
-          <ref bean="Demo-RowDetails-Section3"/>
-          <ref bean="Demo-RowDetails-Section4"/>
-          <ref bean="Demo-RowDetails-Section5"/>
+          <spring:ref bean="Demo-RowDetails-Section6"/>
+          <spring:ref bean="Demo-RowDetails-Section1"/>
+          <spring:ref bean="Demo-RowDetails-Section2"/>
+          <spring:ref bean="Demo-RowDetails-Section3"/>
+          <spring:ref bean="Demo-RowDetails-Section4"/>
+          <spring:ref bean="Demo-RowDetails-Section5"/>
         </items>
-      </pageGroup>
+      </page-bean>
     </items>
-  </formView>
-  <formView id="Demo-RowDetails-KNS" parent="Demo-RowDetails">
+  </formView-bean>
+  <formView-bean id="Demo-RowDetails-KNS" parent="Demo-RowDetails">
     <theme>
-      <viewTheme parent="Uif-ClassicKnsTheme"/>
+      <classicKnsTheme-bean/>
     </theme>
-  </formView>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
-                   headertext="Row Details with image option on, showing two fields in details"
-                   id="Demo-RowDetails-Section2"
-                   instructionalText="Details group contains Field3 and Field4 of the collection object"
-                   layoutManager.ajaxDetailsRetrieval="true" layoutManager.applyDefaultCellWidths="false"
-                   layoutManager.renderSequenceField="false" parent="Uif-TableCollectionSection" propertyName="list1"
-                   readOnly="true">
-    <layoutManager.expandDetailsActionPrototype>
-      <spring:bean parent="Uif-ExpandDetailsImageAction"/>
-    </layoutManager.expandDetailsActionPrototype>
-    <layoutManager.richTable>
-      <richTable parent="Uif-PagedRichTable">
+  </formView-bean>
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Row Details with image option on, showing two fields in details" id="Demo-RowDetails-Section2" instructionalText="Details group contains Field3 and Field4 of the collection object" layoutManager.ajaxDetailsRetrieval="true" layoutManager.applyDefaultCellWidths="false" layoutManager.renderSequenceField="false" propertyName="list1" readOnly="true">
+    <spring:property name="layoutManager.expandDetailsActionPrototype">
+      <expandDetailsImageAction-bean/>
+    </spring:property>
+    <spring:property name="layoutManager.richTable">
+      <pagedRichTable-bean>
         <templateOptions merge="true">
-          <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+          <spring:entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
         </templateOptions>
-      </richTable>
-    </layoutManager.richTable>
-    <layoutManager.rowDetailsGroup>
-      <group parent="Uif-VerticalBoxGroup">
+      </pagedRichTable-bean>
+    </spring:property>
+    <spring:property name="layoutManager.rowDetailsGroup">
+      <verticalBoxGroup-bean>
         <items>
-          <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
-          <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+          <inputField-bean label="Field 3" propertyName="field3" required="true"/>
+          <inputField-bean label="Field 4" propertyName="field4" required="true"/>
         </items>
-      </group>
-    </layoutManager.rowDetailsGroup>
+      </verticalBoxGroup-bean>
+    </spring:property>
     <items>
-      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField-bean label="Field 1" propertyName="field1" required="true"/>
+      <inputField-bean label="Field 2" propertyName="field2" required="true"/>
     </items>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Row Details Default"
-                   id="Demo-RowDetails-Section1" instructionalText="Row Details with default settings"
-                   layoutManager.renderSequenceField="false" layoutManager.showToggleAllDetails="true"
-                   parent="Uif-TableCollectionSection" propertyName="list2" readOnly="false">
-    <layoutManager.rowDetailsGroup>
-      <group parent="Uif-VerticalBoxGroup">
+  </tableCollectionSection-bean>
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Row Details Default" id="Demo-RowDetails-Section1" instructionalText="Row Details with default settings" layoutManager.generateAutoSequence="true" layoutManager.renderSequenceField="true" layoutManager.showToggleAllDetails="true" propertyName="list2" readOnly="false">
+    <spring:property name="layoutManager.rowDetailsGroup">
+      <verticalBoxGroup-bean>
         <items>
-          <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+          <inputField-bean label="Field 4" propertyName="field4" required="true"/>
         </items>
-      </group>
-    </layoutManager.rowDetailsGroup>
+      </verticalBoxGroup-bean>
+    </spring:property>
     <items>
-      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
-      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField-bean label="Field 1" propertyName="field1" required="true"/>
+      <inputField-bean label="Field 2" propertyName="field2" required="true"/>
+      <inputField-bean label="Field 3" propertyName="field3" required="true"/>
     </items>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
-                   headertext="TableCollection inside the details itself" id="Demo-RowDetails-Section3"
-                   instructionalText="Details group contains a collection" layoutManager.applyDefaultCellWidths="false"
-                   layoutManager.renderSequenceField="false" parent="Uif-TableCollectionSection" propertyName="list4"
-                   readOnly="true">
-    <layoutManager.expandDetailsActionPrototype>
-      <spring:bean parent="Uif-ExpandDetailsImageAction"/>
-    </layoutManager.expandDetailsActionPrototype>
-    <layoutManager.richTable>
-      <richTable parent="Uif-PagedRichTable">
+  </tableCollectionSection-bean>
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="TableCollection inside the details itself" id="Demo-RowDetails-Section3" instructionalText="Details group contains a collection" layoutManager.applyDefaultCellWidths="false" layoutManager.renderSequenceField="false" propertyName="list4" readOnly="true">
+    <spring:property name="layoutManager.expandDetailsActionPrototype">
+      <expandDetailsImageAction-bean/>
+    </spring:property>
+    <spring:property name="layoutManager.richTable">
+      <pagedRichTable-bean>
         <templateOptions merge="true">
-          <entry key="aaSorting" value="[[1,'desc']]"/>
-          <entry key="aoColumnDefs"
-                 value="[{'sWidth' : '20px', 'aTargets' : [0]},{'aTargets':[2], 'bSortable':false}]"/>
+          <spring:entry key="aaSorting" value="[[1,'desc']]"/>
+          <spring:entry key="aoColumnDefs" value="[{'sWidth' : '20px', 'aTargets' : [0]},{'aTargets':[2], 'bSortable':false}]"/>
         </templateOptions>
-      </richTable>
-    </layoutManager.richTable>
-    <layoutManager.rowDetailsGroup>
-      <group parent="Uif-VerticalBoxGroup">
+      </pagedRichTable-bean>
+    </spring:property>
+    <spring:property name="layoutManager.rowDetailsGroup">
+      <verticalBoxGroup-bean>
         <items>
-          <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
-          <collectionGroup parent="Details-subCollection1" propertyName="subList"/>
+          <inputField-bean label="Field 3" propertyName="field3" required="true"/>
+          <collectionGroup-bean parent="Details-subCollection1" propertyName="subList"/>
         </items>
-      </group>
-    </layoutManager.rowDetailsGroup>
+      </verticalBoxGroup-bean>
+    </spring:property>
     <items>
-      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField-bean label="Field 1" propertyName="field1" required="true"/>
+      <inputField-bean label="Field 2" propertyName="field2" required="true"/>
     </items>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="SubCollection"
-                   id="Details-subCollection1" layoutManager.numberOfColumns="4"
-                   layoutManager.sequencePropertyName="field1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
-                   readOnly="true">
+  </tableCollectionSection-bean>
+  <disclosure-tableSubCollection-withinSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="SubCollection" id="Details-subCollection1" layoutManager.numberOfColumns="4" layoutManager.sequencePropertyName="field1" readOnly="true">
     <items>
-      <inputField label="SubField 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="SubField 2" parent="Uif-InputField" propertyName="field2" required="true"/>
-      <inputField label="SubField 3" parent="Uif-InputField" propertyName="field3" required="true"/>
-      <inputField label="SubField 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+      <inputField-bean label="SubField 1" propertyName="field1" required="true"/>
+      <inputField-bean label="SubField 2" propertyName="field2" required="true"/>
+      <inputField-bean label="SubField 3" propertyName="field3" required="true"/>
+      <inputField-bean label="SubField 4" propertyName="field4" required="true"/>
     </items>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
-                   headertext="Stacked Collection with its own tables inside details" id="Demo-RowDetails-Section4"
-                   instructionalText="Details group contains a collection" layoutManager.applyDefaultCellWidths="false"
-                   layoutManager.renderSequenceField="false" parent="Uif-TableCollectionSection" propertyName="list5"
-                   readOnly="true">
-    <layoutManager.expandDetailsActionPrototype>
-      <spring:bean parent="Uif-ExpandDetailsImageAction"/>
-    </layoutManager.expandDetailsActionPrototype>
-    <layoutManager.richTable>
-      <richTable parent="Uif-PagedRichTable">
+  </disclosure-tableSubCollection-withinSection-bean>
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Stacked Collection with its own tables inside details" id="Demo-RowDetails-Section4" instructionalText="Details group contains a collection" layoutManager.applyDefaultCellWidths="false" layoutManager.renderSequenceField="false" propertyName="list5" readOnly="true">
+    <spring:property name="layoutManager.expandDetailsActionPrototype">
+      <expandDetailsImageAction-bean/>
+    </spring:property>
+    <spring:property name="layoutManager.richTable">
+      <pagedRichTable-bean>
         <templateOptions merge="true">
-          <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+          <spring:entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
         </templateOptions>
-      </richTable>
-    </layoutManager.richTable>
-    <layoutManager.rowDetailsGroup>
-      <group parent="Uif-VerticalBoxGroup">
+      </pagedRichTable-bean>
+    </spring:property>
+    <spring:property name="layoutManager.rowDetailsGroup">
+      <verticalBoxGroup-bean>
         <items>
-          <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
-          <collectionGroup parent="Details-subCollection2" propertyName="subList"/>
+          <inputField-bean label="Field 3" propertyName="field3" required="true"/>
+          <collectionGroup-bean parent="Details-subCollection2" propertyName="subList"/>
         </items>
-      </group>
-    </layoutManager.rowDetailsGroup>
+      </verticalBoxGroup-bean>
+    </spring:property>
     <items>
-      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField-bean label="Field 1" propertyName="field1" required="true"/>
+      <inputField-bean label="Field 2" propertyName="field2" required="true"/>
     </items>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="SubCollection"
-                   id="Details-subCollection2" parent="Uif-StackedSubCollection-WithinSection" readOnly="true">
+  </tableCollectionSection-bean>
+  <stackedSubCollection-withinSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="SubCollection" id="Details-subCollection2" readOnly="true">
     <items>
-      <inputField label="SubField 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="SubField 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField-bean label="SubField 1" propertyName="field1" required="true"/>
+      <inputField-bean label="SubField 2" propertyName="field2" required="true"/>
     </items>
-    <subCollection>
-      <collectionGroup disclosure.render="false" layoutManager.richTable.render="false"
-                       parent="Demo-StandardLayout-CollectionSection2-SubCollection" propertyName="subList">
+    <subCollections>
+      <collectionGroup-bean disclosure.render="false" layoutManager.richTable.render="false" parent="Demo-StandardLayout-CollectionSection2-SubCollection" propertyName="subList">
         <items>
-          <inputField label="Field 1" parent="Uif-InputField-LabelTop" propertyName="field1" required="true"/>
-          <inputField label="Field 2" parent="Uif-InputField-LabelTop" propertyName="field2" required="true"/>
-          <inputField label="Field 3" parent="Uif-InputField-LabelTop" propertyName="field3" required="true"/>
+          <inputField-labelTop-bean label="Field 1" propertyName="field1" required="true"/>
+          <inputField-labelTop-bean label="Field 2" propertyName="field2" required="true"/>
+          <inputField-labelTop-bean label="Field 3" propertyName="field3" required="true"/>
         </items>
-      </collectionGroup>
-    </subCollection>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
-                   headertext="Table with details inside details" id="Demo-RowDetails-Section5"
-                   layoutManager.applyDefaultCellWidths="false" layoutManager.renderSequenceField="false"
-                   parent="Uif-TableCollectionSection" propertyName="list3" readOnly="true">
-    <layoutManager.expandDetailsActionPrototype>
-      <spring:bean parent="Uif-ExpandDetailsImageAction"/>
-    </layoutManager.expandDetailsActionPrototype>
-    <layoutManager.richTable>
-      <richTable parent="Uif-PagedRichTable">
+      </collectionGroup-bean>
+    </subCollections>
+  </stackedSubCollection-withinSection-bean>
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Table with details inside details" id="Demo-RowDetails-Section5" layoutManager.applyDefaultCellWidths="false" layoutManager.renderSequenceField="false" propertyName="list3" readOnly="true">
+    <spring:property name="layoutManager.expandDetailsActionPrototype">
+      <expandDetailsImageAction-bean/>
+    </spring:property>
+    <spring:property name="layoutManager.richTable">
+      <pagedRichTable-bean>
         <templateOptions merge="true">
-          <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+          <spring:entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
         </templateOptions>
-      </richTable>
-    </layoutManager.richTable>
-    <layoutManager.rowDetailsGroup>
-      <group parent="Uif-VerticalBoxGroup">
+      </pagedRichTable-bean>
+    </spring:property>
+    <spring:property name="layoutManager.rowDetailsGroup">
+      <verticalBoxGroup-bean>
         <items>
-          <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
-          <collectionGroup parent="Details-subCollection3" propertyName="subList"/>
+          <inputField-bean label="Field 3" propertyName="field3" required="true"/>
+          <collectionGroup-bean parent="Details-subCollection3" propertyName="subList"/>
         </items>
-      </group>
-    </layoutManager.rowDetailsGroup>
+      </verticalBoxGroup-bean>
+    </spring:property>
     <items>
-      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
-      <inputField label="Field 4" parent="Uif-InputField" propertyName="field3" required="true"/>
-      <inputField label="Field 4" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField-bean label="Field 1" propertyName="field1" required="true"/>
+      <inputField-bean label="Field 2" propertyName="field2" required="true"/>
+      <inputField-bean label="Field 4" propertyName="field3" required="true"/>
+      <inputField-bean label="Field 4" propertyName="field3" required="true"/>
     </items>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="SubCollection"
-                   id="Details-subCollection3" layoutManager.renderSequenceField="false"
-                   parent="Uif-TableSubCollection-WithinSection" readOnly="true">
-    <layoutManager.rowDetailsGroup>
-      <group parent="Uif-VerticalBoxGroup">
+  </tableCollectionSection-bean>
+  <tableSubCollection-withinSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="SubCollection" id="Details-subCollection3" layoutManager.renderSequenceField="false" readOnly="true">
+    <spring:property name="layoutManager.rowDetailsGroup">
+      <verticalBoxGroup-bean>
         <items>
-          <inputField label="SubField 3" parent="Uif-InputField" propertyName="field3" required="true"/>
-          <inputField label="SubField 3" parent="Uif-InputField" propertyName="field4" required="true"/>
+          <inputField-bean label="SubField 3" propertyName="field3" required="true"/>
+          <inputField-bean label="SubField 3" propertyName="field4" required="true"/>
         </items>
-      </group>
-    </layoutManager.rowDetailsGroup>
+      </verticalBoxGroup-bean>
+    </spring:property>
     <items>
-      <inputField label="SubField 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="SubField 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField-bean label="SubField 1" propertyName="field1" required="true"/>
+      <inputField-bean label="SubField 2" propertyName="field2" required="true"/>
     </items>
-  </collectionGroup>
-  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Row Details Default"
-                   id="Demo-RowDetails-Section6" instructionalText="Row Details with default settings"
-                   layoutManager.renderSequenceField="false" layoutManager.rowDetailsOpen="true"
-                   layoutManager.showToggleAllDetails="true" parent="Uif-TableCollectionSection" propertyName="list1"
-                   readOnly="false">
-    <layoutManager.rowDetailsGroup>
-      <group parent="Uif-VerticalBoxGroup">
+  </tableSubCollection-withinSection-bean>
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Row Details Default" id="Demo-RowDetails-Section6" instructionalText="Row Details with default settings" layoutManager.renderSequenceField="false" layoutManager.rowDetailsOpen="true" layoutManager.showToggleAllDetails="true" propertyName="list1" readOnly="false">
+    <spring:property name="layoutManager.rowDetailsGroup">
+      <verticalBoxGroup-bean>
         <items>
-          <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+          <inputField-bean label="Field 4" propertyName="field4" required="true"/>
         </items>
-      </group>
-    </layoutManager.rowDetailsGroup>
+      </verticalBoxGroup-bean>
+    </spring:property>
     <items>
-      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
-      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
-      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField-bean label="Field 1" propertyName="field1" required="true"/>
+      <inputField-bean label="Field 2" propertyName="field2" required="true"/>
+      <inputField-bean label="Field 3" propertyName="field3" required="true"/>
     </items>
-  </collectionGroup>
+  </tableCollectionSection-bean>
 </spring:beans>

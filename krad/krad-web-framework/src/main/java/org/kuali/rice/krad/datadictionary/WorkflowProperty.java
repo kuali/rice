@@ -28,7 +28,7 @@ import java.io.Serializable;
  * path are determined
  * by the {@link PropertySerializabilityEvaluator} that evaluates whether a property is serializable.
  */
-@BeanTag(name = "workflowProperty")
+@BeanTag(name = "workflowProperty-bean")
 public class WorkflowProperty implements Serializable {
     private static final long serialVersionUID = 1L;
 

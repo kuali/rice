@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -159,7 +160,8 @@ public final class NaturalLanguageTemplateBoServiceImpl
         map.put("naturalLanguageUsageId", naturalLanguageUsageId);
         map.put("typeId", typeId);
         List<NaturalLanguageTemplateBo> bos = (List<NaturalLanguageTemplateBo>) businessObjectService.findMatching(NaturalLanguageTemplateBo.class, map);
-        return convertBosToImmutables(bos).get(0);
+        List<NaturalLanguageTemplate> immutables = convertBosToImmutables(bos);
+        return CollectionUtils.isEmpty(immutables) ? null : immutables.get(0);
     }
 
     @Override

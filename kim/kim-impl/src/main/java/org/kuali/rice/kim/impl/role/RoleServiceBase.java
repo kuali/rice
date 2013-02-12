@@ -554,9 +554,10 @@ abstract class RoleServiceBase {
             if (service != null && service instanceof RoleTypeService) {
                 return (RoleTypeService) service;
             }
+            LOG.warn("Unable to find role type service by name: " + serviceName + ". Defaulting to: kimNoMembersRoleTypeService ");
             return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
         } catch (Exception ex) {
-            LOG.warn("Unable to find role type service with name: " + serviceName, ex);
+            LOG.warn("Unable to find role type service by name: " + serviceName, ex);
             return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
         }
     }
@@ -569,6 +570,7 @@ abstract class RoleServiceBase {
                 if (service != null && service instanceof RoleTypeService) {
                     return (RoleTypeService) service;
                 }
+                LOG.warn("Unable to find role type service with name: " + serviceName + ". Defaulting to: kimNoMembersRoleTypeService ");
                 return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
             } catch (Exception ex) {
                 LOG.error("Unable to find role type service with name: " + serviceName, ex);

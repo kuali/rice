@@ -29,39 +29,154 @@
       <list>
         <ref bean="Demo-Header-Example1"/>
         <ref bean="Demo-Header-Example2"/>
+        <ref bean="Demo-Header-Example3"/>
+        <ref bean="Demo-Header-Example4"/>
+        <ref bean="Demo-Header-Example5"/>
+        <ref bean="Demo-Header-Example6"/>
+        <ref bean="Demo-Header-Example7"/>
+        <ref bean="Demo-Header-Example8"/>
+        <ref bean="Demo-Header-Example9"/>
+        <ref bean="Demo-Header-Example10"/>
+        <ref bean="Demo-Header-Example11"/>
+        <ref bean="Demo-Header-Example12"/>
+        <ref bean="Demo-Header-Example13"/>
+        <ref bean="Demo-Header-Example14"/>
+        <ref bean="Demo-Header-Example15"/>
       </list>
     </property>
   </bean>
-
-  <!-- Default -->
   <bean id="Demo-Header-Example1"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Header-Example1 start-->
-        <bean parent="Uif-HeaderBase" p:headerText="Base Header"/>
-        <bean parent="Uif-HeaderOne" p:headerText="Header One"/>
-        <bean parent="Uif-HeaderTwo" p:headerText="Header Two"/>
-        <bean parent="Uif-HeaderThree" p:headerText="Header Three"/>
-        <bean parent="Uif-HeaderFour" p:headerText="Header Four"/>
-        <bean parent="Uif-HeaderFive" p:headerText="Base Header"/>
-        <bean parent="Uif-HeaderSix" p:headerText="Header Six"/>
-        <bean parent="Uif-PageHeader" p:headerText="Page Header"/>
-        <bean parent="Uif-SectionHeader" p:headerText="Section Header"/>
-        <bean parent="Uif-SubSectionHeader" p:headerText="SubSection Header"/>
-        <bean parent="Uif-SubCollectionHeader" p:headerText="SubCollection Header"/>
-        <bean parent="Uif-EditablePageHeader" p:headerText="EditablePage Header"/>
-        <bean parent="Uif-ReadOnlyPageHeader" p:headerText="ReadOnlyPage Header"/>
-        <bean parent="Uif-ImageCaptionHeader" p:headerText="ImageCaption Header"/>
+        <bean parent="Uif-HeaderBase"/>
         <!-- ex:Demo-Header-Example1 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example2"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example2 start-->
+        <bean parent="Uif-HeaderOne"/>
+        <!-- ex:Demo-Header-Example2 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example3"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example3 start-->
+        <bean parent="Uif-HeaderTwo"/>
+        <!-- ex:Demo-Header-Example3 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example4"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example4 start-->
+        <bean parent="Uif-HeaderThree"/>
+        <!-- ex:Demo-Header-Example4 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example5"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example5 start-->
+        <bean parent="Uif-HeaderFour"/>
+        <!-- ex:Demo-Header-Example5 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example6"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example6 start-->
+        <bean parent="Uif-HeaderFive"/>
+        <!-- ex:Demo-Header-Example6 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example7"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example7 start-->
+        <bean parent="Uif-HeaderSix"/>
+        <!-- ex:Demo-Header-Example7 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example8"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example8 start-->
+        <bean parent="Uif-PageHeader"/>
+        <!-- ex:Demo-Header-Example8 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example9"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example9 start-->
+        <bean parent="Uif-SectionHeader"/>
+        <!-- ex:Demo-Header-Example9 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example10"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example10 start-->
+        <bean parent="Uif-SubSectionHeader"/>
+        <!-- ex:Demo-Header-Example10 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example11"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example11 start-->
+        <bean parent="Uif-SubCollectionHeader"/>
+        <!-- ex:Demo-Header-Example11 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example12"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example12 start-->
+        <bean parent="Uif-EditablePageHeader"/>
+        <!-- ex:Demo-Header-Example12 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example13"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example13 start-->
+        <bean parent="Uif-ReadOnlyPageHeader"/>
+        <!-- ex:Demo-Header-Example13 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="Demo-Header-Example14"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Header-Example14 start-->
+        <bean parent="Uif-ImageCaptionHeader"/>
+        <!-- ex:Demo-Header-Example14 end-->
       </list>
     </property>
   </bean>
 
   <!-- Header Groups -->
-  <bean id="Demo-Header-Example2"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Header-Example15"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-Header-Example2 start-->
+        <!-- ex:Demo-Header-Example15 start-->
         <bean parent="Uif-VerticalBoxSection" p:headerText="Header Groups Demo">
           <property name="header.upperGroup">
             <bean parent="Uif-HeaderUpperGroup">
@@ -91,7 +206,7 @@
             </bean>
           </property>
         </bean>
-        <!-- ex:Demo-Header-Example2 end-->
+        <!-- ex:Demo-Header-Example15 end-->
       </list>
     </property>
   </bean>

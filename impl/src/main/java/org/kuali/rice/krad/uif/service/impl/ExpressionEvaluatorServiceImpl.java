@@ -95,6 +95,138 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#evaluatePropertyExpression(
+     * org.kuali.rice.krad.uif.view.View, java.lang.Object, java.util.Map<java.lang.String,java.lang.Object>,
+     * org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, java.lang.String, boolean)
+     */
+    public void evaluatePropertyExpression(View view, Object contextObject, Map<String, Object> evaluationParameters,
+            UifDictionaryBean expressionConfigurable, String propertyName, boolean removeExpression) {
+
+        Map<String, String> propertyExpressions = expressionConfigurable.getPropertyExpressions();
+        if ((propertyExpressions == null) || !propertyExpressions.containsKey(propertyName)) {
+            return;
+        }
+
+        String expression = propertyExpressions.get(propertyName);
+
+        // check whether expression should be evaluated or property should retain the expression
+        if (CloneUtils.fieldHasAnnotation(expressionConfigurable.getClass(), propertyName, KeepExpression.class)) {
+            // set expression as property value to be handled by the component
+            ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyName, expression);
+            return;
+        }
+
+        Object propertyValue = null;
+
+        // replace binding prefixes (lp, dp, fp) in expression before evaluation
+        String adjustedExpression = replaceBindingPrefixes(view, expressionConfigurable, expression);
+
+        // determine whether the expression is a string template, or evaluates to another object type
+        if (StringUtils.startsWith(adjustedExpression, UifConstants.EL_PLACEHOLDER_PREFIX) && StringUtils.endsWith(
+                adjustedExpression, UifConstants.EL_PLACEHOLDER_SUFFIX) && (StringUtils.countMatches(adjustedExpression,
+                UifConstants.EL_PLACEHOLDER_PREFIX) == 1)) {
+            propertyValue = evaluateExpression(contextObject, evaluationParameters, adjustedExpression);
+        } else {
+            // treat as string template
+            propertyValue = evaluateExpressionTemplate(contextObject, evaluationParameters, adjustedExpression);
+        }
+
+        // if property name has the special indicator then we need to add the expression result to the property
+        // value instead of replace
+        if (StringUtils.endsWith(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR)) {
+            StringUtils.removeEnd(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR);
+
+            Collection collectionValue = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, propertyName);
+            if (collectionValue == null) {
+                throw new RuntimeException("Property name: "
+                        + propertyName
+                        + " with collection type was not initialized. Cannot add expression result");
+            }
+            collectionValue.add(propertyValue);
+        } else {
+            ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyName, propertyValue);
+        }
+
+        if (removeExpression) {
+            propertyExpressions.remove(propertyName);
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#containsElPlaceholder(java.lang.String)
+     */
+    public boolean containsElPlaceholder(String value) {
+        boolean containsElPlaceholder = false;
+
+        if (StringUtils.isNotBlank(value)) {
+            String elPlaceholder = StringUtils.substringBetween(value, UifConstants.EL_PLACEHOLDER_PREFIX,
+                    UifConstants.EL_PLACEHOLDER_SUFFIX);
+            if (StringUtils.isNotBlank(elPlaceholder)) {
+                containsElPlaceholder = true;
+            }
+        }
+
+        return containsElPlaceholder;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#replaceBindingPrefixes(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, java.lang.String)
+     */
+    public String replaceBindingPrefixes(View view, Object object, String expression) {
+        String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
+
+        // replace the field path prefix for DataFields
+        if (object instanceof DataField) {
+
+            // Get the binding path from the object
+            BindingInfo bindingInfo = ((DataField) object).getBindingInfo();
+            String fieldPath = bindingInfo.getBindingPath();
+
+            // Remove the property name from the binding path
+            fieldPath = StringUtils.removeEnd(fieldPath, "." + bindingInfo.getBindingName());
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
+                    fieldPath + ".");
+        } else {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
+                    "");
+        }
+
+        // replace the default path prefix if there is one set on the view
+        if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
+                    view.getDefaultBindingObjectPath() + ".");
+
+        } else {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
+                    "");
+        }
+
+        // replace line path binding prefix with the actual line path
+        if (adjustedExpression.contains(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
+            String linePath = getLinePathPrefixValue((Component) object);
+
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
+                    linePath + ".");
+        }
+
+        // replace node path binding prefix with the actual node path
+        if (adjustedExpression.contains(UifConstants.NODE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
+            String nodePath = "";
+
+            Map<String, Object> context = ((Component) object).getContext();
+            if (context.containsKey(UifConstants.ContextVariableNames.NODE_PATH)) {
+                nodePath = (String) context.get(UifConstants.ContextVariableNames.NODE_PATH);
+            }
+
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.NODE_PATH_BIND_ADJUST_PREFIX,
+                    nodePath + ".");
+        }
+
+        return adjustedExpression;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#evaluateExpression(java.lang.Object,
      *      java.util.Map, java.lang.String)
      */
@@ -197,8 +329,9 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
     }
 
     /**
-     * Retrieves the Map from the given object that containing the property expressions that should
-     * be evaluated. Each expression is then evaluated and the result is used to set the property value
+     * Iterates through the keys of the property expressions map and invokes
+     * {@link #evaluatePropertyExpression(org.kuali.rice.krad.uif.view.View, Object, java.util.Map,
+     * org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, String, boolean)}
      *
      * <p>
      * If the expression is an el template (part static text and part expression), only the expression
@@ -213,122 +346,10 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
     protected void evaluatePropertyExpressions(View view, UifDictionaryBean expressionConfigurable,
             Object contextObject, Map<String, Object> evaluationParameters) {
         Map<String, String> propertyExpressions = expressionConfigurable.getPropertyExpressions();
-        for (Entry<String, String> propertyExpression : propertyExpressions.entrySet()) {
-            String propertyName = propertyExpression.getKey();
-            String expression = propertyExpression.getValue();
-
-            // check whether expression should be evaluated or property should retain the expression
-            if (CloneUtils.fieldHasAnnotation(expressionConfigurable.getClass(), propertyName, KeepExpression.class)) {
-                // set expression as property value to be handled by the component
-                ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyName, expression);
-                continue;
-            }
-
-            Object propertyValue = null;
-
-            // replace binding prefixes (lp, dp, fp) in expression before evaluation
-            String adjustedExpression = replaceBindingPrefixes(view, expressionConfigurable, expression);
-
-            // determine whether the expression is a string template, or evaluates to another object type
-            if (StringUtils.startsWith(adjustedExpression, UifConstants.EL_PLACEHOLDER_PREFIX) && StringUtils.endsWith(
-                    adjustedExpression, UifConstants.EL_PLACEHOLDER_SUFFIX) && (StringUtils.countMatches(
-                    adjustedExpression, UifConstants.EL_PLACEHOLDER_PREFIX) == 1)) {
-                propertyValue = evaluateExpression(contextObject, evaluationParameters, adjustedExpression);
-            } else {
-                // treat as string template
-                propertyValue = evaluateExpressionTemplate(contextObject, evaluationParameters, adjustedExpression);
-            }
-
-            // if property name has the special indicator then we need to add the expression result to the property
-            // value instead of replace
-            if (StringUtils.endsWith(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR)) {
-                StringUtils.removeEnd(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR);
-
-                Collection collectionValue = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, propertyName);
-                if (collectionValue == null) {
-                    throw new RuntimeException("Property name: "
-                            + propertyName
-                            + " with collection type was not initialized. Cannot add expression result");
-                }
-                collectionValue.add(propertyValue);
-            } else {
-                ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyName, propertyValue);
-            }
+        for (String propertyName : propertyExpressions.keySet()) {
+            evaluatePropertyExpression(view, contextObject, evaluationParameters, expressionConfigurable, propertyName,
+                    false);
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#containsElPlaceholder(java.lang.String)
-     */
-    public boolean containsElPlaceholder(String value) {
-        boolean containsElPlaceholder = false;
-
-        if (StringUtils.isNotBlank(value)) {
-            String elPlaceholder = StringUtils.substringBetween(value, UifConstants.EL_PLACEHOLDER_PREFIX,
-                    UifConstants.EL_PLACEHOLDER_SUFFIX);
-            if (StringUtils.isNotBlank(elPlaceholder)) {
-                containsElPlaceholder = true;
-            }
-        }
-
-        return containsElPlaceholder;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#replaceBindingPrefixes(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, java.lang.String)
-     */
-    public String replaceBindingPrefixes(View view, Object object, String expression) {
-        String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
-
-        // replace the field path prefix for DataFields
-        if (object instanceof DataField) {
-
-            // Get the binding path from the object
-            BindingInfo bindingInfo = ((DataField) object).getBindingInfo();
-            String fieldPath = bindingInfo.getBindingPath();
-
-            // Remove the property name from the binding path
-            fieldPath = StringUtils.removeEnd(fieldPath, "." + bindingInfo.getBindingName());
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
-                    fieldPath + ".");
-        } else {
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
-                    "");
-        }
-
-        // replace the default path prefix if there is one set on the view
-        if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
-                    view.getDefaultBindingObjectPath() + ".");
-
-        } else {
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
-                    "");
-        }
-
-        // replace line path binding prefix with the actual line path
-        if (adjustedExpression.contains(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
-            String linePath = getLinePathPrefixValue((Component) object);
-
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
-                    linePath + ".");
-        }
-
-        // replace node path binding prefix with the actual node path
-        if (adjustedExpression.contains(UifConstants.NODE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
-            String nodePath = "";
-
-            Map<String, Object> context = ((Component) object).getContext();
-            if (context.containsKey(UifConstants.ContextVariableNames.NODE_PATH)) {
-                nodePath = (String) context.get(UifConstants.ContextVariableNames.NODE_PATH);
-            }
-
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.NODE_PATH_BIND_ADJUST_PREFIX,
-                    nodePath + ".");
-        }
-
-        return adjustedExpression;
     }
 
     /**

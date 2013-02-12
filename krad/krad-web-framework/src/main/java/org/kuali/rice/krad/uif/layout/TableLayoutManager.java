@@ -20,7 +20,9 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.KeepExpression;
@@ -34,6 +36,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -295,7 +298,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param container the parent container
      * @param totalColumns total number of columns in the table
      */
-    private void setupColumnCalculations(View view, Object model, Container container, int totalColumns) {
+    protected void setupColumnCalculations(View view, Object model, Container container, int totalColumns) {
         footerCalculationComponents = new ArrayList<Component>(totalColumns);
 
         //add nulls for each column to start - nulls will be processed by the ftl as a blank cell
@@ -454,7 +457,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param leftLabelColumnIndex index of the leftLabelColumn (0 or 1 if grouping enabled - hidden column)
      * @return the field with cInfo and tableLayoutManager settings applied as appropriate
      */
-    private Field setupTotalField(Field totalField, ColumnCalculationInfo cInfo, boolean show, Label leftLabel,
+    protected Field setupTotalField(Field totalField, ColumnCalculationInfo cInfo, boolean show, Label leftLabel,
             String type, int leftLabelColumnIndex) {
         //setup the totals field
         Field totalDataField = totalField;
@@ -494,6 +497,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
             Object currentLine, int lineIndex) {
+
+        // since expressions are not evaluated on child components yet, we need to evaluate any properties
+        // we are going to read for building the table
+        ExpressionEvaluatorService expressionEvaluatorService = KRADServiceLocatorWeb.getExpressionEvaluatorService();
+        for (Field lineField : lineFields) {
+            lineField.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, collectionGroup);
+
+            expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
+                    UifPropertyPaths.ROW_SPAN, true);
+            expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
+                    UifPropertyPaths.COL_SPAN, true);
+            expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
+                    UifPropertyPaths.REQUIRED, true);
+            expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
+                    UifPropertyPaths.READ_ONLY, true);
+        }
 
         // if first line for table set number of data columns
         if (dataFields.isEmpty()) {

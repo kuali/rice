@@ -29,14 +29,14 @@
      <property name="items">
        <list>
          <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
-         <bean parent="Uif-InputField" p:propertyName="field2" p:required="true">
+         <bean parent="Uif-InputField" p:propertyName="field2" p:required="false">
            <property name="dependencyConstraints">
              <list>
                <bean parent="PrerequisiteConstraint" p:propertyName="field1"/>
              </list>
            </property>
          </bean>
-         <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+         <bean parent="Uif-InputField" p:propertyName="field3" p:required="@{1 == 1}"/>
          <bean parent="Uif-InputField" p:propertyName="bfield" p:required="true">
            <property name="control">
              <bean parent="Uif-CheckboxControl">

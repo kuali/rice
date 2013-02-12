@@ -96,6 +96,19 @@ public interface ExpressionEvaluatorService {
             String expressionTemplate);
 
     /**
+     * Evaluates the configured expression for the given property name (if not exists) on the given configurable
+     *
+     * @param view view instance the configurable is associated with, used to adjust binding prefixes
+     * @param contextObject model object containing data
+     * @param evaluationParameters map that will be exposed as EL parameters
+     * @param expressionConfigurable configurable object to pull and evaluate the expression on
+     * @param propertyName name of the property whose expression should be evaluated
+     * @param removeExpression boolean that indicates whether the expression should be removed after evaluation
+     */
+    public void evaluatePropertyExpression(View view, Object contextObject, Map<String, Object> evaluationParameters,
+            UifDictionaryBean expressionConfigurable, String propertyName, boolean removeExpression);
+
+    /**
      * Evaluates the given el expression against the content object and
      * parameters, and returns the result of the evaluation
      *

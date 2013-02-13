@@ -159,6 +159,10 @@ delete from krew_usr_optn_t
 
 delete from KRLC_CMP_T
 /
+delete from KRCR_NMSPC_T where NMSPC_CD='KR-SAP'
+/
+delete from KRCR_PARM_T where NMSPC_CD='KR-SAP'
+/
 
 -- ##############
 -- # KEN Tables #
@@ -292,6 +296,16 @@ drop table TRV_MULTI_ATT_SAMPLE
 drop table TRV_ATT_SAMPLE
 /
 drop sequence trv_fo_id_s
+/
+drop table TRVL_AUTH_DOC_T
+/
+drop table TRVL_PER_DIEM_T
+/
+drop table TRVL_TRIP_TYP_T
+/
+drop sequence TRVL_ID_SEQ
+/
+drop sequence TRVL_PER_DIEM_ID_SEQ
 /
 
 delete from krim_role_perm_t where perm_id in (select perm_id from krim_perm_t where nmspc_cd = 'KR-SAP')

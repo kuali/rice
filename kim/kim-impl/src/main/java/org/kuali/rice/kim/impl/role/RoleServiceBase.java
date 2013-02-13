@@ -41,6 +41,7 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
@@ -456,7 +457,7 @@ abstract class RoleServiceBase {
         return getBusinessObjectService().findByPrimaryKey(RoleBoLite.class, criteria);
     }
 
-	protected List<RoleMember> doAnyMemberRecordsMatchByExactQualifier( RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
+	protected List<RoleMember> doAnyMemberRecordsMatchByExactQualifier( RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
 		List<RoleMemberBo> roleMemberBos = getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier);
         List<RoleMember> roleMembers = new ArrayList<RoleMember>();
         if(CollectionUtils.isNotEmpty(roleMemberBos)) {
@@ -469,7 +470,7 @@ abstract class RoleServiceBase {
 		return Collections.emptyList();
 	}
 	
-	protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
+	protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
 		List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
 		RoleTypeService roleTypeService = getRoleTypeService( role.getId() );
 		if(roleTypeService != null) {
@@ -489,7 +490,7 @@ abstract class RoleServiceBase {
 	        					rms.add(rm);
 	        				}
 	        			}
-	        			break;	    				
+                        break;
 	    			default : // The daoActionToTake parameter is invalid; throw an exception.
 	    				throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
     			}

@@ -44,6 +44,35 @@
   </repositories>
   <profiles>
     <profile>
+      <id>commitmaster</id>
+      <properties>
+        <impex.invalid.phase>process-resources</impex.invalid.phase>
+        <scm.phase>process-resources</scm.phase>
+      </properties>
+    </profile>
+    <profile>
+      <id>exportmaster</id>
+      <properties>
+        <impex.username>RICEMASTER21</impex.username>
+        <impex.password>RICEMASTER21</impex.password>
+        <impex.database>RICEMASTER21</impex.database>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>maven-impex-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>export</id>
+                <phase>generate-resources</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>commit</id>
       <properties>
         <impex.invalid.phase>none</impex.invalid.phase>

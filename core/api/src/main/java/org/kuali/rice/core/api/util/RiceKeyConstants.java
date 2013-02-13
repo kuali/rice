@@ -54,7 +54,13 @@ public final class RiceKeyConstants {
     public static final String ERROR_OUT_OF_RANGE = "error.outOfRange";
 
     public static final String ERROR_INACTIVATION_BLOCKED = "error.inactivation.blocked";
-
+    
+    // KULRICE-7419: Adhoc route completion validation rule
+    public static final String ERROR_ADHOC_COMPLETE_PERSON_IS_INITIATOR = "error.adhoc.complete.person.is.initiator";
+    
+    // KULRICE-8760: Multiple complete adhoc requests should not be allowed on the same document
+    public static final String ERROR_ADHOC_COMPLETE_MORE_THAN_ONE = "error.adhoc.complete.more.than.one.request";
+    
     public static final String ERROR_INVALID_ADHOC_PERSON_ID = "error.adhoc.invalid.person";
     public static final String ERROR_MISSING_ADHOC_PERSON_ID = "error.adhoc.missing.person";
     public static final String ERROR_UNAUTHORIZED_ADHOC_PERSON_ID = "error.adhoc.unauthorized.person";

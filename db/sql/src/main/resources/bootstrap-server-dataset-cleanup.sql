@@ -159,6 +159,10 @@ delete from krew_usr_optn_t
 
 delete from KRLC_CMP_T
 /
+delete from KRCR_NMSPC_T where NMSPC_CD='KR-SAP'
+/
+delete from KRCR_PARM_T where NMSPC_CD='KR-SAP'
+/
 
 -- ##############
 -- # KEN Tables #

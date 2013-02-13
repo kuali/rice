@@ -114,6 +114,7 @@ import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleBoLite;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
@@ -350,7 +351,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<Group> groups = getGroupService().getGroups(getGroupService().getDirectGroupIdsByPrincipalId(
                 identityManagementPersonDocument.getPrincipalId()));
 		loadGroupToPersonDoc(identityManagementPersonDocument, groups);
-		loadRoleToPersonDoc(identityManagementPersonDocument);
+        loadSparceRoleToPersonDoc(identityManagementPersonDocument);
 		loadDelegationsToPersonDoc(identityManagementPersonDocument);
 	}
 
@@ -582,6 +583,52 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setRoles(docRoles);
 	}
 
+    protected void loadSparceRoleToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument) {
+        List <PersonDocumentRole> docRoles = new ArrayList <PersonDocumentRole>();
+        List<RoleMemberBo> roleMembers = getRoleMembersForPrincipal(identityManagementPersonDocument.getPrincipalId());
+        List<String> roleIds = new ArrayList<String>();
+        if(ObjectUtils.isNotNull(roleMembers)){
+            for (RoleMemberBo member : roleMembers) {
+                List <RoleBoLite> roles = getRoleBoLiteById(member.getRoleId());
+                for (RoleBoLite role : roles) {
+                    if (!roleIds.contains(role.getId())) {
+                        PersonDocumentRole docRole = new PersonDocumentRole();
+                        docRole.setKimTypeId(role.getKimTypeId());
+                        docRole.setActive(role.isActive());
+                        docRole.setNamespaceCode(role.getNamespaceCode());
+                        docRole.setEdit(true);
+                        docRole.setRoleId(role.getId());
+                        docRole.setRoleName(role.getName());
+                        docRole.refreshReferenceObject("assignedResponsibilities");
+                        docRoles.add(docRole);
+                        roleIds.add(role.getId());
+                    }
+                }
+            }
+        }
+        for (PersonDocumentRole role : docRoles) {
+            role.setDefinitions(getAttributeDefinitionsForRole(role));
+            // when post again, it will need this during populate
+            KimDocumentRoleMember newRolePrncpl = new KimDocumentRoleMember();
+            newRolePrncpl.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
+            newRolePrncpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
+            role.setNewRolePrncpl(newRolePrncpl);
+            if(role.getDefinitions()!=null){
+                for (KimAttributeField key : role.getDefinitions()) {
+                    KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
+                    //qualifier.setQualifierKey(key);
+                    setAttrDefnIdForQualifier(qualifier,key);
+                    role.getNewRolePrncpl().getQualifiers().add(qualifier);
+                }
+            }
+            loadRoleRstAction(role);
+            role.setAttributeEntry( getAttributeEntries( role.getDefinitions() ) );
+        }
+        //
+
+        identityManagementPersonDocument.setRoles(docRoles);
+    }
+
 	protected List<KimAttributeField> getAttributeDefinitionsForRole(PersonDocumentRole role) {
     	KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(KimTypeBo.to(
                 role.getKimRoleType()));
@@ -666,6 +713,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		criteria.put("members.typeCode", MemberType.PRINCIPAL.getCode());
 		return (List<RoleBo>)getBusinessObjectService().findMatching(RoleBo.class, criteria);
 	}
+
+    @SuppressWarnings("unchecked")
+    protected List<RoleBoLite> getRoleBoLiteById(String roleId) {
+        if ( roleId == null ) {
+            return new ArrayList<RoleBoLite>();
+        }
+        Map<String,String> criteria = new HashMap<String,String>( 1 );
+        criteria.put("id", roleId);
+        return (List<RoleBoLite>)getBusinessObjectService().findMatching(RoleBoLite.class, criteria);
+    }
 
 	@SuppressWarnings("unchecked")
 	protected List<RoleMemberBo> getRoleMembersForPrincipal(String principalId) {

@@ -9,7 +9,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        ConfigNameSpaceLegacyIT.class,
+        ConfigNameSpaceNavIT.class,
         ConfigParameterLegacyIT.class,
         ConfigParameterTypeLegacyIT.class,
         IdentityGroupBlanketAppNavIT.class,

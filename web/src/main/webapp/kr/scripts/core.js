@@ -152,7 +152,9 @@ function resetScrollPosition() {
 function saveScrollPosition() {
 //	alert( document.forms[0].formKey );
 	if ( document.forms[0].formKey ) {
-		formKey = document.forms[0].formKey.value;
+		// KULRICE-8292: Timeout issues across servers (3535) 
+		scrollPositionKey = document.forms[0].formKey.value % 20;
+		
 		if( document.documentElement ) { 
 			x = Math.max(parent.document.documentElement.scrollLeft, parent.document.body.scrollLeft); 
 		  	y = Math.max(parent.document.documentElement.scrollTop, parent.document.body.scrollTop); 
@@ -163,7 +165,7 @@ function saveScrollPosition() {
 			x = parent.window.pageXOffset; 
 		  	y = parent.window.pageYOffset; 
 		} 
-		document.cookie = "KulScrollPos"+formKey+"="+x+","+y+"; path="+document.location.pathname;
+		document.cookie = "KulScrollPos"+scrollPositionKey+"="+x+","+y+"; path="+document.location.pathname;
 	}
 	// test read cookie back
 //	matchResult = document.cookie.match(new RegExp("KulScrollPos"+formKey+"=([^;]+);?"));
@@ -174,8 +176,10 @@ function saveScrollPosition() {
 
 function restoreScrollPosition() {
     if ( document.forms[0].formKey ) {
-        formKey = document.forms[0].formKey.value;
-        var cookieName = "KulScrollPos"+formKey;
+    	// KULRICE-8292: Timeout issues across servers (3535) 
+    	scrollPositionKey = document.forms[0].formKey.value % 20;
+    	
+        var cookieName = "KulScrollPos"+scrollPositionKey;
         var matchResult = document.cookie.match(new RegExp(cookieName+"=([^;]+);?"));
         if ( matchResult ) {
             var coords = matchResult[1].split( ',' );

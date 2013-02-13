@@ -161,7 +161,8 @@ public class SectionBridge {
     			field.setFieldType(Field.HIDDEN);
     			field.setPropertyValue(null);
     		}
-    		else if (fieldRestriction.isMasked()) {
+    		// KULRICE-8271: partially masked field can't be masked properly 
+    		else if (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked()) {
             	field.setSecure(true);
             	MaskFormatter maskFormatter = fieldRestriction.getMaskFormatter();
             	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());

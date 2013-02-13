@@ -151,8 +151,9 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
     }
 
     public boolean canEdit(Document document, Person user) {
-        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
-                KimConstants.PermissionTemplateNames.EDIT_DOCUMENT, user.getPrincipalId());
+        // KULRICE-7864: document can be editable on adhoc route for completion 
+        return document.getDocumentHeader().getWorkflowDocument().isCompletionRequested()
+                || isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.EDIT_DOCUMENT, user.getPrincipalId());
     }
 
     public boolean canAnnotate(Document document, Person user) {
@@ -346,5 +347,4 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
     }
-
 }

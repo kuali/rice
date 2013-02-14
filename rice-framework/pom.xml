@@ -23,4 +23,16 @@
     <module>krad-web-framework</module>
   </modules>
 
+  <profiles>
+    <profile>
+      <id>itests</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <maven.failsafe.skip>false</maven.failsafe.skip>
+      </properties>
+    </profile>
+  </profiles>
+
 </project>

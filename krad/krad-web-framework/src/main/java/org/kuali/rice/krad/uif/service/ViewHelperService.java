@@ -271,4 +271,15 @@ public interface ViewHelperService {
      */
     void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup, Object line);
 
+    /**
+     * Gets global objects for the context map and pushes them to the context
+     * for the component
+     *
+     * @param view
+     *            - view instance for component
+     * @param component
+     *            - component instance to push context to
+     */
+    Map<String, Object> getCommonContext(View view, Component component);
+
 }

@@ -15,16 +15,13 @@
  */
 package org.kuali.rice.krad.demo.uif.form;
 
-import edu.sampleu.demo.kitchensink.UITestObject;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
 
 /**
  * Basic form for the KRAD sample application
@@ -80,7 +77,7 @@ public class KradSampleAppForm extends UifFormBase {
     private Person testPerson;
 
     private String testGroupId;
-    
+
     //DataField
     private String dataField1 = "1001";
     private String dataField2 = "";
@@ -789,4 +786,5 @@ public class KradSampleAppForm extends UifFormBase {
     public void setBooleanField3(boolean booleanField3) {
         this.booleanField3 = booleanField3;
     }
+
 }

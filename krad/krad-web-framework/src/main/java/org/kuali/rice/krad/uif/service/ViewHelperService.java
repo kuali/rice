@@ -117,6 +117,17 @@ public interface ViewHelperService {
 	 */
 	void performApplyModel(View view, Object model);
 
+    /**
+     * Gets global objects for the context map and pushes them to the context
+     * for the component
+     *
+     * @param view
+     *            - view instance for component
+     * @param component
+     *            - component instance to push context to
+     */
+    Map<String, Object> getCommonContext(View view, Component component);
+
 	/**
 	 * The last phase before the view is rendered. Here final preparations can
 	 * be made based on the updated view state

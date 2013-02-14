@@ -503,6 +503,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         ExpressionEvaluatorService expressionEvaluatorService = KRADServiceLocatorWeb.getExpressionEvaluatorService();
         for (Field lineField : lineFields) {
             lineField.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, collectionGroup);
+            lineField.pushAllToContext(view.getViewHelperService().getCommonContext(view, lineField));
 
             expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
                     UifPropertyPaths.ROW_SPAN, true);

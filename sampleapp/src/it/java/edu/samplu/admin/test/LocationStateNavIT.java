@@ -19,14 +19,14 @@ import edu.samplu.common.AdminMenuLegacyITBase;
 import org.junit.Test;
 
 /**
- * tests new and edit Parameter maintenance screens
+ * tests creating and cancelling new and edit State maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterLegacyIT extends AdminMenuLegacyITBase {
+public class LocationStateNavIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "Parameter";
+        return "State";
     }
     @Test
     @Override

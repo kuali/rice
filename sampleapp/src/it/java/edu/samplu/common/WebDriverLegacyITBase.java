@@ -47,6 +47,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -916,7 +917,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testConfigNamespaceBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = configNameSpaceBlanketApprove();
@@ -926,7 +927,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testConfigParamaterBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1023,7 +1024,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityPermissionBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1042,7 +1043,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityPersonBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1069,7 +1070,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityResponsibilityBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1089,7 +1090,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityRoleBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
@@ -1113,7 +1114,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationCampusBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1128,7 +1129,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationCountryBlanketApprove() throws InterruptedException {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1144,7 +1145,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationCountyBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1198,7 +1199,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationStateBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1220,7 +1221,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testReferenceCampusTypeBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1234,7 +1235,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testWorkFlowDocTypeBlanketApprove() throws Exception {
-//        open(ITUtil.getBaseUrlString() + getTestUrl());
+        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -1603,4 +1604,634 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         passed();
     }
 
+    protected void testAddingNamespace() throws Exception
+    {
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        waitForPageToLoad();
+        assertElementPresentByXpath("//*[@name='methodToCall.save' and @alt='save']",
+                "save button does not exist on the page");
+        //Enter details for Namespace.
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding PEANUTS");
+        waitAndTypeByXpath("//*[@id='document.documentHeader.explanation']", "I want to add PEANUTS to test KIM");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "PEANUTS");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "The Peanuts Gang");
+        checkByXpath("//input[@id='document.newMaintainableObject.active']");
+        waitAndClickByXpath("//*[@name='methodToCall.save' and @alt='save']");
+        waitForPageToLoad();
+        checkForIncidentReport();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]",
+                "Document is not saved successfully");
+        //checks it is saved and initiator is admin.
+        assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a"))
+                .getText());
+
+    }
+
+    protected void testAddingBrownGroup() throws Exception {
+
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        waitForPageToLoad();
+        String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
+        //Enter details for BrownGroup.
+        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Brown Group");
+        waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
+        selectOptionByName("document.groupNamespace", "KR-IDM");
+        waitForPageToLoad();
+        String groupName = "BrownGroup " + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.groupName", groupName);
+        checkByName("document.active");
+        waitAndClickByXpath("//*[@name='methodToCall.save' and @alt='save']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]",
+                "Document is not saved successfully");
+        checkForIncidentReport();
+        //checks it is saved and initiator is admin.
+        assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a"))
+                .getText());
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
+        waitForPageToLoad();
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClickByLinkText("return value");
+        waitForPageToLoad();
+        waitAndClickByName("methodToCall.addMember.anchorAssignees");
+        waitForPageToLoad();
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByLinkText("Administration");
+        waitForPageToLoad();
+        waitAndClickByLinkText("Group");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndTypeByName("name", groupName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(groupName);
+    }
+
+    
+    protected void testDocTypeLookup() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@title='Search Parent Name']");
+        waitForPageToLoad();
+        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        //waitForPageToLoad();
+        waitAndClickByXpath("//table[@id='row']/tbody/tr[contains(td[3],'RiceDocument')]/td[1]/a");
+        waitForPageToLoad();
+        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        assertEquals("RiceDocument", getTextByXpath("//table[@id='row']/tbody/tr/td[4]/a"));
+        waitAndClickByName("methodToCall.clearValues");
+        waitAndTypeByName("name", "Kuali*D");
+        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[3], 'KualiDocument')]");
+        String docIdOld= getTextByXpath("//table[@id='row']/tbody/tr[contains(td[3], 'KualiDocument')]/td[2]/a");
+        waitAndClickByName("methodToCall.clearValues");
+        waitAndTypeByName("label", "KualiDocument");
+        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[5], 'KualiDocument')]");
+        waitAndClickByName("methodToCall.clearValues");
+        waitAndTypeByName("documentTypeId", docIdOld);
+        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[2], '" + docIdOld + "')]");
+   
+    }
+    
+    protected List<String> testCreateNewParameter(String docId,String parameterName) throws Exception
+    {
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        //Enter details for Parameter.
+        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
+        waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
+        waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
+        parameterName = "TestIndicator" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterName);
+        waitAndTypeByName("document.newMaintainableObject.value", "Y");
+        waitAndTypeByName("document.newMaintainableObject.description", "for testing");
+        selectOptionByName("document.newMaintainableObject.parameterTypeCode", "HELP");
+        waitAndClickByXpath("//input[@name='document.newMaintainableObject.evaluationOperatorCode' and @value='A']");
+    
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("--------------------------------New Parameter Created-------------------------");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterName);
+        return params;
+    }
+    
+    protected List<String> testLookUpParameter(String docId,String parameterName) throws Exception
+    {
+        waitAndTypeByName("name", parameterName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(parameterName);
+        waitAndClickByLinkText(parameterName);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");        
+        Thread.sleep(2000);
+        assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        System.out.println("--------------------------------Lookup And View Successful-------------------------");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterName);
+        return params;
+        
+    }
+    
+    protected List<String> testEditParameter(String docId,String parameterName) throws Exception
+    {
+        selectFrame("iframeportlet");
+        waitAndClickByLinkText("edit");
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
+        clearTextByName("document.newMaintainableObject.value");
+        waitAndTypeByName("document.newMaintainableObject.value", "N");
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("-----------------------------------Parameter Edited-------------------------");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterName);
+        return params;
+    }
+    
+    protected List<String> testVerifyEditedParameter(String docId,String parameterName) throws Exception
+    {
+        waitAndTypeByName("name", parameterName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(parameterName);
+        waitAndClickByLinkText(parameterName);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+        assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterName);
+        return params;
+    }
+    
+    protected List<String> testCopyParameter(String docId,String parameterName) throws Exception
+    {
+        selectFrame("iframeportlet");
+        waitAndClickByLinkText("copy");
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
+        waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
+        waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
+        parameterName = "TestIndicator" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterName);
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("-----------------------------------Parameter Edited-------------------------");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterName);
+        return params;
+    }
+    
+    protected List<String> testVerifyCopyParameter(String docId,String parameterName) throws Exception
+    {
+        waitAndTypeByName("name", parameterName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(parameterName);
+        waitAndClickByLinkText(parameterName);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+        assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterName);
+        return params;
+    }
+    
+    protected List<String> testCreateNewParameterType(String docId,String parameterType,String parameterCode) throws Exception
+    {
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        //Enter details for Parameter.
+        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter Type");
+        parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
+        waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
+        parameterType = "testing " + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
+    
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("--------------------------------New Parameter Type Created-------------------------");
+        
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+        return params;
+    }
+    
+    protected List<String> testLookUpParameterType(String docId,String parameterType,String parameterCode) throws Exception
+    {
+        waitAndTypeByName("name", parameterType);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(parameterType);
+        waitAndClickByLinkText(parameterType);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");        
+        Thread.sleep(2000);
+        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        System.out.println("--------------------------------Lookup And View Successful-------------------------");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+        return params;
+        
+    }
+    
+    protected List<String> testEditParameterType(String docId,String parameterType,String parameterCode) throws Exception
+    {
+        selectFrame("iframeportlet");
+        waitAndClickByLinkText("edit");
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
+        clearTextByName("document.newMaintainableObject.name");
+        parameterType = "testing " + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("-----------------------------------Parameter Type Edited-------------------------");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+        return params;
+    }
+    
+    protected List<String> testVerifyEditedParameterType(String docId,String parameterType,String parameterCode) throws Exception
+    {
+        waitAndTypeByName("name", parameterType);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(parameterType);
+        waitAndClickByLinkText(parameterType);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+        return params;
+    }
+    
+    protected List<String> testCopyParameterType(String docId,String parameterType,String parameterCode) throws Exception
+    {
+        selectFrame("iframeportlet");
+        waitAndClickByLinkText("copy");
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
+        parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
+        waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
+        clearTextByName("document.newMaintainableObject.name");
+        parameterType = "testing " + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("-----------------------------------Parameter Type Edited-------------------------");
+        
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+        return params;
+    }
+    
+    protected List<String> testVerifyCopyParameterType(String docId,String parameterType,String parameterCode) throws Exception
+    {
+        waitAndTypeByName("name", parameterType);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(parameterType);
+        waitAndClickByLinkText(parameterType);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+//        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+        return params;
+    }
+    
+    protected List<String> testCreateNewPermission(String docId,String permissionName) throws Exception
+    {
+        
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        /*assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
+                "save button does not exist on the page");*/
+        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(.,'Document Description (Description) is a required field.')]/img[@alt='error']");
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding Permission removeme");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[@class='error']");
+        assertElementPresentByXpath("//div[contains(.,'Template (Template) is a required field.')]/img[@alt='error']");
+        assertElementPresentByXpath("//div[contains(.,'Permission Namespace (Permission Namespace) is a required field.')]/img[@alt='error']");
+        assertElementPresentByXpath("//div[contains(.,'Permission Name (Permission Name) is a required field.')]/img[@alt='error']");
+        System.out.println("------------------------------------Validation Test Successful--------------------------");
+        
+        
+        selectOptionByName("document.newMaintainableObject.templateId", "36");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-SYS");
+        permissionName = "removeme" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", permissionName);
+        waitAndTypeByName("document.newMaintainableObject.description", "namespaceCode=KR*");
+        checkByName("document.newMaintainableObject.active");
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]");
+        assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
+        assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
+        System.out.println("------------------------------------Permission document submitted successfully--------------------------");
+        
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(permissionName);
+        return params;
+    }
+    
+    protected List<String> testLookUpPermission(String docId,String permissionName) throws Exception
+    {
+        waitForPageToLoad();
+        waitAndTypeByName("name", permissionName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(permissionName);
+        System.out.println("----------------------------------Lookup successful-----------------------------");
+            
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(permissionName);
+        return params;
+     }
+    
+    protected List<String> testEditPermission(String docId,String permissionName) throws Exception
+    {
+        waitAndClickByLinkText("edit");
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Editing Permission removeme");
+        uncheckByName("document.newMaintainableObject.active");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
+        System.out.println("------------------------------------Inactivation of Permission successfull--------------------------");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(permissionName);
+        return params;
+     }
+    
+    protected List<String> testVerifyPermission(String docId,String permissionName) throws Exception
+    {
+
+        waitForPageToLoad();
+        waitAndTypeByName("name", permissionName);
+        waitAndClickByXpath("//input[@title='Active Indicator - No']");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(permissionName);
+        
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(permissionName);
+        return params;
+     }
+    
+    
+    protected List<String> testCreateNewPerson(String docId,String personName) throws Exception
+    {
+        
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        /*assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
+                "save button does not exist on the page");*/
+        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding Charlie Brown");
+        waitAndTypeByName("document.documentHeader.explanation", "I want to add Charlie Brown to test KIM");
+        //here You should also check for lower case validation for principalName, but it is skipped for now as there is an incident report error there.
+        personName = "cbrown" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.principalName", personName);
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]");
+        assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
+        assertElementPresentByXpath("//div[contains(.,'At least one name must be entered.')]/img[@alt='error']");
+        System.out.println("------------------------------------Validation Test Successful--------------------------");
+        
+        selectOptionByName("newAffln.affiliationTypeCode", "STDNT");
+        selectOptionByName("newAffln.campusCode", "BL");
+        checkByName("newAffln.dflt");
+        waitAndClickByName("methodToCall.addAffln.anchor");
+        waitForPageToLoad();
+        //waitAndClickByName("methodToCall.toggleTab.tabContact");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        selectOptionByName("newName.nameCode", "PRM");
+        selectOptionByName("newName.namePrefix", "Mr");
+        waitAndTypeByName("newName.firstName", "Charlie");
+        waitAndTypeByName("newName.lastName", "Brown");
+        checkByName("newName.dflt");
+        waitAndClickByName("methodToCall.addName.anchor");
+        waitForPageToLoad();
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
+        assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
+        System.out.println("------------------------------------Person document submitted successfully--------------------------");
+        
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(personName);
+        return params;
+    }
+    
+    protected List<String> testLookUpPerson(String docId,String personName) throws Exception
+    {
+        waitForPageToLoad();
+        waitAndTypeByName("principalName", personName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(personName);
+        waitAndClickByName("methodToCall.clearValues");
+        waitAndTypeByName("firstName","Charlie");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(personName);
+        waitAndClickByName("methodToCall.clearValues");
+        waitAndTypeByName("lastName", "Brown");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(personName);
+        waitAndClickByName("methodToCall.clearValues");
+        waitAndTypeByName("campusCode", "BL");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(personName);
+        System.out.println("----------------------------------Lookup successful-----------------------------");
+            
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(personName);
+        return params;
+     }
+    
+   
+    
+    protected List<String> testVerifyPerson(String docId,String personName) throws Exception
+    {
+
+        waitAndClickByLinkText(personName);
+        waitForPageToLoad();
+        Thread.sleep(5000);
+        switchToWindow("Kuali :: Person");
+        Thread.sleep(2000);
+        assertEquals(personName, getTextByXpath("//div[@class='tab-container']/table//tr[2]/td[1]/div").trim());
+        assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div").trim());
+        assertEquals("Student", getTextByXpath("//select/option[@selected]").trim());
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='close Overview']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='open Contact']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='open Privacy Preferences']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='open Membership']");
+        waitAndClickByName("methodToCall.showAllTabs");
+        Thread.sleep(3000);
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='close Overview']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='close Contact']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='close Privacy Preferences']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='close Membership']");
+        waitAndClickByName("methodToCall.hideAllTabs");
+        Thread.sleep(3000);
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='open Overview']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='open Contact']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='open Privacy Preferences']");
+        assertElementPresentByXpath("//table[@class='tab']//input[@title='open Membership']");
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        System.out.println("------------------------------------Viewing from Inquiry Framework Test Successful--------------------------");
+        List<String> params= new ArrayList<String>();
+        params.add(docId);
+        params.add(personName);
+        return params;
+     }
+   
 }

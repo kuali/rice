@@ -19,19 +19,14 @@ import edu.samplu.common.AdminMenuLegacyITBase;
 import org.junit.Test;
 
 /**
- * tests creating and cancelling new and edit Group maintenance screens
+ * tests creating and cancelling the new Responsibility maintenance screen 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityGroupLegacyIT extends AdminMenuLegacyITBase {
+public class IdentityResponsibilityNavIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "Group";
-    }
-    @Test
-    @Override
-    public void testEditCancel() throws Exception {
-        super.testEditCancel();
+        return "Responsibility";
     }
     @Test
     @Override

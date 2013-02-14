@@ -15,27 +15,30 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+import org.openqa.selenium.By;
+
+import edu.samplu.common.AdminMenuLegacyITBase;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
- * tests creating and cancelling new and edit Country maintenance screens 
- *
+ * Create a document type via the document type creation screen and verify it in docsearch
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryLegacyIT extends AdminMenuLegacyITBase {
+public class CreateDocTypeNavIT extends AdminMenuLegacyITBase {
+
     @Override
-    public String getLinkLocator() {
-        return "Country";
+    protected String getLinkLocator() {
+        return "Document Type";
     }
+
     @Test
-    @Override
-    public void testEditCancel() throws Exception {
-        super.testEditCancel();
-    }
-    @Test
-    @Override
-    public void testCreateNewCancel() throws Exception {
-        super.testCreateNewCancel();
+    public void createDocType() throws Exception {
+        gotoMenuLinkLocator();
+        super.testCreateDocType();
     }
 }

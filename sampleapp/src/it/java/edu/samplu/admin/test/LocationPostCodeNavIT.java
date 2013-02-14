@@ -19,14 +19,14 @@ import edu.samplu.common.AdminMenuLegacyITBase;
 import org.junit.Test;
 
 /**
- * tests creating and cancelling the new Responsibility maintenance screen 
+ * tests creating and cancelling the new Postal Code maintenance screen
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityResponsibilityLegacyIT extends AdminMenuLegacyITBase {
+public class LocationPostCodeNavIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "Responsibility";
+        return "Postal Code";
     }
     @Test
     @Override

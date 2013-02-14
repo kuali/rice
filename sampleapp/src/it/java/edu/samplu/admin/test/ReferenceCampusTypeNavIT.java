@@ -15,6 +15,7 @@
  */
 package edu.samplu.admin.test;
 
+import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.Test;
@@ -26,30 +27,17 @@ import static org.junit.Assert.assertEquals;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeLegacyIT extends WebDriverLegacyITBase {
+public class ReferenceCampusTypeNavIT extends AdminMenuLegacyITBase {
     @Override
-    public String getTestUrl() {
-        return ITUtil.PORTAL;
+    public String getLinkLocator() {
+        return "Campus Type";
     }
-
     @Test
     /**
      * tests that a new Campus Type maintenance document can be cancelled
      */
     public void testEditCampusType() throws Exception {
-        assertEquals("Kuali Portal Index", getTitle());
-        waitAndClickByLinkText("Administration");
-        waitForPageToLoad();
-        assertEquals("Kuali Portal Index", getTitle());
-        waitAndClickByLinkText("Campus Type");
-        waitForPageToLoad();
-        assertEquals("Kuali Portal Index", getTitle());
-        selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
-        waitAndClickByLinkText("edit");
-        assertElementPresentByName("methodToCall.cancel");
-        waitAndClickByName("methodToCall.cancel");
-        waitAndClickByName("methodToCall.processAnswer.button0");
-        passed();
+        gotoMenuLinkLocator();
+        super.testSearchEditCancel();
     }
 }

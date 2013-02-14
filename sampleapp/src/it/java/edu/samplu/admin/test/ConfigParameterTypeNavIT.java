@@ -16,19 +16,22 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuLegacyITBase;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * tests creating and cancelling the new County maintenance screen
+ * tests new and edit Parameter Type maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountyLegacyIT extends AdminMenuLegacyITBase {
+public class ConfigParameterTypeNavIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "County";
+        return "Parameter Type";
+    }
+    @Test
+    @Override
+    public void testEditCancel() throws Exception {
+        super.testEditCancel();
     }
     @Test
     @Override

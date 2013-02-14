@@ -19,14 +19,14 @@ import edu.samplu.common.AdminMenuLegacyITBase;
 import org.junit.Test;
 
 /**
- * tests creating and cancelling new and edit State maintenance screens
+ * tests creating and cancelling new and edit Group maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationStateLegacyIT extends AdminMenuLegacyITBase {
+public class IdentityGroupNavIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "State";
+        return "Group";
     }
     @Test
     @Override

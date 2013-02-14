@@ -15,27 +15,35 @@
  */
 package edu.samplu.admin.test;
 
+import static org.junit.Assert.assertEquals;
+
 import edu.samplu.common.AdminMenuLegacyITBase;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.WebDriverLegacyITBase;
+
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
- * tests new and edit Parameter Type maintenance screens
+ * tests the group section in Rice.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterTypeLegacyIT extends AdminMenuLegacyITBase {
+public class GroupNavIT extends AdminMenuLegacyITBase {
+    /**
+     * This overridden method ...
+     * 
+     * @see edu.samplu.common.MenuLegacyITBase#getLinkLocator()
+     */
     @Override
-    public String getLinkLocator() {
-        return "Parameter Type";
+    protected String getLinkLocator() {
+        return "Group";
     }
+
     @Test
-    @Override
-    public void testEditCancel() throws Exception {
-        super.testEditCancel();
+    public void testAddingBrownGroup() throws Exception {
+        gotoMenuLinkLocator();
+        super.testAddingBrownGroup();
     }
-    @Test
-    @Override
-    public void testCreateNewCancel() throws Exception {
-        super.testCreateNewCancel();
-    }
+
 }

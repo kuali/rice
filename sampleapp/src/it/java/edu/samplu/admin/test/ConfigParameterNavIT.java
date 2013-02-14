@@ -19,14 +19,14 @@ import edu.samplu.common.AdminMenuLegacyITBase;
 import org.junit.Test;
 
 /**
- * tests creating and cancelling new and edit Person maintenance screens 
+ * tests new and edit Parameter maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonLegacyIT extends AdminMenuLegacyITBase {
+public class ConfigParameterNavIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "Person";
+        return "Parameter";
     }
     @Test
     @Override

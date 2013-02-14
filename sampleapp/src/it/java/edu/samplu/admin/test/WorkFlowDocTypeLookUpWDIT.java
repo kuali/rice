@@ -15,22 +15,34 @@
  */
 package edu.samplu.admin.test;
 
+import static org.junit.Assert.assertEquals;
+
 import edu.samplu.common.AdminMenuLegacyITBase;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.WebDriverLegacyITBase;
+
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
- * tests creating and cancelling the new Postal Code maintenance screen
+ * tests adding a namespace to Rice.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationPostCodeLegacyIT extends AdminMenuLegacyITBase {
+public class WorkFlowDocTypeLookUpWDIT extends WebDriverLegacyITBase {
+    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Document%20Type&channelUrl=" + ITUtil.getBaseUrlString() +
+            "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=" +
+            ITUtil.PORTAL_URL + "&hideReturnLink=true&docFormKey=88888888";
+  
     @Override
-    public String getLinkLocator() {
-        return "Postal Code";
+    public String getTestUrl() {
+        return TEST_URL;
     }
     @Test
-    @Override
-    public void testCreateNewCancel() throws Exception {
-        super.testCreateNewCancel();
+    public void testDocTypeLookup() throws Exception {
+        super.testDocTypeLookup();       
+        
     }
+
+    
 }

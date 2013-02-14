@@ -16,27 +16,23 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuLegacyITBase;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * tests creating and cancelling new and edit Permission maintenance screens
+ * tests creating and cancelling the new County maintenance screen
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPermissionLegacyIT extends AdminMenuLegacyITBase {
+public class LocationCountyNavIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "Permission";
-    }
-    @Test
-    @Override
-    public void testEditCancel() throws Exception {
-        super.testEditCancel();
+        return "County";
     }
     @Test
     @Override
     public void testCreateNewCancel() throws Exception {
         super.testCreateNewCancel();
     }
-
 }

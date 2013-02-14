@@ -19,14 +19,14 @@ import edu.samplu.common.AdminMenuLegacyITBase;
 import org.junit.Test;
 
 /**
- * tests creating and cancelling new and edit Campus maintenance screens
+ * tests creating and cancelling new and edit Permission maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCampusLegacyIT extends AdminMenuLegacyITBase {
+public class IdentityPermissionNavIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "Campus";
+        return "Permission";
     }
     @Test
     @Override
@@ -38,4 +38,5 @@ public class LocationCampusLegacyIT extends AdminMenuLegacyITBase {
     public void testCreateNewCancel() throws Exception {
         super.testCreateNewCancel();
     }
+
 }

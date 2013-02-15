@@ -78,21 +78,8 @@
         NMSPC_CD="KR-WKFLW" OBJ_ID="BD82F716EFEFF706E0402E0AA9D70A27"
         ROLE_ID="99" ROLE_NM="Document Router" VER_NBR="1"/>
     <KRIM_ROLE_T ACTV_IND="Y"
-        DESC_TXT="This role is used for no login guest users."
-        KIM_TYP_ID="1" LAST_UPDT_DT="20121130172357" NMSPC_CD="KUALI"
-        OBJ_ID="CFBAA6F5F0D25D07E0406E0AC31D229B" ROLE_ID="KR1000"
-        ROLE_NM="GuestRole" VER_NBR="1"/>
-    <KRIM_ROLE_T ACTV_IND="Y"
         DESC_TXT="This role derives its members from users with an complete action request in the route log of a given document."
-        KIM_TYP_ID="42" LAST_UPDT_DT="20130213234940"
-        NMSPC_CD="KR-WKFLW" OBJ_ID="D0C2892F47ED9142E0406E0AC31D23D6"
+        KIM_TYP_ID="42" LAST_UPDT_DT="20130215224147"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="D0C288607977E015E0406E0AC31D23C6"
         ROLE_ID="KR1001" ROLE_NM="Complete Request Recipient" VER_NBR="1"/>
-    <KRIM_ROLE_T ACTV_IND="Y" DESC_TXT="Test role for the sample app"
-        KIM_TYP_ID="1" LAST_UPDT_DT="20121106173421" NMSPC_CD="KR-SAP"
-        OBJ_ID="CDD8032915D1BF1FE040F90A05B94313" ROLE_ID="KRSAP10003"
-        ROLE_NM="Sample App Admin" VER_NBR="1"/>
-    <KRIM_ROLE_T ACTV_IND="Y" DESC_TXT="Test role for the sample app"
-        KIM_TYP_ID="1" LAST_UPDT_DT="20121106173440" NMSPC_CD="KR-SAP"
-        OBJ_ID="CDD8032915D3BF1FE040F90A05B94313" ROLE_ID="KRSAP10004"
-        ROLE_NM="Sample App Users" VER_NBR="1"/>
 </dataset>

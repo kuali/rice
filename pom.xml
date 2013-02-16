@@ -306,14 +306,14 @@
         test run. E.g. <param name="my.new.param">${my.new.param}</param> -->
       <testResource>
         <filtering>true</filtering>
-        <directory>${basedir}/src/test/resources/META-INF</directory>
+        <directory>${basedir}/rice-framework/krad-it/src/test/resources/META-INF</directory>
         <includes>
           <include>${project.name}-test-config.xml</include>
           <include>sample-app-test-config.xml</include>
         </includes>
       </testResource>
       <testResource>
-        <directory>${basedir}/src/test/resources</directory>
+        <directory>${basedir}/rice-framework/krad-it/src/test/resources</directory>
       </testResource>
     </testResources>
     <pluginManagement>

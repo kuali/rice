@@ -21,23 +21,17 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceDocumentOverviewLegacyIT extends KradMenuLegacyITBase {
-
+public class MaintenanceButtonsNavIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
     }
-
     @Test
     /**
-     * Verify document overview section and contained fields appear
+     * Verify Submit, Save, Blanket approve, Close and Cancel buttons are available
      */
-    public void testVerifyDocumentOverviewLegacy() throws Exception {
+    public void testVerifyButtonsLegacy() throws Exception {
         gotoMenuLinkLocator();
-        assertTextPresent("Document Overview");
-        assertElementPresentByXpath("//input[@name='document.documentHeader.documentDescription']");
-        assertElementPresentByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']");
-        assertElementPresentByXpath("//textarea[@name='document.documentHeader.explanation']");
-        passed();
+        super.testVerifyButtonsLegacy();
     }
 }

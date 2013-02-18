@@ -18,22 +18,23 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceLookupAddMultipleLinesLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceConstraintTextNavIT extends KradMenuLegacyITBase {
+
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
     }
-
     @Test
     /**
-     * Verify Lookup/Add Multiple Lines link appears
+     * Verify constraint text matches specific values
      */
-    public void testVerifyLookupAddMultipleLinesLegacy() throws Exception {
+    public void testVerifyConstraintText() throws Exception {
         gotoMenuLinkLocator();
-        assertElementPresentByXpath("//a[contains(text(),'Lookup/Add Multiple Lines')]");
-        passed();
+       super.testVerifyConstraintText();
     }
 }

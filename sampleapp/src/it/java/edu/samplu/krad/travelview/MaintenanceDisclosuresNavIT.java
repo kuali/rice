@@ -16,14 +16,13 @@
 package edu.samplu.krad.travelview;
 
 import edu.samplu.common.KradMenuLegacyITBase;
-
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceExpandCollapseLegacyIT extends KradMenuLegacyITBase {
-
+public class MaintenanceDisclosuresNavIT extends KradMenuLegacyITBase{
+   
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
@@ -31,12 +30,10 @@ public class MaintenanceExpandCollapseLegacyIT extends KradMenuLegacyITBase {
 
     @Test
     /**
-     * Verify expand and collapse all buttons appear
+     * Verify disclosures are present and functional
      */
-    public void testVerifyExpandCollapse() throws Exception {
+    public void testVerifyDisclosures() throws Exception {
         gotoMenuLinkLocator();
-        assertElementPresentByXpath("//button[contains(@class, 'uif-expandDisclosuresButton')]");
-        assertElementPresentByXpath("//button[contains(@class, 'uif-collapseDisclosuresButton')]");
-        passed();
+        super.testVerifyDisclosures();
     }
 }

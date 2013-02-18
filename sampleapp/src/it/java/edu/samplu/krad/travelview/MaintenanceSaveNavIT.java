@@ -15,30 +15,25 @@
  */
 package edu.samplu.krad.travelview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceQuickfinderIconsLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceSaveNavIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
     }
 
+     @Test
     /**
-     * Verify quickfinder icons appear for account and fiscal officer section fields
+     * Verify Save
      */
-    @Test
-    public void testVerifyQuickfinderIconsLegacy() throws Exception {
+    public void testVerifySave() throws Exception {
         gotoMenuLinkLocator();
-        assertTextPresent("Document Overview");
-        assertElementPresentByXpath("//*[@id='quickfinder1']");
-        assertElementPresentByXpath("//*[@id='quickfinder2']");
-        assertElementPresentByXpath("//*[@id='quickfinder3']");
-        assertElementPresentByXpath("//*[@id='quickfinder4_add']");
-        // TODO it would be better to test that the image isn't 404
-        passed();
-    }
+        super.testVerifySave();
+     }
 }

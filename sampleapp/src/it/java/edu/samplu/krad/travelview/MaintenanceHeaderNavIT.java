@@ -21,8 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteFiscalOfficerLegacyIT extends KradMenuLegacyITBase {
-
+public class MaintenanceHeaderNavIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
@@ -30,11 +29,10 @@ public class MaintenanceAddDeleteFiscalOfficerLegacyIT extends KradMenuLegacyITB
 
     @Test
     /**
-     * Verify a fiscal officer line can be added and deleted
+     * Verify Document Number, Initiator Network Id, Document Status, and Creation Timestamp fields appear
      */
-    public void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
+    public void testVerifyHeaderFieldsLegacy() throws Exception {
         gotoMenuLinkLocator();
-        testVerifyAddDeleteFiscalOfficerLegacy();
+        super.testVerifyHeaderFieldsLegacy();
     }
-
 }

@@ -21,22 +21,18 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceButtonsLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceQuickfinderIconsNavIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
     }
-    @Test
+
     /**
-     * Verify Submit, Save, Blanket approve, Close and Cancel buttons are available
+     * Verify quickfinder icons appear for account and fiscal officer section fields
      */
-    public void testVerifyButtonsLegacy() throws Exception {
+    @Test
+    public void testVerifyQuickfinderIconsLegacy() throws Exception {
         gotoMenuLinkLocator();
-        assertElementPresentByXpath("//button[contains(.,'ubmit')]");
-        assertElementPresentByXpath("//button[contains(.,'ave')]");
-        assertElementPresentByXpath("//button[contains(.,'lanket approve')]");
-        assertElementPresentByXpath("//button[contains(.,'lose')]");
-        assertElementPresentByXpath("//a[contains(.,'ancel')]");
-        passed();
+        super.testVerifyQuickfinderIconsLegacy();
     }
 }

@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteNoteLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceAddDeleteNoteNavIT extends KradMenuLegacyITBase {
 
     @Override
     protected String getLinkLocator() {
@@ -36,19 +36,20 @@ public class MaintenanceAddDeleteNoteLegacyIT extends KradMenuLegacyITBase {
      */
     public void testVerifyAddDeleteNoteLegacy() throws Exception {
         gotoMenuLinkLocator();
-        waitAndClick("div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
-        
-        waitForElementPresent("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-        
-        waitAndClickByName("newCollectionLines['document.notes'].noteText");
-        waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
-        waitAndClick("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-        waitForElementPresentByName("document.notes[0].noteText");
-
-        assertEquals("Test note", getTextByName("document.notes[0].noteText"));
-        waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-
-        waitForElementPresentByName("document.notes[0].noteText");
-        passed();
+        super.testVerifyAddDeleteNoteLegacy();
+//        waitAndClick("div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
+//        
+//        waitForElementPresent("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
+//        
+//        waitAndClickByName("newCollectionLines['document.notes'].noteText");
+//        waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
+//        waitAndClick("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
+//        waitForElementPresentByName("document.notes[0].noteText");
+//
+//        assertEquals("Test note", getTextByName("document.notes[0].noteText"));
+//        waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
+//
+//        waitForElementPresentByName("document.notes[0].noteText");
+//        passed();
     }
 }

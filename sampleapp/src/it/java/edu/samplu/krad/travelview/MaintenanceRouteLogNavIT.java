@@ -7,7 +7,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class MaintenanceRouteLogLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceRouteLogNavIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
@@ -19,8 +19,6 @@ public class MaintenanceRouteLogLegacyIT extends KradMenuLegacyITBase {
      */
     public void testVerifyRouteLog() throws Exception {
         gotoMenuLinkLocator();
-        waitAndClickByLinkText("Route Log");
-        waitForElementPresent("//iframe[contains(@src,'RouteLog.do')]");
-        passed();
+        super.testVerifyRouteLog();
     }
 }

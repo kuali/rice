@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAdHocRecipientsLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceAdHocRecipientsNavIT extends KradMenuLegacyITBase {
 
     @Override
     protected String getLinkLocator() {
@@ -34,14 +34,15 @@ public class MaintenanceAdHocRecipientsLegacyIT extends KradMenuLegacyITBase {
      */
     public void testVerifyAdHocRecipientsLegacy() throws Exception {
         gotoMenuLinkLocator();
-        waitAndClickByLinkText("Fiscal Officer Accounts");
-
-        assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRoutePersons'].actionRequested\"]");
-        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRoutePersons'].name\" and @type=\"text\"]");
-
-        assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].actionRequested\"]");
-        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']");
-        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']");
-        passed();
+        super.testVerifyAdHocRecipientsLegacy();
+//        waitAndClickByLinkText("Fiscal Officer Accounts");
+//
+//        assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRoutePersons'].actionRequested\"]");
+//        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRoutePersons'].name\" and @type=\"text\"]");
+//
+//        assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].actionRequested\"]");
+//        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']");
+//        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']");
+//        passed();
     }
 }

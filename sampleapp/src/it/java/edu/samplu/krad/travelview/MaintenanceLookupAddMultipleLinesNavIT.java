@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceHeaderLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceLookupAddMultipleLinesNavIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
@@ -29,14 +29,10 @@ public class MaintenanceHeaderLegacyIT extends KradMenuLegacyITBase {
 
     @Test
     /**
-     * Verify Document Number, Initiator Network Id, Document Status, and Creation Timestamp fields appear
+     * Verify Lookup/Add Multiple Lines link appears
      */
-    public void testVerifyHeaderFieldsLegacy() throws Exception {
+    public void testVerifyLookupAddMultipleLinesLegacy() throws Exception {
         gotoMenuLinkLocator();
-        assertElementPresentByXpath("//div[contains(@class, 'uif-documentNumber')]");
-        assertElementPresentByXpath("//div[contains(@class, 'uif-documentInitiatorNetworkId')]");
-        assertElementPresentByXpath("//div[contains(@class, 'uif-documentStatus')]");
-        assertElementPresentByXpath("//div[contains(@class, 'uif-documentCreateDate')]");
-        passed();
+        super.testVerifyLookupAddMultipleLinesLegacy();
     }
 }

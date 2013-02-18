@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceSubsidizedPercentWatermarkLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceSubsidizedPercentWatermarkNavIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
@@ -33,9 +33,6 @@ public class MaintenanceSubsidizedPercentWatermarkLegacyIT extends KradMenuLegac
      */
     public void testVerifySubsidizedPercentWatermarkLegacy() throws Exception {
         gotoMenuLinkLocator();        
-        // May be blowing up due to multiple locators
-        //assertTrue(isElementPresent("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @placeholder='##.##   ']"));
-        assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent']");
-        passed();
+        super.testVerifySubsidizedPercentWatermarkLegacy();
     }
 }

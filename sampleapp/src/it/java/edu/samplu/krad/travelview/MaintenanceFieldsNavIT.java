@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceNotesAndAttachmentsLegacyIT  extends KradMenuLegacyITBase {
+public class MaintenanceFieldsNavIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
@@ -29,16 +29,10 @@ public class MaintenanceNotesAndAttachmentsLegacyIT  extends KradMenuLegacyITBas
 
     @Test
     /**
-     * Verify Notes and Attachments section and fields exist
+     * Verify text fields are present and match expected length and max length
      */
-    public void testVerifyNotesAndAttachments() throws Exception {
+    public void testVerifyFieldsLegacy() throws Exception {
         gotoMenuLinkLocator();
-        waitAndClickByXpath("//span[contains(text(),'Notes and Attachments')]");
-        waitForElementPresentByXpath("//button[@title='Add a Note']");
-        assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
-        assertElementPresentByXpath("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]");
-        assertElementPresentByXpath("//input[@name='attachmentFile']");
-        assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]");
-        passed();
+        super.testVerifyFieldsLegacy();
     }
 }

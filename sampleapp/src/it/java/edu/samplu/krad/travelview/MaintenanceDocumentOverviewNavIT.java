@@ -15,33 +15,25 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceSaveLegacyIT extends KradMenuLegacyITBase {
+public class MaintenanceDocumentOverviewNavIT extends KradMenuLegacyITBase {
+
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";
     }
 
-     @Test
+    @Test
     /**
-     * Verify Save
+     * Verify document overview section and contained fields appear
      */
-    public void testVerifySave() throws Exception {
+    public void testVerifyDocumentOverviewLegacy() throws Exception {
         gotoMenuLinkLocator();
-        waitAndTypeByName("document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
-        waitAndClickByName("document.newMaintainableObject.dataObject.number");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.number", "1234567890");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.subAccount", "a1");
-        waitAndClick("button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
-        Thread.sleep(2000);
-       // checkErrorMessageItem(" also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
-        passed();
-     }
+        super.testVerifyDocumentOverviewLegacy();
+    }
 }

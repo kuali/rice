@@ -36,10 +36,13 @@ import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Evaluates expression language statements using the Spring EL engine
@@ -177,19 +180,24 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
 
         // replace the field path prefix for DataFields
-        if (object instanceof DataField) {
+        if (StringUtils.contains(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX)) {
+            if (object instanceof DataField) {
+                // Get the binding path from the object
+                BindingInfo bindingInfo = ((DataField) object).getBindingInfo();
 
-            // Get the binding path from the object
-            BindingInfo bindingInfo = ((DataField) object).getBindingInfo();
-            String fieldPath = bindingInfo.getBindingPath();
+                Pattern pattern = Pattern.compile("(" + Pattern.quote(UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX)
+                        + "[\\.\\w]+" + ")");
+                Matcher matcher = pattern.matcher(adjustedExpression);
+                while (matcher.find()) {
+                    String path = matcher.group();
 
-            // Remove the property name from the binding path
-            fieldPath = StringUtils.removeEnd(fieldPath, "." + bindingInfo.getBindingName());
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
-                    fieldPath + ".");
-        } else {
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
-                    "");
+                    String adjustedPath = bindingInfo.getPropertyAdjustedBindingPath(path);
+                    adjustedExpression = StringUtils.replace(adjustedExpression, path, adjustedPath);
+                }
+            } else {
+                adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
+                        "");
+            }
         }
 
         // replace the default path prefix if there is one set on the view

@@ -146,7 +146,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
         }
 
         if (bindToMap) {
-            bindingPrefix += "['" + bindingName + "']";
+            bindingPrefix += "[" + bindingName + "]";
         } else {
             if (StringUtils.isNotBlank(bindingPrefix)) {
                 bindingPrefix += ".";
@@ -178,21 +178,37 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
     public String getPropertyAdjustedBindingPath(String propertyPath) {
         if (propertyPath.startsWith(UifConstants.NO_BIND_ADJUST_PREFIX)) {
             propertyPath = StringUtils.removeStart(propertyPath, UifConstants.NO_BIND_ADJUST_PREFIX);
+
             return propertyPath;
         }
 
-        BindingInfo bindingInfoCopy = (BindingInfo) ObjectUtils.deepCopy(this);
-
-        // clear the path if explicitly set
-        bindingInfoCopy.setBindingPath("");
-
         if (propertyPath.startsWith(UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX)) {
-            bindingInfoCopy.setBindByNamePrefix("");
             propertyPath = StringUtils.removeStart(propertyPath, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX);
         }
-        bindingInfoCopy.setBindingName(propertyPath);
 
-        return bindingInfoCopy.getBindingPath();
+        String formedBindingPath = "";
+
+        if (!bindToForm && StringUtils.isNotBlank(bindingObjectPath)) {
+            formedBindingPath = bindingObjectPath;
+        }
+
+        if (StringUtils.isNotBlank(bindByNamePrefix)) {
+            if (!bindByNamePrefix.startsWith("[") && StringUtils.isNotBlank(formedBindingPath)) {
+                formedBindingPath += ".";
+            }
+            formedBindingPath += bindByNamePrefix;
+        }
+
+        if (bindToMap) {
+            formedBindingPath += "[" + propertyPath + "]";
+        } else {
+            if (StringUtils.isNotBlank(formedBindingPath)) {
+                formedBindingPath += ".";
+            }
+            formedBindingPath += propertyPath;
+        }
+
+        return formedBindingPath;
     }
 
     /**

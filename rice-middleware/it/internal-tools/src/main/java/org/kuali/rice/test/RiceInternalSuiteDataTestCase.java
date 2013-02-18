@@ -49,7 +49,7 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
                 try {
                     new SQLDataLoader(getKIMSqlFileBaseLocation() + "/" + line, "/").runSql();
                 } catch (Exception e) {
-                    LOG.error("Exception during loadSuitTestData: " + e);
+                    LOG.error("Exception during loadSuiteTestData: " + e);
                 }
 			}
 		}

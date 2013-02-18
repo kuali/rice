@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kew.role;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -65,6 +67,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class RoleRouteModuleTest extends KEWTestCase {
 
@@ -508,7 +511,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     @Test
     public void testRoleRouteModule_FirstApprove() throws Exception {
 
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest1");
         document.route("");
 
         // in this case we should have a first approve role that contains admin and user2, we
@@ -561,7 +564,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     @Test
     public void testRoleRouteModule_AllApprove() throws Exception {
 
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest2");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
         document.route("");
 
         // in this case we should have all approve roles for admin, user1 and user2
@@ -616,7 +619,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     @Test
     public void testRoleRouteModule_RoleResponsibilityActionUpdate() throws Exception {
 
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest1");
         document.route("");
 
         // in this case we should have a first approve role that contains admin and user2, we
@@ -695,7 +698,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     }
 
     @Test
-    public void testDelegate() throws Exception{
+    public void testRoleDelegate() throws Exception{
         this.createDelegate();
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
@@ -723,7 +726,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     }
 
     @Test
-    public void testDelegateApproval() throws Exception{
+    public void testRoleDelegateApproval() throws Exception{
         this.createDelegate();
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");

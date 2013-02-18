@@ -5052,8 +5052,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     </listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Document Type Policies</title>
             <para>Document Type Policies affect workflow routing behavior.</para>
             <para>Current Document Type polices:<itemizedlist>
@@ -5622,8 +5622,8 @@ document.routeDocument("user inputted annotation");
                 <programlisting>&lt;authorizer>your.package.CustomDocumentTypeAuthorizer&lt;/authorizer></programlisting>
                 <para>The element above determines which class to use for the DocumentType Authorizer for this
                     particular Document Type. This component performs authorization checks as the eDoc travels through routing.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Managed Workgroups</title>
                 <programlisting>&lt;superUserWorkgroupName>WorkflowAdmin&lt;/superUserWorkgroupName>
 &lt;blanketApproveWorkgroupName>WorkgroupBlanketApprovers&lt;/blanketApproveWorkgroupName>

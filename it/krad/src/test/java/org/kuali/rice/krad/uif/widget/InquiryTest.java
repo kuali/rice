@@ -41,7 +41,7 @@ public class InquiryTest extends KRADTestCase{
      */
     public void testBuildInquiryUrl_relatedClass() {
         Inquiry inquiry = new Inquiry();
-        inquiry.setReadOnly(true);
+        inquiry.setParentReadOnly(true);
         inquiry.setInquiryLink(new Link());
         inquiry.setDirectInquiryAction(new Action());
         String baseInquiryUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(

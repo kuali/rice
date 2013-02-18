@@ -59,7 +59,7 @@ import static org.junit.Assert.fail;
  */
 public abstract class RiceTestCase extends BaseRiceTestCase {
 
-    private static final Logger LOG = Logger.getLogger(RiceTestCase.class);
+    protected static final Logger LOG = Logger.getLogger(RiceTestCase.class);
 
     private static final String ALT_LOG4J_CONFIG_LOCATION_PROP = "alt.log4j.config.location";
     private static final String DEFAULT_LOG4J_CONFIG = "classpath:rice-testharness-default-log4j.properties";

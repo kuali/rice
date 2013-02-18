@@ -46,7 +46,11 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 		String line = null;
 		while ((line = reader.readLine()) != null) {
 			if (!StringUtils.isBlank(line) && !line.startsWith(HASH_PREFIX) && !line.startsWith(SLASH_PREFIX)) {
-				new SQLDataLoader(getKIMSqlFileBaseLocation() + "/" + line, "/").runSql();
+                try {
+                    new SQLDataLoader(getKIMSqlFileBaseLocation() + "/" + line, "/").runSql();
+                } catch (Exception e) {
+                    LOG.error("Exception during loadSuitTestData: " + e);
+                }
 			}
 		}
 	}

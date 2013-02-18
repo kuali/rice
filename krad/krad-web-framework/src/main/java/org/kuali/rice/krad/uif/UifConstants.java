@@ -40,6 +40,8 @@ public class UifConstants {
     public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
     public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
 
+    public static final String SPACE = " ";
+
     public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
     public static final String REQUEST_FORM = "requestForm";
 
@@ -245,6 +247,7 @@ public class UifConstants {
 
     public static class MessageKeys {
         public static final String QUERY_DATA_NOT_FOUND = "query.dataNotFound";
+        public static final String OPTION_ALL = "option.all";
     }
 
     public static class ClientSideVariables {

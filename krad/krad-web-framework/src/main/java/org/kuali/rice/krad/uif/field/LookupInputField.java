@@ -21,14 +21,18 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.KeyMessage;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -69,14 +73,24 @@ public class LookupInputField extends InputField {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        // add all option
+        // if enabled add option to select all values
         if (addControlSelectAllOption && (getControl() != null) && getControl() instanceof MultiValueControl) {
+            String allOptionText = KRADServiceLocatorWeb.getMessageService().getMessageText(
+                    UifConstants.MessageKeys.OPTION_ALL);
+
             MultiValueControl multiValueControl = (MultiValueControl) getControl();
             if (multiValueControl.getOptions() != null) {
-                List<KeyValue> fieldOptions = multiValueControl.getOptions();
-                fieldOptions.add(0, new ConcreteKeyValue("", "All"));
+                multiValueControl.getOptions().add(0, new ConcreteKeyValue("", allOptionText));
+            }
 
-                multiValueControl.setOptions(fieldOptions);
+            if (multiValueControl.getRichOptions() != null) {
+                Message message = ComponentFactory.getMessage();
+
+                view.assignComponentIds(message);
+                message.setMessageText(allOptionText);
+                message.setGenerateSpan(false);
+
+                multiValueControl.getRichOptions().add(0, new KeyMessage("", allOptionText, message));
             }
         }
     }

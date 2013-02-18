@@ -29,13 +29,14 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccountName" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccountName"
+              p:progressiveRender="@{#fp.number eq #fp.foId}" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="extension.accountTypeCode">
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="extension.accountTypeCode" p:addControlSelectAllOption="true">
           <property name="control">
-            <bean parent="Uif-DropdownControl" />
+            <bean parent="Uif-HorizontalCheckboxesControl" />
           </property>
           <property name="optionsFinder">
             <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />

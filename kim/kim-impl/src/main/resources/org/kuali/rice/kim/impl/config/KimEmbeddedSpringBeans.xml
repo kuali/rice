@@ -291,8 +291,50 @@
     </property>
   </bean>
 
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref bean="matchAllTxInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="kimIdentityDelegateService" />
+        <idref local="kimIdentityArchiveService" />
+        <idref local="kimIdentityService" />
+        <idref local="kimRoleService" />
+        <idref local="kimRoleInternalService" />
+        <idref local="kimGroupService" />
+        <idref local="kimPermissionService" />
+        <idref local="kimResponsibilityService" />
+        <idref local="kimTypeInfoService" />
+        <idref local="activePrincipalRoleTypeService" />
+        <idref local="groupInternalService" />
+        <idref local="documentInitiatorRoleTypeService" />
+        <idref local="documentEditorRoleTypeService" />
+        <idref local="documentOpenerRoleTypeService" />
+        <idref local="documentRouterRoleTypeService" />
+        <idref local="documentTypeAndNodeOrStatePermissionTypeService" />
+        <idref local="defaultPermissionTypeService" />
+        <idref local="defaultResponsibilityTypeService" />
+        <idref local="permissionPermissionTypeService" />
+        <idref local="responsibilityPermissionTypeService" />
+        <idref local="rolePermissionTypeService" />
+        <idref local="groupPermissionTypeService" />
+        <idref local="kimTypeService" />
+        <idref local="kimPermissionTypeService" />
+        <idref local="kimRoleTypeService" />
+        <idref local="kimGroupTypeService" />
+        <idref local="kimDelegationTypeService" />
+        <idref local="kimNoMembersRoleTypeService" />
+      </list>
+    </property>
+  </bean>
+
   <bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
         p:moduleConfiguration-ref="kimModuleConfiguration"
         p:kualiModuleService-ref="rice.kim.import.kualiModuleService"/>
 
 </beans>
+
+

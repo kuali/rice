@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -110,6 +111,11 @@ public class LookupView extends FormView {
     @Override
     public void performInitialization(View view, Object model) {
         initializeGroups();
+
+        // since we don't have these as prototypes need to assign ids here
+        view.assignComponentIds(getCriteriaGroup());
+        view.assignComponentIds(getResultsGroup());
+
         if (getItems().isEmpty()) {
             setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
         }
@@ -170,12 +176,8 @@ public class LookupView extends FormView {
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
 
-        components.add(criteriaGroup);
-        components.add(resultsGroup);
         components.add(resultsActionsFieldGroup);
         components.add(resultsReturnField);
-        components.addAll(criteriaFields);
-        components.addAll(resultFields);
 
         return components;
     }

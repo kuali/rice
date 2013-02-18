@@ -281,7 +281,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 	@Test
 	public void testResolvePrincipalNamesToPrincipalIds_Nested() throws Exception {
 
-        KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
+        KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "", "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
         KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
 
 		Map<String,String> criteria = new HashMap<String,String>();

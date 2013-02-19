@@ -22,5 +22,10 @@
 	<xsl:import href="titlepage.xsl"/>
     <xsl:attribute-set name="monospace.verbatim.properties">
         <xsl:attribute name="wrap-option">wrap</xsl:attribute>
+        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="start-indent">0pt</xsl:attribute>
     </xsl:attribute-set>
+    <xsl:template name="table.cell.block.properties">
+        <xsl:attribute name="font-size">7pt</xsl:attribute>
+    </xsl:template>
 </xsl:stylesheet>

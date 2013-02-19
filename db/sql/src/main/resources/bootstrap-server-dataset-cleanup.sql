@@ -227,7 +227,7 @@ delete from krim_grp_mbr_t where grp_id not in (select grp_id from krim_grp_t)
 -- delete all entity and principal data except for principalID/entityID = 1 which is the 'kr' system user
 -- and principalID=admin/entityID = 1100 which is the 'admin' user
 -- also keep the 'notsys' user, as it is required for KEN
--- also keep the 'guest' user (id='KR1000'), as it is required for guest user access (KULRICE-8349)
+-- also keep the 'guest' user (entity_id='KR1000', prncpl_nm='guest'), it is required for guest user access (KULRICE-8349)
 
 delete from krim_entity_addr_t where entity_id not in ('1', '1100', '1131')
 /
@@ -260,7 +260,7 @@ delete from KRIM_ENTITY_VISA_T where entity_id not in ('1', '1100', '1131')
 delete from krim_entity_t where entity_id not in ('1', '1100', '1131', 'KR1000')
 /
 
-delete from krim_prncpl_t where prncpl_id not in ('1', 'admin', 'notsys', 'KR1000')
+delete from krim_prncpl_t where prncpl_id not in ('1', 'admin', 'notsys', 'guest')
 /
 
 delete from krim_role_perm_t where role_perm_id = '856'
@@ -297,16 +297,6 @@ drop table TRV_MULTI_ATT_SAMPLE
 drop table TRV_ATT_SAMPLE
 /
 drop sequence trv_fo_id_s
-/
-drop table TRVL_AUTH_DOC_T
-/
-drop table TRVL_PER_DIEM_T
-/
-drop table TRVL_TRIP_TYP_T
-/
-drop sequence TRVL_ID_SEQ
-/
-drop sequence TRVL_PER_DIEM_ID_SEQ
 /
 
 delete from krim_role_perm_t where perm_id in (select perm_id from krim_perm_t where nmspc_cd = 'KR-SAP')

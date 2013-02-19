@@ -251,7 +251,7 @@
             <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/KEW-PeopleFlowOnMainTabInPortal.png"
-                        scalefit="1"/>
+                        contentwidth="400"/>
                 </imageobject>
             </mediaobject>
             </figure>
@@ -263,7 +263,7 @@
                 <title>PeopleFlow Lookup</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KEW-PeopleFlowLookup.png" scalefit="1" contentwidth="640"/>
+                    <imagedata fileref="../images/KEW-PeopleFlowLookup.png" scalefit="1" contentwidth="400"/>
                 </imageobject>
             </mediaobject>
             </figure>
@@ -276,7 +276,7 @@
                 <title>PeopleFlow - Create New</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlowCreateNew.png" scalefit="1" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowCreateNew.png" scalefit="1" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -291,7 +291,7 @@
                 <title>PeopleFlow - Create New (with additional type attributes)</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlowCreateNewWithType.png" scalefit="1" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowCreateNewWithType.png" scalefit="1" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -303,7 +303,7 @@
                 <title>PeopleFlow - Create New - with 2 stops added</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlowAddingStops.png" scalefit="1" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowAddingStops.png" scalefit="1" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>   
@@ -345,7 +345,7 @@
                 <title>Kuali Portal: Action List Button</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/kfs_kew.png" scalefit="1"/>
+                        <imagedata fileref="../images/kfs_kew.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -556,7 +556,7 @@
                             <title>Action List</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/action_list.png" scalefit="1"/>
+                                    <imagedata fileref="../images/action_list.png" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -573,7 +573,7 @@
                             <title>Route Log</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/route_log.png" scalefit="1"/>
+                                    <imagedata fileref="../images/route_log.png" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -612,7 +612,7 @@
             <figure><title>Action List: Preferences Button</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_page.png"/>
+                        <imagedata fileref="../images/action_list_page.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -622,7 +622,7 @@
             <figure><title>Action List Preference Page</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_preferences.png"/>
+                        <imagedata fileref="../images/action_list_preferences.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -632,7 +632,7 @@
                 <title>Action List Preferences: General section</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_preferences_general.png"/>
+                        <imagedata fileref="../images/action_list_preferences_general.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -675,7 +675,7 @@
                                 <imageobject>
                                     <imagedata
                                         fileref="../images/fields_displayed_in_action_list.png"
-                                        scale="85"/>
+                                        scale="85" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject></figure>
                     <itemizedlist>
@@ -694,7 +694,7 @@
                             <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/document_route_status_colors.png"
-                                        scale="85"/>
+                                        scale="85" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -721,7 +721,7 @@
             <figure><title>Action List Preferences: Document Route Status Colors Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_preferences2.png"/>
+                        <imagedata fileref="../images/action_list_preferences2.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -731,7 +731,7 @@
             <figure><title>Action List Preferences: Document Route Status Colors Action List Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/document_route_status_colors_exp.png"/>
+                        <imagedata fileref="../images/document_route_status_colors_exp.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -740,7 +740,7 @@
             <figure><title>Action List Preferences: Email Notifications Preferences</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_prefs_email_settings.png"/>
+                        <imagedata fileref="../images/action_list_prefs_email_settings.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>            
@@ -794,7 +794,7 @@
                 <title>Action List Preferences: Document Type Notifications</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/document_type_notifications.png"/>
+                        <imagedata fileref="../images/document_type_notifications.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>    
@@ -822,7 +822,7 @@
                 <title>Action List Preferences: Action Requested Email Notification</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_requested_email_notification.png"/>
+                        <imagedata fileref="../images/action_requested_email_notification.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure> 
@@ -858,7 +858,7 @@
                 <figure><title>Action List Filter Page</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/action_list_filter.png"/>
+                            <imagedata fileref="../images/action_list_filter.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1028,7 +1028,7 @@
                                             <imageobject>
                                                 <imagedata
                                                   fileref="../images/document_type_lookup.png"
-                                                  scale="85"/>
+                                                  scale="85" contentwidth="400"/>
                                             </imageobject>
                                         </mediaobject>
                                     </figure>
@@ -1059,7 +1059,7 @@
                         <figure><title>Date Widget</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/date_created.png" scale="85"/>
+                                    <imagedata fileref="../images/date_created.png" scale="85" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -1081,7 +1081,7 @@
                 <figure><title>Action List: Clear Filter Button</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/action_list_old.png"/>
+                            <imagedata fileref="../images/action_list_old.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1243,7 +1243,7 @@
                 <figure><title>Delegation Tree Example</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/action_request_tree.png"/>
+                            <imagedata fileref="../images/action_request_tree.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1303,7 +1303,7 @@
                 <figure><title>Delegation Tree Example: Deactivation</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/deactivation_flow.png"/>
+                            <imagedata fileref="../images/deactivation_flow.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1612,7 +1612,7 @@
                 <figure><title>New Superuser Tab Example</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/new_superuser_tab.png"/>
+                            <imagedata fileref="../images/new_superuser_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1672,7 +1672,7 @@
             <figure><title>Workflow Channel: eDocLite Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/edoclite_link.png"/>
+                        <imagedata fileref="../images/edoclite_link.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject></figure>
             <sect3>
@@ -1694,7 +1694,7 @@
                 <figure><title>eDocLite Lookup</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/edoclite_lookup.png"/>
+                            <imagedata fileref="../images/edoclite_lookup.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1747,7 +1747,7 @@
                 <figure><title>eDocLite Lookup: Search Results</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/search_results.png"/>
+                            <imagedata fileref="../images/search_results.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1838,7 +1838,7 @@
             <figure><title>eDocLite Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/edoclite_inquiry.png"/>
+                        <imagedata fileref="../images/edoclite_inquiry.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1996,7 +1996,7 @@
                 <para>The following is one example of an eDocLite form:</para>
                 <para><inlinemediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/edoclite_form.png"/>
+                            <imagedata fileref="../images/edoclite_form.png" contentwidth="400"/>
                         </imageobject>
                     </inlinemediaobject></para>
                 <note><para>Notes that have been added to an eDocLite document can be edited or
@@ -2045,7 +2045,7 @@
         <figure><title>Workflow Channel: User Preferences Link</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/select_user_preferences.png"/>
+                    <imagedata fileref="../images/select_user_preferences.png" contentwidth="400"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -2053,7 +2053,7 @@
         <figure><title>Workflow Preferences</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/workflow_preferences.png"/>
+                    <imagedata fileref="../images/workflow_preferences.png" contentwidth="400"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -2230,7 +2230,7 @@
             <figure><title>Workflow Channel: Routing Rules Delegation Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/routing_rules_delegation.png"/>
+                        <imagedata fileref="../images/routing_rules_delegation.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2240,7 +2240,7 @@
             <figure><title>Delegation Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/delegate_rule_lookup.png"/>
+                        <imagedata fileref="../images/delegate_rule_lookup.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2280,7 +2280,7 @@
             <figure><title>Delegation Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rules_list.png"/>
+                        <imagedata fileref="../images/rules_list.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2314,7 +2314,7 @@
             <figure><title>Delegation Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/delegation_rule_inquiry.png"/>
+                        <imagedata fileref="../images/delegation_rule_inquiry.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2330,7 +2330,7 @@
             <figure><title>Delegation Rule: Create New Screen</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/delegate_routing_rule_creation.png"/>
+                        <imagedata fileref="../images/delegate_routing_rule_creation.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2354,7 +2354,7 @@
                                 <imageobject>
                                     <imagedata
                                         fileref="../images/delegate_routing_rule_creation2.png"
-                                        scale="85"/>
+                                        scale="85" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -2389,7 +2389,7 @@
             <figure><title>Routing Rule Delegation: Overview</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/routing_rule_delegation.png"/>
+                        <imagedata fileref="../images/routing_rule_delegation.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2441,7 +2441,7 @@
                 <figure><title>Routing Rule Deleation: Details Section</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/delegation_details.png"/>
+                            <imagedata fileref="../images/delegation_details.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2454,7 +2454,7 @@
                 <figure><title>Routing Rules Delegation: Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/copying_rules.png"/>
+                            <imagedata fileref="../images/copying_rules.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2524,7 +2524,7 @@
                 <figure><title>Routing Rules Delegation: Delegate Rule Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/delegate_rule.png"/>
+                            <imagedata fileref="../images/delegate_rule.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2535,7 +2535,7 @@
                 <figure><title>Routing Rule Delegation: Delegate Rule Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/delegate_rule_copy.png"/>
+                            <imagedata fileref="../images/delegate_rule_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2645,7 +2645,7 @@
                 <figure><title>Routing Rules Delegation: Persons Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/persons_tab.png"/>
+                            <imagedata fileref="../images/persons_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2657,7 +2657,7 @@
                 <figure><title>Routing Rules Delegation: Persons tab, Copy/Edit View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/persons_tab_copy.png"/>
+                            <imagedata fileref="../images/persons_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2720,7 +2720,7 @@
                 <figure><title>Routing Rules Delegation: Groups Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/groups_tab.png"/>
+                            <imagedata fileref="../images/groups_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2731,7 +2731,7 @@
                 <figure><title>Routing Rules Delegation: Groups Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/groups_tab_copy.png"/>
+                            <imagedata fileref="../images/groups_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2799,7 +2799,7 @@
             <figure><title>Workflow Channel: Routing Rules Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/routing_rules_link.png"/>
+                        <imagedata fileref="../images/routing_rules_link.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2813,7 +2813,7 @@
             <figure><title>Routing Rules Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_lookup.png"/>
+                        <imagedata fileref="../images/rule_lookup.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2837,7 +2837,7 @@
             <figure><title>Routing Rules Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_lookup_results.png"/>
+                        <imagedata fileref="../images/rule_lookup_results.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2865,7 +2865,7 @@
             <figure><title>Routing Rules Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_inquiry.png"/>
+                        <imagedata fileref="../images/rule_inquiry.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2879,7 +2879,7 @@
             <figure><title>Routing Rules Creation</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/routing_rule_creation.png"/>
+                        <imagedata fileref="../images/routing_rule_creation.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2933,7 +2933,7 @@
             <figure><title>Workflow Channel: Routing report</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/sample_travel_app.png"/>
+                        <imagedata fileref="../images/sample_travel_app.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2952,7 +2952,7 @@
                 <figure><title>Routing Report: Template Selection</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/select_rule_template.png"/>
+                            <imagedata fileref="../images/select_rule_template.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2965,7 +2965,7 @@
                 <figure><title>Routing Report: Template Selection, Detail</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/select_rule_template2.png"/>
+                            <imagedata fileref="../images/select_rule_template2.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2978,7 +2978,7 @@
                 <figure><title>Routing Report: Routing Data Entry</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/routing_data_entry.png"/>
+                            <imagedata fileref="../images/routing_data_entry.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2988,7 +2988,7 @@
                 <figure><title>Routing Report: Route Log View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/view_route_log_report.png"/>
+                            <imagedata fileref="../images/view_route_log_report.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3004,7 +3004,7 @@
                 <figure><title>Routing Report: Route Log View, Pending Action Requests</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/pending_action_requests.png"/>
+                            <imagedata fileref="../images/pending_action_requests.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3018,7 +3018,7 @@
                 <title>Rule Maintenance Document Type Document</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_maintenance_document_type_document.png"/>
+                        <imagedata fileref="../images/rule_maintenance_document_type_document.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -3068,7 +3068,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Rule Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/rule_tab.png"/>
+                            <imagedata fileref="../images/rule_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3076,7 +3076,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Rule Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/rule_tab_copy.png"/>
+                            <imagedata fileref="../images/rule_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3151,7 +3151,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Person Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/person_tab.png"/>
+                            <imagedata fileref="../images/person_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3159,7 +3159,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Person Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/person_tab_copy.png"/>
+                            <imagedata fileref="../images/person_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3219,7 +3219,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Groups Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/groups_tab.png"/>
+                            <imagedata fileref="../images/groups_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3227,7 +3227,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Groups Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/groups_tab_copy.png"/>
+                            <imagedata fileref="../images/groups_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3295,7 +3295,7 @@
             <figure><title>Rule Template Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_template_lookup.png"/>
+                        <imagedata fileref="../images/rule_template_lookup.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -3307,7 +3307,7 @@
             <figure><title>Rule Template Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_template_results.png"/>
+                        <imagedata fileref="../images/rule_template_results.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -3361,7 +3361,7 @@
             <figure><title>Rule Template Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_template_inquiry.png"/>
+                        <imagedata fileref="../images/rule_template_inquiry.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>

@@ -102,7 +102,7 @@
             <figure><title>Notification Channel: Channel Subscriptions</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/channel_subscriptions.png"/>
+                        <imagedata fileref="../images/channel_subscriptions.png" scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </mediaobject></figure>
             <para>This displays the list of channels that allow the user to manage their

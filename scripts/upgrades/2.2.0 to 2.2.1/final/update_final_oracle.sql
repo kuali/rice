@@ -56,3 +56,11 @@ INSERT INTO krim_role_mbr_t (role_mbr_id, ver_nbr, obj_id, role_id, mbr_id, mbr_
     FROM dual
     WHERE NOT EXISTS (SELECT * FROM krim_role_mbr_t WHERE role_mbr_id = 'KR1000' AND role_id = 'KR1000')
 /
+
+
+--
+-- KULRICE-8985: Add Index to prevent deadlocks during deletion of KSB entries
+--
+
+CREATE INDEX KRSB_SVC_DEF_TI4 ON KRSB_SVC_DEF_T(SVC_DSCRPTR_ID)
+/

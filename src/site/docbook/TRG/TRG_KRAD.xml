@@ -132,7 +132,8 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata 
-                                fileref="../images/KRAD-InputField2.png" align="left" scalefit="1" contentwidth="640"/>
+                                fileref="../images/KRAD-InputField2.png" align="left" 
+                                contentwidth="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -149,7 +150,8 @@
                 <title>KRAD Conceptual View</title>
                 <mediaobject>
                     <imageobject>
-                    <imagedata fileref="../images/KRAD-classes2.png" align="left" scalefit="1"/>
+                    <imagedata fileref="../images/KRAD-classes2.png" align="left" 
+                            width="720" contentwidth="100%" contentdepth="100%"/>
                 </imageobject>
                 </mediaobject>
             </figure>    
@@ -164,7 +166,7 @@
                 <title>KRAD Relational View</title> 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/KRAD-Relational-View.png"/>
+                    <imagedata fileref="../images/KRAD-Relational-View.png" scalefit="1" width="100%" contentdepth="100%" />
                   </imageobject>
                </mediaobject>
             </figure>
@@ -1237,11 +1239,7 @@
                                     name="defaultBindingObjectPath" vaue=""/> &lt;property
                                     name="formClass" value=""/> &lt;/bean></entry>
                             </row>
-                            <row>
-                                <entry/>
-                                <entry/>
-                            </row>
-                        </tbody>
+                            </tbody>
                       </tgroup>
                     </table>
                 </para>

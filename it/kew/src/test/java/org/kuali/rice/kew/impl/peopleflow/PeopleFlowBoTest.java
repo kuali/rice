@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test the basic persistence of business objects related to PeopleFlows
@@ -48,7 +47,8 @@ public class PeopleFlowBoTest extends KEWTestCase {
         responsibilityIdService = KEWServiceLocator.getResponsibilityIdService();
     }
 
-    @Test
+    //Test
+    //ExpectedException(value = Throwable.class)
     public void testKewTypeBoBasicPersist() {
         KewTypeBoBuilder builder = new KewTypeBoBuilder("testType", "testNamespace");
 

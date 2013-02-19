@@ -24,10 +24,10 @@
          xmlns:ns="http://docbook.org/ns/docbook">
   <title>KIM</title>
 
-  <sect1>
+  <section>
     <title>Terminology</title>
 
-    <sect2>
+    <section>
       <title>Principal</title>
 
       <para>A principal represents an entity that can authenticate. In
@@ -36,9 +36,9 @@
       uniquely identify it. It also has a name that represents the principal's
       username and is typically what is entered when authenticating. All
       principals are associated with one and only one entity.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Entity</title>
 
       <para>An entity represents a person or system. Additionally, other
@@ -86,9 +86,9 @@
             <para>Privacy Preferences</para>
           </listitem>
         </itemizedlist></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Group</title>
 
       <para>A group is a collection of principals. You can create a group
@@ -99,9 +99,9 @@
       membership). A principal or group is a "direct" member of another group
       only if it is directly assigned as a member of the group, and not
       through a nested group assignment.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Permission</title>
 
       <para>A permission is the ability to perform an action. All permissions
@@ -123,9 +123,9 @@
       particular principal will be authorized for a given permission if the
       principal is assigned to a role that has been granted the
       permission.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Responsibility</title>
 
       <para>A responsibility represents an action that a principal is
@@ -140,9 +140,9 @@
       permissions, a role has a responsibility template. The responsibility
       template specifies what additional responsibility details need to be
       defined when the responsibility is created.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Role</title>
 
       <para>You grant permissions and responsibilities to roles. Roles have a
@@ -156,9 +156,9 @@
       further qualified by the school they are the dean of, such as "Computer
       Science." You can pass qualifications as part of authorization checks to
       restrict the subset of roles to check.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Reference Information</title>
 
       <para>There are several collections of reference information managed
@@ -204,7 +204,7 @@
           </listitem>
         </itemizedlist></para>
 
-      <sect3>
+      <section>
         <title>Configuration Parameters</title>
 
         <table frame="none">
@@ -256,11 +256,11 @@
             </tbody>
           </tgroup>
         </table>
-      </sect3>
-    </sect2>
-  </sect1>
+      </section>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Services</title>
 
     <para>KIM provides several service APIs with which client applications
@@ -303,7 +303,7 @@
     However, for more details, please see the javadocs for these services and
     the services they delegate to.</para>
 
-    <sect2>
+    <section>
       <title>Using the Services</title>
 
       <para>All KIM clients should retrieve service instances using the KIM
@@ -317,9 +317,9 @@
 
       <para>You would use a similar mechanism for retrieving references to the
       other KIM services.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>IdentityService</title>
 
       <para>The <emphasis role="bold">IdentityService</emphasis> is one of the
@@ -334,7 +334,7 @@
       to help increase the performance of service calls for the client
       application.</para>
 
-      <sect3>
+      <section>
         <title>Retrieving Principal Information</title>
 
         <para>To retrieve the principal ID for a user, use the <emphasis
@@ -383,9 +383,9 @@
 
         <para>Once these three points have been overridden, you’ll be able to
         use uppercase principal names.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Retrieving Entity Default Information</title>
 
         <para>To retrieve the default information for an entity, use one of
@@ -394,9 +394,9 @@
         <programlisting>EntityDefault infoByEntityId = identityService.getEntityDefault(entityId);
 
 EntityDefault infoByPrincipalId = identityService.getEntityDefaultByPrincipalId(principalId);</programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Retrieving Reference Information</title>
 
         <para>To retrieve information about a type or status code, use the
@@ -448,13 +448,13 @@ EntityDefault infoByPrincipalId = identityService.getEntityDefaultByPrincipalId(
         code:</para>
 
         <programlisting>CodedAttribute addressType = identityService.getAddressType(code);</programlisting>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>GroupService</title>
 
-      <sect3>
+      <section>
         <title>Retrieving Group Membership Information</title>
 
         <para>To retrieve a list of all groups in which a particular user is a
@@ -474,9 +474,9 @@ EntityDefault infoByPrincipalId = identityService.getEntityDefaultByPrincipalId(
         role="bold">getMemberPrincipalIds</emphasis> method:</para>
 
         <programlisting>List&lt;String&gt; members = groupService.getMemberPrincipalIds(groupId);</programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Retrieving Group Information</title>
 
         <para>To retrieve information about a group, use the <emphasis
@@ -486,13 +486,13 @@ EntityDefault infoByPrincipalId = identityService.getEntityDefaultByPrincipalId(
 
         <programlisting>Group info = groupService.getGroup(groupId);
 Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupName);</programlisting>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>PermissionService</title>
 
-      <sect3>
+      <section>
         <title>Checking Permission</title>
 
         <para>To determine if a user has been granted a permission, without
@@ -511,9 +511,9 @@ Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupNam
     // Do the action
 }
 </programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Retrieving Permission Information</title>
 
         <para>To retrieve a list of principals granted a permission (including
@@ -531,13 +531,13 @@ Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupNam
         <programlisting>List&lt;Permission&gt; perms = permissionService.getAuthorizedPermissions(principalId,
  namespaceCode, permissionName, qualification);
 </programlisting>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>ResponsibilityService</title>
 
-      <sect3>
+      <section>
         <title>Checking Responsibility</title>
 
         <para>To determine if a user has a responsibility, use the <emphasis
@@ -548,9 +548,9 @@ Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupNam
 
 }
 </programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Retrieving Responsibility Information</title>
 
         <para>To retrieve a list of roles associated with a responsibility,
@@ -558,13 +558,13 @@ Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupNam
         method:</para>
 
         <programlisting>List&lt;String&gt; roleIds = responsibilityService.getRoleIdsForResponsibility(responsibilityId);</programlisting>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>AuthenticationService</title>
 
-      <sect3>
+      <section>
         <title>Checking Authentication</title>
 
         <para>The <emphasis role="bold">AuthenticationService</emphasis> is
@@ -598,10 +598,10 @@ Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupNam
         authentication.</para>
 
         <programlisting>String principalName = authenticationService.getPrincipalName(request);</programlisting>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>RoleService</title>
 
       <para>In KIM, Roles are used as a way to associate principals, groups
@@ -625,7 +625,7 @@ Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupNam
           </listitem>
         </itemizedlist></para>
 
-      <sect3>
+      <section>
         <title>Checking Role Assignment</title>
 
         <para>To determine if a role is assigned to a principal, use the
@@ -634,9 +634,9 @@ Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupNam
         <programlisting>if (roleService.principalHasRole(principalId, roleIds, qualifications)) {
     // Do something
 }</programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Retrieving Role Information</title>
 
         <para>To retrieve information on a role, use the <emphasis
@@ -651,9 +651,9 @@ Role info = roleService.getRoleByNamespaceCodeAndName(namespaceCode, roleName); 
         method:</para>
 
         <programlisting>Collection&lt;String&gt; principals = roleService.getRoleMemberPrincipalIds(namespaceCode, roleName, qualifications);</programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Updating Role Membership</title>
 
         <para>To assign a principal to a role, use the <emphasis
@@ -665,10 +665,10 @@ Role info = roleService.getRoleByNamespaceCodeAndName(namespaceCode, roleName); 
         role="bold">removePrincipalFromRole</emphasis> method:</para>
 
         <programlisting>roleService.removePrincipalFromRole(principalId, namespaceCode, roleName, qualifications);</programlisting>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Person Service</title>
 
       <para>The <emphasis role="bold">PersonService</emphasis> is used to
@@ -680,7 +680,7 @@ Role info = roleService.getRoleByNamespaceCodeAndName(namespaceCode, roleName); 
       client applications to more easily interact with the data in the
       underlying KIM data model for entities and principals.</para>
 
-      <sect3>
+      <section>
         <title>Retrieving Personal Information</title>
 
         <para>To retrieve information on a person by principal ID, use the
@@ -703,14 +703,14 @@ Role info = roleService.getRoleByNamespaceCodeAndName(namespaceCode, roleName); 
         role="bold">java.util.Map&lt;String, String&gt;</emphasis> which
         contains key-value pairs. The key is the name of the Person property
         to search on, while the value is the value to search for.</para>
-      </sect3>
-    </sect2>
-  </sect1>
+      </section>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>KimTypeService Callbacks</title>
 
-    <sect2>
+    <section>
       <title>Implementing Custom KIM Types</title>
 
       <para>KIM uses the concept of "types" to define additional attributes
@@ -778,9 +778,9 @@ public class MyPermissionTypeService extends PermissionTypeServiceBase {
       <para>Detailed documentation on the specific methods which can be
       implemented on <code>KimTypeService</code> and it's various
       sub-interfaces can be found in the KIM javadocs.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Configuring Custom KIM Types</title>
 
       <para>Groups, Roles, Permissions, Responsibilities, and Delegations can
@@ -857,9 +857,9 @@ WHERE NMSPC_CD = 'MyNamespace' AND NM = 'MyPermissionTemplate'</programlisting><
       <para>Once this is complete, any existing or new permissions you create
       with this template will use your custom KIM type and it's associated
       type service.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Publishing Custom KIM Types to the Kuali Service Bus</title>
 
       <para>As mentioned previously, KIM type services should be published
@@ -883,22 +883,22 @@ WHERE NMSPC_CD = 'MyNamespace' AND NM = 'MyPermissionTemplate'</programlisting><
       p:serviceNameSpaceURI="http://myapp.myu.edu"
       p:localServiceName="myPermissionTypeService"
       p:serviceInterface="org.kuali.rice.kim.framework.permission.PermissionTypeService"/&gt;</programlisting></para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>KIM Database Tables</title>
 
-    <sect2>
+    <section>
       <title>Table Name Prefixes</title>
 
       <para>The KIM tables in the Rice database are prefixed by KRIM, which
       stands for <emphasis role="bold">K</emphasis>uali <emphasis
       role="bold">R</emphasis>ice <emphasis role="bold">I</emphasis>dentity
       <emphasis role="bold">M</emphasis>anagement.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Unmapped LAST_UPDT_DT Columns</title>
 
       <para>Many of the KIM tables have an additional column called
@@ -926,6 +926,6 @@ BEGIN
 END;
 /
 </programlisting>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 </chapter>

@@ -391,7 +391,7 @@
           <para><table frame="none">
               <title>Person Document: Overview Attributes</title>
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -465,7 +465,7 @@
               Affiliations</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -542,7 +542,7 @@
               <title>Person Document: Overview Attributes, Affiliations
               Continued</title>
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -673,7 +673,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -787,7 +787,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -878,7 +878,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -968,7 +968,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1041,7 +1041,7 @@
         <para><table frame="none">
             <title>Person Document: Privacy Preferences Tab Attributes</title>
             <tgroup cols="2">
-              <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+              <colspec colname="c1" colnum="1" colwidth="0.5*"/>
               <colspec colname="c2" colnum="2" colwidth="1.0*"/>
               <thead>
                 <row>
@@ -1115,7 +1115,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1185,7 +1185,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1350,7 +1350,7 @@
         <para><table frame="none">
             <title>Group Inquiry: Assignees Attributes</title>
             <tgroup cols="2">
-              <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+              <colspec colname="c1" colnum="1" colwidth="0.5*"/>
               <colspec colname="c2" colnum="2" colwidth="1.0*"/>
               <thead>
                 <row>
@@ -1428,7 +1428,7 @@
         <para><table frame="none">
             <title>KIM Type Lookup Search Attributes</title>
             <tgroup cols="2">
-              <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+              <colspec colname="c1" colnum="1" colwidth="0.5*"/>
               <colspec colname="c2" colnum="2" colwidth="1.0*"/>
               <thead>
                 <row>
@@ -1528,7 +1528,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1607,7 +1607,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1834,7 +1834,7 @@
               <title>Role Maintenance Doucment: Overview Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -1942,7 +1942,7 @@
               <title>Role Maintenance Document: Permissions Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2000,7 +2000,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2091,7 +2091,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2148,7 +2148,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2284,7 +2284,7 @@
               Section Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2386,7 +2386,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2503,7 +2503,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2640,7 +2640,7 @@
           <title>KIM Type Lookup Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2728,7 +2728,7 @@
           <title>KIM Type Inquiry Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2810,7 +2810,7 @@
           <title>Responsibility Lookup Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2925,7 +2925,7 @@
           <title>Responsibility Lookup: Resutls Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -3077,7 +3077,7 @@
           <title>Permission Lookup Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -3220,7 +3220,7 @@
           <title>Permission Lookup: Results Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 

@@ -25,9 +25,10 @@ import org.kuali.rice.krad.uif.view.View;
  * ValidationMessages for logic and options specific to groups
  */
 @BeanTag(name = "fieldValidationMessages-bean", parent = "Uif-FieldValidationMessages")
-public class FieldValidationMessages extends ValidationMessages{
+public class FieldValidationMessages extends ValidationMessages {
 
     private boolean useTooltip;
+    private boolean showIcons;
 
     @Override
     /**
@@ -39,20 +40,35 @@ public class FieldValidationMessages extends ValidationMessages{
     public void generateMessages(boolean reset, View view, Object model, Component parent) {
         super.generateMessages(reset, view, model, parent);
         boolean hasMessages = false;
-        if(!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()){
+        if (!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()) {
             hasMessages = true;
         }
         parent.addDataAttribute("validationMessages", "{"
-            + "displayMessages:" + this.isDisplayMessages() + ","
-            + "useTooltip:"+ useTooltip + ","
-            + "messagingEnabled:"+ this.isDisplayMessages() + ","
-            + "hasOwnMessages:"+ hasMessages + ","
-            + "serverErrors:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors())) + ","
-            + "serverWarnings:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings())) + ","
-            + "serverInfo:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
-            + "}");
+                + "displayMessages:"
+                + this.isDisplayMessages()
+                + ","
+                + "useTooltip:"
+                + useTooltip
+                + ","
+                + "messagingEnabled:"
+                + this.isDisplayMessages()
+                + ","
+                + "hasOwnMessages:"
+                + hasMessages
+                + ","
+                + "showIcons:"
+                + showIcons
+                + ","
+                + "serverErrors:"
+                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors()))
+                + ","
+                + "serverWarnings:"
+                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings()))
+                + ","
+                + "serverInfo:"
+                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
+                + "}");
     }
-
 
     /**
      * When true, use the tooltip on fields to display their relevant messages.  When false, these messages
@@ -60,7 +76,7 @@ public class FieldValidationMessages extends ValidationMessages{
      *
      * @return true if using tooltips for messages, false to display below control
      */
-    @BeanTagAttribute(name="useTooltip")
+    @BeanTagAttribute(name = "useTooltip")
     public boolean isUseTooltip() {
         return useTooltip;
     }
@@ -74,4 +90,22 @@ public class FieldValidationMessages extends ValidationMessages{
         this.useTooltip = useTooltip;
     }
 
+    /**
+     * If true, display dynamic icons next to fields which have messages.  Otherwise, do not render these icons.
+     *
+     * @return true if icons will be displayed, false otherwise
+     */
+    @BeanTagAttribute(name = "showIcons")
+    public boolean isShowIcons() {
+        return showIcons;
+    }
+
+    /**
+     * Set whether field validation icons should display or not.
+     *
+     * @param showIcons
+     */
+    public void setShowIcons(boolean showIcons) {
+        this.showIcons = showIcons;
+    }
 }

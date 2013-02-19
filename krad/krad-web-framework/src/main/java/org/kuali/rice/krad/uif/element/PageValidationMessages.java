@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * ValidationMessages for logic and options specific to pages
@@ -24,4 +25,25 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 @BeanTag(name = "pageValidationMessages-bean", parent = "Uif-PageValidationMessages")
 public class PageValidationMessages extends GroupValidationMessages {
 
+    private boolean showPageSummaryHeader;
+
+    /**
+     * If true, shows the page summary header (message count header message in the message block).  Otherwise, this
+     * header is not rendered.
+     *
+     * @return true if the header will show, false otherwise
+     */
+    @BeanTagAttribute(name = "showPageSummaryHeader")
+    public boolean isShowPageSummaryHeader() {
+        return showPageSummaryHeader;
+    }
+
+    /**
+     * Set the page summary header to show or not show.
+     *
+     * @param showPageSummaryHeader
+     */
+    public void setShowPageSummaryHeader(boolean showPageSummaryHeader) {
+        this.showPageSummaryHeader = showPageSummaryHeader;
+    }
 }

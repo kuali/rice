@@ -43,6 +43,7 @@ public class GroupValidationMessages extends ValidationMessages {
 
     private boolean displayFieldLabelWithMessages;
     private boolean collapseAdditionalFieldLinkMessages;
+    private boolean displayHeaderMessageSummary;
 
     private static final String SECTION_TOKEN = "s$";
     private static final String FIELDGROUP_TOKEN = "f$";
@@ -82,55 +83,79 @@ public class GroupValidationMessages extends ValidationMessages {
 
         boolean pageLevel = false;
         boolean forceShow = false;
+        boolean showPageSummaryHeader = true;
         if (parent instanceof PageGroup) {
             pageLevel = true;
             forceShow = true;
-            parent.addDataAttribute(UifConstants.DataAttributes.SERVER_MESSAGES,
-                    Boolean.toString(GlobalVariables.getMessageMap().hasMessages()));
+            parent.addDataAttribute(UifConstants.DataAttributes.SERVER_MESSAGES, Boolean.toString(
+                    GlobalVariables.getMessageMap().hasMessages()));
+            if (this instanceof PageValidationMessages) {
+                showPageSummaryHeader = ((PageValidationMessages) this).isShowPageSummaryHeader();
+            }
         } else if (parentContainer instanceof FieldGroup) {
             //note this means container of the parent is a FieldGroup
             forceShow = true;
         }
 
         boolean hasMessages = false;
-        if(!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()){
+        if (!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()) {
             hasMessages = true;
         }
         parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, "{"
-                + UifConstants.DataAttributes.SUMMARIZE + ":"
+                + UifConstants.DataAttributes.SUMMARIZE
+                + ":"
                 + true
                 + ","
-                + UifConstants.DataAttributes.DISPLAY_MESSAGES + ":"
+                + UifConstants.DataAttributes.DISPLAY_MESSAGES
+                + ":"
                 + this.isDisplayMessages()
                 + ","
-                + UifConstants.DataAttributes.COLLAPSE_FIELD_MESSAGES + ":"
+                + UifConstants.DataAttributes.COLLAPSE_FIELD_MESSAGES
+                + ":"
                 + collapseAdditionalFieldLinkMessages
                 + ","
-                + UifConstants.DataAttributes.DISPLAY_LABEL + ":"
+                + UifConstants.DataAttributes.SHOW_PAGE_SUMMARY_HEADER
+                + ":"
+                + showPageSummaryHeader
+                + ","
+                + UifConstants.DataAttributes.DISPLAY_LABEL
+                + ":"
                 + displayFieldLabelWithMessages
                 + ","
-                + UifConstants.DataAttributes.HAS_OWN_MESSAGES + ":"
+                + UifConstants.DataAttributes.DISPLAY_HEADER_SUMMARY
+                + ":"
+                + displayHeaderMessageSummary
+                + ","
+                + UifConstants.DataAttributes.HAS_OWN_MESSAGES
+                + ":"
                 + hasMessages
                 + ","
-                + UifConstants.DataAttributes.PAGE_LEVEL + ":"
+                + UifConstants.DataAttributes.PAGE_LEVEL
+                + ":"
                 + pageLevel
                 + ","
-                + UifConstants.DataAttributes.FORCE_SHOW + ":"
+                + UifConstants.DataAttributes.FORCE_SHOW
+                + ":"
                 + forceShow
                 + ","
-                + UifConstants.DataAttributes.SECTIONS + ":"
+                + UifConstants.DataAttributes.SECTIONS
+                + ":"
                 + ScriptUtils.convertStringListToJsArray(sectionIds)
                 + ","
-                + UifConstants.DataAttributes.ORDER + ":"
+                + UifConstants.DataAttributes.ORDER
+                + ":"
                 + ScriptUtils.convertStringListToJsArray(fieldOrder)
                 + ","
-                + UifConstants.DataAttributes.SERVER_ERRORS + ":"
+                + UifConstants.DataAttributes.SERVER_ERRORS
+                + ":"
                 + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors()))
                 + ","
-                + UifConstants.DataAttributes.SERVER_WARNINGS + ":"
+                + UifConstants.DataAttributes.SERVER_WARNINGS
+                + ":"
                 + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings()))
                 + ","
-                + UifConstants.DataAttributes.SERVER_INFO + ":"
+                + UifConstants.DataAttributes.SERVER_INFO
+                + ":"
                 + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
                 + "}");
     }
@@ -198,7 +223,7 @@ public class GroupValidationMessages extends ValidationMessages {
      *
      * @return the displayFieldLabelWithMessages
      */
-    @BeanTagAttribute(name="displayFieldLabelWithMessages")
+    @BeanTagAttribute(name = "displayFieldLabelWithMessages")
     public boolean isDisplayFieldLabelWithMessages() {
         return this.displayFieldLabelWithMessages;
     }
@@ -224,7 +249,7 @@ public class GroupValidationMessages extends ValidationMessages {
      *
      * @return if field link messages are being collapsed
      */
-    @BeanTagAttribute(name="collapseAdditionalFieldLinkMessages")
+    @BeanTagAttribute(name = "collapseAdditionalFieldLinkMessages")
     public boolean isCollapseAdditionalFieldLinkMessages() {
         return collapseAdditionalFieldLinkMessages;
     }
@@ -236,5 +261,25 @@ public class GroupValidationMessages extends ValidationMessages {
      */
     public void setCollapseAdditionalFieldLinkMessages(boolean collapseAdditionalFieldLinkMessages) {
         this.collapseAdditionalFieldLinkMessages = collapseAdditionalFieldLinkMessages;
+    }
+
+    /**
+     * If true, the header message summary will display (this is the message count message appended to section
+     * headers).
+     *
+     * @return true if the summary will display, false otherwise
+     */
+    @BeanTagAttribute(name = "displayHeaderMessageSummary")
+    public boolean isDisplayHeaderMessageSummary() {
+        return displayHeaderMessageSummary;
+    }
+
+    /**
+     * Sets whether the header message summary will display or not for this section/page.
+     *
+     * @param displayHeaderMessageSummary
+     */
+    public void setDisplayHeaderMessageSummary(boolean displayHeaderMessageSummary) {
+        this.displayHeaderMessageSummary = displayHeaderMessageSummary;
     }
 }

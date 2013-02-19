@@ -112,7 +112,7 @@ input[disabled], textarea[disabled], select[disabled] {
     border: 1px solid #AAAAAA;
 }
 
-a.disabled, a[disabled], a.disabled:hover, a[disabled]:hover, a.disabled:focus, a[disabled]:focus{
+a.disabled, a[disabled], a.disabled:hover, a[disabled]:hover, a.disabled:focus, a[disabled]:focus {
     color: #888888;
     text-decoration: none;
     cursor: default;
@@ -123,11 +123,11 @@ input[disabled]+label {
     color: #888888;
 }
 
-ol.uif-readOnlyStringList li{
+ol.uif-readOnlyStringList li {
     list-style: decimal inside none;
 }
 
-ul.uif-readOnlyStringList li{
+ul.uif-readOnlyStringList li {
     list-style: disc inside none;
 }
 
@@ -246,7 +246,7 @@ img.uif-disclosure-image {
 
 /** Group specific styles *******************************************************************************/
 
-.uif-page{
+.uif-page {
     margin-right: 10px;
 }
 
@@ -372,11 +372,11 @@ div.clearfix:after {
     text-align: left;
 }
 
-table.uif-gridLayout > tbody > tr > td.uif-inputField{
+table.uif-gridLayout > tbody > tr > td.uif-inputField {
     white-space: nowrap;
 }
 
-.uif-gridLayout td.uif-inputField span.uif-instructionalMessage{
+.uif-gridLayout td.uif-inputField span.uif-instructionalMessage {
     max-width: none !important;
 }
 
@@ -412,11 +412,11 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField{
     margin-right: 0px;
 }
 
-.uif-listLayout ul li{
+.uif-listLayout ul li {
     list-style: disc inside none;
 }
 
-.uif-listLayout ol li{
+.uif-listLayout ol li {
     list-style: decimal inside none;
 }
 
@@ -439,11 +439,11 @@ table.uif-tableCollectionLayout thead th.sorting_desc label {
     cursor: pointer;
 }
 
-table.dataTable thead th{
+table.dataTable thead th {
     cursor: default;
 }
 
-table.dataTable tfoot th{
+table.dataTable tfoot th {
     font-weight: normal;
     padding: 3px 10px;
 }
@@ -524,45 +524,45 @@ div.uif-newCollectionItem {
     background-color: #CCCC99;
 }
 
-tr.uif-groupRow.addline, tr.uif-groupTotalRow[data-groupvalue="addline"]{
+tr.uif-groupRow.addline, tr.uif-groupTotalRow[data-groupvalue="addline"] {
     display: none !important;
 }
 
-tr.uif-totalRow{
+tr.uif-totalRow {
     background-color: #F9F9F9;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
 }
 
-tr.uif-totalRow .uif-boxLayoutVerticalItem, tr.uif-groupTotalRow .uif-boxLayoutVerticalItem{
+tr.uif-totalRow .uif-boxLayoutVerticalItem, tr.uif-groupTotalRow .uif-boxLayoutVerticalItem {
     margin: 0;
 }
 
-tr.uif-groupRow{
+tr.uif-groupRow {
     background-color: #F9F9F9;
     border-top: 1px solid black;
     border-bottom: 1px solid black !important;
 }
 
-tr.uif-groupRow td{
+tr.uif-groupRow td {
     font-weight: bolder;
 }
 
-tr.uif-groupTotalRow{
+tr.uif-groupTotalRow {
     background-color: #F4F4F4;
     border-bottom: 1px solid black !important;
 }
 
-tr.uif-groupTotalRow td{
+tr.uif-groupTotalRow td {
     border: none !important;
     margin-right: 10px;
 }
 
-tr.uif-groupTotalRow td, tr.uif-totalRow th{
+tr.uif-groupTotalRow td, tr.uif-totalRow th {
     text-align: right;
 }
 
-div.uif-calculationField, div.uif-calculationField input{
+div.uif-calculationField, div.uif-calculationField input {
     text-align: right;
 }
 
@@ -787,13 +787,13 @@ img.uif-changedHeaderIcon {
 
 /** Radios and Checkboxes (fieldsets)**************************************************************/
 
-fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"]{
+fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"] {
     display: inline;
     padding-right: 0.5em;
     max-width: 64em;
 }
 
-fieldset[data-type="InputSet"]{
+fieldset[data-type="InputSet"] {
     display: inline;
 }
 
@@ -846,7 +846,7 @@ fieldset[data-type="InputSet"]{
     width: 85.5em;
 }
 
-.ui-tabs-nav li.ui-state-active.ui-state-hover{
+.ui-tabs-nav li.ui-state-active.ui-state-hover {
 }
 
 .ui-tabs-vertical .ui-tabs-nav li a {
@@ -882,7 +882,7 @@ fieldset[data-type="InputSet"]{
     margin-left: -2px;
 }
 
-.ui-tabs-vertical-left .ui-tabs-panel{
+.ui-tabs-vertical-left .ui-tabs-panel {
     clear: none !important;
 }
 
@@ -926,7 +926,6 @@ fieldset[data-type="InputSet"]{
     margin-top: -1px;
     padding-top: 1px;
 }
-
 
 /** Navigation Menu ************************************************************************************/
 
@@ -1021,11 +1020,16 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 }
 
 /** Validation Messages Framework **********************************************************************/
+.uif-correctedError {
+    text-decoration: line-through;
+    color: #a9a9a9;
+}
+
 .uif-messageCount {
     font-size: 0.9em;
     font-weight: normal;
     padding-left: 1.3em;
-    vertical-align: top;
+    vertical-align: bottom;
     display: inline;
 }
 
@@ -1052,7 +1056,8 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 }
 
 .uif-validationMessages {
-    background-image: url(../../images/validation/normal-stripe.png);
+    /*background-image: url(../../images/validation/normal-stripe.png);*/
+    background-color: #F8F8F8;
     background-repeat: repeat;
     border: 1px solid #cbcbcb;
     padding-top: .5em;
@@ -1083,25 +1088,29 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 }
 
 .uif-pageValidationMessages-error {
-    background-image: url(../../images/validation/error-stripe.png);
-    background-repeat: repeat;
+    /*    background-image: url(../../images/validation/error-stripe.png);
+   background-repeat: repeat;*/
+    background-color: #FFEAF0;
     border: 1px solid #ffa09c;
 }
 
 .uif-pageValidationMessages-warning {
-    background-image: url(../../images/validation/warn-stripe.png);
-    background-repeat: repeat;
+    /*    background-image: url(../../images/validation/warn-stripe.png);
+   background-repeat: repeat;*/
+    background-color: #FFFEDA;
     border: 1px solid #FF9900;
 }
 
 .uif-pageValidationMessages-info {
-    background-image: url(../../images/validation/info-stripe.png);
-    background-repeat: repeat;
+    /*    background-image: url(../../images/validation/info-stripe.png);
+   background-repeat: repeat;*/
+    background-color: #EEF7FE;
     border: 1px solid #3366CC;
 }
 
 .uif-pageValidationHeader {
-    margin: .5em;
+    margin: .2em;
+    font-size: 18px;
 }
 
 .uif-hasInfo > fieldset[data-type="RadioSet"],
@@ -1200,17 +1209,17 @@ li.uif-infoMessageItem:before {
 }
 
 .uif-errorHighlight .uif-control, .uif-errorHighlight > fieldset[data-type="RadioSet"],
-.uif-errorHighlight > fieldset[data-type="CheckboxSet"], .uif-errorHighlight .uif-checkboxControl + label{
+.uif-errorHighlight > fieldset[data-type="CheckboxSet"], .uif-errorHighlight .uif-checkboxControl + label {
     background-color: #FFE1E9;
 }
 
 .uif-warningHighlight .uif-control, .uif-warningHighlight > fieldset[data-type="RadioSet"],
-.uif-warningHighlight > fieldset[data-type="CheckboxSet"], .uif-warningHighlight .uif-checkboxControl + label{
+.uif-warningHighlight > fieldset[data-type="CheckboxSet"], .uif-warningHighlight .uif-checkboxControl + label {
     background-color: #FFFEDA;
 }
 
 .uif-infoHighlight .uif-control, .uif-infoHighlight > fieldset[data-type="RadioSet"],
-.uif-infoHighlight > fieldset[data-type="CheckboxSet"], .uif-infoHighlight .uif-checkboxControl + label{
+.uif-infoHighlight > fieldset[data-type="CheckboxSet"], .uif-infoHighlight .uif-checkboxControl + label {
     background-color: #E7F3FE;
 }
 
@@ -1237,8 +1246,26 @@ li.uif-infoMessageItem:before {
 }
 
 .uif-applicationMessage {
-    font-size:125%;
-    font-weight:bold;
+    font-size: 125%;
+    font-weight: bold;
+}
+
+.uif-pageValidationMessages .uif-validationImage {
+    vertical-align: bottom;
+    width: 24px;
+}
+
+ul.uif-pageValidationMessage-single {
+    margin-left: 1em;
+}
+
+.uif-pageValidationMessage-single li:before {
+    content: none;
+}
+
+.uif-hasError .uif-checkboxControl + label {
+    border: 2px solid red;
+    padding: .2em;
 }
 
 /** Help  *******************************************************************************************/
@@ -1285,21 +1312,21 @@ li.uif-infoMessageItem:before {
 }
 
 /***** Lightbox customization ******************************************************************/
-.fancybox-inner form{
+.fancybox-inner form {
     height: 100%;
 }
 
-.overlay-fixed{
+.overlay-fixed {
     opacity: 0.4 !important;
 }
 
 /***** Syntax Highlighter *********************************************************************/
-.uif-syntaxHighlighter > div{
+.uif-syntaxHighlighter > div {
     max-height: 400px;
     overflow: auto;
 }
 
-.uif-syntaxHighlighter li{
+.uif-syntaxHighlighter li {
     list-style: decimal outside none;
 }
 
@@ -1316,9 +1343,11 @@ li.uif-infoMessageItem:before {
     word-break: break-all;
     word-wrap: break-word;
 }
+
 .uif-syntaxHighlighter pre.prettyprint {
     margin-bottom: 20px;
 }
+
 .uif-syntaxHighlighter pre code {
     background-color: transparent;
     border: 0 none;
@@ -1329,9 +1358,11 @@ li.uif-infoMessageItem:before {
 .uif-syntaxHighlighter .prettyprint.linenums {
     box-shadow: 40px 0 0 #FBFBFC inset, 41px 0 0 #ECECF0 inset;
 }
+
 .uif-syntaxHighlighter ol.linenums {
     margin: 0 0 0 33px;
 }
+
 .uif-syntaxHighlighter ol.linenums li {
     color: #BEBEC5;
     line-height: 20px;
@@ -1346,9 +1377,11 @@ li.uif-infoMessageItem:before {
 ol.linenums li:nth-of-type(2n+1) {
     background: none repeat scroll 0 0 #FFFFFF;
 }
+
 .prettyprint {
     font-size: 0.8em;
 }
+
 .prettyprint {
     background-color: #F6F6F6;
     border: 1px solid #CCCCCC;

@@ -27,7 +27,11 @@ var messageSummariesShown = false;
 var pauseTooltipDisplay = false;
 var haltValidationMessaging = false;
 var gAutoFocus = false;
+var clientErrorStorage = new Object();
+var summaryTextExistence = new Object();
+var clientErrorExistsCheck = false;
 
+var originalPageTitle;
 var errorImage;
 var errorGreyImage;
 var warningImage;
@@ -37,12 +41,12 @@ var detailsCloseImage;
 var ajaxReturnHandlers = {};
 
 //delay function
-var delay = (function(){
-  var timer = 0;
-  return function(callback, ms){
-    clearTimeout (timer);
-    timer = setTimeout(callback, ms);
-  };
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
 })();
 
 // map of componentIds and refreshTimers
@@ -345,7 +349,7 @@ function initFieldHandlers() {
                                 //never had a client error before, so pop-up and delay close
                                 showMessageTooltip(id, true, true);
                             }
-                            else if (!mouseInTooltip){
+                            else if (!mouseInTooltip) {
                                 hideMessageTooltip(id);
                             }
                         }
@@ -373,19 +377,21 @@ function initFieldHandlers() {
                         //never had a client error before, so pop-up and delay
                         showMessageTooltip(id, true, true);
                     }
-                    else if (!mouseInTooltip){
+                    else if (!mouseInTooltip) {
                         hideMessageTooltip(id);
                     }
                 }
             });
 
-    jQuery(document).on("change", "table.dataTable div[data-role='InputField'][data-total='change'] :input", function(){
+    jQuery(document).on("change", "table.dataTable div[data-role='InputField'][data-total='change'] :input", function () {
         refreshDatatableCellRedraw(this);
     });
 
-    jQuery(document).on("keyup", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function(){
+    jQuery(document).on("keyup", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function () {
         var input = this;
-        delay(function(){refreshDatatableCellRedraw(input)}, 300);
+        delay(function () {
+            refreshDatatableCellRedraw(input)
+        }, 300);
     });
 
 }
@@ -401,8 +407,8 @@ function initFieldHandlers() {
 function initBubblePopups() {
     //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
     jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
-                    + "select, textarea, .uif-tooltip", {   manageMouseEvents:false,
-                                        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
+            + "select, textarea, .uif-tooltip", {   manageMouseEvents:false,
+        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
 
 }
 
@@ -422,6 +428,7 @@ function hideBubblePopups(element) {
  */
 function setupPage(validate) {
     jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+    originalPageTitle = document.title;
 
     setupImages();
 
@@ -559,21 +566,23 @@ function setupValidator(form) {
                             }
                         }
 
-                        if (data && !exists) {
+                        if (!exists) {
                             data.errors = [];
                             data.errors.push(message);
                             jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                        }
 
+                        if (data) {
                             if (messageSummariesShown) {
                                 handleMessagesAtField(id);
                             }
                             else {
                                 writeMessagesAtField(id);
                             }
+                        }
 
-                            if (!pauseTooltipDisplay) {
-                                showMessageTooltip(id, false, true);
-                            }
+                        if (data && !exists && !pauseTooltipDisplay) {
+
                         }
                     }
 

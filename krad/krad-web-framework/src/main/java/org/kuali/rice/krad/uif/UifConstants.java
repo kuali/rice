@@ -268,6 +268,8 @@ public class UifConstants {
         public static final String DISPLAY_MESSAGES = "displayMessages";
         public static final String COLLAPSE_FIELD_MESSAGES = "collapseFieldMessages";
         public static final String DISPLAY_LABEL = "displayLabel";
+        public static final String SHOW_PAGE_SUMMARY_HEADER = "showPageSummaryHeader";
+        public static final String DISPLAY_HEADER_SUMMARY = "displayHeaderSummary";
         public static final String HAS_OWN_MESSAGES = "hasOwnMessages";
         public static final String PAGE_LEVEL = "pageLevel";
         public static final String FORCE_SHOW = "forceShow";

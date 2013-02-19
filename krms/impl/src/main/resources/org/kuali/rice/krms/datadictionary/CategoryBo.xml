@@ -82,8 +82,8 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="namespace"/>
-        <bean parent="Uif-InputField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="namespace"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
       </list>
     </property>
   </bean>

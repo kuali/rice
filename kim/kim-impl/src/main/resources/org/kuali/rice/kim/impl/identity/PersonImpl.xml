@@ -351,13 +351,13 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="principalId"/>
-        <bean parent="Uif-InputField" p:propertyName="principalName"/>
-        <bean parent="Uif-InputField" p:propertyName="name"/>
-        <bean parent="Uif-InputField" p:propertyName="entityId"/>
-        <bean parent="Uif-InputField" p:propertyName="campusCode"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDepartmentCode"/>
-        <bean parent="Uif-InputField" p:propertyName="employeeId"/>
+        <bean parent="Uif-DataField" p:propertyName="principalId"/>
+        <bean parent="Uif-DataField" p:propertyName="principalName"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="entityId"/>
+        <bean parent="Uif-DataField" p:propertyName="campusCode"/>
+        <bean parent="Uif-DataField" p:propertyName="primaryDepartmentCode"/>
+        <bean parent="Uif-DataField" p:propertyName="employeeId"/>
       </list>
     </property>
   </bean>

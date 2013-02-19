@@ -186,11 +186,11 @@
       <lookupInputField parent="Uif-LookupCriteriaInputField" propertyName="active"/>
     </criteriaFields>
     <resultFields>
-      <inputField parent="Uif-InputField" propertyName="authorId"/>
-      <inputField parent="Uif-InputField" propertyName="authorName"/>
-      <inputField parent="Uif-InputField" propertyName="email"/>
-      <inputField parent="Uif-InputField" propertyName="phoneNbr"/>
-      <inputField parent="Uif-InputField" propertyName="active"/>
+      <inputField parent="Uif-DataField" propertyName="authorId"/>
+      <inputField parent="Uif-DataField" propertyName="authorName"/>
+      <inputField parent="Uif-DataField" propertyName="email"/>
+      <inputField parent="Uif-DataField" propertyName="phoneNbr"/>
+      <inputField parent="Uif-DataField" propertyName="active"/>
     </resultFields>
   </lookupView>
 </spring:beans>

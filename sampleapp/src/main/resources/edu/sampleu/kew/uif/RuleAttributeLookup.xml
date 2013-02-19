@@ -45,11 +45,11 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
-        <bean parent="Uif-InputField" p:propertyName="className" />
-        <bean parent="Uif-InputField" p:propertyName="type" />
-        <bean parent="Uif-InputField" p:propertyName="applicationId" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="className" />
+        <bean parent="Uif-DataField" p:propertyName="type" />
+        <bean parent="Uif-DataField" p:propertyName="applicationId" />
       </list>
     </property>
   </bean>

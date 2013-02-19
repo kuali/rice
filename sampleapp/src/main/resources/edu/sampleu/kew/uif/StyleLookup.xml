@@ -38,9 +38,9 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
-        <bean parent="Uif-InputField" p:propertyName="active" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="active" />
       </list>
     </property>
   </bean>

@@ -243,11 +243,11 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="code"/>
-        <bean parent="Uif-InputField" p:propertyName="name"/>
-        <bean parent="Uif-InputField" p:propertyName="shortName"/>
-        <bean parent="Uif-InputField" p:propertyName="campusTypeCode"/>
-        <bean parent="Uif-InputField" p:propertyName="active"/>
+        <bean parent="Uif-DataField" p:propertyName="code"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="shortName"/>
+        <bean parent="Uif-DataField" p:propertyName="campusTypeCode"/>
+        <bean parent="Uif-DataField" p:propertyName="active"/>
       </list>
     </property>
   </bean>

@@ -107,9 +107,9 @@
       <lookupInputField parent="Uif-LookupCriteriaInputField" propertyName="active"/>
     </criteriaFields>
     <resultFields>
-      <inputField parent="Uif-InputField" propertyName="type"/>
-      <inputField parent="Uif-InputField" propertyName="description"/>
-      <inputField parent="Uif-InputField" propertyName="active"/>
+      <inputField parent="Uif-DataField" propertyName="type"/>
+      <inputField parent="Uif-DataField" propertyName="description"/>
+      <inputField parent="Uif-DataField" propertyName="active"/>
     </resultFields>
   </lookupView>
 </spring:beans>

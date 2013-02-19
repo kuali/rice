@@ -192,8 +192,8 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="userName" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="userName" />
       </list>
     </property>
   </bean>
@@ -211,8 +211,8 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="userName" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="userName" />
       </list>
     </property>
   </bean>
@@ -229,8 +229,8 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="userName" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="userName" />
       </list>
     </property>
   </bean>

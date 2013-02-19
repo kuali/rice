@@ -136,13 +136,13 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
-        <bean parent="Uif-InputField" p:propertyName="namespace" />
-        <bean parent="Uif-InputField" p:propertyName="description" />
-        <bean parent="Uif-InputField" p:propertyName="typeId" />
-        <bean parent="Uif-InputField" p:propertyName="ruleId" />
-        <bean parent="Uif-InputField" p:propertyName="sequenceNumber" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="namespace" />
+        <bean parent="Uif-DataField" p:propertyName="description" />
+        <bean parent="Uif-DataField" p:propertyName="typeId" />
+        <bean parent="Uif-DataField" p:propertyName="ruleId" />
+        <bean parent="Uif-DataField" p:propertyName="sequenceNumber" />
       </list>
     </property>
   </bean>

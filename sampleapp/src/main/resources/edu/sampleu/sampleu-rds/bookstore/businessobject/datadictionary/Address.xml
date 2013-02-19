@@ -151,13 +151,13 @@
       <lookupInputField parent="Uif-LookupCriteriaInputField" propertyName="country"/>
     </criteriaFields>
     <resultFields>
-      <inputField parent="Uif-InputField" propertyName="addressId"/>
-      <inputField parent="Uif-InputField" propertyName="addressType.type"/>
-      <inputField parent="Uif-InputField" propertyName="street1"/>
-      <inputField parent="Uif-InputField" propertyName="street2"/>
-      <inputField parent="Uif-InputField" propertyName="city"/>
-      <inputField parent="Uif-InputField" propertyName="province"/>
-      <inputField parent="Uif-InputField" propertyName="country"/>
+      <inputField parent="Uif-DataField" propertyName="addressId"/>
+      <inputField parent="Uif-DataField" propertyName="addressType.type"/>
+      <inputField parent="Uif-DataField" propertyName="street1"/>
+      <inputField parent="Uif-DataField" propertyName="street2"/>
+      <inputField parent="Uif-DataField" propertyName="city"/>
+      <inputField parent="Uif-DataField" propertyName="province"/>
+      <inputField parent="Uif-DataField" propertyName="country"/>
     </resultFields>
   </lookupView>
   <inquiryView dataObjectClassName="edu.sampleu.bookstore.bo.Address" id="Address-InquiryView" parent="Uif-InquiryView">

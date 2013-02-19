@@ -106,10 +106,10 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
-        <bean parent="Uif-InputField" p:propertyName="typeId" />
-        <bean parent="Uif-InputField" p:propertyName="contextId"/>
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="typeId" />
+        <bean parent="Uif-DataField" p:propertyName="contextId"/>
       </list>
     </property>
   </bean>

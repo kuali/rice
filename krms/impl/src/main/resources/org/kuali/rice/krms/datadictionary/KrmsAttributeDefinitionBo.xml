@@ -118,11 +118,11 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
-        <bean parent="Uif-InputField" p:propertyName="namespace" />
-        <bean parent="Uif-InputField" p:propertyName="label" />
-        <bean parent="Uif-InputField" p:propertyName="componentName" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="namespace" />
+        <bean parent="Uif-DataField" p:propertyName="label" />
+        <bean parent="Uif-DataField" p:propertyName="componentName" />
       </list>
     </property>
   </bean>

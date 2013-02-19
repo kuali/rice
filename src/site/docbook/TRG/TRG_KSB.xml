@@ -24,10 +24,10 @@
          xmlns:ns="http://docbook.org/ns/docbook">
   <title>KSB</title>
 
-  <sect1>
+  <section>
     <title>How to Use the KSB</title>
 
-    <sect2>
+    <section>
       <title>Introduction</title>
 
       <para>The Kuali Service Bus (KSB) is a lightweight service bus designed
@@ -40,9 +40,9 @@
       listing of all services available for consumption on the bus. The
       registry provides the bus with the information necessary to achieve load
       balancing, failover and more.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Bean Based Services</title>
 
       <para>Typically, KSB programming is centered on exposing
@@ -56,13 +56,13 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/supported_service_protocols2.png"/>
+            <imagedata fileref="../images/supported_service_protocols2.png" scalefit="1" width="100%" contentdepth="100%" />
           </imageobject>
         </mediaobject>
       </figure>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Diagram Notes</title>
 
       <para>This drawing is conceptual and not representative of a true
@@ -103,16 +103,16 @@
             persisted until it is sent.</para>
           </listitem>
         </itemizedlist></para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Details of Supported Service Protocols</title>
 
-    <sect2>
+    <section>
       <title>Java Rice Client</title>
 
-      <sect3>
+      <section>
         <title>As Consumer</title>
 
         <para>If configured for the KSB, a Java Rice Client can invoke any
@@ -153,21 +153,21 @@
                 </itemizedlist></para>
             </listitem>
           </orderedlist></para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>As Producer</title>
 
         <para>You can register Spring-defined services in the KSB Registry
         through the KSB Configurer. Consumers can call these services as
         described in other sections.</para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Any Java Client</title>
 
-      <sect3>
+      <section>
         <title>As Consumer</title>
 
         <para>A <emphasis role="bold">Java Client</emphasis>, regardless of
@@ -189,9 +189,9 @@
               URL of the service.</para>
             </listitem>
           </orderedlist></para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>As Producer</title>
 
         <orderedlist>
@@ -212,13 +212,13 @@
             talking to a database.</para>
           </listitem>
         </orderedlist>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Non-Java/Non-Rice Client</title>
 
-      <sect3>
+      <section>
         <title>As Consumer</title>
 
         <para>A <emphasis role="bold">non-Java/non-Rice Client</emphasis> that
@@ -234,9 +234,9 @@
               at this time.</para>
             </listitem>
           </itemizedlist></para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>As Producer</title>
 
         <orderedlist>
@@ -250,10 +250,10 @@
             services directly (on their own).</para>
           </listitem>
         </orderedlist>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KSB Registry as a Service</title>
 
       <para>As of the 2.0 version of Rice, the ServiceRegistry is now itself a
@@ -271,13 +271,13 @@
       to do load balancing amongst potential registry endpoints, then a
       hardware or software load balancer could be configured to do
       this.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Configuring the KSB Client in Spring</title>
 
-    <sect2>
+    <section>
       <title>Overview</title>
 
       <para>The Kuali Service Bus (KSB) is installed as a Kuali Rice (Rice)
@@ -295,9 +295,9 @@
 
   &lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"/&gt;
 &lt;/beans&gt;</programlisting>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Spring Property Configuration</title>
 
       <para>The <emphasis role="italic">KSBTestHarnessSpring.xml</emphasis>
@@ -389,9 +389,9 @@
       PropertyPlaceHolderConfigurer bean, the parameter name must be equal to
       the key value in the Spring file so that the properties propagate
       successfully.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Spring JTA Configuration</title>
 
       <para>When doing persistent messaging it is best practice to use JTA as
@@ -427,9 +427,9 @@
       use the Rice XAPoolDataSource class as your data source because it
       addresses some bugs in the StandardXAPoolDataSource, which extends from
       this class.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Put JTA and the Rice Config object in the CoreConfigurer</title>
 
       <para>Next, you must inject the JOTM into the RiceConfigurer:</para>
@@ -449,9 +449,9 @@
         injecting the name into the RiceConfigurer. You can do this instead of
         setting the property in the configuration system.</para>
       </note>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Configuring KSB without JTA</title>
 
       <para>You can configure KSB by injecting a PlatformTransactionManager
@@ -530,9 +530,9 @@
       OJB.properties object at the root of the classpath so OJB can load
       itself. KSB will automatically register its mappings with OJB, so they
       don't need to be included in the repository.xml file.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>web.xml Configuration</title>
 
       <para>To allow external bus clients to invoke services on the
@@ -557,9 +557,9 @@
       name]</emphasis>. Notice how this URL corresponds to the configured
       <emphasis role="bold">serviceServletUrl</emphasis> property on the
       KSBConfigurer.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Configuration Parameters</title>
 
       <para>The service bus leverages the Rice configuration system for its
@@ -746,7 +746,7 @@
           </tgroup>
         </table></para>
 
-      <sect3>
+      <section>
         <title>dev.mode</title>
 
         <para>Indicates whether this node should export and consume services
@@ -755,9 +755,9 @@
         only consume services that it has available locally. In addition to
         this, other nodes on the service bus will not be able to "see" this
         node and will therefore not forward any messages to it.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>message.persistence</title>
 
         <para>If <emphasis role="italic">true</emphasis>, then messages will
@@ -767,9 +767,9 @@
         messages will be lost. For a production environment, it is recommended
         that you set message.persistence to <emphasis
         role="italic">true</emphasis>.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>message.delivery</title>
 
         <para>Can be set to either <emphasis
@@ -788,9 +788,9 @@
           implementing automated tests or short-lived programs that interact
           with the service bus.</para>
         </note>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>message.off</title>
 
         <para>If set to true, then asynchronous messages will not be sent. In
@@ -799,33 +799,33 @@
         Fetcher. However, if message persistence is turned off, these messages
         will be lost. This can be useful in certain debugging or testing
         scenarios.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>RouteQueue.maxRetryAttempts</title>
 
         <para>Sets the default number of retries that will be executed if a
         message fails to be sent. You can also customize this retry count for
         a specific service (see Exposing Services on the Bus).</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>RouteQueue.timeIncrement</title>
 
         <para>Sets the default time increment between retry attempts. As with
         RouteQueue.maxRetryAttempts, you can also configure this at the
         service level.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Routing.ImmediateExceptionRouting</title>
 
         <para>If set to <emphasis role="italic">true</emphasis>, then messages
         that fail to be sent will not be retried. Instead, their
         MessageExceptionHandler will be invoked immediately.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>RouteQueue.maxRetryAttemptsOverride</title>
 
         <para>If set with a number, it will temporarily set the retry attempts
@@ -833,18 +833,18 @@
         arbitrarily high to prevent all messages in a node from making it to
         exception routing if they are having trouble. The message.off param
         produces the same result.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>useQuartzDatabase</title>
 
         <para>When using the embedded Quartz scheduler started by the KSB,
         indicates whether that Quartz scheduler should store its entries in
         the database. If this is true, then the appropriate Quartz properties
         should be set as well. (See ksb.org.quartz.* below).</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>ksb.org.quartz.*</title>
 
         <para>Can be used to pass Quartz properties to the embedded Quartz
@@ -854,9 +854,9 @@
         role="italic">ksb.org.quartz</emphasis>. will have the "ksb." portion
         stripped and will be sent as configuration parameters to the embedded
         Quartz scheduler.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>rice.ksb.config.allowSelfSignedSSL</title>
 
         <para>If <emphasis role="italic">true</emphasis>, then the bus will
@@ -869,25 +869,25 @@
           <para>It is best practice to only set this to 'true' in
           non-production environments!</para>
         </note>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>rice.ksb.web.forceEnable</title>
 
         <para>publish the KSB user interface components (such as the Message
         Queue, Thread Pool, Service Registry screens) even when the ksb.mode
         is not set to <emphasis role="italic">local</emphasis>.</para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KSBConfigurer Properties</title>
 
       <para>In addition to the configuration parameters that you can specify
       using the Rice configuration system, the KSBConfigurer bean itself has
       some properties that can be injected in order to configure it:</para>
 
-      <sect3>
+      <section>
         <title>exceptionMessagingScheduler</title>
 
         <para>By default, KSB uses an embedded Quartz scheduler for scheduling
@@ -895,9 +895,9 @@
         scheduler can instead be injected into the KSBConfigurer and it will
         use that scheduler instead. See Quartz Scheduling for more
         detail.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>messageDataSource</title>
 
         <para>Specifies the javax.sql.DataSource to use for storing the
@@ -906,18 +906,18 @@
 
         <para>If this DataSource is injected, then the registryDataSource must
         also be injected and vice-versa.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>nonTransactionalMessageDataSource</title>
 
         <para>Specifies the javax.sql.DataSource to use that matches the
         messageDataSource property. This datasource instance must not be
         transactional. If not specified, this defaults to the
         nonTransactionalDataSource injected into the RiceConfigurer.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>registryDataSource</title>
 
         <para>Specifies the javax.sql.DataSource to use for reading and
@@ -926,17 +926,17 @@
 
         <para>If this DataSource is injected, then the messageDataSource must
         also be injected and vice-versa.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>services</title>
 
         <para>Specifies a list of Java service definitions relating to SOAP to
         use as part of messaging.</para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KSB Configurer</title>
 
       <para>The application needs to do one more thing to begin publishing
@@ -1051,7 +1051,7 @@
       the SoapServiceExporter classes. See Acquiring and invoking services for
       more detail.</para>
 
-      <sect3>
+      <section>
         <title>Implications of “synchronous” vs. “asynchronous” Message
         Delivery</title>
 
@@ -1094,7 +1094,7 @@
             </listitem>
           </orderedlist></para>
 
-        <sect4>
+        <section>
           <title>Order of Execution</title>
 
           <para>In asynchronous messaging, messages are queued up until the
@@ -1106,9 +1106,9 @@
           role="bold">immediately</emphasis> when they are “sent”. This
           results in a different ordering of execution when using these two
           different messaging models.</para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Exception Handling</title>
 
           <para>In asynchronous messaging, whenever there is a failure
@@ -1136,15 +1136,15 @@
           sending of all messages in a batch job to fail, then each message
           will need to be sent in it’s own transaction, and errors handled
           appropriately.</para>
-        </sect4>
-      </sect3>
-    </sect2>
-  </sect1>
+        </section>
+      </section>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Configuring Quartz for KSB</title>
 
-    <sect2>
+    <section>
       <title>Quartz Scheduling</title>
 
       <para>The Kuali Service Bus (KSB) uses Quartz to schedule delayed tasks,
@@ -1168,13 +1168,13 @@
 
       <para>When you do this, KSB will not create an embedded scheduler but
       will instead use the one provided.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Acquiring and Invoking Services Deployed on KSB</title>
 
-    <sect2>
+    <section>
       <title>Service invocation overview</title>
 
       <para><orderedlist>
@@ -1221,9 +1221,9 @@
       protocol and a compatible service definition, you could move a service
       to different protocols as access needs change without affecting
       dependent client code.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Acquiring and invoking a service directly</title>
 
       <para>The easiest way to call a service is to grab it and invoke it
@@ -1301,9 +1301,9 @@ String result = echoService.echo(echoValue);</programlisting>
           <title>Properties of the ServiceDefinition</title>
 
           <tgroup cols="4">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.8*"/>
 
-            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+            <colspec colname="c2" colnum="2" colwidth="0.3*"/>
 
             <colspec colname="c3" colnum="3" colwidth="1.0*"/>
 
@@ -1477,9 +1477,9 @@ String result = echoService.echo(echoValue);</programlisting>
             </tbody>
           </tgroup>
         </table></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Acquiring and invoking a service using messaging</title>
 
       <para>To make a call to a service through messaging, acquire the service
@@ -1563,9 +1563,9 @@ KEWSampleJavaService testJavaAsyncService = (KEWSampleJavaService) KsbApiService
       a Topic, then those services are invoked at least once or multiple
       times. If any number of services is declared a Queue, then one and only
       one service name will be invoked.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Getting responses from service calls made with messaging</title>
 
       <para>You can use Callback objects to get responses from service calls
@@ -1587,13 +1587,13 @@ testXmlAsyncService.invoke("message content");</programlisting>
       consideration that this object (and the result of a method call) may
       survive machine restart and therefore it’s recommended that you NOT
       depend on certain transient in-memory resources.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Failover</title>
 
-    <sect2>
+    <section>
       <title>Service call failover</title>
 
       <para>Failover works the same whether making direct service calls or
@@ -1611,9 +1611,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
 
       <para>When a message calls a service, the failover rules determine which
       service KSB assigns (topic or queue) to the message.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Failover with queues</title>
 
       <para>Because queues require only one call between all beans bound to
@@ -1622,18 +1622,18 @@ testXmlAsyncService.invoke("message content");</programlisting>
       continues until a suitable bean is found. If none is found, the message
       is marked for retry later. Eventually, the message either goes to KSB
       exception messaging or successfully completes.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Failover with topics</title>
 
       <para>If a machine in a topic is unavailable, a failed call to that
       machine will continue to be retried until that call is successful or
       that call goes into KSB exception messaging.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>KSB Exception Messaging</title>
 
     <para>Exception Messaging is the set of services and configuration options
@@ -1672,9 +1672,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
     <para>Because the node exposing the service configures the
     MessageExceptionHandler, any clients depending on the service need that
     MessageExceptionHandler and any dependent code and configuration.</para>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title>KSB Messaging Paradigms</title>
 
     <para>KSB supports two types of messaging paradigms; Queues and Topics,
@@ -1689,22 +1689,22 @@ testXmlAsyncService.invoke("message content");</programlisting>
     <para>The advantage here is that we can apply these messaging concepts to
     any support protocol with which we can communicate.</para>
 
-    <sect2>
+    <section>
       <title>Queues</title>
 
       <para>When any number of services is bound to a queue and a method is
       invoked, one and only one service gets the invocation.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Topics</title>
 
       <para>When any number of services is bound to a topic and a method is
       invoked, all services are invoked AT LEAST once or multiple
       times.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Message Fetcher</title>
 
       <para><emphasis
@@ -1735,24 +1735,24 @@ testXmlAsyncService.invoke("message content");</programlisting>
       can be used to pull any message in the message store and put it in
       memory for invocation. <emphasis role="italic">Integer</emphasis> is a
       fetch size; <emphasis role="italic">null</emphasis> means all.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Load Balancing</title>
 
     <para>Load balancing between service calls is automatic. If there are
     multiple nodes that expose services of the same name, clients will
     randomly acquire proxies to each endpoint bound to that name.</para>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title>Object Remoting</title>
 
     <para>As of Rice 2.0, Object remoting support has been removed.</para>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title>Publishing Services to KSB</title>
 
     <para>You can publish Services on the service bus either by configuring
@@ -1761,7 +1761,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
     ServiceDefinition is provided that specifies various bus settings and the
     target Spring bean.</para>
 
-    <sect2>
+    <section>
       <title>KSBConfigurer</title>
 
       <para>A service can be exposed by explicitly registering it with the
@@ -1788,9 +1788,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
               &lt;property name="localServiceName" value="myExposedJavaService" /&gt;
           &lt;/bean&gt;
 </programlisting>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Service Exporter</title>
 
       <para>You can also publish Services in any context using the
@@ -1836,9 +1836,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
     &lt;/property&gt;
 
 &lt;/bean&gt;</programlisting>
-    </sect2>
+    </section>
 
-    <sect2 xml:id="callback_service_exporter">
+    <section xml:id="callback_service_exporter">
       <title>CallbackServiceExporter</title>
 
       <para>The term "Callback Service" refers to services that client
@@ -1901,7 +1901,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       cases they can also be used to provide custom processing hooks for
       different components of the various Kuali Rice frameworks.</para>
 
-      <sect3>
+      <section>
         <title>Version Compatibility for Callback Services</title>
 
         <para>Callback services (like all services in Rice) can be evolved
@@ -1920,9 +1920,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
         <para>In order to make this easier on client applications, a helper
         has been implemented which can be used for this purpose in
         Rice.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Callback Service Exporter Helper</title>
 
         <para>There is a helper class which can be used by client applications
@@ -1948,17 +1948,17 @@ testXmlAsyncService.invoke("message content");</programlisting>
 
         <para>The javadocs for <code>CallbackServiceExporter</code> provide
         more detail on the options for publishing of callback services.</para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>ServiceDefinition properties</title>
 
       <para>ServiceDefinitions define how the service is published to the KSB.
       Currently KSB supports three types of services: Java RPC (via
       serialization over HTTP), SOAP, and JMS.</para>
 
-      <sect3>
+      <section>
         <title>Basic parameters</title>
 
         <para>All service definitions support these properties:</para>
@@ -1967,7 +1967,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
             <title>ServiceDefinition Properties</title>
 
             <tgroup cols="3">
-              <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+              <colspec colname="c1" colnum="1" colwidth="0.8*"/>
 
               <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2071,10 +2071,10 @@ testXmlAsyncService.invoke("message content");</programlisting>
               </tbody>
             </tgroup>
           </table></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>ServiceNameSpaceURI/MessageEntity</title>
 
       <para>ServiceNameSpaceURI is the same as the <emphasis
@@ -2086,16 +2086,16 @@ testXmlAsyncService.invoke("message content");</programlisting>
       explicit message entity when acquiring a resource, for example:</para>
 
       <programlisting>GlobalResourceLoader.getService(new QName("MYAPP", "myExposedSoapService"))</programlisting>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>SOAPServiceDefinition</title>
 
       <table frame="none">
         <title>SOAPServiceDefinition</title>
 
         <tgroup cols="3">
-          <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+          <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
           <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2124,16 +2124,16 @@ testXmlAsyncService.invoke("message content");</programlisting>
           </tbody>
         </tgroup>
       </table>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>JavaServiceDefinition</title>
 
       <table frame="none">
         <title>JavaServiceDefinition</title>
 
         <tgroup cols="3">
-          <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+          <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
           <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2170,9 +2170,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
           </tbody>
         </tgroup>
       </table>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Publishing Rice services</title>
 
       <para>We show how you can "import" Rice services into the client Spring
@@ -2208,13 +2208,13 @@ testXmlAsyncService.invoke("message content");</programlisting>
         <para>Not all Rice services are intended for public use. Do not
         arbitrarily expose them on the bus</para>
       </warning>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>The ResourceLoader Stack</title>
 
-    <sect2>
+    <section>
       <title>Overview</title>
 
       <para>Rice is composed of a set of modules that provide distinct
@@ -2248,7 +2248,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/global_resource_loader.png"
-                             scalefit="1"/>
+                    contentwidth="100%" contentdepth="100%" />
                 </imageobject>
               </mediaobject>
             </figure>
@@ -2265,13 +2265,13 @@ testXmlAsyncService.invoke("message content");</programlisting>
       role="bold">RemoteResourceLoader</emphasis>. The Root ResourceLoader is
       registered by the KSB module that exposes services that have been
       registered on the bus.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Accessing and overriding Rice services and beans from
       Spring</title>
 
-      <sect3>
+      <section>
         <title>ResourceLoaderFactoryBean</title>
 
         <para>In addition to programmatically acquiring service references,
@@ -2283,9 +2283,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
         and will produce a bean of the same name obtained from Rice's resource
         loader stack. The bean can then be wired in Spring like any other
         bean.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Installing an application root resource loader </title>
 
         <para>Applications can install their own root ResourceLoader to
@@ -2321,9 +2321,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
           occur lazily, after Spring initialization has completed (either
           programmatically or through a proxy).</para>
         </warning>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Overriding Rice services: Alternate method</title>
 
         <para>A Rice-enabled webapp (including the Rice Standalone
@@ -2365,22 +2365,22 @@ testXmlAsyncService.invoke("message content");</programlisting>
     &lt;/bean&gt;
 
 &lt;/beans&gt;</programlisting>
-      </sect3>
-    </sect2>
-  </sect1>
+      </section>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>KSB Security -- STILL NEEDS TO BE REVIEWED!!!!</title>
 
-    <sect2>
+    <section>
       <title>Overview</title>
 
       <para>Acegi handles the security layer for KSB. Acegi uses remote method
       invocation to hold the application’s security context and to propagate
       this object through to the service layer.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Credentials types</title>
 
       <para>There are several security types you can use to propagate the
@@ -2401,9 +2401,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
             <para>X509</para>
           </listitem>
         </itemizedlist></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>CredentialsSource</title>
 
       <para>The CredentialsSource is an interface that helps obtain security
@@ -2419,7 +2419,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
           </listitem>
         </itemizedlist></para>
 
-      <sect3>
+      <section>
         <title>KSB security: Server side configuration</title>
 
         <para>Here is a code snippet that shows the changes needed to
@@ -2459,9 +2459,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
         &lt;/list&gt;
     &lt;/property&gt;
 &lt;/bean&gt;</programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>KSB security: Client side configuration</title>
 
         <programlisting>&lt;bean id="customCredentialsSourceFactory" class="edu.myinstituition.myapp.security.credentials.CredentialsSourceFactory" /&gt;
@@ -2471,13 +2471,13 @@ testXmlAsyncService.invoke("message content");</programlisting>
     &lt;property name="credentialsSourceFactory" ref="customCredentialsSourceFactory"&gt;
 &lt;/bean&gt;
 </programlisting>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KSB connector and exporter code</title>
 
-      <sect3>
+      <section>
         <title>Connectors</title>
 
         <para>Connectors are used by a client to connect to a service that is
@@ -2488,30 +2488,30 @@ testXmlAsyncService.invoke("message content");</programlisting>
         by the server is serialized to the database and de-serialized by the
         client. There are different types of connectors supported by KSB, most
         notable are SOAP and Java over HTTP.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Exporters</title>
 
         <para>Services, when exported, can be secured using standard Acegi
         methods. A security manager and an interceptor help organize the set
         of Business Objects that are exported.</para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2 xml:id="security_and_keystores">
+    <section xml:id="security_and_keystores">
       <title>Security and Keystores</title>
 
-      <sect3>
+      <section>
         <title>Generating the Keystore</title>
 
         <para>For client applications to be able to consume secured services
         hosted from a Rice server, the implementer must generate a keystore.
         As an initial setup, KSB security relies on the creation of a keystore
         using the JVM keytool as follows:</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Step 1: Create the Keystore</title>
 
         <para>The first step is to create the keystore and generate a
@@ -2529,9 +2529,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
 
           <para>r1c3pw is the password used for the provided example.</para>
         </caution>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Step 2: Sign the Key</title>
 
         <para>This generates the keystore in a file called "rice_keystore" in
@@ -2541,9 +2541,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
         command:</para>
 
         <programlisting>keytool  -selfcert -validity 9999 -alias rice -keystore rice.keystore -keypass r1c3pw -storepass r1c3pw</programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Step 3: Generate the Certificate</title>
 
         <para>After the application's certificate has been signed, we must
@@ -2551,9 +2551,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
         a certificate, execute the following command:</para>
 
         <programlisting>keytool  -export -alias rice -file rice.cert -keystore rice.keystore -storepass r1c3pw</programlisting>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Step 4: Import Application Certificates</title>
 
         <para>The client application's certificate can be imported using the
@@ -2567,9 +2567,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
         keystore and cert. This is so you do not have to continually update
         these keystores. This will be determined by your computing standards
         on how you handle key management.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Configure KSB to use the keystore</title>
 
         <para>The following params are needed in the xml config to allow the
@@ -2596,9 +2596,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
               that these are the same.</para>
             </listitem>
           </itemizedlist></para>
-      </sect3>
-    </sect2>
-    <sect2>
+      </section>
+    </section>
+    <section>
       <title>BasicAuthenticationService</title>
         <para>The <emphasis role="bold">BasicAuthenticationService</emphasis> allows services published on the
           KSB to be accessed securely with basic authentication.  As an example, here is how the
@@ -2677,10 +2677,10 @@ testXmlAsyncService.invoke("message content");</programlisting>
         </itemizedlist>
         </para>
       
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Queue and Topic invocation</title>
 
     <para>When you deploy a service, you can configure it for queue or for
@@ -2691,7 +2691,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
     service registered under the same <emphasis
     role="bold">QName</emphasis>.</para>
 
-    <sect2>
+    <section>
       <title>Queue invocation</title>
 
       <para>Remote service proxies obtained through the resource loader stack
@@ -2710,9 +2710,9 @@ testXmlAsyncService.invoke("message content");</programlisting>
       similar fashion to determine a single service to call. After the first
       queue service invocation the <emphasis
       role="bold">MessageServiceInvoker</emphasis> will return.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Topic invocation</title>
 
       <para>The simplest way to invoke a topic service is using the <emphasis
@@ -2752,27 +2752,27 @@ testXmlAsyncService.invoke("message content");</programlisting>
       <programlisting>List&lt;Endpoint&gt; servicesToProxy = KsbApiServiceLocator.getServiceBus().getEndpoints(qname);
 
 SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInstance(servicesToProxy, callback, context, value1, value2);</programlisting>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>KSB Parameters</title>
 
     <para>Here is a comprehensive set of configuration parameters used to
     configure the Kuali Service Bus.</para>
 
-    <sect2>
+    <section>
       <title>Core Parameters</title>
 
       <para><table frame="none">
           <title>Core Parameters</title>
 
           <tgroup cols="3">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.9*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
-            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+            <colspec colname="c3" colnum="3" colwidth="0.6*"/>
 
             <thead>
               <row>
@@ -2974,7 +2974,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
           </tgroup>
         </table></para>
 
-      <sect3>
+      <section>
         <title>serviceServletUrl</title>
 
         <para>The URL that resolves to the KSB servlet that handles incoming
@@ -2984,9 +2984,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         the <emphasis role="italic">KSBDispatcherServlet</emphasis>. This
         parameter should point to the absolute URL of where that servlet is
         mapped. It should include a trailing slash.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>application.id</title>
 
         <para>An identifier that indicates the name of the <emphasis
@@ -2996,15 +2996,15 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         among other things. All services exported from the client application
         onto the service bus use this value as their default namespace unless
         otherwise specified.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>keystore.file, keystore.alias, keystore.password</title>
 
         <para>See the documentation below on keystore management.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>ksb.mode</title>
 
         <para>Mode in which to load the KSB module. Valid values are <emphasis
@@ -3013,24 +3013,24 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         how the KSB module loads based on these settings. It will always try
         to load the KSB struts module if a <emphasis
         role="italic">KualiActionServlet</emphasis> is configured.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>ksb.url</title>
 
         <para>The URL of the KSB web application screens</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>rice.ksb.struts.config.files</title>
 
         <para>The file that defines the struts context for the KRice KSB
         struts module. The struts module is loaded automatically if a
         <emphasis role="italic">KualiActionServlet</emphasis> is configured in
         the <emphasis role="italic">web.xml</emphasis>.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>dev.mode</title>
 
         <para>Indicates whether this node should export and consume services
@@ -3040,9 +3040,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         services that it has available locally. In addition to this, other
         nodes on the service bus will not be able to "see" this node and will
         therefore not forward any messages to it.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>message.persistence</title>
 
         <para>If <emphasis role="italic">true</emphasis>, then messages will
@@ -3052,9 +3052,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         messages will be lost. For a production environment, it is recommended
         that message persistence be set to <emphasis
         role="italic">true</emphasis>.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>message.delivery</title>
 
         <para>Can be set to either <emphasis
@@ -3066,9 +3066,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         scenarios. For a production environment, it is recommended that
         message delivery be set to <emphasis
         role="italic">async</emphasis>.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>message.off</title>
 
         <para>If set to <emphasis role="italic">true</emphasis> then
@@ -3077,25 +3077,25 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         and can even be picked up later using the Message Fetcher. However, if
         message persistence is turned off, these messages will be lost. This
         can be useful in certain debugging or testing scenarios.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>RouteQueue.maxRetryAttempts</title>
 
         <para>Sets the default number of retries that will be executed if a
         message fails to be sent. This retry count can also be customized for
         a specific service. (See Exposing Services on the Bus)</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>RouteQueue.timeIncrement</title>
 
         <para>Sets the default time increment between retry attempts. As with
         <emphasis role="italic">RouteQueue.maxRetryAttempts</emphasis> this
         can also be configured at the service level.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>RouteQueue.maxRetryAttemptsOverride</title>
 
         <para>If set with a number, it will temporarily set the retry attempts
@@ -3104,18 +3104,18 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         exception routing is by setting the number arbitrarily high. The
         <emphasis role="italic">message.off</emphasis> param does the same
         thing.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Routing.ImmediateExceptionRouting</title>
 
         <para>If set to <emphasis role="italic">true</emphasis>, then messages
         that fail to be sent will not be re-tried. Instead their <emphasis
         role="italic">MessageExceptionHandler</emphasis> will be invoked
         immediately.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>useQuartzDatabase</title>
 
         <para>When using the embedded Quartz scheduler started by the KSB,
@@ -3123,9 +3123,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         the database. If this is <emphasis role="italic">true</emphasis>, then
         the appropriate Quartz properties should be set as well (see
         ksb.org.quartz.* below).</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>ksb.org.quartz.*</title>
 
         <para>Can be used to pass Quartz properties to the embedded Quartz
@@ -3134,10 +3134,10 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         role="bold">ksb.org.quartz</emphasis>. will have the "<emphasis
         role="italic">ksb.</emphasis>" portion stripped and will be sent as
         configuration parameters to the embedded Quartz scheduler.</para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KSB Configurer Properties</title>
 
       <para>In addition to the configuration parameters available in the KRice
@@ -3145,7 +3145,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
       role="italic">KSBConfigurer</emphasis> bean has some properties that can
       be injected to configure it:</para>
 
-      <sect3>
+      <section>
         <title>exceptionMessagingScheduler</title>
 
         <para>By default, the KSB uses an embedded Quartz scheduler for
@@ -3153,9 +3153,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         Quartz scheduler can instead be injected into the KSBConfigurer and it
         will use that scheduler instead. See Quartz Scheduling for more
         detail.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>messageDataSource</title>
 
         <para>Specifies the <emphasis
@@ -3165,9 +3165,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
 
         <para>If this DataSource is injected, then the registryDataSource must
         also be injected, and vice-versa.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>registryDataSource</title>
 
         <para>Specifies the<emphasis role="bold">
@@ -3178,23 +3178,23 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
         <para>If this DataSource is injected, then the <emphasis
         role="bold">messageDataSource</emphasis> must also be injected, and
         vice-versa.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>overrideServices</title>
 
         <para>See Acquiring and invoking services</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Services</title>
 
         <para>See Acquiring and invoking services</para>
-      </sect3>
-    </sect2>
-  </sect1>
+      </section>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>JAX-RS / RESTful services</title>
 
     <para>Rice now allows allows RESTful (JAX-RS) services to be exported and
@@ -3205,7 +3205,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
     <para>For details on JAX-RS, see <link
     xlink:href="http://jcp.org/en/jsr/detail?id=311">JSR-311</link>.</para>
 
-    <sect2>
+    <section>
       <title>Caveats</title>
 
       <para><itemizedlist>
@@ -3227,9 +3227,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
             thrown.</para>
           </listitem>
         </itemizedlist></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>A Simple Example</title>
 
       <para>To expose a simple JAX-RS annotated service on the bus, you can
@@ -3333,9 +3333,9 @@ public interface BaseballCardCollectionService {
 List&lt;BaseballCard&gt; allMyMickeyMantles = baseballCardCollection.get("Mickey Mantle");
 // baseballCardCollection.&lt;other service method&gt;(...)
 // etc</programlisting>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Composite Services</title>
 
       <para>It is also possible to aggregate multiple Rice service
@@ -3392,15 +3392,15 @@ new QName(NAMESPACE, KMS_SERVICE));
 InboxResource inboxResource = kmsService.getResource("inbox");
 // Get service by resource class
 MessageResource messageResource = kmsService.getResource(MessageResource.class);</programlisting>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Additional Service Definition Properties</title>
 
       <para>There are some properties on the RESTServiceDefinition object that
       let you do more advanced configuration:</para>
 
-      <sect3>
+      <section>
         <title>Providers</title>
 
         <para>JAX-RS Providers allow you to define:<itemizedlist>
@@ -3426,9 +3426,9 @@ MessageResource messageResource = kmsService.getResource(MessageResource.class);
         but the CXF project which Rice uses under the hood does not (at the
         time of this writing) support this configuration mechanism, so this
         configuration property is currently necessary.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Extension Mappings</title>
 
         <para>Ordinarily you need to set your ACCEPT header to ask for a
@@ -3439,23 +3439,23 @@ MessageResource messageResource = kmsService.getResource(MessageResource.class);
         role="bold">.xml</emphasis> extension to the media type <emphasis
         role="bold">text/xml</emphasis>, and then tag .xml on to the end of
         your resource URL to specify that representation.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Language Mappings</title>
 
         <para>language mappings allow you a way to control the the
         Content-Language header, which lets you specify which languages your
         service can accept and provide.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Additional Information</title>
 
         <para>For more information on what these properties provide, it may be
         helpful to consult the JAX-RS specification, or the CXF
         documentation.</para>
-      </sect3>
-    </sect2>
-  </sect1>
+      </section>
+    </section>
+  </section>
 </chapter>

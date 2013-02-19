@@ -1233,7 +1233,7 @@
             <para>This screen print is from the Bug Fix screen. The screens for Improvement and for
                 New Feature are slightly different. The fields in which you need to enter
                 information are highlighted in this screen print.</para>
-            <figure><title>Creat New Jira: Detail Section</title>
+            <figure><title>Create New Jira: Detail Section</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/Jira_bug_fix.png" scale="65"/>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <BK_BOOK_AUTHOR_T AUTHOR_ID="1" BOOK_ID="1"/>
+    <BK_BOOK_AUTHOR_T AUTHOR_ID="1" BOOK_ID="2"/>
+    <BK_BOOK_AUTHOR_T AUTHOR_ID="2" BOOK_ID="1"/>
+</dataset>

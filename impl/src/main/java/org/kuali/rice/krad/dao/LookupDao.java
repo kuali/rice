@@ -28,6 +28,14 @@ public interface LookupDao {
 			Class<T> example, Map<String, String> formProps, boolean unbounded,
 			boolean usePrimaryKeyValuesOnly);
 
+    /**
+     * Uses the searchResultsLimit passed in to limit the number of items returned
+     *
+     * @return Object returned from the search
+     */
+    public <T extends Object> Collection<T> findCollectionBySearchHelper(
+            Class<T> example, Map<String, String> formProps, boolean unbounded,
+            boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit);
 	/**
 	 * Retrieves a Object based on the search criteria, which should uniquely
 	 * identify a record.

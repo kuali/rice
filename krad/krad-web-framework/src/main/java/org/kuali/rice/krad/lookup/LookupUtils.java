@@ -168,6 +168,21 @@ public class LookupUtils {
     }
 
     /**
+     * This method applies the given search results limit to the search criteria for this BO.  Passing in the
+     * limit if it is known avoids having to look it up.
+     *
+     * @param limit limit to use
+     * @param criteria search criteria
+     * @param platform database platform
+     */
+    public static void applySearchResultsLimit(Integer limit, Criteria criteria,
+            DatabasePlatform platform) {
+        if (limit != null) {
+            platform.applyLimit(limit, criteria);
+        }
+    }
+
+    /**
      * Applies the search results limit to the search criteria for this BO (JPA)
      *
      * @param businessObjectClass BO class to search on / get limit for

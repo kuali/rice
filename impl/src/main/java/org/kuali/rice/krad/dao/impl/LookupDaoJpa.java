@@ -114,15 +114,30 @@ public class LookupDaoJpa implements LookupDao {
 		return (Long) new QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
 	}
 
+    /**
+     * Since 2.3
+     * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
+     * to behave the same way as it did prior to 2.3. The value for searchResultsLimit will be retrieved from the
+     * KNS version of LookupUtils.
+     */
 	public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-		PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
-		if (usePrimaryKeyValuesOnly) {
-			return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, formProps), unbounded);
-		} else {
-			Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
-			return executeSearch(businessObjectClass, crit, unbounded);
-		}
+        Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils
+                .getSearchResultsLimit(businessObjectClass);
+        return findCollectionBySearchHelper(businessObjectClass, formProps, unbounded,
+                usePrimaryKeyValuesOnly, searchResultsLimit);
 	}
+
+    public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded,
+            boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit) {
+        PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
+        if (usePrimaryKeyValuesOnly) {
+            return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(
+                    businessObjectClass, formProps), unbounded, searchResultsLimit);
+        } else {
+            Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
+            return executeSearch(businessObjectClass, crit, unbounded, searchResultsLimit);
+        }
+    }
 
 	public Criteria getCollectionCriteriaFromMap(PersistableBusinessObject example, Map formProps) {
 		Criteria criteria = new Criteria(example.getClass().getName());
@@ -204,11 +219,10 @@ public class LookupDaoJpa implements LookupDao {
 		return businessObject;
 	}
 
-	private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded) {
+	private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded, Integer searchResultsLimit) {
 		Collection<PersistableBusinessObject> searchResults = new ArrayList<PersistableBusinessObject>();
 		Long matchingResultsCount = null;
 		try {
-			Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(businessObjectClass);
 			if (!unbounded && (searchResultsLimit != null)) {
 				matchingResultsCount = (Long) new QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
 				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().setMaxResults(searchResultsLimit).getResultList();

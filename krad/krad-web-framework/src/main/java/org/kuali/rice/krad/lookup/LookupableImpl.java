@@ -164,6 +164,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // if any of the properties refer to an embedded EBO, call the EBO
         // lookups first and apply to the local lookup
         try {
+            Integer searchResultsLimit = null;
+            if (!unbounded) {
+                searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass());
+            }
             if (LookupUtils.hasExternalBusinessObjectProperty(getDataObjectClass(), nonBlankSearchCriteria)) {
                 Map<String, String> eboSearchCriteria = adjustCriteriaForNestedEBOs(nonBlankSearchCriteria, unbounded);
 
@@ -173,10 +177,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
                 // add those results as criteria run the normal search (but with the EBO criteria added)
                 searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
-                        eboSearchCriteria, unbounded);
+                        eboSearchCriteria, unbounded, searchResultsLimit);
             } else {
                 searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
-                        nonBlankSearchCriteria, unbounded);
+                        nonBlankSearchCriteria, unbounded, searchResultsLimit);
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Error trying to perform search", e);

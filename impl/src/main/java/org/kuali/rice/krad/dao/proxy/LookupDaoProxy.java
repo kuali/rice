@@ -113,6 +113,12 @@ public class LookupDaoProxy implements LookupDao {
                 treatWildcardsAndOperatorsAsLiteral, criteria);
 	}
 
+    /**
+     * Since 2.3
+     * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
+     * to behave the same way as it did prior to 2.3. In the LookupDao, the value for searchResultsLimit will be
+     * retrieved from the KNS version of LookupUtils in the LookupDao.
+     */
 	/**
 	 * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean, boolean)
 	 */
@@ -120,7 +126,17 @@ public class LookupDaoProxy implements LookupDao {
 		return getDao(example).findCollectionBySearchHelper(example, formProps, unbounded, usePrimaryKeyValuesOnly);
 	}
 
-	/**
+    /**
+     * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean,
+     *      boolean, Integer)
+     */
+    public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded,
+            boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit) {
+        return getDao(example).findCollectionBySearchHelper(example, formProps, unbounded, usePrimaryKeyValuesOnly,
+            searchResultsLimit);
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.dao.LookupDao#findCountByMap(java.lang.Object, java.util.Map)
 	 */
 	public Long findCountByMap(Object example, Map formProps) {

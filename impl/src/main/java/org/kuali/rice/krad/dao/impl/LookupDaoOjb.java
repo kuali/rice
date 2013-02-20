@@ -61,15 +61,30 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     private PersistenceStructureService persistenceStructureService;
     private DataDictionaryService dataDictionaryService;
 
+    /**
+     * Since 2.3
+     * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
+     * to behave the same way as it did prior to 2.3. The value for searchResultsLimit will be retrieved from the
+     * KNS version of LookupUtils.
+     */
     public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
+        Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils
+                .getSearchResultsLimit(businessObjectClass);
+        return findCollectionBySearchHelper(businessObjectClass, formProps, unbounded,
+                usePrimaryKeyValuesOnly, searchResultsLimit);
+    }
+
+    public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded,
+            boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit) {
         BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         if (usePrimaryKeyValuesOnly) {
-        	return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, formProps), unbounded);
+            return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(
+                    businessObjectClass, formProps), unbounded, searchResultsLimit);
         }
-        
-		Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
-		return executeSearch(businessObjectClass, crit, unbounded);
-	}
+
+        Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
+        return executeSearch(businessObjectClass, crit, unbounded, searchResultsLimit);
+    }
 
     /**
      * Builds up criteria object based on the object and map.
@@ -160,17 +175,14 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         return businessObject;
     }
 
-    private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded) {
+    private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded, Integer searchResultsLimit) {
     	Collection searchResults = new ArrayList();
     	Long matchingResultsCount = null;
     	try {
-    		Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils
-                    .getSearchResultsLimit(businessObjectClass);
     		// A negative number in searchResultsLimit means the search results should be unlimited.
             if (!unbounded && (searchResultsLimit != null) && searchResultsLimit >= 0) {
     			matchingResultsCount = new Long(getPersistenceBrokerTemplate().getCount(QueryFactory.newQuery(businessObjectClass, criteria)));
-    			org.kuali.rice.kns.lookup.LookupUtils
-                        .applySearchResultsLimit(businessObjectClass, criteria, getDbPlatform());
+    			LookupUtils.applySearchResultsLimit(searchResultsLimit, criteria, getDbPlatform());
     		}
     		if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
     			matchingResultsCount = new Long(0);

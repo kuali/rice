@@ -88,6 +88,7 @@ public class LookupView extends FormView {
     private boolean disableSearchButtons = false;
 
     private Integer resultSetLimit = null;
+    private Integer multipleValuesSelectResultSetLimit = null;
 
     private String maintenanceUrlMapping;
 
@@ -416,6 +417,36 @@ public class LookupView extends FormView {
      */
     public boolean hasResultSetLimit() {
         return (resultSetLimit != null);
+    }
+
+    /**
+     * Retrieves the maximum number of records that will be listed
+     * as a result of the multiple values select lookup search
+     *
+     * @return Integer multiple values select result set limit
+     */
+    @BeanTagAttribute(name="multipleValuesSelectResultSetLimit")
+    public Integer getMultipleValuesSelectResultSetLimit() {
+        return multipleValuesSelectResultSetLimit;
+    }
+
+    /**
+     * Setter for the multiple values select result set limit
+     *
+     * @param multipleValuesSelectResultSetLimit Integer specifying limit
+     */
+    public void setMultipleValuesSelectResultSetLimit(Integer multipleValuesSelectResultSetLimit) {
+        this.multipleValuesSelectResultSetLimit = multipleValuesSelectResultSetLimit;
+    }
+
+    /**
+     * Indicates whether a multiple values select result
+     * set limit has been specified for the view
+     *
+     * @return true if this instance has a multiple values select result set limit
+     */
+    public boolean hasMultipleValuesSelectResultSetLimitResultSetLimit() {
+        return (multipleValuesSelectResultSetLimit != null);
     }
 
     /**

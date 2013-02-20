@@ -146,7 +146,11 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
         }
 
         if (lookupView != null) {
-            return lookupView.getResultSetLimit();
+            if (!lookupView.isMultipleValuesSelect()) {
+                return lookupView.getResultSetLimit();
+            } else {
+                return lookupView.getMultipleValuesSelectResultSetLimit();
+            }
         }
 
         return null;

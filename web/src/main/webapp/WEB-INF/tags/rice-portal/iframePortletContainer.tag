@@ -83,7 +83,7 @@ function getLocation(href) {
     props: {
       style: {
         width: "100%",
-        height: jQuery(window).height() - 250 + "px"  // initial height
+        height: screen.height - 350 + "px"  // initial height set to a reasonable value in case messaging doesn't work
       }
     },
     onMessage: function(message, origin) {

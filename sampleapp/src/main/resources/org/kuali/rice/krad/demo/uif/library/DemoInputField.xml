@@ -35,7 +35,6 @@
         <ref bean="Demo-InputField-Example6"/>
         <ref bean="Demo-InputField-Example7"/>
         <ref bean="Demo-InputField-Example8"/>
-        <ref bean="Demo-InputField-Example9"/>
         <ref bean="Demo-InputField-Example10"/>
         <ref bean="Demo-InputField-Example11"/>
       </list>
@@ -154,24 +153,6 @@
           </property>
         </bean>
         <!-- ex:Demo-InputField-Example8 end-->
-      </list>
-    </property>
-  </bean>
-
-  <!-- Suggest -->
-  <bean id="Demo-InputField-Example9" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-InputField-Example9 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Suggest Field"
-              p:instructionalText="Enter ca or ea to see a TravelAccountType accountTypeCode suggestion"
-              p:propertyName="inputField9" p:required="true">
-          <property name="suggest">
-              <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="accountTypeCode"
-                    p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
-          </property>
-        </bean>
-        <!-- ex:Demo-InputField-Example9 end-->
       </list>
     </property>
   </bean>

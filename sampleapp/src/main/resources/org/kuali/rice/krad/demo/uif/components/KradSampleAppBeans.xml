@@ -496,6 +496,7 @@
         p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>-->
         <bean parent="Uif-Link" p:linkText="Disclosure"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Suggest" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Suggest-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

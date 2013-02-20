@@ -30,6 +30,7 @@ var gAutoFocus = false;
 var clientErrorStorage = new Object();
 var summaryTextExistence = new Object();
 var clientErrorExistsCheck = false;
+var skipPageSetup = false;
 
 var originalPageTitle;
 var errorImage;
@@ -54,6 +55,14 @@ var refreshTimerComponentMap = {};
 
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
+    //page redirect variables
+    var hashPageId = getUrlParameter("pageId", document.location.hash);
+    var currentPageIdField = jQuery("input#pageId");
+    var pageRedirect = hashPageId && currentPageIdField.length && currentPageIdField.val() != hashPageId;
+
+    //skip the page setup if we are performing a redirect
+    skipPageSetup = pageRedirect;
+
     setPageBreadcrumb();
 
     // buttons
@@ -75,6 +84,7 @@ jQuery(document).ready(function () {
         hideLoading();
     });
 
+    //run all the scripts
     runHiddenScripts("");
 
     // show the page
@@ -83,7 +93,36 @@ jQuery(document).ready(function () {
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
+    //add listener for popstate to change pages
+    window.addEventListener("popstate", function (e) {
+        var currentPageId = jQuery("input#pageId").val();
+        if (e.state && e.state.pageId && e.state.pageId != currentPageId) {
+            var request = new KradRequest();
+            request.methodToCall = "navigate";
+            request.additionalData = {"actionParameters[navigateToPageId]":e.state.pageId};
+            request.send();
+        }
+    });
+
+    //add listener on hashchange to change pages when pageId hash changes
+    window.addEventListener("hashchange", function (e) {
+        var pageId = null;
+        if (document.location.hash) {
+            pageId = getUrlParameter("pageId", document.location.hash);
+        }
+
+        if (pageId && jQuery("input#pageId").length && pageId != jQuery("input#pageId").val()) {
+            handleHashPageId(pageId);
+        }
+    });
+
+    //focus on first field
     performFocus("FIRST");
+
+    //handle hash pageId redirect (old IE bookmark support)
+    if (pageRedirect) {
+        handleHashPageId(hashPageId);
+    }
 });
 
 /**
@@ -427,6 +466,12 @@ function hideBubblePopups(element) {
  * Sets up the validator and the dirty check and other page scripts
  */
 function setupPage(validate) {
+    //if we are skipping this page setup, reset the flag, and return (this logic is for redirects)
+    if (skipPageSetup) {
+        skipPageSetup = false;
+        return;
+    }
+
     jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
     originalPageTitle = document.title;
 
@@ -440,9 +485,27 @@ function setupPage(validate) {
     validateClient = validate;
 
     //select current page
-    var pageId = jQuery("[name='view.currentPageId']").val();
+    var pageId = jQuery("input[name='view.currentPageId']").val();
     jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage:pageId});
     jQuery("ul.uif-tabMenu").selectTab({selectPage:pageId});
+
+    //handle page history/url
+    if (history.replaceState) {
+        //HTML5 history is supported...
+        var urlPageId = getUrlParameter("pageId");
+        if (urlPageId && pageId && urlPageId != pageId) {
+            //push state if new page
+            history.pushState({pageId:pageId}, null, getHistoryQueryString("pageId", pageId));
+        }
+        else {
+            //otherwise replace state
+            history.replaceState({pageId:pageId}, null, getHistoryQueryString("pageId", pageId));
+        }
+    }
+    else {
+        //Add to hash if no HTML5 history support (old IE support)
+        document.location.hash = "#?pageId=" + pageId;
+    }
 
     //skip input field iteration and validation message writing, if no server messages
     var hasServerMessagesData = jQuery("[data-type='Page']").data("server-messages");

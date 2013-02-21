@@ -486,8 +486,25 @@
       <id>rds</id>
       <properties>
         <!-- Override for JDK6 and Amazon RDS -->
+
+        <!-- LAME!  L A M E ! !    L   A   M   E   !   !   !   -->
+        <!-- LAME!  L A M E ! !    L   A   M   E   !   !   !   -->
+        <!-- LAME!  L A M E ! !    L   A   M   E   !   !   !   -->
+        <!-- LAME!  L A M E ! !    L   A   M   E   !   !   !   -->
+        <!-- LAME!  L A M E ! !    L   A   M   E   !   !   !   -->
+        <!--                                                   -->
+        <!-- We are missing some column defaults when we use   --> 
+        <!-- this newer Oracle driver, so for now we're        -->
+        <!-- backing off and using the ancient ojdbc14 jar     -->
+
+        <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
+        <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
+
+        <!-- 
         <oracle.jdbc.artifactId>ojdbc6_g</oracle.jdbc.artifactId>
         <oracle.jdbc.version>11.2.0.2</oracle.jdbc.version>
+        -->
+
         <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
         <impex.dba.url>${impex.url}</impex.dba.url>
         <impex.dba.username>master</impex.dba.username>

@@ -487,23 +487,27 @@ public class CustomTagAnnotations {
             while (!clazz.equals(Object.class)) {
                 //add tag to interface object elements
                 for (Class currentInterface : clazz.getInterfaces()) {
-                    if (currentInterface.getName().startsWith("org.kuali")) {
-                        Element elementObject = document.createElement("xsd:complexType");
-                        elementObject.setAttribute("name", currentInterface.getName());
-
-                        Element choice = document.createElement("xsd:choice");
-                        choice.setAttribute("minOccurs", "0");
-                        choice.setAttribute("maxOccurs", "unbounded");
-                        Element springBean = document.createElement("xsd:element");
-                        springBean.setAttribute("ref", "spring:bean");
-                        Element springRef = document.createElement("xsd:element");
-                        springRef.setAttribute("ref", "spring:ref");
-
-                        choice.appendChild(springRef);
-                        choice.appendChild(springBean);
-                        elementObject.appendChild(choice);
-                        elementObjects.put(currentInterface.getName(), elementObject);
+                    //skip non-kuali interfaces
+                    if (!currentInterface.getName().startsWith("org.kuali")) {
+                        continue;
                     }
+
+                    Element elementObject = document.createElement("xsd:complexType");
+                    elementObject.setAttribute("name", currentInterface.getName());
+
+                    Element choice = document.createElement("xsd:choice");
+                    choice.setAttribute("minOccurs", "0");
+                    choice.setAttribute("maxOccurs", "unbounded");
+                    Element springBean = document.createElement("xsd:element");
+                    springBean.setAttribute("ref", "spring:bean");
+                    Element springRef = document.createElement("xsd:element");
+                    springRef.setAttribute("ref", "spring:ref");
+
+                    choice.appendChild(springRef);
+                    choice.appendChild(springBean);
+                    elementObject.appendChild(choice);
+                    elementObjects.put(currentInterface.getName(), elementObject);
+
                 }
 
                 //add tag to class object elements

@@ -14,6 +14,8 @@
 -- limitations under the License.
 --
 
+
+
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 --
@@ -23,8 +25,14 @@
 -------------------------------------------------------------------------------------------
 
 
+
 --
--- KULRICE-8573: Add session id to locks and delete these locks when session is destroyed.
+-- KULRICE-7378 - MySQL Upgrade script for Rice 2.0 is dropping not null constraints
 --
 
-ALTER TABLE KRNS_PESSIMISTIC_LOCK_T ADD COLUMN SESN_ID VARCHAR(40) NOT NULL DEFAULT '';
+--
+-- NOTE - This is only an issue for the MySQL scripts, so that is why there is no corresponding
+--        2012-010-24.sql script for Oracle.
+--
+
+ALTER TABLE KRSB_MSG_QUE_T MODIFY APPL_ID VARCHAR(255) NOT NULL;

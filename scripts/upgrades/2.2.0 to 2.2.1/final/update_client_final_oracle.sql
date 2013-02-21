@@ -22,3 +22,9 @@
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 
+--
+-- KULRICE-8573: Add session id to locks and delete these locks when session is destroyed.
+--
+
+ALTER TABLE KRNS_PESSIMISTIC_LOCK_T ADD SESN_ID VARCHAR2(40) DEFAULT '' NOT NULL
+/

@@ -32,14 +32,14 @@ If the origin of your 2.2.0 database was:
 1) An upgraded 2.1.0 database:
 
 If your Rice 2.2.0 database was upgraded from the 2.1.0 schema using the
-upgrade scripts, you will first need to run the appropriate upgrade script
-(either the client or server script) from 2.1.0 to 2.1.2 (found in
-scripts/upgrades/2.1.0 to 2.1.2/final), and then you can proceed with the
-2.2.0 to 2.2.1 scripts found in this folder.
+upgrade scripts, you will first need to run the appropriate "missing prereqs"
+script from this folder (note that there is no such script needed for oracle
+Rice client schemas), and then you can proceed with the update scripts
+also found in this folder.
 
 2) The Impex dataset for the Rice 2.2.0 database:
 
 If your Rice 2.2.0 database was built from the Impex dataset provided with
 Rice, or derived from that dataset, then you do not need to perform this
-additional step, and you can directly upgrade your database using the scripts
-in this folder.
+additional step, and you can directly upgrade your database using the update
+scripts in this folder.

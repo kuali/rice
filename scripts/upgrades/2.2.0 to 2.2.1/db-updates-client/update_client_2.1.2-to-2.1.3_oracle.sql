@@ -14,17 +14,9 @@
 -- limitations under the License.
 --
 
--------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
---
---  Please see README.TXT for special instructions about the 2.2.0 to 2.2.1 upgrade
---
--------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
-
-
 --
 -- KULRICE-8573: Add session id to locks and delete these locks when session is destroyed.
 --
 
-ALTER TABLE KRNS_PESSIMISTIC_LOCK_T ADD COLUMN SESN_ID VARCHAR(40) NOT NULL DEFAULT '';
+ALTER TABLE KRNS_PESSIMISTIC_LOCK_T ADD SESN_ID VARCHAR2(40) DEFAULT '' NOT NULL
+/

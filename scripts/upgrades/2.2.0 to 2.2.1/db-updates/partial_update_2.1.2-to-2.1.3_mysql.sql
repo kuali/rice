@@ -16,19 +16,10 @@
 
 
 
--------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
---
---  Please see README.TXT for special instructions about the 2.2.0 to 2.2.1 upgrade
---
--------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
-
-
 
 -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 -- mysql-2012-11-28.sql
---
+-- 
 
 
 --
@@ -65,7 +56,7 @@ INSERT INTO KRIM_ROLE_PERM_T (ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, A
 
 -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 -- mysql-2012-12-12.sql
---
+-- 
 
 
 --
@@ -77,7 +68,7 @@ ALTER TABLE KRNS_PESSIMISTIC_LOCK_T ADD COLUMN SESN_ID VARCHAR(40) NOT NULL DEFA
 
 -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 -- mysql-2013-01-09.sql
---
+-- 
 
 
 
@@ -90,7 +81,7 @@ delete from krim_role_perm_t where
 
 -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 -- mysql-2013-01-14.sql
---
+-- 
 
 
 -- Add column for Document Type Authorizer
@@ -99,7 +90,7 @@ ALTER TABLE KREW_DOC_TYP_T ADD COLUMN AUTHORIZER VARCHAR(255) DEFAULT NULL;
 
 -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 -- mysql-2013-01-16.sql
---
+-- 
 
 
 
@@ -118,45 +109,4 @@ update KREW_DOC_TYP_T set LBL = 'Identity Management Document' where
 --
 
 CREATE INDEX KRSB_SVC_DEF_TI4 ON KRSB_SVC_DEF_T(SVC_DSCRPTR_ID)
-;
-
-
--- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
--- mysql-2013-02-14.sql
---
-
---
---     KULRICE-8349 - guest user access
---
-
--- CONDITIONALLY ADD THESE AGAIN, as the boostrap server cleanup script may have nuked them
-
-INSERT INTO krim_entity_t (entity_id, obj_id, ver_nbr, actv_ind, last_updt_dt)
-  SELECT 'KR1000', uuid(), 1, 'Y', now()
-    FROM dual
-    WHERE NOT EXISTS (SELECT * FROM krim_entity_t WHERE entity_id = 'KR1000')
-;
-
-INSERT INTO krim_entity_ent_typ_t (ent_typ_cd, entity_id, obj_id, ver_nbr, actv_ind, last_updt_dt)
-  SELECT 'PERSON', 'KR1000', uuid(), 1, 'Y', now()
-    FROM dual
-    WHERE NOT EXISTS (SELECT * FROM krim_entity_ent_typ_t WHERE ent_typ_cd = 'PERSON' AND entity_id = 'KR1000')
-;
-
-INSERT INTO krim_prncpl_t (prncpl_id, obj_id, ver_nbr, prncpl_nm, entity_id, prncpl_pswd, actv_ind, last_updt_dt)
-  SELECT 'guest', uuid(), 1, 'guest', 'KR1000', '', 'Y', now()
-    FROM dual
-    WHERE NOT EXISTS (SELECT * FROM krim_prncpl_t WHERE prncpl_id = 'guest' AND entity_id = 'KR1000')
-;
-
-INSERT INTO krim_role_t (role_id, obj_id, ver_nbr, role_nm, nmspc_cd, desc_txt, kim_typ_id, actv_ind, last_updt_dt)
-  SELECT 'KR1000', uuid(), 1, 'GuestRole', 'KUALI', 'This role is used for no login guest users.', '1', 'Y', now()
-    FROM dual
-    WHERE NOT EXISTS (SELECT * FROM krim_role_t WHERE role_id = 'KR1000')
-;
-
-INSERT INTO krim_role_mbr_t (role_mbr_id, ver_nbr, obj_id, role_id, mbr_id, mbr_typ_cd, actv_frm_dt, actv_to_dt, last_updt_dt)
-  SELECT 'KR1000', 1, uuid(), 'KR1000', 'guest', 'P', null, null, now()
-    FROM dual
-    WHERE NOT EXISTS (SELECT * FROM krim_role_mbr_t WHERE role_mbr_id = 'KR1000' AND role_id = 'KR1000')
 ;

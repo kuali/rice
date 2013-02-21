@@ -140,7 +140,7 @@ public final class NaturalLanguageTemplateIntegrationGenTest extends AbstractBoT
         test_createNaturalLanguageTemplate();
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = org.springframework.dao.DataIntegrityViolationException.class) // TODO gen update expected
     public void test_createNaturalLanguageTemplate_null_fail() {
         (NaturalLanguageTemplateBoServiceImplGenTest.create(naturalLanguageTemplateBoServiceImpl, krmsAttributeDefinitionService)).test_createNaturalLanguageTemplate_null_fail();
     }

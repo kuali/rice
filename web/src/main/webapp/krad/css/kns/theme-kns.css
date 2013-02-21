@@ -698,3 +698,23 @@ span.uif-breadcrumbs a {
 	font-size: 0.85em;
 	font-style: italic;
 }
+
+/** Syntax highlighter  */
+.uif-syntaxHighlighter   {
+    position: relative;
+}
+
+.uif-syntaxHighlighter .uif-copyPaste  {
+    background: url("../../images/icon_copypaste.png") repeat scroll 0 0 #FFFFFF;
+    cursor: pointer;
+    display: none;
+    height: 26px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    width: 26px;
+}
+
+.uif-syntaxHighlighter:hover .uif-copyPaste{
+    display : block;
+}

@@ -39,9 +39,13 @@ public class SyntaxHighlighter extends WidgetBase {
     private Header header;
     private String sourceCode;
     private String pluginCssClass;
+    private boolean allowCopy;
+    private boolean showCopyConfirmation;
     
     public SyntaxHighlighter() {
         super();
+        allowCopy = true;
+        showCopyConfirmation = false;
     }
 
     @Override
@@ -98,5 +102,46 @@ public class SyntaxHighlighter extends WidgetBase {
      */
     public void setPluginCssClass(String pluginCssClass) {
         this.pluginCssClass = pluginCssClass;
+    }
+
+    /**
+     * Indicates if the ZeroClipboard copy functionality must be added
+     *
+     * <p>
+     * When copy is allowed a copy button will be shown when the mouse hovers over the syntax highlighter. This button
+     * will be hidden the otherwise to avoid obstructing some of the displayed code.
+     * </p>
+     *
+     * @return  boolean
+     */
+    public boolean isAllowCopy() {
+        return allowCopy;
+    }
+
+    /**
+     * Setter for the allow copy flag
+     *
+     * @param allowCopy
+     */
+    public void setAllowCopy(boolean allowCopy) {
+        this.allowCopy = allowCopy;
+    }
+
+    /**
+     * Indicates if a confirmation dialog must be shown after copy action
+     *
+     * @return boolean
+     */
+    public boolean isShowCopyConfirmation() {
+        return showCopyConfirmation;
+    }
+
+    /**
+     * Setter for the show copy confirmation dialog flag
+     *
+     * @param showCopyConfirmation
+     */
+    public void setShowCopyConfirmation(boolean showCopyConfirmation) {
+        this.showCopyConfirmation = showCopyConfirmation;
     }
 }

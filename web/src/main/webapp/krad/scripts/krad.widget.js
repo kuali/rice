@@ -867,6 +867,50 @@ function createTree(divId, options) {
     });
 }
 
+/**
+ * Adds a ZeroClipboard flash movie to the copy trigger element which will copy the content of the content element
+ * on mousedown. This uses the ZeroClipboard plugin bundled with the Datatables plugin
+ *
+ * @param componentId - id of the parent component
+ * @param copyTriggerId - id of the element that must trigger the copy action
+ * @param contentElementId - id of the element that the value must be copied from
+ * @param showCopyConfirmation [optional] if supplied and true, a dialog will be triggered displaying the copied value
+ * after copy action
+ */
+function createCopyToClipboard(componentId, copyTriggerId, contentElementId, showCopyConfirmation) {
+
+    // the ZeroClipboard flash movie can only be added to visible elements so must be added on dosument ready
+    jQuery(document).ready(function () {
+
+        // Do not add flash to hidden syntax highlighters as this causes exception
+        if (jQuery("#" + componentId).is(':visible')) {
+
+            // setup new client for this component
+            ZeroClipboard.setMoviePath( '../krad/plugins/rice/datatables/copy_cvs_xls_pdf.swf' );
+            var clip = new ZeroClipboard.Client();
+
+            // copy text on mousedown
+            clip.addEventListener('mousedown',function(client) {
+                clip.setText(jQuery("#" + contentElementId).text());
+            });
+
+            // show dialog
+            if (showCopyConfirmation) {
+                clip.addEventListener('complete',function(client,text) {
+                    alert('Copied to Clipboard :\n\n' + text);
+                });
+            }
+
+            // the element needs to be visible when adding the flah movie to it
+            // just reset the display css on the element after showing it
+            jQuery('#' + copyTriggerId).show();
+            clip.glue(jQuery('#' + copyTriggerId).get(0));
+            jQuery('#' + copyTriggerId).css("display", "");
+        }
+
+    });
+}
+
 function createAccordion(id, options, active){
     if(active == false){
         active = "false";

@@ -86,6 +86,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     @BeforeClass
     public static void createAndStartService() throws Exception {
+        // this isn't so great... if the chrome driver isn't configured null is returned, but chromeDriverService needs to run before.
         chromeDriverService = WebDriverUtil.createAndStartService();
         if (chromeDriverService != null)
             chromeDriverService.start();

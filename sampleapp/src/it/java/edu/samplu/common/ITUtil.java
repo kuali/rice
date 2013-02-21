@@ -26,6 +26,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -232,6 +233,9 @@ public class ITUtil {
                 return new FirefoxDriver(profile);
             } else if ("chrome".equalsIgnoreCase(driverParam)) {
                 return new ChromeDriver();
+            } else if ("safari".equals(driverParam)) {
+                System.out.println("SafariDriver probably won't work, if it does please contact Erik M.");
+                return new SafariDriver();
             }
         } else {
             try {

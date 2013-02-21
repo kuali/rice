@@ -81,11 +81,15 @@ public class WebDriverUtil {
                     System.setProperty("webdriver.chrome.driver", System.getProperty("remote.public.chrome"));
                 }
             }
-            ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
-                    .usingChromeDriverExecutable(new File(System.getProperty("remote.public.chrome")))
-                    .usingAnyFreePort()
-                    .build();
-            return chromeDriverService;
+            try {
+                ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
+                        .usingChromeDriverExecutable(new File(System.getProperty("webdriver.chrome.driver")))
+                        .usingAnyFreePort()
+                        .build();
+                return chromeDriverService;
+            } catch (Throwable t) {
+                throw new RuntimeException("Exception starting chrome driver service, is chromedriver ( http://code.google.com/p/chromedriver/downloads/list ) installed? You can include the path to it using -Dremote.public.chrome", t)   ;
+            }
         }
         return null;
     }

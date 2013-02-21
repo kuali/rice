@@ -611,7 +611,7 @@
     </property>
   </bean>
 
-  <bean id="ComponentLibrary-CodeViewer" parent="Uif-SyntaxHighlighter">
+  <bean id="ComponentLibrary-CodeViewer" parent="Uif-SyntaxHighlighter" p:showCopyConfirmation="true">
     <property name="header">
       <bean parent="Uif-HeaderThree"/>
     </property>

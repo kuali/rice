@@ -47,19 +47,18 @@ public class PeopleFlowBoTest extends KEWTestCase {
         responsibilityIdService = KEWServiceLocator.getResponsibilityIdService();
     }
 
-    //Test
-    //ExpectedException(value = Throwable.class)
+    @Test(expected = java.lang.Throwable.class)
     public void testKewTypeBoBasicPersist() {
         KewTypeBoBuilder builder = new KewTypeBoBuilder("testType", "testNamespace");
 
         boService.save(builder.build());
-        try {
+//        try {
             // same info again should be a no go
             boService.save(builder.build());
-            fail("this should violate unique constraints");
-        } catch (Exception e) {
+//            fail("this should violate unique constraints");
+//        } catch (Exception e) {
             // good
-        }
+//        }
     }
     @Test
     public void testKewTypeBoFullPersist() {

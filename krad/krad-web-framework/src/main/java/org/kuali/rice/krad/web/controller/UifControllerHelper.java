@@ -212,9 +212,11 @@ public class UifControllerHelper {
 
             if (form.isUpdateComponentRequest()) {
                 Component postedComponent = ComponentUtils.findNestedComponentById(postedView, refreshComponentId);
-                if (postedComponent.getCssClasses().contains("uif-boxLayoutHorizontalItem")){
+                if (postedComponent != null && postedComponent.getCssClasses() != null &&
+                        postedComponent.getCssClasses().contains("uif-boxLayoutHorizontalItem")) {
                     boxLayoutHorizontalItem = true;
-                }else if (postedComponent.getCssClasses().contains("uif-boxLayoutVerticalItem")){
+                } else if (postedComponent != null && postedComponent.getCssClasses() != null &&
+                        postedComponent.getCssClasses().contains("uif-boxLayoutVerticalItem")) {
                     boxLayoutVerticalItem = true;
                 }
             }
@@ -232,7 +234,6 @@ public class UifControllerHelper {
             } else if (boxLayoutVerticalItem) {
                 comp.addStyleClass("uif-boxLayoutVerticalItem");
             }
-
 
             // regenerate server message content for page
             postedView.getCurrentPage().getValidationMessages().generateMessages(false, postedView, form,

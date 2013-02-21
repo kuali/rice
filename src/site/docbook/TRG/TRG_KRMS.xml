@@ -731,7 +731,7 @@
                                 KRMS Agenda' and select the appropriate namespace.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/KRMS-exmpl- - -Identity-permission-creation-screen.png" scalefit="1"/>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -Identity-permission-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -747,7 +747,7 @@
                                 rules.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/KRMS-exmpl- - -role-maintenance-edit-screen.png" scalefit="1"/>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -role-maintenance-edit-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -932,7 +932,7 @@
             <para>The UML diagram below shows the KRMS data model:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms-ruleModel-20b.png" scalefit="1"/>
+                        <imagedata fileref="../images/krms-ruleModel-20b.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
         </section>
@@ -942,7 +942,7 @@
                 architecture:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms-architecture.png" scalefit="1" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/krms-architecture.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
         </section>
@@ -956,7 +956,7 @@
                 used?)</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS_Execution_Log_Class_Diagram.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRMS_Execution_Log_Class_Diagram.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
         </section>

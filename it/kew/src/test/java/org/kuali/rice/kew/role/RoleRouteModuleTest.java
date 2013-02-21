@@ -67,6 +67,9 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+// FixMethodOrder will run tests in alphabetical order by test name
+//                to ensure testing of forceAction by each user for
+//                the case of an existing delegate being the initiator.
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class RoleRouteModuleTest extends KEWTestCase {
@@ -425,6 +428,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction1.setActionPolicyCode(actionRequestPolicy.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
+        roleResponsibilityAction1.setForceAction(true);
         roleResponsibilityAction1 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
 
         roleResponsibilityActionId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
@@ -435,6 +439,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction2.setActionPolicyCode(actionRequestPolicy.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
+        roleResponsibilityAction2.setForceAction(true);
         roleResponsibilityAction2 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
 
         roleResponsibilityActionId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
@@ -445,6 +450,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction3.setActionPolicyCode(actionRequestPolicy.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
+        roleResponsibilityAction3.setForceAction(true);
         roleResponsibilityAction3 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
 
     }
@@ -489,6 +495,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         DelegateMemberBo user1RoleDelegate = new DelegateMemberBo();
         user1RoleDelegate.setDelegationMemberId(delgMemberId);
         // This is the user the delegation requests should be sent to.
+        // Note: If initiator is same as delegate, forceAction is utilized in responsibilities of approvers.
         Principal kPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
         assertNotNull(kPrincipal);
         user1RoleDelegate.setMemberId(kPrincipal.getPrincipalId());
@@ -511,7 +518,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     @Test
     public void testRoleRouteModule_FirstApprove() throws Exception {
 
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest1");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
         document.route("");
 
         // in this case we should have a first approve role that contains admin and user2, we
@@ -564,7 +571,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     @Test
     public void testRoleRouteModule_AllApprove() throws Exception {
 
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest2");
         document.route("");
 
         // in this case we should have all approve roles for admin, user1 and user2
@@ -619,7 +626,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     @Test
     public void testRoleRouteModule_RoleResponsibilityActionUpdate() throws Exception {
 
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest1");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
         document.route("");
 
         // in this case we should have a first approve role that contains admin and user2, we

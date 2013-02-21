@@ -24,6 +24,7 @@
         <script language="JavaScript" type="text/javascript" src="../../../krad/plugins/jquery/jquery-1.8.3.js"></script>
         <script type="text/javascript" src="easyXDM.js"></script>
         <script type="text/javascript">
+            var heightPadding = 45; // needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
             var iframe;
             var socket = new easyXDM.Socket({
                 swf : "../easyxdm.swf",
@@ -40,7 +41,7 @@
                     iframe.onload = function() {
                         var d = iframe.contentWindow.document;
                         var originalHeight =  jQuery(d).find('#Uif-Application').height();
-                        originalHeight += 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
+                        originalHeight += heightPadding;
                         var oldHeight = originalHeight;  // to avoid flashing vertical scroll bar in Google Chrome when table labels wrap/unwrap on screen resize
 
                         // We want to monitor the document for resize events in case of the use of accordions and such,
@@ -53,10 +54,10 @@
                                 try {
                                     var d = iframe.contentWindow.document;
                                     var newHeight = jQuery(d).find('#Uif-Application').height();
-                                    if(newHeight != originalHeight && newHeight + 45 != oldHeight) {
+                                    if(newHeight != originalHeight && newHeight + heightPadding != oldHeight) {
                                         // The height has changed since last we checked
                                         oldHeight = originalHeight;
-                                        originalHeight = newHeight + 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
+                                        originalHeight = newHeight + heightPadding;
                                         socket.postMessage(originalHeight);
                                     }
                                 } catch(e) {

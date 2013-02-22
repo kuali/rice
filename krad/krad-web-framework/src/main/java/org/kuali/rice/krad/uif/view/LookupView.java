@@ -167,6 +167,9 @@ public class LookupView extends FormView {
             ((List<Component>) getResultsGroup().getItems()).add(0, getResultsReturnField());
         }
 
+        if (disableSearchButtons) {
+            criteriaGroup.getFooter().setRender(false);
+        }
         super.performApplyModel(view, model, parent);
     }
 
@@ -505,5 +508,23 @@ public class LookupView extends FormView {
      */
     public void setMaintenanceUrlMapping(String maintenanceUrlMapping) {
         this.maintenanceUrlMapping = maintenanceUrlMapping;
+    }
+
+    /**
+     * Indicates that the action buttons like search in the criteria section should not be rendered
+     *
+     * @return boolean
+     */
+    public boolean isDisableSearchButtons() {
+        return disableSearchButtons;
+    }
+
+    /**
+     * Setter for the disable search buttons flag
+     *
+     * @param disableSearchButtons
+     */
+    public void setDisableSearchButtons(boolean disableSearchButtons) {
+        this.disableSearchButtons = disableSearchButtons;
     }
 }

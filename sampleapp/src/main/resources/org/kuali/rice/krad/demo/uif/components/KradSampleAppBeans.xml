@@ -91,6 +91,8 @@
         </property>
       </bean>
     </property>
+    <property name="viewHelperServiceClass"
+              value="org.kuali.rice.krad.demo.uif.components.ComponentViewHelperServiceImpl"/>
     <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
   </bean>
 

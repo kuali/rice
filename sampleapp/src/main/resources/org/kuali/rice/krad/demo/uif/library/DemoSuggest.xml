@@ -27,6 +27,8 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-Suggest-Example1"/>
+        <ref bean="Demo-Suggest-Example2"/>
+        <ref bean="Demo-Suggest-Example3"/>
       </list>
     </property>
   </bean>
@@ -35,13 +37,56 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Suggest-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField9" p:required="true">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField1" p:required="true">
           <property name="suggest">
             <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="accountTypeCode"
                   p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
           </property>
         </bean>
         <!-- ex:Demo-Suggest-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Suggest-Example2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Suggest-Example2 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2">
+          <property name="suggest">
+            <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="number">
+              <property name="suggestQuery">
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccounts"/>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Suggest-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Suggest-Example3" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Suggest-Example3 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField3"/>
+        <bean parent="Uif-InputField" p:propertyName="inputField4">
+          <property name="suggest">
+            <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="number">
+              <property name="suggestQuery">
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsBySubAcct"
+                      p:queryMethodArgumentFieldList="inputField3"/>
+              </property>
+              <property name="templateOptions">
+                <map merge="true">
+                  <entry key="minLength" value="1"/>
+                </map>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Suggest-Example3 end-->
       </list>
     </property>
   </bean>

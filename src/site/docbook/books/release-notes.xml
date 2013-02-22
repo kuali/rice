@@ -27,19 +27,10 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para> Rice 2.1.3 is primarily a bug fix release. If you find a problem with this
+            <para> Rice ${project.version} is primarily a bug fix release. If you find a problem with this
               documentation, please <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/UG.html#reporting_rice_jira">report it in Jira</link> and set the component to Documentation.</para>
             <itemizedlist>
                 <title>Highlights of this release include:</title>
-                <listitem>
-                    <simpara>Addition of maven archetype for simpler project creation. See the <link
-                      xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/IG.html">Installation Guide</link> for more information on
-                        how to use.</simpara>
-                </listitem>
-                <listitem>
-                    <simpara>Application Document Status functionality was enhanced to provide
-                        better document search integration.</simpara>
-                </listitem>
                 <listitem>
                     <simpara>Ability to add links to the question framework</simpara>
                 </listitem>
@@ -478,9 +469,6 @@
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8714'>KULRICE-8714</link>] - Bug related to caching used to improve role service performance.</para>
         </listitem>
         <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8715'>KULRICE-8715</link>] - Problems with 2.1.3 Oracle upgrade scripts</para>
-        </listitem>
-        <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8717'>KULRICE-8717</link>] - Document Search issue with custom attribute date searches</para>
         </listitem>
         <listitem>
@@ -761,18 +749,6 @@
         </listitem>
         <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8735'>KULRICE-8735</link>] - Broken tests as a result of changes for KULRICE-8717 ; Fix tests or fix the code</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8763'>KULRICE-8763</link>] - manual testing for blue team devs</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8765'>KULRICE-8765</link>] - manual testing for blue team devs</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8767'>KULRICE-8767</link>] - manual testing for blue team devs</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8769'>KULRICE-8769</link>] - manual testing for blue team devs</para>
         </listitem>
         <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8846'>KULRICE-8846</link>] - Update JUnit to 4.11 to be able to specify the order the test run in, since JDK7 randomizes order</para>

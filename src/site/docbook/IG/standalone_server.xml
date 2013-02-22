@@ -803,8 +803,7 @@ tail -n 500 -f catalina.out</programlisting>
                         <title>Rice Portal Main Menu</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata
-                                    fileref="../images/rice_portal_main_menu.png"/>
+                                <imagedata fileref="../images/rice_portal_main_menu.png" scalefit="1" width="100%" contentdepth="100%"/>
                             </imageobject>
                         </mediaobject>
                     </figure>

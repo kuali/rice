@@ -48,7 +48,7 @@
         </listitem>
     </orderedlist>
     <note><para>Rather than install and setup as the root user on systems designed for production, you may
-            want to create a non-privilieged user named something like 'rice' to use for this
+            want to create a non-privileged user named something like 'rice' to use for this
             purpose.</para></note>
     <section>
         <title>Suggested Server Hardware</title>
@@ -377,12 +377,12 @@ Database changed</programlisting>
                 <section>
                     <title>With MySQL</title>
                     <para>Connecting to a MySQL database with the name <emphasis role="bold">test</emphasis>
-                        would have a JDBC url like the following: <emphasis role="bold"
+                        would have a JDBC URL like the following: <emphasis role="bold"
                             >jdbc:mysql://localhost:3306/test</emphasis>.</para>
                 </section>
                 <section>
                     <title>With Oracle</title>
-                    <para>Connecting to an Oracle database would have a JDBC url like the following:
+                    <para>Connecting to an Oracle database would have a JDBC URL like the following:
                         <emphasis role="bold">jdbc:oracle:thin:@localhost:1521:XE</emphasis>.</para>
                     <para>The Rice SQL files use slash ‘/‘ as the statement delimiter. You may have to
                         configure your SQL client appropriately so it can run the Rice SQL. In SQuirreL, you
@@ -501,7 +501,7 @@ export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_
                     Windows, you can download it from the following URL: <link
                         xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
                         >http://www.oracle.com/technetwork/java/javase/downloads/index.html</link>.</para>
-                <para>If you are on a Mac, then Java 6 should alredy be installed if you are up to date
+                <para>If you are on a Mac, then Java 6 should already be installed if you are up to date
                     with the latest updates from Apple.</para>
             </section>
             <section>
@@ -542,7 +542,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisti
             <title>Maven</title>
             <para>Maven is the primary build tool used by the Kuali Rice project. Maven is based on a
                 project object model (POM) that defines various standards and conventions surrounding
-                the organization of a project. This faciliates a set of standard build goals and
+                the organization of a project. This facilitates a set of standard build goals and
                 lifecycle phases (such as compile, test, package, etc.)</para>
             <section>
                 <title>Installation</title>
@@ -554,7 +554,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisti
             </section>    
             <section>
                 <title>Configuration</title>
-                <para>You will want to set your <emphasis role="bold">M2_HOME</emphasis> environement
+                <para>You will want to set your <emphasis role="bold">M2_HOME</emphasis> environment
                     variable to point to the location where you unzipped Maven. You will additionally
                     want to include <emphasis role="bold">M2_HOME/bin</emphasis> in your <emphasis
                         role="bold">PATH</emphasis> environment variable so that maven can be executed

@@ -116,6 +116,7 @@
         <value>classpath:edu/sampleu/demo/kitchensink/UifValidationDemoServerSide.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifStateBasedValidation.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifRowDetailsDemo.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/LookupSampleView.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifLayoutView.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifStandardLayout.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifValidationLayout.xml</value>

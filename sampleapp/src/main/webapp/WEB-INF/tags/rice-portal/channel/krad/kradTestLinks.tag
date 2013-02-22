@@ -36,5 +36,13 @@
      <%--<li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/collegeapp?viewId=Training-CollegeApplicationView_KNS&methodToCall=start"/>Training - Student College Application</a></li>--%>
    </ul>
 
+  <strong>Lookup Testing</strong>
+  <ul class="chan">
+    <li><portal:portalLink displayTitle="true" title="Lookup Sample"
+          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Multi-Value Lookup Sample"
+          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
+  </ul>
+
 </div>
 <channel:portalChannelBottom />

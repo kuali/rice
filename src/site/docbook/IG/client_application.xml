@@ -348,7 +348,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenu>Maven</guimenu><guisubmenu>Maven Project</guisubmenu></menuchoice> and press the
               <guibutton>Next</guibutton> button twice to get to the <guilabel>Select an Archtype</guilabel> window.
               <figure>
-                <title>Select maven project</title>
+                <title>Eclipse: Select maven project</title>
                 <mediaobject>
                   <imageobject>
                     <imagedata fileref="../images/archetype/2_eclipse_dbk.png"/>
@@ -404,7 +404,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title>Select archetype</title>
+              <title>Eclipse: Select archetype</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/3_eclipse_dbk.png"/>
@@ -464,7 +464,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Click the <guibutton>Finish</guibutton> button.
             </para>
             <figure>
-              <title>Add database information</title>
+              <title>Eclipse: Add database information</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/4_eclipse_dbk.png"/>
@@ -530,7 +530,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     from the menu.
                   </para>
                   <figure>
-                    <title>Run integration test</title>
+                    <title>Eclipse: Run integration test</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/6_eclipse_dbk.png"/>
@@ -547,7 +547,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guimenuitem>JUnit Test</guimenuitem></menuchoice> from the menu.
                   </para>
                   <figure>
-                    <title>Run the 3 unit tests</title>
+                    <title>Eclipse: Run the 3 unit tests</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/7_eclipse_dbk.png"/>
@@ -569,7 +569,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guilabel>new server wizard</guilabel> link.
                   </para>
                   <figure>
-                    <title>Start new server wizard</title>
+                    <title>Eclipse: Start new server wizard</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/8_eclipse_dbk.png"/>
@@ -584,7 +584,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     button.
                   </para>
                   <figure>
-                    <title>Select app server</title>
+                    <title>Eclipse: Select app server</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/9_eclipse_dbk.png"/>
@@ -598,7 +598,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Point to a local install of tomcat and click the <guibutton>Next</guibutton> button.
                   </para>
                   <figure>
-                    <title>Select local install of Tomcat</title>
+                    <title>Eclipse: Select local install of Tomcat</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/10_eclipse_dbk.png"/>
@@ -613,7 +613,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     configured side. Click the <guibutton>Finish</guibutton> button.
                   </para>
                   <figure>
-                    <title>Move bar to configured</title>
+                    <title>Eclipse: Move bar to configured</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/11_eclipse_dbk.png"/>
@@ -627,7 +627,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Double click on the newly created server under the <guilabel>Servers</guilabel> tab.
                   </para>
                   <figure>
-                    <title>Select new server</title>
+                    <title>Eclipse: Select new server</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/12_eclipse_dbk.png"/>
@@ -644,7 +644,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Click the <guibutton>OK</guibutton> button.
                   </para>
                   <figure>
-                    <title>Add more memory</title>
+                    <title>Eclipse: Add more memory</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/13_eclipse_dbk.png"/>
@@ -661,7 +661,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenuitem>Start</guimenuitem>.
             </para>
             <figure>
-              <title>Start the server</title>
+              <title>Eclipse: Start the server</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/14_eclipse_dbk.png"/>
@@ -676,7 +676,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
-              <title>Login</title>
+              <title>Eclipse: Login</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/15_eclipse_dbk.png"/>
@@ -685,7 +685,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/15_eclipse.png">Click to enlarge</link></para>
             </figure>
             <figure>
-              <title>Initial screen</title>
+              <title>Eclipse: Initial screen</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/16_eclipse_dbk.png"/>
@@ -705,7 +705,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               menu choices.
             </para>
             <figure>
-              <title>Intellij new project</title>
+              <title>Intellij: new project</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/1_intellij_dbk.png"/>
@@ -720,7 +720,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               menu choices.
             </para>
             <figure>
-              <title>Create project from scratch</title>
+              <title>Intellij: Create project from scratch</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/2_intellij_dbk.png"/>
@@ -743,7 +743,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Select <guilabel>Maven Module</guilabel> and click the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title>Select Maven Module</title>
+              <title>Intellij: Select Maven Module</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/3_intellij_dbk.png"/>
@@ -802,7 +802,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               and click the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title>Select archetype</title>
+              <title>Intellij: Select archetype</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/4_intellij_dbk.png"/>
@@ -847,7 +847,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Click the <guibutton>Finish</guibutton> button.
             </para>
             <figure>
-              <title>Add database information</title>
+              <title>Intellij: Add database information</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/5_intellij_dbk.png"/>
@@ -862,7 +862,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenuitem>Reimport</guimenuitem></menuchoice> from the menu.
             </para>
             <figure>
-              <title>Reimport the project</title>
+              <title>Intellij: Reimport the project</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/6_intellij_dbk.png"/>
@@ -898,7 +898,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 </step>
               </substeps>
             <figure>
-              <title>Add reintegration test folder</title>
+              <title>Intellij: Add reintegration test folder</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/7_intellij_dbk.png"/>
@@ -919,7 +919,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </menuchoice> to rebuild the project.
                 </para>
                 <figure>
-                  <title>Rebuild the project</title>
+                  <title>Intellij: Rebuild the project</title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/8_intellij_dbk.png"/>
@@ -935,7 +935,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   integration test.
                 </para>
                 <figure>
-                  <title>Run integration test</title>
+                  <title>Intellij: Run integration test</title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/9_intellij_dbk.png"/>
@@ -951,7 +951,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   unit tests.
                 </para>
                 <figure>
-                  <title>Run unit tests</title>
+                  <title>Intellij: Run unit tests</title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/10_intellij_dbk.png"/>
@@ -973,7 +973,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 </menuchoice> from the menu.
                 </para>
                 <figure>
-                  <title>Edit configurations</title>
+                  <title>Intellij: Edit configurations</title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/11_intellij_dbk.png"/>
@@ -988,7 +988,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <guimenu>Tomcat Server</guimenu><guimenuitem>Local</guimenuitem></menuchoice> from the menu.
                 </para>
                 <figure>
-                  <title>Select the Tomcat Server</title>
+                  <title>Intellij: Select the Tomcat Server</title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/12_intellij_dbk.png"/>
@@ -1004,7 +1004,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   "-Xms512m -Xmx2g -XX:MaxPermSize=512m" in the <guilabel>VM options</guilabel> field.
                 </para>
                 <figure>
-                  <title>Specify server and add more memory</title>
+                  <title>Intellij: Specify server and add more memory</title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/13_intellij_dbk.png"/>
@@ -1020,7 +1020,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <guilabel>bar:war (exploded)</guilabel> and click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>
-                  <title>Deploy</title>
+                  <title>Intellij: Deploy</title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/14_intellij_dbk.png"/>
@@ -1035,7 +1035,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   Click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>
-                  <title>Specify application context</title>
+                  <title>Intellij: Specify application context</title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/15_intellij_dbk.png"/>
@@ -1052,7 +1052,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               the menu
             </para>
             <figure>
-              <title>Run Tomcat locally</title>
+              <title>Intellij: Run Tomcat locally</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/16_intellij_dbk.png"/>
@@ -1067,7 +1067,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
-              <title>Login</title>
+              <title>Intellij: Login</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/17_intellij_dbk.png"/>
@@ -1076,7 +1076,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/17_intellij.png">Click to enlarge</link></para>
             </figure>
             <figure>
-              <title>Initial screen</title>
+              <title>Intellij: Initial screen</title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/18_intellij_dbk.png"/>

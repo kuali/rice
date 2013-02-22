@@ -134,13 +134,20 @@ public final class NaturalLanguageTemplateIntegrationGenTest extends AbstractBoT
         assert(naturalLanguageTemplate.getAttributes() != null && !naturalLanguageTemplate.getAttributes().isEmpty());
     }
 
-    @Test(expected = java.lang.IllegalStateException.class)
+    @Test // TODO gen use multiple catches
     public void test_createNaturalLanguageTemplate_fail_existing() {
         test_createNaturalLanguageTemplate();
-        test_createNaturalLanguageTemplate();
+        try {
+            test_createNaturalLanguageTemplate();
+        } catch (IllegalStateException ise) {
+            return; // local
+        } catch (org.springframework.dao.DataIntegrityViolationException dive) {
+            return; // ci
+        }
+        assert(false); // exception should be thrown
     }
 
-    @Test(expected = org.springframework.dao.DataIntegrityViolationException.class) // TODO gen update expected
+    @Test(expected = java.lang.IllegalArgumentException.class)
     public void test_createNaturalLanguageTemplate_null_fail() {
         (NaturalLanguageTemplateBoServiceImplGenTest.create(naturalLanguageTemplateBoServiceImpl, krmsAttributeDefinitionService)).test_createNaturalLanguageTemplate_null_fail();
     }

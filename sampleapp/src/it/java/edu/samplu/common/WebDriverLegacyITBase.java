@@ -16,9 +16,11 @@
 package edu.samplu.common;
 
 import org.apache.commons.lang.RandomStringUtils;
+
+import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertNotSame;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -33,6 +35,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -1677,7 +1680,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         isElementPresentByLinkText(groupName);
     }
 
-    
     protected void testDocTypeLookup() throws Exception {
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@title='Search Parent Name']");
@@ -1692,7 +1694,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("name", "Kuali*D");
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[3], 'KualiDocument')]");
-        String docIdOld= getTextByXpath("//table[@id='row']/tbody/tr[contains(td[3], 'KualiDocument')]/td[2]/a");
+        String docIdOld = getTextByXpath("//table[@id='row']/tbody/tr[contains(td[3], 'KualiDocument')]/td[2]/a");
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("label", "KualiDocument");
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
@@ -1701,10 +1703,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("documentTypeId", docIdOld);
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[2], '" + docIdOld + "')]");
-   
+
     }
-    
-    protected List<String> testCreateNewParameter(String docId,String parameterName) throws Exception
+
+    protected List<String> testCreateNewParameter(String docId, String parameterName) throws Exception
     {
         waitForPageToLoad();
         docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
@@ -1719,11 +1721,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.newMaintainableObject.description", "for testing");
         selectOptionByName("document.newMaintainableObject.parameterTypeCode", "HELP");
         waitAndClickByXpath("//input[@name='document.newMaintainableObject.evaluationOperatorCode' and @value='A']");
-    
+
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
@@ -1734,13 +1737,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("--------------------------------New Parameter Created-------------------------");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
         return params;
     }
-    
-    protected List<String> testLookUpParameter(String docId,String parameterName) throws Exception
+
+    protected List<String> testLookUpParameter(String docId, String parameterName) throws Exception
     {
         waitAndTypeByName("name", parameterName);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1748,21 +1751,21 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByLinkText(parameterName);
         waitForPageToLoad();
         Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");        
+        switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
         assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
         assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         System.out.println("--------------------------------Lookup And View Successful-------------------------");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
         return params;
-        
+
     }
-    
-    protected List<String> testEditParameter(String docId,String parameterName) throws Exception
+
+    protected List<String> testEditParameter(String docId, String parameterName) throws Exception
     {
         selectFrame("iframeportlet");
         waitAndClickByLinkText("edit");
@@ -1774,7 +1777,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
@@ -1785,13 +1789,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Edited-------------------------");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
         return params;
     }
-    
-    protected List<String> testVerifyEditedParameter(String docId,String parameterName) throws Exception
+
+    protected List<String> testVerifyEditedParameter(String docId, String parameterName) throws Exception
     {
         waitAndTypeByName("name", parameterName);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1805,13 +1809,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
         return params;
     }
-    
-    protected List<String> testCopyParameter(String docId,String parameterName) throws Exception
+
+    protected List<String> testCopyParameter(String docId, String parameterName) throws Exception
     {
         selectFrame("iframeportlet");
         waitAndClickByLinkText("copy");
@@ -1826,7 +1830,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
@@ -1837,13 +1842,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Edited-------------------------");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
         return params;
     }
-    
-    protected List<String> testVerifyCopyParameter(String docId,String parameterName) throws Exception
+
+    protected List<String> testVerifyCopyParameter(String docId, String parameterName) throws Exception
     {
         waitAndTypeByName("name", parameterName);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1857,13 +1862,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
         return params;
     }
-    
-    protected List<String> testCreateNewParameterType(String docId,String parameterType,String parameterCode) throws Exception
+
+    protected List<String> testCreateNewParameterType(String docId, String parameterType, String parameterCode)
+            throws Exception
     {
         waitForPageToLoad();
         docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
@@ -1873,11 +1879,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
         parameterType = "testing " + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
-    
+
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
@@ -1888,15 +1895,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("--------------------------------New Parameter Type Created-------------------------");
-        
-        List<String> params= new ArrayList<String>();
+
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
         return params;
     }
-    
-    protected List<String> testLookUpParameterType(String docId,String parameterType,String parameterCode) throws Exception
+
+    protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode)
+            throws Exception
     {
         waitAndTypeByName("name", parameterType);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1904,22 +1912,25 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByLinkText(parameterType);
         waitForPageToLoad();
         Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");        
+        switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim()
+                .toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim()
+                .toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         System.out.println("--------------------------------Lookup And View Successful-------------------------");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
         return params;
-        
+
     }
-    
-    protected List<String> testEditParameterType(String docId,String parameterType,String parameterCode) throws Exception
+
+    protected List<String> testEditParameterType(String docId, String parameterType, String parameterCode)
+            throws Exception
     {
         selectFrame("iframeportlet");
         waitAndClickByLinkText("edit");
@@ -1932,7 +1943,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
@@ -1943,14 +1955,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Type Edited-------------------------");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
         return params;
     }
-    
-    protected List<String> testVerifyEditedParameterType(String docId,String parameterType,String parameterCode) throws Exception
+
+    protected List<String> testVerifyEditedParameterType(String docId, String parameterType, String parameterCode)
+            throws Exception
     {
         waitAndTypeByName("name", parameterType);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1960,18 +1973,21 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim()
+                .toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim()
+                .toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
         return params;
     }
-    
-    protected List<String> testCopyParameterType(String docId,String parameterType,String parameterCode) throws Exception
+
+    protected List<String> testCopyParameterType(String docId, String parameterType, String parameterCode)
+            throws Exception
     {
         selectFrame("iframeportlet");
         waitAndClickByLinkText("copy");
@@ -1986,7 +2002,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
@@ -1997,15 +2014,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Type Edited-------------------------");
-        
-        List<String> params= new ArrayList<String>();
+
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
         return params;
     }
-    
-    protected List<String> testVerifyCopyParameterType(String docId,String parameterType,String parameterCode) throws Exception
+
+    protected List<String> testVerifyCopyParameterType(String docId, String parameterType, String parameterCode)
+            throws Exception
     {
         waitAndTypeByName("name", parameterType);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -2015,20 +2033,21 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-//        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        //        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim()
+                .toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
-        List<String> params= new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
         return params;
     }
-    
-    protected List<String> testCreateNewPermission(String docId,String permissionName) throws Exception
+
+    protected List<String> testCreateNewPermission(String docId, String permissionName) throws Exception
     {
-        
+
         waitForPageToLoad();
         Thread.sleep(2000);
         /*assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
@@ -2046,8 +2065,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//div[contains(.,'Permission Namespace (Permission Namespace) is a required field.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'Permission Name (Permission Name) is a required field.')]/img[@alt='error']");
         System.out.println("------------------------------------Validation Test Successful--------------------------");
-        
-        
+
         selectOptionByName("document.newMaintainableObject.templateId", "36");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-SYS");
         permissionName = "removeme" + ITUtil.DTS_TWO;
@@ -2063,29 +2081,30 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
                 "Document is not submitted successfully");
         assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
-        System.out.println("------------------------------------Permission document submitted successfully--------------------------");
-        
-        List<String> params= new ArrayList<String>();
+        System.out
+                .println("------------------------------------Permission document submitted successfully--------------------------");
+
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
         return params;
     }
-    
-    protected List<String> testLookUpPermission(String docId,String permissionName) throws Exception
+
+    protected List<String> testLookUpPermission(String docId, String permissionName) throws Exception
     {
         waitForPageToLoad();
         waitAndTypeByName("name", permissionName);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         isElementPresentByLinkText(permissionName);
         System.out.println("----------------------------------Lookup successful-----------------------------");
-            
-        List<String> params= new ArrayList<String>();
+
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
         return params;
-     }
-    
-    protected List<String> testEditPermission(String docId,String permissionName) throws Exception
+    }
+
+    protected List<String> testEditPermission(String docId, String permissionName) throws Exception
     {
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
@@ -2096,14 +2115,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
                 "Document is not submitted successfully");
-        System.out.println("------------------------------------Inactivation of Permission successfull--------------------------");
-        List<String> params= new ArrayList<String>();
+        System.out
+                .println("------------------------------------Inactivation of Permission successfull--------------------------");
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
         return params;
-     }
-    
-    protected List<String> testVerifyPermission(String docId,String permissionName) throws Exception
+    }
+
+    protected List<String> testVerifyPermission(String docId, String permissionName) throws Exception
     {
 
         waitForPageToLoad();
@@ -2111,17 +2131,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@title='Active Indicator - No']");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         isElementPresentByLinkText(permissionName);
-        
-        List<String> params= new ArrayList<String>();
+
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
         return params;
-     }
-    
-    
-    protected List<String> testCreateNewPerson(String docId,String personName) throws Exception
+    }
+
+    protected List<String> testCreateNewPerson(String docId, String personName) throws Exception
     {
-        
+
         waitForPageToLoad();
         Thread.sleep(2000);
         /*assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
@@ -2142,7 +2161,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'At least one name must be entered.')]/img[@alt='error']");
         System.out.println("------------------------------------Validation Test Successful--------------------------");
-        
+
         selectOptionByName("newAffln.affiliationTypeCode", "STDNT");
         selectOptionByName("newAffln.campusCode", "BL");
         checkByName("newAffln.dflt");
@@ -2163,22 +2182,23 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
                 "Document is not submitted successfully");
         assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
-        System.out.println("------------------------------------Person document submitted successfully--------------------------");
-        
-        List<String> params= new ArrayList<String>();
+        System.out
+                .println("------------------------------------Person document submitted successfully--------------------------");
+
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
         return params;
     }
-    
-    protected List<String> testLookUpPerson(String docId,String personName) throws Exception
+
+    protected List<String> testLookUpPerson(String docId, String personName) throws Exception
     {
         waitForPageToLoad();
         waitAndTypeByName("principalName", personName);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         isElementPresentByLinkText(personName);
         waitAndClickByName("methodToCall.clearValues");
-        waitAndTypeByName("firstName","Charlie");
+        waitAndTypeByName("firstName", "Charlie");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         isElementPresentByLinkText(personName);
         waitAndClickByName("methodToCall.clearValues");
@@ -2190,16 +2210,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         isElementPresentByLinkText(personName);
         System.out.println("----------------------------------Lookup successful-----------------------------");
-            
-        List<String> params= new ArrayList<String>();
+
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
         return params;
-     }
-    
-   
-    
-    protected List<String> testVerifyPerson(String docId,String personName) throws Exception
+    }
+
+    protected List<String> testVerifyPerson(String docId, String personName) throws Exception
     {
 
         waitAndClickByLinkText(personName);
@@ -2208,7 +2226,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         switchToWindow("Kuali :: Person");
         Thread.sleep(2000);
         assertEquals(personName, getTextByXpath("//div[@class='tab-container']/table//tr[2]/td[1]/div").trim());
-        assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div").trim());
+        assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div")
+                .trim());
         assertEquals("Student", getTextByXpath("//select/option[@selected]").trim());
         assertElementPresentByXpath("//table[@class='tab']//input[@title='close Overview']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Contact']");
@@ -2228,11 +2247,925 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Membership']");
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
-        System.out.println("------------------------------------Viewing from Inquiry Framework Test Successful--------------------------");
-        List<String> params= new ArrayList<String>();
+        System.out
+                .println("------------------------------------Viewing from Inquiry Framework Test Successful--------------------------");
+        List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
         return params;
-     }
-   
+    }
+
+    protected void testContraintsIT() throws Exception {
+        checkForIncidentReport("field9");
+        fireEvent("field9", "focus");
+        waitAndTypeByName("field9", "1");
+        fireEvent("field9", "blur");
+        Assert.assertTrue(getAttributeByName("field9", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field9", "focus");
+        clearTextByName("field9");
+        waitAndTypeByName("field9", "12345");
+        fireEvent("field9", "blur");
+        Assert.assertTrue(getAttributeByName("field9", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field10", "focus");
+        waitAndTypeByName("field10", "2");
+        fireEvent("field10", "blur");
+        Assert.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field10", "focus");
+        clearTextByName("field10");
+        waitAndTypeByName("field10", "51");
+        fireEvent("field10", "blur");
+        Assert.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field10", "focus");
+        clearTextByName("field10");
+        waitAndTypeByName("field10", "25");
+        fireEvent("field10", "blur");
+        Assert.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field6", "focus");
+        waitAndTypeByName("field6", "A");
+        fireEvent("field6", "blur");
+        waitAndTypeByName("field7", "");
+        fireEvent("field7", "blur");
+        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        waitAndTypeByName("field7", "B");
+        fireEvent("field7", "blur");
+        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        waitAndTypeByName("field8", "");
+        fireEvent("field8", "blur");
+        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field8");
+        waitAndTypeByName("field8", "C");
+        fireEvent("field8", "blur");
+        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field6");
+        waitAndTypeByName("field6", "");
+        fireEvent("field6", "blur");
+        Assert.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field7");
+        waitAndTypeByName("field7", "");
+        fireEvent("field7", "blur");
+        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field8");
+        waitAndTypeByName("field8", "");
+        fireEvent("field8", "blur");
+        Assert.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field8");
+        waitAndTypeByName("field8", "C");
+        fireEvent("field8", "blur");
+        Assert.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field6");
+        waitAndTypeByName("field6", "A");
+        fireEvent("field6", "blur");
+        Assert.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        waitAndTypeByName("field14", "A");
+        fireEvent("field14", "blur");
+        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field11");
+        waitAndTypeByName("field11", "A");
+        fireEvent("field11", "blur");
+        Assert.assertTrue(getAttributeByName("field11", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field11");
+        waitAndTypeByName("field11", "");
+        fireEvent("field11", "blur");
+        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field12");
+        waitAndTypeByName("field12", "A");
+        fireEvent("field12", "blur");
+        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field13");
+        waitAndTypeByName("field13", "A");
+        fireEvent("field13", "blur");
+        Assert.assertTrue(getAttributeByName("field13", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field11");
+        waitAndTypeByName("field11", "A");
+        fireEvent("field11", "blur");
+        Assert.assertTrue(getAttributeByName("field11", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        waitAndTypeByName("field18", "A");
+        fireEvent("field18", "blur");
+        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        waitAndTypeByName("field15", "A");
+        fireEvent("field15", "blur");
+        Assert.assertTrue(getAttributeByName("field15", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field15");
+        waitAndTypeByName("field15", "");
+        fireEvent("field15", "blur");
+        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field6");
+        waitAndTypeByName("field16", "A");
+        fireEvent("field16", "blur");
+        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field17");
+        waitAndTypeByName("field17", "A");
+        fireEvent("field17", "blur");
+        Assert.assertTrue(getAttributeByName("field17", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field15");
+        waitAndTypeByName("field15", "A");
+        fireEvent("field15", "blur");
+        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        waitAndTypeByName("field23", "A");
+        fireEvent("field23", "blur");
+        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field19");
+        waitAndTypeByName("field19", "A");
+        fireEvent("field19", "blur");
+        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field19");
+        waitAndTypeByName("field19", "");
+        fireEvent("field19", "blur");
+        waitAndTypeByName("field20", "B");
+        fireEvent("field20", "blur");
+        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field20");
+        waitAndTypeByName("field20", "");
+        fireEvent("field20", "blur");
+        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field21");
+        waitAndTypeByName("field21", "C");
+        fireEvent("field21", "blur");
+        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field22");
+        waitAndTypeByName("field22", "D");
+        fireEvent("field22", "blur");
+        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field19");
+        waitAndTypeByName("field19", "D");
+        fireEvent("field19", "blur");
+        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field20");
+        waitAndTypeByName("field20", "D");
+        fireEvent("field20", "blur");
+        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        checkByXpath("//*[@name='field24' and @value='case1']");
+        clearTextByName("field25");
+        waitAndTypeByName("field25", "");
+        fireEvent("field25", "blur");
+        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        checkByXpath("//*[@name='field24' and @value='case4']");
+        fireEvent("field24", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        checkByXpath("//*[@name='field24' and @value='case1']");
+        fireEvent("field24", "blur");
+        clearTextByName("field25");
+        waitAndTypeByName("field25", "$100");
+        fireEvent("field25", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        checkByXpath("//*[@name='field24' and @value='case2']");
+        fireEvent("field24", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field25");
+        waitAndTypeByName("field25", "A100");
+        fireEvent("field25", "blur");
+        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        checkByXpath("//*[@name='field24' and @value='case3']");
+        fireEvent("field24", "blur");
+        clearTextByName("field26");
+        waitAndTypeByName("field26", "6000");
+        fireEvent("field26", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field26");
+        waitAndTypeByName("field26", "501");
+        fireEvent("field26", "blur");
+        Assert.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field26");
+        waitAndTypeByName("field26", "499");
+        fireEvent("field26", "blur");
+        Assert.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field26");
+        waitAndTypeByName("field26", "6000");
+        fireEvent("field26", "blur");
+        checkByXpath("//*[@name='field24' and @value='case3']");
+        fireEvent("field24", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        checkByXpath("//*[@name='field24' and @value='case4']");
+        clearTextByName("field27");
+        waitAndTypeByName("field27", "A");
+        fireEvent("field27", "blur");
+        clearTextByName("field28");
+        waitAndTypeByName("field28", "");
+        fireEvent("field28", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (getAttributeByName("field28", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        checkByXpath("//*[@name='field24' and @value='case3']");
+        fireEvent("field24", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field28");
+        waitAndTypeByName("field28", "B");
+        fireEvent("field28", "blur");
+        checkByXpath("//*[@name='field24' and @value='case4']");
+        fireEvent("field24", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field31");
+        waitAndTypeByName("field31", "B");
+        clearTextByName("field32");
+        waitAndTypeByName("field32", "B");
+        waitAndTypeByName("field33", "");
+        fireEvent("field33", "blur");
+        Assert.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        clearTextByName("field33");
+        waitAndTypeByName("field33", "B");
+        fireEvent("field33", "blur");
+        Assert.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        clearTextByName("field32");
+        waitAndTypeByName("field32", "A");
+        clearTextByName("field33");
+        waitAndTypeByName("field33", "");
+        fireEvent("field33", "blur");
+        Assert.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        passed();
+    }
+
+    protected void deleteSubCollectionLine() throws Exception {
+        // click on collections page link
+        waitAndClickByLinkText("Collections");
+        Thread.sleep(5000);
+        // wait for collections page to load by checking the presence of a sub collection line item
+
+        waitForElementPresentByName("list4[0].subList[0].field1");
+        // change a value in the line to be deleted
+        waitAndTypeByName("list4[0].subList[0].field1", "selenium");
+        // click the delete button
+        waitAndClickByXpath("//div[@id='collection4_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div[@class='uif-group uif-gridGroup uif-collectionItem uif-gridCollectionItem']/table/tbody/tr[5]/td/div/fieldset/div/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button");
+        Thread.sleep(2000);
+        // confirm that the input box containing the modified value is not present
+
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                fail("timeout");
+            try {
+                System.out.println("Loop ----- " + second);
+                if (!"selenium".equals(getAttributeByName("list4[0].subList[0].field1", "value")))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        // verify that the value has changed for the input box in the line that has replaced the deleted one
+        assertNotSame("selenium", getAttributeByName("list4[0].subList[0].field1", "value"));
+        passed();
+    }
+
+    protected void testUifTooltip(String NAME_FIELD_1, String NAME_FIELD_2) throws Exception {
+        // check if tooltip opens on focus
+        fireEvent(NAME_FIELD_1, "focus");
+        fireMouseOverEventByName(NAME_FIELD_1);
+        //        Assert.assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
+        Assert.assertEquals("This tooltip is triggered by focus or and mouse over.",
+                getText("td.jquerybubblepopup-innerHtml"));
+
+        // check if tooltip closed on blur
+        fireEvent(NAME_FIELD_1, "blur");
+        Assert.assertFalse(isVisible("div.jquerybubblepopup.jquerybubblepopup-black")
+                && isVisible("td.jquerybubblepopup-innerHtml"));
+        //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
+
+        Thread.sleep(5000);
+        fireEvent("field119", "focus");
+        // check if tooltip opens on mouse over
+        fireMouseOverEventByName(NAME_FIELD_2);
+        //        Assert.assertTrue(isVisible("td.jquerybubblepopup-innerHtml"));
+        //        Assert.assertTrue(isVisibleByXpath("//td[@class='jquerybubblepopup-innerHtml']"));
+        //        Assert.assertEquals("This is a tool-tip with different position and tail options", getText("td.jquerybubblepopup-innerHtml"));
+        Assert.assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+
+        // check if tooltip closed on mouse out
+        waitAndTypeByName(NAME_FIELD_2, "a");
+        Thread.sleep(5000);
+        Assert.assertFalse(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+
+        // check that default tooltip does not display when there are an error message on the field
+        waitAndTypeByName(NAME_FIELD_1, "1");
+        fireEvent(NAME_FIELD_1, "blur");
+        //        fireEvent(NAME_FIELD_1, "focus");
+        fireMouseOverEventByName(NAME_FIELD_1);
+        Thread.sleep(10000);
+        assertTrue(
+                "https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
+                isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
+                        !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
+        // TODO figure out this last assert
+        //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
+        passed();
+    }
+
+    protected void testValidCharsConstraintIT() throws Exception {
+        fireEvent("field50", "focus");
+        waitAndTypeByName("field50", "12.333");
+        fireEvent("field50", "blur");
+        Assert.assertTrue(getAttributeByName("field50", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field50", "focus");
+        waitAndTypeByName("field50", "123.33");
+        fireEvent("field50", "blur");
+        Assert.assertTrue(getAttributeByName("field50", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field51", "focus");
+        waitAndTypeByName("field51", "A");
+        fireEvent("field51", "blur");
+        Assert.assertTrue(getAttributeByName("field51", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field51", "focus");
+        waitAndTypeByName("field51", "-123.33");
+        fireEvent("field51", "blur");
+        Assert.assertTrue(getAttributeByName("field51", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field77", "focus");
+        waitAndTypeByName("field77", "1.1");
+        fireEvent("field77", "blur");
+        Assert.assertTrue(getAttributeByName("field77", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field77", "focus");
+        waitAndTypeByName("field77", "12");
+        fireEvent("field77", "blur");
+        Assert.assertTrue(getAttributeByName("field77", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field52", "focus");
+        waitAndTypeByName("field52", "5551112222");
+        fireEvent("field52", "blur");
+        Assert.assertTrue(getAttributeByName("field52", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field52", "focus");
+        waitAndTypeByName("field52", "555-111-1111");
+        fireEvent("field52", "blur");
+        Assert.assertTrue(getAttributeByName("field52", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field53", "focus");
+        waitAndTypeByName("field53", "1ClassName.java");
+        fireEvent("field53", "blur");
+        Assert.assertTrue(getAttributeByName("field53", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field53", "focus");
+        waitAndTypeByName("field53", "ClassName.java");
+        fireEvent("field53", "blur");
+        Assert.assertTrue(getAttributeByName("field53", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field54", "focus");
+        waitAndTypeByName("field54", "aaaaa");
+        fireEvent("field54", "blur");
+        Assert.assertTrue(getAttributeByName("field54", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field54", "focus");
+        waitAndTypeByName("field54", "aaaaa@kuali.org");
+        fireEvent("field54", "blur");
+        Assert.assertTrue(getAttributeByName("field54", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field84", "focus");
+        waitAndTypeByName("field84", "aaaaa");
+        fireEvent("field84", "blur");
+        Assert.assertTrue(getAttributeByName("field84", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field84", "focus");
+        waitAndTypeByName("field84", "http://www.kuali.org");
+        fireEvent("field84", "blur");
+        Assert.assertTrue(getAttributeByName("field84", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field55", "focus");
+        waitAndTypeByName("field55", "023512");
+        fireEvent("field55", "blur");
+        Assert.assertTrue(getAttributeByName("field55", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field55", "focus");
+        waitAndTypeByName("field55", "022812");
+        fireEvent("field55", "blur");
+        Assert.assertTrue(getAttributeByName("field55", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field75", "focus");
+        waitAndTypeByName("field75", "02/35/12");
+        fireEvent("field75", "blur");
+        Assert.assertTrue(getAttributeByName("field75", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field75", "focus");
+        waitAndTypeByName("field75", "02/28/12");
+        fireEvent("field75", "blur");
+        Assert.assertTrue(getAttributeByName("field75", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field82", "focus");
+        waitAndTypeByName("field82", "13:22");
+        fireEvent("field82", "blur");
+        Assert.assertTrue(getAttributeByName("field82", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field82", "focus");
+        waitAndTypeByName("field82", "02:33");
+        fireEvent("field82", "blur");
+        Assert.assertTrue(getAttributeByName("field82", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field83", "focus");
+        waitAndTypeByName("field83", "25:22");
+        fireEvent("field83", "blur");
+        Assert.assertTrue(getAttributeByName("field83", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field83", "focus");
+        waitAndTypeByName("field83", "14:33");
+        fireEvent("field83", "blur");
+        Assert.assertTrue(getAttributeByName("field83", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field57", "focus");
+        waitAndTypeByName("field57", "0");
+        fireEvent("field57", "blur");
+        Assert.assertTrue(getAttributeByName("field57", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field57", "focus");
+        waitAndTypeByName("field57", "2020");
+        fireEvent("field57", "blur");
+        Assert.assertTrue(getAttributeByName("field57", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field58", "focus");
+        waitAndTypeByName("field58", "13");
+        fireEvent("field58", "blur");
+        Assert.assertTrue(getAttributeByName("field58", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field58", "focus");
+        waitAndTypeByName("field58", "12");
+        fireEvent("field58", "blur");
+        Assert.assertTrue(getAttributeByName("field58", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field61", "focus");
+        waitAndTypeByName("field61", "5555-444");
+        fireEvent("field61", "blur");
+        Assert.assertTrue(getAttributeByName("field61", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field61", "focus");
+        waitAndTypeByName("field61", "55555-4444");
+        fireEvent("field61", "blur");
+        Assert.assertTrue(getAttributeByName("field61", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field62", "focus");
+        waitAndTypeByName("field62", "aa5bb6_a");
+        fireEvent("field62", "blur");
+        Assert.assertTrue(getAttributeByName("field62", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field62", "focus");
+        waitAndTypeByName("field62", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890");
+        fireEvent("field62", "blur");
+        Assert.assertTrue(getAttributeByName("field62", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field63", "focus");
+        waitAndTypeByName("field63", "fff555$");
+        fireEvent("field63", "blur");
+        Assert.assertTrue(getAttributeByName("field63", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field63", "focus");
+        waitAndTypeByName("field63", "aa22 _/");
+        fireEvent("field63", "blur");
+        Assert.assertTrue(getAttributeByName("field63", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field64", "focus");
+        waitAndTypeByName("field64", "AABB55");
+        fireEvent("field64", "blur");
+        Assert.assertTrue(getAttributeByName("field64", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field64", "focus");
+        waitAndTypeByName("field64", "ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z");
+        fireEvent("field64", "blur");
+        Assert.assertTrue(getAttributeByName("field64", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field76", "focus");
+        waitAndTypeByName("field76", "AA~BB%");
+        fireEvent("field76", "blur");
+        Assert.assertTrue(getAttributeByName("field76", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field76", "focus");
+        waitAndTypeByName("field76", "abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?");
+        fireEvent("field76", "blur");
+        Assert.assertTrue(getAttributeByName("field76", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field65", "focus");
+        waitAndTypeByName("field65", "sdfs$#$# dsffs");
+        fireEvent("field65", "blur");
+        Assert.assertTrue(getAttributeByName("field65", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field65", "focus");
+        waitAndTypeByName("field65", "sdfs$#$#sffs");
+        fireEvent("field65", "blur");
+        Assert.assertTrue(getAttributeByName("field65", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field66", "focus");
+        waitAndTypeByName("field66", "abcABCD");
+        fireEvent("field66", "blur");
+        Assert.assertTrue(getAttributeByName("field66", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field66", "focus");
+        waitAndTypeByName("field66", "ABCabc");
+        fireEvent("field66", "blur");
+        Assert.assertTrue(getAttributeByName("field66", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field67", "focus");
+        waitAndTypeByName("field67", "(111)B-(222)A");
+        fireEvent("field67", "blur");
+        Assert.assertTrue(getAttributeByName("field67", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field67", "focus");
+        waitAndTypeByName("field67", "(12345)-(67890)");
+        fireEvent("field67", "blur");
+        Assert.assertTrue(getAttributeByName("field67", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field68", "focus");
+        waitAndTypeByName("field68", "A.66");
+        fireEvent("field68", "blur");
+        Assert.assertTrue(getAttributeByName("field68", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field68", "focus");
+        waitAndTypeByName("field68", "a.4");
+        fireEvent("field68", "blur");
+        Assert.assertTrue(getAttributeByName("field68", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        fireEvent("field56", "focus");
+        waitAndTypeByName("field56", "2020-06-02");
+        fireEvent("field56", "blur");
+        Assert.assertTrue(getAttributeByName("field56", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        fireEvent("field56", "focus");
+        waitAndTypeByName("field56", "2020-06-02 03:30:30.22");
+        fireEvent("field56", "blur");
+        Assert.assertTrue(getAttributeByName("field56", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        passed();
+    }
+
+    protected void testSubCollectionSize() throws Exception {
+        checkForIncidentReport("link=Collections");
+        //        // click on collections page link
+        waitAndClickByLinkText("Collections");
+        //        // wait for collections page to load by checking the presence of a sub collection line item
+        for (int second = 0;; second++) {
+            if (second >= 30)
+                fail("timeout");
+            try {
+                if (getText(
+                        "div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span")
+                        .equals("SubCollection - (3 lines)"))
+                {
+                    break;
+                }
+
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        // verify that sub collection sizes are displayed as expected
+        assertEquals(
+                "SubCollection - (3 lines)",
+                getText("div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span"));
+        assertEquals("SubCollection - (2 lines)", getTextByXpath("//a[@id='subCollection1_line1_toggle']/span"));
+
+    }
+
+    protected void verifyRichMessagesValidationBasicFunctionality() throws Exception
+    {
+        Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field1']"));
+        Assert.assertTrue(isElementPresentByXpath("//a[contains(text(), 'Kuali')]"));
+        Assert.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='field2']"));
+        Thread.sleep(3000);
+    }
+
+    protected void verifyRichMessagesValidationAdvancedFunctionality() throws Exception
+    {
+        //Color Options
+        Assert.assertTrue(isElementPresentByXpath("//span[@style='color: green;']"));
+        Assert.assertTrue(isElementPresentByXpath("//span[@style='color: blue;']"));
+
+        //Css class
+        Assert.assertTrue(isElementPresentByXpath("//span[@class='fl-text-underline fl-text-larger']"));
+
+        //Combinations
+        Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field3']"));
+        Assert.assertTrue(isElementPresentByXpath("//select[@name='field4']"));
+        Assert.assertTrue(isElementPresentByXpath("//button[contains(text(), 'Action Button')]"));
+
+        //Rich Message Field
+        Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/span[contains(., 'Color')]"));
+        Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/i/b[contains(., 'Html')]"));
+        Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/img[@class='uif-image inlineBlock']"));
+
+        Thread.sleep(3000);
+    }
+
+    protected void verifyRichMessagesValidationLettersNumbersValidation() throws Exception
+    {
+        //For letters only Validation
+        Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field5']"));
+        waitAndTypeByXpath(
+                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']",
+                "abc");
+        Assert.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']");
+        waitAndTypeByXpath(
+                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']",
+                "abc12");
+
+        waitAndTypeByXpath("//input[@name= 'field6']", "");
+        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        Thread.sleep(3000);
+        clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']");
+        waitAndTypeByXpath(
+                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']",
+                "abc");
+        waitAndTypeByXpath("//input[@name= 'field6']", "");
+
+        //For numbers only validation
+        waitAndTypeByXpath("//input[@name= 'field6']", "123");
+        Assert.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        clearTextByXpath("//input[@name= 'field6']");
+        waitAndTypeByXpath("//input[@name= 'field6']", "123ab");
+        fireEvent("field6", "blur");
+        Thread.sleep(5000);
+        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+
+        Thread.sleep(3000);
+    }
+
+    protected void verifyRichMessagesValidationRadioAndCheckBoxGroupFunctionality() throws Exception
+    {
+        //Radio Group
+        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='1']"));
+        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='2']"));
+        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='3']"));
+        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='4']"));
+
+        //Checkbox Group
+        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='1']"));
+        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='2']"));
+        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='3']"));
+        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/label/div/select[@name='field4']"));
+
+        //Checkbox Control
+        Assert.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='bField1']"));
+        Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field103']"));
+
+    }
+
+    protected void verifyRichMessagesValidationLinkDeclarationsFunctionality() throws Exception
+    {
+        //Testing link tag
+        waitAndClickByXpath("//div[contains(., 'Testing link tag')]/a");
+        Thread.sleep(9000);
+        switchToWindow("Open Source Software | www.kuali.org");
+        switchToWindow("Kuali :: Rich Messages");
+
+        //Testing methodToCall Action
+        waitAndClickByXpath("//div[contains(., 'Testing methodToCall action')]/a");
+        Thread.sleep(3000);
+        //        Assert.assertTrue(isElementPresentByXpath("//div[@class='fancybox-wrap fancybox-desktop fancybox-type-html fancybox-opened']"));
+        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+
+        //Testing methodToCall action (no client validation check)
+        waitAndClickByXpath("//div[contains(., 'Testing methodToCall action (no client validation check)')]/a");
+        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages']"));
+        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        Thread.sleep(3000);
+    }
+
+    public void testDefaultTestsTableLayout() throws Exception {
+
+        assertTableLayout();
+        waitAndTypeByName("newCollectionLines['list1'].field1", "asdf1");
+        waitAndTypeByName("newCollectionLines['list1'].field2", "asdf2");
+        waitAndTypeByName("newCollectionLines['list1'].field3", "asdf3");
+        waitAndTypeByName("newCollectionLines['list1'].field4", "asdf4");
+        waitAndClickByXpath("//button[contains(.,'add')]"); // the first button is the one we want
+
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                Assert.fail("timeout");
+            try {
+                if (getAttributeByName("newCollectionLines['list1'].field1", "value").equals(""))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
+        Assert.assertEquals("asdf1", getAttributeByName("list1[0].field1", "value"));
+        Assert.assertEquals("asdf2", getAttributeByName("list1[0].field2", "value"));
+        Assert.assertEquals("asdf3", getAttributeByName("list1[0].field3", "value"));
+        Assert.assertEquals("asdf4", getAttributeByName("list1[0].field4", "value"));
+
+        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        passed();
+    }
+
+    protected void assertTableLayout() {
+        Assert.assertTrue(driver.getPageSource().contains("Table Layout"));
+        Assert.assertTrue(driver.getPageSource().contains("Field 1"));
+        Assert.assertTrue(driver.getPageSource().contains("Field 2"));
+        Assert.assertTrue(driver.getPageSource().contains("Field 3"));
+        Assert.assertTrue(driver.getPageSource().contains("Field 4"));
+        Assert.assertTrue(driver.getPageSource().contains("Actions"));
+    }
+
+    /**
+     * Test adding a column of values to the Add Blank Line Tests Table Layout
+     */
+    protected void testAddBlankLine() throws Exception {
+        waitAndClickByLinkText("Add Blank Line");
+        waitAndClickByXpath("//button[contains(.,'Add Line')]");
+        Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible woudl be better
+        assertElementPresentByName("list1[0].field1");
+
+        assertTableLayout();
+        Assert.assertEquals("", getAttributeByName("list1[0].field1", "value"));
+        Assert.assertEquals("", getAttributeByName("list1[0].field2", "value"));
+        Assert.assertEquals("", getAttributeByName("list1[0].field3", "value"));
+        Assert.assertEquals("", getAttributeByName("list1[0].field4", "value"));
+        Assert.assertEquals("5", getAttributeByName("list1[1].field1", "value"));
+        Assert.assertEquals("6", getAttributeByName("list1[1].field2", "value"));
+        Assert.assertEquals("7", getAttributeByName("list1[1].field3", "value"));
+        Assert.assertEquals("8", getAttributeByName("list1[1].field4", "value"));
+
+        Assert.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        waitAndTypeByName("list1[0].field1", "1");
+        waitAndTypeByName("list1[0].field2", "1");
+        waitAndTypeByName("list1[0].field3", "1");
+        waitAndTypeByName("list1[0].field4", "1");
+        Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        passed();
+
+    }
+
+    /**
+     * Test action column placement in table layout collections
+     */
+    protected void testActionColumnPlacement() throws Exception {
+
+        //Lack of proper locators its not possible to uniquely identify/locate this elements without use of ID's.
+        //This restricts us to use the XPath to locate elements from the dome. 
+        //This test is prone to throw error in case of any changes in the dom Html graph.
+
+        waitAndClickByLinkText("Column Sequence");
+        Thread.sleep(2000);
+        //waitAndClick("css=div.jGrowl-close");
+        // check if actions column RIGHT by default
+        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                Assert.fail("timeout");
+            try {
+                if (isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        Assert.assertTrue(isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"));
+
+        // check if actions column is LEFT
+        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                Assert.fail("timeout");
+            try {
+                if (isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        Assert.assertTrue(isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"));
+
+        // check if actions column is 3rd in a sub collection
+        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                Assert.fail("timeout");
+            try {
+                if (isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        Assert.assertTrue(isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
+        passed();
+
+    }
+
+    protected void testAddViaLightbox() throws Exception {
+
+        waitAndClickByLinkText("Add Via Lightbox");
+        Assert.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        waitAndClickByXpath("//button[contains(.,'Add Line')]");
+        Thread.sleep(3000);
+        waitAndTypeByXpath("//form/div/table/tbody/tr/td/div/input", "1");
+        waitAndTypeByXpath("//form/div/table/tbody/tr[2]/td/div/input", "1");
+        waitAndTypeByXpath("//form/div/table/tbody/tr[3]/td/div/input", "1");
+        waitAndTypeByXpath("//form/div/table/tbody/tr[4]/td/div/input", "1");
+        waitAndClickByXpath("//button[@id='Collections-AddViaLightbox-TableTop_add']");
+        Thread.sleep(3000);
+        Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        passed();
+    }
+
+    protected void testColumnSequence() throws Exception {
+
+        waitAndClickByLinkText("Column Sequence");
+        Thread.sleep(3000);
+        waitAndTypeByName("newCollectionLines['list1'].field1", "1");
+        waitAndTypeByName("newCollectionLines['list1'].field2", "1");
+        waitAndTypeByName("newCollectionLines['list1'].field3", "1");
+        waitAndTypeByName("newCollectionLines['list1'].field4", "1");
+        waitAndClick(By.id("Collections-ColumnSequence-TableDefault_add"));
+        Thread.sleep(3000);
+
+        //Check if row has been added really or not
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
+        Assert.assertEquals("1", getAttributeByName("list1[0].field1", "value"));
+        Assert.assertEquals("1", getAttributeByName("list1[0].field2", "value"));
+        Assert.assertEquals("1", getAttributeByName("list1[0].field3", "value"));
+        Assert.assertEquals("1", getAttributeByName("list1[0].field4", "value"));
+
+        //Check for the added if delete is present or not
+        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        passed();
+    }
+
+    protected void testSequencerow() throws Exception {
+        waitAndClickByLinkText("Save Row");
+        Thread.sleep(3000);
+        waitAndTypeByName("newCollectionLines['list1'].field1", "1");
+        waitAndTypeByName("newCollectionLines['list1'].field2", "1");
+        waitAndTypeByName("newCollectionLines['list1'].field3", "1");
+        waitAndTypeByName("newCollectionLines['list1'].field4", "1");
+
+        waitAndClickByXpath("//button[contains(.,'add')]");
+        Thread.sleep(3000);
+
+        //Check if row has been added really or not
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
+        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
+        Assert.assertEquals("1", getAttributeByName("list1[0].field1", "value"));
+        Assert.assertEquals("1", getAttributeByName("list1[0].field2", "value"));
+        Assert.assertEquals("1", getAttributeByName("list1[0].field3", "value"));
+        Assert.assertEquals("1", getAttributeByName("list1[0].field4", "value"));
+
+        //Check for the added if delete is present or not
+        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        //        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
+        passed();
+    }
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.configview;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+package edu.samplu.krad.compview;
+
+import edu.samplu.common.WebDriverLegacyITBase;
+
+import junit.framework.Assert;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-    CollectionsWDIT.class,
-    HelpIT.class,
-    HelpIT2.class})
-public class ConfigViewTestSuite {
+public class ValidCharsConstraintWDIT extends WebDriverLegacyITBase {
+    @Override
+    public String getTestUrl() {
+        return "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4";
+    }
 
+	@Test
+	public void testValidCharsConstraintIT() throws Exception {
+	    super.testValidCharsConstraintIT();
+	}
 }

@@ -31,7 +31,7 @@ import static org.junit.Assert.fail;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ParentLineLegacyIT extends WebDriverLegacyITBase {
+public class ParentLineWDIT extends WebDriverLegacyITBase {
     @Override
     public String getTestUrl() {
         return "/kr-krad/uicomponents?methodToCall=start&readOnlyFields=field91&viewId=UifCompView_KNS#UifCompView-Page7";
@@ -42,27 +42,6 @@ public class ParentLineLegacyIT extends WebDriverLegacyITBase {
      * tests that the size of a sub collection is correctly displayed using the parentLine el variable
      */
     public void testSubCollectionSize() throws Exception {
-        checkForIncidentReport("link=Collections");
-//        // click on collections page link
-        waitAndClickByLinkText("Collections");
-//        // wait for collections page to load by checking the presence of a sub collection line item
-        for (int second = 0;; second++) {
-            if (second >= 30)
-                fail("timeout");
-            try { 
-                if(getText("div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span").equals("SubCollection - (3 lines)"))
-                {
-                    break;
-                }
-                          
-            }
-            catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        // verify that sub collection sizes are displayed as expected
-        assertEquals("SubCollection - (3 lines)", getText("div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span"));
-        assertEquals("SubCollection - (2 lines)", getTextByXpath("//a[@id='subCollection1_line1_toggle']/span"));
-        
-        
+    super.testSubCollectionSize();
     }
 }

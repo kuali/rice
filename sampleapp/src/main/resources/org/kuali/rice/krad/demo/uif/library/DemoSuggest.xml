@@ -29,6 +29,7 @@
         <ref bean="Demo-Suggest-Example1"/>
         <ref bean="Demo-Suggest-Example2"/>
         <ref bean="Demo-Suggest-Example3"/>
+        <ref bean="Demo-Suggest-Example4"/>
       </list>
     </property>
   </bean>
@@ -87,6 +88,30 @@
           </property>
         </bean>
         <!-- ex:Demo-Suggest-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Suggest-Example4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Suggest-Example4 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField5">
+          <property name="suggest">
+            <bean parent="Uif-Suggest" p:render="true" p:sourceQueryMethodResults="true">
+              <property name="suggestQuery">
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
+                        "org.kuali.rice.krad.demo.uif.components.ComponentSuggestClass.getLanguages"/>
+              </property>
+              <property name="templateOptions">
+                <map merge="true">
+                  <entry key="minLength" value="0"/>
+                </map>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Suggest-Example4 end-->
       </list>
     </property>
   </bean>

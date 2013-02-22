@@ -42,6 +42,8 @@
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Multi-Value Lookup Sample"
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Lookup sample with no specified results limit"
+          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewNoResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
   </ul>
 
 </div>

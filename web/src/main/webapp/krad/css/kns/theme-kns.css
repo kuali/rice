@@ -705,7 +705,7 @@ span.uif-breadcrumbs a {
 }
 
 .uif-syntaxHighlighter .uif-copyPaste  {
-    background: url("../../images/icon_copypaste.png") repeat scroll 0 0 #FFFFFF;
+    background: url("../../images/icon-copypaste.png") repeat scroll 0 0 #FFFFFF;
     cursor: pointer;
     display: none;
     height: 26px;

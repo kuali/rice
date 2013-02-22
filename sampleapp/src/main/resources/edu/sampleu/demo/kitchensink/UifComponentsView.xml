@@ -65,7 +65,7 @@
             <list>
               <ref bean="UifCompView-FieldGroups"/>
               <ref bean="UifCompView-MessageFields"/>
-              <ref bean="UifCompView-SyntaxHighlighter"/>
+              <ref bean="UifCompView-SyntaxHighlighters"/>
               <ref bean="UifCompView-AttributeSecurity"/>
               <ref bean="UifCompView-ImageFields"/>
               <ref bean="UifCompView-ActionFields"/>

@@ -309,6 +309,9 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/widget/syntaxHighlighter.ftl"/>
     <property name="templateName" value="uif_syntaxHighlighter"/>
     <property name="pluginCssClass" value="prettyprint linenums prettyprinted"/>
+    <property name="header">
+      <bean parent="Uif-HeaderFour"/>
+    </property>
   </bean>
 
   <bean id="Uif-Tooltip" parent="Uif-Tooltip-parentBean"/>

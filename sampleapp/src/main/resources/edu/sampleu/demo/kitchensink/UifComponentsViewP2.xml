@@ -102,11 +102,14 @@
                                            UIF Comp - Syntax Highlighter
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-SyntaxHighlighter" parent="Uif-VerticalBoxSection" p:header.headerText="Test code highlight">
+  <bean id="UifCompView-SyntaxHighlighters" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-SyntaxHighlighter" p:sourceCode='@{sourceCodeField}'>
-        </bean>
+        <bean id="UifCompView-SyntaxHighlighter1" parent="Uif-SyntaxHighlighter" p:sourceCode='@{sourceCodeField}'/>
+        <bean id="UifCompView-SyntaxHighlighter2" parent="Uif-SyntaxHighlighter" p:sourceCode='@{sourceCodeField}'
+              p:showCopyConfirmation="true" />
+        <bean id="UifCompView-SyntaxHighlighter3" parent="Uif-SyntaxHighlighter" p:sourceCode='@{sourceCodeField}'
+              p:allowCopy="false" />
       </list>
     </property>
   </bean>

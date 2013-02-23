@@ -32,6 +32,9 @@
         <ref bean="Demo-Suggest-Example4"/>
         <ref bean="Demo-Suggest-Example5"/>
         <ref bean="Demo-Suggest-Example6"/>
+        <ref bean="Demo-Suggest-Example7"/>
+        <ref bean="Demo-Suggest-Example8"/>
+        <ref bean="Demo-Suggest-Example9"/>
       </list>
     </property>
   </bean>
@@ -164,6 +167,116 @@
           </property>
         </bean>
         <!-- ex:Demo-Suggest-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Suggest-Example7" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Suggest-Example7 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField8">
+          <property name="suggest">
+            <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
+              <property name="suggestQuery">
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
+                        "org.kuali.rice.krad.demo.uif.components.ComponentSuggestClass.getRichOptions"/>
+              </property>
+              <property name="templateOptions">
+                <map>
+                  <entry key="minLength" value="0"/>
+                  <entry key="delay" value="0"/>
+                  <entry key="html" value="true"/>
+                </map>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Suggest-Example7 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Suggest-Example8" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Suggest-Example8 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField9">
+          <property name="suggest">
+            <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
+              <property name="suggestOptions">
+                <list>
+                  <value>ActionScript</value>
+                  <value>AppleScript</value>
+                  <value>Asp</value>
+                  <value>BASIC</value>
+                  <value>C</value>
+                  <value>C++</value>
+                  <value>Clojure</value>
+                  <value>COBOL</value>
+                  <value>ColdFusion</value>
+                  <value>Erlang</value>
+                  <value>Fortran</value>
+                  <value>Groovy</value>
+                  <value>Haskell</value>
+                  <value>Java</value>
+                  <value>JavaScript</value>
+                  <value>Lisp</value>
+                  <value>Perl</value>
+                  <value>PHP</value>
+                  <value>Python</value>
+                  <value>Ruby</value>
+                  <value>Scala</value>
+                  <value>Scheme</value>
+                </list>
+              </property>
+              <property name="templateOptions">
+                <map>
+                  <entry key="minLength" value="0"/>
+                  <entry key="delay" value="0"/>
+                </map>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Suggest-Example8 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Suggest-Example9" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Suggest-Example9 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField10" p:additionalHiddenPropertyNames="inputField11"
+              p:propertyNamesForAdditionalDisplay="inputField12">
+          <property name="suggest">
+            <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
+              <property name="suggestQuery">
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
+                        "org.kuali.rice.krad.demo.uif.components.ComponentSuggestClass.getComplexOptions"/>
+              </property>
+              <property name="templateOptions">
+                <map>
+                  <entry key="minLength" value="0"/>
+                  <entry key="delay" value="0"/>
+                  <entry key="select">
+                    <value>
+                      function( event, ui ) {
+                      jQuery( "input[name='inputField11']" ).val( ui.item.value );
+                      jQuery( "input[name='inputField10']" ).val( ui.item.label );
+                      jQuery( "span[id$='_info_inputField12']").html( ui.item.description );
+
+                      return false;
+                      }
+                    </value>
+                  </entry>
+                </map>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Suggest-Example9 end-->
       </list>
     </property>
   </bean>

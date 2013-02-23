@@ -20,6 +20,52 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ComponentSuggestClass {
+    public static class TestLabelValue {
+        private String label;
+        private String value;
+
+        public TestLabelValue() {
+        }
+
+        public TestLabelValue(String value, String label) {
+            this.value = value;
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
+    public static class TestSuggestObject extends TestLabelValue {
+        private String description;
+
+        public TestSuggestObject(String value, String label, String description) {
+            super(value, label);
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
+
     public static List<String> getLanguages(String term) {
         List<String> matchingLanguages = new ArrayList<String>();
 
@@ -45,5 +91,25 @@ public class ComponentSuggestClass {
                         "Scala", "Scheme"};
 
         return Arrays.asList(languageArray);
+    }
+
+    public static List<TestLabelValue> getRichOptions() {
+        List<TestLabelValue> options = new ArrayList<TestLabelValue>();
+
+        options.add(new TestLabelValue("r1", "<b>Rich Option 1</b><br/><i>this is a desc for option 1</i>"));
+        options.add(new TestLabelValue("r1", "<b>Rich Option 2</b><br/><i>this is a desc for option 2</i>"));
+        options.add(new TestLabelValue("r1", "<b>Rich Option 3</b><br/><i>this is a desc for option 3</i>"));
+
+        return options;
+    }
+
+    public static List<TestSuggestObject> getComplexOptions() {
+        List<TestSuggestObject> options = new ArrayList<TestSuggestObject>();
+
+        options.add(new TestSuggestObject("1", "jhbon", "Bohan, Jack"));
+        options.add(new TestSuggestObject("2", "jmcross", "Cross, Jeff"));
+        options.add(new TestSuggestObject("3", "jomot", "Mot, Joe"));
+
+        return options;
     }
 }

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.uif.components;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ComponentSuggestClass {
@@ -35,5 +36,14 @@ public class ComponentSuggestClass {
         }
 
         return matchingLanguages;
+    }
+
+    public static List<String> getAllLanguages() {
+        String[] languageArray =
+                {"ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang",
+                        "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby",
+                        "Scala", "Scheme"};
+
+        return Arrays.asList(languageArray);
     }
 }

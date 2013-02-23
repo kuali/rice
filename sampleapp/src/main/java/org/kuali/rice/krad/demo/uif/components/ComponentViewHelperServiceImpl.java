@@ -50,4 +50,16 @@ public class ComponentViewHelperServiceImpl extends ViewHelperServiceImpl {
 
         return matchingAccounts;
     }
+
+    public List<TravelAccount> retrieveTravelAccountsBySubAcct(String subAccount) {
+        List<TravelAccount> matchingAccounts = new ArrayList<TravelAccount>();
+
+        Map<String, String> lookupCriteria = new HashMap<String, String>();
+        lookupCriteria.put("subAccountName", subAccount + SearchOperator.LIKE_MANY.op());
+
+        matchingAccounts = (List<TravelAccount>) KRADServiceLocatorWeb.getLookupService().findCollectionBySearch(
+                TravelAccount.class, lookupCriteria);
+
+        return matchingAccounts;
+    }
 }

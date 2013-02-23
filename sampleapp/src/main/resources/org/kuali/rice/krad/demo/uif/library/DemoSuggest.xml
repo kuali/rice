@@ -30,6 +30,8 @@
         <ref bean="Demo-Suggest-Example2"/>
         <ref bean="Demo-Suggest-Example3"/>
         <ref bean="Demo-Suggest-Example4"/>
+        <ref bean="Demo-Suggest-Example5"/>
+        <ref bean="Demo-Suggest-Example6"/>
       </list>
     </property>
   </bean>
@@ -112,6 +114,56 @@
           </property>
         </bean>
         <!-- ex:Demo-Suggest-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Suggest-Example5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Suggest-Example5 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField6">
+          <property name="suggest">
+            <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="subAccountName">
+              <property name="suggestQuery">
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsBySubAcct"
+                      p:sortPropertyNames="subAccountName">
+                  <property name="queryMethodInvokerConfig.targetObject">
+                    <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+                      <property name="serviceName" value="componentViewHelperService"/>
+                    </bean>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Suggest-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Suggest-Example6" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Suggest-Example6 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField7">
+          <property name="suggest">
+            <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
+              <property name="suggestQuery">
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
+                        "org.kuali.rice.krad.demo.uif.components.ComponentSuggestClass.getAllLanguages"/>
+              </property>
+              <property name="templateOptions">
+                <map>
+                  <entry key="minLength" value="0"/>
+                  <entry key="delay" value="0"/>
+                </map>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Suggest-Example6 end-->
       </list>
     </property>
   </bean>

@@ -406,6 +406,8 @@
 
   <bean id="testSuggestService" class="edu.sampleu.demo.kitchensink.TestSuggestServiceImpl"/>
 
+  <bean id="componentViewHelperService" class="org.kuali.rice.krad.demo.uif.components.ComponentViewHelperServiceImpl"/>
+
   <bean id="testAttributeQueryService" class="edu.sampleu.demo.kitchensink.TestAttributeQueryServiceImpl"/>
 
 </beans>

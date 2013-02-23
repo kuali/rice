@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertTrue;
@@ -86,7 +87,8 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
     private String previousVersion;
 
     private static final List<String> ignoreBreakageRegexps = Arrays.asList(
-            ".*Position of any null changed.$" // change in position of an 'any' doesn't indicate a breakage for us
+            ".*Position of any null changed.$", // change in position of an 'any' doesn't indicate a breakage for us
+            ".*Position of element null changed.$" // this also indicates an 'any' changing position, ignore it too
     );
 
     public WsdlCompareTestCase(String moduleName) {
@@ -228,6 +230,16 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         }
     }
 
+    /**
+     * Allows an extending test to specify versions of specific wsdls to omit from testing.  This can be useful for
+     * ignoring version compatibility issues that have already been addressed in previous versions.
+     *
+     * @return a Map from wsdl file name (e.g. "DocumentTypeService.wsdl") to a list of {@link MavenVersion}s to filter
+     */
+    protected Map<String, List<MavenVersion>> getWsdlVersionBlacklists() {
+        return null;
+    }
+
     protected void compareWsdlFiles(File[] files) {
         List<VersionCompatibilityBreakage> breakages = new ArrayList<VersionCompatibilityBreakage>();
 
@@ -241,7 +253,23 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
                 LOG.info("new wsdl: " + file.getAbsolutePath());
                 String newWsdl = file.getAbsolutePath();
 
-                Iterator<MavenVersion> versionsIter = versions.iterator();
+                // do filtering to avoid comparing with blacklisted versions of wsdls
+
+                List<MavenVersion> filteredVersions = new ArrayList<MavenVersion>(versions);
+                Map<String, List<MavenVersion>> wsdlVersionBlacklists = getWsdlVersionBlacklists();
+
+                if (wsdlVersionBlacklists != null) {
+                    for (Map.Entry<String, List<MavenVersion>> wsdlVersionBlacklist : wsdlVersionBlacklists.entrySet()) {
+                        if (file.getName().equals(wsdlVersionBlacklist.getKey())) {
+                            LOG.info("filtering blacklisted versions of " + wsdlVersionBlacklist.getKey() + ": " +
+                                    StringUtils.join(wsdlVersionBlacklist.getValue(), ","));
+                            filteredVersions.removeAll(wsdlVersionBlacklist.getValue());
+                        }
+                    }
+                }
+
+                Iterator<MavenVersion> versionsIter = filteredVersions.iterator();
+
                 boolean processedCurrent = false;
 
                 MavenVersion v1;
@@ -524,6 +552,29 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
             return "MavenVersion{" +
                     originalForm +
                     '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            final MavenVersion that = (MavenVersion) o;
+
+            if (!originalForm.equals(that.originalForm)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return originalForm.hashCode();
         }
     }
 

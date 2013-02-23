@@ -21,6 +21,10 @@ import org.junit.Test;
 import org.kuali.rice.vc.test.WsdlCompareTestCase;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
     private static final Logger LOG = Logger.getLogger(KewWsdlCompatibilityTest.class);
@@ -43,5 +47,12 @@ public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
         compareWsdlFiles(files);
     }
 
-
+    /**
+     * WorkflowDocumentService.wsdl had an incompatible change in  2.2.0 that was corrected in 2.2.1
+     * @return
+     */
+    @Override
+    protected Map<String, List<MavenVersion>> getWsdlVersionBlacklists() {
+        return Collections.singletonMap("WorkflowDocumentService.wsdl", Arrays.asList(new MavenVersion("2.2.0")));
+    }
 }

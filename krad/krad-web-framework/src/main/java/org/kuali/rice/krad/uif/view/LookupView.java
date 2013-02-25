@@ -74,6 +74,8 @@ public class LookupView extends FormView {
     private boolean showMaintenanceLinks = false;
     @RequestParameter
     private boolean multipleValuesSelect = false;
+    @RequestParameter
+    private boolean renderLookupCriteria = true;
 
     @RequestParameter
     private String returnTarget;
@@ -81,7 +83,6 @@ public class LookupView extends FormView {
     @RequestParameter
     private boolean returnByScript;
 
-    private boolean lookupCriteriaEnabled = true;
     private boolean supplementalActionsEnabled = false;
     private boolean renderSearchButtons = false;
 
@@ -133,7 +134,7 @@ public class LookupView extends FormView {
     }
 
     protected void initializeGroups() {
-        if ((getCriteriaGroup() != null) && (getCriteriaGroup().getItems().isEmpty())) {
+        if (renderLookupCriteria && (getCriteriaGroup() != null) && (getCriteriaGroup().getItems().isEmpty())) {
             getCriteriaGroup().setItems(getCriteriaFields());
         }
 
@@ -167,6 +168,10 @@ public class LookupView extends FormView {
 
         if (!renderSearchButtons) {
             criteriaGroup.getFooter().setRender(false);
+        }
+
+        if (!renderLookupCriteria) {
+            criteriaGroup.setRender(false);
         }
         super.performApplyModel(view, model, parent);
     }
@@ -524,5 +529,27 @@ public class LookupView extends FormView {
      */
     public void setRenderSearchButtons(boolean renderSearchButtons) {
         this.renderSearchButtons = renderSearchButtons;
+    }
+
+    /**
+     * Indicates whether the lookup criteria group should be rendered
+     *
+     * <p>
+     * Defaults to true. Can be set as bean property or passed as a request parameter in the lookup url.
+     * </p>
+     *
+     * @return boolean
+     */
+    public boolean isRenderLookupCriteria() {
+        return renderLookupCriteria;
+    }
+
+    /**
+     * Setter for the render lookup criteria group render flag
+     *
+     * @param renderLookupCriteria
+     */
+    public void setRenderLookupCriteria(boolean renderLookupCriteria) {
+        this.renderLookupCriteria = renderLookupCriteria;
     }
 }

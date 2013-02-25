@@ -23,8 +23,6 @@
   <bean id="LookupSampleView" parent="Uif-LookupView">
     <property name="viewName" value="LookupSampleView"/>
     <property name="headerText" value="Lookup Sample" />
-    <property name="resultSetLimit" value="2" />
-    <property name="multipleValuesSelectResultSetLimit" value="4" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
     <property name="criteriaFields">
       <list>
@@ -44,49 +42,51 @@
     </property>
   </bean>
 
-  <bean id="LookupSampleViewAlwaysMultipleValuesSelect" parent="Uif-LookupView">
+  <bean id="LookupSampleViewAlwaysMultipleValuesSelect" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewAlwaysMultipleValuesSelect"/>
     <property name="headerText" value="Lookup Sample - Multiple Value Specified in View" />
-    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
     <property name="multipleValuesSelectResultSetLimit" value="5" />
     <property name="multipleValuesSelect" value="true" />
-    <property name="criteriaFields">
-      <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
-      </list>
-    </property>
-    <property name="resultFields">
-      <list>
-        <bean parent="Uif-DataField" p:propertyName="number" />
-        <bean parent="Uif-DataField" p:propertyName="name" />
-        <bean parent="Uif-DataField" p:propertyName="subAccount" />
-        <bean parent="Uif-DataField" p:propertyName="createDate" />
-      </list>
-    </property>
   </bean>
 
-  <bean id="LookupSampleViewNoResultsLimit" parent="Uif-LookupView">
-    <property name="viewName" value="LookupSampleViewNoResultsLimit"/>
-    <property name="headerText" value="Lookup Sample with No Results Limit" />
-    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
-    <property name="criteriaFields">
-      <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
-      </list>
+  <bean id="LookupSampleViewResultsLimit" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewResultsLimit"/>
+    <property name="headerText" value="Lookup Sample with Results Limit of 2" />
+    <property name="resultSetLimit" value="2" />
+  </bean>
+
+  <bean id="LookupSampleViewHeadings" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewHeadings"/>
+    <property name="headerText" value="Lookup Sample with Headings" />
+
+    <property name="header.upperGroup">
+      <bean parent="Uif-HeaderUpperGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Upper Group of headerText"/>
+          </list>
+        </property>
+      </bean>
     </property>
-    <property name="resultFields">
-      <list>
-        <bean parent="Uif-DataField" p:propertyName="number" />
-        <bean parent="Uif-DataField" p:propertyName="name" />
-        <bean parent="Uif-DataField" p:propertyName="subAccount" />
-        <bean parent="Uif-DataField" p:propertyName="createDate" />
-      </list>
+
+    <property name="header.rightGroup">
+      <bean parent="Uif-HeaderRightGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Right Group of headerText"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+
+    <property name="header.lowerGroup">
+      <bean parent="Uif-HeaderLowerGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Lower Group of headerText"/>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 </beans>

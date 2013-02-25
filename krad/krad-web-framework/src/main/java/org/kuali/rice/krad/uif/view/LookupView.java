@@ -24,8 +24,6 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
-import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.web.form.LookupForm;
@@ -85,7 +83,7 @@ public class LookupView extends FormView {
 
     private boolean lookupCriteriaEnabled = true;
     private boolean supplementalActionsEnabled = false;
-    private boolean disableSearchButtons = false;
+    private boolean renderSearchButtons = false;
 
     private Integer resultSetLimit = null;
     private Integer multipleValuesSelectResultSetLimit = null;
@@ -167,7 +165,7 @@ public class LookupView extends FormView {
             ((List<Component>) getResultsGroup().getItems()).add(0, getResultsReturnField());
         }
 
-        if (disableSearchButtons) {
+        if (!renderSearchButtons) {
             criteriaGroup.getFooter().setRender(false);
         }
         super.performApplyModel(view, model, parent);
@@ -511,20 +509,20 @@ public class LookupView extends FormView {
     }
 
     /**
-     * Indicates that the action buttons like search in the criteria section should not be rendered
+     * Indicates that the action buttons like search in the criteria section should be rendered
      *
      * @return boolean
      */
-    public boolean isDisableSearchButtons() {
-        return disableSearchButtons;
+    public boolean isRenderSearchButtons() {
+        return renderSearchButtons;
     }
 
     /**
-     * Setter for the disable search buttons flag
+     * Setter for the render search buttons flag
      *
-     * @param disableSearchButtons
+     * @param renderSearchButtons
      */
-    public void setDisableSearchButtons(boolean disableSearchButtons) {
-        this.disableSearchButtons = disableSearchButtons;
+    public void setRenderSearchButtons(boolean renderSearchButtons) {
+        this.renderSearchButtons = renderSearchButtons;
     }
 }

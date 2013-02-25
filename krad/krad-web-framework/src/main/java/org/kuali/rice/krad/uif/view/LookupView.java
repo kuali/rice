@@ -84,7 +84,7 @@ public class LookupView extends FormView {
     private boolean returnByScript;
 
     private boolean supplementalActionsEnabled = false;
-    private boolean renderSearchButtons = false;
+    private boolean renderSearchButtons = true;
 
     private Integer resultSetLimit = null;
     private Integer multipleValuesSelectResultSetLimit = null;

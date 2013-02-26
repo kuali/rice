@@ -56,6 +56,11 @@
     <property name="multipleValuesSelectResultSetLimit" value="4" />
   </bean>
 
+  <bean id="LookupSampleViewUseResultsLimitOnParent" parent="LookupSampleViewResultsLimit">
+    <property name="viewName" value="LookupSampleViewUseResultsLimitOnParent"/>
+    <property name="headerText" value="Lookup Sample with Results Limit on Parent View  (2 for typical lookup, 4 for multiple lookup)" />
+  </bean>
+
   <bean id="LookupSampleViewHeadings" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewHeadings"/>
     <property name="headerText" value="Lookup Sample with Headings" />

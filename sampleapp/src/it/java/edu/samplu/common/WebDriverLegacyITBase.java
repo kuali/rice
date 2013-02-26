@@ -19,8 +19,13 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -30,6 +35,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -77,6 +84,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected String user = "admin";
     protected boolean passed = false;
     static ChromeDriverService chromeDriverService;
+    private Log log = LogFactory.getLog(getClass());
 
     public @Rule
     TestName testName = new TestName();
@@ -436,8 +444,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
         Thread.sleep(3000);
-        assertEquals(Boolean.FALSE,
-                isElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
+        junit.framework.Assert
+                .assertEquals(
+                        Boolean.FALSE,
+                        (Boolean) isElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
         passed();
     }
 
@@ -899,7 +909,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         if (isElementPresent(By.linkText(docId))) {
             assertEquals("FINAL", getDocStatus());
         } else {
-            assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
+            junit.framework.Assert.assertEquals(docId,
+                    driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
             assertEquals("FINAL", getDocStatus());
         }
     }
@@ -1275,7 +1286,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         assertEquals("Test note", getTextByXpath("//pre"));
         waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-        assertEquals(Boolean.FALSE, isElementPresentByName("document.notes[0].noteText"));
+        junit.framework.Assert.assertEquals(Boolean.FALSE,
+                (Boolean) isElementPresentByName("document.notes[0].noteText"));
         passed();
     }
 
@@ -2642,10 +2654,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //        fireEvent(NAME_FIELD_1, "focus");
         fireMouseOverEventByName(NAME_FIELD_1);
         Thread.sleep(10000);
-        assertTrue(
-                "https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
-                isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
-                        !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
+        junit.framework.Assert
+                .assertTrue(
+                        "https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
+                        isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
+                                !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
         // TODO figure out this last assert
         //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
         passed();
@@ -3167,5 +3180,1145 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
         //        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
         passed();
+    }
+
+    //Code for KRAD Test Package.
+    protected void testCollectionTotalling() throws Exception {
+        //Scenario Asserts Changes in Total at client side        
+        waitForElementPresent("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']");
+        assertEquals("Total: 419",
+                getText("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
+
+        clearText("div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']");
+        waitAndType(
+                "div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']",
+                "10");
+        waitAndClick("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']");
+
+        Thread.sleep(5000);
+        assertEquals("Total: 424",
+                getText("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
+
+        //Scenario Asserts Changes in Total at client side on keyUp
+        assertEquals("Total: 419",
+                getText("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
+        clearText("div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']");
+        waitAndType(
+                "div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']",
+                "9");
+        waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
+
+        Thread.sleep(5000);
+        assertEquals("Total: 423",
+                getText("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
+
+        //Asserts absence of Total in 2nd column at the footer for Demonstrating totaling on only some columns 
+        assertEquals("", getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[2]"));
+        //Asserts Presence of Total in 2nd column at the footer for Demonstrating totaling on only some columns 
+        assertEquals("Total: 369",
+                getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[3]/div/fieldset/div/div[2]/div[2]"));
+
+        //Asserts Presence of Total in left most column only being one with no totaling itself 
+        assertEquals("Total:", getTextByXpath("//*[@id='u100213_span']"));
+        assertEquals("419", getTextByXpath("//div[4]/div[3]/table/tfoot/tr/th[2]/div/fieldset/div/div[2]/div[2]"));
+
+        //Asserts changes in value in Total and Decimal for Demonstrating multiple types of calculations for a single column (also setting average to 3 decimal places to demonstrate passing data to calculation function) 
+        assertEquals("Total: 382", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
+        clearText("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']");
+        waitAndType(
+                "div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']",
+                "11");
+        waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
+
+        Thread.sleep(5000);
+        assertEquals("Total: 385", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
+
+        // Assert changes in Decimal..
+        clearText("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']");
+        waitAndType(
+                "div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']",
+                "15.25");
+        waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
+
+        Thread.sleep(5000);
+        assertEquals("Page Average: 11.917", getTextByXpath("//div[2]/fieldset/div/div[2]/div"));
+    }
+
+    protected void testConfigurationTestView(String idPrefix) throws Exception {
+        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
+        String styleValue = getAttributeByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']", "style");
+        // log.info("styleValue is " + styleValue);
+        Assert.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue
+                .replace(" ", "").contains(
+                        "color:red"));
+        // get current list of options
+        String refreshTextSelectLocator = "//select[@id='" + idPrefix + "RefreshTextField_control']";
+        String[] options1 = getSelectOptionsByXpath(refreshTextSelectLocator);
+        String dropDownSelectLocator = "//select[@id='" + idPrefix + "DropDown_control']";
+        selectByXpath(dropDownSelectLocator, "Vegetables");
+        Thread.sleep(3000);
+        //get list of options after change
+        String[] options2 = getSelectOptionsByXpath(refreshTextSelectLocator);
+        //verify that the change has occurred
+        assertFalse(
+                "Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection",
+                options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
+        //confirm that control gets disabled
+        selectByXpath(dropDownSelectLocator, "None");
+        Thread.sleep(3000);
+        assertEquals("true", getAttributeByXpath(refreshTextSelectLocator, "disabled"));
+        passed();
+    }
+
+    /**
+     * verify that add line controls are present
+     */
+    protected void confirmAddLineControlsPresent(String idPrefix, String addLineIdSuffix) {
+        String[] addLineIds = {"StartTime", "StartTimeAmPm", "AllDay"};
+
+        for (String id : addLineIds) {
+            String tagId = "//*[@id='" + idPrefix + id + addLineIdSuffix + "']";
+            junit.framework.Assert.assertTrue("Did not find id " + tagId, isElementPresentByXpath(tagId));
+        }
+    }
+
+    protected void testAddLineWithSpecificTime(String idPrefix, String addLineIdSuffix) throws Exception {
+        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
+        String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
+        String inputTime = "7:06";
+        waitAndTypeByXpath(startTimeId, inputTime);
+        String amPmSelectLocator = "//*[@id='" + idPrefix + "StartTimeAmPm" + addLineIdSuffix + "']";
+        selectByXpath(amPmSelectLocator, "PM");
+        assertEquals("PM", getAttributeByXpath(amPmSelectLocator, "value"));
+        Thread.sleep(5000); //allow for ajax refresh        
+        waitAndClickByXpath("//button");
+        Thread.sleep(5000); //allow for line to be added
+        //confirm that line has been added
+        junit.framework.Assert
+                .assertTrue(
+                        "line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
+                        isElementPresentByXpath("//input[@value='7:06']"));
+        passed();
+    }
+
+    protected void testAddLineWithAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
+        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
+        String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
+        String inputTime = "5:20";
+        waitAndTypeByXpath(startTimeId, inputTime);
+        String allDaySelector = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
+        Thread.sleep(5000); //allow for ajax refresh
+        waitAndClickByXpath(allDaySelector);
+        Thread.sleep(5000); //allow for ajax refresh
+        waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
+        Thread.sleep(5000); //allow for line to be added           
+        passed();
+    }
+
+    protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
+        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
+        //store number of rows before adding the lines
+        String cssCountRows = "div#ConfigurationTestView-ProgressiveRender-TimeInfoSection.uif-group div#ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent.uif-disclosureContent table tbody tr";
+        int rowCount = (getCssCount(cssCountRows));
+        String allDayId = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
+        Thread.sleep(5000); //allow for ajax refresh
+        waitAndClickByXpath(allDayId);
+        waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
+        Thread.sleep(5000); //allow for line to be added
+        //confirm that line has been added (by checking for the new delete button)
+        assertEquals("line was not added", rowCount + 1, (getCssCount(cssCountRows)));
+        passed();
+    }
+
+    protected void testTravelAccountTypeLookup() throws Exception {
+        selectFrame("iframeportlet");
+
+        //Blank Search
+        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+        Thread.sleep(4000);
+        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
+        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
+        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'IAT')]");
+
+        //search with each field
+        waitAndTypeByName("lookupCriteria[accountTypeCode]", "CAT");
+        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+        Thread.sleep(2000);
+        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
+        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[2]");
+        Thread.sleep(2000);
+        waitAndTypeByName("lookupCriteria[name]", "Expense Account Type");
+        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+        Thread.sleep(4000);
+        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
+
+        //Currently No links available for Travel Account Type Inquiry so cant verify heading and values.
+    }
+
+    protected void testValidCharacterConstraint() throws Exception {
+        waitAndClickByXpath("//a[contains(text(),'Validation - Regex')]");
+        //---------------------------------------------Fixed Point------------------------------//       
+        waitAndTypeByName("field50", "123.123");
+        fireEvent("field50", "blur");
+        validateErrorImage(true);
+        clearTextByName("field50");
+        waitAndTypeByXpath("//input[@name='field50']", "1234.4");
+        fireEvent("field50", "blur");
+        validateErrorImage(true);
+        clearTextByName("field50");
+        waitAndTypeByXpath("//input[@name='field50']", "1234.434");
+        fireEvent("field50", "blur");
+        validateErrorImage(true);
+        clearTextByName("field50");
+        waitAndTypeByXpath("//input[@name='field50']", "123.67");
+        fireEvent("field50", "blur");
+        validateErrorImage(false);
+        clearTextByName("field50");
+
+        //---------------------------------------------Floating Point------------------------------//     
+        waitAndTypeByXpath("//input[@name='field51']", "127.");
+        fireEvent("field51", "blur");
+        validateErrorImage(true);
+        clearTextByName("field51");
+        waitAndTypeByXpath("//input[@name='field51']", "1234()98");
+        fireEvent("field51", "blur");
+        validateErrorImage(true);
+        clearTextByName("field51");
+        waitAndTypeByXpath("//input[@name='field51']", "-123.67");
+        fireEvent("field51", "blur");
+        validateErrorImage(false);
+        clearTextByName("field51");
+
+        //---------------------------------------------Integer Pattern constraint------------------------------//       
+        waitAndTypeByXpath("//input[@name='field77']", "127.");
+        fireEvent("field77", "blur");
+        validateErrorImage(true);
+        clearTextByName("field77");
+        waitAndTypeByXpath("//input[@name='field77']", "1234.4123");
+        fireEvent("field77", "blur");
+        validateErrorImage(true);
+        clearTextByName("field77");
+        waitAndTypeByXpath("//input[@name='field77']", "123E123");
+        fireEvent("field77", "blur");
+        validateErrorImage(true);
+        clearTextByName("field77");
+        waitAndTypeByXpath("//input[@name='field77']", "-123");
+        fireEvent("field77", "blur");
+        validateErrorImage(false);
+        clearTextByName("field77");
+
+        //---------------------------------------------Phone Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field52']", "1271231234");
+        fireEvent("field52", "blur");
+        validateErrorImage(true);
+        clearTextByName("field52");
+        waitAndTypeByXpath("//input[@name='field52']", "123-123-123");
+        fireEvent("field52", "blur");
+        validateErrorImage(true);
+        clearTextByName("field52");
+        waitAndTypeByXpath("//input[@name='field52']", "12-12-123445");
+        fireEvent("field52", "blur");
+        validateErrorImage(true);
+        clearTextByName("field52");
+        waitAndTypeByXpath("//input[@name='field52']", "1234-12-1234");
+        fireEvent("field52", "blur");
+        validateErrorImage(true);
+        clearTextByName("field52");
+        waitAndTypeByXpath("//input[@name='field52']", "123.123.1234");
+        fireEvent("field52", "blur");
+        validateErrorImage(true);
+        clearTextByName("field52");
+        waitAndTypeByXpath("//input[@name='field52']", "123-123-12345");
+        fireEvent("field52", "blur");
+        validateErrorImage(true);
+        clearTextByName("field52");
+        waitAndTypeByXpath("//input[@name='field52']", "123-123-1234");
+        fireEvent("field52", "blur");
+        validateErrorImage(false);
+        clearTextByName("field52");
+
+        //---------------------------------------------JavaClass Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field53']", "127");
+        fireEvent("field53", "blur");
+        validateErrorImage(true);
+        clearTextByName("field53");
+        waitAndTypeByXpath("//input[@name='field53']", "TestJava!@#Class");
+        fireEvent("field53", "blur");
+        validateErrorImage(true);
+        clearTextByName("field53");
+        waitAndTypeByXpath("//input[@name='field53']", "Test JavaClass");
+        fireEvent("field53", "blur");
+        validateErrorImage(true);
+        clearTextByName("field53");
+        waitAndTypeByXpath("//input[@name='field53']", "Test JavaClass");
+        fireEvent("field53", "blur");
+        validateErrorImage(true);
+        clearTextByName("field53");
+        waitAndTypeByXpath("//input[@name='field53']", "TestJavaClass");
+        fireEvent("field53", "blur");
+        validateErrorImage(false);
+        clearTextByName("field53");
+
+        //---------------------------------------------Email Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field54']", "123@123.123");
+        fireEvent("field54", "blur");
+        validateErrorImage(true);
+        clearTextByName("field54");
+        waitAndTypeByXpath("//input[@name='field54']", "email.com@emailServer");
+        fireEvent("field54", "blur");
+        validateErrorImage(true);
+        clearTextByName("field54");
+        waitAndTypeByXpath("//input[@name='field54']", "emailemailServer@.com");
+        fireEvent("field54", "blur");
+        validateErrorImage(true);
+        clearTextByName("field54");
+        waitAndTypeByXpath("//input[@name='field54']", "email@emailServercom");
+        fireEvent("field54", "blur");
+        validateErrorImage(true);
+        clearTextByName("field54");
+        waitAndTypeByXpath("//input[@name='field54']", "email@emailServer.com");
+        fireEvent("field54", "blur");
+        validateErrorImage(false);
+        clearTextByName("field54");
+
+        //---------------------------------------------URL pattern Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field84']", "www.google.com");
+        fireEvent("field84", "blur");
+        validateErrorImage(true);
+        clearTextByName("field84");
+        waitAndTypeByXpath("//input[@name='field84']", "https:www.google.com");
+        fireEvent("field84", "blur");
+        validateErrorImage(true);
+        clearTextByName("field84");
+        waitAndTypeByXpath("//input[@name='field84']", "ftp://www.google.comsdfa123!#@");
+        fireEvent("field84", "blur");
+        validateErrorImage(true);
+        clearTextByName("field84");
+        waitAndTypeByXpath("//input[@name='field84']", "ftp:/www.google.coms");
+        fireEvent("field84", "blur");
+        validateErrorImage(true);
+        clearTextByName("field84");
+        waitAndTypeByXpath("//input[@name='field84']", "ftp://www.google.com");
+        fireEvent("field84", "blur");
+        validateErrorImage(false);
+        clearTextByName("field84");
+        waitAndTypeByXpath("//input[@name='field84']", "https://www.google.com");
+        fireEvent("field84", "blur");
+        validateErrorImage(false);
+        clearTextByName("field84");
+        waitAndTypeByXpath("//input[@name='field84']", "http://www.google.com");
+        fireEvent("field84", "blur");
+        validateErrorImage(false);
+        clearTextByName("field84");
+
+        //---------------------------------------------Date pattern Text------------------------------//
+        //-------------invalid formats
+        waitAndTypeByXpath("//input[@name='field55']", "12/12/2112 12:12:87 am");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "12-12-2112 12:12 am");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "12-12-2112 12:12");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "12/12/2112 12:12");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "12-12-2112 12:12:78");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "12 Sept");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "Sept 12 12:12");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "221299 12:12:13");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "111222 12:12");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "9/9/2012 12:12 am");
+        fireEvent("field55", "blur");
+        validateErrorImage(true);
+        clearTextByName("field55");
+
+        //-------------valid formats      
+        waitAndTypeByXpath("//input[@name='field55']", "09/09/2012 12:12 pm");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "090923");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "Sept 12");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "2034");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "12/12/2012 23:12:59");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "12-12-12 23:12:59");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "121212 23:12:32");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "Sept 12 23:45:50");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+        waitAndTypeByXpath("//input[@name='field55']", "2011 12:23:32");
+        fireEvent("field55", "blur");
+        validateErrorImage(false);
+        clearTextByName("field55");
+
+        //---------------------------------------------BasicDate pattern Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field75']", "12122012");
+        fireEvent("field75", "blur");
+        validateErrorImage(true);
+        clearTextByName("field75");
+        waitAndTypeByXpath("//input[@name='field75']", "13-12-34");
+        fireEvent("field75", "blur");
+        validateErrorImage(true);
+        clearTextByName("field75");
+        waitAndTypeByXpath("//input[@name='field75']", "12:12:2034");
+        fireEvent("field75", "blur");
+        validateErrorImage(true);
+        clearTextByName("field75");
+        waitAndTypeByXpath("//input[@name='field75']", "12-12-2034");
+        fireEvent("field75", "blur");
+        validateErrorImage(false);
+        clearTextByName("field75");
+
+        //---------------------------------------------Time12H Pattern Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field82']", "13:00:12");
+        fireEvent("field82", "blur");
+        validateErrorImage(true);
+        clearTextByName("field82");
+        waitAndTypeByXpath("//input[@name='field82']", "09:00:");
+        fireEvent("field82", "blur");
+        validateErrorImage(true);
+        clearTextByName("field82");
+        waitAndTypeByXpath("//input[@name='field82']", "3-00:12");
+        fireEvent("field82", "blur");
+        validateErrorImage(true);
+        clearTextByName("field82");
+        waitAndTypeByXpath("//input[@name='field82']", "3:00:34");
+        fireEvent("field82", "blur");
+        validateErrorImage(false);
+        clearTextByName("field82");
+        waitAndTypeByXpath("//input[@name='field82']", "3:00");
+        fireEvent("field82", "blur");
+        validateErrorImage(false);
+        clearTextByName("field82");
+
+        //---------------------------------------------Time24H Pattern Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field83']", "24:00:12");
+        fireEvent("field83", "blur");
+        validateErrorImage(true);
+        clearTextByName("field83");
+        waitAndTypeByXpath("//input[@name='field83']", "14:00:");
+        fireEvent("field83", "blur");
+        validateErrorImage(true);
+        clearTextByName("field83");
+        waitAndTypeByXpath("//input[@name='field83']", "13:00:76");
+        fireEvent("field83", "blur");
+        validateErrorImage(true);
+        clearTextByName("field83");
+        waitAndTypeByXpath("//input[@name='field83']", "13:00:23");
+        fireEvent("field83", "blur");
+        validateErrorImage(false);
+        clearTextByName("field83");
+        waitAndTypeByXpath("//input[@name='field83']", "23:00:12");
+        fireEvent("field83", "blur");
+        validateErrorImage(false);
+        clearTextByName("field83");
+
+        //---------------------------------------------Timestamp pattern Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field56']", "1000-12-12 12:12:12.103");
+        fireEvent("field56", "blur");
+        validateErrorImage(true);
+        clearTextByName("field56");
+        waitAndTypeByXpath("//input[@name='field56']", "2000/12/12 12-12-12.87");
+        fireEvent("field56", "blur");
+        validateErrorImage(true);
+        clearTextByName("field56");
+        waitAndTypeByXpath("//input[@name='field56']", "2000/12/12 12-12-12.87");
+        fireEvent("field56", "blur");
+        validateErrorImage(true);
+        clearTextByName("field56");
+        waitAndTypeByXpath("//input[@name='field56']", "2011-08-12 12:12:12");
+        fireEvent("field56", "blur");
+        validateErrorImage(true);
+        clearTextByName("field56");
+
+        //--------this should not be allowed
+        /*
+        clearTimeStampText();
+        waitAndType("//input[@name='field56']", "2999-12-12 12:12:12.103");
+        focus("//input[@name='field57']");
+        Thread.sleep(100);
+        assertTrue(isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
+        
+        */
+        waitAndTypeByXpath("//input[@name='field56']", "2099-12-12 12:12:12.103");
+        fireEvent("field56", "blur");
+        validateErrorImage(false);
+        clearTextByName("field56");
+
+        //---------------------------------------------Year Pattern Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field57']", "1599");
+        fireEvent("field57", "blur");
+        validateErrorImage(true);
+        clearTextByName("field57");
+        waitAndTypeByXpath("//input[@name='field57']", "2200");
+        fireEvent("field57", "blur");
+        validateErrorImage(true);
+        clearTextByName("field57");
+        waitAndTypeByXpath("//input[@name='field57']", "20000");
+        fireEvent("field57", "blur");
+        validateErrorImage(true);
+        clearTextByName("field57");
+        waitAndTypeByXpath("//input[@name='field57']", "-202");
+        fireEvent("field57", "blur");
+        validateErrorImage(true);
+        clearTextByName("field57");
+        waitAndTypeByXpath("//input[@name='field57']", "2000");
+        fireEvent("field57", "blur");
+        validateErrorImage(false);
+        clearTextByName("field57");
+
+        //---------------------------------------------Month Pattern Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field58']", "0");
+        fireEvent("field58", "blur");
+        validateErrorImage(true);
+        clearTextByName("field58");
+        waitAndTypeByXpath("//input[@name='field58']", "-12");
+        fireEvent("field58", "blur");
+        validateErrorImage(true);
+        clearTextByName("field58");
+        waitAndTypeByXpath("//input[@name='field58']", "100");
+        fireEvent("field58", "blur");
+        validateErrorImage(true);
+        clearTextByName("field58");
+        waitAndTypeByXpath("//input[@name='field58']", "12");
+        fireEvent("field58", "blur");
+        validateErrorImage(false);
+        clearTextByName("field58");
+
+        //---------------------------------------------ZipCode Pattern Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field61']", "123");
+        fireEvent("field61", "blur");
+        validateErrorImage(true);
+        clearTextByName("field61");
+        waitAndTypeByXpath("//input[@name='field61']", "2341 12");
+        fireEvent("field61", "blur");
+        validateErrorImage(true);
+        clearTextByName("field61");
+        waitAndTypeByXpath("//input[@name='field61']", "0-1231");
+        fireEvent("field61", "blur");
+        validateErrorImage(true);
+        clearTextByName("field61");
+        waitAndTypeByXpath("//input[@name='field61']", "12345");
+        fireEvent("field61", "blur");
+        validateErrorImage(false);
+        clearTextByName("field61");
+
+        //---------------------------------------------Alpha Numeric w/o options Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field62']", "123 23 @#");
+        fireEvent("field62", "blur");
+        validateErrorImage(true);
+        clearTextByName("field62");
+        waitAndTypeByXpath("//input[@name='field62']", "-asd123");
+        fireEvent("field62", "blur");
+        validateErrorImage(true);
+        clearTextByName("field62");
+        waitAndTypeByXpath("//input[@name='field62']", "asd/123");
+        fireEvent("field62", "blur");
+        validateErrorImage(true);
+        clearTextByName("field62");
+        waitAndTypeByXpath("//input[@name='field62']", "asd123");
+        fireEvent("field62", "blur");
+        validateErrorImage(false);
+        clearTextByName("field62");
+
+        //---------------------------------------------Alpha Numeric with options Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field63']", "123^we");
+        fireEvent("field63", "blur");
+        validateErrorImage(true);
+        clearTextByName("field63");
+        waitAndTypeByXpath("//input[@name='field63']", "-123_asd");
+        fireEvent("field63", "blur");
+        validateErrorImage(true);
+        clearTextByName("field63");
+        waitAndTypeByXpath("//input[@name='field63']", "123 23 @#");
+        fireEvent("field63", "blur");
+        clearTextByName("field63");
+        waitAndTypeByXpath("//input[@name='field63']", "as_de 456/123");
+        fireEvent("field63", "blur");
+        validateErrorImage(false);
+        clearTextByName("field63");
+
+        //---------------------------------------------Alpha with Whitespace and commas Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field64']", "123^we");
+        fireEvent("field64", "blur");
+        validateErrorImage(true);
+        clearTextByName("field64");
+        waitAndTypeByXpath("//input[@name='field64']", "asd_pqr");
+        fireEvent("field64", "blur");
+        validateErrorImage(true);
+        clearTextByName("field64");
+        waitAndTypeByXpath("//input[@name='field64']", "asd/def");
+        fireEvent("field64", "blur");
+        validateErrorImage(true);
+        clearTextByName("field64");
+        waitAndTypeByXpath("//input[@name='field64']", "asd ,pqr");
+        fireEvent("field64", "blur");
+        validateErrorImage(false);
+        clearTextByName("field64");
+
+        //---------------------------------------------AlphaPatterrn with disallowed charset Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field76']", "123");
+        fireEvent("field76", "blur");
+        validateErrorImage(true);
+        clearTextByName("field76");
+        waitAndTypeByXpath("//input[@name='field76']", "`abcd`");
+        fireEvent("field76", "blur");
+        validateErrorImage(true);
+        clearTextByName("field76");
+        waitAndTypeByXpath("//input[@name='field76']", "|abcd|");
+        fireEvent("field76", "blur");
+        validateErrorImage(true);
+        clearTextByName("field76");
+        waitAndTypeByXpath("//input[@name='field76']", "~abcd~");
+        fireEvent("field76", "blur");
+        validateErrorImage(true);
+        clearTextByName("field76");
+        waitAndTypeByXpath("//input[@name='field76']", " ab_c d_ef ");
+        fireEvent("field76", "blur");
+        validateErrorImage(false);
+        clearTextByName("field76");
+
+        //---------------------------------------------Anything with No Whitespace Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field65']", "123 ^we");
+        fireEvent("field65", "blur");
+        validateErrorImage(true);
+        clearTextByName("field65");
+        waitAndTypeByXpath("//input[@name='field65']", "123^we!@#^&*~:");
+        fireEvent("field65", "blur");
+        validateErrorImage(false);
+        clearTextByName("field65");
+
+        //---------------------------------------------CharacterSet Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field66']", "123 ^we");
+        fireEvent("field66", "blur");
+        validateErrorImage(true);
+        clearTextByName("field66");
+        waitAndTypeByXpath("//input[@name='field66']", "123_^we");
+        fireEvent("field66", "blur");
+        validateErrorImage(true);
+        clearTextByName("field66");
+        waitAndTypeByXpath("//input[@name='field66']", "abc ABC");
+        fireEvent("field66", "blur");
+        validateErrorImage(true);
+        clearTextByName("field66");
+        waitAndTypeByXpath("//input[@name='field66']", "aAbBcC");
+        fireEvent("field66", "blur");
+        validateErrorImage(false);
+        clearTextByName("field66");
+
+        //---------------------------------------------Numeric Character Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field67']", "123 ^we");
+        fireEvent("field67", "blur");
+        validateErrorImage(true);
+        clearTextByName("field67");
+        waitAndTypeByXpath("//input[@name='field67']", "123/10");
+        fireEvent("field67", "blur");
+        validateErrorImage(true);
+        clearTextByName("field67");
+        waitAndTypeByXpath("//input[@name='field67']", "(123.00)");
+        fireEvent("field67", "blur");
+        validateErrorImage(true);
+        clearTextByName("field67");
+        waitAndTypeByXpath("//input[@name='field67']", "(12-3)");
+        fireEvent("field67", "blur");
+        validateErrorImage(false);
+        clearTextByName("field67");
+
+        //---------------------------------------------Valid Chars Custom Text------------------------------//
+        waitAndTypeByXpath("//input[@name='field68']", "123.123");
+        fireEvent("field68", "blur");
+        validateErrorImage(true);
+        clearTextByName("field68");
+        waitAndTypeByXpath("//input[@name='field68']", "a.b");
+        fireEvent("field68", "blur");
+        validateErrorImage(true);
+        clearTextByName("field68");
+        waitAndTypeByXpath("//input[@name='field68']", "123 qwe");
+        fireEvent("field68", "blur");
+        validateErrorImage(true);
+        clearTextByName("field68");
+        waitAndTypeByXpath("//input[@name='field68']", "5.a");
+        fireEvent("field68", "blur");
+        validateErrorImage(true);
+        clearTextByName("field68");
+        waitAndTypeByXpath("//input[@name='field68']", "a.0,b.4");
+        fireEvent("field68", "blur");
+        validateErrorImage(true);
+        clearTextByName("field68");
+        waitAndTypeByXpath("//input[@name='field68']", "a.0");
+        fireEvent("field68", "blur");
+        validateErrorImage(false);
+        clearTextByName("field68");
+        passed();
+    }
+
+    protected void validateErrorImage(boolean validateVisible) throws Exception {
+        Thread.sleep(500);
+        for (int second = 0;; second++) {
+            if (second >= 5)
+                Assert.fail("timeout");
+            try {
+                if (validateVisible) {
+                    if (isElementPresentByXpath("//input[@aria-invalid]"))
+                        ;
+                    break;
+                } else {
+                    if (!isElementPresentByXpath("//input[@aria-invalid]"))
+                        break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        if (validateVisible) {
+            Assert.assertTrue(isElementPresentByXpath("//input[@aria-invalid]"));
+        } else {
+            Assert.assertTrue(!isElementPresentByXpath("//input[@aria-invalid]"));
+        }
+    }
+
+    
+    //Code for Validation Messages package tests.
+    protected void testClientErrors() throws Exception {
+
+        fireEvent("field1", "focus");
+        //        waitAndTypeByName("field1","");
+        fireEvent("field1", "blur");
+        System.out.println("This is value ----------------" + getAttributeByName("field1", "aria-invalid"));
+        Thread.sleep(3000);
+        fireMouseOverEventByName("field1");
+        Assert.assertEquals("true", getAttributeByName("field1", "aria-invalid"));
+        Assert.assertTrue(getAttributeByName("field1", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isTextPresent("Required"));
+        //        fireEvent("field1", "focus");
+        fireMouseOverEventByName("field1");
+        for (int second = 0;; second++) {
+            if (second >= 10) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        waitAndTypeByName("field1", "a");
+        fireEvent("field1", "blur");
+        fireMouseOverEventByName("field1");
+        for (int second = 0;; second++) {
+            if (second >= 10) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (!isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertFalse(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']"));
+        fireEvent("field1", "blur");
+        Assert.assertFalse(isElementPresentByXpath("//*[@name='field1' and @aria-invalid]"));
+        Assert.assertTrue(getAttributeByName("field1", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(isTextPresent("Required"));
+        fireEvent("field2", "focus");
+        //        waitAndTypeByName("field2", "");
+        fireEvent("field2", "blur");
+        fireMouseOverEventByName("field2");
+        Assert.assertEquals("true", getAttributeByName("field2", "aria-invalid"));
+        Assert.assertTrue(getAttributeByName("field2", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isTextPresent("Required"));
+        fireEvent("field2", "focus");
+        waitAndTypeByName("field2", "a");
+        fireEvent("field2", "blur");
+        Assert.assertFalse(isElementPresentByXpath("//*[@name='field2' and @aria-invalid]"));
+        Assert.assertTrue(getAttributeByName("field2", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresentByXpath("//textarea[@name='field2']/../img[@alt='Error']"));
+        fireEvent("field3", "focus");
+        //        selectByName("field3", "");
+        fireEvent("field3", "blur");
+        fireMouseOverEventByName("field3");
+        Assert.assertEquals("true", getAttributeByName("field3", "aria-invalid"));
+        Assert.assertTrue(getAttributeByName("field3", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        //        Assert.assertTrue(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
+        Assert.assertTrue(isTextPresent("Required"));
+        fireEvent("field3", "focus");
+        selectByName("field3", "Option 1");
+        fireEvent("field3", "blur");
+        Assert.assertFalse(isElementPresentByXpath("//*[@name='field3' and @aria-invalid]"));
+        Assert.assertTrue(getAttributeByName("field3", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
+        fireEvent("field114", "focus");
+        //    removeAllSelectionsByName("field114");
+        fireMouseOverEventByName("field114");
+        driver.findElement(By.name("field114")).findElements(By.tagName("option")).get(0).click();
+        fireEvent("field114", "blur");
+        Assert.assertEquals("true", getAttributeByName("field114", "aria-invalid"));
+        Assert.assertTrue(getAttributeByName("field114", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        Assert.assertTrue(isTextPresent("Required"));
+        //        Assert.assertTrue(isElementPresentByXpath("//select[@name='field114']/../img[@alt='Error']"));
+        fireEvent("field114", "focus");
+        selectByName("field114", "Option 1");
+        fireEvent("field114", "blur");
+        Assert.assertFalse(isElementPresentByXpath("//*[@name='field114' and @aria-invalid]"));
+        Assert.assertTrue(getAttributeByName("field114", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresentByXpath("//select[@name='field114']/../img[@alt='Error']"));
+        fireEvent("field117", "3", "focus");
+        uncheckByXpath("//*[@name='field117' and @value='3']");
+        fireEvent("field117", "blur");
+        fireMouseOverEventByName("field117");
+        for (int second = 0;; second++) {
+            if (second >= 10) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertEquals("true", getAttributeByXpath("//*[@name='field117' and @value='1']", "aria-invalid"));
+        Assert.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches(
+                "^[\\s\\S]*error[\\s\\S]*$"));
+        //        Assert.assertTrue(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
+        Assert.assertTrue(isTextPresent("Required"));
+        fireEvent("field117", "3", "focus");
+        checkByXpath("//*[@name='field117' and @value='3']");
+        fireEvent("field117", "3", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (!isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertFalse(isElementPresentByXpath("//*[@name='field117' and @value='3' and @aria-invalid]"));
+        Assert.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches(
+                "^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
+        fireEvent("bField1", "focus");
+        uncheckByName("bField1");
+        fireEvent("bField1", "blur");
+        fireMouseOverEventByName("bField1");
+        Assert.assertEquals("true", getAttributeByName("bField1", "aria-invalid"));
+        Assert.assertTrue(getAttributeByName("bField1", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        //        Assert.assertTrue(isElementPresentByXpath(
+        //                "//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
+        Assert.assertTrue(isTextPresent("Required"));
+        fireEvent("bField1", "focus");
+        checkByName("bField1");
+        fireEvent("bField1", "blur");
+        Assert.assertFalse(isElementPresentByXpath("//*[@name='bField1' and @aria-invalid]"));
+        Assert.assertTrue(getAttributeByName("bField1", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertFalse(isElementPresentByXpath(
+                "//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
+        fireEvent("field115", "3", "focus");
+        uncheckByXpath("//*[@name='field115' and @value='3']");
+        uncheckByXpath("//*[@name='field115' and @value='4']");
+        fireEvent("field115", "blur");
+        fireMouseOverEventByName("field115");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertEquals("true", getAttributeByXpath("//*[@name='field115' and @value='1']", "aria-invalid"));
+        Assert.assertTrue(getAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches(
+                "^[\\s\\S]*error[\\s\\S]*$"));
+        //        Assert.assertTrue(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
+        Assert.assertTrue(isTextPresent("Required"));
+        fireEvent("field115", "3", "focus");
+        checkByXpath("//*[@name='field115' and @value='3']");
+        checkByXpath("//*[@name='field115' and @value='4']");
+        fireEvent("field115", "blur");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (!isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertFalse(isElementPresentByXpath("//*[@name='field115' and @value='3' and @aria-invalid]"));
+        Assert.assertFalse(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
+        passed();
+    }
+
+    protected void testServerErrorsIT() throws Exception {
+        waitAndClickByXpath("//button[contains(.,'Get Error Messages')]");
+        waitForPageToLoad();
+        //        Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]")); // bugged isVisible? you can see it on the screen...
+        Thread.sleep(5000);
+        assertElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem");
+        waitIsVisibleByXpath("//div[@data-headerfor='Demo-ValidationLayout-Section1']");
+        assertElementPresentByXpath("//*[@data-messageitemfor='Demo-ValidationLayout-Section1' and @class='uif-errorMessageItem']");
+        assertElementPresent("div[data-role=\"InputField\"] img[alt=\"Error\"]");
+        assertElementPresentByXpath("//a[contains(.,'Section 1 Title')]");
+        // waitAndClickByXpath("//a[contains(.,'Section 1 Title')]");
+        fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
+        assertElementPresent(".uif-errorMessageItem-field");
+        waitAndClickByXpath("//a[contains(.,'Field 1')]");
+        Thread.sleep(2000);
+        waitIsVisible(".jquerybubblepopup-innerHtml");
+
+        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems");
+        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
+        waitAndTypeByName("field1", "");
+        fireEvent("field1", "blur");
+        fireEvent("field1", "focus");
+        waitIsVisible(".jquerybubblepopup-innerHtml");
+
+        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
+        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems");
+        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field");
+        waitAndTypeByName("field1", "t");
+        //    keyDown(By.name("field1"), Keys('t'));
+        //    keyPress("name=field1", "t");
+        //    keyUp("field1", "t");
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            try {
+                if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
+        Assert.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        passed();
+    }
+
+    protected void testServerInfoIT() throws Exception {
+
+        waitAndClickByXpath("//button[contains(.,'Get Info Messages')]");
+        waitIsVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']");
+        //Thread.sleep(3000);
+        Assert.assertTrue(isVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']"));
+        Assert.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
+        Assert.assertTrue(isVisible("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
+        Assert.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
+        Assert.assertTrue(isElementPresentByXpath("//div[@data-role='InputField']//img[@alt='Information']"));
+        fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
+        Assert.assertTrue(isElementPresent(".uif-infoHighlight"));
+        waitAndClickByXpath("//a[contains(.,'Field 1')]");
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                Assert.fail("timeout");
+            try {
+                if (isVisible(".jquerybubblepopup-innerHtml"))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
+        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        waitAndTypeByName("field1", "");
+        fireEvent("field1", "blur");
+        fireEvent("field1", "focus");
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                Assert.fail("timeout");
+            try {
+                if (isVisible(".jquerybubblepopup-innerHtml"))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                Assert.fail("timeout");
+            try {
+                if (isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        waitAndTypeByName("field1", "b");
+        fireEvent("field1", "blur");
+        fireEvent("field1", "focus");
+        for (int second = 0;; second++) {
+            if (second >= 60)
+                Assert.fail("timeout");
+            try {
+                if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
+                    break;
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        fireEvent("field1", "blur");
+        Thread.sleep(3000);
+        Assert.assertTrue(!isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        Assert.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        fireEvent("field1", "focus");
+        clearTextByName("field1");
+        fireEvent("field1", "blur");
+        Assert.assertTrue(isElementPresent("div.uif-hasError"));
+        Assert.assertTrue(isElementPresent("img[src*=\"error.png\"]"));
+        passed();
+    }
+
+    protected void testServerWarningsIT() throws Exception {
+        waitAndClickByXpath("//button[contains(.,'Get Warning Messages')]");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
+                "div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible",
+                isVisible("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
+        com.thoughtworks.selenium.SeleneseTestBase
+                .assertTrue(
+                        "div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem not present",
+                        isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem"));
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
+                "div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] not visible", isVisible(
+                "div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
+                "div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem not present",
+                isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem"));
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
+                "div[data-role=\"InputField\"] img[alt=\"Warning\"] not present", isElementPresent(
+                "div[data-role=\"InputField\"] img[alt=\"Warning\"]"));
+        fireMouseOverEvent(By.xpath("//a[contains(.,'Field 1')]"));
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
+                ".uif-warningHighlight no present when //a[contains(.,'Field 1')] is moused over",
+                isElementPresent(".uif-warningHighlight"));
+        waitAndClickByXpath("//a[contains(.,'Field 1')]");
+        waitForElementVisible(".jquerybubblepopup-innerHtml", " after click on //a[contains(.,'Field 1')]");
+
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
+                ".jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", isVisible(
+                ".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
+                ".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible",
+                isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+        waitAndTypeByName("field1", "");
+        fireEvent("field1", "blur");
+        fireMouseOverEventByName("field1");
+        //   fireEvent("field1","hover");
+        waitForElementVisible(".jquerybubblepopup-innerHtml",
+                " not visible after typing nothing in name=field1 then firing blur and focus events");
+
+        com.thoughtworks.selenium.SeleneseTestBase
+                .assertTrue(
+                        ".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
+                        isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+
+        waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-clientMessageItems",
+                " not visible after typing nothing in name=field1 then firing blur and focus events");
+
+        com.thoughtworks.selenium.SeleneseTestBase
+                .assertTrue(
+                        ".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
+                        isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+
+        waitAndTypeByName("field1", "b");
+        fireEvent("field1", "blur");
+        fireMouseOverEventByName("field1");
+        //  fireEvent("field1","hover");
+        waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-serverMessageItems", "");
+
+        com.thoughtworks.selenium.SeleneseTestBase
+                .assertTrue(
+                        ".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
+                        isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems",
+                !isElementPresent(
+                ".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+
+        //        waitAndTypeByName("field1", "");
+        clearTextByName("field1");
+        //     fireEvent("field1", "focus");
+        fireEvent("field1", "blur");
+        fireMouseOverEventByName("field1");
+        //        fireEvent("field1","hover");
+        com.thoughtworks.selenium.SeleneseTestBase
+                .assertTrue(
+                        ".uif-hasError is not present after typing nothing in name=field1 and then firing focus and blur events",
+                        isElementPresent(".uif-hasError"));
+        com.thoughtworks.selenium.SeleneseTestBase
+                .assertTrue(
+                        "img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",
+                        isElementPresent("img[src*=\"error.png\"]"));
+        passed();
+    }
+
+    private void typeBlurFocus(String name, String text) throws InterruptedException {
+        waitAndTypeByName(name, text);
+        fireEvent(name, "blur");
+        fireEvent(name, "focus");
     }
 }

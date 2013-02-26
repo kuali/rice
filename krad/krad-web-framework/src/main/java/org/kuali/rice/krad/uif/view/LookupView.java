@@ -76,15 +76,16 @@ public class LookupView extends FormView {
     private boolean multipleValuesSelect = false;
     @RequestParameter
     private boolean renderLookupCriteria = true;
+    @RequestParameter
+    private boolean renderSearchButtons = true;
+    @RequestParameter
+    private boolean renderHeader = true;
 
     @RequestParameter
     private String returnTarget;
 
     @RequestParameter
     private boolean returnByScript;
-
-    private boolean supplementalActionsEnabled = false;
-    private boolean renderSearchButtons = true;
 
     private Integer resultSetLimit = null;
     private Integer multipleValuesSelectResultSetLimit = null;
@@ -149,8 +150,8 @@ public class LookupView extends FormView {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(View, Object,
+     * org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
@@ -173,6 +174,11 @@ public class LookupView extends FormView {
         if (!renderLookupCriteria) {
             criteriaGroup.setRender(false);
         }
+
+        if (!renderHeader) {
+            getHeader().setRender(false);
+        }
+
         super.performApplyModel(view, model, parent);
     }
 
@@ -545,11 +551,34 @@ public class LookupView extends FormView {
     }
 
     /**
-     * Setter for the render lookup criteria group render flag
+     * Setter for the lookup criteria group render flag
      *
      * @param renderLookupCriteria
      */
     public void setRenderLookupCriteria(boolean renderLookupCriteria) {
         this.renderLookupCriteria = renderLookupCriteria;
     }
+
+    /**
+     * Indicates whether the lookup header should be rendered
+     *
+     * <p>
+     * Defaults to true. Can be set as bean property or passed as a request parameter in the lookup url.
+     * </p>
+     *
+     * @return boolean
+     */
+    public boolean isRenderHeader() {
+        return renderHeader;
+    }
+
+    /**
+     * Setter for the header render flag
+     *
+     * @param renderHeader
+     */
+    public void setRenderHeader(boolean renderHeader) {
+        this.renderHeader = renderHeader;
+    }
+
 }

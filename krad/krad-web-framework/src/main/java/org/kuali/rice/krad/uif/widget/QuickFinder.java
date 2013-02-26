@@ -62,10 +62,10 @@ public class QuickFinder extends WidgetBase {
     private Boolean hideReturnLink;
     private Boolean suppressActions;
     private Boolean autoSearch;
-    private Boolean lookupCriteriaEnabled;
+    private Boolean renderLookupCriteria;
     private Boolean supplementalActionsEnabled;
-    private Boolean disableSearchButtons;
-    private Boolean headerBarEnabled;
+    private Boolean renderSearchButtons;
+    private Boolean renderHeader;
     private Boolean showMaintenanceLinks;
 
     private Boolean multipleValuesSelect;
@@ -214,10 +214,10 @@ public class QuickFinder extends WidgetBase {
         addActionParameterIfNotNull(UifParameters.SUPRESS_ACTIONS, suppressActions);
         addActionParameterIfNotNull(UifParameters.REFERENCES_TO_REFRESH, referencesToRefresh);
         addActionParameterIfNotNull(UifParameters.AUTO_SEARCH, autoSearch);
-        addActionParameterIfNotNull(UifParameters.LOOKUP_CRITERIA_ENABLED, lookupCriteriaEnabled);
+        addActionParameterIfNotNull(UifParameters.RENDER_LOOKUP_CRITERIA, renderLookupCriteria);
         addActionParameterIfNotNull(UifParameters.SUPPLEMENTAL_ACTIONS_ENABLED, supplementalActionsEnabled);
-        addActionParameterIfNotNull(UifParameters.DISABLE_SEARCH_BUTTONS, disableSearchButtons);
-        addActionParameterIfNotNull(UifParameters.HEADER_BAR_ENABLED, headerBarEnabled);
+        addActionParameterIfNotNull(UifParameters.RENDER_SEARCH_BUTTONS, renderSearchButtons);
+        addActionParameterIfNotNull(UifParameters.RENDER_HEADER, renderHeader);
         addActionParameterIfNotNull(UifParameters.SHOW_MAINTENANCE_LINKS, showMaintenanceLinks);
         addActionParameterIfNotNull(UifParameters.MULTIPLE_VALUES_SELECT, multipleValuesSelect);
         addActionParameterIfNotNull(UifParameters.LOOKUP_COLLECTION_NAME, lookupCollectionName);
@@ -619,18 +619,18 @@ public class QuickFinder extends WidgetBase {
      *
      * @return true if lookup criteria should be displayed, false if not
      */
-    @BeanTagAttribute(name = "lookupCriteriaEnabled")
-    public Boolean getLookupCriteriaEnabled() {
-        return this.lookupCriteriaEnabled;
+    @BeanTagAttribute(name = "renderLookupCriteria")
+    public Boolean getRenderLookupCriteria() {
+        return this.renderLookupCriteria;
     }
 
     /**
      * Setter for enabling the lookup criteria group
      *
-     * @param lookupCriteriaEnabled
+     * @param renderLookupCriteria
      */
-    public void setLookupCriteriaEnabled(Boolean lookupCriteriaEnabled) {
-        this.lookupCriteriaEnabled = lookupCriteriaEnabled;
+    public void setRenderLookupCriteria(Boolean renderLookupCriteria) {
+        this.renderLookupCriteria = renderLookupCriteria;
     }
 
     /**
@@ -648,31 +648,45 @@ public class QuickFinder extends WidgetBase {
     }
 
     /**
-     * TODO: not implemented currently
+     * Indicates that the action buttons like search in the criteria section should be rendered
      *
      * @return Boolean
      */
-    @BeanTagAttribute(name = "disabledSearchButtons")
-    public Boolean getDisableSearchButtons() {
-        return this.disableSearchButtons;
-    }
-
-    public void setDisableSearchButtons(Boolean disableSearchButtons) {
-        this.disableSearchButtons = disableSearchButtons;
+    @BeanTagAttribute(name = "renderSearchButtons")
+    public Boolean getRenderSearchButtons() {
+        return this.renderSearchButtons;
     }
 
     /**
-     * TODO: not implemented currently
+     * Setter for the render search buttons flag
      *
-     * @return Boolean
+     * @param renderSearchButtons
      */
-    @BeanTagAttribute(name = "headerBarEnabled")
-    public Boolean getHeaderBarEnabled() {
-        return this.headerBarEnabled;
+    public void setRenderSearchButtons(Boolean renderSearchButtons) {
+        this.renderSearchButtons = renderSearchButtons;
     }
 
-    public void setHeaderBarEnabled(Boolean headerBarEnabled) {
-        this.headerBarEnabled = headerBarEnabled;
+    /**
+     * Indicates whether the lookup header should be rendered
+     *
+     * <p>
+     * Defaults to true. Can be set as bean property or passed as a request parameter in the lookup url.
+     * </p>
+     *
+     * @return boolean
+     */
+    @BeanTagAttribute(name = "renderHeader")
+    public Boolean getRenderHeader() {
+        return this.renderHeader;
+    }
+
+    /**
+     * Setter for the header render flag
+     *
+     * @param renderHeader
+     */
+    public void setRenderHeader(Boolean renderHeader) {
+        this.renderHeader = renderHeader;
     }
 
     /**

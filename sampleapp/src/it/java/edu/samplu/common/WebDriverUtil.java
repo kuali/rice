@@ -53,10 +53,10 @@ public class WebDriverUtil {
         WebDriver driver = null;
         if (System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
             driver = ITUtil.getWebDriver();
-//        } else {
-//            SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
-//            saucelabs.setUp(className, testName);
-//            driver = saucelabs.getDriver();
+        } else {
+            SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
+            saucelabs.setUp(className, testName);
+            driver = saucelabs.getDriver();
         }
         driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         driver.get(url);

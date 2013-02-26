@@ -23,6 +23,7 @@ import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
+import static edu.samplu.common.WebDriverLegacyITBase.gotoNestedFrame;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertTrue;
 
@@ -227,11 +228,15 @@ public abstract class UpgradedSeleniumITBase {
         selenium.select(locator, select);
     }
 
-    protected void selectFrame(String frameName) {
-        try {
-            selenium.selectFrame(frameName);
-        } catch (NoSuchFrameException nsfe) {
-            // do nothing, don't fail on a missing iframe
+    protected void selectFrame(String locator) {
+        if ("iframeportlet".equals(locator)) {
+            gotoNestedFrame(driver);
+        } else {
+            try {
+                driver.switchTo().frame(locator);
+            } catch (NoSuchFrameException nsfe) {
+                // don't fail
+            }
         }
     }
 

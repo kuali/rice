@@ -353,6 +353,24 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         driver.manage().timeouts().implicitlyWait(DEFAULT_WAIT_SEC, TimeUnit.SECONDS);
     }
 
+    /**
+     * Until UpdatedLegacyDriver is deleted.
+     * @param driver
+     */
+    public static void gotoNestedFrame(WebDriver driver) {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver.switchTo().defaultContent();
+        if (driver.findElements(By.xpath("//iframe")).size() > 0) {
+            WebElement containerFrame = driver.findElement(By.xpath("//iframe"));
+            driver.switchTo().frame(containerFrame);
+        }
+        if (driver.findElements(By.xpath("//iframe")).size() > 0) {
+            WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
+            driver.switchTo().frame(contentFrame);
+        }
+        driver.manage().timeouts().implicitlyWait(DEFAULT_WAIT_SEC, TimeUnit.SECONDS);
+    }
+
     protected boolean isElementPresent(By by) {
         return (driver.findElements(by)).size() > 0;
     }

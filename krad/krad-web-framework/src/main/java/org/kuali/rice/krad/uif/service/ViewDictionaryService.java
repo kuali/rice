@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.service;
 
 import org.kuali.rice.krad.inquiry.Inquirable;
+import org.kuali.rice.krad.web.form.LookupForm;
 
 /**
  * Provides methods to query the dictionary meta-data for view entries and their
@@ -75,10 +76,12 @@ public interface ViewDictionaryService {
      * Attempts to find an associated <code>LookupView</code> for the
      * given data object class and if found returns the configured result
      * set limit, if multiple lookup views are found the default is used
+     * unless the specific view can be found by view ID
      *
      * @param dataObjectClass - object class to get lookup view for
+     * @param form - the LookupForm
      * @return Integer configured result set limit for lookup, or null if not found (note
      *         property could also be null on the view itself)
      */
-    public Integer getResultSetLimitForLookup(Class<?> dataObjectClass);
+    public Integer getResultSetLimitForLookup(Class<?> dataObjectClass, LookupForm form);
 }

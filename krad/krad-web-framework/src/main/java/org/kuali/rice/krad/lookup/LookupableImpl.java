@@ -166,7 +166,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         try {
             Integer searchResultsLimit = null;
             if (!unbounded) {
-                searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass());
+                searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass(), form);
             }
             if (LookupUtils.hasExternalBusinessObjectProperty(getDataObjectClass(), nonBlankSearchCriteria)) {
                 Map<String, String> eboSearchCriteria = adjustCriteriaForNestedEBOs(nonBlankSearchCriteria, unbounded);

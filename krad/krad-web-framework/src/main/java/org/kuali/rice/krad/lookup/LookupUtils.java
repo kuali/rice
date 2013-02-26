@@ -30,6 +30,7 @@ import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -126,7 +127,22 @@ public class LookupUtils {
      * @return result set limit
      */
     public static Integer getSearchResultsLimit(Class dataObjectClass) {
-        Integer limit = KRADServiceLocatorWeb.getViewDictionaryService().getResultSetLimitForLookup(dataObjectClass);
+        return  getSearchResultsLimit(dataObjectClass, null);
+    }
+
+    /**
+     * Parses and returns the lookup result set limit, checking first for the limit
+     * for the specific view, then the class being looked up, and then the global application
+     * limit if there isn't a limit specific to this data object class.
+     *
+     * @param dataObjectClass - class to get limit for
+     * @param form - LookupForm to use
+     *
+     * @return result set limit
+     */
+    public static Integer getSearchResultsLimit(Class dataObjectClass, LookupForm form) {
+        Integer limit = KRADServiceLocatorWeb.getViewDictionaryService().getResultSetLimitForLookup(
+            dataObjectClass, form);
         if (limit == null) {
             limit = getApplicationSearchResultsLimit();
         }

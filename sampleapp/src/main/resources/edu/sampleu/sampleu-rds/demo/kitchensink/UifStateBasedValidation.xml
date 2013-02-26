@@ -16,8 +16,14 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView-bean entryPageId="Demo-StateBasedValidation-Server-Page1" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="State-based Validation Server-side Test View" id="Demo-StateBasedValidation-Server" validateClientSide="false" viewHelperServiceClass="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean entryPageId="Demo-StateBasedValidation-Server-Page1"
+                 formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm"
+                 headertext="State-based Validation Server-side Test View" id="Demo-StateBasedValidation-Server"
+                 validateClientSide="false"
+                 viewHelperServiceClass="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl">
     <stateMapping>
       <stateMapping-bean>
         <states>
@@ -53,27 +59,33 @@
           <checkFormAction-bean/>
           <stateBased-requiredInstructionsMessage-bean/>
           <inputField-labelTop-bean label="State" propertyName="state" readOnly="true"/>
-          <inputField-labelTop-bean constraintText="Required                                         for state2 only" label="Field 1" propertyName="field1">
+          <inputField-labelTop-bean constraintText="Required                                         for state2 only"
+                                    label="Field 1" propertyName="field1">
             <simpleConstraint>
               <simpleContraint-bean required="true" states="state2"/>
             </simpleConstraint>
           </inputField-labelTop-bean>
-          <inputField-labelTop-bean constraintText="Required                   for state2 and after" label="Field 2" propertyName="field2">
+          <inputField-labelTop-bean constraintText="Required                   for state2 and after" label="Field 2"
+                                    propertyName="field2">
             <simpleConstraint>
               <simpleContraint-bean required="true" states="state2+"/>
             </simpleConstraint>
           </inputField-labelTop-bean>
-          <inputField-labelTop-bean constraintText="Required               for state1 through state2" label="Field 3" propertyName="field3">
+          <inputField-labelTop-bean constraintText="Required               for state1 through state2" label="Field 3"
+                                    propertyName="field3">
             <simpleConstraint>
               <simpleContraint-bean required="true" states="state1&gt;state2"/>
             </simpleConstraint>
           </inputField-labelTop-bean>
-          <inputField-labelTop-bean constraintText="Required                                   for state1 and state3" label="Field 4" propertyName="field4">
+          <inputField-labelTop-bean constraintText="Required                                   for state1 and state3"
+                                    label="Field 4" propertyName="field4">
             <simpleConstraint>
               <simpleContraint-bean required="true" states="state1,state3"/>
             </simpleConstraint>
           </inputField-labelTop-bean>
-          <inputField-labelTop-bean constraintText="For state 1 and 2 max 50 characters, for state 3 max 25 characters, for                     state4 and after 15 characters" label="Field 5" propertyName="field5">
+          <inputField-labelTop-bean
+                  constraintText="For state 1 and 2 max 50 characters, for state 3 max 25 characters, for                     state4 and after 15 characters"
+                  label="Field 5" propertyName="field5">
             <simpleConstraint>
               <simpleContraint-bean maxLength="50" states="state1&gt;state2">
                 <constraintStateOverrides>
@@ -83,7 +95,8 @@
               </simpleContraint-bean>
             </simpleConstraint>
           </inputField-labelTop-bean>
-          <inputField-labelTop-bean constraintText="Alpha only, state4 and after only upperCase allowed" label="Field 6" propertyName="field6">
+          <inputField-labelTop-bean constraintText="Alpha only, state4 and after only upperCase allowed" label="Field 6"
+                                    propertyName="field6">
             <validCharactersConstraint>
               <alphaPatternConstraint-bean states="state1&gt;state3">
                 <constraintStateOverrides>
@@ -92,7 +105,9 @@
               </alphaPatternConstraint-bean>
             </validCharactersConstraint>
           </inputField-labelTop-bean>
-          <inputField-labelTop-bean constraintText="AlphaNumeric only, state3 and after                                         only Numeric allowed" label="Field 8" propertyName="field7">
+          <inputField-labelTop-bean
+                  constraintText="AlphaNumeric only, state3 and after                                         only Numeric allowed"
+                  label="Field 8" propertyName="field7">
             <validCharactersConstraint>
               <alphaNumericPatternConstraint-bean states="state1&gt;state2">
                 <constraintStateOverrides>
@@ -110,9 +125,14 @@
       <classicKnsTheme-bean/>
     </theme>
   </formView-bean>
-  <formView-bean headertext="State-based Validation client-side Test View" id="Demo-StateBasedValidation-Client" parent="Demo-StateBasedValidation-Server" validateClientSide="true"/>
-  <formView-bean headertext="State-based Validation client-side Test View" id="Demo-StateBasedValidation-Client-KNS" parent="Demo-StateBasedValidation-Server-KNS" validateClientSide="true"/>
-  <formView-bean headertext="State-based Validation Custom client-side Test View" id="Demo-StateBasedValidation-ClientCustom" instructionalText="Demonstration of custom client side validation settings: when in                           either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after                           client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5" parent="Demo-StateBasedValidation-Server" validateClientSide="true">
+  <formView-bean headertext="State-based Validation client-side Test View" id="Demo-StateBasedValidation-Client"
+                 parent="Demo-StateBasedValidation-Server" validateClientSide="true"/>
+  <formView-bean headertext="State-based Validation client-side Test View" id="Demo-StateBasedValidation-Client-KNS"
+                 parent="Demo-StateBasedValidation-Server-KNS" validateClientSide="true"/>
+  <formView-bean headertext="State-based Validation Custom client-side Test View"
+                 id="Demo-StateBasedValidation-ClientCustom"
+                 instructionalText="Demonstration of custom client side validation settings: when in                           either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after                           client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"
+                 parent="Demo-StateBasedValidation-Server" validateClientSide="true">
     <spring:property name="stateMapping.customClientSideValidationStates">
       <spring:map>
         <spring:entry key="state1" value="state3"/>
@@ -120,7 +140,10 @@
       </spring:map>
     </spring:property>
   </formView-bean>
-  <formView-bean headertext="State-based Validation Custom client-side Test View" id="Demo-StateBasedValidation-ClientCustom-KNS" instructionalText="Demonstration of custom client side validation settings: when in                     either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after                     client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5" parent="Demo-StateBasedValidation-Server-KNS" validateClientSide="true">
+  <formView-bean headertext="State-based Validation Custom client-side Test View"
+                 id="Demo-StateBasedValidation-ClientCustom-KNS"
+                 instructionalText="Demonstration of custom client side validation settings: when in                     either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after                     client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"
+                 parent="Demo-StateBasedValidation-Server-KNS" validateClientSide="true">
     <spring:property name="stateMapping.customClientSideValidationStates">
       <spring:map>
         <spring:entry key="state1" value="state3"/>

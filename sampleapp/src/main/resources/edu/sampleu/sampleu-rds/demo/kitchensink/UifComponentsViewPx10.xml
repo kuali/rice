@@ -16,21 +16,29 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
   <verticalBoxSection-bean disclosure.render="false" id="remotableFieldsGroup">
     <items>
-      <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields" propertyName="remoteFieldValuesMap"/>
+      <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields"
+                                             propertyName="remoteFieldValuesMap"/>
       <horizontalFieldGroup-bean id="remotableFields-Group1">
         <items>
-          <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields" propertyName="remoteFieldValuesMap2"/>
+          <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields"
+                                                 propertyName="remoteFieldValuesMap2"/>
         </items>
       </horizontalFieldGroup-bean>
     </items>
   </verticalBoxSection-bean>
-  <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" id="remotableFieldsCollection" layoutManager.richTable.render="false" layoutManager.sequencePropertyName="field1" layoutManager.suppressLineWrapping="true" propertyName="list1">
+  <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                          id="remotableFieldsCollection" layoutManager.richTable.render="false"
+                                          layoutManager.sequencePropertyName="field1"
+                                          layoutManager.suppressLineWrapping="true" propertyName="list1">
     <items>
       <inputField-bean propertyName="field3" required="true"/>
-      <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields" propertyName="remoteFieldValuesMap"/>
+      <remotableFieldsPlaceholderConfig-bean fetchingMethodToCall="retrieveRemoteFields"
+                                             propertyName="remoteFieldValuesMap"/>
       <inputField-bean propertyName="field4" required="true"/>
     </items>
   </disclosure-tableCollectionSection-bean>
@@ -44,7 +52,9 @@
           <textControl-bean/>
         </control>
       </inputField-bean>
-      <inputField-bean id="uiTestObject-Field3" parent="GenericTextField" propertyEditorClass="edu.sampleu.demo.kitchensink.UITestPropertyEditor" propertyName="uiTestObject.field3">
+      <inputField-bean id="uiTestObject-Field3" parent="GenericTextField"
+                       propertyEditorClass="edu.sampleu.demo.kitchensink.UITestPropertyEditor"
+                       propertyName="uiTestObject.field3">
         <control>
           <textControl-bean/>
         </control>
@@ -55,7 +65,9 @@
           <spring:value>field74</spring:value>
         </additionalHiddenPropertyNames>
         <attributeQuery>
-          <attributeQueryConfig-bean dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
+          <attributeQueryConfig-bean dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                                     queryFieldMapping="field72:number"
+                                     returnFieldMapping="name:field73,subAccountName:field74"/>
         </attributeQuery>
       </inputField-bean>
       <inputField-bean progressiveRender="@{!#empty(field73)}" propertyName="bField1">
@@ -74,7 +86,8 @@
       </sectionHeader-bean>
     </header>
     <items>
-      <inputField-bean exclusiveMin="2" parent="GenericTextField" propertyName="field1" readOnly="false" required="false">
+      <inputField-bean exclusiveMin="2" parent="GenericTextField" propertyName="field1" readOnly="false"
+                       required="false">
         <fieldLabel>
           <label-bean>
             <toolTip>
@@ -126,7 +139,9 @@
           </multiSelectControl-bean>
         </control>
       </inputField-bean>
-      <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" id="toolTipGroup-TableCollection1" layoutManager.numberOfColumns="4" layoutManager.renderSequenceField="false" propertyName="list2">
+      <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                              id="toolTipGroup-TableCollection1" layoutManager.numberOfColumns="4"
+                                              layoutManager.renderSequenceField="false" propertyName="list2">
         <items>
           <inputField-bean propertyName="field1" required="true"/>
           <inputField-bean propertyName="field2" required="true"/>
@@ -149,7 +164,8 @@
       <dataTable-bean ajaxSource="@{#ConfigProperties['serviceServletUrl']}dataTableRestServiceTest/TableData">
         <spring:property name="richTable.templateOptions">
           <spring:map merge="true">
-            <spring:entry key="aoColumns" value="[                                 {'sTitle':'Course Id', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Course Name', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Credits', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Subject', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Dept', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Professor', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Days', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Fee', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Min Credits', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Grading', 'bSortable':true, 'bSearchable':false}                             ]"/>
+            <spring:entry key="aoColumns"
+                          value="[                                 {'sTitle':'Course Id', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Course Name', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Credits', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Subject', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Dept', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Professor', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Days', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Fee', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Min Credits', 'bSortable':true, 'bSearchable':false},                                 {'sTitle':'Grading', 'bSortable':true, 'bSearchable':false}                             ]"/>
             <spring:entry key="'bScrollInfinite'" value="true"/>
             <spring:entry key="'bScrollCollapse'" value="true"/>
             <spring:entry key="'sScrollY'" value="200px"/>

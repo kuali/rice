@@ -16,23 +16,29 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
   <horizontalBoxSection-bean id="Demo-ButtonLevels">
     <items>
       <verticalBoxSubSection-bean id="Demo-Primary">
         <items>
           <primaryActionButton-bean actionScript="alert('You clicked a button');" id="Demo-Primary-Action1"/>
-          <primaryActionButton-bean actionScript="alert('You clicked a button');" disabled="true" id="Demo-Primary-Action2"/>
+          <primaryActionButton-bean actionScript="alert('You clicked a button');" disabled="true"
+                                    id="Demo-Primary-Action2"/>
           <primaryActionButton-small-bean actionScript="alert('You clicked a button');" id="Demo-Primary-Action3"/>
-          <primaryActionButton-small-bean actionScript="alert('You clicked a button');" disabled="true" id="Demo-Primary-Action4"/>
+          <primaryActionButton-small-bean actionScript="alert('You clicked a button');" disabled="true"
+                                          id="Demo-Primary-Action4"/>
         </items>
       </verticalBoxSubSection-bean>
       <verticalBoxSubSection-bean id="Demo-Secondary">
         <items>
           <secondaryActionButton-bean actionScript="alert('You clicked a button');" id="Demo-Secondary-Action1"/>
-          <secondaryActionButton-bean actionScript="alert('You clicked a button');" disabled="true" id="Demo-Secondary-Action2"/>
+          <secondaryActionButton-bean actionScript="alert('You clicked a button');" disabled="true"
+                                      id="Demo-Secondary-Action2"/>
           <secondaryActionButton-small-bean actionScript="alert('You clicked a button');" id="Demo-Secondary-Action3"/>
-          <secondaryActionButton-small-bean actionScript="alert('You clicked a button');" disabled="true" id="Demo-Secondary-Action4"/>
+          <secondaryActionButton-small-bean actionScript="alert('You clicked a button');" disabled="true"
+                                            id="Demo-Secondary-Action4"/>
         </items>
       </verticalBoxSubSection-bean>
       <verticalBoxSubSection-bean id="Demo-Links">

@@ -16,8 +16,12 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView-bean entryPageId="Demo-CollectionTotaling-Page" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="Collection Totaling" id="Demo-CollectionTotaling">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean entryPageId="Demo-CollectionTotaling-Page"
+                 formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="Collection Totaling"
+                 id="Demo-CollectionTotaling">
     <theme>
       <kradTheme-bean/>
     </theme>
@@ -39,7 +43,11 @@
       </page-bean>
     </items>
   </formView-bean>
-  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Different Calculations per Column" id="Demo-CollectionTotaling-Section1" instructionalText="Demonstrating sum, average, min, max" layoutManager.generateAutoSequence="true" layoutManager.numberOfColumns="4" layoutManager.richTable.render="true" propertyName="list1">
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                               headertext="Different Calculations per Column" id="Demo-CollectionTotaling-Section1"
+                               instructionalText="Demonstrating sum, average, min, max"
+                               layoutManager.generateAutoSequence="true" layoutManager.numberOfColumns="4"
+                               layoutManager.richTable.render="true" propertyName="list1">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
         <columnCalculationInfo-sum-bean propertyName="field1"/>
@@ -55,7 +63,9 @@
       <inputField-bean label="Field 4" propertyName="field4" required="true"/>
     </items>
   </tableCollectionSection-bean>
-  <collectionGroup-bean headertext="KeyUp calculation" id="Demo-CollectionTotaling-Section2" instructionalText="Demonstrating totaling on keyUp for instant totaling" parent="Demo-CollectionTotaling-Section1" propertyName="list1">
+  <collectionGroup-bean headertext="KeyUp calculation" id="Demo-CollectionTotaling-Section2"
+                        instructionalText="Demonstrating totaling on keyUp for instant totaling"
+                        parent="Demo-CollectionTotaling-Section1" propertyName="list1">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
         <columnCalculationInfo-sum-bean calculationOnKeyUp="true" propertyName="field1"/>
@@ -65,7 +75,9 @@
       </spring:list>
     </spring:property>
   </collectionGroup-bean>
-  <collectionGroup-bean headertext="Totaling Flexibility" id="Demo-CollectionTotaling-Section3" instructionalText="Demonstrating totaling on only some columns" parent="Demo-CollectionTotaling-Section1" propertyName="list1">
+  <collectionGroup-bean headertext="Totaling Flexibility" id="Demo-CollectionTotaling-Section3"
+                        instructionalText="Demonstrating totaling on only some columns"
+                        parent="Demo-CollectionTotaling-Section1" propertyName="list1">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
         <columnCalculationInfo-sum-bean propertyName="field2"/>
@@ -73,17 +85,10 @@
       </spring:list>
     </spring:property>
   </collectionGroup-bean>
-  <collectionGroup-bean headertext="Left Total Labels" id="Demo-CollectionTotaling-Section4" instructionalText="Force labels left with left most column being one with       no totaling itself" layoutManager.renderOnlyLeftTotalLabels="true" parent="Demo-CollectionTotaling-Section1" propertyName="list1">
-    <spring:property name="layoutManager.columnCalculations">
-      <spring:list>
-        <columnCalculationInfo-sum-bean propertyName="field1"/>
-        <columnCalculationInfo-sum-bean propertyName="field2"/>
-        <columnCalculationInfo-sum-bean propertyName="field3"/>
-        <columnCalculationInfo-sum-bean propertyName="field4"/>
-      </spring:list>
-    </spring:property>
-  </collectionGroup-bean>
-  <collectionGroup-bean headertext="Left Total Labels - no sequence column" id="Demo-CollectionTotaling-Section5" instructionalText="Force labels left with left most column being one WITH       totaling.  Also turning off page totaling and changing the total label text." layoutManager.renderOnlyLeftTotalLabels="true" layoutManager.renderSequenceField="false" layoutManager.showPageTotal="false" layoutManager.totalLabel.labelText="Grand Total" parent="Demo-CollectionTotaling-Section1" propertyName="list1">
+  <collectionGroup-bean headertext="Left Total Labels" id="Demo-CollectionTotaling-Section4"
+                        instructionalText="Force labels left with left most column being one with       no totaling itself"
+                        layoutManager.renderOnlyLeftTotalLabels="true" parent="Demo-CollectionTotaling-Section1"
+                        propertyName="list1">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
         <columnCalculationInfo-sum-bean propertyName="field1"/>
@@ -93,7 +98,23 @@
       </spring:list>
     </spring:property>
   </collectionGroup-bean>
-  <collectionGroup-bean headertext="Multiple Calculations" id="Demo-CollectionTotaling-Section6" instructionalText="Demonstrating multiple types of calculations for a single       column (also setting average to 3 decimal places to demonstrate passing data to calculation function)" parent="Demo-CollectionTotaling-Section1" propertyName="list1">
+  <collectionGroup-bean headertext="Left Total Labels - no sequence column" id="Demo-CollectionTotaling-Section5"
+                        instructionalText="Force labels left with left most column being one WITH       totaling.  Also turning off page totaling and changing the total label text."
+                        layoutManager.renderOnlyLeftTotalLabels="true" layoutManager.renderSequenceField="false"
+                        layoutManager.showPageTotal="false" layoutManager.totalLabel.labelText="Grand Total"
+                        parent="Demo-CollectionTotaling-Section1" propertyName="list1">
+    <spring:property name="layoutManager.columnCalculations">
+      <spring:list>
+        <columnCalculationInfo-sum-bean propertyName="field1"/>
+        <columnCalculationInfo-sum-bean propertyName="field2"/>
+        <columnCalculationInfo-sum-bean propertyName="field3"/>
+        <columnCalculationInfo-sum-bean propertyName="field4"/>
+      </spring:list>
+    </spring:property>
+  </collectionGroup-bean>
+  <collectionGroup-bean headertext="Multiple Calculations" id="Demo-CollectionTotaling-Section6"
+                        instructionalText="Demonstrating multiple types of calculations for a single       column (also setting average to 3 decimal places to demonstrate passing data to calculation function)"
+                        parent="Demo-CollectionTotaling-Section1" propertyName="list1">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
         <columnCalculationInfo-sum-bean propertyName="field4"/>
@@ -103,12 +124,18 @@
       </spring:list>
     </spring:property>
   </collectionGroup-bean>
-  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Group Totaling" id="Demo-CollectionTotaling-Section7" instructionalText="Group Totaling on for last 3 columns, no totaling for       total or page total" layoutManager.renderSequenceField="false" propertyName="groupedList1" readOnly="true">
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                               headertext="Group Totaling" id="Demo-CollectionTotaling-Section7"
+                               instructionalText="Group Totaling on for last 3 columns, no totaling for       total or page total"
+                               layoutManager.renderSequenceField="false" propertyName="groupedList1" readOnly="true">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
-        <columnCalculationInfo-sum-bean propertyName="field2" showGroupTotal="true" showPageTotal="false" showTotal="false"/>
-        <columnCalculationInfo-sum-bean propertyName="field3" showGroupTotal="true" showPageTotal="false" showTotal="false"/>
-        <columnCalculationInfo-sum-bean propertyName="field4" showGroupTotal="true" showPageTotal="false" showTotal="false"/>
+        <columnCalculationInfo-sum-bean propertyName="field2" showGroupTotal="true" showPageTotal="false"
+                                        showTotal="false"/>
+        <columnCalculationInfo-sum-bean propertyName="field3" showGroupTotal="true" showPageTotal="false"
+                                        showTotal="false"/>
+        <columnCalculationInfo-sum-bean propertyName="field4" showGroupTotal="true" showPageTotal="false"
+                                        showTotal="false"/>
       </spring:list>
     </spring:property>
     <spring:property name="layoutManager.groupingPropertyNames">
@@ -123,10 +150,15 @@
       <inputField-bean label="Group Value" propertyName="field1"/>
     </items>
   </tableCollectionSection-bean>
-  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Total from Server, no client-side totalling" id="Demo-CollectionTotaling-Section8" instructionalText="Server value for total, no client-side calculations, page       and group totals turned off (because these are client-side only functionality)" layoutManager.renderSequenceField="false" propertyName="groupedList1">
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                               headertext="Total from Server, no client-side totalling"
+                               id="Demo-CollectionTotaling-Section8"
+                               instructionalText="Server value for total, no client-side calculations, page       and group totals turned off (because these are client-side only functionality)"
+                               layoutManager.renderSequenceField="false" propertyName="groupedList1">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
-        <columnCalculationInfo-sum-bean propertyName="field4" recalculateTotalClientside="false" showPageTotal="false" showTotal="true" totalField.messageText="@{#form.fakeTotal}"/>
+        <columnCalculationInfo-sum-bean propertyName="field4" recalculateTotalClientside="false" showPageTotal="false"
+                                        showTotal="true" totalField.messageText="@{#form.fakeTotal}"/>
       </spring:list>
     </spring:property>
     <spring:property name="layoutManager.groupingPropertyNames">

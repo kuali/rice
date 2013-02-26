@@ -16,23 +16,32 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
   <page-bean headertext="Quickfinders" id="ConfigurationTestView-Quickfinder-Page">
     <items>
       <spring:ref bean="ConfigurationTestView-Quickfinder-Section1"/>
       <spring:ref bean="ConfigurationTestView-Suggest"/>
     </items>
   </page-bean>
-  <disclosure-verticalBoxSection-bean headertext="Quickfinders" id="ConfigurationTestView-Quickfinder-Section1" instructionalText="Quickfinders on same view with different lookup configurations" layoutManager.orientation="VERTICAL">
+  <disclosure-verticalBoxSection-bean headertext="Quickfinders" id="ConfigurationTestView-Quickfinder-Section1"
+                                      instructionalText="Quickfinders on same view with different lookup configurations"
+                                      layoutManager.orientation="VERTICAL">
     <items>
-      <inputField-bean instructionalText="TravelAccounts lookup (account number should be read only)" label="Lookup" parent="GenericTextField" propertyName="field60" quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" quickfinder.readOnlySearchFields="number">
+      <inputField-bean instructionalText="TravelAccounts lookup (account number should be read only)" label="Lookup"
+                       parent="GenericTextField" propertyName="field60"
+                       quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                       quickfinder.readOnlySearchFields="number">
         <spring:property name="quickfinder.fieldConversions">
           <spring:map>
             <spring:entry key="number" value="field60"/>
           </spring:map>
         </spring:property>
       </inputField-bean>
-      <inputField-bean instructionalText="TravelAccounts lookup (account number should NOT be read only)" label="Lookup" parent="GenericTextField" propertyName="field90" quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
+      <inputField-bean instructionalText="TravelAccounts lookup (account number should NOT be read only)" label="Lookup"
+                       parent="GenericTextField" propertyName="field90"
+                       quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
         <spring:property name="quickfinder.fieldConversions">
           <spring:map>
             <spring:entry key="number" value="field90"/>
@@ -41,14 +50,18 @@
       </inputField-bean>
     </items>
   </disclosure-verticalBoxSection-bean>
-  <disclosure-verticalBoxSection-bean headertext="Suggest Widgets" id="ConfigurationTestView-Suggest" instructionalText="Various configurations for the suggest widget">
+  <disclosure-verticalBoxSection-bean headertext="Suggest Widgets" id="ConfigurationTestView-Suggest"
+                                      instructionalText="Various configurations for the suggest widget">
     <items>
-      <inputField-bean instructionalText="auto-query configuration, type a1 or a2 for suggestions" label="Suggest" propertyName="field61">
+      <inputField-bean instructionalText="auto-query configuration, type a1 or a2 for suggestions" label="Suggest"
+                       propertyName="field61">
         <suggest>
-          <suggest-bean render="true" sourcePropertyName="number" suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"/>
+          <suggest-bean render="true" sourcePropertyName="number"
+                        suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"/>
         </suggest>
       </inputField-bean>
-      <inputField-bean instructionalText="view helper method configuration, type a1 or a2 for suggestions" label="Suggest 2" propertyName="field62">
+      <inputField-bean instructionalText="view helper method configuration, type a1 or a2 for suggestions"
+                       label="Suggest 2" propertyName="field62">
         <suggest>
           <suggest-bean render="true" sourcePropertyName="number">
             <suggestQuery>
@@ -57,14 +70,17 @@
           </suggest-bean>
         </suggest>
       </inputField-bean>
-      <horizontalFieldGroup-bean group.instructionalText="view helper method with additional arguments, subaccount is used in query" label="Suggest 3">
+      <horizontalFieldGroup-bean
+              group.instructionalText="view helper method with additional arguments, subaccount is used in query"
+              label="Suggest 3">
         <items>
           <inputField-bean instructionalText="type a6-sub" label="Sub-Account" propertyName="field63"/>
           <inputField-bean instructionalText="type a for suggestions" label="Account" propertyName="field64">
             <suggest>
               <suggest-bean render="true" sourcePropertyName="number">
                 <suggestQuery>
-                  <attributeQueryConfig-bean queryMethodArgumentFieldList="field63" queryMethodToCall="retrieveTravelAccountsBySubAcct"/>
+                  <attributeQueryConfig-bean queryMethodArgumentFieldList="field63"
+                                             queryMethodToCall="retrieveTravelAccountsBySubAcct"/>
                 </suggestQuery>
                 <templateOptions merge="true">
                   <spring:entry key="minLength" value="1"/>
@@ -74,11 +90,14 @@
           </inputField-bean>
         </items>
       </horizontalFieldGroup-bean>
-      <inputField-bean instructionalText="static method and query result suggestions option, type a or c for suggestions" label="Suggest 4" propertyName="field65">
+      <inputField-bean
+              instructionalText="static method and query result suggestions option, type a or c for suggestions"
+              label="Suggest 4" propertyName="field65">
         <suggest>
           <suggest-bean render="true" sourceQueryMethodResults="true">
             <suggestQuery>
-              <attributeQueryConfig-bean queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getLanguages"/>
+              <attributeQueryConfig-bean
+                      queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getLanguages"/>
             </suggestQuery>
             <templateOptions merge="true">
               <spring:entry key="minLength" value="0"/>
@@ -86,26 +105,29 @@
           </suggest-bean>
         </suggest>
       </inputField-bean>
-      <inputField-bean instructionalText="service method and sorting configuration, type sub for suggestions" label="Suggest 5" propertyName="field66">
+      <inputField-bean instructionalText="service method and sorting configuration, type sub for suggestions"
+                       label="Suggest 5" propertyName="field66">
         <suggest>
           <suggest-bean render="true" sourcePropertyName="subAccountName">
             <suggestQuery>
               <attributeQueryConfig-bean queryMethodToCall="retrieveTravelAccounts" sortPropertyNames="subAccountName">
                 <spring:property name="queryMethodInvokerConfig.targetObject">
                   <spring:bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-                      <spring:property name="serviceName" value="testSuggestService"/>
-                    </spring:bean>
+                    <spring:property name="serviceName" value="testSuggestService"/>
+                  </spring:bean>
                 </spring:property>
               </attributeQueryConfig-bean>
             </suggestQuery>
           </suggest-bean>
         </suggest>
       </inputField-bean>
-      <inputField-bean instructionalText="local suggest options, press arrow down for all options or type c" label="Suggest 6" propertyName="field67">
+      <inputField-bean instructionalText="local suggest options, press arrow down for all options or type c"
+                       label="Suggest 6" propertyName="field67">
         <suggest>
           <suggest-bean render="true" retrieveAllSuggestions="true">
             <suggestQuery>
-              <attributeQueryConfig-bean queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getAllLanguages"/>
+              <attributeQueryConfig-bean
+                      queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getAllLanguages"/>
             </suggestQuery>
             <templateOptions>
               <spring:entry key="minLength" value="0"/>
@@ -114,11 +136,13 @@
           </suggest-bean>
         </suggest>
       </inputField-bean>
-      <inputField-bean instructionalText="rich suggest options, press arrow down for all options or type r" label="Suggest 7" propertyName="field68">
+      <inputField-bean instructionalText="rich suggest options, press arrow down for all options or type r"
+                       label="Suggest 7" propertyName="field68">
         <suggest>
           <suggest-bean render="true" retrieveAllSuggestions="true">
             <suggestQuery>
-              <attributeQueryConfig-bean queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getRichOptions"/>
+              <attributeQueryConfig-bean
+                      queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getRichOptions"/>
             </suggestQuery>
             <templateOptions>
               <spring:entry key="minLength" value="0"/>
@@ -128,7 +152,8 @@
           </suggest-bean>
         </suggest>
       </inputField-bean>
-      <inputField-bean instructionalText="configured suggest options, press arrow down for all options or type c" label="Suggest 8" propertyName="field69">
+      <inputField-bean instructionalText="configured suggest options, press arrow down for all options or type c"
+                       label="Suggest 8" propertyName="field69">
         <suggest>
           <suggest-bean render="true" retrieveAllSuggestions="true">
             <suggestOptions>
@@ -162,24 +187,27 @@
           </suggest-bean>
         </suggest>
       </inputField-bean>
-      <inputField-bean additionalHiddenPropertyNames="field71" instructionalText="custom selection (sets hidden, input, and info), press arrow down for all options or type c" label="Suggest 9" propertyName="field70" propertyNamesForAdditionalDisplay="field72">
+      <inputField-bean additionalHiddenPropertyNames="field71"
+                       instructionalText="custom selection (sets hidden, input, and info), press arrow down for all options or type c"
+                       label="Suggest 9" propertyName="field70" propertyNamesForAdditionalDisplay="field72">
         <suggest>
           <suggest-bean render="true" retrieveAllSuggestions="true">
             <suggestQuery>
-              <attributeQueryConfig-bean queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getComplexOptions"/>
+              <attributeQueryConfig-bean
+                      queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getComplexOptions"/>
             </suggestQuery>
             <templateOptions>
               <spring:entry key="minLength" value="0"/>
               <spring:entry key="delay" value="0"/>
               <spring:entry key="select">
-                    function( event, ui ) {
-                    	jQuery( "input[name='field71']" ).val( ui.item.value );
-                    	jQuery( "input[name='field70']" ).val( ui.item.label );
-                    	jQuery( "span[id$='_info_field72']").html( ui.item.description );
+                function( event, ui ) {
+                jQuery( "input[name='field71']" ).val( ui.item.value );
+                jQuery( "input[name='field70']" ).val( ui.item.label );
+                jQuery( "span[id$='_info_field72']").html( ui.item.description );
 
-                    	return false;
-                    }
-                    </spring:entry>
+                return false;
+                }
+              </spring:entry>
             </templateOptions>
           </suggest-bean>
         </suggest>

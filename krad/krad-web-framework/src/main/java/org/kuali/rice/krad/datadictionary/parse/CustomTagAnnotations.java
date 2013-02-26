@@ -33,6 +33,7 @@ import org.springframework.util.SystemPropertyUtils;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -179,9 +180,6 @@ public class CustomTagAnnotations {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document;
             document = builder.newDocument();
-
-            //initialize top level schema element
-            Element schema = initializeSchemaElement(document);
 
             //init variables
             List<Element> types = new ArrayList<Element>();
@@ -364,7 +362,7 @@ public class CustomTagAnnotations {
             }
 
             //fill in the schema with the collected pieces and write it out
-            fillAndWriteSchema(document, schema, elements, types, elementObjects, componentAttributeElements);
+            fillAndWriteSchema(builder, elements, types, elementObjects, componentAttributeElements);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -373,16 +371,186 @@ public class CustomTagAnnotations {
     }
 
     /**
-     * Initializes the schema element with necessary content and appends some additional elements
+     * Fills in the schema documents with the content passed in and writes them out.  Multiple schema files and
+     * includes
+     * are used due to a file size limitation of 45k lines in intelliJ for xsd files.
      *
-     * @param document
-     * @return the schema element
+     * @param builder documentBuilder to build documents with
+     * @param elements the elements
+     * @param types the element types
+     * @param elementObjects the backing element objects (represent java classes)
+     * @param componentAttributeElements a list of elements that are xsd:attribute, representing attributes of the
+     * component type (used for extension)
+     * @throws TransformerException
+     * @throws IOException
      */
-    private static Element initializeSchemaElement(Document document) {
+    private static void fillAndWriteSchema(DocumentBuilder builder, List<Element> elements, List<Element> types,
+            Map<String, Element> elementObjects,
+            List<Element> componentAttributeElements) throws TransformerException, IOException {
+
+        //create top level schema
+        Document topLevelDocument = builder.newDocument();
+        Element schema = getSchemaInstance(topLevelDocument);
+
+        //necessary include
+        Element include = topLevelDocument.createElement("xsd:include");
+        include.setAttribute("schemaLocation", "krad-elements.xsd");
+        schema.appendChild(include);
+
+        //append schema
+        topLevelDocument.appendChild(schema);
+
+        //start elements document
+        Document elementsDocument = builder.newDocument();
+        schema = getSchemaInstance(elementsDocument);
+        List<Document> documentsToWrite = new ArrayList<Document>();
+
+        //add all elements
+        for (Element element : elements) {
+            schema.appendChild(elementsDocument.importNode(element, true));
+        }
+
+        //append schema
+        elementsDocument.appendChild(schema);
+
+        //start baseTypesDocument
+        Document baseTypesDocument = builder.newDocument();
+        schema = getSchemaInstance(baseTypesDocument);
+
+        //necessary include
+        include = baseTypesDocument.createElement("xsd:include");
+        include.setAttribute("schemaLocation", "krad-elements.xsd");
+        schema.appendChild(include);
+
+        //create basicList type
+        Element basicListType = baseTypesDocument.createElement("xsd:complexType");
+        basicListType.setAttribute("name", "basicList-type");
+
+        Element basicListSequence = baseTypesDocument.createElement("xsd:sequence");
+        Element basicListElement = baseTypesDocument.createElement("xsd:element");
+        basicListElement.setAttribute("minOccurs", "0");
+        basicListElement.setAttribute("maxOccurs", "unbounded");
+        basicListElement.setAttribute("ref", "spring:value");
+
+        Element basicListMergeAttribute = baseTypesDocument.createElement("xsd:attribute");
+        basicListMergeAttribute.setAttribute("name", "merge");
+        basicListMergeAttribute.setAttribute("type", "xsd:boolean");
+
+        basicListSequence.appendChild(basicListElement);
+        basicListType.appendChild(basicListSequence);
+        basicListType.appendChild(basicListMergeAttribute);
+        schema.appendChild(basicListType);
+
+        //add component attributes type for extension
+        Element componentAttributesType = baseTypesDocument.createElement("xsd:complexType");
+        componentAttributesType.setAttribute("name", "componentAttributes-type");
+        for (Element attribute : componentAttributeElements) {
+            componentAttributesType.appendChild(baseTypesDocument.importNode(attribute, true));
+        }
+        schema.appendChild(componentAttributesType);
+
+        //add all elementObjects complexTypes
+        for (String objectName : elementObjects.keySet()) {
+            schema.appendChild(baseTypesDocument.importNode(elementObjects.get(objectName), true));
+        }
+
+        //append schema
+        baseTypesDocument.appendChild(schema);
+
+        //start types schemas
+        Document typesDocument = builder.newDocument();
+        schema = getSchemaInstance(typesDocument);
+
+        int startIndex = 0;
+        int endIndex = 60;
+
+        if (endIndex > types.size()) {
+            endIndex = types.size();
+        }
+
+        boolean complete = false;
+
+        while (!complete) {
+            List<Element> typesSubList = types.subList(startIndex, endIndex);
+
+            include = typesDocument.createElement("xsd:include");
+            include.setAttribute("schemaLocation", "krad-baseTypes.xsd");
+            schema.appendChild(include);
+
+            //add all types
+            for (Element type : typesSubList) {
+                schema.appendChild(typesDocument.importNode(type, true));
+            }
+
+            //add to write list
+            typesDocument.appendChild(schema);
+            documentsToWrite.add(typesDocument);
+
+            //setup next subList indices
+            startIndex = endIndex;
+            endIndex = endIndex + 60;
+
+            if (endIndex > types.size()) {
+                endIndex = types.size();
+            }
+
+            if (startIndex == types.size()) {
+                complete = true;
+            }
+
+            //reset document and schema for next phase
+            typesDocument = builder.newDocument();
+            schema = getSchemaInstance(typesDocument);
+        }
+
+        Node elementsSchema = elementsDocument.getFirstChild();
+
+        for (int i = 0; i < documentsToWrite.size(); i++) {
+            //write includes in element document
+            include = elementsDocument.createElement("xsd:include");
+            include.setAttribute("schemaLocation", "krad-types" + (i + 1) + ".xsd");
+            elementsSchema.insertBefore(include, elementsSchema.getFirstChild());
+        }
+
+        //write out all the documents
+        writeDocument(topLevelDocument, "krad-schema.xsd");
+        writeDocument(elementsDocument, "krad-elements.xsd");
+        writeDocument(baseTypesDocument, "krad-baseTypes.xsd");
+
+        int part = 1;
+        for (Document document : documentsToWrite) {
+            writeDocument(document, "krad-types" + part + ".xsd");
+            part++;
+        }
+    }
+
+    /**
+     * Writes the document out with the provided documentName to the current directory
+     *
+     * @param document document to be written
+     * @param documentName name of document to write to
+     * @throws TransformerException
+     * @throws IOException
+     */
+    private static void writeDocument(Document document, String documentName) throws TransformerException, IOException {
+        File file = new File("./" + documentName);
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        transformer.transform(new DOMSource(document), new StreamResult(new FileWriter(file)));
+    }
+
+    /**
+     * Gets a new schema element instance with the krad namespace
+     *
+     * @param document the document
+     * @return schema element with properties/imports filled in
+     */
+    private static Element getSchemaInstance(Document document) {
         //set up base schema tag
         Element schema = document.createElement("xsd:schema");
-        schema.setAttribute("xmlns", "http://www.kuali.org/schema");
-        schema.setAttribute("targetNamespace", "http://www.kuali.org/schema");
+        schema.setAttribute("xmlns", "http://www.kuali.org/krad/schema");
+        schema.setAttribute("targetNamespace", "http://www.kuali.org/krad/schema");
         schema.setAttribute("elementFormDefault", "qualified");
         schema.setAttribute("attributeFormDefault", "unqualified");
 
@@ -398,75 +566,7 @@ public class CustomTagAnnotations {
         springImport.setAttribute("namespace", "http://www.springframework.org/schema/beans");
         schema.appendChild(springImport);
 
-        //add special basic list type
-        Element basicListType = document.createElement("xsd:complexType");
-        basicListType.setAttribute("name", "basicList-type");
-
-        Element basicListSequence = document.createElement("xsd:sequence");
-        Element basicListElement = document.createElement("xsd:element");
-        basicListElement.setAttribute("minOccurs", "0");
-        basicListElement.setAttribute("maxOccurs", "unbounded");
-        basicListElement.setAttribute("ref", "spring:value");
-
-        Element basicListMergeAttribute = document.createElement("xsd:attribute");
-        basicListMergeAttribute.setAttribute("name", "merge");
-        basicListMergeAttribute.setAttribute("type", "xsd:boolean");
-
-        basicListSequence.appendChild(basicListElement);
-        basicListType.appendChild(basicListSequence);
-        basicListType.appendChild(basicListMergeAttribute);
-        schema.appendChild(basicListType);
-
         return schema;
-    }
-
-    /**
-     * Fills in the schema with the content passed in
-     *
-     * @param document the document to generate elements with
-     * @param schema the schema to fill in
-     * @param elements the elements
-     * @param types the element types
-     * @param elementObjects the backing element objects (represent java classes)
-     * @param componentAttributeElements a list of elements that are xsd:attribute, representing attributes of the
-     * component type (used for extension)
-     * @throws TransformerException
-     * @throws IOException
-     */
-    private static void fillAndWriteSchema(Document document, Element schema, List<Element> elements,
-            List<Element> types, Map<String, Element> elementObjects,
-            List<Element> componentAttributeElements) throws TransformerException, IOException {
-        //add component attributes type for extension
-        Element componentAttributesType = document.createElement("xsd:complexType");
-        componentAttributesType.setAttribute("name", "componentAttributes-type");
-        for (Element attribute : componentAttributeElements) {
-            componentAttributesType.appendChild(attribute);
-        }
-        schema.appendChild(componentAttributesType);
-
-        //add all elementObjects
-        for (String objectName : elementObjects.keySet()) {
-            schema.appendChild(elementObjects.get(objectName));
-        }
-
-        //add all elements
-        for (Element element : elements) {
-            schema.appendChild(element);
-        }
-
-        //add all types
-        for (Element type : types) {
-            schema.appendChild(type);
-        }
-
-        document.appendChild(schema);
-
-        File file = new File("./krad_schema.xsd");
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-        transformer.transform(new DOMSource(document), new StreamResult(new FileWriter(file)));
     }
 
     /**

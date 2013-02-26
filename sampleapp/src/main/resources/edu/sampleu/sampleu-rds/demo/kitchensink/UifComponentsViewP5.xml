@@ -16,7 +16,9 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
   <verticalBoxSection-bean disclosure.render="false" id="prog1" layoutManager.orientation="VERTICAL">
     <items>
       <inputField-bean propertyName="field34" width="auto">
@@ -31,15 +33,20 @@
         </control>
       </inputField-bean>
       <inputField-bean parent="GenericTextField" progressiveRender="@{#dp.field34 eq 'show1'}" propertyName="field35"/>
-      <inputField-bean parent="GenericTextField" progressiveRender="field34 eq 'show2'" progressiveRenderViaAJAX="true" propertyName="field36"/>
-      <inputField-bean parent="GenericTextField" progressiveRender="@{#form.field34 eq 'show3'}" progressiveRenderAndRefresh="true" propertyName="field37">
+      <inputField-bean parent="GenericTextField" progressiveRender="field34 eq 'show2'" progressiveRenderViaAJAX="true"
+                       propertyName="field36"/>
+      <inputField-bean parent="GenericTextField" progressiveRender="@{#form.field34 eq 'show3'}"
+                       progressiveRenderAndRefresh="true" propertyName="field37">
         <validCharactersConstraint>
           <emailAddressPatternConstraint-bean/>
         </validCharactersConstraint>
       </inputField-bean>
-      <inputField-bean maxLength="1" parent="GenericTextField" progressiveRenderAndRefresh="true" propertyName="field47"/>
-      <inputField-bean parent="GenericTextField" progressiveRender="field47 matches '^[aA]$'" progressiveRenderAndRefresh="true" propertyName="field48"/>
-      <inputField-bean parent="GenericTextField" progressiveRender="field47 matches '^[bB]$'" progressiveRenderAndRefresh="true" propertyName="field49"/>
+      <inputField-bean maxLength="1" parent="GenericTextField" progressiveRenderAndRefresh="true"
+                       propertyName="field47"/>
+      <inputField-bean parent="GenericTextField" progressiveRender="field47 matches '^[aA]$'"
+                       progressiveRenderAndRefresh="true" propertyName="field48"/>
+      <inputField-bean parent="GenericTextField" progressiveRender="field47 matches '^[bB]$'"
+                       progressiveRenderAndRefresh="true" propertyName="field49"/>
     </items>
   </verticalBoxSection-bean>
   <verticalBoxSection-bean disclosure.render="false" id="prog2" layoutManager.orientation="VERTICAL">
@@ -61,7 +68,8 @@
           <inputField-bean parent="GenericTextField" propertyName="field41"/>
         </items>
       </horizontalBoxSection-bean>
-      <horizontalBoxSection-bean disclosure.render="false" id="prog2-group2" progressiveRender="field38 eq 'show2'" progressiveRenderViaAJAX="true">
+      <horizontalBoxSection-bean disclosure.render="false" id="prog2-group2" progressiveRender="field38 eq 'show2'"
+                                 progressiveRenderViaAJAX="true">
         <items>
           <inputField-bean parent="GenericTextField" propertyName="field42"/>
           <inputField-bean parent="GenericTextField" propertyName="field43"/>
@@ -82,7 +90,8 @@
         </control>
       </inputField-bean>
       <inputField-bean conditionalRefresh="#dp.field44 eq 'show1'" parent="GenericTextField" propertyName="field45"/>
-      <inputField-bean parent="GenericTextField" progressiveRenderViaAJAX="true" propertyName="field46" readOnly="@{field44 eq 'show2'}" refreshWhenChangedPropertyNames="#form.field44"/>
+      <inputField-bean parent="GenericTextField" progressiveRenderViaAJAX="true" propertyName="field46"
+                       readOnly="@{field44 eq 'show2'}" refreshWhenChangedPropertyNames="#form.field44"/>
       <fieldGroup-bean id="prog3-group1" parent="GenericHorizontalFieldGroup">
         <items>
           <inputField-bean parent="GenericTextField" propertyName="field88">
@@ -95,7 +104,8 @@
               </dropdownControl-bean>
             </control>
           </inputField-bean>
-          <inputField-bean optionsFinderClass="edu.sampleu.travel.options.FoodKeyValuesFinder" parent="GenericTextField" propertyName="field89" refreshWhenChangedPropertyNames="field88">
+          <inputField-bean optionsFinderClass="edu.sampleu.travel.options.FoodKeyValuesFinder" parent="GenericTextField"
+                           propertyName="field89" refreshWhenChangedPropertyNames="field88">
             <control>
               <dropdownControl-bean/>
             </control>
@@ -105,8 +115,10 @@
       <fieldGroup-bean id="prog3-group2" parent="GenericHorizontalFieldGroup">
         <items>
           <primaryActionButton-bean id="prog3-group2-action1" methodToCall="refreshProgGroup" refreshId="prog3"/>
-          <primaryActionButton-bean id="prog3-group2-action2" methodToCall="refreshProgGroup" refreshPropertyName="field45"/>
-          <primaryActionButton-bean id="prog3-group2-action3" methodToCall="refreshWithServerMessages" refreshPropertyName="field45"/>
+          <primaryActionButton-bean id="prog3-group2-action2" methodToCall="refreshProgGroup"
+                                    refreshPropertyName="field45"/>
+          <primaryActionButton-bean id="prog3-group2-action3" methodToCall="refreshWithServerMessages"
+                                    refreshPropertyName="field45"/>
           <primaryActionButton-bean id="prog3-group2-action4" methodToCall="refresh"/>
         </items>
       </fieldGroup-bean>
@@ -117,7 +129,9 @@
       </verticalBoxSection-bean>
     </items>
   </verticalBoxSection-bean>
-  <disclosure-stackedCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" id="Uif-CollectionRefresh" layoutManager.summaryFields="field1" propertyName="list5">
+  <disclosure-stackedCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                            id="Uif-CollectionRefresh" layoutManager.summaryFields="field1"
+                                            propertyName="list5">
     <items>
       <inputField-bean propertyName="field1" required="true"/>
       <inputField-bean constraintText="Type ref" propertyName="field2" required="true"/>
@@ -132,7 +146,9 @@
       <collectionGroup-bean parent="Uif-SubCollectionRefresh" refreshWhenChangedPropertyNames="#lp.field2"/>
     </subCollections>
   </disclosure-stackedCollectionSection-bean>
-  <stackedCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" disclosure.render="false" id="Uif-SubCollectionRefresh" layoutManager.summaryFields="field1" propertyName="subList">
+  <stackedCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                 disclosure.render="false" id="Uif-SubCollectionRefresh"
+                                 layoutManager.summaryFields="field1" propertyName="subList">
     <items>
       <inputField-bean propertyName="field1" required="true"/>
       <inputField-bean progressiveRender="@{#lp.field1 eq 'show2'}" propertyName="field2" required="true"/>

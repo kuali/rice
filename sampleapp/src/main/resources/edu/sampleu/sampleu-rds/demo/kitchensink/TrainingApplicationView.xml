@@ -16,8 +16,11 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView-bean formClass="edu.sampleu.demo.kitchensink.TrainingApplicationForm" headertext="Kuali University Student Application Form" id="Training-CollegeApplicationView">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean formClass="edu.sampleu.demo.kitchensink.TrainingApplicationForm"
+                 headertext="Kuali University Student Application Form" id="Training-CollegeApplicationView">
     <items>
       <spring:ref bean="Training-CollegeApplicationPage"/>
     </items>
@@ -46,7 +49,9 @@
     <footer>
       <footer-bean>
         <items>
-          <primaryActionButton-bean actionLabel="Submit" methodToCall="submit" performClientSideValidation="true" preSubmitCall="return confirm('Submit?');" render="@{!#view.readOnly}" successCallback="alert('Submit Successful')"/>
+          <primaryActionButton-bean actionLabel="Submit" methodToCall="submit" performClientSideValidation="true"
+                                    preSubmitCall="return confirm('Submit?');" render="@{!#view.readOnly}"
+                                    successCallback="alert('Submit Successful')"/>
           <actionLink-bean actionLabel="Clear all" actionScript="clearAll()" render="@{!#view.readOnly}"/>
         </items>
       </footer-bean>
@@ -80,7 +85,8 @@
           </dropdownControl-bean>
         </control>
       </inputField-labelTop-bean>
-      <inputField-labelTop-bean label="Campus" progressiveRender="@{#dp.college eq 'art' or #dp.college eq 'csc'}" propertyName="campus">
+      <inputField-labelTop-bean label="Campus" progressiveRender="@{#dp.college eq 'art' or #dp.college eq 'csc'}"
+                                propertyName="campus">
         <control>
           <dropdownControl-bean>
             <options>
@@ -108,7 +114,8 @@
       </inputField-labelTop-bean>
     </items>
   </horizontalBoxSection-bean>
-  <horizontalBoxSection-bean headertext="About Me" id="Training-StudentInfo" instructionalText="Please fill out this form [b]completely[/b]">
+  <horizontalBoxSection-bean headertext="About Me" id="Training-StudentInfo"
+                             instructionalText="Please fill out this form [b]completely[/b]">
     <items>
       <spring:ref bean="Training-StudentInfo-Group1"/>
       <spring:ref bean="Training-StudentInfo-Group2"/>
@@ -158,7 +165,10 @@
           <basicDatePatternConstraint-bean/>
         </validCharactersConstraint>
       </inputField-bean>
-      <inputField-bean instructionalText="Please select the [link='http://kuali.org']ethnicity/race(s)[/link] you most closely identify yourself as" label="Race/Ethnicity" propertyName="ethnicity" readOnlyDisplayReplacement="@{ethnicity.toString()}" required="true">
+      <inputField-bean
+              instructionalText="Please select the [link='http://kuali.org']ethnicity/race(s)[/link] you most closely identify yourself as"
+              label="Race/Ethnicity" propertyName="ethnicity" readOnlyDisplayReplacement="@{ethnicity.toString()}"
+              required="true">
         <control>
           <verticalCheckboxesControl-bean>
             <options>
@@ -200,14 +210,20 @@
           <alphaPatternConstraint-bean/>
         </validCharactersConstraint>
       </inputField-bean>
-      <inputField-bean constraintText="Only [color=red]digits[/color] allowed." label="Zip" maxLength="10" minLength="5" propertyName="zip" required="true">
+      <inputField-bean constraintText="Only [color=red]digits[/color] allowed." label="Zip" maxLength="10" minLength="5"
+                       propertyName="zip" required="true">
         <validCharactersConstraint>
           <zipcodePatternConstraint-bean/>
         </validCharactersConstraint>
       </inputField-bean>
     </items>
   </gridSection-bean>
-  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.TrainingApplicationReference" headertext="References" id="Training-StudentReferences" instructionalText="Please list any references we can contact" layoutManager.addLineGroup.layoutManager.numberOfColumns="8" layoutManager.generateAutoSequence="true" layoutManager.separateAddLine="true" propertyName="references">
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.TrainingApplicationReference"
+                               headertext="References" id="Training-StudentReferences"
+                               instructionalText="Please list any references we can contact"
+                               layoutManager.addLineGroup.layoutManager.numberOfColumns="8"
+                               layoutManager.generateAutoSequence="true" layoutManager.separateAddLine="true"
+                               propertyName="references">
     <items>
       <inputField-bean label="Name" propertyName="name" required="true"/>
       <inputField-bean label="Phone" propertyName="phone" required="true">
@@ -236,7 +252,11 @@
       </inputField-bean>
     </items>
   </tableCollectionSection-bean>
-  <disclosure-stackedCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.TrainingApplicationPreviousEducation" headertext="Previous Education" id="Training-PreviousEducation" layoutManager.summaryFields="course,university" layoutManager.summaryTitle="Course" propertyName="previousEducation">
+  <disclosure-stackedCollectionSection-bean
+          collectionObjectClass="edu.sampleu.demo.kitchensink.TrainingApplicationPreviousEducation"
+          headertext="Previous Education" id="Training-PreviousEducation"
+          layoutManager.summaryFields="course,university" layoutManager.summaryTitle="Course"
+          propertyName="previousEducation">
     <items>
       <inputField-bean label="University" propertyName="university" required="true"/>
       <inputField-bean label="College" propertyName="college" required="true"/>

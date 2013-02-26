@@ -16,7 +16,9 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
   <verticalBoxSection-bean componentSecurity.viewAuthz="true" id="UifCompView-SecureGroupView">
     <items>
       <inputField-bean propertyName="field1">
@@ -113,15 +115,21 @@
   <verticalBoxSection-bean id="UifCompView-SecureActions">
     <items>
       <primaryActionButton-bean id="UifCompView-SecureAction1" methodToCall="close"/>
-      <primaryActionButton-bean actionEvent="save" componentSecurity.performActionAuthz="true" id="UifCompView-SecureAction2" methodToCall="save"/>
+      <primaryActionButton-bean actionEvent="save" componentSecurity.performActionAuthz="true"
+                                id="UifCompView-SecureAction2" methodToCall="save"/>
     </items>
   </verticalBoxSection-bean>
   <verticalBoxSection-bean id="UifCompView-SecureWidgets">
     <items>
-      <inputField-bean propertyName="field14" quickfinder.componentSecurity.viewAuthz="true" quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" quickfinder.fieldConversions="number:field60" quickfinder.id="UifCompView-SecureWidget"/>
+      <inputField-bean propertyName="field14" quickfinder.componentSecurity.viewAuthz="true"
+                       quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                       quickfinder.fieldConversions="number:field60" quickfinder.id="UifCompView-SecureWidget"/>
     </items>
   </verticalBoxSection-bean>
-  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" componentSecurity.viewLineAuthz="true" id="UifCompView-SecureLineView" layoutManager.richTable.render="false" layoutManager.sequencePropertyName="field1" propertyName="list1">
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                               componentSecurity.viewLineAuthz="true" id="UifCompView-SecureLineView"
+                               layoutManager.richTable.render="false" layoutManager.sequencePropertyName="field1"
+                               propertyName="list1">
     <items>
       <inputField-bean propertyName="field1" required="true"/>
       <inputField-bean propertyName="field2" required="true"/>
@@ -129,7 +137,10 @@
       <inputField-bean propertyName="field4" required="true"/>
     </items>
   </tableCollectionSection-bean>
-  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" componentSecurity.editLineAuthz="true" id="UifCompView-SecureLineEdit" layoutManager.richTable.render="false" layoutManager.sequencePropertyName="field1" propertyName="list2">
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                               componentSecurity.editLineAuthz="true" id="UifCompView-SecureLineEdit"
+                               layoutManager.richTable.render="false" layoutManager.sequencePropertyName="field1"
+                               propertyName="list2">
     <items>
       <inputField-bean propertyName="field1" required="true"/>
       <inputField-bean propertyName="field2" required="true"/>
@@ -137,7 +148,9 @@
       <inputField-bean propertyName="field4" required="true"/>
     </items>
   </tableCollectionSection-bean>
-  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" id="UifCompView-SecureLineFields" layoutManager.richTable.render="false" layoutManager.sequencePropertyName="field1" propertyName="list3">
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                               id="UifCompView-SecureLineFields" layoutManager.richTable.render="false"
+                               layoutManager.sequencePropertyName="field1" propertyName="list3">
     <items>
       <inputField-bean propertyName="field1" required="true"/>
       <inputField-bean componentSecurity.viewInLineAuthz="true" propertyName="field2" required="true"/>
@@ -145,7 +158,9 @@
       <inputField-bean propertyName="field4" required="true"/>
     </items>
   </tableCollectionSection-bean>
-  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" id="UifCompView-SecureLineActions" layoutManager.richTable.render="false" layoutManager.sequencePropertyName="field1" propertyName="list4">
+  <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                               id="UifCompView-SecureLineActions" layoutManager.richTable.render="false"
+                               layoutManager.sequencePropertyName="field1" propertyName="list4">
     <items>
       <inputField-bean propertyName="field1" required="true"/>
       <inputField-bean propertyName="field2" required="true"/>
@@ -153,7 +168,8 @@
       <inputField-bean propertyName="field4" required="true"/>
     </items>
     <lineActions>
-      <secondaryActionButton-small-bean actionEvent="delete" componentSecurity.performLineActionAuthz="true" id="UifCompView-DeleteAction" methodToCall="deleteLine"/>
+      <secondaryActionButton-small-bean actionEvent="delete" componentSecurity.performLineActionAuthz="true"
+                                        id="UifCompView-DeleteAction" methodToCall="deleteLine"/>
     </lineActions>
   </tableCollectionSection-bean>
 </spring:beans>

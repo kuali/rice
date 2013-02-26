@@ -16,8 +16,11 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView-bean entryPageId="Collections-DefaultTests" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" growlMessagingEnabled="true" headertext="Collection Test View" id="ConfigurationTestView-Collections">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean entryPageId="Collections-DefaultTests" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm"
+                 growlMessagingEnabled="true" headertext="Collection Test View" id="ConfigurationTestView-Collections">
     <navigation>
       <spring:ref bean="ConfigurationTestView-Collections-Menu"/>
     </navigation>
@@ -81,7 +84,10 @@
       <spring:ref bean="Collections-SaveRow-Stack"/>
     </items>
   </page-bean>
-  <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Table Layout" id="Collections-Base-TableLayout" layoutManager.generateAutoSequence="true" layoutManager.numberOfColumns="4" layoutManager.richTable.render="true" propertyName="list1">
+  <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                          headertext="Table Layout" id="Collections-Base-TableLayout"
+                                          layoutManager.generateAutoSequence="true" layoutManager.numberOfColumns="4"
+                                          layoutManager.richTable.render="true" propertyName="list1">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
         <columnCalculationInfo-sum-bean calculationOnKeyUp="true" propertyName="field1"/>
@@ -91,13 +97,17 @@
       </spring:list>
     </spring:property>
     <items>
-      <inputField-bean cellCssClasses="demo-customCell1,demo-customCell2" fieldLabel.cellCssClasses="demo-customHeader" label="Field 1" propertyName="field1" required="true"/>
+      <inputField-bean cellCssClasses="demo-customCell1,demo-customCell2" fieldLabel.cellCssClasses="demo-customHeader"
+                       label="Field 1" propertyName="field1" required="true"/>
       <inputField-bean cellCssClasses="demo-customCell3" label="Field 2" propertyName="field2" required="true"/>
       <inputField-bean label="Field 3" propertyName="field3" required="true"/>
       <inputField-bean label="Field 4" propertyName="field4" required="true"/>
     </items>
   </disclosure-tableCollectionSection-bean>
-  <disclosure-stackedCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Stack Layout" id="Collections-Base-StackLayout" layoutManager.summaryFields="field1" layoutManager.summaryTitle="Line Summary" propertyName="list3">
+  <disclosure-stackedCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                            headertext="Stack Layout" id="Collections-Base-StackLayout"
+                                            layoutManager.summaryFields="field1"
+                                            layoutManager.summaryTitle="Line Summary" propertyName="list3">
     <items>
       <inputField-bean label="Field 1" propertyName="field1" required="true"/>
       <inputField-bean label="Field 2" propertyName="field2" required="true"/>
@@ -105,17 +115,39 @@
       <inputField-bean label="Field 4" propertyName="field4"/>
     </items>
   </disclosure-stackedCollectionSection-bean>
-  <collectionGroup-bean headertext="Table Layout With Add Blank line TOP (default)" id="Collections-AddBlankLine-TableTop" parent="Collections-Base-TableLayout" renderAddBlankLineButton="true"/>
-  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Table Layout With Add Blank line BOTTOM" id="Collections-AddBlankLine-TableBottom" parent="Collections-AddBlankLine-TableTop" propertyName="list2"/>
-  <collectionGroup-bean headertext="Stack Layout With Add Blank line TOP (default)" id="Collections-AddBlankLine-StackTop" parent="Collections-Base-StackLayout" renderAddBlankLineButton="true"/>
-  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Stack Layout With Add Blank line BOTTOM" id="Collections-AddBlankLine-StackBottom" parent="Collections-AddBlankLine-StackTop" propertyName="list4"/>
-  <collectionGroup-bean addViaLightBox="true" headertext="Table Layout Add Via Lightbox TOP" id="Collections-AddViaLightbox-TableTop" layoutManager.separateAddLine="true" parent="Collections-Base-TableLayout"/>
-  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Table Layout With Add Via Lightbox BOTTOM" id="Collections-AddViaLightbox-TableBottom" parent="Collections-AddViaLightbox-TableTop" propertyName="list2"/>
-  <collectionGroup-bean addViaLightBox="true" headertext="Stack Layout With Add Via Lightbox TOP" id="Collections-AddViaLightbox-StackTop" parent="Collections-Base-StackLayout"/>
-  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Stack Layout With Add Via Lightbox BOTTOM" id="Collections-AddViaLightbox-StackBottom" parent="Collections-AddViaLightbox-StackTop" propertyName="list4"/>
-  <collectionGroup-bean headertext="Table Layout Action Column Default" id="Collections-ColumnSequence-TableDefault" parent="Collections-Base-TableLayout"/>
-  <collectionGroup-bean headertext="Table Layout Action Column Left" id="Collections-ColumnSequence-TableLeft" layoutManager.actionColumnPlacement="LEFT" parent="Collections-Base-TableLayout" propertyName="list2"/>
-  <collectionGroup-bean headertext="Table Layout Action Column 3" id="Collections-ColumnSequence-TableThird" layoutManager.actionColumnPlacement="3" parent="Collections-Base-TableLayout" propertyName="list3"/>
-  <collectionGroup-bean headertext="Table Layout With Save Row" id="Collections-SaveRow-Table" parent="Collections-Base-TableLayout" renderSaveLineActions="true"/>
-  <collectionGroup-bean headertext="Stack Layout With Save Row" id="Collections-SaveRow-Stack" parent="Collections-Base-StackLayout" propertyName="list2" renderSaveLineActions="true"/>
+  <collectionGroup-bean headertext="Table Layout With Add Blank line TOP (default)"
+                        id="Collections-AddBlankLine-TableTop" parent="Collections-Base-TableLayout"
+                        renderAddBlankLineButton="true"/>
+  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Table Layout With Add Blank line BOTTOM"
+                        id="Collections-AddBlankLine-TableBottom" parent="Collections-AddBlankLine-TableTop"
+                        propertyName="list2"/>
+  <collectionGroup-bean headertext="Stack Layout With Add Blank line TOP (default)"
+                        id="Collections-AddBlankLine-StackTop" parent="Collections-Base-StackLayout"
+                        renderAddBlankLineButton="true"/>
+  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Stack Layout With Add Blank line BOTTOM"
+                        id="Collections-AddBlankLine-StackBottom" parent="Collections-AddBlankLine-StackTop"
+                        propertyName="list4"/>
+  <collectionGroup-bean addViaLightBox="true" headertext="Table Layout Add Via Lightbox TOP"
+                        id="Collections-AddViaLightbox-TableTop" layoutManager.separateAddLine="true"
+                        parent="Collections-Base-TableLayout"/>
+  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Table Layout With Add Via Lightbox BOTTOM"
+                        id="Collections-AddViaLightbox-TableBottom" parent="Collections-AddViaLightbox-TableTop"
+                        propertyName="list2"/>
+  <collectionGroup-bean addViaLightBox="true" headertext="Stack Layout With Add Via Lightbox TOP"
+                        id="Collections-AddViaLightbox-StackTop" parent="Collections-Base-StackLayout"/>
+  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Stack Layout With Add Via Lightbox BOTTOM"
+                        id="Collections-AddViaLightbox-StackBottom" parent="Collections-AddViaLightbox-StackTop"
+                        propertyName="list4"/>
+  <collectionGroup-bean headertext="Table Layout Action Column Default" id="Collections-ColumnSequence-TableDefault"
+                        parent="Collections-Base-TableLayout"/>
+  <collectionGroup-bean headertext="Table Layout Action Column Left" id="Collections-ColumnSequence-TableLeft"
+                        layoutManager.actionColumnPlacement="LEFT" parent="Collections-Base-TableLayout"
+                        propertyName="list2"/>
+  <collectionGroup-bean headertext="Table Layout Action Column 3" id="Collections-ColumnSequence-TableThird"
+                        layoutManager.actionColumnPlacement="3" parent="Collections-Base-TableLayout"
+                        propertyName="list3"/>
+  <collectionGroup-bean headertext="Table Layout With Save Row" id="Collections-SaveRow-Table"
+                        parent="Collections-Base-TableLayout" renderSaveLineActions="true"/>
+  <collectionGroup-bean headertext="Stack Layout With Save Row" id="Collections-SaveRow-Stack"
+                        parent="Collections-Base-StackLayout" propertyName="list2" renderSaveLineActions="true"/>
 </spring:beans>

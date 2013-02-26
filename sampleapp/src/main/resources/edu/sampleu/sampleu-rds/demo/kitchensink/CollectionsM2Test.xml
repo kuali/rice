@@ -16,8 +16,11 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView-bean formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" growlMessagingEnabled="true" headertext="Collection 2.2 M2 Items Test View" id="CollectionsM2Test">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" growlMessagingEnabled="true"
+                 headertext="Collection 2.2 M2 Items Test View" id="CollectionsM2Test">
     <items>
       <page-bean headertext="Collection 2.2M2 Test Page" id="CollectionsM2Test-PageTest">
         <items>
@@ -39,7 +42,13 @@
       <classicKnsTheme-bean/>
     </theme>
   </formView-bean>
-  <disclosure-tableCollectionSection-bean addViaLightBox="true" collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Collection With Add Via Lightbox" id="CollectionsM2Test-collectionTest5" layoutManager.generateAutoSequence="true" layoutManager.numberOfColumns="4" layoutManager.richTable.render="true" layoutManager.separateAddLine="true" propertyName="list5">
+  <disclosure-tableCollectionSection-bean addViaLightBox="true"
+                                          collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                          headertext="Collection With Add Via Lightbox"
+                                          id="CollectionsM2Test-collectionTest5"
+                                          layoutManager.generateAutoSequence="true" layoutManager.numberOfColumns="4"
+                                          layoutManager.richTable.render="true" layoutManager.separateAddLine="true"
+                                          propertyName="list5">
     <items>
       <inputField-bean label="Field 1" propertyName="field1" required="true"/>
       <inputField-bean label="Field 2" propertyName="field2" required="true"/>
@@ -47,7 +56,12 @@
       <inputField-bean label="Field 4" propertyName="field4" required="true"/>
     </items>
   </disclosure-tableCollectionSection-bean>
-  <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Collection With Add Blank Line Button (TOP) and New Line Action(Save)" id="CollectionsM2Test-collectionTest" layoutManager.generateAutoSequence="true" layoutManager.numberOfColumns="4" layoutManager.richTable.render="true" propertyName="list1" renderAddBlankLineButton="true" renderSaveLineActions="true">
+  <disclosure-tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                          headertext="Collection With Add Blank Line Button (TOP) and New Line Action(Save)"
+                                          id="CollectionsM2Test-collectionTest"
+                                          layoutManager.generateAutoSequence="true" layoutManager.numberOfColumns="4"
+                                          layoutManager.richTable.render="true" propertyName="list1"
+                                          renderAddBlankLineButton="true" renderSaveLineActions="true">
     <items>
       <inputField-bean label="Field 1" propertyName="field1" required="true"/>
       <inputField-bean label="Field 2" propertyName="field2" required="true"/>
@@ -55,8 +69,15 @@
       <inputField-bean label="Field 4" propertyName="field4" required="true"/>
     </items>
   </disclosure-tableCollectionSection-bean>
-  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Collection With Add Blank Line Button (BOTTOM)" id="CollectionsM2Test-collectionTest3" parent="CollectionsM2Test-collectionTest" propertyName="list2" renderSaveLineActions="true"/>
-  <disclosure-stackedCollectionSection-bean addViaLightBox="true" collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Collection With Add Via Lightbox" id="CollectionsM2Test-collectionTest2" layoutManager.summaryFields="field1" layoutManager.summaryTitle="Line Summary" propertyName="list3" renderSaveLineActions="true">
+  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Collection With Add Blank Line Button (BOTTOM)"
+                        id="CollectionsM2Test-collectionTest3" parent="CollectionsM2Test-collectionTest"
+                        propertyName="list2" renderSaveLineActions="true"/>
+  <disclosure-stackedCollectionSection-bean addViaLightBox="true"
+                                            collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                                            headertext="Collection With Add Via Lightbox"
+                                            id="CollectionsM2Test-collectionTest2" layoutManager.summaryFields="field1"
+                                            layoutManager.summaryTitle="Line Summary" propertyName="list3"
+                                            renderSaveLineActions="true">
     <items>
       <inputField-bean label="Field 1" propertyName="field1" required="true"/>
       <inputField-bean label="Field 2" propertyName="field2" required="true"/>
@@ -64,7 +85,9 @@
       <inputField-bean label="Field 4" propertyName="field4"/>
     </items>
   </disclosure-stackedCollectionSection-bean>
-  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Collection With Add Blank Line Button (BOTTOM)" id="CollectionsM2Test-collectionTest4" parent="CollectionsM2Test-collectionTest2" propertyName="list4" renderSaveLineActions="false"/>
+  <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Collection With Add Blank Line Button (BOTTOM)"
+                        id="CollectionsM2Test-collectionTest4" parent="CollectionsM2Test-collectionTest2"
+                        propertyName="list4" renderSaveLineActions="false"/>
   <verticalBoxSection-bean disclosure.render="false" headertext="Tooltip examples" id="toolTipTest">
     <header>
       <sectionHeader-bean>
@@ -74,25 +97,32 @@
       </sectionHeader-bean>
     </header>
     <items>
-      <primaryActionButton-small-bean actionLabel="Test Lightbox" actionScript="showLightboxContent(jQuery('#toolTipTest').detach());"/>
-      <primaryActionButton-small-bean actionLabel="Test Lightbox2" actionScript="showLightboxComponent('toolTipTest');"/>
-      <inputField-bean exclusiveMin="2" instructionalText="Hover mouse over label or select control to display tooltip. Default tooltip should not display when field contains a message." label="Field 1" parent="GenericTextField" propertyName="field1" readOnly="false" required="true">
+      <primaryActionButton-small-bean actionLabel="Test Lightbox"
+                                      actionScript="showLightboxContent(jQuery('#toolTipTest').detach());"/>
+      <primaryActionButton-small-bean actionLabel="Test Lightbox2"
+                                      actionScript="showLightboxComponent('toolTipTest');"/>
+      <inputField-bean exclusiveMin="2"
+                       instructionalText="Hover mouse over label or select control to display tooltip. Default tooltip should not display when field contains a message."
+                       label="Field 1" parent="GenericTextField" propertyName="field1" readOnly="false" required="true">
         <fieldLabel>
           <label-bean>
             <toolTip>
-              <tooltip-bean tooltipContent="&lt;p&gt;Example of HTML rich tooltip content.&lt;p&gt;&lt;p&gt;&lt;font color=&quot;#660033&quot;&gt;&lt;a href=&quot;http://www.vegabit.com/jquery_bubble_popup_v2/#examples&quot; target=&quot;_blank&quot;&gt;jQuery Bubble Popup&lt;/a&gt;&lt;/font&gt;&lt;/p&gt;"/>
+              <tooltip-bean
+                      tooltipContent="&lt;p&gt;Example of HTML rich tooltip content.&lt;p&gt;&lt;p&gt;&lt;font color=&quot;#660033&quot;&gt;&lt;a href=&quot;http://www.vegabit.com/jquery_bubble_popup_v2/#examples&quot; target=&quot;_blank&quot;&gt;jQuery Bubble Popup&lt;/a&gt;&lt;/font&gt;&lt;/p&gt;"/>
             </toolTip>
           </label-bean>
         </fieldLabel>
         <control>
           <textControl-bean>
             <toolTip>
-              <tooltipFocus-bean onMouseHover="true" tooltipContent="This tooltip is triggered by focus or and mouse over."/>
+              <tooltipFocus-bean onMouseHover="true"
+                                 tooltipContent="This tooltip is triggered by focus or and mouse over."/>
             </toolTip>
           </textControl-bean>
         </control>
       </inputField-bean>
-      <inputField-bean instructionalText="Mouse over control tooltip" label="Field 2" parent="GenericTextField" propertyName="field2" readOnly="false" required="true">
+      <inputField-bean instructionalText="Mouse over control tooltip" label="Field 2" parent="GenericTextField"
+                       propertyName="field2" readOnly="false" required="true">
         <control>
           <textControl-bean>
             <toolTip>
@@ -107,7 +137,8 @@
           </textControl-bean>
         </control>
       </inputField-bean>
-      <inputField-bean defaultValue="4" label="Select Control" parent="GenericTextField" propertyName="field119" width="auto">
+      <inputField-bean defaultValue="4" label="Select Control" parent="GenericTextField" propertyName="field119"
+                       width="auto">
         <control>
           <dropdownControl-bean>
             <toolTip>

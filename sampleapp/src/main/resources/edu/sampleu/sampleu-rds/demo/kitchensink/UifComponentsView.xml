@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
-
-    Copyright 2005-2013 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView-bean entryPageId="UifCompView-Page1" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" id="UifCompView" viewHelperServiceClass="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl">
+  ~ Copyright 2006-2013 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean entryPageId="UifCompView-Page1" formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm"
+                 id="UifCompView"
+                 viewHelperServiceClass="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl">
     <help>
       <help-bean externalHelpUrl="http://www.kuali.org/"/>
     </help>
@@ -29,7 +32,8 @@
         <help>
           <help-bean>
             <helpDefinition>
-              <helpDefinition-bean parameterDetailType="TEST_COMPONENT" parameterName="TEST_PARAM" parameterNamespace="KR-SAP" parent="HelpDefinition"/>
+              <helpDefinition-bean parameterDetailType="TEST_COMPONENT" parameterName="TEST_PARAM"
+                                   parameterNamespace="KR-SAP" parent="HelpDefinition"/>
             </helpDefinition>
           </help-bean>
         </help>
@@ -46,7 +50,7 @@
         <items>
           <spring:ref bean="UifCompView-FieldGroups"/>
           <spring:ref bean="UifCompView-MessageFields"/>
-          <spring:ref bean="UifCompView-SyntaxHighlighter"/>
+          <spring:ref bean="UifCompView-SyntaxHighlighters"/>
           <spring:ref bean="UifCompView-AttributeSecurity"/>
           <spring:ref bean="UifCompView-ImageFields"/>
           <spring:ref bean="UifCompView-ActionFields"/>
@@ -188,12 +192,14 @@
   </disclosure-verticalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-TextFields1">
     <items>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field1">
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+                       propertyName="field1">
         <control>
           <textControl-bean/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true" labelPlacement="TOP" propertyName="field100">
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true" labelPlacement="TOP"
+                       propertyName="field100">
         <control>
           <textControl-bean/>
         </control>
@@ -217,12 +223,14 @@
           <textControl-bean/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field103">
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+                       propertyName="field103">
         <control>
           <textControl-bean/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field104">
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+                       propertyName="field104">
         <control>
           <textControl-bean/>
         </control>
@@ -256,7 +264,8 @@
           <textControl-bean disabled="true" size="30"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field112" uppercaseValue="true">
+      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field112"
+                       uppercaseValue="true">
         <control>
           <textControl-bean size="30"/>
         </control>
@@ -265,12 +274,14 @@
   </horizontalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-TextAreas">
     <items>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field110">
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+                       propertyName="field110">
         <control>
           <textAreaControl-bean cols="40" rows="5"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field111">
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+                       propertyName="field111">
         <control>
           <textAreaControl-bean cols="50" rows="10" textExpand="true"/>
         </control>
@@ -545,7 +556,6 @@
             <spinner>
               <spinner-bean>
                 <templateOptions merge="true">
-
                   <spring:entry key="start" value="0.01"/>
                   <spring:entry key="step" value="0.01"/>
                   <spring:entry key="numberFormat" value="n"/>

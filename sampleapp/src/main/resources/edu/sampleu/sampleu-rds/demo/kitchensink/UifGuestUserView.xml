@@ -16,8 +16,11 @@
     limitations under the License.
 
 -->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
-  <formView-bean formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm" headertext="View that can be opened by guests without login." id="UifGuestUserView">
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
+  <formView-bean formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm"
+                 headertext="View that can be opened by guests without login." id="UifGuestUserView">
     <items>
       <spring:ref bean="UifGuestUserView-Page"/>
     </items>
@@ -30,7 +33,8 @@
       <spring:ref bean="UifGuestUserView-Section1"/>
     </items>
   </page-bean>
-  <disclosure-verticalBoxSection-bean headertext="Guest user test view input fields" id="UifGuestUserView-Section1" layoutManager.orientation="VERTICAL">
+  <disclosure-verticalBoxSection-bean headertext="Guest user test view input fields" id="UifGuestUserView-Section1"
+                                      layoutManager.orientation="VERTICAL">
     <items>
       <inputField-bean instructionalText="Field1" label="Field1" parent="GenericTextField" propertyName="field1"/>
       <inputField-bean instructionalText="Field2" label="Field2" parent="GenericTextField" propertyName="field2"/>

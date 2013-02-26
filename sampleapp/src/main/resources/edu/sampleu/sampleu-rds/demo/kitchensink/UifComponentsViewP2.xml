@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
-
-    Copyright 2005-2013 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/schema" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  ~ Copyright 2006-2013 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
   <disclosure-verticalBoxSection-bean id="UifCompView-FieldGroups">
     <items>
       <verticalFieldGroup-bean id="UifCompView-FieldGroup1">
@@ -65,9 +65,12 @@
       <message-bean id="UifCompView-MessageFieldWithExpression"/>
     </items>
   </verticalBoxSection-bean>
-  <verticalBoxSection-bean header.headerText="Test code highlight" id="UifCompView-SyntaxHighlighter">
+  <verticalBoxSection-bean id="UifCompView-SyntaxHighlighters">
     <items>
-      <syntaxHighlighter-bean sourceCode="@{sourceCodeField}"/>
+      <syntaxHighlighter-bean id="UifCompView-SyntaxHighlighter1" sourceCode="@{sourceCodeField}"/>
+      <syntaxHighlighter-bean id="UifCompView-SyntaxHighlighter2" showCopyConfirmation="true"
+                              sourceCode="@{sourceCodeField}"/>
+      <syntaxHighlighter-bean allowCopy="false" id="UifCompView-SyntaxHighlighter3" sourceCode="@{sourceCodeField}"/>
     </items>
   </verticalBoxSection-bean>
   <verticalBoxSection-bean id="UifCompView-AttributeSecurity">
@@ -94,28 +97,36 @@
   </verticalBoxSection-bean>
   <verticalBoxSection-bean id="UifCompView-ImageFields">
     <items>
-      <imageField-bean id="UifCompView-ImageField1" source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png"/>
-      <imageField-bean cssClasses="kr-photo" fieldLabel.render="false" id="UifCompView-ImageField2" source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
+      <imageField-bean id="UifCompView-ImageField1"
+                       source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png"/>
+      <imageField-bean cssClasses="kr-photo" fieldLabel.render="false" id="UifCompView-ImageField2"
+                       source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
     </items>
   </verticalBoxSection-bean>
   <disclosure-verticalBoxSection-bean id="UifCompView-ActionFields">
     <items>
       <actionLink-bean actionScript="alert('You clicked the link');" id="UifCompView-ActionField1"/>
       <actionLink-bean id="UifCompView-ActionField2" methodToCall="refresh" preSubmitCall="return testPresubmitCall()"/>
-      <actionLink-bean id="UifCompView-ActionField3" methodToCall="refresh" preSubmitCall="return testPresubmitCall2(this, 'stop')"/>
-      <actionLink-bean ajaxSubmit="false" id="UifCompView-ActionField4" methodToCall="refresh" preSubmitCall="var valid=true;return valid;"/>
-      <actionLink-bean id="UifCompView-ActionField5" methodToCall="refresh" successCallback="testSuccessCallback(responseContents)"/>
+      <actionLink-bean id="UifCompView-ActionField3" methodToCall="refresh"
+                       preSubmitCall="return testPresubmitCall2(this, 'stop')"/>
+      <actionLink-bean ajaxSubmit="false" id="UifCompView-ActionField4" methodToCall="refresh"
+                       preSubmitCall="var valid=true;return valid;"/>
+      <actionLink-bean id="UifCompView-ActionField5" methodToCall="refresh"
+                       successCallback="testSuccessCallback(responseContents)"/>
       <actionLink-bean id="UifCompView-ActionField6" methodToCall="refresh" performClientSideValidation="true"/>
       <actionLink-bean errorCallback="testErrorCallback" id="UifCompView-ActionField7" methodToCall="errorCheck"/>
       <actionLink-bean ajaxSubmit="true" id="UifCompView-ActionField8" methodToCall="redirectCheck"/>
-      <actionLink-bean actionImagePlacement="RIGHT" actionScript="alert('You clicked a button');" id="UifCompView-ActionField9">
+      <actionLink-bean actionImagePlacement="RIGHT" actionScript="alert('You clicked a button');"
+                       id="UifCompView-ActionField9">
         <actionImage>
-          <image-bean id="UifCompView-ActionField10" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean id="UifCompView-ActionField10"
+                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
         </actionImage>
       </actionLink-bean>
       <actionLink-bean actionScript="alert('You clicked a button');" id="UifCompView-ActionField11">
         <actionImage>
-          <image-bean id="UifCompView-ActionField12" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean id="UifCompView-ActionField12"
+                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
         </actionImage>
       </actionLink-bean>
       <actionImage-bean actionScript="alert('You clicked a button');" id="UifCompView-ActionField13">
@@ -124,35 +135,41 @@
         </actionImage>
       </actionImage-bean>
       <primaryActionButton-bean actionScript="alert('You clicked a button');" id="UifCompView-ActionField14"/>
-      <primaryActionButton-bean actionImagePlacement="BOTTOM" actionScript="alert('You clicked a button');" id="UifCompView-ActionField15">
+      <primaryActionButton-bean actionImagePlacement="BOTTOM" actionScript="alert('You clicked a button');"
+                                id="UifCompView-ActionField15">
         <actionImage>
           <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
         </actionImage>
       </primaryActionButton-bean>
-      <primaryActionButton-bean actionImagePlacement="TOP" actionScript="alert('You clicked a button');" id="UifCompView-ActionField16">
+      <primaryActionButton-bean actionImagePlacement="TOP" actionScript="alert('You clicked a button');"
+                                id="UifCompView-ActionField16">
         <actionImage>
           <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
         </actionImage>
       </primaryActionButton-bean>
-      <primaryActionButton-bean actionImagePlacement="LEFT" actionScript="alert('You clicked a button');" id="UifCompView-ActionField17">
+      <primaryActionButton-bean actionImagePlacement="LEFT" actionScript="alert('You clicked a button');"
+                                id="UifCompView-ActionField17">
         <actionImage>
           <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
         </actionImage>
       </primaryActionButton-bean>
-      <primaryActionButton-bean actionImagePlacement="RIGHT" actionScript="alert('You clicked a button');" id="UifCompView-ActionField18">
+      <primaryActionButton-bean actionImagePlacement="RIGHT" actionScript="alert('You clicked a button');"
+                                id="UifCompView-ActionField18">
         <actionImage>
           <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
         </actionImage>
       </primaryActionButton-bean>
       <primaryActionButton-bean actionScript="alert('You clicked a button');">
         <actionImage>
-          <image-bean id="UifCompView-ActionField19" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean id="UifCompView-ActionField19"
+                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
         </actionImage>
       </primaryActionButton-bean>
       <primaryActionButton-bean disabled="true" id="UifCompView-ActionField20" methodToCall="foo"/>
       <actionField-bean id="UifCompView-ActionField21" methodToCall="foo">
         <actionImage>
-          <image-bean id="UifCompView-ActionField22" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean id="UifCompView-ActionField22"
+                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
         </actionImage>
       </actionField-bean>
     </items>
@@ -237,10 +254,14 @@
                 <items>
                   <horizontalFieldGroup-bean>
                     <items>
-                      <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField4" labelPlacement="TOP" propertyName="field1" required="true"/>
-                      <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField5" labelPlacement="TOP" propertyName="field2" required="true"/>
-                      <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField6" labelPlacement="TOP" propertyName="field3" required="true"/>
-                      <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField7" labelPlacement="TOP" propertyName="field4" required="true"/>
+                      <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField4"
+                                       labelPlacement="TOP" propertyName="field1" required="true"/>
+                      <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField5"
+                                       labelPlacement="TOP" propertyName="field2" required="true"/>
+                      <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField6"
+                                       labelPlacement="TOP" propertyName="field3" required="true"/>
+                      <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField7"
+                                       labelPlacement="TOP" propertyName="field4" required="true"/>
                     </items>
                   </horizontalFieldGroup-bean>
                 </items>

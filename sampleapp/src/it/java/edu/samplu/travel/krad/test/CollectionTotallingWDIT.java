@@ -15,24 +15,33 @@
  */
 package edu.samplu.travel.krad.test;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
+ * Test verifies updates in Totals at client side.
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-        CollectionTotallingIT.class,
-        ConfigurationTestViewIT.class,
-        ConfigurationTestViewNavIT.class,
-        DirtyFieldsCheckIT.class,
-        TravelAccountMaintenanceDocumentTest.class,
-        UIFComponentValidationRegexPatternIT.class,
-        UIFComponentValidationRegexPatternNavIT.class,
-        UifDataAttributesLegacyIT.class,
-        WatermarkValidationIT.class})
-public class KradTestingTestSuite {
+public class CollectionTotallingWDIT extends WebDriverLegacyITBase {
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see edu.samplu.common.UpgradedSeleniumITBase#getTestUrl()
+     */
+    @Override
+    public String getTestUrl() {
+        //Returns "Group Totalling" url
+        return "/kr-krad/uicomponents?viewId=Demo-CollectionTotaling&methodToCall=start";
+    }
+
+    @Test
+    public void testCollectionTotalling() throws Exception {
+        
+        super.testCollectionTotalling();
+    }  
 
 }

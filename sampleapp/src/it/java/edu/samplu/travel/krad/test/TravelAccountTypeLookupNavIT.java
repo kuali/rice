@@ -30,7 +30,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TravelAccountTypeLookupLegacyIT extends WebDriverLegacyITBase {
+public class TravelAccountTypeLookupNavIT extends WebDriverLegacyITBase {
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
@@ -40,30 +40,6 @@ public class TravelAccountTypeLookupLegacyIT extends WebDriverLegacyITBase {
     public void testTravelAccountTypeLookup() throws Exception {
         waitAndClickByLinkText("KRAD");
         waitAndClickByLinkText("Travel Account Type Lookup");
-        selectFrame("iframeportlet");
-        
-        //Blank Search
-        waitAndClickByXpath("//*[@id='u18']");
-        Thread.sleep(2000);
-        assertElementPresentByXpath("//table[@id='u27']//tr[contains(td[1],'CAT')]");
-        assertElementPresentByXpath("//table[@id='u27']//tr[contains(td[1],'EAT')]");
-        assertElementPresentByXpath("//table[@id='u27']//tr[contains(td[1],'IAT')]");
-        
-        //search with each field
-        
-        waitAndTypeByName("lookupCriteria[accountTypeCode]", "CAT");
-        waitAndClickByXpath("//*[@id='u18']");
-        Thread.sleep(2000);
-        assertElementPresentByXpath("//table[@id='u27']//tr[contains(td[1],'CAT')]");
-        waitAndClickByXpath("//button[@id='u19']");
-        Thread.sleep(2000);
-        
-        waitAndTypeByName("lookupCriteria[name]", "Expense Account Type");
-        waitAndClickByXpath("//*[@id='u18']");
-        Thread.sleep(2000);
-        assertElementPresentByXpath("//table[@id='u27']//tr[contains(td[1],'EAT')]");
-        
-        //Currently No links available for Travel Account Type Inquiry so cant verify heading and values.
-       
+        super.testTravelAccountTypeLookup();
     }
 }

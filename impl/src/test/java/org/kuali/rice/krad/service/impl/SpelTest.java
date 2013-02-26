@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.travel.krad.test;
+package org.kuali.rice.krad.service.impl;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**

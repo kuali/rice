@@ -132,14 +132,16 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
         LookupView lookupView = null;
         boolean multipleValueSelectSpecifiedOnURL = false;
 
-        if (form.getViewRequestParameters().containsKey(UifParameters.MULTIPLE_VALUES_SELECT)) {
-            String multiValueSelect = form.getViewRequestParameters().get(UifParameters.MULTIPLE_VALUES_SELECT);
-            if (multiValueSelect.equalsIgnoreCase("true")) {
-                multipleValueSelectSpecifiedOnURL = true;
+        if (ObjectUtils.isNotNull(form)) {
+            if (form.getViewRequestParameters().containsKey(UifParameters.MULTIPLE_VALUES_SELECT)) {
+                String multiValueSelect = form.getViewRequestParameters().get(UifParameters.MULTIPLE_VALUES_SELECT);
+                if (multiValueSelect.equalsIgnoreCase("true")) {
+                    multipleValueSelectSpecifiedOnURL = true;
+                }
             }
         }
 
-        if (ObjectUtils.isNotNull(form.getViewId())) {
+        if (ObjectUtils.isNotNull(form) && ObjectUtils.isNotNull(form.getViewId())) {
             View lookupViewforId = getDataDictionary().getViewById(form.getViewId());
             if (lookupViewforId != null) {
                 LookupView lView = (LookupView) lookupViewforId;

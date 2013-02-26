@@ -120,18 +120,6 @@ public class LookupUtils {
 
     /**
      * Parses and returns the lookup result set limit, checking first for the limit
-     * for the class being looked up, and then the global application limit if there isn't a limit
-     * specific to this data object class
-     *
-     * @param dataObjectClass - class to get limit for
-     * @return result set limit
-     */
-    public static Integer getSearchResultsLimit(Class dataObjectClass) {
-        return  getSearchResultsLimit(dataObjectClass, null);
-    }
-
-    /**
-     * Parses and returns the lookup result set limit, checking first for the limit
      * for the specific view, then the class being looked up, and then the global application
      * limit if there isn't a limit specific to this data object class.
      *
@@ -174,27 +162,17 @@ public class LookupUtils {
      * @param businessObjectClass BO class to search on / get limit for
      * @param criteria search criteria
      * @param platform database platform
+     * @param limit limit to use
      */
     public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria,
-            DatabasePlatform platform) {
-        Integer limit = getSearchResultsLimit(businessObjectClass);
+            DatabasePlatform platform, Integer limit) {
         if (limit != null) {
             platform.applyLimit(limit, criteria);
-        }
-    }
-
-    /**
-     * This method applies the given search results limit to the search criteria for this BO.  Passing in the
-     * limit if it is known avoids having to look it up.
-     *
-     * @param limit limit to use
-     * @param criteria search criteria
-     * @param platform database platform
-     */
-    public static void applySearchResultsLimit(Integer limit, Criteria criteria,
-            DatabasePlatform platform) {
-        if (limit != null) {
-            platform.applyLimit(limit, criteria);
+        } else {
+            limit = getSearchResultsLimit(businessObjectClass, null);
+            if (limit != null) {
+                platform.applyLimit(limit, criteria);
+            }
         }
     }
 
@@ -206,7 +184,7 @@ public class LookupUtils {
      */
     public static void applySearchResultsLimit(Class businessObjectClass,
             org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria) {
-        Integer limit = getSearchResultsLimit(businessObjectClass);
+        Integer limit = getSearchResultsLimit(businessObjectClass, null);
         if (limit != null) {
             criteria.setSearchLimit(limit);
         }

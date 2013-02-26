@@ -182,7 +182,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     		// A negative number in searchResultsLimit means the search results should be unlimited.
             if (!unbounded && (searchResultsLimit != null) && searchResultsLimit >= 0) {
     			matchingResultsCount = new Long(getPersistenceBrokerTemplate().getCount(QueryFactory.newQuery(businessObjectClass, criteria)));
-    			LookupUtils.applySearchResultsLimit(searchResultsLimit, criteria, getDbPlatform());
+    			LookupUtils.applySearchResultsLimit(businessObjectClass, criteria, getDbPlatform(), searchResultsLimit);
     		}
     		if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
     			matchingResultsCount = new Long(0);

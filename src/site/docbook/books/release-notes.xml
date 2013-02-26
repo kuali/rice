@@ -29,8 +29,7 @@
             <title>Release Highlights</title>
             <para>This version of Rice includes many improvements to the Kuali Rapid Application
                 Development (KRAD) Framework. Below is a summary of the larger new features and you
-                can learn more about them in the <link xlink:show="new"
-                    xlink:href="KRAD_Guide.html">KRAD Guide</link> which is also now publicly
+                can learn more about them in the <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html">KRAD Guide</link> which is also now publicly
                 available with this release. Also review the Jira list at the end of tis document to
                 see the smaller items.</para>
             <para>

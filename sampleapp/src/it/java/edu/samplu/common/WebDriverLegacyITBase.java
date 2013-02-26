@@ -524,9 +524,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitFor(By by, String message) throws InterruptedException {
         //        for (int second = 0;; second++) {
-        Thread.sleep(1000);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
+        Thread.sleep(1000);
         //            if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
         try {
             driver.findElement(by);

@@ -24,10 +24,16 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    ContraintsIT.class,
-    DeleteSubCollectionLineIT.class,
-    ParentLineIT.class,
-    RichMessagesValidationIT.class,
+    ContraintsNavIT.class,
+    ContraintsWDIT.class,
+    DeleteSubCollectionLineNavIT.class,
+    DeleteSubCollectionLineWDIT.class,
+    ParentLineNavIT.class,
+    ParentLineWDIT.class,
+    RichMessagesValidationNavIT.class,
+    RichMessagesValidationWDIT.class,
+    UifTooltipNavIT.class,
     UifTooltipWDIT.class,
-    ValidCharsConstraintIT.class})
+    ValidCharsConstraintNavIT.class,
+    ValidCharsConstraintWDIT.class})
 public class CompViewTestSuite {}

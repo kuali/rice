@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

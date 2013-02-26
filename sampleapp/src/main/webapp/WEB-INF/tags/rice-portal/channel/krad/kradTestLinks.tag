@@ -40,12 +40,12 @@
   <ul class="chan">
     <li><portal:portalLink displayTitle="true" title="Lookup Sample"
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Lookup Sample - Multiple Value Specified in URL"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Lookup Sample - Multiple Value Specified in View"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewAlwaysMultipleValuesSelect&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Lookup sample with specified results limit"
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Lookup Sample - Multiple Value Specified in URL"
+          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Lookup Sample - Multiple Value Specified in View"
+          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewAlwaysMultipleValuesSelect&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Lookup sample with headings"
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewHeadings&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>

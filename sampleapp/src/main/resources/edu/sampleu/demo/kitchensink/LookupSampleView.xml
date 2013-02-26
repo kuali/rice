@@ -44,15 +44,16 @@
 
   <bean id="LookupSampleViewAlwaysMultipleValuesSelect" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewAlwaysMultipleValuesSelect"/>
-    <property name="headerText" value="Lookup Sample - Multiple Value Specified in View" />
+    <property name="headerText" value="Lookup Sample - Multiple Value Specified in View (will return return 5 rows)" />
     <property name="multipleValuesSelectResultSetLimit" value="5" />
     <property name="multipleValuesSelect" value="true" />
   </bean>
 
   <bean id="LookupSampleViewResultsLimit" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewResultsLimit"/>
-    <property name="headerText" value="Lookup Sample with Results Limit of 2" />
+    <property name="headerText" value="Lookup Sample with Results Limit  (2 for typical lookup, 4 for multiple lookup)" />
     <property name="resultSetLimit" value="2" />
+    <property name="multipleValuesSelectResultSetLimit" value="4" />
   </bean>
 
   <bean id="LookupSampleViewHeadings" parent="LookupSampleView">

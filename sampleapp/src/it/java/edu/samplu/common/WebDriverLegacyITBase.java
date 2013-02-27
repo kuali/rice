@@ -549,8 +549,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndClick(By by, String message) throws InterruptedException {
-        waitFor(by, message);
         try {
+            waitFor(by, message);
             (driver.findElement(by)).click();
         } catch (Exception e) {
             fail(e.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
@@ -587,8 +587,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndType(By by, String text) throws InterruptedException {
-        waitFor(by, "");
         try {
+            waitFor(by, "");
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
             fail(e.getMessage() + " " + by.toString() + " unable to type text '" + text + "' current url "
@@ -599,8 +599,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndType(By by, String text, String message) throws InterruptedException {
-        waitFor(by, "");
         try {
+            waitFor(by, "");
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
             fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message

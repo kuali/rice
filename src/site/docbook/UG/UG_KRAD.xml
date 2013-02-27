@@ -18,13 +18,13 @@
 -->
 <chapter xml:id="UG_KRAD" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KRAD</title>
-    <sect1>
+    <section>
         <title>KRAD Architecture Overview</title>
         <para>The Kuali Rapid Application Development (KRAD) framework and tools are provided to
             enable universities to more quickly build "rich-UI" web-based and client applications. 
             KRAD expands the set of application features beyond what was formerly available through
             KNS alone.</para>
-        <sect2>
+        <section>
             <title>What is KRAD?</title>
             <itemizedlist>
                 <listitem>
@@ -44,8 +44,8 @@
             <para>KRAD supports the KNS document types - Lookups, Inquiries, and Maintenance pages -
                 while it also provides more flexibility in user interface layouts, for example,
                 beyond the "vertical" tab section and collection layouts that are supported by KNS.   </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KRAD Conceptual View</title>
             <para>
                 <figure>
@@ -58,8 +58,8 @@
                 </figure>
             </para>
             <para>(more in progress here) </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KRAD Relational View</title>
             <para>
             <figure>
@@ -72,11 +72,11 @@
             </figure>
             </para>
             <para>(more in progress here)</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KRAD's User Interface Framework</title>
-        <sect2>
+        <section>
             <title>UIF Overview</title>
             <para>KRAD introduces the concept of a "View" and a hierarchy of pieces which can be
                 added to a view.  A view can represent a whole page or even, in some cases, multiple
@@ -114,17 +114,17 @@
                 </mediaobject>
                 </figure>
             </para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KRAD Design Components</title>
-        <sect2>
+        <section>
             <title>Overview of Design Components built into KRAD</title>
             <para></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KRAD Layout Managers</title>
-            <sect3>
+            <section>
                 <title>Overview of Layout Managers</title>
                 <para>Controls, Fields, and Widgets - and even other Groups - can be encapsulated in
                     a Container. The question then becomes how KRAD will lay out those
@@ -135,8 +135,8 @@
                     with a certain algorithm.  In this first version of KRAD, there are 4 layout
                     managers for collections (and developers can create additional ones):  Grid,
                     Box, Table, and Stack.  See material below for additional details. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Grid Layout Manager</title>
                 <para>The GridLayoutManager places sub-Components into a set of side-by-side
                     columns. For those familiar with KNS, when a maintenance document copies a
@@ -154,8 +154,8 @@
                     </mediaobject>
                 </figure>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Box Layout Manager</title>
                 <para>There's also the BoxLayoutManager, which works just like the BoxLayoutManager
                     in the Java AWT. Nesting Groups with different BoxLayoutManager aspects provides
@@ -172,8 +172,8 @@
                     </mediaobject>
                     </figure>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Table Layout Manager</title>
                 <para>When laying out the rendering of collections, TableLayoutManager provides a
                     lot of power for rendering that data in a tabular fashion. The
@@ -199,8 +199,8 @@
                     </mediaobject>
                 </figure>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Stack Layout Manager</title>
                 <para>When rendering a Collection, maybe a TableLayoutManager is too much of a
                     straight jacket for each row. Perhaps, for each row in a Collection, a whole
@@ -226,9 +226,9 @@
                     </mediaobject>
                 </figure>
                 </para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>KRAD  Fields</title>
             <para>Developers need ways to interact with the users, to put up text and images, to
                 create interactive and informative web pages in their applications. To accomplish
@@ -241,7 +241,7 @@
             <para>Think of all the different kinds of visual elements on a page: images, buttons,
                 messages, even blank space. Each of these elements can be encapsulated in different
                 kinds of fields.  </para>
-            <sect3>
+            <section>
                 <title>KRAD Input Fields</title>
                 <para>An Input field enables user input. This means that this "grouped" field
                     control will display an entry field for user input, and can optionally include
@@ -261,28 +261,28 @@
                     </mediaobject>
                 </figure>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Other KRAD Fields </title>
                 <para>There are many other field types provided by KRAD, but none are as complex and
                     rich as the input field.  For a full list, see the "KRAD Conceptual View - KRAD
                     classes" in the Architecture Overview section above.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Some key KRAD extensions beyond KNS concepts</title>
-            <sect3>
+            <section>
                 <title>Progressive Disclosure</title>
                 <para></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Multi-value Lookups</title>
                 <para></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>(other...)</title>
                 <para></para>
-            </sect3>
-        </sect2>
-    </sect1>
+            </section>
+        </section>
+    </section>
 </chapter>

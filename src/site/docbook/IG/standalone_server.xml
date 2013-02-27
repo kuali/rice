@@ -858,6 +858,23 @@ tail -n 500 -f catalina.out</programlisting>
                                 </entry>
                             </row>
                             <row>
+                                <entry><para>context.names._____</para><para>*See note below</para></entry>
+                                <entry><para>The context name of each web application, including Rice, needs to be specified when the supplied portal is used. The parameter must start with "context.names." and may have a suffix of your choice (i.e. context.names.rice, context.names.kfs, context.names.kc</para>
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>context.names.app defaults to app.context.name (i.e. no configuration needed for bundled setup or the server that hosts the portal)</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>No configuration needed when the application context name is blank</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>Used with default iframe portal when accessing servers</para>
+                                        </listitem>
+                                    </itemizedlist></entry>
+                                <entry>kuali-rice-web-app-url
+                                </entry>
+                            </row>
+                            <row>
                                 <entry>log4j.settings.path </entry>
                                 <entry>Path to log4j.properties file. If the file does not
                                     exist, you must create it.</entry>
@@ -890,6 +907,37 @@ tail -n 500 -f catalina.out</programlisting>
                         </tbody>
                     </tgroup>
                 </table>
+                 <note><para>*context.names.____: Each content source that is served from an application server that uses a
+                    context name will need a context.names.&lt;webappcontext> parameter. Replace the
+                    &lt;webappcontext> with a unique suffix of your choosing. Specify the context
+                    name of the web application server as the value of this parameter.</para><para>By default context.names.app is set to app.context.name. This allows bundled mode usage
+                    without additional configuration. With standalone mode, the server that hosts
+                    the portal also doesn’t need any additional configurations thanks to
+                    context.names.app.</para><para>
+                         
+                             <emphasis role="bold">Example:</emphasis> KFS is used with a standalone Rice server.</para><para>
+                         
+                         KFS URL:http://www.example.com:8080/kfs-test/portal.do</para><para>
+                         Rice URL:http://www.example.com:8080/rice-test/portal.do</para><para>
+                         
+                         The following additional configuration is needed in the kfs-config.xml:</para><para>
+                         
+                             <code>&lt;param name="context.names.rice">rice-test&lt;/param></code></para><para> A <code>&lt;param name="context.names.kfs">kfs-test&lt;/param></code> is not needed since
+                    "kfs-test" is specified as the app.context.name.</para>
+                     <para>
+                         
+                         <emphasis role="bold">Example:</emphasis> KFS is used with a standalone Rice server.</para><para>
+                         
+                         KFS URL:http://www.example.com:8080/kfs-test/portal.do</para><para>
+                             Rice URL:http://www.example.com:8080/portal.do</para><para>
+                         
+                         
+                         No additional configuration is needed.
+                         Specifying <code>&lt;param name="context.names.rice">&lt;/param></code> would be acceptable as well.</para><para>
+                         
+                             <emphasis role="bold">Example:</emphasis> KFS is used with bundled Rice server.
+                         No additional configuration is needed.
+                 </para></note>
             <table frame="none">
                 <title>Database</title>
                 <tgroup cols="3">

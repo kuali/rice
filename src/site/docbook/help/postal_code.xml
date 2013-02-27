@@ -27,7 +27,7 @@
         Lookup screen. After the user selects a postal code or clicks the <emphasis role="bold"
             >create new</emphasis> button, the system presents the Postal Code Maintenance document. </para>
     <note><para>The user may also enter a city and state to find the associated zip code. </para></note>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <figure>
             <title>Postal Code Maintenance document, create mode</title>
@@ -82,5 +82,5 @@
                 </tbody>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

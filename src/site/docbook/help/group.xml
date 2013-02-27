@@ -26,7 +26,7 @@
     <para>Groups have no inherent permissions or responsibilities of their own. Only by associating
         a group with a role do the members of that group become associated with permissions and
         responsibilities.</para>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para>The Group document includes <emphasis role="bold">Document Overview</emphasis>,
                 <emphasis role="bold">Overview,</emphasis>
@@ -39,8 +39,8 @@
                 </imageobject>
             </mediaobject>
         </figure></para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Overview Tab</title>
         <para>This tab identifies the group with a unique system-assigned ID number, a namespace and
             a name. Each group also has a type that specifies any qualifiers that this group might
@@ -99,8 +99,8 @@
             </table>
         </para>
 
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Assignees Tab</title>
         <para>This tab contains the members who belong to this group. It can also be used to add new
             members or edit the values associated with existing members.</para>
@@ -159,5 +159,5 @@
                 </tbody>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

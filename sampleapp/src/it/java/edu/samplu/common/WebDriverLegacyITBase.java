@@ -265,7 +265,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected String getAttribute(By by, String attribute) throws InterruptedException {
-        waitFor(by);
+        jiraAwareWaitFor(by, "");
         return driver.findElement(by).getAttribute(attribute);
     }
 
@@ -490,15 +490,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitForElementPresent(String locator) throws InterruptedException {
-        waitFor(By.cssSelector(locator));
+        jiraAwareWaitFor(By.cssSelector(locator), "");
     }
 
     protected void waitForElementPresentByXpath(String locator) throws InterruptedException {
-        waitFor(By.xpath(locator));
+        jiraAwareWaitFor(By.xpath(locator), "");
     }
 
     protected void waitForElementPresentByName(String name) throws InterruptedException {
-        waitFor(By.name(name));
+        jiraAwareWaitFor(By.name(name), "");
     }
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
@@ -527,7 +527,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitFor(By by) throws InterruptedException {
-        waitFor(by, "");
+        jiraAwareWaitFor(by, "");
     }
 
     /**
@@ -917,7 +917,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void assertDocFinal(String docId) throws InterruptedException {
-        waitFor(By.linkText("spreadsheet"));
+        jiraAwareWaitFor(By.linkText("spreadsheet"), "");
         if (isElementPresent(By.linkText(docId))) {
             assertEquals("FINAL", getDocStatus());
         } else {

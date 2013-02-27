@@ -17,14 +17,11 @@ package edu.samplu.common;
 
 import org.apache.commons.lang.RandomStringUtils;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -34,7 +31,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
@@ -42,7 +38,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -53,19 +48,7 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import static com.thoughtworks.selenium.SeleneseTestBase.fail;
-import static org.junit.Assert.assertEquals;
-import org.openqa.selenium.support.ui.Select;
 
 /**
  * Class to upgrade UpgradedSeleniumITBase tests to WebDriver.
@@ -74,14 +57,16 @@ import org.openqa.selenium.support.ui.Select;
  */
 public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
 
-    public static final int DEFAULT_WAIT_SEC = 60;
+    public static final int DEFAULT_WAIT_SEC = 30;
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
     public static final String REMOTE_PUBLIC_USER_PROPERTY = "remote.public.user";
+    public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
 
     public abstract String getTestUrl();
 
     protected WebDriver driver;
     protected String user = "admin";
+    protected int waitSeconds = DEFAULT_WAIT_SEC;
     protected boolean passed = false;
     static ChromeDriverService chromeDriverService;
     private Log log = LogFactory.getLog(getClass());
@@ -112,6 +97,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public void setUp() throws Exception {
         // {"test":"1","user":"1"}
         try {
+            waitSeconds = Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + ""));
             if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
                 user = System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
             } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
@@ -350,7 +336,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
             driver.switchTo().frame(contentFrame);
         }
-        driver.manage().timeouts().implicitlyWait(DEFAULT_WAIT_SEC, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
     /**
@@ -368,7 +354,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
             driver.switchTo().frame(contentFrame);
         }
-        driver.manage().timeouts().implicitlyWait(DEFAULT_WAIT_SEC, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + "")), TimeUnit.SECONDS);
     }
 
     protected boolean isElementPresent(By by) {
@@ -521,11 +507,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //        boolean failed = false;
         //        for (int second = 0;; second++) {
         //            Thread.sleep(1000);
-        //            if (second >= 60) failed = true;
+        //            if (second >= waitSeconds) failed = true;
         //            try { if (failed || ITUtil.KUALI_PORTAL_TITLE.equals(driver.getTitle())) break; } catch (Exception e) {}
         //        }
         //        WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
-        //        if (failed) fail("timeout of " + 60 + " seconds " + message);
+        //        if (failed) fail("timeout of " + waitSeconds + " seconds " + message);
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {
@@ -542,7 +528,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitFor(By by, String message) throws InterruptedException {
         //        for (int second = 0;; second++) {
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
         Thread.sleep(1000);
         //            if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
         try {
@@ -731,7 +717,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitNotVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
 
@@ -749,7 +735,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitIsVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             if (isVisible(by)) {
@@ -762,7 +748,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
         boolean failed = false;
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 failed = true;
             try {
                 if (failed || (driver.findElements(By.cssSelector(elementLocator))).size() > 0)
@@ -772,7 +758,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
         checkForIncidentReport(elementLocator); // after timeout to be sure page is loaded
         if (failed)
-            fail("timeout of 60 seconds waiting for " + elementLocator + " " + message + " " + driver.getCurrentUrl());
+            fail("timeout of " + waitSeconds + " seconds waiting for " + elementLocator + " " + message + " " + driver.getCurrentUrl());
     }
 
     protected void waitIsVisible(String locator) throws InterruptedException {
@@ -899,7 +885,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // click refresh  several times
         for (int i = 0; i < 6; i++) {
             for (int second = 0;; second++) {
-                if (second >= 60)
+                if (second >= waitSeconds)
                     Assert.fail("timeout");
                 try {
                     if (isElementPresent(".kr-refresh-button"))
@@ -2442,7 +2428,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByXpath("//*[@name='field24' and @value='case4']");
         fireEvent("field24", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -2460,7 +2446,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("field25", "$100");
         fireEvent("field25", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -2475,7 +2461,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByXpath("//*[@name='field24' and @value='case2']");
         fireEvent("field24", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -2497,7 +2483,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("field26", "6000");
         fireEvent("field26", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -2523,7 +2509,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByXpath("//*[@name='field24' and @value='case3']");
         fireEvent("field24", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -2543,7 +2529,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("field28", "");
         fireEvent("field28", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -2558,7 +2544,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByXpath("//*[@name='field24' and @value='case3']");
         fireEvent("field24", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -2576,7 +2562,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByXpath("//*[@name='field24' and @value='case4']");
         fireEvent("field24", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -2623,7 +2609,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // confirm that the input box containing the modified value is not present
 
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 fail("timeout");
             try {
                 System.out.println("Loop ----- " + second);
@@ -2875,7 +2861,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByLinkText("Collections");
         //        // wait for collections page to load by checking the presence of a sub collection line item
         for (int second = 0;; second++) {
-            if (second >= 30)
+            if (second >= waitSeconds)
                 fail("timeout");
             try {
                 if (getText(
@@ -3016,7 +3002,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//button[contains(.,'add')]"); // the first button is the one we want
 
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 Assert.fail("timeout");
             try {
                 if (getAttributeByName("newCollectionLines['list1'].field1", "value").equals(""))
@@ -3091,7 +3077,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // check if actions column RIGHT by default
         //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 Assert.fail("timeout");
             try {
                 if (isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"))
@@ -3104,7 +3090,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // check if actions column is LEFT
         //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 Assert.fail("timeout");
             try {
                 if (isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"))
@@ -3117,7 +3103,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // check if actions column is 3rd in a sub collection
         //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 Assert.fail("timeout");
             try {
                 if (isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"))
@@ -4053,7 +4039,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByXpath("//*[@name='field117' and @value='3']");
         fireEvent("field117", "3", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -4090,7 +4076,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent("field115", "blur");
         fireMouseOverEventByName("field115");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -4111,7 +4097,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByXpath("//*[@name='field115' and @value='4']");
         fireEvent("field115", "blur");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -4159,7 +4145,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //    keyPress("name=field1", "t");
         //    keyUp("field1", "t");
         for (int second = 0;; second++) {
-            if (second >= 60) {
+            if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
             try {
@@ -4189,7 +4175,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(isElementPresent(".uif-infoHighlight"));
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 Assert.fail("timeout");
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml"))
@@ -4204,7 +4190,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 Assert.fail("timeout");
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml"))
@@ -4215,7 +4201,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 Assert.fail("timeout");
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
@@ -4229,7 +4215,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
         for (int second = 0;; second++) {
-            if (second >= 60)
+            if (second >= waitSeconds)
                 Assert.fail("timeout");
             try {
                 if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))

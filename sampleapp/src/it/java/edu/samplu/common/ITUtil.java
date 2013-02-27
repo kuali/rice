@@ -577,43 +577,43 @@ public class ITUtil {
     }
 
     private static void processIncidentReport(String contents, String linkLocator, String message) {
-        if (contents.indexOf("Incident Feedback") > -1) {
-            Iterator<String> iter = jiraMatches.keySet().iterator();
-            String key = null;
-            while (iter.hasNext()) {
-                key = iter.next();
-                if (contents.contains(key)) {
-                    Assert.fail("https://jira.kuali.org/browse/" + jiraMatches.get(key));
-                }
-            }
-
-            String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
-            String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
-            docId = docId.substring(0, docId.indexOf("</span>"));
-            docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
-
-            String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
-            viewId = viewId.substring(0, viewId.indexOf("</span>"));
-            viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
-
-            String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
-            stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
-            stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
-
-            //            System.out.println(docId);
-            //            System.out.println(viewId);
-            //            System.out.println(stackTrace);
-            Assert.fail("\nIncident report " + message + " navigating to "
-                    + linkLocator
-                    + " : View Id: "
-                    + viewId.trim()
-                    + " Doc Id: "
-                    + docId.trim()
-                    + "\nStackTrace: "
-                    + stackTrace.trim());
-        } else {
+        if (contents.indexOf("Incident Feedback") == -1) {
             Assert.fail("\nIncident report detected " + message + "\nContents that triggered exception: " + deLinespace(contents));
         }
+
+        Iterator<String> iter = jiraMatches.keySet().iterator();
+        String key = null;
+        while (iter.hasNext()) {
+            key = iter.next();
+            if (contents.contains(key)) {
+                Assert.fail("https://jira.kuali.org/browse/" + jiraMatches.get(key));
+            }
+        }
+
+        String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
+        String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
+        docId = docId.substring(0, docId.indexOf("</span>"));
+        docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
+
+        String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
+        viewId = viewId.substring(0, viewId.indexOf("</span>"));
+        viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
+
+        String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
+        stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
+        stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
+
+        //            System.out.println(docId);
+        //            System.out.println(viewId);
+        //            System.out.println(stackTrace);
+        Assert.fail("\nIncident report " + message + " navigating to "
+                + linkLocator
+                + " : View Id: "
+                + viewId.trim()
+                + " Doc Id: "
+                + docId.trim()
+                + "\nStackTrace: "
+                + stackTrace.trim());
     }
 
     protected static String deLinespace(String contents) {

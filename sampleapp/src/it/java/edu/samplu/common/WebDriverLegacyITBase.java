@@ -461,7 +461,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndCreateNew() throws InterruptedException {
-//        waitAndClickByXpath("//img[@alt='create new']"); // timing out in CI rice-trunk-smoke-test-jdk7/494
+        try {
+            waitAndClickByXpath("//img[@alt='create new']"); // timing out in CI rice-trunk-smoke-test-jdk7/494
+        } catch (Exception e) {
+            System.out.println("waitAndClickByXpath(\"//img[@alt='create new']\") failed trying title method with " + e.getMessage());
+        }
         waitAndClickByXpath("//a[@title='Create a new record']");
     }
 

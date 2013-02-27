@@ -561,8 +561,9 @@ public class ITUtil {
             try {
                 processIncidentReport(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
-                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + deLinespace(
-                        contents));
+                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage()
+                        + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: "
+                        + deLinespace(contents));
             }
         }
 
@@ -570,10 +571,24 @@ public class ITUtil {
             Assert.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
         }
 
-        if (contents != null && contents.contains("Java backtrace for programmers:")) { // freemarker exception
-            // TODO parse out exception info
-            Assert.fail("\nFreemarker exception " + linkLocator + " " + message + " " + "\ncontents:" + contents);
+        if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
+            try {
+                processFreemarkerException(contents, linkLocator, message);
+            } catch (IndexOutOfBoundsException e) {
+                Assert.fail("\nFreemarker exception detected " + message + " but there was an exception during processing: "
+                        + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e)
+                        + "\nContents that triggered exception: " + deLinespace(contents));
+            }
+
         }
+    }
+
+    private static void processFreemarkerException(String contents, String linkLocator, String message) {
+        failOnMatchedJira(contents);
+
+        String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
+
+        Assert.fail("\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: "  + stackTrace.trim());
     }
 
     private static void processIncidentReport(String contents, String linkLocator, String message) {
@@ -581,14 +596,7 @@ public class ITUtil {
             Assert.fail("\nIncident report detected " + message + "\nContents that triggered exception: " + deLinespace(contents));
         }
 
-        Iterator<String> iter = jiraMatches.keySet().iterator();
-        String key = null;
-        while (iter.hasNext()) {
-            key = iter.next();
-            if (contents.contains(key)) {
-                Assert.fail("https://jira.kuali.org/browse/" + jiraMatches.get(key));
-            }
-        }
+        failOnMatchedJira(contents);
 
         String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
         String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
@@ -614,6 +622,16 @@ public class ITUtil {
                 + docId.trim()
                 + "\nStackTrace: "
                 + stackTrace.trim());
+    }
+
+    private static void failOnMatchedJira(String contents) {Iterator<String> iter = jiraMatches.keySet().iterator();
+        String key = null;
+        while (iter.hasNext()) {
+            key = iter.next();
+            if (contents.contains(key)) {
+                Assert.fail("https://jira.kuali.org/browse/" + jiraMatches.get(key));
+            }
+        }
     }
 
     protected static String deLinespace(String contents) {

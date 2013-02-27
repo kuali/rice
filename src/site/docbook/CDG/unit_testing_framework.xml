@@ -18,8 +18,8 @@
 -->
 <chapter xml:id="unit_testing_framework" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Unit Testing Framework</title>
-    <sect1>
+    <section>
         <title>Title</title>
         <para></para>
-    </sect1>
+    </section>
 </chapter>

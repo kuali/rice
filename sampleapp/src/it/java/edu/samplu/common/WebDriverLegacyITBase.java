@@ -480,7 +480,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitAndSearch() throws InterruptedException {
         waitAndClickByXpath("//input[@value='search']");
         //        waitAndClickByXpath("//input[@name='methodToCall.search']");
-        //        waitAndClick("input[alt='search']");
+        //        jiraAwareWaitAndClick("input[alt='search']");
         //        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
     }
 
@@ -531,47 +531,58 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     /**
+     * Should be called from jiraAwareWaitFor to get KULRICE error output in CI.
+     *
      * Inner most waitFor, let it throw the failure so the timeout message reflects the waitSeconds time, not the 1
      * second it is set to before returning.
      * @param by
      * @param message
      * @throws InterruptedException
      */
-    protected void waitFor(By by, String message) throws InterruptedException {
+    private void waitFor(By by, String message) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
         Thread.sleep(1000);
-        driver.findElement(by);
+        driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visiable or enabled.
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
-    protected void waitAndClick(By by) throws InterruptedException {
-        waitAndClick(by, "");
-    }
-
-    protected void waitAndClick(By by, String message) throws InterruptedException {
+    protected void jiraAwareWaitFor(By by, String message) throws InterruptedException {
         try {
             waitFor(by, message);
+        } catch (Throwable t) {
+            ITUtil.failOnMatchedJira(by.toString());
+        }
+    }
+
+    protected void waitAndClick(By by) throws InterruptedException {
+        jiraAwareWaitAndClick(by, "");
+    }
+
+    protected void jiraAwareWaitAndClick(By by, String message) throws InterruptedException {
+        try {
+            jiraAwareWaitFor(by, message);
             (driver.findElement(by)).click();
         } catch (Exception e) {
+            ITUtil.failOnMatchedJira(by.toString());
             fail(e.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
             e.printStackTrace();
         }
     }
 
     protected void waitAndClick(String locator, String message) throws InterruptedException {
-        waitAndClick(By.cssSelector(locator), message);
+        jiraAwareWaitAndClick(By.cssSelector(locator), message);
     }
 
     protected void waitAndClickByLinkText(String text) throws InterruptedException {
-        waitAndClick(By.linkText(text), "");
+        jiraAwareWaitAndClick(By.linkText(text), "");
     }
 
     protected void waitAndClickByLinkText(String text, String message) throws InterruptedException {
-        waitAndClick(By.linkText(text), message);
+        jiraAwareWaitAndClick(By.linkText(text), message);
     }
 
     protected void waitAndClickByName(String name) throws InterruptedException {
-        waitAndClick(By.name(name), "");
+        jiraAwareWaitAndClick(By.name(name), "");
     }
 
     protected void waitAndClickByXpath(String xpath) throws InterruptedException {
@@ -579,34 +590,27 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndClickByName(String name, String message) throws InterruptedException {
-        waitAndClick(By.name(name), message);
+        jiraAwareWaitAndClick(By.name(name), message);
     }
 
     protected void waitAndClickByXpath(String xpath, String message) throws InterruptedException {
-        waitAndClick(By.xpath(xpath), message);
+        jiraAwareWaitAndClick(By.xpath(xpath), message);
     }
 
     protected void waitAndType(By by, String text) throws InterruptedException {
-        try {
-            waitFor(by, "");
-            (driver.findElement(by)).sendKeys(text);
-        } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + " unable to type text '" + text + "' current url "
-                    + driver.getCurrentUrl()
-                    + "\n" + ITUtil.deLinespace(driver.getPageSource()));
-            e.printStackTrace();
-        }
+        waitAndType(by, text,  "");
     }
 
     protected void waitAndType(By by, String text, String message) throws InterruptedException {
         try {
-            waitFor(by, "");
+            jiraAwareWaitFor(by, "");
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
+            ITUtil.failOnMatchedJira(by.toString());
             fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
                     + " current url " + driver.getCurrentUrl()
                     + "\n" + ITUtil.deLinespace(driver.getPageSource()));
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -877,13 +881,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testAgendaEditRuleRefreshIT() throws Exception {
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  waitAndClick("id=32");
+        waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  jiraAwareWaitAndClick("id=32");
         Thread.sleep(3000);
         waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']",
-                "Does user have edit permissions?"); // waitAndClick("id=194_line0");
+                "Does user have edit permissions?"); // jiraAwareWaitAndClick("id=194_line0");
         checkForIncidentReport("");
         Thread.sleep(3000);
-        waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']"); // waitAndClick("//li[@id='473_node_0_parent_root']/a");
+        waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']"); // jiraAwareWaitAndClick("//li[@id='473_node_0_parent_root']/a");
         waitAndClickByXpath("//li/a[@class='agendaNode logicNode whenTrueNode']");
         waitAndClickByLinkText("[-] collapse all");
 
@@ -1228,7 +1232,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
         assertBlanketApproveButtonsPresent();
-        //waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
+        //jiraAwareWaitAndClick("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(countryLookUp);
@@ -1513,17 +1517,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         driver.findElement(By.tagName("body")).getText().contains("KR-RULE");
         driver.findElement(By.tagName("body")).getText().contains("PeopleFlow");
         //         selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
-        //         waitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
+        //         jiraAwareWaitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
         //         Thread.sleep(500);
-        //         waitAndClick("css=button:contains(cancel)");
+        //         jiraAwareWaitAndClick("css=button:contains(cancel)");
 
         // AttributeDefinition's don't have actions (yet)
-        //         waitAndClick("id=u80");
+        //         jiraAwareWaitAndClick("id=u80");
         //         waitForPageToLoad();
-        //         waitAndClick("id=u86");
+        //         jiraAwareWaitAndClick("id=u86");
         //         waitForPageToLoad();
         //         selectWindow("null");
-        //         waitAndClick("xpath=(//input[@name='imageField'])[2]");
+        //         jiraAwareWaitAndClick("xpath=(//input[@name='imageField'])[2]");
         //         waitForPageToLoad();
         passed();
     }
@@ -1562,7 +1566,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //         waitAndCreateNew();
         //         waitForPageToLoad();
         waitAndClickByLinkText("Create New");
-        //         waitAndClick(By.linkText("Create New"));
+        //         jiraAwareWaitAndClick(By.linkText("Create New"));
         //Save docId
         waitForElementPresent("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
         String docId = getText("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
@@ -3078,7 +3082,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         waitAndClickByLinkText("Column Sequence");
         Thread.sleep(2000);
-        //waitAndClick("css=div.jGrowl-close");
+        //jiraAwareWaitAndClick("css=div.jGrowl-close");
         // check if actions column RIGHT by default
         //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {

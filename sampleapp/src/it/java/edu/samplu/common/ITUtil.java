@@ -90,7 +90,14 @@ public class ITUtil {
 
         jiraMatches.put("java.sql.SQLSyntaxErrorException: ORA-00904: \"ROUTEHEADERID\": invalid identifier",
                 "KULRICE-8277 Several ITs fail with OJB operation; bad SQL grammar []; nested exception is java.sql.SQLException: ORA-00904: \"ROUTEHEADERID\": invalid identifier");
-//        jiraMatches.put("",
+
+        jiraMatches.put("By.xpath: //button[@data-loadingmessage='Adding Line...']",
+                "KULRICE-9044 KRAD \"stacked\" collection elements are not rendering add/delete buttons ");
+
+        jiraMatches.put("Error: on line 135, column 39 in krad/WEB-INF/ftl/lib/grid.ftl",
+                "KULRICE-9047 Term maintenance freemarker exception ");
+
+        //        jiraMatches.put("",
 //                "");
 
     }
@@ -624,7 +631,8 @@ public class ITUtil {
                 + stackTrace.trim());
     }
 
-    private static void failOnMatchedJira(String contents) {Iterator<String> iter = jiraMatches.keySet().iterator();
+    public static void failOnMatchedJira(String contents) {
+        Iterator<String> iter = jiraMatches.keySet().iterator();
         String key = null;
         while (iter.hasNext()) {
             key = iter.next();

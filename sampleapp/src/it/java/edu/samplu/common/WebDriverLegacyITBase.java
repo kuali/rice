@@ -530,17 +530,18 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitFor(by, "");
     }
 
+    /**
+     * Inner most waitFor, let it throw the failure so the timeout message reflects the waitSeconds time, not the 1
+     * second it is set to before returning.
+     * @param by
+     * @param message
+     * @throws InterruptedException
+     */
     protected void waitFor(By by, String message) throws InterruptedException {
-        //        for (int second = 0;; second++) {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
         Thread.sleep(1000);
-        //            if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
-        try {
-            driver.findElement(by);
-            //break;
-        } catch (Exception e) {}
+        driver.findElement(by);
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        //        }
     }
 
     protected void waitAndClick(By by) throws InterruptedException {

@@ -75,6 +75,7 @@ public abstract class WebDriverITBase {
     @Before
     public void setUp() throws Exception {
         driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl());
+        ITUtil.login(driver, getUserName());
     }
 
     /**

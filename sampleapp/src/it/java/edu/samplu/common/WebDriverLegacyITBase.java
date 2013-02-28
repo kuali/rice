@@ -4580,4 +4580,186 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByName("methodToCall.processAnswer.button0");
         passed();
     }
+    
+    protected List<String> testCreateNewComponent(String docId, String componentName, String componentCode) throws Exception
+    {
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        //Enter details for Parameter.
+        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Component");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
+        componentCode = "testing" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.code", componentCode);
+        componentName = "testing" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", componentName);
+        checkByName("document.newMaintainableObject.active");
+
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("--------------------------------New Component Created-------------------------");
+        
+        List<String> parameterList=new ArrayList<String>();
+        parameterList.add(docId);
+        parameterList.add(componentName);
+        parameterList.add(componentCode);
+        
+        return parameterList;
+    }
+    
+    
+    protected List<String> testLookUpComponent(String docId, String componentName, String componentCode) throws Exception
+    {
+        //Lookup
+        waitAndTypeByName("name", componentName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(componentName);
+        waitAndClickByLinkText(componentName);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        System.out.println("--------------------------------Lookup And View Successful-------------------------");
+        
+        List<String> parameterList=new ArrayList<String>();
+        parameterList.add(docId);
+        parameterList.add(componentName);
+        parameterList.add(componentCode);
+        
+        return parameterList;
+    }
+    
+    protected List<String> testEditComponent(String docId, String componentName, String componentCode) throws Exception
+    {
+        //edit
+        selectFrame("iframeportlet");
+        waitAndClickByLinkText("edit");
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Component");
+        clearTextByName("document.newMaintainableObject.name");
+        componentName = "testing" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", componentName);
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("-----------------------------------Component Edited-------------------------");
+        
+        List<String> parameterList=new ArrayList<String>();
+        parameterList.add(docId);
+        parameterList.add(componentName);
+        parameterList.add(componentCode);
+        
+        return parameterList;
+    }
+    
+    protected List<String> testVerifyEditedComponent(String docId, String componentName, String componentCode) throws Exception
+    {
+        waitAndTypeByName("name", componentName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(componentName);
+        waitAndClickByLinkText(componentName);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        
+        List<String> parameterList=new ArrayList<String>();
+        parameterList.add(docId);
+        parameterList.add(componentName);
+        parameterList.add(componentCode);
+        
+        return parameterList;
+    }
+    
+    protected List<String> testCopyComponent(String docId, String componentName, String componentCode) throws Exception
+    {
+        //copy
+        selectFrame("iframeportlet");
+        waitAndClickByLinkText("copy");
+        waitForPageToLoad();
+        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Component");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
+        componentCode = "test" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.code", componentCode);
+        clearTextByName("document.newMaintainableObject.name");
+        componentName = "testing" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", componentName);
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitForPageToLoad();
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
+                "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByXpath("//a[@title='Document Search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        Thread.sleep(2000);
+        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("-----------------------------------Component Copied-------------------------");
+        
+        List<String> parameterList=new ArrayList<String>();
+        parameterList.add(docId);
+        parameterList.add(componentName);
+        parameterList.add(componentCode);
+        
+        return parameterList;
+    }
+    
+    protected List<String> testVerifyCopyComponent(String docId, String componentName, String componentCode) throws Exception
+    {
+        waitAndTypeByName("name", componentName);
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        isElementPresentByLinkText(componentName);
+        waitAndClickByLinkText(componentName);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        waitAndClickByXpath("//*[@title='close this window']");
+        switchToWindow("null");
+        
+        List<String> parameterList=new ArrayList<String>();
+        parameterList.add(docId);
+        parameterList.add(componentName);
+        parameterList.add(componentCode);
+        
+        return parameterList;
+    }
 }

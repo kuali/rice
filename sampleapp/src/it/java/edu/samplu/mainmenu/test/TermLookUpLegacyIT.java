@@ -28,6 +28,9 @@ import edu.samplu.common.MainMenuLookupLegacyITBase;
  */
 public class TermLookUpLegacyIT extends MainMenuLookupLegacyITBase {
     @Override
+    public void testLookUp() {} // no-op to avoid https://jira.kuali.org/browse/KULRICE-9047 messing up the server state
+
+    @Override
     public String getLinkLocator() {
         return "Term Lookup";
     }

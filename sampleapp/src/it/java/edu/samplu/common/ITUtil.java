@@ -634,6 +634,7 @@ public class ITUtil {
     public static void failOnMatchedJira(String contents) {
         Iterator<String> iter = jiraMatches.keySet().iterator();
         String key = null;
+        
         while (iter.hasNext()) {
             key = iter.next();
             if (contents.contains(key)) {

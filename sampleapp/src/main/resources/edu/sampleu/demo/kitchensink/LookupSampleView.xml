@@ -36,7 +36,7 @@
       <list>
         <bean parent="Uif-DataField" p:propertyName="number" />
         <bean parent="Uif-DataField" p:propertyName="name" />
-        <bean parent="Uif-DataField" p:propertyName="subAccount" />
+        <bean parent="Uif-DataField" p:propertyName="subAccount"/>
         <bean parent="Uif-DataField" p:propertyName="createDate" />
       </list>
     </property>
@@ -93,6 +93,13 @@
           </list>
         </property>
       </bean>
+    </property>
+
+    <property name="page.header.lowerGroup.items">
+      <list merge="true">
+        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
+                p:actionScript="alert('JavaScript triggered action.')"/>
+      </list>
     </property>
   </bean>
 </beans>

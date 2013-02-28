@@ -859,7 +859,8 @@ tail -n 500 -f catalina.out</programlisting>
                             </row>
                             <row>
                                 <entry><para>context.names._____</para><para>*See note below</para></entry>
-                                <entry><para>The context name of each web application, including Rice, needs to be specified when the supplied portal is used. The parameter must start with "context.names." and may have a suffix of your choice (i.e. context.names.rice, context.names.kfs, context.names.kc</para>
+                                <entry><para>The context name of each web application, including
+                                    Rice, needs to be specified when the supplied portal is used. The parameter must start with "context.names." and may have a suffix of your choice (i.e. context.names.rice, context.names.kfs, context.names.kc)</para>
                                     <itemizedlist>
                                         <listitem>
                                             <para>context.names.app defaults to app.context.name (i.e. no configuration needed for bundled setup or the server that hosts the portal)</para>

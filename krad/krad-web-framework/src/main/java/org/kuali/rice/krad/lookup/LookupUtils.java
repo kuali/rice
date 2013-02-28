@@ -124,13 +124,13 @@ public class LookupUtils {
      * limit if there isn't a limit specific to this data object class.
      *
      * @param dataObjectClass - class to get limit for
-     * @param form - LookupForm to use
-     *
+     * @param lookupForm - LookupForm to use.  May be null if the form is unknown. If lookupForm is null, only the
+     * dataObjectClass will be used to find the search results set limit
      * @return result set limit
      */
-    public static Integer getSearchResultsLimit(Class dataObjectClass, LookupForm form) {
-        Integer limit = KRADServiceLocatorWeb.getViewDictionaryService().getResultSetLimitForLookup(
-            dataObjectClass, form);
+    public static Integer getSearchResultsLimit(Class dataObjectClass, LookupForm lookupForm) {
+        Integer limit = KRADServiceLocatorWeb.getViewDictionaryService().getResultSetLimitForLookup(dataObjectClass,
+                lookupForm);
         if (limit == null) {
             limit = getApplicationSearchResultsLimit();
         }
@@ -162,10 +162,11 @@ public class LookupUtils {
      * @param businessObjectClass BO class to search on / get limit for
      * @param criteria search criteria
      * @param platform database platform
-     * @param limit limit to use
+     * @param limit limit to use.  If limit is null, getSearchResultsLimit will be called using the businessObjectClass
+     * to see if a limit can be found for this particular businessObjectClass.
      */
-    public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria,
-            DatabasePlatform platform, Integer limit) {
+    public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria, DatabasePlatform platform,
+            Integer limit) {
         if (limit != null) {
             platform.applyLimit(limit, criteria);
         } else {

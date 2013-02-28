@@ -457,7 +457,7 @@ public class LookupView extends FormView {
      *
      * @return true if this instance has a multiple values select result set limit
      */
-    public boolean hasMultipleValuesSelectResultSetLimitResultSetLimit() {
+    public boolean hasMultipleValuesSelectResultSetLimit() {
         return (multipleValuesSelectResultSetLimit != null);
     }
 

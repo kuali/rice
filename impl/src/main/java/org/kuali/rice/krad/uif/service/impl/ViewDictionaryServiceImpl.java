@@ -124,44 +124,35 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.impl.ViewDictionaryService#getResultSetLimitForLookup(java.lang.Class,
-     *     org.kuali.rice.krad.web.form.LookupForm)
+     * @see org.kuali.rice.krad.uif.service.ViewDictionaryService#getResultSetLimitForLookup(java.lang.Class,
+     *      org.kuali.rice.krad.web.form.LookupForm)
+     *
+     *      If the form is null, only the dataObjectClass will be used to find the LookupView and corresponding
+     *      results set limit
      */
     @Override
-    public Integer getResultSetLimitForLookup(Class<?> dataObjectClass, LookupForm form) {
+    public Integer getResultSetLimitForLookup(Class<?> dataObjectClass, LookupForm lookupForm) {
         LookupView lookupView = null;
         boolean multipleValueSelectSpecifiedOnURL = false;
 
-        if (ObjectUtils.isNotNull(form)) {
-            if (form.getViewRequestParameters().containsKey(UifParameters.MULTIPLE_VALUES_SELECT)) {
-                String multiValueSelect = form.getViewRequestParameters().get(UifParameters.MULTIPLE_VALUES_SELECT);
+        if (ObjectUtils.isNotNull(lookupForm)) {
+            if (lookupForm.getViewRequestParameters().containsKey(UifParameters.MULTIPLE_VALUES_SELECT)) {
+                String multiValueSelect = lookupForm.getViewRequestParameters().get(
+                        UifParameters.MULTIPLE_VALUES_SELECT);
                 if (multiValueSelect.equalsIgnoreCase("true")) {
                     multipleValueSelectSpecifiedOnURL = true;
                 }
             }
         }
 
-        if (ObjectUtils.isNotNull(form) && ObjectUtils.isNotNull(form.getViewId())) {
-            View lookupViewforId = getDataDictionary().getViewById(form.getViewId());
+        if (ObjectUtils.isNotNull(lookupForm) && ObjectUtils.isNotNull(lookupForm.getViewId())) {
+            View lookupViewforId = getDataDictionary().getViewById(lookupForm.getViewId());
             if (lookupViewforId != null) {
                 LookupView lView = (LookupView) lookupViewforId;
                 lookupView = lView;
             }
         } else {
-            List<View> lookupViews = getDataDictionary().getViewsForType(UifConstants.ViewType.LOOKUP);
-            for (View view : lookupViews) {
-                LookupView lView = (LookupView) view;
-                if (StringUtils.equals(lView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
-                    // if we already found a lookup view, only override if this is the default
-                    if (lookupView != null) {
-                        if (StringUtils.equals(lView.getViewName(), UifConstants.DEFAULT_VIEW_NAME)) {
-                            lookupView = lView;
-                        }
-                    } else {
-                        lookupView = lView;
-                    }
-                }
-            }
+            lookupView = getLimitForLookupBasedOnlyOnDataObjectClass(dataObjectClass);
         }
 
         if (lookupView != null) {
@@ -172,6 +163,25 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
             }
         }
         return null;
+    }
+
+    protected LookupView getLimitForLookupBasedOnlyOnDataObjectClass(Class<?> dataObjectClass) {
+        LookupView lookupView = null;
+        List<View> lookupViews = getDataDictionary().getViewsForType(UifConstants.ViewType.LOOKUP);
+        for (View view : lookupViews) {
+            LookupView lView = (LookupView) view;
+            if (StringUtils.equals(lView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
+                // if we already found a lookup view, only override if this is the default
+                if (lookupView != null) {
+                    if (StringUtils.equals(lView.getViewName(), UifConstants.DEFAULT_VIEW_NAME)) {
+                        lookupView = lView;
+                    }
+                } else {
+                    lookupView = lView;
+                }
+            }
+        }
+        return lookupView;
     }
 
     protected DataDictionary getDataDictionary() {

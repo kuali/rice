@@ -66,14 +66,23 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
      * to behave the same way as it did prior to 2.3. The value for searchResultsLimit will be retrieved from the
      * KNS version of LookupUtils.
+     *
+     * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean,
+     *      boolean)
      */
-    public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-        Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils
-                .getSearchResultsLimit(businessObjectClass);
-        return findCollectionBySearchHelper(businessObjectClass, formProps, unbounded,
-                usePrimaryKeyValuesOnly, searchResultsLimit);
+    public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded,
+            boolean usePrimaryKeyValuesOnly) {
+        Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit(businessObjectClass);
+        return findCollectionBySearchHelper(businessObjectClass, formProps, unbounded, usePrimaryKeyValuesOnly,
+                searchResultsLimit);
     }
 
+    /**
+     * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean,
+     *      boolean, Integer)
+     *
+     * If searchResultsLimit is null, the search results will not be limited by any other means.
+     */
     public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded,
             boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit) {
         BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);

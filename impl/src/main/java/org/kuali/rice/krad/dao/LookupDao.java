@@ -24,17 +24,34 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface LookupDao {
+
+    /**
+     * Retrieves a collection of objects for the businessObjectClass based on the other information passed into the
+     * method.
+     *
+     * @param businessObjectClass - business object being queried on
+     * @param formProps - map of form properties
+     * @param unbounded - indicates if the search should be unbounded
+     * @param usePrimaryKeyValuesOnly - indicates if only primary key values should be used
+     * @return Object returned from the search
+     */
 	public <T extends Object> Collection<T> findCollectionBySearchHelper(
-			Class<T> example, Map<String, String> formProps, boolean unbounded,
+			Class<T> businessObjectClass, Map<String, String> formProps, boolean unbounded,
 			boolean usePrimaryKeyValuesOnly);
 
     /**
-     * Uses the searchResultsLimit passed in to limit the number of items returned
+     * Retrieves a collection of objects for the businessObjectClass based on the other information passed into the
+     * method.
      *
+     * @param businessObjectClass - business object being queried on
+     * @param formProps - map of form properties
+     * @param unbounded - indicates if the search should be unbounded
+     * @param usePrimaryKeyValuesOnly - indicates if only primary key values should be used
+     * @param searchResultsLimit - used to limit the number of items returned
      * @return Object returned from the search
      */
     public <T extends Object> Collection<T> findCollectionBySearchHelper(
-            Class<T> example, Map<String, String> formProps, boolean unbounded,
+            Class<T> businessObjectClass, Map<String, String> formProps, boolean unbounded,
             boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit);
 	/**
 	 * Retrieves a Object based on the search criteria, which should uniquely

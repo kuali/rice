@@ -118,22 +118,24 @@ public class LookupDaoProxy implements LookupDao {
      * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
      * to behave the same way as it did prior to 2.3. In the LookupDao, the value for searchResultsLimit will be
      * retrieved from the KNS version of LookupUtils in the LookupDao.
+     *
+     * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean,
+     *      boolean)
      */
-	/**
-	 * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean, boolean)
-	 */
-	public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-		return getDao(example).findCollectionBySearchHelper(example, formProps, unbounded, usePrimaryKeyValuesOnly);
-	}
+    public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded,
+            boolean usePrimaryKeyValuesOnly) {
+        return getDao(businessObjectClass).findCollectionBySearchHelper(businessObjectClass, formProps, unbounded,
+                usePrimaryKeyValuesOnly);
+    }
 
     /**
      * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean,
      *      boolean, Integer)
      */
-    public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded,
+    public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded,
             boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit) {
-        return getDao(example).findCollectionBySearchHelper(example, formProps, unbounded, usePrimaryKeyValuesOnly,
-            searchResultsLimit);
+        return getDao(businessObjectClass).findCollectionBySearchHelper(businessObjectClass, formProps, unbounded,
+                usePrimaryKeyValuesOnly, searchResultsLimit);
     }
 
     /**

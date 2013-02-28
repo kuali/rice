@@ -4482,7 +4482,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //docId= "link=" + docId;
         junit.framework.Assert.assertTrue(isElementPresent(By.linkText(docId)));
         if (isElementPresent(By.linkText(docId))) {
-            assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+            assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"), "https://jira.kuali.org/browse/KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
         } else {
             assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]"));
             assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));

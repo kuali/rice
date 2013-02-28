@@ -599,12 +599,20 @@ public class ITUtil {
     }
 
     private static void processIncidentReport(String contents, String linkLocator, String message) {
-        if (contents.indexOf("Incident Feedback") == -1) {
-            Assert.fail("\nIncident report detected " + message + "\nContents that triggered exception: " + deLinespace(contents));
-        }
-
         failOnMatchedJira(contents);
 
+        if (contents.indexOf("Incident Feedback") > -1) {
+            failWithReportInfo(contents, linkLocator, message);
+        }
+
+        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
+            failWithReportInfoForKim(contents, linkLocator, message);
+        }
+
+        Assert.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(contents));
+    }
+
+    private static void failWithReportInfo(String contents, String linkLocator, String message) {
         String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
         String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
         docId = docId.substring(0, docId.indexOf("</span>"));
@@ -621,10 +629,31 @@ public class ITUtil {
         //            System.out.println(docId);
         //            System.out.println(viewId);
         //            System.out.println(stackTrace);
-        Assert.fail("\nIncident report " + message + " navigating to "
+        Assert.fail("\nIncident report "
+                + message
+                + " navigating to "
                 + linkLocator
                 + " : View Id: "
                 + viewId.trim()
+                + " Doc Id: "
+                + docId.trim()
+                + "\nStackTrace: "
+                + stackTrace.trim());
+    }
+
+    private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
+        String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
+        String docIdPre = "type=\"hidden\" value=\"";
+        String docId = chunk.substring(chunk.indexOf(docIdPre) + docIdPre.length(), chunk.indexOf("\" name=\"documentId\""));
+
+        String stackTrace = chunk.substring(chunk.lastIndexOf("name=\"displayMessage\""), chunk.length());
+        String stackTracePre = "value=\"";
+        stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
+
+        Assert.fail("\nIncident report "
+                + message
+                + " navigating to "
+                + linkLocator
                 + " Doc Id: "
                 + docId.trim()
                 + "\nStackTrace: "

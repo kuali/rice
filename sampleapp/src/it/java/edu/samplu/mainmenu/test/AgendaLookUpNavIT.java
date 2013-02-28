@@ -20,21 +20,21 @@ import org.junit.Test;
 import edu.samplu.common.MainMenuLookupLegacyITBase;
 
 /**
- * tests that user 'admin' can display the Term lookup screen, search,
- * initiate an Term maintenance document via an edit action on the search results and
+ * tests that user 'admin' can display the Agenda lookup screen, search,
+ * initiate an Agenda maintenance document via a copy action on the search results and
  * finally cancel the maintenance document
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpLegacyIT extends MainMenuLookupLegacyITBase {
+public class AgendaLookUpNavIT extends MainMenuLookupLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "Term Lookup";
+        return "Agenda Lookup";
     }
-
+    
     @Test
-    public void lookupAssertions() throws Exception{
+    public void agendaLookupAssertions() throws Exception{
         gotoMenuLinkLocator();
-        super.testTermLookUp();
+        super.agendaLookupAssertions();
     }
 }

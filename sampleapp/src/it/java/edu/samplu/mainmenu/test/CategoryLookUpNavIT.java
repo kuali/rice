@@ -15,22 +15,36 @@
  */
 package edu.samplu.mainmenu.test;
 
+import org.junit.Test;
+import org.openqa.selenium.By;
+
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupLegacyITBase;
+import edu.samplu.common.WebDriverLegacyITBase;
+
 
 /**
- * tests that user 'admin' can display the Agenda lookup screen, search,
- * initiate an Agenda maintenance document via a copy action on the search results and
- * finally cancel the maintenance document
+ * tests whether the Category Look UP is working ok 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AgendaLookUpLegacyIT extends MainMenuLookupLegacyITBase {
+public class CategoryLookUpNavIT extends MainMenuLookupLegacyITBase{
+    /**
+     * This overridden method ...
+     * 
+     * @see edu.samplu.common.MenuLegacyITBase#getLinkLocator()
+     */
     @Override
-    public String getLinkLocator() {
-        return "Agenda Lookup";
+    protected String getLinkLocator() {
+        // TODO dmoteria - THIS METHOD NEEDS JAVADOCS
+        return "Category Lookup";
     }
-    @Override
-    public void lookupAssertions() {
-        assertTextPresent("Rules");
+    
+    @Test
+    public void testCategoryLookUp() throws Exception {
+       gotoMenuLinkLocator();
+       super.testCategoryLookUp();
     }
+
+  
 }

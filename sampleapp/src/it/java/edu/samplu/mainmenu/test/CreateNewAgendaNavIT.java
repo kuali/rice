@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2011 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,21 +16,26 @@
 package edu.samplu.mainmenu.test;
 
 import edu.samplu.common.MainMenuLookupLegacyITBase;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.util.Calendar;
 
 /**
- * tests that user 'admin' can display the Context lookup screen, search,
- * initiate an Context maintenance document via an edit action on the search results and
- * finally cancel the maintenance document
+ * tests whether the "Create New Agenda" is working ok 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContextLookUpLegacyIT extends MainMenuLookupLegacyITBase {
+public class CreateNewAgendaNavIT extends MainMenuLookupLegacyITBase {
     @Override
-    public String getLinkLocator() {
-        return "Context Lookup";
+    protected String getLinkLocator() {
+        return "Create New Agenda";
     }
-    @Override
-    public void lookupAssertions() {
-        assertTextPresent("Notes and Attachments");
+    
+    @Test
+    public void testCreateNewAgenda() throws Exception {
+        gotoMenuLinkLocator();
+        super.testCreateNewAgenda();
     }
+     
 }

@@ -3933,7 +3933,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
     }
 
-    
     //Code for Validation Messages package tests.
     protected void testClientErrors() throws Exception {
 
@@ -4332,5 +4331,253 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName(name, text);
         fireEvent(name, "blur");
         fireEvent(name, "focus");
+    }
+
+    public void testCategoryLookUp() throws Exception {
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//button[contains(.,'earch')]");
+        Thread.sleep(3000);
+        waitForPageToLoad();
+        driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
+        // Category's don't have actions (yet)
+        //        waitAndClick("id=u80");
+        //        waitForPageToLoad();
+        //        waitAndClick("id=u86");
+        //        waitForPageToLoad();
+        //        selectWindow("null");
+        //        waitAndClick("xpath=(//input[@name='imageField'])[2]");
+        //        waitForPageToLoad();
+        passed();
+    }
+
+    protected void testCreateSampleEDocLite() throws Exception {
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
+        waitForPageToLoad();
+        // click on the create new.
+        waitAndClickByLinkText("Create Document");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        String docId = getTextByXpath("//table/tbody/tr[4]/td[@class='datacell1']");
+        waitAndTypeByName("userName", "Viral Chauhan");
+        waitAndTypeByName("rqstDate", "12/03/2020");
+        checkByName("fundedBy");
+        waitAndTypeByName("addText", "Note Added.");
+        waitAndClickByXpath("//td[@class='datacell']/div/img");
+        waitForPageToLoad();
+        waitAndClickByXpath("//input[@value='submit']");
+        junit.framework.Assert.assertEquals(Boolean.FALSE,
+                (Boolean) isElementPresentByXpath("//input[@value='submit']"));
+        junit.framework.Assert.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='save']"));
+        junit.framework.Assert.assertEquals(Boolean.FALSE,
+                (Boolean) isElementPresentByXpath("//input[@value='cancel']"));
+        waitForPageToLoad();
+        selectTopFrame();
+        waitAndClickByXpath("//img[@alt='doc search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
+        waitForPageToLoad();
+        isElementPresent(By.linkText(docId));
+
+    }
+
+    public void testTermLookUp() throws Exception {
+        //        waitAndClickByLinkText(getLinkLocator());
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        // Mixed capitalization
+        waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
+        waitAndClickByLinkText("edit", "edit button not present does user " + user + " have permission?");
+        checkForIncidentReport("submit");
+        assertTextPresent("ubmit");
+        assertTextPresent("ave");
+        assertTextPresent("pprove");
+        assertTextPresent("lose");
+        assertTextPresent("ancel");
+        assertTextPresent("Term Parameters");
+        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        passed();
+    }
+
+    protected void testWorkFlowRouteRulesBlanketApp() throws Exception {
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        // click on the create new button
+        waitAndClickByXpath("//img[@alt='create new']");
+        waitForPageToLoad();
+        // lookup on the Document Type Name
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        // type in the name field the text RoutingRuleDocument
+        waitAndTypeByName("name", "RoutingRuleDocument");
+        // click the search button
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        // click the return value link
+        waitAndClickByLinkText("return value");
+        waitForPageToLoad();
+        // lookup on the Rule Template Name
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        // type in the name field the text RuleRoutingTemplate
+        waitAndTypeByName("name", "RuleRoutingTemplate");
+        // click the search button
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        // click the return value link
+        waitAndClickByLinkText("return value");
+        waitForPageToLoad();
+        // click the create new button
+        waitAndClickByName("methodToCall.createRule");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        String docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        junit.framework.Assert.assertTrue(isElementPresentByName("methodToCall.cancel"));
+        // type in the Document Overview Description the text Test Routing Rule
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
+        // click the Force Action checkbox
+        waitAndClickByXpath("//input[@id='document.newMaintainableObject.forceAction']");
+        // type in the Description text area the text Test Routing Rule1
+        waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
+        // type in the Document type name field the text DocumentTypeDocument
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']",
+                "DocumentTypeDocument");
+        // lookup on Person
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
+        waitForPageToLoad();
+        // click the search button
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        // click the return value
+        waitAndClickByLinkText("return value");
+        waitForPageToLoad();
+        // select from the Action Request ACKNOWLEDGE
+        selectByXpath("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']",
+                "ACKNOWLEDGE");
+        // type in the Priority field the text 1
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
+        // click the add button
+        waitAndClickByName("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!).(:::;15;:::).anchor15");
+        waitForPageToLoad();
+        checkForIncidentReport("methodToCall.blanketApprove");
+        waitAndClickByName("methodToCall.blanketApprove");
+        waitForPageToLoad();
+        driver.switchTo().defaultContent(); //selectWindow("null");
+        Thread.sleep(2000);
+        waitAndClickByXpath("//img[@alt='doc search']");
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+
+        //docId= "link=" + docId;
+        junit.framework.Assert.assertTrue(isElementPresent(By.linkText(docId)));
+        if (isElementPresent(By.linkText(docId))) {
+            assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        } else {
+            assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]"));
+            assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        }
+
+    }
+
+    protected void testEditRouteRulesDelegation() throws Exception {
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        //  setSpeed("2000");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        waitAndClickByLinkText("edit");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        junit.framework.Assert.assertTrue(isElementPresentByName("methodToCall.cancel"));
+        waitAndClickByName("methodToCall.cancel");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        waitAndClickByName("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
+        passed();
+    }
+
+    protected void testCreateNewRRDTravelRequestDestRouting() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndClick("img[alt=\"create new\"]");
+        waitForPageToLoad();
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        //     Thread.sleep(6000);
+        waitAndClickByXpath("//td[@class='infoline']/input[@name='methodToCall.search']");
+        waitForPageToLoad();
+        //   Thread.sleep(6000);
+        waitAndClick("a[title=\"return valueRule Id=1046 \"]");
+        waitForPageToLoad();
+        waitAndClickByName("parentResponsibilityId");
+        waitAndClickByName("methodToCall.createDelegateRule");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        waitAndClickByName("methodToCall.cancel");
+        waitForPageToLoad();
+        //Thread.sleep(3000);
+        waitAndClickByName("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
+        //Thread.sleep(3000);
+        driver.switchTo().defaultContent();
+        waitAndClickByXpath("(//input[@name='imageField'])[2]");
+        waitForPageToLoad();
+        passed();
+    }
+
+    protected void testWorkFlowRouteRulesCreateNew() throws Exception {
+        waitForPageToLoad();
+        Thread.sleep(5000);
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//img[@alt='create new']");
+        //        selectFrame("relative=up");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        waitAndClickByName("methodToCall.cancel",
+                "https://jira.kuali.org/browse/KULRICE-8161 Work Flow Route Rules cancel new yields 404 not found");
+        //setSpeed("3000");
+        // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        waitAndClickByName(
+                "methodToCall.processAnswer.button0",
+                "https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.");
+        passed();
+    }
+
+    /**
+     * tests that a Routing Rule maintenance document is created for an edit operation originating
+     * from a lookup screen
+     */
+    protected void testWorkFlowRouteRulesEditRouteRules() throws Exception {
+
+        waitForPageToLoad();
+        assertEquals("Kuali Portal Index", getTitle());
+        selectFrame("iframeportlet");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByLinkText("edit");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        Thread.sleep(3000);
+        waitAndClickByName("methodToCall.cancel");
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        waitAndClickByName("methodToCall.processAnswer.button0");
+        passed();
     }
 }

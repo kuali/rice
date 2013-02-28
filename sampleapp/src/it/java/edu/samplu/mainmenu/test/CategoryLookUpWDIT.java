@@ -27,29 +27,19 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CategoryLookUpLegacyIT extends WebDriverLegacyITBase{
+public class CategoryLookUpWDIT extends WebDriverLegacyITBase{
+    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Category%20Lookup&channelUrl=" + ITUtil.getBaseUrlString() +
+            "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.CategoryBo&showMaintenanceLinks=true&returnLocation=" +
+            ITUtil.PORTAL_URL + "&hideReturnLink=true";
+    
     @Override
     public String getTestUrl() {
-        return ITUtil.PORTAL;
+        return TEST_URL;
+        
     }
     
     @Test
     public void testCategoryLookUp() throws Exception {
-        waitAndClickByLinkText("Category Lookup");
-        waitForPageToLoad();
-        selectFrame("iframeportlet");
-        waitAndClickByXpath("//button[contains(.,'earch')]");
-        Thread.sleep(3000);
-        waitForPageToLoad();
-        driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
-// Category's don't have actions (yet)
-//        waitAndClick("id=u80");
-//        waitForPageToLoad();
-//        waitAndClick("id=u86");
-//        waitForPageToLoad();
-//        selectWindow("null");
-//        waitAndClick("xpath=(//input[@name='imageField'])[2]");
-//        waitForPageToLoad();
-        passed();
+       super.testCategoryLookUp();
     }
 }

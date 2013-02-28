@@ -17,7 +17,9 @@ package edu.samplu.mainmenu.test;
 
 import org.junit.Test;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupLegacyITBase;
+import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * tests that user 'admin' can display the Term lookup screen, search,
@@ -26,15 +28,27 @@ import edu.samplu.common.MainMenuLookupLegacyITBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpLegacyIT extends MainMenuLookupLegacyITBase {
+public class TermLookUpWDIT extends WebDriverLegacyITBase {
+    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Term%20Lookup&channelUrl=" + ITUtil.getBaseUrlString() +
+            "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.TermBo&showMaintenanceLinks=true&returnLocation=" +
+            ITUtil.PORTAL_URL + "&hideReturnLink=true";
+   
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see edu.samplu.common.WebDriverLegacyITBase#getTestUrl()
+     */
     @Override
-    public String getLinkLocator() {
-        return "Term Lookup";
+    public String getTestUrl() {
+        // TODO dmoteria - THIS METHOD NEEDS JAVADOCS
+        return TEST_URL;
     }
 
     @Test
     public void lookupAssertions() throws Exception{
-        gotoMenuLinkLocator();
         super.testTermLookUp();
     }
+
+   
 }

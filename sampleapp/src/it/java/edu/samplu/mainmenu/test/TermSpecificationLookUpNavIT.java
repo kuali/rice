@@ -15,23 +15,27 @@
  */
 package edu.samplu.mainmenu.test;
 
+import org.junit.Test;
+
 import edu.samplu.common.MainMenuLookupLegacyITBase;
 
 /**
- * tests that user 'admin' can display the Term Specification lookup screen, search,
- * initiate an Term Specification maintenance document via an edit action on the search results and
- * finally cancel the maintenance document
+ * tests that user 'admin' can display the Term Specification lookup screen, search, initiate an
+ * Term Specification maintenance document via an edit action on the search results and finally
+ * cancel the maintenance document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermSpecificationLookUpLegacyIT extends MainMenuLookupLegacyITBase {
+public class TermSpecificationLookUpNavIT extends MainMenuLookupLegacyITBase {
     @Override
     public String getLinkLocator() {
         return "Term Specification Lookup";
     }
-    
-    @Override
-    public void lookupAssertions() {
-       assertTextPresent("Context");
+
+    @Test
+    public void lookupAssertions() throws Exception {
+        gotoMenuLinkLocator();
+        super.testTermSpecificationLookupAssertions();
+
     }
 }

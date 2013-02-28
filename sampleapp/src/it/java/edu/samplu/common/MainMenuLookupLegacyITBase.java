@@ -36,9 +36,9 @@ public abstract class MainMenuLookupLegacyITBase extends MenuLegacyITBase {
     /**
      * Override to execute assertions once a looked-up item's edit action is clicked.
      */
-    public abstract void lookupAssertions();
+//    public abstract void lookupAssertions();
 
-    @Test
+//    @Test
     public void testLookUp() throws Exception {
         waitAndClickByLinkText(getLinkLocator());
         waitForPageToLoad();
@@ -52,7 +52,7 @@ public abstract class MainMenuLookupLegacyITBase extends MenuLegacyITBase {
         assertTextPresent("pprove");
         assertTextPresent("lose");
         assertTextPresent("ancel");
-        lookupAssertions();
+//        lookupAssertions();
         waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
         passed();
     }

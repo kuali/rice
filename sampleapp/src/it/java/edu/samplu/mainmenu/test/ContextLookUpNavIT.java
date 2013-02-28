@@ -20,21 +20,21 @@ import org.junit.Test;
 import edu.samplu.common.MainMenuLookupLegacyITBase;
 
 /**
- * tests that user 'admin' can display the Term lookup screen, search,
- * initiate an Term maintenance document via an edit action on the search results and
+ * tests that user 'admin' can display the Context lookup screen, search,
+ * initiate an Context maintenance document via an edit action on the search results and
  * finally cancel the maintenance document
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpLegacyIT extends MainMenuLookupLegacyITBase {
+public class ContextLookUpNavIT extends MainMenuLookupLegacyITBase {
     @Override
     public String getLinkLocator() {
-        return "Term Lookup";
+        return "Context Lookup";
     }
 
     @Test
-    public void lookupAssertions() throws Exception{
+    public void contextLookupAssertions() throws Exception{
         gotoMenuLinkLocator();
-        super.testTermLookUp();
+        super.contextLookupAssertions();
     }
 }

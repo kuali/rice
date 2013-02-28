@@ -993,8 +993,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndCreateNew();
         assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
                 "save button does not exist on the page");
-        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
+//        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
+        String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Creating new Document Type");
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
@@ -1662,7 +1663,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();
         waitForPageToLoad();
-        String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
+//        String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
+        String docId = waitForDocId();
         //Enter details for BrownGroup.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Brown Group");
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
@@ -1733,7 +1735,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testCreateNewParameter(String docId, String parameterName) throws Exception
     {
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
@@ -1794,7 +1797,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
         clearTextByName("document.newMaintainableObject.value");
         waitAndTypeByName("document.newMaintainableObject.value", "N");
@@ -1844,7 +1848,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
         waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
@@ -1896,7 +1901,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             throws Exception
     {
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter Type");
         parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
@@ -1959,7 +1965,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
         clearTextByName("document.newMaintainableObject.name");
         parameterType = "testing " + ITUtil.DTS_TWO;
@@ -2016,7 +2023,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
         parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
         waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
@@ -2076,8 +2084,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         /*assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
                 "save button does not exist on the page");*/
-        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(.,'Document Description (Description) is a required field.')]/img[@alt='error']");
@@ -2166,11 +2175,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     {
 
         waitForPageToLoad();
-        Thread.sleep(2000);
+//        Thread.sleep(2000);
         /*assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
                 "save button does not exist on the page");*/
-        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding Charlie Brown");
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Charlie Brown to test KIM");
         //here You should also check for lower case validation for principalName, but it is skipped for now as there is an incident report error there.
@@ -4437,8 +4447,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // click the create new button
         waitAndClickByName("methodToCall.createRule");
         waitForPageToLoad();
-        Thread.sleep(3000);
-        String docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        Thread.sleep(3000);
+//        String docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        String docId = waitForDocId();
         junit.framework.Assert.assertTrue(isElementPresentByName("methodToCall.cancel"));
         // type in the Document Overview Description the text Test Routing Rule
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
@@ -4584,7 +4595,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testCreateNewComponent(String docId, String componentName, String componentCode) throws Exception
     {
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Component");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
@@ -4650,7 +4662,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Component");
         clearTextByName("document.newMaintainableObject.name");
         componentName = "testing" + ITUtil.DTS_TWO;
@@ -4708,7 +4721,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
-        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Component");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
         componentCode = "test" + ITUtil.DTS_TWO;

@@ -235,7 +235,7 @@
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ACKNOWLEDGE]}"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="close"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CLOSE]}"/>
-        <bean parent="Uif-SecondaryActionButton" p:methodToCall="cancel" p:actionLabel="cancel"
+        <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="cancel"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}"/>
         <bean parent="Uif-ActionLink" p:methodToCall="copy" p:actionLabel="copy"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>

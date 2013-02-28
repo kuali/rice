@@ -39,6 +39,7 @@ public abstract class MenuLegacyITBase extends WebDriverLegacyITBase {
      */
     protected void gotoMenuLinkLocator(String message) throws Exception {
         waitForTitleToEqualKualiPortalIndex();
+        selectTopFrame();
         waitAndClickByLinkText(getMenuLinkLocator(), message);
         waitForTitleToEqualKualiPortalIndex();
         waitAndClickByLinkText(getLinkLocator(), message);

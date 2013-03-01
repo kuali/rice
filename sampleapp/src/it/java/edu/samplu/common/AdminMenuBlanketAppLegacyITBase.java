@@ -15,7 +15,6 @@
  */
 package edu.samplu.common;
 
-import org.junit.Test;
 import org.openqa.selenium.By;
 
 import static org.junit.Assert.assertEquals;
@@ -24,7 +23,6 @@ import static org.junit.Assert.assertEquals;
  * blanket approving a new document, results in a final document
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @deprecated
  */
 public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
 

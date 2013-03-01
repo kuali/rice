@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         AgendaLookUpNavIT.class,
         ContextLookUpNavIT.class,
-        TermLookUpLegacyIT.class,
+        TermLookUpNavIT.class,
         TermSpecificationLookUpNavIT.class
 })
 public class MainLookupSuite {}

@@ -15,24 +15,29 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.MainMenuLookupITBase;
+import org.junit.Test;
+
+import edu.samplu.common.MainMenuLookupLegacyITBase;
 
 /**
  * tests that user 'admin' can display the Term lookup screen, search,
  * initiate an Term maintenance document via an edit action on the search results and
  * finally cancel the maintenance document
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpIT extends MainMenuLookupITBase {
+public class TermLookUpNavIT extends MainMenuLookupLegacyITBase {
     @Override
-    public void testLookUp() {} // freemarker exception https://jira.kuali.org/browse/KULRICE-9047
+    public void testLookUp() {} // no-op to avoid https://jira.kuali.org/browse/KULRICE-9047 messing up the server state
+
     @Override
     public String getLinkLocator() {
-		return "link=Term Lookup";
+        return "Term Lookup";
     }
-    @Override
-    public void lookupAssertions() {
-        assertTextPresent("Text Parameters not present", "Term Parameters");
+
+    @Test
+    public void lookupAssertions() throws Exception{
+        gotoMenuLinkLocator();
+        super.testTermLookUp();
     }
 }

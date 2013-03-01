@@ -52,7 +52,6 @@ import java.util.ArrayList;
 
 /**
  * Class to upgrade UpgradedSeleniumITBase tests to WebDriver.
- * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {

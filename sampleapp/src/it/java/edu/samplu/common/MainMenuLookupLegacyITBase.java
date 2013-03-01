@@ -15,11 +15,9 @@
  */
 package edu.samplu.common;
 
-import org.junit.Test;
 import org.openqa.selenium.By;
 
 /**
- * @deprecated use WebDriverITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class MainMenuLookupLegacyITBase extends MenuLegacyITBase {

@@ -3,7 +3,6 @@ package edu.samplu.common;
 import org.openqa.selenium.By;
 
 /**
- * @deprecated use WebDriverITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 

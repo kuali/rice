@@ -51,12 +51,16 @@ public class LookupInputField extends InputField {
 
     private boolean disableWildcardsAndOperators;
     private boolean addControlSelectAllOption;
+    private boolean triggerOnChange;
+    private boolean triggerOnEnter;
 
     public LookupInputField() {
         super();
 
         disableWildcardsAndOperators = false;
         addControlSelectAllOption = false;
+        setTriggerOnChange(false);
+        setTriggerOnEnter(false);
     }
 
     /**
@@ -220,4 +224,41 @@ public class LookupInputField extends InputField {
     public void setAddControlSelectAllOption(boolean addControlSelectAllOption) {
         this.addControlSelectAllOption = addControlSelectAllOption;
     }
+
+    /**
+     * Indicates that the search must execute on changing of a value in the lookup input field
+     *
+     * @return boolean
+     */
+    public boolean isTriggerOnChange() {
+        return triggerOnChange;
+    }
+
+    /**
+     * Setter for the trigger search on change flag
+     *
+     * @param triggerOnChange
+     */
+    public void setTriggerOnChange(boolean triggerOnChange) {
+        this.triggerOnChange = triggerOnChange;
+    }
+
+    /**
+     * Indicates that the search must execute on pressing enter in the lookup input field
+     *
+     * @return boolean
+     */
+    public boolean isTriggerOnEnter() {
+        return triggerOnEnter;
+    }
+
+    /**
+     * Setter for the trigger search on enter key
+     *
+     * @param triggerOnEnter
+     */
+    public void setTriggerOnEnter(boolean triggerOnEnter) {
+        this.triggerOnEnter = triggerOnEnter;
+    }
+
 }

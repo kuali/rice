@@ -24,8 +24,12 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
+import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.LookupInputField;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Arrays;
@@ -87,6 +91,10 @@ public class LookupView extends FormView {
     @RequestParameter
     private boolean returnByScript;
 
+    private boolean triggerOnChange;
+
+    private boolean triggerOnEnter;
+
     private Integer resultSetLimit = null;
     private Integer multipleValuesSelectResultSetLimit = null;
 
@@ -97,6 +105,8 @@ public class LookupView extends FormView {
 
         setViewTypeName(ViewType.LOOKUP);
         setApplyDirtyCheck(false);
+        setTriggerOnChange(false);
+        setTriggerOnEnter(true);
     }
 
     /**
@@ -179,7 +189,44 @@ public class LookupView extends FormView {
             getHeader().setRender(false);
         }
 
+        // Get the search action button for trigger on change and trigger on enter
+        Group actionGroup = criteriaGroup.getFooter();
+        Action searchButton = findSearchButton(actionGroup.getItems());
+
+        // Only add trigger on script if an action with methodToCall search exists
+        if (searchButton != null) {
+            String searchButtonId = searchButton.getId();
+
+            for (Component criteriaField : criteriaGroup.getItems()) {
+                if (criteriaField instanceof LookupInputField) {
+                    if (isTriggerOnEnter() || ((LookupInputField)criteriaField).isTriggerOnEnter()) {
+                        criteriaField.setOnKeyPressScript("if(e.which == 13) { e.preventDefault();jQuery('#" + searchButtonId + "' ).click();}");
+                    }
+                    if (isTriggerOnChange() || ((LookupInputField)criteriaField).isTriggerOnChange()) {
+                        criteriaField.setOnChangeScript("jQuery('#" + searchButtonId + "' ).click();");
+                    }
+                }
+            }
+        }
+
         super.performApplyModel(view, model, parent);
+    }
+
+    /**
+     * Finds an Action with the search methodToCall from a list of Actions
+     *
+     * @param componentList - list of components
+     * @return the Action component with methodToCall of search
+     */
+    private Action findSearchButton(List<? extends Component> componentList) {
+        List<? extends Action> actionList = ComponentUtils.getComponentsOfType(componentList, Action.class);
+        for (Action action : actionList) {
+            String methodToCall = action.getMethodToCall();
+            if (methodToCall != null && methodToCall.equals("search")) {
+                return action;
+            }
+        }
+        return null;
     }
 
     /**
@@ -581,4 +628,39 @@ public class LookupView extends FormView {
         this.renderHeader = renderHeader;
     }
 
+    /**
+     * Indicates that the search must execute on changing of a value in all lookup input fields
+     *
+     * @return boolean
+     */
+    public boolean isTriggerOnChange() {
+        return triggerOnChange;
+    }
+
+    /**
+     * Setter for the trigger search on change flag
+     *
+     * @param triggerOnChange
+     */
+    public void setTriggerOnChange(boolean triggerOnChange) {
+        this.triggerOnChange = triggerOnChange;
+    }
+
+    /**
+     * Indicates that the search must execute on pressing enter in all lookup input fields
+     *
+     * @return boolean
+     */
+    public boolean isTriggerOnEnter() {
+        return triggerOnEnter;
+    }
+
+    /**
+     * Setter for the trigger search on enter key
+     *
+     * @param triggerOnEnter
+     */
+    public void setTriggerOnEnter(boolean triggerOnEnter) {
+        this.triggerOnEnter = triggerOnEnter;
+    }
 }

@@ -1949,7 +1949,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                 .toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
-        System.out.println("--------------------------------Lookup And View Successful-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);

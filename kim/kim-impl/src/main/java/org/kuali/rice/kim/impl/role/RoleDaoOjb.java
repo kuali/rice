@@ -326,8 +326,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                                 + "A0.ROLE_MBR_ID,A0.ROLE_ID,A0.MBR_ID,A0.MBR_TYP_CD,A0.VER_NBR,A0.OBJ_ID,A0.ACTV_FRM_DT,A0.ACTV_TO_DT, A0.VER_NBR AS ROLE_MBR_VER_NBR, A0.OBJ_ID AS ROLE_MBR_OBJ_ID, "
                                 + "BO.KIM_TYP_ID, BO.KIM_ATTR_DEFN_ID, BO.ATTR_VAL, BO.ROLE_MBR_ID, BO.ATTR_DATA_ID AS ATTR_DATA_ID, BO.OBJ_ID AS ATTR_DATA_OBJ_ID, BO.VER_NBR AS ATTR_DATA_VER_NBR,  "
                                 + "CO.OBJ_ID AS ATTR_DEFN_OBJ_ID, CO.VER_NBR as ATTR_DEFN_VER_NBR, CO.NM AS ATTR_NAME, CO.LBL as ATTR_DEFN_LBL, CO.ACTV_IND as ATTR_DEFN_ACTV_IND, CO.NMSPC_CD AS ATTR_DEFN_NMSPC_CD, CO.CMPNT_NM AS ATTR_DEFN_CMPNT_NM "
-                                + "FROM KRIM_ROLE_MBR_T A0 LEFT JOIN KRIM_ROLE_MBR_ATTR_DATA_T BO ON A0.ROLE_MBR_ID = BO.ROLE_MBR_ID "
-                                + " JOIN KRIM_ATTR_DEFN_T CO ON BO.KIM_ATTR_DEFN_ID = CO.KIM_ATTR_DEFN_ID  ");
+                                + "FROM KRIM_ROLE_MBR_T A0 LEFT OUTER JOIN KRIM_ROLE_MBR_ATTR_DATA_T BO ON A0.ROLE_MBR_ID = BO.ROLE_MBR_ID "
+                                + " LEFT OUTER JOIN KRIM_ATTR_DEFN_T CO ON BO.KIM_ATTR_DEFN_ID = CO.KIM_ATTR_DEFN_ID  ");
 
                         List<String> params = new ArrayList<String>();
                         if (roleIDs != null && !roleIDs.isEmpty()) {
@@ -411,35 +411,35 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                             lastRoleMember = roleMemberBo;
                         }
 
-                        // Create RoleMemberAttributeDataBo for this row
-                        RoleMemberAttributeDataBo roleMemAttrDataBo = new RoleMemberAttributeDataBo();
-
                         String kimTypeId = rs.getString("KIM_TYP_ID");
                         String attrKey = rs.getString("KIM_ATTR_DEFN_ID");
                         String attrVal = rs.getString("ATTR_VAL");
+                        if(StringUtils.isNotEmpty(kimTypeId)){
+                            KimType theType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
+                            // Create RoleMemberAttributeDataBo for this row
+                            RoleMemberAttributeDataBo roleMemAttrDataBo = new RoleMemberAttributeDataBo();
 
-                        KimType theType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
+                            KimAttribute.Builder attrBuilder = KimAttribute.Builder.create(rs.getString(
+                                    "ATTR_DEFN_CMPNT_NM"), rs.getString("ATTR_NAME"), rs.getString("ATTR_DEFN_NMSPC_CD"));
+                            attrBuilder.setActive(Truth.strToBooleanIgnoreCase(rs.getString("ATTR_DEFN_ACTV_IND")));
+                            attrBuilder.setAttributeLabel(rs.getString("ATTR_DEFN_LBL"));
+                            attrBuilder.setId(rs.getString("KIM_ATTR_DEFN_ID"));
+                            attrBuilder.setObjectId(rs.getString("ATTR_DEFN_OBJ_ID"));
+                            attrBuilder.setVersionNumber(rs.getLong("ATTR_DEFN_VER_NBR"));
 
-                        KimAttribute.Builder attrBuilder = KimAttribute.Builder.create(rs.getString(
-                                "ATTR_DEFN_CMPNT_NM"), rs.getString("ATTR_NAME"), rs.getString("ATTR_DEFN_NMSPC_CD"));
-                        attrBuilder.setActive(Truth.strToBooleanIgnoreCase(rs.getString("ATTR_DEFN_ACTV_IND")));
-                        attrBuilder.setAttributeLabel(rs.getString("ATTR_DEFN_LBL"));
-                        attrBuilder.setId(rs.getString("KIM_ATTR_DEFN_ID"));
-                        attrBuilder.setObjectId(rs.getString("ATTR_DEFN_OBJ_ID"));
-                        attrBuilder.setVersionNumber(rs.getLong("ATTR_DEFN_VER_NBR"));
+                            roleMemAttrDataBo.setId(rs.getString("ATTR_DATA_ID"));
+                            roleMemAttrDataBo.setAssignedToId(id);
+                            roleMemAttrDataBo.setKimTypeId(kimTypeId);
+                            roleMemAttrDataBo.setKimType(KimTypeBo.from(theType));
+                            roleMemAttrDataBo.setKimAttributeId(attrBuilder.getId());
+                            roleMemAttrDataBo.setAttributeValue(attrVal);
+                            roleMemAttrDataBo.setVersionNumber(rs.getLong("ATTR_DATA_VER_NBR"));
+                            roleMemAttrDataBo.setObjectId(rs.getString("ATTR_DATA_OBJ_ID"));
 
-                        roleMemAttrDataBo.setId(rs.getString("ATTR_DATA_ID"));
-                        roleMemAttrDataBo.setAssignedToId(id);
-                        roleMemAttrDataBo.setKimTypeId(kimTypeId);
-                        roleMemAttrDataBo.setKimType(KimTypeBo.from(theType));
-                        roleMemAttrDataBo.setKimAttributeId(attrBuilder.getId());
-                        roleMemAttrDataBo.setAttributeValue(attrVal);
-                        roleMemAttrDataBo.setVersionNumber(rs.getLong("ATTR_DATA_VER_NBR"));
-                        roleMemAttrDataBo.setObjectId(rs.getString("ATTR_DATA_OBJ_ID"));
+                            roleMemAttrDataBo.setKimAttribute(KimAttributeBo.from(attrBuilder.build()));
+                            lastRoleMember.getAttributeDetails().add(roleMemAttrDataBo);
+                        }
 
-                        roleMemAttrDataBo.setKimAttribute(KimAttributeBo.from(attrBuilder.build()));
-
-                        lastRoleMember.getAttributeDetails().add(roleMemAttrDataBo);
                     }
                 } finally {
                     if (rs != null) {

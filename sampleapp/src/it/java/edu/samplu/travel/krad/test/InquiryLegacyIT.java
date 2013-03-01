@@ -49,7 +49,7 @@ public class InquiryLegacyIT extends WebDriverLegacyITBase {
         driver.switchTo().frame(iframe1);
         assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
         assertElementPresentByLinkText("a1");
-        waitAndClickByXpath("//button[@id='u13']");
+        waitAndClickByXpath("//button[@id='u16']"); // close
         selectFrame("iframeportlet");
         
         waitAndClickByXpath("//button[@id='u19']");

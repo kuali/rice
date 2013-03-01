@@ -24,7 +24,7 @@ import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InvalidUserNameIT extends WebDriverLegacyITBase {
+public class InvalidUserNameWDIT extends WebDriverLegacyITBase {
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;

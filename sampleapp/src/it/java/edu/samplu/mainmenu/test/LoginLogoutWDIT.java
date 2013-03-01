@@ -19,7 +19,7 @@ import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.Test;
 
-public class LoginLogoutLegacyIT extends WebDriverLegacyITBase {
+public class LoginLogoutWDIT extends WebDriverLegacyITBase {
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;

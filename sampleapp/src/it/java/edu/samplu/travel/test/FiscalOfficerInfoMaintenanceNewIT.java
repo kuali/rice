@@ -78,6 +78,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         selectWindow(windowTitles[1]);
         windowFocus();
         assertEquals(windowTitles[1], getTitle());
+        checkForIncidentReport("Action List Id link opened window.", "https://jira.kuali.org/browse/KULRICE-9062 Action list id links result in 404 or NPE");
         
         //------submit-----//
         selectFrame("relative=up");

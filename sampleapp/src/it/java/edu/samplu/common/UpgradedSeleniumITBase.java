@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public abstract class UpgradedSeleniumITBase {
     private Selenium selenium;
     protected WebDriver driver;

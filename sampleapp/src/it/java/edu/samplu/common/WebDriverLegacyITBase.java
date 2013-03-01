@@ -61,6 +61,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
     public static final String REMOTE_PUBLIC_USER_PROPERTY = "remote.public.user";
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
+    public static final String DOC_ID_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
 
     public abstract String getTestUrl();
 
@@ -485,8 +486,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected String waitForDocId() throws InterruptedException {
-        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        return driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
+        waitForElementPresentByXpath(DOC_ID_XPATH);
+        return driver.findElement(By.xpath(DOC_ID_XPATH)).getText();
     }
 
     protected void waitForElementPresent(String locator) throws InterruptedException {
@@ -565,7 +566,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         } catch (Exception e) {
             ITUtil.failOnMatchedJira(by.toString());
             fail(e.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
-            e.printStackTrace();
         }
     }
 
@@ -610,7 +610,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
                     + " current url " + driver.getCurrentUrl()
                     + "\n" + ITUtil.deLinespace(driver.getPageSource()));
-//            e.printStackTrace();
         }
     }
 

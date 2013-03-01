@@ -240,6 +240,10 @@ public abstract class UpgradedSeleniumITBase {
         }
     }
 
+    protected void selectTopFrame() {
+        driver.switchTo().defaultContent();
+    }
+
     protected void setSpeed(String speed) {
         selenium.setSpeed(speed);
     }

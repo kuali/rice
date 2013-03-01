@@ -41,7 +41,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         selectFrame("iframeportlet");
         // String docId = getText("//span[contains(@id , '_attribute_span')][position()=1]");
         checkForIncidentReport("", "https://jira.kuali.org/browse/KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
-        String docId = getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        String docId = getText("//*[@id='u13_control']");
         waitAndType("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");
         waitAndType("//input[@name='document.newMaintainableObject.dataObject.id']", "5");
         waitAndType("//input[@name='document.newMaintainableObject.dataObject.userName']", "Jigar");
@@ -56,13 +56,12 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
 //        waitAndClick("//input[@value='add']");
 //        System.out.println("adding Row");
 //        selenium.wait(90000);
-    
-        waitAndClick("//button[@value='save']");
+        waitAndClick("//button[@id='usave']");
         
         int docIdInt = Integer.valueOf(docId).intValue(); 
         
         waitForPageToLoad50000();
-        selectFrame("relative=up");
+        selectTopFrame();
         waitAndClick("//img[@alt='action list']");
         waitForPageToLoad50000();
         selectFrame("iframeportlet");

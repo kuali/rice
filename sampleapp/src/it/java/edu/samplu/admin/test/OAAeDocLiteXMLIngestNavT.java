@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class OAAeDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
+public class OAAeDocLiteXMLIngestNavT extends AdminMenuLegacyITBase {
     // values set by default for repeatable testing; left as configurable for load tests
     private List<File> fileUploadList;
 

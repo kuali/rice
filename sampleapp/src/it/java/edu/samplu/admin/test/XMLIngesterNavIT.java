@@ -44,7 +44,7 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
+public class XMLIngesterNavIT extends AdminMenuLegacyITBase {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 

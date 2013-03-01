@@ -23,7 +23,7 @@ import org.openqa.selenium.internal.seleniumemulation.IsElementPresent;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
-public class MultipleLoginLogoutLegacyIT extends WebDriverLegacyITBase {
+public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;

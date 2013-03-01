@@ -34,7 +34,7 @@ import freemarker.template.Configuration;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NeustarJSTemplateLegacyIT {
+public class NeustarJSTemplate {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 

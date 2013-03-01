@@ -248,6 +248,16 @@ public abstract class UpgradedSeleniumITBase {
         selenium.selectWindow(windowName);
     }
 
+    protected void selectWindowContaining(String windowName) {
+        String[] windowNames = selenium.getAllWindowNames();
+        for (int i = 0, s = windowNames.length; i < s; i++) {
+            if (windowNames[i] != null && windowNames[i].contains(windowName)) {
+                selenium.selectWindow(windowNames[i]);
+                break;
+            }
+        }
+    }
+
     protected void uncheck(String locator) {
         selenium.uncheck(locator);
     }

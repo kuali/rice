@@ -66,11 +66,14 @@ public class KualiHttpSessionListener implements HttpSessionListener {
      * Remove any locks that the user has for this session
      */
     private void releaseLocks() {
-        String sessionId = GlobalVariables.getUserSession().getKualiSessionId();
-        List<PessimisticLock> locks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForSession(sessionId);
-        Person user = GlobalVariables.getUserSession().getPerson();
+        UserSession userSession = GlobalVariables.getUserSession();
+        if (userSession != null) {
+            String sessionId = userSession.getKualiSessionId();
+            List<PessimisticLock> locks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForSession(sessionId);
+            Person user = GlobalVariables.getUserSession().getPerson();
 
-        KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, user);
+            KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, user);
+        }
     }
 
 }

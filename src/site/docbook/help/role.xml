@@ -31,9 +31,9 @@
         responsibilities with which they can be associated. </para>
     <note><para>The process of creating a new type requires technical assistance. Consequently, KIM does
         not provide an interface for creating role types.</para></note>
-    <sect1>
+    <section>
         <title>Document Layout</title>
-        <sect2><title>Creating New Roles</title>
+        <section><title>Creating New Roles</title>
             <para>When you click the <emphasis role="bold">Create New</emphasis> button, the
                 system displays the KIM Type Lookup. You must search for and select an existing
                 Type in order for the system to generate a new Role document.</para>
@@ -47,8 +47,8 @@
                 </imageobject>
             </mediaobject>
             </figure></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
          <title>Role Document</title>   
         <para>The Role document includes <emphasis role="bold">Document Overview</emphasis>,
                 <emphasis role="bold">Overview,</emphasis>
@@ -62,7 +62,7 @@
                 </imageobject>
             </mediaobject>
         </figure></para>
-        <sect3>
+        <section>
             <title>Overview Tab</title>
             <para>This tab identifies the role with a unique system-assigned ID number, a namespace
                 and a name. Each role also has a type which tends to match the types of permissions
@@ -125,8 +125,8 @@
                     </tbody>
                 </table>
             </para>
-        </sect3>
-        <sect3>
+        </section>
+        <section>
             <title>Permissions Tab</title>
             <para>This tab identifies the permissions associated with this role. Permissions
                 authorize specific actions in the system with which they are associated. A role can
@@ -216,8 +216,8 @@
                     </tbody>
                 </table>
             </para>
-        </sect3>
-        <sect3>
+        </section>
+        <section>
             <title>Responsibilities Tab</title>
             <para>This tab identifies the responsibilities associated with this role.
                 Responsibilities define the workflow actions that will be requested of the role. A
@@ -333,7 +333,7 @@
                     </tbody>
                 </table>
             </para>
-            <sect4>
+            <section>
                 <title>Assigning Action Detail Values</title>
                 <para>When adding a responsibility with an <emphasis role="bold">Action Detail
                         Values at Role Member Level</emphasis> value of 'False,' you must complete
@@ -417,9 +417,9 @@
                         </tbody>
                     </table>
                 </para>
-            </sect4>
-        </sect3>
-        <sect3>
+            </section>
+        </section>
+        <section>
             <title>Assignees Tab</title>
             <para>This tab contains all members who belong to this role. You may also use the tab to
                 add new members and edit the values associated with existing members.</para>
@@ -505,8 +505,8 @@
                         qualifiers can cause problems throughout your applications. Please consult
                         with an application technical resource if you are unsure of whether or not
                         to provide qualifying values when assigning a role to another role.</para></caution>
-        </sect3>
-        <sect3>
+        </section>
+        <section>
             <title>Delegations Tab</title>
             <para>This tab identifies identifies delegates associated with the role. Delegates are
                 users that a member of this role has authorized to have the same permissions and
@@ -598,7 +598,7 @@
             </para>
             <note><para>Additional fields may be required, such as <emphasis role="bold">Chart
                 Code</emphasis>, depending on the role type selected.</para></note>
-        </sect3>
-        </sect2>     
-    </sect1>
+        </section>
+        </section>     
+    </section>
 </chapter>

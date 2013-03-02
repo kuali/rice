@@ -18,7 +18,7 @@
 -->
 <chapter xml:id="TRG_KNS" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>KNS</title>
-    <sect1>
+    <section>
         <title>KNS Configuration Guide</title>
         <para>The Kuali Nervous System (KNS) is, primarily, an application development framework.
             Each Rice client application can use the KNS to construct various screens and build
@@ -51,7 +51,7 @@
                         supports. </para>
                 </listitem>
             </orderedlist></para>
-        <sect2>
+        <section>
             <title>Database Creation</title>
             <para>In order for the KNS services to work, many of them require the ability to access
                 special tables within the client application’s database. These tables are used to
@@ -63,8 +63,8 @@
                 Installation Guide. </para>
             <note><para>It’s important to note that these tables should be installed in the client
                 application’s database, and not the Rice standalone server database.</para></note>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KNSConfigurer and RiceConfigurer</title>
             <para>As with the other modules, a <emphasis role="bold">KNSConfigurer</emphasis> needs
                 to be injected into the <emphasis role="bold">RiceConfigurer</emphasis> in order to
@@ -99,10 +99,10 @@
             <para>The <emphasis role="bold">KNSConfigurer</emphasis> supports some other properties
                 as well. See the javadocs of <emphasis role="bold">KNSConfigurer</emphasis> for more
                 information.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Configuring the KNS Web Application Components</title>
-            <sect3>
+            <section>
                 <title>Loading the KNS Struts Modules</title>
                 <para>The web application framework of the KNS is built on top of the <link
                         xlink:href="http://struts.apache.org/1.x/">Apache Struts</link> framework.
@@ -140,8 +140,8 @@
                     The KNS framework requires that at least the app.title property to be set, as in
                     the following example:</para>
                 <programlisting>app.title=Recipe Sample Application</programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Configuring KNS Servlet Context Listeners</title>
                 <para>The KNS framework requires a couple of ServletContextListener classes to be
                     configured in the application’s web.xml. These include:<itemizedlist>
@@ -177,8 +177,8 @@
 &lt;listener>
     &lt;listener-class>org.kuali.rice.kns.web.listener.KualiHttpSessionListener&lt;/listener-class>
 &lt;/listener></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Configuring KNS Message Resources</title>
                 <para>As of Rice version 1.0.1.1, messages are loaded through the new
                     KualiPropertyMessageResourcesFactory. This class is a factory of
@@ -197,8 +197,8 @@
                     default list if a property key in KR-ApplicationResources was duplicated in
                     KIM-ApplicationResources, the value used would be the one set in
                     KIM-ApplicationResources. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Configuring AJAX Support</title>
                 <para>The KNS uses <link xlink:href="http://directwebremoting.org/dwr/index.html"
                         >DWR</link> to provide AJAX support. In order to enable this, the <emphasis
@@ -225,9 +225,9 @@
     &lt;servlet-name>dwr-invoker&lt;/servlet-name>
     &lt;url-pattern>/dwr/*&lt;/url-pattern>
 &lt;/servlet-mapping></programlisting>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Module Configuration – Loading Data Dictionary and OJB Files</title>
             <para>One of the most important pieces of the KNS framework is the Data Dictionary. It’s
                 used to define various pieces of metadata about business objects, maintenance
@@ -287,8 +287,8 @@
             <para>There are more configuration options on the <emphasis role="bold"
                     >ModuleConfiguration</emphasis>. See the javadocs on this class for more
                 information.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KNS Configuration Parameters</title>
             <para>The KNS supports numerous configuration parameters that can be set in the Rice
                 configuration file. Below is a list of these with descriptions and defaults.</para>
@@ -296,8 +296,8 @@
                 <table frame="none">
                     <title>KNS Configuration Parameters</title>
                     <tgroup cols="3">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="1.2*"/>
+                        <colspec colname="c2" colnum="2" colwidth="0.8*"/>
                         <colspec colname="c3" colnum="3" colwidth="1.0*"/>
                         <thead>
                             <row>
@@ -467,17 +467,19 @@
                                 <entry>rice.struts.message.resources</entry>
                                 <entry>The key used to load message property files. The value should
                                     be a comma delimited list or properties files.</entry>
-                                <entry>KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources</entry>
+                                <entry>KR-ApplicationResources,
+                                    org.kuali.rice.kew.ApplicationResources,
+                                    org.kuali.rice.ksb.messaging.ApplicationResources, KIM-ApplicationResources</entry>
                             </row>
                         </tbody>
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KNS Business Object Framework</title>
-        <sect2>
+        <section>
             <title>Business Object Database Table Definition</title>
             <para>Business object instances are typically java object representations of rows of a
                 database table.</para>
@@ -501,7 +503,7 @@
                 locking requires the use of a version number field, named "VER_NBR". On Oracle, the
                 field is defined as a NUMBER(8,0). On MySQL, the field is defined as a DECIMAL(8).
                 This column should NOT be part of the primary key.</para>
-            <sect3>
+            <section>
                 <title>About optimistic locking</title>
                 <para>Optimistic locking helps to prevent updates to stale data and consists of two steps:<orderedlist>
                         <listitem>
@@ -564,14 +566,14 @@
                             </para>
                         </listitem>
                     </orderedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Business Object Database Mapping</title>
                 <para>The default mapping library used by the KNS for this release is OJB from
                     Apache. More information can be found on the OJB website: <link
                         xlink:href="http://db.apache.org/ojb/"
                     >http://db.apache.org/ojb/</link>.</para>
-                <sect4>
+                <section>
                     <title>Purpose of OJB mappings</title>
                     <para>OJB repository files map the following information:<orderedlist>
                             <listitem>
@@ -587,8 +589,8 @@
                                     object and its reference(s) </para>
                             </listitem>
                         </orderedlist></para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>OJB documentation</title>
                     <para>Currently, OJB is used as the underlying persistence layer. It converts
                         database rows into java objects upon retrieval, and vice versa upon
@@ -619,8 +621,8 @@
                                 </para>
                             </listitem>
                         </itemizedlist></para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>OJB field-level conversions</title>
                     <para>OJB provides a way to convert data before they are persisted to and
                         retrieved from the database. This is accomplished by specifying a class that
@@ -647,8 +649,8 @@
                         beyond these two for use in client applications.</para>
                     <para>Example converter declaration for a sample Business Object</para>
                     <programlisting>&lt;field-descriptor name="bankAccountNbr" column="BNK_ACCT_NBR" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion"/></programlisting>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>When to use OJB vs. data dictionary relationships</title>
                     <para>OJB relationships should be used to define relationships between tables
                         that are guaranteed to exist within the same database.</para>
@@ -663,8 +665,8 @@
                         discussed in detail later in this document). Any business object
                         implementing the org.kuali.rice.kns.bo.ExternalizableBusinessObject
                         interface needs to be related to via the data dictionary.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Example OJB Mapping</title>
                     <para>Here is an example directly from Rice in the file
                         OJB-repository-kns.xml:</para>
@@ -746,8 +748,8 @@
                                     CountryImpl’s primary key value. </para>
                             </listitem>
                         </orderedlist></para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Example OJB Mapping for Collection Descriptor</title>
                     <para>A mapping may also define a collection-descriptor tag as follows:</para>
                     <programlisting>&lt;class-descriptor class="org.kuali.rice.kns.test.document.bo.AccountManager" table="TRV_ACCT_FO">
@@ -804,10 +806,10 @@
                                 </para>
                             </listitem>
                         </orderedlist></para>
-                </sect4>
-            </sect3>
-        </sect2>
-        <sect2>
+                </section>
+            </section>
+        </section>
+        <section>
             <title>Business Object Java Definition</title>
             <para>Business Objects are java classes that implement the <emphasis role="bold"
                     >org.kuali.core.bo.BusinessObject</emphasis> interface. However, a majority of
@@ -839,7 +841,7 @@
                 object. Just a few examples are customizations that can be made upon persistence and
                 retrieval of the business object, and how reference objects of the business object
                 are refreshed, as well as other methods.</para>
-            <sect3>
+            <section>
                 <title>Reference Objects</title>
                 <para>A reference object is a member variable of a business object that also
                     implements the BusinessObject interface. It refers to the database row
@@ -892,7 +894,7 @@ protected boolean active;
                     the logic to enable refreshing of a reference. The code must both implement the
                     logic to refresh a data dictionary defined reference and the logic to invoke
                     refreshing. A specific explanation can be found below.</para>
-                <sect4>
+                <section>
                     <title>Refreshing reference objects mapped in OJB</title>
                     <para>For references mapped within OJB, the framework automatically takes care of
                         the logic to enable refreshing of a reference. Under certain circumstances, it's
@@ -905,8 +907,8 @@ protected boolean active;
                         CampusTypeImpl BO reference object. To refresh the CampusImpl’s CampusTypeImpl
                         reference object with the new campus type code, refresh/retrieve must be
                         manually called (see below).</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Refreshing reference objects not mapped in OJB</title>
                     <para>For references with relationships that are not mapped in OJB, code will need
                         to be written to accommodate refreshing. A common example of this is Person
@@ -921,8 +923,8 @@ protected boolean active;
                         for CampusTypeImpl was not defined in OJB, the string campusTypeCode may be
                         changed and that would be enough to alter the getter method for CampusTypeImpl
                         to properly retrieve the correct row from the database.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Initializing collection references</title>
                     <para>Business objects fall into two broad, and for the most part mutually
                         exclusive, categories: those that are edited by maintenance documents and
@@ -949,9 +951,9 @@ protected boolean active;
                     <para>When a collection is non-updatable (i.e. read only from the database), it
                         is not necessary to initialize the collection. OJB will take care of list
                         construction and population.</para>
-                </sect4>
-            </sect3>    
-            <sect3>
+                </section>
+            </section>    
+            <section>
                 <title>Inactivateable Business Objects</title>
                 <para>Business objects that have active/inactive states should implement the
                     Inactivateable interface:</para>
@@ -969,8 +971,8 @@ protected boolean active;
                 <para>By implementing this interface, functionality such as default active checks
                     and inactivation blocking in the maintenance framework can be taken advantage
                     of.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>InactivateableFromTo Business Objects</title>
                 <para>Business objects that have active from and to dates (effective dating) should
                     implement the InactivateableFromTo interface:</para>
@@ -1031,7 +1033,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
 
 }
 </programlisting>
-                <sect4>
+                <section>
                     <title>Explanation of InactivateableFromTo fields</title>
                     <para><emphasis role="italic">activeFromDate</emphasis> - The date for which the
                         record becomes active (inclusive when checking active status).</para>
@@ -1069,8 +1071,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         will be determined inactive. However if we set the active as of date equal
                         to 05/01/2010 (which falls between the active date range) and query, this
                         record will be determined active.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Framework Support</title>
                     <para>Business objects that implement InactivateableFromTo can participate in
                         default existence checks and inactivation blocking functionality. In
@@ -1090,14 +1092,14 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                                     queries </para>
                             </listitem>
                         </orderedlist></para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>InactivateableFromToService</title>
                     <para>For finding active and current InactivateableFromTo records
                         InactivateableFromToService can be used. This service provides many methods
                         for dealing with InactivateableFromTo objects in code.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Group by Attributes</title>
                     <para>In order to determine whether or not an InactivateableFromTo record is
                         current, the framework must know what fields of the business object to group
@@ -1133,11 +1135,11 @@ public void setActiveAsOfDate(Date activeAsOfDate);
         &lt;/list>
     &lt;/property>
 &lt;/bean></programlisting>
-                </sect4>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+                </section>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>KNS Data Dictionary Overview</title>
         <para>The data dictionary is the main repository for metadata storage and provides the glue
             to combining classes related to a single piece of functionality. The data dictionary is
@@ -1146,7 +1148,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
             operation will match that of the files that define the module configurers.</para>
         <para>The contents of the data dictionary are defined by two sets of vocabularies; the
             ‘business object’ and the ‘document’ data. </para>
-        <sect2>
+        <section>
             <title>Business Object Data Dictionary</title>
             <para>Business Object Data Dictionary entries provide the KNS framework extra metadata
                 about a business object which is not provided by the persistence mapping or the
@@ -1187,7 +1189,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         <para>The orientation of various fields on user interface screens </para>
                     </listitem>
                 </itemizedlist></para>
-            <sect3>
+            <section>
                 <title>Note About Following Documentation</title>
                 <para>One thing to note is the use of ‘abstract’ parent beans within the Rice files.
                     These are used to facilitate easy overriding of beans from Rice in a client
@@ -1217,8 +1219,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>For the sake of this documentation, the abstract parent bean structure will be
                     mostly ignored but its operation is consistent throughout all data dictionary
                     files.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Data Dictionary File Layout</title>
                 <para>A sample Data Dictionary file to show typical organization of various beans
                     that may be defined:</para>
@@ -1298,8 +1300,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>The <emphasis role="bold">objectLabel</emphasis> property is the label that
                     will be used for all general business object references including where the
                     system has collections of the business object.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Attribute Definition</title>
                 <para>Attribute definitions are used to provide metadata about the attributes (i.e.
                     fields) of a business object. The following is a sampling of attribute
@@ -1382,10 +1384,10 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>All business object data dictionary files need to have the version number
                     field bean defined. This will verify that the UI will have the version number as
                     a hidden field.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Business Object Data Dictionary Lookup Definition</title>
-                <sect4>
+                <section>
                     <title>Lookup Fields</title>
                     <para>A lookup definition contains a property called lookupFields which is made
                         up of a list of FieldDefinitions. These specify the fields that will be
@@ -1400,23 +1402,23 @@ public void setActiveAsOfDate(Date activeAsOfDate);
     &lt;/list>
 &lt;/property>
 </programlisting>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Lookup default values</title>
                     <para>You can set a global default for that lookup field using the defaultValue
                     property: </para>
                     <programlisting>&lt;bean parent="FieldDefinition" p:attributeName="campusCode" p:defaultValue="BL"/></programlisting>
                     <para>The effect of this is that every time the lookup for this Business Object
                         is rendered, the campusCode text input will have "BL" in it. </para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Quickfinders</title>
                     <para>A quickfinder is a button that is rendered next to a lookup field which
                         takes you to a lookup for a related Business Object which that field
                         references, which in the case of this example would be to a Campus Business
                         Object.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Quickfinder parameters</title>
                     <para>If a lookup field will have a quickfinder button on it due to a BO
                         relationship, you may wish to set default values for certain fields on that
@@ -1429,8 +1431,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         lookupFields for, rather for specific fields in the related Business Object
                         that this lookupField (campusCode) references – but only when accessed
                         through this quickfinder on our parent BO's lookup form. </para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Example LookupDefinition with defaultValue and
                         quickfinderParameterString</title>
                     <para>This is perhaps better explained through a simple example with two BOs
@@ -1466,8 +1468,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         quickfinderParameterStringBuilderClass defined on a single FieldDefinition,
                         and you will get an exception during Data Dictionary validation if you do
                         so. </para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Totals</title>
                     <para>Support exists in the lookup framework for totaling the lookup results. If
                         the ‘total’ property is set to true on one or more FieldDefinition within
@@ -1501,8 +1503,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         <title>Totals</title>
                         <mediaobject>
                             <imageobject>
-                                    <imagedata fileref="../images/totals.png" scalefit="1"
-                                        contentwidth="700"/>
+                                    <imagedata fileref="../images/totals.png" 
+                                    scalefit="1" width="100%" contentdepth="100%" />
                                 </imageobject>
                         </mediaobject>
                     </figure>
@@ -1513,8 +1515,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         column that has inquiry URLs. This is because of the need to have a numeric
                         value to sum on and for fields with an inquiry the URL is put into the tag
                         value along with the actual cell value.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Disabling Search Buttons</title>
                     <para>In certain cases the search and clear buttons for a lookup are not needed.
                         Therefore these buttons can be disabled in one of two ways.</para>
@@ -1532,9 +1534,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     <programlisting>http://localhost:8080/kr-dev/lookup.do?disableSearchButtons=true&amp;more parms ... </programlisting>
                     <para>Note in this scenario other calls to the lookup without this parameter
                         will have the search buttons rendered.</para>
-                </sect4>
-            </sect3>
-            <sect3>
+                </section>
+            </section>
+            <section>
                 <title>Merging Custom Attributes into Lookup Definitions</title>
                 <para>There are instances when an institution would choose to add custom attributes
                     to existing data dictionary definitions in a client application (such as KFS or
@@ -1598,13 +1600,13 @@ public void setActiveAsOfDate(Date activeAsOfDate);
     &lt;/bean>
     ...
 &lt;/beans></programlisting>
-            </sect3>
+            </section>
 <!-- TO DO     
-   <sect3>
+   <section>
         <title>Business Object Data Dictionary Inquiry Definition</title>
-   </sect3>
+   </section>
 -->
-            <sect3>
+            <section>
                 <title>Merging Custom Attributes into Inquiry Definitions</title>
                 <para>There are instances when an institution would choose to add custom attributes
                     to existing data dictionary definitions in a client application (such as KFS or
@@ -1658,9 +1660,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
 
 &lt;/beans>
 </programlisting>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Document Data Dictionary Overview</title>
             <para>There are two different document types in KNS: <orderedlist>
                     <listitem>
@@ -1677,7 +1679,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                             action. </para>
                     </listitem>
                 </orderedlist></para>
-            <sect3><title>Comparison of Maintenance and Transactional Documents</title>
+            <section><title>Comparison of Maintenance and Transactional Documents</title>
                 <para>
                     <table frame="none">
                         <title>Comparison of Maintenance and Transactional Documents</title>
@@ -1726,9 +1728,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     of ‘abstract’ parent beans for Data Dictionary beans. A detailed description of
                     their use and why Kuali uses this type of implementation can be found in the
                     beginning of the ‘Business Object Data Dictionary’ section.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Maintenance Document Data Dictionary Overview</title>
             <para>In general, documents have metadata associated with them, and the metadata for
                 maintenance documents exists in the document's data dictionary configuration. The
@@ -1816,7 +1818,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
         &lt;/list>
     &lt;/property>
 &lt;/bean></programlisting>
-            <sect3>
+            <section>
                 <title>Basic Setup</title>
                 <para>The first bean defined for the ParameterMaintenanceDocument data dictionary
                     file is the main definition bean “ParameterMaintenanceDocument-parentBean”. This
@@ -1841,8 +1843,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         >org.kuali.rice.kns.maintenance.KualiMaintainableImpl</emphasis> should be
                     used. More will be discussed about custom maintainable classes later in this
                     document.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Existence Checking</title>
                 <para>The next maintenance document specific tag is <emphasis role="bold"
                         >defaultExistenceChecks</emphasis>. Certain document validations are so
@@ -1877,8 +1879,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     this to work correctly, the foreign keys to the fields must be specified as
                     required. That will come into play in section below about specifying the
                     UI.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Locking keys</title>
                 <para>Since maintenance documents edit one or more business objects, there is the
                     potential for race conditions. For example, if two business objects were created
@@ -1908,8 +1910,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     put into Workflow. The fields used in a locking key can be anything, as long as
                     it marks the business object uniquely. It makes sense, then, that most locking
                     keys are simply the primary keys for the business object.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Defining the UI</title>
                 <para>Finally, the largest part of the maintenance document data dictionary: the
                     definition of the UI through the <emphasis role="bold"
@@ -2025,8 +2027,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         role="bold">overrideFieldConversions</emphasis> may not be necessary if the
                     field names are the same on the lookup’s business object class and the data
                     dictionary’s business object class.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Additional MaintainableFieldDefinition Properties</title>
                 <para>For each MaintainableFieldDefinition bean defined in a maintenance document,
                     there are a few fields that can help adjust the User Interface for a KNS client.
@@ -2064,8 +2066,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     Dictionary file. If that DD file has a Lookup control element but the lookup
                     need to be hidden on the Maintenance Document then this attribute allows for
                     that functionality.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Collections</title>
                 <para>Some maintenance documents include collections of business objects. Below is
                     an example from the RoutingRuleMaintenanceDocument data dictionary file from
@@ -2167,15 +2169,15 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     added to the collection and each of the new lines could be deleted (though lines
                     that had been previously saved and routed appropriately into the collection
                     could not be deleted).</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Alternate/Additional Display Properties</title>
             <para>Within the business object frameworks (lookup, inquiry, and maintenance document)
                 an alternate or additional property can be specified to display when a field is
                 read-only. These properties are configured through the data dictionary as
                 follows:</para>
-            <sect3>
+            <section>
                 <title>alternateDisplayAttributeName</title>
                 <para>This property specifies an attribute on the business object that should be
                     displayed instead of the field attribute when the view is read-only. The
@@ -2231,8 +2233,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     quickfinder or lookup URL will be built using the field property as usual. If
                     the field is editable or hidden, the value of the field property will be
                     used.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>additionalDisplayAttributeName</title>
                 <para>This property behaves much like the alternateDisplayAttibuteName, the only
                     difference being the value of the additionalDisplayAttributeName attribute will
@@ -2241,8 +2243,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>Neither the alternateDisplayAttibuteName nor additionalDisplayAttributeName
                     need to have an AttributeDefinition defined, however they must have an
                     accessible getter in the business object.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Automatic Translation of KualiCode fields</title>
                 <para>If enabled, fields that have references to a KualiCode class will be found and
                     the corresponding KualiCode name field will be set as the
@@ -2295,14 +2297,14 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>Note the Summarizable interface and SummarizableFormatter class were removed
                     as part of this work. If an application class implemented Summarizable it should
                     be changed to implement the KualiCode interface.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Dynamic read-only, hidden, and required Field states</title>
             <para>Within the KNS lookup and maintenance frameworks there is support for dynamically
                 altering the read-only, hidden, or required states of a field. This functionality is
                 configured through the data dictionary and java code as follows:</para>
-            <sect3>
+            <section>
                 <title>Conditional Logic</title>
                 <para>Any conditional logic that is necessary to determine whether a field should be
                     read-only, hidden, or required (and editable) is implemented with java code. For
@@ -2379,8 +2381,8 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
     }
     return hiddenPropertyNames;
 }</programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Trigger Fields</title>
                 <para>The second part to implementing conditional logic is indicating which fields
                     should trigger a refresh (page post) when its value changes. The page post will
@@ -2412,10 +2414,10 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
                     will not work correctly if fields are inserted between the field that triggered
                     a refresh and the next tab field (for instance if a field between these two was
                     hidden or read-only, and becomes editable on refresh).</para></note>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Configuring a KNS Client in Spring</title>
         <para>The Kuali Nervous System (KNS) is installed as a Rice Module using Spring. The primary
             source for configuring Spring in KNS is the KnsTestSpringBeans.xml file located in the
@@ -2442,7 +2444,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
             tokenization and the <emphasis role="bold">PropertyPlaceholderConfigurer</emphasis>
             bean, the parameter name must be equal to the key value in the Spring file so that the
             properties propagate successfully.</para>
-        <sect2>
+        <section>
             <title>Spring JTA Configuration</title>
             <para>When doing persistent messaging, it is best to use JTA as your transaction
                 manager. This ensure the messages you are sending are synchronized with the current
@@ -2471,15 +2473,15 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
                     >XAPoolDataSource</emphasis> class as your data source because it addresses some
                 bugs in the <emphasis role="bold">StandardXAPoolDataSource</emphasis>, which extends
                 from this class. </para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KNS Validation and Business Rules Framework</title>
         <para>When actions are performed on documents, there is typically some validation to
             accomplish on the document; indeed, a great deal of the business logic for client
             application is stored in document validations. The KNS supports a standard framework for
             validations as well as a way to display errors to application end users.</para>
-        <sect2>
+        <section>
             <title>Rules and Events</title>
             <para>KNS validations are performed by rules classes, which respond to a specific
                 application event. An event is an object which encapsulates contextual information
@@ -2568,21 +2570,21 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
                 “categoryId” attribute (meaning the error message will be displayed close to that
                 attribute) and that false is returned, meaning that the save is not carried
                 out.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Standard KNS Events</title>
             <para>There are eight common KNS events which apply to every document – maintenance and
                 transactional – built within client applications. For each, the KNS does an amount
                 of standard validation, while leaving customization points so client applications
                 can add more validation business logic. They are:</para>
             <para>
-                <table frame="none">
+                <table frame="none" pgwide="1" orient="land">
                     <title>KNS Events</title>
                     <tgroup cols="4">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
-                        <colspec colname="c4" colnum="4" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="1.1*"/>
+                        <colspec colname="c2" colnum="2" colwidth="0.5*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.62*"/>
+                        <colspec colname="c4" colnum="4" colwidth="0.6*"/>
                         <thead>
                             <row>
                                 <entry>Event</entry>
@@ -2664,8 +2666,8 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
                 org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase also contains a
                 number of useful utility methods which makes writing business rules for maintenance
                 documents easier.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Notifying Users of Errors</title>
             <para>When a validation results in some kind of text being displayed to the user,
                     <emphasis role="bold">GlobalVariables.getMessageMap()</emphasis> is used to
@@ -2685,8 +2687,8 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
                     <emphasis role="bold">java.text.MessageFormat</emphasis>.</para>
             <para>Further details about the use of User Messages can be found in the KNS User
                 Messages section.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Creating New Events</title>
             <para>While the vast majority of maintenance documents in client applications will not
                 have custom actions, it is common in transactional documents to have new events
@@ -2738,9 +2740,9 @@ public final class AddCashControlDetailEvent extends KualiDocumentEventBase {
             <programlisting>// apply rules for the new cash control detail
 rulePassed &amp;= ruleService.applyRules(new AddCashControlDetailEvent(ArConstants.NEW_CASH_CONTROL_DETAIL_ERROR_PATH_PREFIX, cashControlDocument, newCashControlDetail));</programlisting>
             <para>Now the new action will be validated properly.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KNS User Messages</title>
         <para>Functional users need a simple way to change wording of messages used throughout a KNS
             client application. Those messages may even be in a language foreign to that of the
@@ -2784,7 +2786,7 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
             application user message file redefines a user message using the same key, as so:</para>
         <programlisting>document.question.cancel.text=Canceling will lead to permanent disuse of this document.  Are you completely certain this is the action you want to take?</programlisting>
         <para>users will be treated to the longer, more worried user message.</para>
-        <sect2>
+        <section>
             <title>Retrieving User Messages</title>
             <para>Retrieving the text for user messages can be done in a number of ways, based on
                 the context the user message occurs in. The easiest use case is to get the text of
@@ -2801,8 +2803,8 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
                     >getPropertyAsBoolean</emphasis>, which translates the messages (regardless of
                 case) of “true”, “yes”, “on”, or “1” as a boolean true and everything else as a
                 false.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Error Messages</title>
             <para>The vast majority of user messages are warnings when an error occurs. Thankfully,
                 as was seen in the section on validations, the KNS handles error messages through
@@ -2814,8 +2816,8 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
                 be interpolated into the message.</para>
             <para>The message must be in the user messages file loaded by
                 KualiConfigurationService.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Struts Messages</title>
             <para>User messages are also available to the web layer of transactional documents and
                 user screens through the standard Struts <emphasis role="bold"
@@ -2839,14 +2841,14 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
                 advised to read Struts’ documentation of the feature: <link
                     xlink:href="http://struts.apache.org/1.2.x/userGuide/struts-bean.html"
                     >http://struts.apache.org/1.2.x/userGuide/struts-bean.html</link>.</para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 <!-- TODO: Section in original Word document
-    <sect1>
+    <section>
         <title>KNS Document Locking</title>
-    </sect1>
+    </section>
 -->    
-    <sect1>
+    <section>
         <title>KNS Questions and Dialogs</title>
         <para>Several use cases exist where extra document processing needs to occur between the
             submitting of a document for routing or approval and the validation on that document.
@@ -2856,7 +2858,7 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
             prompt can come up to ask if the submitter really meant to not enter the airline. If the
             answer is yes, the document will go on to validation; if the answer is no, then the
             document will return to allow the user to edit.</para>
-        <sect2>
+        <section>
             <title>Prompting Before Validation</title>
             <para>This kind of prompt is easily accomplished by giving the document an <emphasis
                     role="bold">org.kuali.rice.kns.rule.PromptBeforeValidation</emphasis>
@@ -2942,8 +2944,8 @@ public boolean doPrompts(Document document) {
             <para>There is no limit to the number of times <emphasis role="bold"
                     >super.askOrAnalyzeYesNoQuestion</emphasis> can be called in a single pre-rules
                 check; several questions can be chained together.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>HTML Markup</title>
             <para>In the question framework some markup support is present for formatting the
                 question text. This markup follows a custom syntax as opposed to HTML. Standard HTML
@@ -2998,9 +3000,9 @@ Example:
                 The question text is sent as one of the request parameters on the URL which is
                 limited by the browser supported max length. Keeping the text under 1000 characters
                 will be safe across all supported browsers.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Derived Values Setters</title>
         <para>What about those instances when a client application has a document that needs to set
             values based on user input but which do not require any further user prompts before the
@@ -3052,8 +3054,8 @@ Example:
                 >DerivedValuesSetter</emphasis> classes offer KNS client application developers the
             flexibility to prompt the user or set values on a document before that document goes
             into validation.</para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>KNS Notes and Attachments</title>
         <para>On most documents written for Rice client applications, there exists a tab at the
             bottom of the page, the Notes tab. This allows document editors to attach files to the
@@ -3093,8 +3095,8 @@ Example:
                 >attachments.directory</emphasis> configuration property; under that, each object
             gets its own subdirectory, with the name of the subdirectory based on the objectId of
             the business object.</para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>KNS Javascript Guide</title>
         <para>The KNS provides a number of ways to integrate Javascript into maintenance and
             transactional documents. A configuration parameter allows a core set of Javascript files
@@ -3132,7 +3134,7 @@ Example:
             this case of a maintenance document, the URL is /application-name/kr/maintenance.do and
             the javascript files are located under /application-name/scripts, hence the “..” in the
             directories.</para>
-        <sect2>
+        <section>
             <title>Integrating Javascript with KNS tags</title>
             <para>As will be covered in the KNS tags section, most controls in KFS documents are
                 rendered using the <emphasis role="bold">kul:htmlControlAttribute</emphasis> tag.
@@ -3149,8 +3151,8 @@ Example:
                     >org.kuali.rice.kns.web.ui.ExtraButton</emphasis> object to the text that should
                 appear in the button’s <emphasis role="bold">onclick</emphasis> call, the developer
                 gains the ability to react, with Javascript, to the button’s click.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Incorporating AJAX</title>
             <para>Finally, we want to make our maintenance documents as interactive as possible to
                 facilitate efficient user experience. In this example, KFS’s <emphasis role="bold"
@@ -3184,9 +3186,9 @@ Example:
                 code, the <emphasis role="bold">onblur_subFundGroup</emphasis> JavaScript function
                 will be called, and that should populate the name of the sub-fund group in the page
                 under the UI field.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KNS Data Masking</title>
         <para>It is very common for business objects to have fields which are not viewable to all
             users. The KNS provides very easy ways to mask fields throughout client
@@ -3310,8 +3312,8 @@ Example:
         <para>Further information about KIM permissions will be covered in KNS Authorizations. The
                 <emphasis role="bold">kul:htmlControlAttribute</emphasis> tag will be covered in the
             section on Tag Libraries.</para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>KNS Authorization</title>
         <para>In most client applications, there’s going to be a need to guard certain end users
             from certain functionality. Certain documents may be locked down and only accessible to
@@ -3367,7 +3369,7 @@ Example:
             documentPresentationControllerClass property. This is the same for maintenance documents
             as well. Once these are specified, the proper classes will be constructed at
             authorization invocation contexts automatically.</para>
-        <sect2>
+        <section>
             <title>Common Document Authorizations</title>
             <para>There are two authorizations which are common to all documents. In both cases, the
                 document presentation controller is called and then the authorizer if needed.</para>
@@ -3592,8 +3594,8 @@ Example:
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Maintenance Document Authorizations</title>
             <para>A couple of authorizations are specific to maintenance documents. The document
                 presentation controller and document authorizer diverge somewhat on which methods
@@ -3635,7 +3637,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             <para>Unlike most methods in MaintenanceDocumentAuthorizer, this method was actually
                 specified to be overridden. It returns a Set of the names of sections on a
                 maintenance document which may be read only based on the user.</para>
-            <sect3>
+            <section>
                 <title>Maintenance Document/Inquiry Authorizations</title>
                 <para>Because maintenance documents and inquiries are rendered using the same code,
                     authorizations which control that rendering are shared between the two. There
@@ -3673,9 +3675,9 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                         >Maintainable#getRows</emphasis> and <emphasis role="bold"
                         >Inquirable#getRows</emphasis>. The subject is otherwise outside the scope
                     of this document.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Transactional Document Authorizations</title>
             <para>There is only one major authorization which is added to
                 TransactionalDocumentPresentationController and TransactionalDocumentAuthorizer:
@@ -3723,8 +3725,8 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 permission associated with them: KR-NS Use Transactional Document. Expected
                 permission details are the document type and the name of edit mode (in this example,
                 “NO_EXTRA_SECTION”).</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Other Authorizations</title>
             <para>Finally, there are two permissions which do not affect documents but only business
                 objects. They are:<itemizedlist>
@@ -3748,8 +3750,8 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                                 forceInquiry)</emphasis>, depending on the use case. </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Overriding Document Authorizers</title>
             <para>Document authorizers handle their calls to Kuali Identity Management in standard
                 ways already. Because this side of authorizations mostly relies on KIM
@@ -3781,9 +3783,9 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 permission details and resolving the role, then the following method should be
                 overridden; it will add the attribute to both:</para>
             <programlisting>protected void addStandardAttributes(Document document, Map&lt;String, String> attributes)</programlisting>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KNS Exception Handling and Incident Reporting</title>
         <para>Any complex Java system are subject to the occurrences of exceptions. From missed
             assignments which cause NullPointerExceptions to network issues which cause
@@ -3838,8 +3840,8 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             the top stack trace of the exception which occurred.</para>
         <para>With this reporting mechanism, incidents are properly reported and can be responded to
             and fixed.</para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>KNS System Parameters</title>
         <para>Often times, there are changes in functionality in a client application which
             functional users want to have control over without an undue technical burden. For
@@ -3859,7 +3861,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             be helpful.</para>
         <para>It should be noted that the maintenance of System Parameters is only authorized to
             those granted the KR-NS Maintain System Parameter KIM permission.</para>
-        <sect2>
+        <section>
             <title>Getting text from a system parameter</title>
             <para>The data from a system parameter can be retrieved through the <emphasis
                     role="bold">ParameterService#getParameterValue</emphasis> method, using the
@@ -3918,8 +3920,8 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             <programlisting>final String parameterValue = KNSLocator.getParameterService().getParameterValue(this.getClass(), "SIMPLE_VALUE");</programlisting>
             <para>The parameterValue can then be used for whatever purpose the business logic
                 requires.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Using an indicator parameter</title>
             <para>An indicator parameter’s text is either “Y” or “N”; invoking that parameter as an
                 indicator parameter simply means that the text will be translated to its
@@ -3930,8 +3932,8 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
     // do something...
 }
 </programlisting>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Parameter Evaluators</title>
             <para>Using parameter text is fine if there is only one value in the text. However, very
                 often a parameter may need to be associated with several pieces of text.</para>
@@ -3998,8 +4000,8 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                     role="bold">ParameterService#getParameterValue()</emphasis> which takes in a
                 constrained value for parameters in the form of “A=B”; if given the value “A”, it
                 will simply return “B”.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Calling missing System Parameters</title>
             <para>All of the methods which use a parameter’s value – <emphasis role="bold"
                     >ParameterService#getParameterValue</emphasis>, <emphasis role="bold"
@@ -4026,8 +4028,8 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
                 parameter detail code of “document”. If that exists, then it returns the value of
                 that parameter. If it does not exist, it uses the more general KR-NS / Document /
                 EXAMPLE_VALUE parameter.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Overriding Rice Parameters</title>
             <para>Rice comes with a number of system parameters which affect KIM, the KNS, and KEW.
                 They have namespace codes “KR-IDM”, “KR-NS”, and “KR-WKFLW” respectively. These
@@ -4049,14 +4051,14 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
                 had an application namespace code matching that of the app.namespace configuration
                 property of the client application, then that would be used before the KR-NS / All /
                 DEFAULT_COUNTRY parameter with the “KUALI” application namespace.</para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 <!-- TODO: Section was in original Word Document as 'Topic Coming Soon'
-    <sect1>
+    <section>
         <title>KNS Help Framework</title>
-    </sect1>
+    </section>
 -->
-    <sect1>
+    <section>
         <title>Building Screens using the KNS Tag Libraries</title>
         <para>The Kuali Nervous System handles the rendering of several pieces of standard
             functionality: maintenance documents, inquiry pages, and lookups. However, that leaves
@@ -4066,7 +4068,7 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
             libraries.</para>
         <para>This section examines several categories of the most used tags that are provided by
         the KNS.</para>
-        <sect2>
+        <section>
             <title>Implicit Variables</title>
             <para>The KNS provides a number of implicit variables which can be used in the context
                 of JSP pages. These variables exist to give the web layer the ability to read
@@ -4105,8 +4107,8 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 is practically the most used.</para>
             <para>These implicit variables work together to support the various tags the KNS
                 provides.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Tags for Layout</title>
             <para>KNS applications have a standard look, and client application developers will want
                 to preserve that look. KNS layout tags provide an easy way to use the KNS look and
@@ -4216,8 +4218,8 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                     >KualiForm.editingMode</emphasis>.</para>
             <para>Armed with these visual layout tags, client application developers are ready to
                 start filling in pages with form controls.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Tags for Controls</title>
             <para>Certainly, controls can be hard coded in JSP files as HTML. However, the KNS
                 provides several tags which provide standard functionality to controls – thus
@@ -4339,8 +4341,8 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 >warningTitle</emphasis>, and <emphasis role="bold">infoTitle</emphasis> can also be
                 set to separate the message sections. Defaults are provided if these attributes are
                 not set.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Tags for KNS Functionality</title>
             <para>Developers of transactional documents or screens will often want to hook into KNS
                 functionality, such as inquiries and lookups. A set of tags makes this easily
@@ -4456,8 +4458,8 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
             <para>The <emphasis role="bold">kul:documentControls</emphasis> tag will then render all
                 of the extra buttons. Given its extra flexibility, this is the preferred method of
                 adding extra buttons.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Useful Pre-Created Tabs</title>
             <para>Finally, the KNS provides a number of tabs that happen to exist on most
                 documents.</para>
@@ -4471,6 +4473,6 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
 &lt;kul:routeLog /></programlisting>
             <para>The names of the tags are self-explanatory; and as easy as that, these three
                 standard tabs have been added to the document.</para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

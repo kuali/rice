@@ -18,9 +18,9 @@
 -->
 <chapter xml:id="UG_KEN" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEN</title>
-    <sect1>
+    <section>
         <title>Channels</title>
-        <sect2>
+        <section>
             <title>Notification Channel</title>
             <para>A notification channel is a communication stream used as a means to organize
                 notifications by topic or audience. Users and groups can subscribe to a channel to
@@ -71,12 +71,12 @@
                         </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Managing Channels</title>
             <para>There is no user interface page to manage channels at this time.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Notification Channel Subscriptions</title>
             <para>Subscribing to a notification channel causes all notifications sent on the channel
                 to be delivered to the subscriber, regardless of the list of users or groups
@@ -92,8 +92,8 @@
                         </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Managing Subscribers</title>
             <para>Users can manage their subscriptions to channels where the Subscription Flag is
                     <emphasis role="bold">Yes</emphasis> using the Channel Subscriptions form. On
@@ -102,7 +102,7 @@
             <figure><title>Notification Channel: Channel Subscriptions</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/channel_subscriptions.png"/>
+                        <imagedata fileref="../images/channel_subscriptions.png" scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </mediaobject></figure>
             <para>This displays the list of channels that allow the user to manage their
@@ -117,9 +117,9 @@
                 subscribe to a channel for which you are not already subscribed. Click the <emphasis
                     role="bold">Unsubscribe</emphasis> button to cancel your subscription to the
                 channel.</para>
-        </sect2>
-    </sect1>    
-    <sect1>
+        </section>
+    </section>    
+    <section>
         <title>Notification Priority</title>
         <para>The priority of a notification indicates its importance. It has no effect on how KEN
             processes the notification, but KEN can use it when delivering a message to determine
@@ -192,11 +192,11 @@
                     </tbody>
                 </tgroup>
             </table></para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Managing Priorities</title>
             <para>There is no user interface page to manage priorities, so changes to the list of
                 priorities must be made by a programmer using SQL. See the KEN section of the
                 Technical Reference Guide for further information on this topic.</para>
-    </sect1>    
+    </section>    
 </chapter>

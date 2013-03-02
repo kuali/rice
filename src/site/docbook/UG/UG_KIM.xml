@@ -18,7 +18,7 @@
 -->
 <chapter xml:id="UG_KIM" xmlns="http://docbook.org/ns/docbook" version="5.0">
   <title>KIM</title>
-  <sect1>
+  <section>
     <title>KIM Overview</title>
 
     <para>Kuali Identity Management (KIM) provides identity and access
@@ -41,7 +41,7 @@
       </mediaobject>
     </figure>
 
-    <sect2>
+    <section>
       <title>KIM Features</title>
       <itemizedlist>
         <listitem>
@@ -100,11 +100,11 @@
           </imageobject>
         </mediaobject>
       </figure>
-    </sect2>
-  </sect1>
-  <sect1>
+    </section>
+  </section>
+  <section>
     <title>Person</title>
-    <sect2>
+    <section>
       <title>Person Lookup</title>
 
       <para>Use the <emphasis role="bold">Person Lookup</emphasis> screen to
@@ -114,7 +114,7 @@
       screen, you can also link to screens where you can create new Persons
       and edit a Person’s information if you have permission to do so.</para>
 
-      <sect3>
+      <section>
         <title>Finding the Person Lookup Screen</title>
 
         <para>You can go to the <emphasis role="bold">Person Lookup</emphasis>
@@ -138,10 +138,10 @@
               <para>Click <emphasis role="bold">Person</emphasis></para>
             </listitem>
           </orderedlist></para>
-      </sect3>
-      <sect3>
+      </section>
+      <section>
         <title>Person Lookup Options</title>
-        <sect4>
+        <section>
           <title>From the Field Search Button</title>
 
           <para>If you clicked the field search button on another Kuali page
@@ -216,8 +216,8 @@
                 that person on the screen for you.</para>
               </listitem>
             </itemizedlist></para>
-        </sect4>
-        <sect4>
+        </section>
+        <section>
           <title>From the Administration Tab</title>
 
           <para>If you come to the <emphasis role="bold">Person
@@ -262,10 +262,10 @@
           information. For more information on working with Person
           information, see the <emphasis role="bold">Person
           Maintenance</emphasis> section (next) in this User Guide.</para>
-        </sect4>
-      </sect3>
-    </sect2>
-    <sect2>
+        </section>
+      </section>
+    </section>
+    <section>
       <title>Person Maintenance</title>
 
       <para>The Person Document allows you to identify and maintain each user
@@ -290,7 +290,7 @@
         (especially the affiliation and contact information) with data from an
         HR system.</para>
       </note>
-      <sect3>
+      <section>
         <title>Business Rules</title>
         <itemizedlist>
           <listitem>
@@ -312,15 +312,15 @@
             <para>Each affiliation must be associated with a Campus. </para>
           </listitem>
         </itemizedlist>
-      </sect3>
-      <sect3>
+      </section>
+      <section>
         <title>Routing</title>
 
         <para>Only people with the appropriate role can initiate routing for
         Person documents.</para>
-      </sect3>
-    </sect2>
-    <sect2>
+      </section>
+    </section>
+    <section>
       <title>Displaying the Person Lookup Screen</title>
 
       <para>On the <emphasis role="bold">Administration</emphasis> tab, click
@@ -329,7 +329,7 @@
       of Persons. Click any Person on the search results list to display his
       or her <emphasis role="bold">Person Document</emphasis> screen.</para>
 
-      <sect3>
+      <section>
         <title>Document Layout</title>
 
         <para>The Person Document includes <emphasis role="bold">Document
@@ -346,8 +346,8 @@
             </imageobject>
           </mediaobject>
         </figure>
-      </sect3>
-      <sect3>
+      </section>
+      <section>
         <title>Document Overview Tab</title>
 
         <para>The <emphasis role="bold">Document Overview</emphasis> tab
@@ -358,8 +358,8 @@
         <para>Additional information on the <emphasis role="bold">Document
         Overview Tab</emphasis> can be found in the Common Features and
         Functions section of this User Guide.</para>
-      </sect3>
-      <sect3>
+      </section>
+      <section>
         <title>Overview Tab</title>
 
         <para>The Overview tab identifies the <emphasis
@@ -385,13 +385,13 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <sect4>
+        <section>
           <title>Overview Section</title>
 
           <para><table frame="none">
               <title>Person Document: Overview Attributes</title>
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -451,8 +451,8 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-        <sect4>
+        </section>
+        <section>
           <title>Affiliations Section</title>
 
           <para>Use the <emphasis role="bold">Affiliations</emphasis> section
@@ -465,7 +465,7 @@
               Affiliations</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -542,7 +542,7 @@
               <title>Person Document: Overview Attributes, Affiliations
               Continued</title>
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -634,9 +634,9 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-      <sect3>
+        </section>
+      </section>
+      <section>
         <title>Contact Tab</title>
 
         <para>The <emphasis role="bold">Contact</emphasis> tab records the
@@ -655,7 +655,7 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <sect4>
+        <section>
           <title>Names Section</title>
 
           <figure>
@@ -673,7 +673,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -768,8 +768,8 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-        <sect4>
+        </section>
+        <section>
           <title>Addresses Section</title>
 
           <figure>
@@ -787,7 +787,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -859,8 +859,8 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-        <sect4>
+        </section>
+        <section>
           <title>Phone Numbers Section</title>
 
           <figure>
@@ -878,7 +878,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -947,9 +947,9 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Email Addresses Section</title>
 
           <figure>
@@ -968,7 +968,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1019,9 +1019,9 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-      <sect3>
+        </section>
+      </section>
+      <section>
         <title>Privacy Preferences Tab</title>
 
         <para>The <emphasis role="bold">Privacy Preferences</emphasis> tab
@@ -1041,7 +1041,7 @@
         <para><table frame="none">
             <title>Person Document: Privacy Preferences Tab Attributes</title>
             <tgroup cols="2">
-              <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+              <colspec colname="c1" colnum="1" colwidth="0.5*"/>
               <colspec colname="c2" colnum="2" colwidth="1.0*"/>
               <thead>
                 <row>
@@ -1083,8 +1083,8 @@
               </tbody>
             </tgroup>
           </table></para>
-      </sect3>
-      <sect3>
+      </section>
+      <section>
         <title>Membership Tab</title>
 
         <para>The <emphasis role="bold">Membership Tab</emphasis> allows you
@@ -1107,7 +1107,7 @@
         managing assignments to <emphasis role="bold">Groups</emphasis> and
         another for <emphasis role="bold">Roles</emphasis>.</para>
 
-        <sect4>
+        <section>
           <title>Groups Section</title>
 
           <para><table frame="none">
@@ -1115,7 +1115,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1176,8 +1176,8 @@
             To remove a person from a group, use the Active To Date field to
             specify a date in the past.</para>
           </note>
-        </sect4>
-        <sect4>
+        </section>
+        <section>
           <title>Roles Section</title>
 
           <para><table frame="none">
@@ -1185,7 +1185,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1249,25 +1249,25 @@
           qualifying information that further defines this person’s
           assignment. For more information on Roles see the Role Maintenance
           section in this User Guide.</para>
-        </sect4>
-      </sect3>
-    </sect2>
-    <sect2>
+        </section>
+      </section>
+    </section>
+    <section>
       <title>Ad Hoc Recipients Tab</title>
 
       <para>Ad Hoc Recipients tab information can be found in the Common
       Features and Functions section of this User Guide.</para>
-    </sect2>
-    <sect2>
+    </section>
+    <section>
       <title>Route Log Tab</title>
 
       <para>Route Log tab information can be found in the Common Features and
       Functions section of this User Guide.</para>
-    </sect2>
-  </sect1>
-  <sect1>
+    </section>
+  </section>
+  <section>
     <title>Group</title>
-    <sect2>
+    <section>
       <title>Group Lookup Screen</title>
       <para>The Group Lookup function provides a quick reference to key Group
       information.</para>
@@ -1317,8 +1317,8 @@
 
       <para>For information on any of the fields above, please refer to the
       <emphasis role="bold">Group Maintenance</emphasis> section below.</para>
-    </sect2>
-    <sect2>
+    </section>
+    <section>
       <title>Group Inquiry Screen</title>
 
       <para>This screen provides high-level information about a Group and
@@ -1338,19 +1338,19 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <sect3>
+      <section>
         <title>Overview Tab</title>
 
         <para>For information on these fields please refer to the <emphasis
         role="bold">Group Maintenance</emphasis> section that follows.</para>
-      </sect3>
-      <sect3>
+      </section>
+      <section>
         <title>Assignees Tab</title>
 
         <para><table frame="none">
             <title>Group Inquiry: Assignees Attributes</title>
             <tgroup cols="2">
-              <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+              <colspec colname="c1" colnum="1" colwidth="0.5*"/>
               <colspec colname="c2" colnum="2" colwidth="1.0*"/>
               <thead>
                 <row>
@@ -1391,9 +1391,9 @@
               </tbody>
             </tgroup>
           </table></para>
-      </sect3>
-    </sect2>
-    <sect2>
+      </section>
+    </section>
+    <section>
       <title>Group Maintenance Document</title>
 
       <para>The Group document allows you to associate Persons, Roles, or
@@ -1404,7 +1404,7 @@
       own. Only by associating a Group with a role do the members of that
       Group become associated with permissions and responsibilities.</para>
 
-      <sect3>
+      <section>
         <title>Creating New Groups</title>
 
         <para>If you are creating a new Group and have clicked the <emphasis
@@ -1428,7 +1428,7 @@
         <para><table frame="none">
             <title>KIM Type Lookup Search Attributes</title>
             <tgroup cols="2">
-              <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+              <colspec colname="c1" colnum="1" colwidth="0.5*"/>
               <colspec colname="c2" colnum="2" colwidth="1.0*"/>
               <thead>
                 <row>
@@ -1471,8 +1471,8 @@
         <para>To select the Type you want to use for your new Group, click the
         return value link for that Type. KIM will copy the Type information to
         use in creating your new Group.</para>
-      </sect3>
-      <sect3>
+      </section>
+      <section>
         <title>Group Maintenance Document: Layout</title>
         <para>The Group document includes these tabs:<itemizedlist>
             <listitem>
@@ -1506,7 +1506,7 @@
           </mediaobject>
         </figure>
 
-        <sect4>
+        <section>
           <title>Overview Tab</title>
 
           <para>This tab identifies the Group with a unique system-assigned ID
@@ -1528,7 +1528,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1577,8 +1577,8 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-        <sect4>
+        </section>
+        <section>
           <title>Assignees Tab</title>
 
           <para>This tab displays the members who belong to this Group. You
@@ -1607,7 +1607,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                 <thead>
                   <row>
@@ -1663,13 +1663,13 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-    </sect2>
-  </sect1>
-  <sect1>
+        </section>
+      </section>
+    </section>
+  </section>
+  <section>
     <title>Role</title>
-    <sect2>
+    <section>
       <title>Role Lookup Screen</title>
 
       <para>This screen provides detailed information relating to the
@@ -1697,7 +1697,7 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <sect3>
+      <section>
         <title>Document Layout</title>
 
         <para>This screen may have three or four tabs of information,
@@ -1722,10 +1722,10 @@
         <para>Information on the fields in all of these tabs can be found in
         the <emphasis role="bold">Role Maintenance</emphasis> section of this
         user guide.</para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Role Maintenance Document</title>
 
       <para>The Role Maintenance Document allows you to create a new KIM Role
@@ -1760,7 +1760,7 @@
           </listitem>
         </orderedlist></para>
 
-      <sect3>
+      <section>
         <title>Role Maintenance Document</title>
 
         <para>The Role document includes eight tabs:<itemizedlist>
@@ -1812,7 +1812,7 @@
           </mediaobject>
         </figure>
 
-        <sect4>
+        <section>
           <title>Overview Tab</title>
 
           <para>This tab gives the Role a unique system-assigned ID number, a
@@ -1834,7 +1834,7 @@
               <title>Role Maintenance Doucment: Overview Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -1891,9 +1891,9 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Creating New Roles</title>
 
           <para>You must search for and select an existing Type for KIM to
@@ -1918,9 +1918,9 @@
             results depending on the KIM Types that are appropriate for your
             task.</para>
           </note>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Permissions Tab</title>
 
           <para>This tab identifies the Permissions associated with this Role.
@@ -1942,7 +1942,7 @@
               <title>Role Maintenance Document: Permissions Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2000,7 +2000,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2066,9 +2066,9 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Responsibilities Tab</title>
 
           <para>This tab identifies the Responsibilities associated with this
@@ -2091,7 +2091,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2148,7 +2148,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2248,9 +2248,9 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Assigning Action Detail Values</title>
 
           <para>When you add a Responsibility with an <emphasis
@@ -2284,7 +2284,7 @@
               Section Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2357,9 +2357,9 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Assignees Tab</title>
 
           <para>This tab displays all members who belong to this Role. You may
@@ -2386,7 +2386,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2465,9 +2465,9 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Delegations Tab</title>
 
           <para>This tab defines and identifies Delegates associated with this
@@ -2503,7 +2503,7 @@
               Attributes</title>
 
               <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2609,15 +2609,15 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-    </sect2>
-  </sect1>
+        </section>
+      </section>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>KIM Type</title>
 
-    <sect2>
+    <section>
       <title>KIM Type Lookup</title>
 
       <para>Use this lookup when you create a new group in KIM to find the KIM
@@ -2640,7 +2640,7 @@
           <title>KIM Type Lookup Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2699,9 +2699,9 @@
       <emphasis role="bold">Lookup</emphasis> screen. To select the Type you
       want to use for your new group, click the <emphasis role="bold">return
       value</emphasis> link for it in the search results list.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>KIM Type Inquiry</title>
 
       <para>The KIM Type Inquiry screen provides details about a KIM Type data
@@ -2728,7 +2728,7 @@
           <title>KIM Type Inquiry Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2757,13 +2757,13 @@
             </tbody>
           </tgroup>
         </table></para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Responsibility</title>
 
-    <sect2>
+    <section>
       <title>Responsibility Lookup</title>
 
       <para>Similar to the Permission Lookup, you can use the Responsibility
@@ -2810,7 +2810,7 @@
           <title>Responsibility Lookup Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -2925,7 +2925,7 @@
           <title>Responsibility Lookup: Resutls Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -3009,9 +3009,9 @@
             </tbody>
           </tgroup>
         </table></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Responsibility Inquiry</title>
 
       <para>To view the <emphasis role="bold">Responsibility
@@ -3034,13 +3034,13 @@
 
       <para>The fields on this screen are documented in the Responsibility
       Lookup section above.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Permission</title>
 
-    <sect2>
+    <section>
       <title>Permission Lookup</title>
 
       <para>The Permission Lookup screen allows you to search for and view
@@ -3077,7 +3077,7 @@
           <title>Permission Lookup Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -3220,7 +3220,7 @@
           <title>Permission Lookup: Results Attributes</title>
 
           <tgroup cols="2">
-            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
 
             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
 
@@ -3243,9 +3243,9 @@
             </tbody>
           </tgroup>
         </table></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Permission Inquiry</title>
 
       <para>To view the <emphasis role="bold">Permission Inquiry</emphasis>
@@ -3267,9 +3267,9 @@
 
       <para>The fields on this screen are documented above in the <emphasis
       role="bold">Permission Lookup</emphasis> section.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Permission Template Inquiry</title>
 
       <para>This screen provides detailed information about a <emphasis
@@ -3291,9 +3291,9 @@
       <para>Information related to the fields on this screen can be found
       above, in the <emphasis role="bold">Permission Lookup</emphasis> section
       of this document.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Delivered Permission Templates</title>
 
       <para>Rice is delivered with a number of permission templates. Below is
@@ -4112,6 +4112,6 @@
             </tbody>
           </tgroup>
         </table></para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 </chapter>

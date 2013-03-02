@@ -18,7 +18,7 @@
 -->
 <chapter xml:id="UG_KEW" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEW</title>
-    <sect1>
+    <section>
         <title>Kuali Enterprise Workflow: Overview</title>
         <para>Kuali Enterprise Workflow, or KEW, is a module of Kuali Rice. KEW provides useful
             features for automatically sending documents to people for approval or action using
@@ -76,7 +76,7 @@
             or attachments.</para>
         <para><emphasis role="bold">Information Sources</emphasis>: <link
                 xlink:href="http://kew.kuali.org/">http://kew.kuali.org/</link></para>
-        <sect2>
+        <section>
             <title>What is KEW?</title>
             <para>Kuali Enterprise Workflow provides a common routing and approval engine that
                 facilitates the automation of electronic processes across the enterprise. The
@@ -87,8 +87,8 @@
                 approval, workflow can also automate process to process related flows. Each process
                 instance is assigned a unique identifier that is global across the organization.
                 Workflow keeps a permanent record of all processes and their participants.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KEW Features</title>
             <itemizedlist>
                 <listitem>
@@ -197,8 +197,8 @@
                         designed with Spring based integration in mind. </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Why Use KEW?</title>
             <para>
                 <itemizedlist>
@@ -218,9 +218,9 @@
                     </listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-    </sect1>
-    <sect1 xml:id="peopleflow_ug_kew">
+        </section>
+    </section>
+    <section xml:id="peopleflow_ug_kew">
         <title>PeopleFlow - a new KEW feature</title>
         <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept included in the
             original Coeus. For all intents and purposes it's a prioritized list of people to send
@@ -240,7 +240,7 @@
         <para>KRMS is also a new feature in Rice 2.0.  See the KRMS Users' Guide for more
         information on KRMS.  </para>
         
-        <sect2>
+        <section>
             <title>Creating a new PeopleFlow</title>
         <para>You can define a PeopleFlow (simple workflow) via a maintenance document.  In the
             Kuali Rice portal on the main tab there is a Workflow category, and PeopleFlow is in
@@ -251,7 +251,7 @@
             <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/KEW-PeopleFlowOnMainTabInPortal.png"
-                        scalefit="1"/>
+                        contentwidth="400"/>
                 </imageobject>
             </mediaobject>
             </figure>
@@ -263,7 +263,7 @@
                 <title>PeopleFlow Lookup</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KEW-PeopleFlowLookup.png" scalefit="1" contentwidth="640"/>
+                    <imagedata fileref="../images/KEW-PeopleFlowLookup.png" scalefit="1" contentwidth="400"/>
                 </imageobject>
             </mediaobject>
             </figure>
@@ -276,7 +276,7 @@
                 <title>PeopleFlow - Create New</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlowCreateNew.png" scalefit="1" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowCreateNew.png" scalefit="1" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -291,7 +291,7 @@
                 <title>PeopleFlow - Create New (with additional type attributes)</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlowCreateNewWithType.png" scalefit="1" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowCreateNewWithType.png" scalefit="1" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -303,7 +303,7 @@
                 <title>PeopleFlow - Create New - with 2 stops added</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlowAddingStops.png" scalefit="1" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowAddingStops.png" scalefit="1" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>   
@@ -314,12 +314,12 @@
                 integrated with the new Kuali Rules Management System (KRMS), with KEW workflows, or
                 with other custom-built applications.</para>
        
-        </sect2>
+        </section>
         
-    </sect1>    
-    <sect1>
+    </section>    
+    <section>
         <title>Actions</title>
-        <sect2>
+        <section>
             <title>Action List Guide</title>
             <para>The <emphasis role="bold">Action List</emphasis> page includes your: <itemizedlist>
                     <listitem>
@@ -345,7 +345,7 @@
                 <title>Kuali Portal: Action List Button</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/kfs_kew.png" scalefit="1"/>
+                        <imagedata fileref="../images/kfs_kew.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -556,7 +556,7 @@
                             <title>Action List</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/action_list.png" scalefit="1"/>
+                                    <imagedata fileref="../images/action_list.png" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -573,7 +573,7 @@
                             <title>Route Log</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/route_log.png" scalefit="1"/>
+                                    <imagedata fileref="../images/route_log.png" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -602,8 +602,8 @@
                 enable this feature to users who have active routing requests. Examples of such
                 roles are KR-WKFLW Approve Request Recipient and KR-WKFLW Acknowledge Request
                 Recipient.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Action List Preferences</title>
             <para>You can customize the appearance and features of your Action List using the
                 Action List Preferences page on KEW. To display this page, click the Preferences
@@ -612,7 +612,7 @@
             <figure><title>Action List: Preferences Button</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_page.png"/>
+                        <imagedata fileref="../images/action_list_page.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -622,17 +622,17 @@
             <figure><title>Action List Preference Page</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_preferences.png"/>
+                        <imagedata fileref="../images/action_list_preferences.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
             <para>The Action List Preferences page has four sections:</para>
-            <sect3><title>Action List Preferences: General Section</title>
+            <section><title>Action List Preferences: General Section</title>
             <figure>
                 <title>Action List Preferences: General section</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_preferences_general.png"/>
+                        <imagedata fileref="../images/action_list_preferences_general.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -667,15 +667,15 @@
                     </listitem>
                 </itemizedlist>
             </para>
-            </sect3>
-            <sect3><title>Action List Preferences: Fields Displayed</title>
+            </section>
+            <section><title>Action List Preferences: Fields Displayed</title>
                         <figure>
                             <title>Action List Preferences: Fields Displayed section</title>
                             <mediaobject>
                                 <imageobject>
                                     <imagedata
                                         fileref="../images/fields_displayed_in_action_list.png"
-                                        scale="85"/>
+                                        scale="85" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject></figure>
                     <itemizedlist>
@@ -687,14 +687,14 @@
                             to un-checkmark it, and vice versa.)</para>
                        </listitem>
                     </itemizedlist>
-            </sect3>
-            <sect3><title>Action List Preferences: Document Route Status Colors</title>
+            </section>
+            <section><title>Action List Preferences: Document Route Status Colors</title>
                         <figure>
                             <title>Action List Preferences: Document Route Status Colors Section</title>
                             <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/document_route_status_colors.png"
-                                        scale="85"/>
+                                        scale="85" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -721,7 +721,7 @@
             <figure><title>Action List Preferences: Document Route Status Colors Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_preferences2.png"/>
+                        <imagedata fileref="../images/action_list_preferences2.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -731,16 +731,16 @@
             <figure><title>Action List Preferences: Document Route Status Colors Action List Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/document_route_status_colors_exp.png"/>
+                        <imagedata fileref="../images/document_route_status_colors_exp.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
-            </sect3>
-            <sect3><title>Action List Preferences: Email Notifications</title>
+            </section>
+            <section><title>Action List Preferences: Email Notifications</title>
             <figure><title>Action List Preferences: Email Notifications Preferences</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_prefs_email_settings.png"/>
+                        <imagedata fileref="../images/action_list_prefs_email_settings.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>            
@@ -794,7 +794,7 @@
                 <title>Action List Preferences: Document Type Notifications</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/document_type_notifications.png"/>
+                        <imagedata fileref="../images/document_type_notifications.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>    
@@ -822,7 +822,7 @@
                 <title>Action List Preferences: Action Requested Email Notification</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_requested_email_notification.png"/>
+                        <imagedata fileref="../images/action_requested_email_notification.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure> 
@@ -836,18 +836,18 @@
                 </itemizedlist></para>
             <para>Remember, all of these preferences and settings are on your Action List
             Preferences page.</para>
-            </sect3>
-        </sect2>
-        <sect2><title>Action List Refresh and Filter</title>
-            <sect3>
+            </section>
+        </section>
+        <section><title>Action List Refresh and Filter</title>
+            <section>
                 <title>Refresh</title>
                 <para>As described above, you can use the Action List Preferences page to tell
                     KEW to automatically update (refresh) the information on your Action List on
                     a regular schedule, such as every 15 minutes. You can also click the Refresh
                     button near the top of your Action List page to update the page at any time.
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Filter</title>
                 <para>If you have a large Action List, the Filter function can help you by
                     displaying only action requests of certain types. To use the Filter
@@ -858,12 +858,12 @@
                 <figure><title>Action List Filter Page</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/action_list_filter.png"/>
+                            <imagedata fileref="../images/action_list_filter.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Keys to using the Action List Filter:</title>
                 <itemizedlist>
                     <listitem>
@@ -913,8 +913,8 @@
                     document title. If you type it as travel doc 2, then the filter
                     won’t recognize this document because the capitalization is
                     different. </para></note>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Filter Criteria:</title>
                 <itemizedlist>
                     <listitem>
@@ -1028,7 +1028,7 @@
                                             <imageobject>
                                                 <imagedata
                                                   fileref="../images/document_type_lookup.png"
-                                                  scale="85"/>
+                                                  scale="85" contentwidth="400"/>
                                             </imageobject>
                                         </mediaobject>
                                     </figure>
@@ -1059,7 +1059,7 @@
                         <figure><title>Date Widget</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/date_created.png" scale="85"/>
+                                    <imagedata fileref="../images/date_created.png" scale="85" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -1073,15 +1073,15 @@
                             above.</para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Clear Filter</title>
                 <para>When you have used a filter on your Action List, you can see a Clear
                     Filter button at the top of your page:</para>
                 <figure><title>Action List: Clear Filter Button</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/action_list_old.png"/>
+                            <imagedata fileref="../images/action_list_old.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1090,12 +1090,12 @@
                     button.</para></note>
                 <para>Remember, you can click the Filter button at the top of your Action List
                     page to return to the Filter page and change or Reset your filters.</para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Action Requests and Actions Guide </title>
-        <sect2>
+        <section>
             <title>Overview</title>
             <para>Action Requests are one of the core functions of the Kuali Enterprise Workflow
                 (KEW) system. An Action Request is a call from KEW to a person or group to take
@@ -1111,8 +1111,8 @@
             <para>The path that the document takes from its starting point to final approval is
                 called its route. Each point along that path where a person needs to do something
                 with the document (approve, acknowledge, etc.) is called a node on the route.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Types of Action Requests</title>
             <para>Each action request has one row on your Action List. There are five types of
                 Action Requests:</para>
@@ -1192,8 +1192,8 @@
             </para>
             <para>There are other actions that you can take in addition to Action Requests. We will
                 look at those in the Action Taken section below.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Action Request Recipients</title>
             <para>Every action request has a recipient. The recipient is the individual or group of
                 individuals whose action is requested on the document. There are three types of recipients:<orderedlist>
@@ -1212,8 +1212,8 @@
                 request. Role requests can be set up to work the same way as Group requests or to
                 require that everyone in that Role approves the document before the request is
                 satisfied.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Action Request Hierarchies</title>
             <para>In certain situations, you can use roles for action requests and you can delegate
                 action requests. You can think of these as trees or as a parent action request that
@@ -1225,7 +1225,7 @@
                 action requests that go to each person or group in that role. </para>
             <para>The parent role request can have any number of children requests that are each
                 either a user request or a group request.</para>
-            <sect3>
+            <section>
                 <title>Action Request Delegation</title>
                 <para>In KEW, you may delegate, or give, your request authority to other people. For
                     example, if Joe is the fiscal officer for an account but he doesn't actually
@@ -1234,8 +1234,8 @@
                 <para>If Jane approves a document as Joe’s delegate, Joe's action request is
                     satisfied. If Joe approves the document, Jane's action request is satisfied.
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Combining Role Requests and Delegation</title>
                 <para>You can combine a role request with a delegate. In fact, in the previous
                     example, the action request that is sent to Joe as a fiscal officer is really a
@@ -1243,17 +1243,17 @@
                 <figure><title>Delegation Tree Example</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/action_request_tree.png"/>
+                            <imagedata fileref="../images/action_request_tree.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
                 <para>This tree is three levels deep and shows a role delegating to a user. You can
                     also have a role delegate to another role.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Action Request Activation and Deactivation</title>
-            <sect3>
+            <section>
                 <title>Activation</title>
                 <para>When action requests are created, they are in the Initialized state. They stay in
                     this state until KEW determines that they need to be Activated. When a request
@@ -1285,8 +1285,8 @@
                         must approve the docusment before the entire request is deactivated. (See
                         Deactivation below.)</para>
                 </note>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Deactivation</title>
                 <para>When a user takes action on a document, that action may start the deactivation
                     of other action requests on the document. For example, if Joe has a pending
@@ -1303,7 +1303,7 @@
                 <figure><title>Delegation Tree Example: Deactivation</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/deactivation_flow.png"/>
+                            <imagedata fileref="../images/deactivation_flow.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1317,9 +1317,9 @@
                     there are two other requests that still need to be satisfied, the Deactivation
                     cannot go back to the parent role request. When the last of the three users has
                     taken action, the parent role request is Deactivated.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Actions and Action Takens</title>
             <para>Actions are how a user interacts with KEW. Actions can be performed in response to
                 an Action Request (such as an Approve action) or they can be user-initiated (such as
@@ -1389,7 +1389,7 @@
                             </itemizedlist></para>
                     </listitem>
                 </itemizedlist></para>
-            <sect3>
+            <section>
                 <title>Acknowledge Action</title>
                 <para>Use this action to satisfy an Acknowledge action request. When you take an
                     Acknowledge action, it usually means that you have examined the document.
@@ -1400,8 +1400,8 @@
                     records an Acknowledge Action Taken and associates it with the Deactivated
                     requests. You may take an Acknowledge action even if you have no Acknowledge
                     Action Requests.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Approve Action</title>
                 <para>Use this action to satisfy an Approve or Complete action request. When you use
                     an Approve action, it means that you have looked at the document and approve
@@ -1410,8 +1410,8 @@
                     complete requests that have been routed to you for this document. You may take
                     an Approve action even if you have no Approve or Complete action
                     requests.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Blanket Approve Action</title>
                 <para>Use the Blanket Approve action to force a document to complete a set of action
                     requests. This allows certain users to "push" a document through its routing. To
@@ -1426,8 +1426,8 @@
                     request was satisfied by the Blanket Approve. It does this for all levels in the
                     request tree until it reaches the end point set in the Blanket Approve Action or
                     it reaches the end of the request tree.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Cancel Action</title>
                 <para>Use this action when a document is no longer valid and you need to cancel it.
                     You must have a pending Approve or Complete action request on the document
@@ -1437,8 +1437,8 @@
                     and Deactivates them. It records a Cancel Action Taken and associates it with
                     the Deactivated requests. Then it sets the document's status to CANCELLED and
                     the document is effectively dead.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Clear FYI Action</title>
                 <para>Use this action to satisfy an FYI action request. You usually get an FYI just
                     to notify you about a document. You don’t need to take any action on an FYI
@@ -1448,8 +1448,8 @@
                     this document that are routed to you and Deactivates them. It then records an
                     FYI Action Taken. You must have a pending FYI request on a document to use the
                     Clear FYI action.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Complete Action</title>
                 <para>Use this action to satisfy an Approve or Complete action request. When you use
                     a Complete, it means that you have looked at the document and completed any of
@@ -1461,8 +1461,8 @@
                     Exception state, it changes it back to Enroute. It then records a Complete
                     Action Taken. You may take a Complete action even if you have no Complete or
                     Approve action requests.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Create Document Action</title>
                 <para>This action creates a new document in KEW of the chosen Document Type. This
                     action does not record an Action Taken of any sort but simply begins a new
@@ -1470,8 +1470,8 @@
                     status. The Document type determines how the document is routed and what must be
                     done for it. For example, an expense report might be routed (sent) to two or
                     three different people for approval before it is paid.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Disapprove Action</title>
                 <para>When you have an Approve action request, you use a Disapprove action if the
                     document does not meet the approval criteria. You must have a pending Approve or
@@ -1484,21 +1484,21 @@
                     previous nodes. It also sends an Acknowledge notification request to the
                     initiator of the document. Then the document's status is set to Disapproved and
                     the document is effectively dead.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Log Document Action</title>
                 <para>This action simply enters a message on the document. It records an Action
                     Taken but it is never associated with any action requests. This action displays
                     a message on the document in the Route Log.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Move Document Action</title>
                 <para>This action moves a document either backward in the route path or forward.
                     Moving the document backward works like the Return to Previous Node action and
                     moving the document forward works like a Blanket Approve action. The difference
                     between these is that the Action Taken is recorded as a Move action. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Return to Previous Node Action</title>
                 <para>Use this action to move a document to a previous node in the route. You must
                     have a pending Approve or Complete request on the document before you can use
@@ -1511,8 +1511,8 @@
                     erasing them. KEW then sends the document through again to recreate requests on
                     the target node. This way a document is "returned" to a previous node, rolling
                     it back to its previous state at that point in the route.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Route Document Action</title>
                 <para>Use the Route Document action to route an Initialized or Saved document to
                     other users. Only the initiator of the document can take this action unless the
@@ -1522,32 +1522,32 @@
                 <para>When you use the Route Document action, it Deactivates all pending requests
                     for the initiator of the document and it associates a Complete Action Taken with
                     the Deactivated requests. The document’s state is then set to Enroute.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Save Document Action</title>
                 <para>Use this action to put a newly created document in the Action List of the
                     document’s initiator. You can only use this action on a document in an Initiated
                     status. When you use this action, KEW creates and Activates a Complete action
                     request for the document’s initiator and then changes the document’s status to
                     Saved.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Recall</title>
                 <para>Use this action to recall a doucment that has been submitted to your action list. 
                     You can only use this action on a document if you have a specific role for the application
                     and/or document you are trying to recall. When you use this action, you are given the option 
                     to recall the document to your action list for updating or you can recall and cancel the doucment
                     with one action if it is no longer needed.</para>
-            </sect3>            
-            <sect3>
+            </section>            
+            <section>
                 <title>Superuser Actions </title>
                 <para>Superuser actions let you move a document past workflow nodes where it may be
                     held up because another user is unavailable to take action on it or due to a
                     system problem. Superuser actions are an administrative tool and safety net.
                     Superusers are designated with a KIM Permission (or they are listed in the
                     Document Type, but this feature is deprecated). </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Using the Superuser Functions</title>
                 <para>To use the Superuser functions, go to Document Search (it is a link in the
                     left menu) and click the Superuser Search link.</para>
@@ -1556,50 +1556,50 @@
                     Id link. If you are authorized to perform a Superuser action on this document,
                     this takes you to the Superuser page. Otherwise, KEW displays a message that you
                     are not authorized to take Superuser action on this document.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Superuser Approve Document Action</title>
                 <para>This action fully approves a document, Deactivating all remaining routing
                     requests. KEW also records a Superuser Approve Action Taken and associates it
                     with the Deactivated requests. The document's state changes to Approved and the
                     document is scheduled for processing. The document status automatically changes
                     to Final when it goes into the Workflow Engine. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Superuser Approve Node Action</title>
                 <para>This action approves the document through all nodes up to (but not including)
                     a specified node. When the document gets to the specified node, requests are
                     created as usual. This action is exactly the same as Blanket Approve except that
                     no notification requests are created from the Superuser Approve Node
                     action.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Superuser Approve Request Action</title>
                 <para>This action approves a single pending Approve or Complete action request. This
                     works the same way as a standard Approve action except that the Superuser is
                     acting in place of the responsible user.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Superuser Cancel Action</title>
                 <para>This action cancels the document. This action works exactly the same way as
                     the standard Cancel action except that the Superuser does not need to have a
                     pending request to Cancel a document.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Superuser Disapprove Action</title>
                 <para>This action disapproves the document. This action works the same way as the
                     standard Disapprove action except that the Superuser does not need to have a
                     pending request to perform the action. Also, on a Superuser disapprove, KEW does
                     not send notification requests.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Superuser Return to Previous Node Action</title>
                 <para>This action returns the document to a previous node in the route path. This
                     action works exactly the same way as the standard Return to Previous Node action
                     except that the Superuser does not need to have a pending request to perform the
                     action.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Superuser Quick Action's Tab</title>
                 <para>With the relese of Rice 2.1 a new option is avaialbe for applications to enable. 
                     Superuser's can now access documents directly from the standard document search 
@@ -1616,16 +1616,16 @@
                 <figure><title>New Superuser Tab Example</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/new_superuser_tab.png"/>
+                            <imagedata fileref="../images/new_superuser_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-            </sect3>
-        </sect2>    
-    </sect1>
-    <sect1>
+            </section>
+        </section>    
+    </section>
+    <section>
         <title>Documents</title>
-        <sect2>
+        <section>
             <title>eDocLite Overview</title>
             <para>eDocLite is a framework designed for rapid development and implementation within
                 an existing Kuali Enterprise Workflow infrastructure. It allows for the development
@@ -1667,8 +1667,8 @@
                     </listitem>
             </itemizedlist></para>
             </note>    
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>eDocLite Lookup</title>
             <para>Use the <emphasis role="bold">eDocLite Lookup</emphasis> screen to quickly find
                 basic information about eDocLite documents and as the first step in creating a new
@@ -1676,10 +1676,10 @@
             <figure><title>Workflow Channel: eDocLite Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/edoclite_link.png"/>
+                        <imagedata fileref="../images/edoclite_link.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject></figure>
-            <sect3>
+            <section>
                 <title>Finding the eDocLite Lookup Screen</title>
                 <para>You can go to the <emphasis role="bold">eDocLite Lookup</emphasis> by:<orderedlist>
                         <listitem>
@@ -1692,13 +1692,13 @@
                             <para>Click eDoc Lite </para>
                         </listitem>
                     </orderedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>eDocLite Lookup</title>
                 <figure><title>eDocLite Lookup</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/edoclite_lookup.png"/>
+                            <imagedata fileref="../images/edoclite_lookup.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1751,7 +1751,7 @@
                 <figure><title>eDocLite Lookup: Search Results</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/search_results.png"/>
+                            <imagedata fileref="../images/search_results.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1835,14 +1835,14 @@
                             <para>New Course Request </para>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>eDocLite Inquiry</title>
             <figure><title>eDocLite Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/edoclite_inquiry.png"/>
+                        <imagedata fileref="../images/edoclite_inquiry.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1850,8 +1850,8 @@
                 Lookup output, but this screen provides you with the export option. Exporting from
                 the Inquiry screen produces a XML file of the source for the eDocLite
                 document.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Create New eDocLite Document</title>
             <para>To create a new eDocLite document to be routed in KEW, click on <emphasis
                     role="bold">Create Document</emphasis> in the row for eDocLite type wanted. It
@@ -1867,7 +1867,7 @@
                         <para>Routing action and annotation, and note area </para>
                     </listitem>
                 </itemizedlist></para>
-            <sect3>
+            <section>
                 <title>Document Header</title>
                 <para>The Document Header contains the following fields: <table frame="none">
                         <title>Document Header Attributes</title>
@@ -1902,8 +1902,8 @@
                             </tbody>
                         </tgroup>
                     </table></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Document body</title>
                 <para>This portion of the document is where the user identifies the routing and
                     complete business function. </para>
@@ -1938,8 +1938,8 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Routing Action and Annotation, and Note area</title>
                 <para>This area is used to add annotation and choose action to be taken on this
                     eDocLite document. Annotation is the comments associated with the routing
@@ -2000,19 +2000,19 @@
                 <para>The following is one example of an eDocLite form:</para>
                 <para><inlinemediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/edoclite_form.png"/>
+                            <imagedata fileref="../images/edoclite_form.png" contentwidth="400"/>
                         </imageobject>
                     </inlinemediaobject></para>
                 <note><para>Notes that have been added to an eDocLite document can be edited or
                     deleted.</para></note>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Extendable functions</title>
                 <para>eDocLites are highly customizable. New eDocLites can be designed for new
                     business and functional requirements. The document header and routing annotation
                     and notes parts will be same or similar, the form will be different. </para>
                 <para>eDocLites can be designed to include following functions:</para>
-                <sect4>
+                <section>
                     <title>Restricted read/write rights</title>
                     <itemizedlist>
                         <listitem>
@@ -2030,26 +2030,26 @@
                                 such as modify, add, and return to a former routing node.</para>
                         </listitem>
                     </itemizedlist>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Hidden fields</title>
                     <para>To accommodate some business requirements, certain fields and notes can be
                         hidden from certain nodes in the routing process. For instance, some
                         administrative notes on a course waiver request will be hidden from students
                         when s/he gets the eDocLite form in the final stage of the routing
                         process.</para>
-                </sect4>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+                </section>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Preferences</title>
         <para>Workflow allows for users to individually configure certain aspects of the system. You
             should be able to access the User Preferences from the Main portal page:</para>
         <figure><title>Workflow Channel: User Preferences Link</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/select_user_preferences.png"/>
+                    <imagedata fileref="../images/select_user_preferences.png" contentwidth="400"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -2057,12 +2057,12 @@
         <figure><title>Workflow Preferences</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/workflow_preferences.png"/>
+                    <imagedata fileref="../images/workflow_preferences.png" contentwidth="400"/>
                 </imageobject>
             </mediaobject>
         </figure>
         <para>There are three configuration sections on this screen:</para>
-        <sect2>
+        <section>
             <title>General Preferences</title>
             <note><para>Many of these preferences can have their system wide default values changed via
                 configuration parameters. Look in the KEW technical documentation for information on
@@ -2071,7 +2071,7 @@
                 <table frame="none">
                     <title>User Preferences Attributes</title>
                     <tgroup cols="3">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="1.2*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.14*"/>
                         <colspec colname="c3" colnum="3" colwidth="2.41*"/>
                         <thead>
@@ -2137,8 +2137,8 @@
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Fields Displayed in Action List Preferences</title>
             <para>These are the columns that will be displayed on the user’s action list
                 page.</para>
@@ -2211,21 +2211,21 @@
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Document Route Status Colors for Action list Entries</title>
             <para>Each Document Route Status can be displayed with a certain color on the action
                 list. This section allows you to configure which colors are used. By default, no
                 colors are set.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Routing</title>
         <para><emphasis role="bold">Please Note:</emphasis> The following secitons on routing and
             rules are written as they relate the legacy/traditional KNS workflow. A new concept of
             workflows, called PeopleFlows, and their use and maintenance is covered in a separate
             section.</para>
-        <sect2>
+        <section>
             <title>Delegate Rules and Delegation Routing Rules</title>
             <para>Rice provides a quick and convenient way to obtain information on Delegation Rules
                 through the <emphasis role="bold">Delegate Rule Lookup</emphasis>. This Lookup also
@@ -2234,7 +2234,7 @@
             <figure><title>Workflow Channel: Routing Rules Delegation Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/routing_rules_delegation.png"/>
+                        <imagedata fileref="../images/routing_rules_delegation.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2244,7 +2244,7 @@
             <figure><title>Delegation Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/delegate_rule_lookup.png"/>
+                        <imagedata fileref="../images/delegate_rule_lookup.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2284,7 +2284,7 @@
             <figure><title>Delegation Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rules_list.png"/>
+                        <imagedata fileref="../images/rules_list.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2312,13 +2312,13 @@
             <para>The standard export options apply to this list of search results. An explanation
                 of the export options can be found in the Common Features and Functions section of
                 this User Guide.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Delegation Rule Inquiry</title>
             <figure><title>Delegation Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/delegation_rule_inquiry.png"/>
+                        <imagedata fileref="../images/delegation_rule_inquiry.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2328,13 +2328,13 @@
                 export an XML version of this information.</para>
             <para>The fields on this screen are described in the Rule Maintenance section of this
                 document.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Delegate Routing Rule Creation</title>
             <figure><title>Delegation Rule: Create New Screen</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/delegate_routing_rule_creation.png"/>
+                        <imagedata fileref="../images/delegate_routing_rule_creation.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2358,7 +2358,7 @@
                                 <imageobject>
                                     <imagedata
                                         fileref="../images/delegate_routing_rule_creation2.png"
-                                        scale="85"/>
+                                        scale="85" contentwidth="400"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -2384,8 +2384,8 @@
                             (next).</para>
                     </listitem>
                 </orderedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Routing Rule Delegation Maintenance</title>
             <para>You can use the <emphasis role="bold">Routing Rule Delegation</emphasis> document
                 screen for both editing existing Delegation Rules and for adding new Delegation
@@ -2393,7 +2393,7 @@
             <figure><title>Routing Rule Delegation: Overview</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/routing_rule_delegation.png"/>
+                        <imagedata fileref="../images/routing_rule_delegation.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2401,7 +2401,7 @@
                     Delegation</emphasis> screen, all of the tabs except the Notes and Attachments,
                 Ad Hoc Recipients, and Route Log tabs, are expanded. They are all collapsed in the
                 screen print above so you can see all of them.</para></note>
-            <sect3>
+            <section>
                 <title>Document Layout</title>
                 <para>The Routing Rule Delegation screen you see when creating a new Rule has eight tabs:<itemizedlist>
                         <listitem>
@@ -2434,8 +2434,8 @@
                     discussed in the sections that follow. The remaining four tabs are commonly used
                     throughout Rice and are described in the Common Features and Functions section
                     of the User Guide.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Delegation Details Tab</title>
                 <para>The Delegation Details tab is where you associate a Parent Rule with a
                     Delegate Rule. It is also where you assign the Reviewer role.</para>
@@ -2445,7 +2445,7 @@
                 <figure><title>Routing Rule Deleation: Details Section</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/delegation_details.png"/>
+                            <imagedata fileref="../images/delegation_details.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2458,7 +2458,7 @@
                 <figure><title>Routing Rules Delegation: Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/copying_rules.png"/>
+                            <imagedata fileref="../images/copying_rules.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2471,7 +2471,7 @@
                     <table frame="none">
                         <title>Routing Rules Delegation Attributes</title>
                         <tgroup cols="2">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
@@ -2519,8 +2519,8 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Delegate Rule tab</title>
                 <para>The Delegate Rule tab is displayed differently, depending on whether you are
                     creating a new Rule or editing/copying a Rule. The version you see when creating
@@ -2528,7 +2528,7 @@
                 <figure><title>Routing Rules Delegation: Delegate Rule Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/delegate_rule.png"/>
+                            <imagedata fileref="../images/delegate_rule.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2539,7 +2539,7 @@
                 <figure><title>Routing Rule Delegation: Delegate Rule Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/delegate_rule_copy.png"/>
+                            <imagedata fileref="../images/delegate_rule_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2552,7 +2552,7 @@
                     <table frame="none">
                         <title>Routing Rule Delegation: Delegate Rule Tab Attributes</title>
                         <tgroup cols="2">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
@@ -2638,8 +2638,8 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Persons tab</title>
                 <para>Rice displays the <emphasis role="bold">Persons</emphasis> tab differently,
                     depending on whether you are creating a new Rule or editing/copying a Rule. This
@@ -2649,7 +2649,7 @@
                 <figure><title>Routing Rules Delegation: Persons Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/persons_tab.png"/>
+                            <imagedata fileref="../images/persons_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2661,7 +2661,7 @@
                 <figure><title>Routing Rules Delegation: Persons tab, Copy/Edit View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/persons_tab_copy.png"/>
+                            <imagedata fileref="../images/persons_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2675,7 +2675,7 @@
                     <table frame="none">
                         <title>Routing Rules Delegation: Persons Tab Attributes</title>
                         <tgroup cols="2">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
@@ -2715,8 +2715,8 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Groups tab</title>
                 <para>The Groups tab differently, depending on whether you are creating a new Rule
                     or editing/copying a Rule. The version you see when creating a new Rule looks
@@ -2724,7 +2724,7 @@
                 <figure><title>Routing Rules Delegation: Groups Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/groups_tab.png"/>
+                            <imagedata fileref="../images/groups_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2735,7 +2735,7 @@
                 <figure><title>Routing Rules Delegation: Groups Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/groups_tab_copy.png"/>
+                            <imagedata fileref="../images/groups_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2746,7 +2746,7 @@
                 <para><table frame="none">
                     <title>Routing Rules Deleation: Groups Tab Attributes</title>
                     <tgroup cols="2">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <thead>
                             <row>
@@ -2791,9 +2791,9 @@
                         </tbody>
                     </tgroup>
                 </table></para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Rule Lookup</title>
             <para>The Rice system provides a quick and convenient way to obtain information on Rules
                 through the <emphasis role="bold">Rule Lookup</emphasis> feature. This feature also
@@ -2803,7 +2803,7 @@
             <figure><title>Workflow Channel: Routing Rules Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/routing_rules_link.png"/>
+                        <imagedata fileref="../images/routing_rules_link.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2817,7 +2817,7 @@
             <figure><title>Routing Rules Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_lookup.png"/>
+                        <imagedata fileref="../images/rule_lookup.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2841,7 +2841,7 @@
             <figure><title>Routing Rules Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_lookup_results.png"/>
+                        <imagedata fileref="../images/rule_lookup_results.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2863,13 +2863,13 @@
             <para>The standard export options apply to this list. Explanation of the export options
                 can be found in the <emphasis role="bold">Common Features and Functions</emphasis>
                 section of the User Guide.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Rule Inquiry</title>
             <figure><title>Routing Rules Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_inquiry.png"/>
+                        <imagedata fileref="../images/rule_inquiry.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2877,13 +2877,13 @@
                     >Rule</emphasis> is set up in Rice. The fields on this screen are described in
                 the <emphasis role="bold">Rule Maintenance</emphasis> section of this
                 document.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Routing Rule Creation</title>
             <figure><title>Routing Rules Creation</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/routing_rule_creation.png"/>
+                        <imagedata fileref="../images/routing_rule_creation.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2897,7 +2897,7 @@
                 <table frame="none">
                     <title>Routing Rule Creation Attributes</title>
                     <tgroup cols="2">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <thead>
                             <row>
@@ -2928,8 +2928,8 @@
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Routing Report</title>
             <para>The routing report is a tool to check workflow routing. You select a rule template
                 and enter any routing data required by the rule template. You can then view the
@@ -2937,11 +2937,11 @@
             <figure><title>Workflow Channel: Routing report</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/sample_travel_app.png"/>
+                        <imagedata fileref="../images/sample_travel_app.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
-            <sect3>
+            <section>
                 <title>Using the Report</title>
                 <para>In the default implementation of Rice you can find the link to the Routing
                     Report on the "Main" tab of the portal inside the "Workflow" pane. If for some
@@ -2956,12 +2956,12 @@
                 <figure><title>Routing Report: Template Selection</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/select_rule_template.png"/>
+                            <imagedata fileref="../images/select_rule_template.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Select a Rule Template</title>
                 <para>The first thing to do is select the rule template to use for the test from the
                     drop-down list. When you select a template the page will update to show the
@@ -2969,12 +2969,12 @@
                 <figure><title>Routing Report: Template Selection, Detail</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/select_rule_template2.png"/>
+                            <imagedata fileref="../images/select_rule_template2.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Enter Routing Data</title>
                 <para>The data entry fields for the routing data use the standard controls described
                     in the Standard Buttons on Lookup Screens document. Here is the example with the
@@ -2982,7 +2982,7 @@
                 <figure><title>Routing Report: Routing Data Entry</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/routing_data_entry.png"/>
+                            <imagedata fileref="../images/routing_data_entry.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2992,12 +2992,12 @@
                 <figure><title>Routing Report: Route Log View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/view_route_log_report.png"/>
+                            <imagedata fileref="../images/view_route_log_report.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Report Contents</title>
                 <para>The upper section of the report (labeled “ID: 0”) contains the basic document
                     information fields as if this was an actual document; several fields are blank
@@ -3008,13 +3008,13 @@
                 <figure><title>Routing Report: Route Log View, Pending Action Requests</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/pending_action_requests.png"/>
+                            <imagedata fileref="../images/pending_action_requests.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Rule Maintenance</title>
             <para>The <emphasis role="bold">Rule Maintenance Document Type Document</emphasis>
                 screen is used for both editing existing Rules and for adding new Rules to Rice. </para>
@@ -3022,7 +3022,7 @@
                 <title>Rule Maintenance Document Type Document</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_maintenance_document_type_document.png"/>
+                        <imagedata fileref="../images/rule_maintenance_document_type_document.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -3031,7 +3031,7 @@
                         Document</emphasis> screen all of the tabs except the Notes and Attachments, Ad
                         Hoc Recipients and Route Log are expanded.</para>
             </note>   
-            <sect3>
+            <section>
                 <title>Document Layout</title>
                 <para>The Rule Maintenance Document Type Document screen you see when creating a new
                     rule is composed of seven tabs:<itemizedlist>
@@ -3063,8 +3063,8 @@
                     sections that follow. The remaining four tabs are commonly used throughout Rice
                     and are described in the Common Features and Functions section of the User
                     Guide.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Rule tab</title>
                 <para>The Rule tab is presented differently depending on whether you are creating a
                     new Rule, or editing/copying a Rule. The version you see when creating a new
@@ -3072,7 +3072,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Rule Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/rule_tab.png"/>
+                            <imagedata fileref="../images/rule_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3080,7 +3080,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Rule Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/rule_tab_copy.png"/>
+                            <imagedata fileref="../images/rule_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3088,7 +3088,7 @@
                     <table frame="none">
                         <title>Rule Maintenance Document Type Document: Rule Tab Attributes</title>
                         <tgroup cols="2">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
@@ -3146,8 +3146,8 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Persons tab</title>
                 <para>The Persons tab is presented differently depending on whether you are creating
                     a new Rule, or editing/copying a Rule. The version you see when creating a new
@@ -3155,7 +3155,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Person Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/person_tab.png"/>
+                            <imagedata fileref="../images/person_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3163,7 +3163,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Person Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/person_tab_copy.png"/>
+                            <imagedata fileref="../images/person_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3172,7 +3172,7 @@
                         <title>Rule Maintenance Document Type Document: Person Tab
                             Attributes</title>
                         <tgroup cols="2">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
@@ -3214,8 +3214,8 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Groups tab</title>
                 <para>The Groups tab is presented differently depending on whether you are creating
                     a new Rule, or editing/copying a Rule. The version you see when creating a new
@@ -3223,7 +3223,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Groups Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/groups_tab.png"/>
+                            <imagedata fileref="../images/groups_tab.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3231,7 +3231,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Groups Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/groups_tab_copy.png"/>
+                            <imagedata fileref="../images/groups_tab_copy.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3242,7 +3242,7 @@
                         <title>Rule Maintenance Document Type Document: Groups Tab
                             Attributes</title>
                         <tgroup cols="2">
-                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
@@ -3289,9 +3289,9 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Rule Template Lookup</title>
             <para>The <emphasis role="bold">Rules Template Lookup</emphasis> function is available
                 from any screen with the field lookup button next to the Rule Template field. Simply
@@ -3299,7 +3299,7 @@
             <figure><title>Rule Template Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_template_lookup.png"/>
+                        <imagedata fileref="../images/rule_template_lookup.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -3311,7 +3311,7 @@
             <figure><title>Rule Template Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_template_results.png"/>
+                        <imagedata fileref="../images/rule_template_results.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -3322,7 +3322,7 @@
                 <table frame="none">
                     <title>Rule Template Lookup Attributes</title>
                     <tgroup cols="2">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <thead>
                             <row>
@@ -3356,8 +3356,8 @@
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Rule Template Inquiry</title>
             <para>The <emphasis role="bold">Rule Template Inquiry</emphasis> screen provides
                 specific information about one particular <emphasis role="bold">Rule
@@ -3365,12 +3365,12 @@
             <figure><title>Rule Template Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/rule_template_inquiry.png"/>
+                        <imagedata fileref="../images/rule_template_inquiry.png" contentwidth="400"/>
                     </imageobject>
                 </mediaobject>
             </figure>
             <para>Clicking the export button will export a copy of the complete Rule Template in XML
                 format.</para>
-        </sect2>        
-    </sect1>
+        </section>        
+    </section>
 </chapter>

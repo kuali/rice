@@ -120,10 +120,11 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
                     // filter by category
                     if (StringUtils.isBlank(selectedCategoryId) ||
                             isTermSpecificationInCategory(output, selectedCategoryId)) {
-
+                    	String outputDescription = StringUtils.isBlank(output.getDescription())?output.getName():
+                    																			output.getDescription();
                         // we use a special prefix to differentiate these, as they are term spec ids instead of term ids.
                         keyValues.add(new ConcreteKeyValue(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX
-                                + output.getId(), output.getName()
+                                + output.getId(), outputDescription
                                 // build a string that indicates the number of parameters
                                 + "(" + StringUtils.repeat("_", ",", termResolver.getParameterSpecifications().size()) +")"));
                     }

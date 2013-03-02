@@ -353,12 +353,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenu>Maven</guimenu><guisubmenu>Maven Project</guisubmenu></menuchoice> and press the
               <guibutton>Next</guibutton> button twice to get to the <guilabel>Select an Archtype</guilabel> window.
               <figure>
-                <title><link xlink:href="../images/archetype/2_eclipse.png">Click to enlarge</link></title>
+                <title>Eclipse: Select maven project</title>
                 <mediaobject>
-                  <imageobject xlink:href="../images/archetype/2_eclipse.png">
+                  <imageobject>
                     <imagedata fileref="../images/archetype/2_eclipse_dbk.png"/>
                   </imageobject>
                 </mediaobject>
+              <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/2_eclipse.png">Click to enlarge</link></para>
               </figure>
             </para>
           </step>
@@ -408,12 +409,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/3_eclipse.png">Click to enlarge</link></title>
+              <title>Eclipse: Select archetype</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/3_eclipse.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/3_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/3_eclipse.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -467,12 +469,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Click the <guibutton>Finish</guibutton> button.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/4_eclipse.png">Click to enlarge</link></title>
+              <title>Eclipse: Add database information</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/4_eclipse.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/4_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/4_eclipse.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -515,12 +518,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guilabel>bar</guilabel> is selected and click the <guibutton>OK</guibutton> button.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/5_eclipse.png">Click to enlarge</link></title>
+                    <title>Clean the project</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/5_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/5_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/5_eclipse.png">Click to enlarge</link></para>
                   </figure>
                 </step>
                 <step>
@@ -531,12 +535,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     from the menu.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/6_eclipse.png">Click to enlarge</link></title>
+                    <title>Eclipse: Run integration test</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/6_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/6_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/6_eclipse.png">Click to enlarge</link></para>
                   </figure>
                 </step>
                 <step>
@@ -547,12 +552,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guimenuitem>JUnit Test</guimenuitem></menuchoice> from the menu.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/7_eclipse.png">Click to enlarge</link></title>
+                    <title>Eclipse: Run the 3 unit tests</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/7_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/7_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/7_eclipse.png">Click to enlarge</link></para>
                   </figure>
                 </step>
               </substeps>
@@ -568,12 +574,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guilabel>new server wizard</guilabel> link.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/8_eclipse.png">Click to enlarge</link></title>
+                    <title>Eclipse: Start new server wizard</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/8_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/8_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/8_eclipse.png">Click to enlarge</link></para>
                   </figure>
                  </step>
                  <step>
@@ -582,12 +589,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     button.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/9_eclipse.png">Click to enlarge</link></title>
+                    <title>Eclipse: Select app server</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/9_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/9_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/9_eclipse.png">Click to enlarge</link></para>
                   </figure>
                 </step>
                 <step>
@@ -595,12 +603,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Point to a local install of tomcat and click the <guibutton>Next</guibutton> button.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/10_eclipse.png">Click to enlarge</link></title>
+                    <title>Eclipse: Select local install of Tomcat</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/10_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/10_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/10_eclipse.png">Click to enlarge</link></para>
                   </figure>
                 </step>
                 <step>
@@ -609,25 +618,27 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     configured side. Click the <guibutton>Finish</guibutton> button.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/11_eclipse.png">Click to enlarge</link></title>
+                    <title>Eclipse: Move bar to configured</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/11_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/11_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/11_eclipse.png">Click to enlarge</link></para>
                   </figure>
                 </step>
                 <step>
                   <para>
-                    Double click on the newly created serer under the <guilabel>Servers</guilabel> tab.
+                    Double click on the newly created server under the <guilabel>Servers</guilabel> tab.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/12_eclipse.png">Click to enlarge</link></title>
+                    <title>Eclipse: Select new server</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/12_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/12_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/12_eclipse.png">Click to enlarge</link></para>
                   </figure>
                 </step>
                 <step>
@@ -638,12 +649,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Click the <guibutton>OK</guibutton> button.
                   </para>
                   <figure>
-                    <title><link xlink:href="../images/archetype/13_eclipse.png">Click to enlarge</link></title>
+                    <title>Eclipse: Add more memory</title>
                     <mediaobject>
-                      <imageobject xlink:href="../images/archetype/13_eclipse.png">
+                      <imageobject>
                         <imagedata fileref="../images/archetype/13_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
+                  <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/13_eclipse.png">Click to enlarge</link></para>
                   </figure>
                 </step>
               </substeps>
@@ -654,12 +666,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenuitem>Start</guimenuitem>.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/14_eclipse.png">Click to enlarge</link></title>
+              <title>Eclipse: Start the server</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/14_eclipse.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/14_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/14_eclipse.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -668,20 +681,22 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/15_eclipse.png">Click to enlarge</link></title>
+              <title>Eclipse: Login</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/15_eclipse.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/15_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/15_eclipse.png">Click to enlarge</link></para>
             </figure>
             <figure>
-              <title><link xlink:href="../images/archetype/16_eclipse.png">Click to enlarge</link></title>
+              <title>Eclipse: Initial screen</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/16_eclipse.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/16_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/16_eclipse.png">Click to enlarge</link></para>
             </figure>
           </step>
         </procedure>
@@ -695,12 +710,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               menu choices.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/1_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: new project</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/1_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/1_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/1_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -709,12 +725,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               menu choices.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/2_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Create project from scratch</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/2_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/2_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/2_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -731,12 +748,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Select <guilabel>Maven Module</guilabel> and click the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/3_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Select Maven Module</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/3_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/3_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/3_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -789,12 +807,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               and click the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/4_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Select archetype</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/4_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/4_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/4_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -833,12 +852,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Click the <guibutton>Finish</guibutton> button.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/5_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Add database information</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/5_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/5_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/5_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -847,12 +867,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenuitem>Reimport</guimenuitem></menuchoice> from the menu.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/6_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Reimport the project</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/6_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/6_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/6_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -882,12 +903,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 </step>
               </substeps>
             <figure>
-              <title><link xlink:href="../images/archetype/7_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Add reintegration test folder</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/7_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/7_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/7_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -902,12 +924,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </menuchoice> to rebuild the project.
                 </para>
                 <figure>
-                  <title><link xlink:href="../images/archetype/8_intellij.png">Click to enlarge</link></title>
+                  <title>Intellij: Rebuild the project</title>
                   <mediaobject>
-                    <imageobject xlink:href="../images/archetype/8_intellij.png">
+                    <imageobject>
                       <imagedata fileref="../images/archetype/8_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
+                <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/8_intellij.png">Click to enlarge</link></para>
                 </figure>
               </step>
               <step>
@@ -917,12 +940,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   integration test.
                 </para>
                 <figure>
-                  <title><link xlink:href="../images/archetype/9_intellij.png">Click to enlarge</link></title>
+                  <title>Intellij: Run integration test</title>
                   <mediaobject>
-                    <imageobject xlink:href="../images/archetype/9_intellij.png">
+                    <imageobject>
                       <imagedata fileref="../images/archetype/9_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
+                <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/9_intellij.png">Click to enlarge</link></para>
                 </figure>
               </step>
               <step>
@@ -932,12 +956,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   unit tests.
                 </para>
                 <figure>
-                  <title><link xlink:href="../images/archetype/10_intellij.png">Click to enlarge</link></title>
+                  <title>Intellij: Run unit tests</title>
                   <mediaobject>
-                    <imageobject xlink:href="../images/archetype/10_intellij.png">
+                    <imageobject>
                       <imagedata fileref="../images/archetype/10_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
+                <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/10_intellij.png">Click to enlarge</link></para>
                 </figure>
               </step>
             </substeps>
@@ -953,12 +978,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 </menuchoice> from the menu.
                 </para>
                 <figure>
-                  <title><link xlink:href="../images/archetype/11_intellij.png">Click to enlarge</link></title>
+                  <title>Intellij: Edit configurations</title>
                   <mediaobject>
-                    <imageobject xlink:href="../images/archetype/11_intellij.png">
+                    <imageobject>
                       <imagedata fileref="../images/archetype/11_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
+                <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/11_intellij.png">Click to enlarge</link></para>
                 </figure>
               </step>
               <step>
@@ -967,12 +993,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <guimenu>Tomcat Server</guimenu><guimenuitem>Local</guimenuitem></menuchoice> from the menu.
                 </para>
                 <figure>
-                  <title><link xlink:href="../images/archetype/12_intellij.png">Click to enlarge</link></title>
+                  <title>Intellij: Select the Tomcat Server</title>
                   <mediaobject>
-                    <imageobject xlink:href="../images/archetype/12_intellij.png">
+                    <imageobject>
                       <imagedata fileref="../images/archetype/12_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
+                <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/12_intellij.png">Click to enlarge</link></para>
                 </figure>
               </step>
               <step>
@@ -982,12 +1009,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   "-Xms512m -Xmx2g -XX:MaxPermSize=512m" in the <guilabel>VM options</guilabel> field.
                 </para>
                 <figure>
-                  <title><link xlink:href="../images/archetype/13_intellij.png">Click to enlarge</link></title>
+                  <title>Intellij: Specify server and add more memory</title>
                   <mediaobject>
-                    <imageobject xlink:href="../images/archetype/13_intellij.png">
+                    <imageobject>
                       <imagedata fileref="../images/archetype/13_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
+                <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/13_intellij.png">Click to enlarge</link></para>
                 </figure>
               </step>
               <step>
@@ -997,12 +1025,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <guilabel>bar:war (exploded)</guilabel> and click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>
-                  <title><link xlink:href="../images/archetype/14_intellij.png">Click to enlarge</link></title>
+                  <title>Intellij: Deploy</title>
                   <mediaobject>
-                    <imageobject xlink:href="../images/archetype/14_intellij.png">
+                    <imageobject>
                       <imagedata fileref="../images/archetype/14_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
+                <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/14_intellij.png">Click to enlarge</link></para>
                 </figure>
               </step>
               <step>
@@ -1011,12 +1040,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   Click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>
-                  <title><link xlink:href="../images/archetype/15_intellij.png">Click to enlarge</link></title>
+                  <title>Intellij: Specify application context</title>
                   <mediaobject>
-                    <imageobject xlink:href="../images/archetype/15_intellij.png">
+                    <imageobject>
                       <imagedata fileref="../images/archetype/15_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
+                <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/15_intellij.png">Click to enlarge</link></para>
                 </figure>
               </step>
             </substeps>
@@ -1027,12 +1057,13 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               the menu
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/16_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Run Tomcat locally</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/16_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/16_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/16_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
           <step>
@@ -1041,20 +1072,22 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
-              <title><link xlink:href="../images/archetype/17_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Login</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/17_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/17_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/17_intellij.png">Click to enlarge</link></para>
             </figure>
             <figure>
-              <title><link xlink:href="../images/archetype/18_intellij.png">Click to enlarge</link></title>
+              <title>Intellij: Initial screen</title>
               <mediaobject>
-                <imageobject xlink:href="../images/archetype/18_intellij.png">
+                <imageobject>
                   <imagedata fileref="../images/archetype/18_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
+            <para><link xlink:href="http://site.kuali.org/rice/${project.version}/reference/images/archetype/18_intellij.png">Click to enlarge</link></para>
             </figure>
           </step>
 

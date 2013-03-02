@@ -25,7 +25,7 @@
         the Person document.</para>
     <note><para> Phone types cannot be edited via the interface. Technical assistance is required to add
         new or edit existing phone types. </para></note>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para><figure><title>Phone Type Lookup with results</title><mediaobject>
                 <imageobject>
@@ -67,5 +67,5 @@
                 </tbody>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

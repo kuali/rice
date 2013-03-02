@@ -18,11 +18,11 @@
 -->
 <chapter xml:id="UG_Global" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>Global</title>
-    <sect1>
+    <section>
         <title>The Kuali Community</title>
         <para>It is important that you have a general understanding of how Rice is a part of a
             larger Kuali community before you begin to use this as a reference.</para>
-        <sect2>
+        <section>
             <title>Kuali Foundation</title>
             <para>The Kuali Foundation employs staff to coordinate partner efforts and to manage and
                 protect the Foundation’s intellectual property. The Kuali Foundation manages a
@@ -32,8 +32,8 @@
                 control, release engineering, packaging, documentation, project management, software
                 testing and quality assurance, conference planning, and educating and assisting
                 members of the Kuali Partners program.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Kuali Rice</title>
             <para>Kuali Rice is a higher-education, community-source software project that is merely
                 a spoke in the wheel of the larger Kuali Community. The Kuali Community is the hub
@@ -50,11 +50,11 @@
             <para>Should you want to learn more detail about how the Rice community is organized,
                 structured and operates you should reference the Rice Charter which is available for
                 review in the Foundation archives.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Licensing and Intellectual Property</title>
-        <sect2>
+        <section>
             <title>Software License</title>
             <para>Kuali Rice software is licensed under the Educational Community License, Version
                 2.0. You may obtain a copy of the License <link xlink:href = "http://www.opensource.org/licenses/ecl2.php">here</link>. See the License for
@@ -62,12 +62,12 @@
             <para>If you have any questions about Kuali Intellectual property, please contact the
                 Kuali Foundation at <link xlink:href="mailto:licensing@kuali.org"
                     >licensing@kuali.org</link>.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Contributors</title>
             <para>TODO: Link to Third Party Licenses Page</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Documentation License</title>
             <para>This work is licensed under a Creative Commons Attribution-ShareAlike 2.5 License.
                 To view a copy of this license, visit http://creativecommons.org/licenses/ or send a
@@ -100,9 +100,9 @@
                 </itemizedlist></para>
             <para>Your fair use and other rights are in no way affected by the aforementioned
                 conditions.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>How to Use This Guide</title>
         <para>The table of contents leads you to headings and subtopic headings that provide
             information ranging from simple notes to a thorough review of what to do and why, with
@@ -110,7 +110,7 @@
             and user interface element references are formatted to enhance readability. Mouse
             pointer icons and callouts are used frequently to show you what to click on at each
             process step.</para>
-        <sect2>
+        <section>
             <title>User Guide Structure</title>
             <para>Each chapter is comprised sections that correspond to modules within Rice. In
                 order to reduce the required effort for documentation maintenance, the documentation
@@ -119,14 +119,14 @@
                 Element Dictionary, Glossary of Terms, Report Catalog and Index, to reduce redundant
                 information within the chapter bodies and give you one common location for
                 information lookup.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Typographic Conventions</title>
             <para>This document adheres to specific documentation standards and style conventions to
                 optimize readability. The formatting of text used to name user interface elements is
                 typically bold to enhance visual comprehension and improve usability.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Versioning</title>
             <para>If you have received a printed copy of this user guide, please note that as Rice
                 is improved and enhanced, corresponding updated releases of the documentation are
@@ -134,15 +134,15 @@
                 time, consult the links from the Documentation page on the <link
                     xlink:href="http://kuali.org/rice">Rice web site</link> and compare the
                 versioning. </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Electronic Navigation</title>
             <para>Cross-references, indexes, and the electronic table of contents are provided
                 wherever possible to allow for efficient navigation to sections and subsections of
                 instructional information (or external Web resources). Each underlined topic
                 functions as a hyperlink that causes a new section to appear.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Printed Documentation</title>
             <para>User documentation made available for online viewing, download and printing may
                 require the use of Portable Document Format (PDF) reader software, such as Adobe
@@ -152,11 +152,11 @@
             <note><para>A plug-in may be available to allow you to view .pdf documents in Web browsers as either .pdf
                     or HTML formats. Consult your Web browser's Help links to explore these viewing
                     options. HTML pages can be printed using your computer's default printer.</para></note>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Common Features and Functions</title>
-        <sect2>
+        <section>
             <title>Standard Buttons on Lookup Screens</title>
             <table>
                 <title>Standard Rice Buttons</title>
@@ -439,8 +439,8 @@
                     </tbody>
                 </tgroup>
             </table>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Useful Screens Are Where You Need Them</title>
             <para>One of the beauties of Rice is that it shows you just the screens and fields that
                 are useful for your Rice Role and the function you need. For example, if your Role
@@ -466,10 +466,10 @@
                 link on the row for the Person you need to close the Person Lookup screen and
                 automatically enter the information for that Person on the original screen (the
                 screen where you clicked the magnifying glass icon).</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Common Functions</title>
-            <sect3>
+            <section>
                 <title>Entering Search Information</title>
                 <itemizedlist>
                     <listitem>
@@ -490,8 +490,8 @@
                             searches. </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Search Results</title>
                 <itemizedlist>
                     <listitem>
@@ -512,8 +512,8 @@
                             entering anything from your search list. </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Maintenance Links</title>
                 <itemizedlist>
                     <listitem>
@@ -537,8 +537,8 @@
                             </itemizedlist></para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Exporting Your Data</title>
                 <para>Below the list of search results, there are links for exporting the search
                     results list to a different format. Click:<itemizedlist>
@@ -555,9 +555,9 @@
                             </para>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Lookup Wildcards</title>
             <para>Rice allows you to use wildcards in the Lookup process. The available wildcards
                 and their functions:<table frame="none">
@@ -771,19 +771,19 @@
                     </tbody>
                 </tgroup>
             </table>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Result Set Limits</title>
             <para>Some lookups for certain business entities in Rice return different numbers of
                 results than the system default; as a result, system administrators may need to be
                 able to limit this set of returned results on an entity-by-entity basis.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Frequently Used Tabs</title>
             <para>To make it easier to do your work, Rice often provides access to the same
                 information from several screens. Some of the most frequently used are described
                 here:</para>
-            <sect3>
+            <section>
                 <title>Ad Hoc Recipients Tab</title>
                 <para>The Ad Hoc Recipients tab allows you to interrupt the normal workflow routing
                     of a document and include other individuals or groups in its routing path. Ad
@@ -866,8 +866,8 @@
                             </tbody>
                         </tgroup>
                     </table></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Document Overview Tab</title>
                 <para>The Document Overview tab contains the short description for a document and
                     two other optional fields. This tab is used for many documents.</para>
@@ -913,8 +913,8 @@
                             </tbody>
                         </tgroup>
                     </table>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Note and Attachments Tab</title>
                 <para>The Notes and Attachments tab has fields for user notes, attachments, and
                     system-generated remarks about the document. The number of notes and/or
@@ -970,8 +970,8 @@
                             </tbody>
                         </tgroup>
                     </table>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Route Log Tab</title>
                 <para>The Route Log tab displays details of the workflow status.</para>
                 <figure><title>Route Log Tab</title>
@@ -1062,15 +1062,15 @@
                     that Workflow will generate in the future, based on the information currently on
                     the document.</para>
                 <para>Future requests appear in the order in which they are to occur.</para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1 xml:id="reporting_rice_jira">
+            </section>
+        </section>
+    </section>
+    <section xml:id="reporting_rice_jira">
         <title>Reporting an Issue with Kuali Rice</title>
         <para>An issue is a problem or error that you see in Kuali Rice. When you report an issue,
             you help us improve Rice and make it work better for everyone. </para>
         <para>Thank you for taking the time to report this issue!</para>
-        <sect2>
+        <section>
             <title>Step 1: Search for a Similar Issue</title>
             <para>Kuali Rice keeps an online list of issues (bugs and suggested improvements and new
                 features) using an issue tracking application called Jira. Your first step is to
@@ -1124,8 +1124,8 @@
                             instructions below. </para>
                     </listitem>
                 </orderedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Step 2: Create an Issue in JIRA</title>
             <para>If you didn’t find a similar issue on the Issue Navigator page, then please create
                 a new issue in JIRA. (If you are a developer, you also determined that this is an
@@ -1166,8 +1166,8 @@
                     </imageobject>
                     </mediaobject>
                 </figure>    
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Step 3: Fill Out Required Fields</title>
             <note><para>JIRA only displays fields that are appropriate to the Issue Type that you selected on the
                     previous page. You may not see all of the fields listed below, and the fields
@@ -1233,18 +1233,18 @@
             <para>This screen print is from the Bug Fix screen. The screens for Improvement and for
                 New Feature are slightly different. The fields in which you need to enter
                 information are highlighted in this screen print.</para>
-            <figure><title>Creat New Jira: Detail Section</title>
+            <figure><title>Create New Jira: Detail Section</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/Jira_bug_fix.png" scale="65"/>
                     </imageobject>
                 </mediaobject>
             </figure>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Step 4: Save the Jira issue</title>
             <para>After entering the information about the your issue, click the Create button at
                 the bottom of the page. This creates your issue in JIRA.</para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

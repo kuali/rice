@@ -19,11 +19,11 @@
 <chapter xml:id="TRG_Global" xmlns="http://docbook.org/ns/docbook"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>Global</title>
-    <sect1>
+    <section>
         <title>Rice Client Overview</title>
         <para>You can integrate your application with Rice using several methods, each described
             below.</para>
-        <sect2>
+        <section>
             <title>Embedded</title>
             <para>This method includes embedding some or all of the Rice services into your
                 application. When using this method, a standalone Rice server for the Rice web
@@ -41,7 +41,7 @@
                     </imageobject>
                 </mediaobject>
             </figure>
-            <sect3>
+            <section>
                 <title>Advantages</title>
                 <itemizedlist>
                     <listitem>
@@ -61,8 +61,8 @@
                             instances of embedded services. </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Disadvantages</title>
                 <itemizedlist>
                     <listitem>
@@ -75,9 +75,9 @@
                         <para>Requires client access to the Rice database </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Bundled</title>
             <para>This method includes the entire Rice web application and all services into your
                 application. This method does not require a standalone Rice server.</para>
@@ -90,12 +90,12 @@
                     <title>Diagram of a sample bundled implementation</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/sample_bundled_implementation.png"/>
+                            <imagedata fileref="../images/sample_bundled_implementation.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
             </para>
-            <sect3>
+            <section>
                 <title>Advantages</title>
                 <itemizedlist>
                     <listitem>
@@ -115,8 +115,8 @@
                             environment </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Disadvantages</title>
                 <itemizedlist>
                     <listitem>
@@ -128,9 +128,9 @@
                             Method (since it requires additional web libraries). </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Thin Java Client</title>
             <para>This method utilizes some pre-built classes to provide an interface between your
                 application and web services on a standalone Rice server.</para>
@@ -144,12 +144,12 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata
-                                fileref="../images/sample_thin_java_client_implementation.png"/>
+                                fileref="../images/sample_thin_java_client_implementation.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
             </para>
-            <sect3>
+            <section>
                 <title>Advantages</title>
                 <itemizedlist>
                     <listitem>
@@ -159,8 +159,8 @@
                         <para>Fewer library dependencies </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Disadvantages</title>
                 <itemizedlist>
                     <listitem>
@@ -171,22 +171,22 @@
                             needed </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Web Services</title>
             <para>This means directly using web services to access a standalone Rice server. This
                 method utilizes the same services as the Thin Java Client, but does not take
                 advantage of pre-built binding code to access those services.</para>
-            <sect3>
+            <section>
                 <title>Advantages</title>
                 <itemizedlist>
                     <listitem>
                         <para>Any language that supports SOAP web services can be used</para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Disadvantages</title>
                 <itemizedlist>
                     <listitem>
@@ -200,16 +200,16 @@
                         <para>Web Services can be slower than other integration options </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Global Configuration Parameters</title>
-        <table frame="none">
+        <table frame="none" pgwide="1">
             <title>Global Configuration Parameters</title>
             <tgroup cols="3">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                <colspec colname="c1" colnum="1" colwidth="0.7*"/>
+                <colspec colname="c2" colnum="2" colwidth="1.3*"/>
                 <colspec colname="c3" colnum="3" colwidth="1.0*"/>
                 <thead>
                     <row>
@@ -390,19 +390,19 @@
                 </tbody>
             </tgroup>
         </table>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Rice Service Architecture and Configuration Overview</title>
         <para>This document describes how the Rice Service Architecture operates.</para>
-        <sect2>
+        <section>
             <title>Overview</title>
             <para>The Rice System consists of a stack of ResourceLoader objects that contain
                 configuration information and expose service implementations (potentially from
                 remote sources). Each module supplies its own Spring context containing it’s
                 services. These Spring contexts are then wrapped by a ResourceLoader which is used
                 to locate and load those services.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Implementation Details</title>
             <para>Rice is composed of a set of modules that provide distinct functionality and
                 expose various services. Each module loads it’s own Spring context which contains
@@ -417,7 +417,7 @@
                     <title>Resource Loader Stack</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/resource_loader_stack.png"/>
+                            <imagedata fileref="../images/resource_loader_stack.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -447,10 +447,10 @@
                 loader is consulted last because it gives priority to using locally deployed
                 services over remote services (if the service is available both locally and
                 remotely). This is meant to help maximize performance.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Accessing Rice Services and Beans Using Spring</title>
-            <sect3>
+            <section>
                 <title>Rice Service as a Spring Bean</title>
                 <para>In addition to programmatically acquiring service references, you can also
                     import Rice services into a Spring context with the help of the
@@ -463,8 +463,8 @@
                 <para>This class uses the GlobalResourceLoader to locate a service named the same as
                     the ID and produces a bean that proxies that service. The bean can thereafter be
                     wired in Spring like any other bean.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Using Annotations</title>
                 <para>Rice includes a Spring bean that extends the Spring auto-wire process (unlike
                     the current version of Spring, the auto-wire process in the version of Spring
@@ -486,8 +486,8 @@
 protected WorkflowDocumentService workflowDocumentService;
 </programlisting>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Publishing Spring Services to the Global Resource Loader</title>
                 <para>In certain cases, it may be desirable to publish all beans in a particular
                     Spring context to the Resource Loader stack. Fortunately, there is an easy way
@@ -510,10 +510,10 @@ protected WorkflowDocumentService workflowDocumentService;
                 <para>
                     <programlisting>MyService1 myService1 = GlobalResourceLoader.getService(“myService1”);</programlisting>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Customizing and Overriding Rice Services</title>
-                <sect4>
+                <section>
                     <title>Reasons for Overriding Services</title>
                     <para>The most common reason that one would want to override services in Kuali
                         Rice is to customize the implementation of a particular service for the
@@ -525,8 +525,8 @@ protected WorkflowDocumentService workflowDocumentService;
                         integrate with. By overriding the service reference implementation with a
                         custom one, it’s possible to integrate with other institutional services
                         (such as LDAP or other services).</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Installing an Application Root Resource Loader</title>
                     <para>An alternative to using the RiceSpringResourceLoaderConfigurer to publish
                         beans from a Spring context to the Rice Resource Loader framework is to
@@ -566,8 +566,8 @@ protected WorkflowDocumentService workflowDocumentService;
                             lazily, after Spring initialization has completed (either
                             programmatically, or via some sort of proxy).</para>
                     </warning>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Replacing Rice Configuration Files</title>
                     <para>A Rice-enabled web application (including the Rice Standalone
                         distribution) contains a RiceConfigurer (typically defined in a Spring XML
@@ -610,11 +610,11 @@ protected WorkflowDocumentService workflowDocumentService;
 value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
 </programlisting>
                     </para>
-                </sect4>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+                </section>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Eclipse and Rice</title>
         <warning>
             <para><emphasis role="bold">Recent change in Eclipse setup</emphasis></para>
@@ -624,14 +624,14 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                     >eclipse:eclipse plugin for Maven</link> to generate a static build path. Please
                 note the changes in the Eclipse project setup.</para>
         </warning>
-        <sect2>
+        <section>
             <title>Overview</title>
             <para>This document describes how to set up an Eclipse environment for running Rice from
                 source and/or for developing on the Kuali Rice project. To create your own Kuali
                 Rice client application, see the instructions in Creating a Rice-Enabled
                 Application.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Download the Tools</title>
             <orderedlist>
                 <listitem>
@@ -729,8 +729,8 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         </orderedlist></para>
                 </listitem>
             </orderedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Import rice into Eclipse as a project (Source distribution only)</title>
             <para><emphasis role="bold">Note: </emphasis>You only need to follow these instructions
                 if you downloaded the source distribution of Rice as a zip file. If you are a
@@ -747,7 +747,7 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         <title>Root Directory Selection</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/eclipse_import_existing_projects.png"
+                                <imagedata fileref="../images/eclipse_import_existing_projects.png" width="100%" scalefit="1"
                                 />
                             </imageobject>
                         </mediaobject>
@@ -761,15 +761,15 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         <title>Root Directory Selection Continued</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/eclipse_import_projects_directory.png"
+                                <imagedata fileref="../images/eclipse_import_projects_directory.png" width="100%" scalefit="1"
                                 />
                             </imageobject>
                         </mediaobject>
                     </figure>
                 </listitem>
             </orderedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Check out the Rice code (Non-source SVN distribution only)</title>
             <para><emphasis role="bold">Note: </emphasis>You do not need to perform the steps in
                 this section if you have downloaded the source distribution of Rice as a zip
@@ -791,10 +791,10 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         branches/rice-release-1-0-0-br) </para>
                 </listitem>
             </orderedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Set up database drivers</title>
-            <sect3>
+            <section>
                 <title>Oracle</title>
                 <orderedlist>
                     <listitem>
@@ -830,8 +830,8 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         </para>
                     </listitem>
                 </orderedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Other databases</title>
                 <para>The driver for MySQL is already referenced by the Kuali Rice project. Rice
                     does not have out-of-the-box support for other RDBMS at this point in time.
@@ -839,9 +839,9 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                     support for that particular database as long as it’s supported by the Apache OJB
                     project (<link xlink:href="http://db.apache.org/ojb"
                         >http://db.apache.org/ojb</link>).</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Set up Eclipse for Maven</title>
             <para>If this is the first time you are using Eclipse with a project build path
                 generated by the eclipse:eclipse Maven plugin, you need to define the <emphasis
@@ -852,15 +852,15 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                 <title>Eclipse Classpath Variables</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/eclipse_classpath_variables.png"/>
+                        <imagedata fileref="../images/eclipse_classpath_variables.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
             <para>The Rice project contains auto-generated build path entries that rely on the
                 presence of this M2_REPO variable to determine the location of dependency
                 libraries.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Rebuild Rice</title>
             <orderedlist>
                 <listitem>
@@ -897,7 +897,7 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         <title>Eclipse Clean Build</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/eclipse_clean_build.png"/>
+                                <imagedata fileref="../images/eclipse_clean_build.png" width="100%" scalefit="1"/>
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -908,20 +908,20 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         libraries, it should now have been built successfully. </para>
                 </listitem>
             </orderedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Install the database</title>
             <para>To set up the database, please follow the instructions in the Installation Guide
                 under Preparing the Database.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Installing the appropriate configuration files</title>
             <para><emphasis role="bold">Note: </emphasis>Be sure to use an appropriate editor such
                 as vi or Notepad when editing configuration files. For example, we have found that
                 WordPad can corrupt the configuration file.</para>
             <para>To install the configuration file for the Kuali Rice sample application, you can
                 do an Ant-based setup or a manual setup.</para>
-            <sect3>
+            <section>
                 <title>Ant-based setup </title>
                 <orderedlist>
                     <listitem>
@@ -935,8 +935,8 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         </para>
                     </listitem>
                 </orderedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Manual setup</title>
                 <orderedlist>
                     <listitem>
@@ -984,9 +984,9 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                             </itemizedlist></para>
                     </listitem>
                 </orderedlist>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Run the sample web application</title>
             <itemizedlist>
                 <listitem>
@@ -995,7 +995,7 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         <title>Eclipse Jetty Launch</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/eclipse_jetty_launch.png"/>
+                                <imagedata fileref="../images/eclipse_jetty_launch.png" width="100%" scalefit="1"/>
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -1007,8 +1007,8 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                     </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Changing Rice project dependencies</title>
             <para>If you change any of the dependencies in any of the Rice <emphasis role="bold"
                     >pom.xml</emphasis> files, you must run the <emphasis role="bold"
@@ -1018,7 +1018,7 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                 <title>Update Eclipse Classpath</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/update_eclipse_classpath.png"/>
+                        <imagedata fileref="../images/update_eclipse_classpath.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1031,10 +1031,10 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         Eclipse.classpath file) have changed.</para>
                 </note>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Other Notes</title>
-            <sect3>
+            <section>
                 <title>Settings.xml warning</title>
                 <para>If this is the first time that you have installed the Maven plugin into your
                     Eclipse environment, you may need to add a file called <emphasis role="bold"
@@ -1053,8 +1053,8 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                     <para>The Eclipse Maven2 plugin is a little bit flaky sometimes. You might need
                         to close Eclipse to flush its memory.</para>
                 </note>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Default workspace JDK not 1.5</title>
                 <para>If your default workspace JDK is not 1.5, you need to reconfigure the Maven
                     external tools definitions for Rice this way: <orderedlist>
@@ -1070,8 +1070,8 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                                 the JRE tab, and ensure the JRE is set to 1.5. </para>
                         </listitem>
                     </orderedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Using a custom maven repository location</title>
                 <para>The default Maven2 repository location is in your user directory; however, if
                     you have a pre-existing repository (or for some other reason don't want it in
@@ -1088,8 +1088,8 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         Managed Dependencies library to your project build path if you have an
                         existing, invalid, Maven-managed dependencies library.</para>
                 </note>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Setting JDK Compliance version</title>
                 <para>If your default workspace JDK is not 1.5, then you also need to set the JDK
                     compliance level to the appropriate version for the project. You can find this
@@ -1097,15 +1097,15 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         Compiler -> Compiler</emphasis> compliance level. Be sure the <emphasis
                         role="bold">Enable project specific settings</emphasis> checkbox is checked.
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Turn off validation</title>
                 <para>Be sure to turn off validation at the project level by right-clicking on the
                     Project, then clicking <emphasis role="italic">Properties -> Validation ->
                         Suspend all Validators</emphasis>. This can be adjusted once a successful
                     Rice project is up and running.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>ORA-12519, TNS:no appropriate service handler found</title>
                 <para>If you start seeing <emphasis role="bold">java.sql.SQLException: Listener
                         refused the connection with the following error: ORA-12519, TNS:no
@@ -1123,140 +1123,28 @@ alter system set sessions=150 scope=spfile;
                         </listitem>
                     </orderedlist></para>
                 <para>Disconnect any other clients and then restart Oracle-XE.</para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Creating Rice Enabled Applications</title>
-        <sect2>
+        <section>
             <title>Creating a Rice Client Application Project Skeleton</title>
-            <para>The Kuali Rice source code comes with a script (written in a language called
-                Groovy) which will create a skeleton client application project that bundles Rice.
-                If you do not have Groovy installed on your machine, you will need to download and
-                install it from <link xlink:href="http://groovy.codehaus.org/"
-                    >http://groovy.codehaus.org/</link></para>
-            <sect3>
-                <title>Preparation Steps</title>
-                <para>To get ready to run the script:<orderedlist>
-                        <listitem>
-                            <para>Open a shell window or command prompt window. </para>
-                        </listitem>
-                        <listitem>
-                            <para>Change your current directory to the scripts directory within the
-                                Rice source code tree (for example, if you unpacked the source code
-                                into a directory named <emphasis role="bold"
-                                    >/java/projects/rice</emphasis>, you want to navigate to
-                                    <emphasis role="bold">/java/projects/rice/scripts</emphasis>).
-                            </para>
-                        </listitem>
-                        <listitem>
-                            <para>If the Groovy interpreter is not on your command path (entering
-                                the command groovy results in an error stating that the command was
-                                not found), enter the command: . <emphasis role="bold"
-                                    >./setenv.sh</emphasis> in Unix or <emphasis role="bold"
-                                    >setenv.bat</emphasis> in Windows. </para>
-                        </listitem>
-                        <listitem>
-                            <para>Verify that you have Groovy installed by typing the command
-                                    <emphasis role="bold">groovy</emphasis> at the comment line.
-                                This should print out the groovy usage message. </para>
-                        </listitem>
-                    </orderedlist></para>
-            </sect3>
-            <sect3>
-                <title>Command Syntax</title>
-                <para>Enter groovy createproject.groovy followed by one or more of the following
-                    parameters, separated by spaces:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">-name</emphasis> defines the name of the
-                                project. It must be followed by a space and the desired project
-                                name. The project name should consist of letters, numbers, dashes,
-                                and underscores only. This parameter is required. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-pdir</emphasis> specifies the directory to
-                                hold the new project. It must be followed by a space and the
-                                directory. A directory named the same as the project name will be
-                                created in this directory. If not specified, the directory <emphasis
-                                    role="bold">/java/projects</emphasis> will be used. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-rdir</emphasis> specifies the directory
-                                containing the Rice project. It must be followed by a space and the
-                                directory. If not specified, the directory /java/projects/rice will
-                                be used. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-mdir</emphasis> specifies the home
-                                directory for Maven, which is required to set up the Eclipse
-                                project’s class path information. It must be followed by a space and
-                                the directory. If not specified, the script will attempt to find
-                                Maven using the following sources: <itemizedlist>
-                                    <listitem>
-                                        <para>An environment variable named <emphasis role="bold"
-                                                >M2_HOME</emphasis>
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                        <para>An environment variable named <emphasis role="bold"
-                                                >m2.home</emphasis>
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                        <para>A property named <emphasis role="bold"
-                                                >maven.home.directory</emphasis> in the file
-                                                <emphasis role="bold">kuali
-                                                build.properties</emphasis> in your home
-                                            directory</para>
-                                    </listitem>
-                                </itemizedlist></para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-sampleapp</emphasis> requests the sample
-                                application to be included in the new project. This can serve as an
-                                example for building a Rice application. If not specified, the
-                                sample application is not included. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-standalone</emphasis> requests the client
-                                project be set up to be run with a standalone rice server. This sets
-                                the default configuration files to containing the necessary settings
-                                to connect to standalone rice. The rice url and database properties
-                                will still need be updated manually. </para>
-                        </listitem>
-                    </itemizedlist></para>
-            </sect3>
-            <sect3>
-                <title>Sample Script Execution</title>
-                <programlisting>groovy createproject.groovy -name MyFirstProject -sampleapp</programlisting>
-                <para>Further instructions on how to open the project and run it will be printed to
-                    the console when the script has finished executing. At this point, you now have
-                    a skeleton of a Kuali Rice client application that you can use to begin building
-                    your own application. However, before running the application, you will need to
-                    create a Rice database (if you’re using the sampleapp, you’ll need to set up the
-                        <emphasis role="bold">demo</emphasis> database; otherwise, you’ll set up a
-                    stripped-down <emphasis role="bold">bootstrap</emphasis> database).</para>
-                <para>The configuration of this application uses a <emphasis role="bold"
-                        >bundled</emphasis> model where the Rice server and client pieces are all
-                    being included and loaded by your sample application. This is useful for
-                    development purposes since it makes it very easy to get the application running.
-                    It is not recommended for an enterprise deployment where you may want to have
-                    more than one application integrating with Kuali Rice. In these cases, you would
-                    want to install and integrate with a Standalone Rice server. For more
-                    information on installing and configuring a standalone server, see the
-                    Installation Guide.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            <para>In order to install a Rice client as a standalone server, please see the
+                <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/IG.html#standalone_server">installation
+                    guide instructions for Standalone Server Setup</link> section in the
+                Installation Guide.</para>
+                        </section>
+        <section>
             <title>Reorder Eclipse Classpath</title>
-            <para>Once the sample script execution has completed, you will need to import your
+            <para>Once you have completed the installation, you will need to import your
                 project into eclipse and reorder the eclipse classpath to account for a change in
                 how the classpath was generated by maven. Navigate to your project properties and
                 select the Order and Export tab from the Java Build Path project property. There
                 will be an entry for JRE System Library at the bottom of the list that should be
                 moved to the very top.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Rice Configuration System</title>
             <para>The Rice Configuration System is an XML-based solution which provides capabilities
                 similar to Java property files, but also adds some additional features. The
@@ -1277,7 +1165,7 @@ alter system set sessions=150 scope=spfile;
                         <para>Override configuration values </para>
                     </listitem>
                 </itemizedlist></para>
-            <sect3>
+            <section>
                 <title>Configuring Keys and Values</title>
                 <para>Below is an example of a configuration XML file. Note that the white space
                     (spaces, tabs, and new lines) is stripped from the beginning and end of the
@@ -1306,8 +1194,8 @@ config.parseConfig();             </programlisting>
                     object containing the default property values.</para>
                 <para>Here is an example of retrieving a property value from Java code:</para>
                 <programlisting>String val = ConfigContext.getCurrentContextConfig().getProperty(“keystore.alias”);</programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Aggregating Multiple Files</title>
                 <para>The Rice Configuration System has a special parameter, config.location, which
                     you use to incorporate the contents of another file. Typically, you use this to
@@ -1317,8 +1205,8 @@ config.parseConfig();             </programlisting>
                 <programlisting>&lt;config>
     &lt;param name="config.location">file:/my_secure_dir/my_secure_file.xml&lt;/param>
 &lt;/config></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Building Parameter Values from Other Parameters</title>
                 <para>Once you have defined a parameter, you can use it in the definition of another
                     parameter. For example:</para>
@@ -1330,8 +1218,8 @@ config.parseConfig();             </programlisting>
                 <para>When this example is parsed, the value of the parameter <emphasis role="bold"
                         >apple.taste</emphasis> will be set to <emphasis role="bold">red delicious
                         yummy yummy</emphasis>.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Using the Parameters in Spring</title>
                 <para>Because the parameters are converted into a Properties object, you can
                     retrieve the complete list of parameters using this code:</para>
@@ -1369,8 +1257,8 @@ config.parseConfig();             </programlisting>
     &lt;property name="username" value="${datasource.username}" />
     &lt;property name="password" value="${datasource.password}" />
 &lt;/bean></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Initializing the Configuration Context in Rice</title>
                 <para>The Config object can be injected into the RiceConfigurer that’s configured in
                     Spring and it will initialize the configuration context with those configuration
@@ -1383,8 +1271,8 @@ config.parseConfig();             </programlisting>
 &lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
     &lt;property name=”rootConfig” ref=”config”/>
 &lt;/bean></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Overriding Configuration Values</title>
                 <para>The primary purpose of overriding configuration values is to provide a set of
                     default values in a base configuration file and then provide a separate file
@@ -1428,9 +1316,9 @@ config.parseConfig();             </programlisting>
                     value with <emphasis role="bold">even yummier</emphasis>. However, since
                         <emphasis role="bold">brand.new.param</emphasis> had not been defined
                     previously, it’s value would be set.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Data Source and JTA Configuration</title>
             <para>The Kuali Rice software require a Java Transaction API (JTA) environment in which
                 to execute database transactions. This allows for creation and coordination of
@@ -1497,7 +1385,7 @@ config.parseConfig();             </programlisting>
             <para>Additionally, the <emphasis role="bold">{Rice project
                     home}config/jotm/carol.properties</emphasis> configuration file needs to be
                 moved to $TOMCAT_HOME/common/classes, this time from the built Rice project.</para>
-            <sect3>
+            <section>
                 <title>Configuring JOTM</title>
                 <para>Configure the JOTM transaction manager and user transaction objects as Spring
                     beans in your application’s Spring configuration file. Here is an
@@ -1525,8 +1413,8 @@ config.parseConfig();             </programlisting>
     &lt;property name="userTransaction" ref="jtaUserTransaction" />
     ...
 &lt;/bean></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Configuring JOTM Transactional Data Sources</title>
                 <para>JTA requires that the datasources that are used implement the XADataSource
                     interface. Some database vendors, such as Oracle, have pure XA implementations
@@ -1547,8 +1435,8 @@ config.parseConfig();             </programlisting>
     &lt;property name="username" value="${datasource.username}" />
     &lt;property name="password" value="${datasource.password}" />
 &lt;/bean></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Configuring JTOM Non-Transactional Data Sources</title>
                 <para>When using the built-in instance of the Quartz scheduler that Rice creates,
                     you will need to inject a non-transactional data source into the RiceConfigurer
@@ -1578,8 +1466,8 @@ config.parseConfig();             </programlisting>
     &lt;property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
     ...
 &lt;/bean></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
               <title>Configuring Bitronix</title>
               <para>Configure the <link xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link>
                   transaction manager and user transaction objects as Spring
@@ -1599,8 +1487,8 @@ config.parseConfig();             </programlisting>
     &lt;property name="userTransaction" ref="jtaUserTransaction" />
   ...
 &lt;/bean></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
               <title>Configuring Bitronix Transactional Data Sources</title>
               <para>An example configuration of Btironix Transactional Data Sources:</para>
   <programlisting>&lt;bean id="riceDataSourceBitronixXa" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
@@ -1625,8 +1513,8 @@ config.parseConfig();             </programlisting>
     &lt;property name="staticMethod" value="org.apache.commons.lang.RandomStringUtils.randomAlphanumeric"/>
     &lt;property name="arguments">&lt;list>&lt;value>20&lt;/value>&lt;/list>&lt;/property>
 &lt;/bean></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
               <title>Configuring Bitronix Non-Transactional Data Sources</title>
               <para>Notice the addition of the driverClassName prop in the dirverProperties in the non-transaction data
                 source configuration</para>
@@ -1653,12 +1541,12 @@ config.parseConfig();             </programlisting>
     &lt;property name="staticMethod" value="org.apache.commons.lang.RandomStringUtils.randomAlphanumeric"/>
     &lt;property name="arguments">&lt;list>&lt;value>20&lt;/value>&lt;/list>&lt;/property>
 &lt;/bean></programlisting>
-          </sect3>
-        </sect2>
-    </sect1>
-    <sect1 xml:id="version_compatibility">
+          </section>
+        </section>
+    </section>
+    <section xml:id="version_compatibility">
         <title>Version Compatibility</title>
-        <sect2>
+        <section>
             <title>Commitment to Compatibility in Kuali Rice</title>
             <para>From version 2.0 of Kuali Rice up to at least version 3.0, the project is
                 committed to providing what it refers to as "middleware" or "client-server" service
@@ -1669,8 +1557,8 @@ config.parseConfig();             </programlisting>
             <para>More information on the scope of version compatibility in Kuali Rice can be found
                 in the <link xlink:href="https://wiki.kuali.org/x/OABHC">Kuali Rice Version
                     Compatibility Statement</link>.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Keeping Your Client Application Compatible</title>
             <para>There are a few rules that a client application using the Kuali Rice apis must
                 following in order to ensure the client application remains compatible once the
@@ -1751,6 +1639,6 @@ config.parseConfig();             </programlisting>
                                 linkend="callback_service_exporter"/></para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

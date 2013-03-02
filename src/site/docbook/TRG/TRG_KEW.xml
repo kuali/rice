@@ -936,7 +936,7 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                         <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/kew_embedded_deployment2.png"
-                                        scalefit="1"/>
+                                        scalefit="1" width="100%" contentdepth="100%"/>
                                 </imageobject>
                             </mediaobject>
                     </figure>
@@ -1098,7 +1098,7 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                     <title>Bundled deployment diagram</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/bundled_deployment_diagram.png"/>
+                            <imagedata fileref="../images/bundled_deployment_diagram.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                     </figure>
@@ -1297,7 +1297,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <title>Thin client deployment diagram</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/thin_client_deployment_diagram.png"/>
+                            <imagedata fileref="../images/thin_client_deployment_diagram.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1314,7 +1314,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <title>Typical enterprise deployment of Kuali Rice</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/enterprise_deployment.png"/>
+                        <imagedata fileref="../images/enterprise_deployment.png" scalefit="1" width="100%" contentdepth="100%"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2041,7 +2041,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Ingester</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/ingester.png"/>
+                            <imagedata fileref="../images/ingester.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2050,7 +2050,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Ingestion Complete</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/ingestion_complete.png"/>
+                            <imagedata fileref="../images/ingestion_complete.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2070,7 +2070,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <title>Message Queue Screen</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/route_queue_screen2.png"/>
+                            <imagedata fileref="../images/route_queue_screen2.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                     </figure>
@@ -2177,7 +2177,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <title>Route Queue Entry Edit Screen</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/route_queue_entry_edit.png"/>
+                            <imagedata fileref="../images/route_queue_entry_edit.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                     </figure>
@@ -2192,12 +2192,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <section>
             <title>System Parameters Covered</title>
             <para>
-                <table frame="none">
+                <table frame="none" pgwide="1">
+                    <?dbfo table-width="100%" ?>
                     <title>KEW System Parameters</title>
                     <tgroup cols="3">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="1.9*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.1*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.4*"/>
                         <thead>
                             <row>
                                 <entry>Name</entry>
@@ -3173,7 +3174,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <figure><title>BlanketApproveSequentialTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/BlanketApproveSequentialTest.png"/>
+                                <imagedata fileref="../images/BlanketApproveSequentialTest.png" scalefit="1" contentdepth="600"/>
                             </imageobject>
                     </mediaobject>
                     </figure>
@@ -3400,7 +3401,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <figure><title>BlanketApproveParallelTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/BlanketApproveParallelTest.png"/>
+                                <imagedata fileref="../images/BlanketApproveParallelTest.png" scalefit="1" contentdepth="600"/>
                             </imageobject>
                         </mediaobject>
                         </figure>
@@ -3559,7 +3560,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <figure><title>NotificationTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/NotificationTest.png"/>
+                                <imagedata fileref="../images/NotificationTest.png" scalefit="1" width="100%" contentdepth="100%"/>
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -3788,11 +3789,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </listitem>
                     </itemizedlist>
                 </para>
-                <figure><title>Blankte Approve Mandatory Test</title>
+                <figure><title>Blanket Approve Mandatory Test</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata
-                                fileref="../images/BlanketApproveMandatoryNodeTest_workflow.png"/>
+                                fileref="../images/BlanketApproveMandatoryNodeTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3907,7 +3908,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Save Action Event Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/SaveActionEventTest_workflow.png"/>
+                            <imagedata fileref="../images/SaveActionEventTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4038,7 +4039,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <mediaobject>
                         <imageobject>
                             <imagedata
-                                fileref="../images/SaveActionEventTestNonInitiator_workflow.png"/>
+                                fileref="../images/SaveActionEventTestNonInitiator_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4149,7 +4150,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Take Workgroup Authority</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/TakeWorkgroupAuthorityDoc_workflow.png"/>
+                            <imagedata fileref="../images/TakeWorkgroupAuthorityDoc_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4298,7 +4299,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Move Sequential Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/MoveSequentialTest_workflow.png"/>
+                            <imagedata fileref="../images/MoveSequentialTest_workflow.png" scalefit="1" contentdepth="600"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4446,7 +4447,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Move In Process Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/MoveInProcessTest_workflow.png"/>
+                            <imagedata fileref="../images/MoveInProcessTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4547,7 +4548,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Adhoc Route Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/AdhocRouteTest_workflow.png"/>
+                            <imagedata fileref="../images/AdhocRouteTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4644,7 +4645,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>PreApproval Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/PreApprovalTest_workflow.png"/>
+                            <imagedata fileref="../images/PreApprovalTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4940,7 +4941,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Variables Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/VariablesTest_workflow.png"/>
+                            <imagedata fileref="../images/VariablesTest_workflow.png" scalefit="1" contentdepth="600"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -5282,7 +5283,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/super_user_action_on_action_requests.png"
-                            />
+                                scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -5744,7 +5745,7 @@ document.routeDocument("user inputted annotation");
                     <title>Parallel and Sequential Activation Types</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/activation_type2.png"/>
+                                <imagedata fileref="../images/activation_type2.png" scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -5754,7 +5755,7 @@ document.routeDocument("user inputted annotation");
                         <title>Parallel-Priority Activation Type</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/pp_activation_type2.png"/>
+                                <imagedata fileref="../images/pp_activation_type2.png" scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -6537,7 +6538,7 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                 <title>EDL Controller Chain</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/edl_controller_chain.png"/>
+                            <imagedata fileref="../images/edl_controller_chain.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
             </figure>
@@ -7247,7 +7248,7 @@ EDL EDoclite Example
             <figure><title>Custom Search Screen:Offer Request Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/offer_request_search.png" scalefit="1" contentwidth="800"/>
+                        <imagedata fileref="../images/offer_request_search.png" scalefit="1" width="100%" contentdepth="100%"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -7456,7 +7457,7 @@ EDL EDoclite Example
             <figure><title>Custom Document Search: Department Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/document_search.png"/>
+                        <imagedata fileref="../images/document_search.png" scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -7471,7 +7472,7 @@ EDL EDoclite Example
         <figure><title>Document Search Screen: Application Document Status Example</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/doc_search_application_status.png" scalefit="1" contentwidth="793"/>
+                    <imagedata fileref="../images/doc_search_application_status.png" scalefit="1" width="100%" contentdepth="100%"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -7864,7 +7865,7 @@ EDL EDoclite Example
             <figure><title>Standard Doc Search Results Set</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/standard_search_result_table.png"/>
+                        <imagedata fileref="../images/standard_search_result_table.png" scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -9248,11 +9249,12 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                     Institutional Plugin. What follows is a list of the most commonly overridden
                     services:</para>
                 <para>
-                    <table frame="none">
+                    <table frame="none" pgwide="1">
+                        <?dbfo table-width="100%" ?>
                         <title>Commonly Overridden Services</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="2.0*"/>
                             <colspec colname="c3" colnum="3" colwidth="1.0*"/>
                             <thead>
                                 <row>

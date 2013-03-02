@@ -24,7 +24,7 @@
          xmlns:ns="http://docbook.org/ns/docbook">
   <title>What is Kuali Rice?</title>
 
-  <sect1>
+  <section>
     <title>Overview and Benefits of Kuali Rice</title>
 
     <para>Kuali Rice (also simply known as Rice) is an open source,
@@ -100,16 +100,16 @@
     that involve human interaction (i.e., approval) as part of the
     flow.</para>
 
-    <sect2>
+    <section>
       <title>Operate Securely</title>
 
       <para>Rice has built-in security integration with support for data
       encryption, pluggable authentication, and pluggable
       authorization.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Licensing</title>
 
     <para>Portions of Kuali are copyrighted by other parties, who are not
@@ -122,5 +122,5 @@
     software under the <link
     xlink:href="http://www.opensource.org/licenses/ecl2.php">Educational
     Community License, version 2.0</link>.</para>
-  </sect1>
+  </section>
 </chapter>

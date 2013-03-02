@@ -48,7 +48,7 @@
         </listitem>
     </orderedlist>
     <note><para>Rather than install and setup as the root user on systems designed for production, you may
-            want to create a non-privilieged user named something like 'rice' to use for this
+            want to create a non-privileged user named something like 'rice' to use for this
             purpose.</para></note>
     <section>
         <title>Suggested Server Hardware</title>
@@ -377,12 +377,12 @@ Database changed</programlisting>
                 <section>
                     <title>With MySQL</title>
                     <para>Connecting to a MySQL database with the name <emphasis role="bold">test</emphasis>
-                        would have a JDBC url like the following: <emphasis role="bold"
+                        would have a JDBC URL like the following: <emphasis role="bold"
                             >jdbc:mysql://localhost:3306/test</emphasis>.</para>
                 </section>
                 <section>
                     <title>With Oracle</title>
-                    <para>Connecting to an Oracle database would have a JDBC url like the following:
+                    <para>Connecting to an Oracle database would have a JDBC URL like the following:
                         <emphasis role="bold">jdbc:oracle:thin:@localhost:1521:XE</emphasis>.</para>
                     <para>The Rice SQL files use slash ‘/‘ as the statement delimiter. You may have to
                         configure your SQL client appropriately so it can run the Rice SQL. In SQuirreL, you
@@ -501,7 +501,7 @@ export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_
                     Windows, you can download it from the following URL: <link
                         xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
                         >http://www.oracle.com/technetwork/java/javase/downloads/index.html</link>.</para>
-                <para>If you are on a Mac, then Java 6 should alredy be installed if you are up to date
+                <para>If you are on a Mac, then Java 6 should already be installed if you are up to date
                     with the latest updates from Apple.</para>
             </section>
             <section>
@@ -542,7 +542,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisti
             <title>Maven</title>
             <para>Maven is the primary build tool used by the Kuali Rice project. Maven is based on a
                 project object model (POM) that defines various standards and conventions surrounding
-                the organization of a project. This faciliates a set of standard build goals and
+                the organization of a project. This facilitates a set of standard build goals and
                 lifecycle phases (such as compile, test, package, etc.)</para>
             <section>
                 <title>Installation</title>
@@ -554,7 +554,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisti
             </section>    
             <section>
                 <title>Configuration</title>
-                <para>You will want to set your <emphasis role="bold">M2_HOME</emphasis> environement
+                <para>You will want to set your <emphasis role="bold">M2_HOME</emphasis> environment
                     variable to point to the location where you unzipped Maven. You will additionally
                     want to include <emphasis role="bold">M2_HOME/bin</emphasis> in your <emphasis
                         role="bold">PATH</emphasis> environment variable so that maven can be executed
@@ -803,8 +803,7 @@ tail -n 500 -f catalina.out</programlisting>
                         <title>Rice Portal Main Menu</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata
-                                    fileref="../images/rice_portal_main_menu.png"/>
+                                <imagedata fileref="../images/rice_portal_main_menu.png" scalefit="1" width="100%" contentdepth="100%"/>
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -859,6 +858,24 @@ tail -n 500 -f catalina.out</programlisting>
                                 </entry>
                             </row>
                             <row>
+                                <entry><para>context.names._____</para><para>*See note below</para></entry>
+                                <entry><para>The context name of each web application, including
+                                    Rice, needs to be specified when the supplied portal is used. The parameter must start with "context.names." and may have a suffix of your choice (i.e. context.names.rice, context.names.kfs, context.names.kc)</para>
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>context.names.app defaults to app.context.name (i.e. no configuration needed for bundled setup or the server that hosts the portal)</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>No configuration needed when the application context name is blank</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>Used with default iframe portal when accessing servers</para>
+                                        </listitem>
+                                    </itemizedlist></entry>
+                                <entry>kuali-rice-web-app-url
+                                </entry>
+                            </row>
+                            <row>
                                 <entry>log4j.settings.path </entry>
                                 <entry>Path to log4j.properties file. If the file does not
                                     exist, you must create it.</entry>
@@ -891,12 +908,43 @@ tail -n 500 -f catalina.out</programlisting>
                         </tbody>
                     </tgroup>
                 </table>
+                 <note><para>*context.names.____: Each content source that is served from an application server that uses a
+                    context name will need a context.names.&lt;webappcontext> parameter. Replace the
+                    &lt;webappcontext> with a unique suffix of your choosing. Specify the context
+                    name of the web application server as the value of this parameter.</para><para>By default context.names.app is set to app.context.name. This allows bundled mode usage
+                    without additional configuration. With standalone mode, the server that hosts
+                    the portal also doesn’t need any additional configurations thanks to
+                    context.names.app.</para><para>
+                         
+                             <emphasis role="bold">Example:</emphasis> KFS is used with a standalone Rice server.</para><para>
+                         
+                         KFS URL:http://www.example.com:8080/kfs-test/portal.do</para><para>
+                         Rice URL:http://www.example.com:8080/rice-test/portal.do</para><para>
+                         
+                         The following additional configuration is needed in the kfs-config.xml:</para><para>
+                         
+                             <code>&lt;param name="context.names.rice">rice-test&lt;/param></code></para><para> A <code>&lt;param name="context.names.kfs">kfs-test&lt;/param></code> is not needed since
+                    "kfs-test" is specified as the app.context.name.</para>
+                     <para>
+                         
+                         <emphasis role="bold">Example:</emphasis> KFS is used with a standalone Rice server.</para><para>
+                         
+                         KFS URL:http://www.example.com:8080/kfs-test/portal.do</para><para>
+                             Rice URL:http://www.example.com:8080/portal.do</para><para>
+                         
+                         
+                         No additional configuration is needed.
+                         Specifying <code>&lt;param name="context.names.rice">&lt;/param></code> would be acceptable as well.</para><para>
+                         
+                             <emphasis role="bold">Example:</emphasis> KFS is used with bundled Rice server.
+                         No additional configuration is needed.
+                 </para></note>
             <table frame="none">
                 <title>Database</title>
                 <tgroup cols="3">
-                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c1" colnum="1" colwidth="1.2*"/>
                     <colspec colname="c2" colnum="2" colwidth="1.55*"/>
-                    <colspec colname="c3" colnum="3" colwidth="2.34*"/>
+                    <colspec colname="c3" colnum="3" colwidth="2.14*"/>
                     <thead>
                         <row>
                             <entry>Parameter</entry>

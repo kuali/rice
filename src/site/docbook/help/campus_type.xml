@@ -35,7 +35,7 @@
     <note><para>While anyone can view the current values for campus type, only members with application
             specific manager or KR-SYS Technical Manager roles can create new campus types or edit
             existing values. This document does not route for approval.</para></note>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para><figure><title>Campus Type Lookup document</title>
             <mediaobject>
@@ -99,5 +99,5 @@
                 </tbody>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

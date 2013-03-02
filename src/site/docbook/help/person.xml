@@ -20,7 +20,7 @@
     <info>
         <title>Person</title>
     </info>
-    <sect1>
+    <section>
         <title>Overview</title>
         <para>Administration > Identity > Identity > Person</para>
         <para>The Person document allows you to identify each user to KIM (and, by extension, to
@@ -45,8 +45,8 @@
                     appropriate role.</para>
         </note></para>
         
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Document Layout</title>
         <para>The Person document includes <emphasis role="bold">Overview,</emphasis>
             <emphasis role="bold">Contact</emphasis>, <emphasis role="bold">Privacy
@@ -58,9 +58,9 @@
                 </imageobject>
              </mediaobject>
         </figure>
-        <sect2>
+        <section>
             <title>Overview Tab</title>
-            <sect3>
+            <section>
                 <title>Overview Section</title>
                 <para>The first section in the <emphasis role="bold">Overview</emphasis> tab is the
                         <emphasis role="bold">Overview</emphasis> section.</para>
@@ -109,8 +109,8 @@
                                 </tr>
                             </tbody>
                     </table></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Affiliations</title>
                 <para>Use the <emphasis role="bold">Affiliations</emphasis> section of the <emphasis
                         role="bold">Overview</emphasis> tab to add affiliations for this principal
@@ -267,9 +267,9 @@
                             </tbody>
                     </table>
                 </para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Contact Tab</title>
             <para>The <emphasis role="bold">Contact </emphasis>tab records the names, addresses,
                 phone numbers and email addresses associated with this Person record. Any Person
@@ -283,7 +283,7 @@
                     </imageobject>
                 </mediaobject>
             </figure></para>
-            <sect3>
+            <section>
                 <title>Names Section</title>
                 <para><figure><title>Names section</title>
                     <mediaobject>
@@ -382,8 +382,8 @@
                         </tbody>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Addresses Section</title>
                 <para><figure><title>Addresses section</title>
                     <mediaobject>
@@ -461,8 +461,8 @@
                         </tbody>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Phone Numbers Section</title>
                 <para><figure><title>Phone Numbers section</title>
                     <mediaobject>
@@ -534,8 +534,8 @@
                         </tbody>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Email Addresses Section</title>
                 <para><figure><title>Email Addresses section</title><mediaobject>
                         <imageobject>
@@ -596,9 +596,9 @@
                         </tbody>
                     </table>
                 </para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Privacy Preferences Tab</title>
             <para>The <emphasis role="bold">Privacy Preferences </emphasis>tab<emphasis role="bold"
                 > </emphasis>allows you to suppress the display of fields on the Contact Tab. </para>
@@ -651,8 +651,8 @@
                     </tbody>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Membership Tab</title>
             <para>The <emphasis role="bold">Membership Tab allows you to </emphasis>associate a
                 person with groups and roles and, by extension, with KIM permissions and
@@ -669,7 +669,7 @@
                     role="bold">Groups</emphasis>, another for <emphasis role="bold">Roles,
                     </emphasis><emphasis role="bold">and a third for</emphasis><emphasis role="bold"
                     > Delegations</emphasis>.</para>
-            <sect3>
+            <section>
                 <title>Groups Section</title>
                 <para>
                     <table frame="border">
@@ -726,8 +726,8 @@
                         </tbody>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Roles Section</title>
                 <para>
                     <table frame="border">
@@ -788,8 +788,8 @@
                 <para>When assigning some roles, you may need to supply additional qualifying values that further
                         define this person's assignment. For more information about role qualifiers,
                         see Role. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Delegations Section</title>
                 <para>Delegations allow you to set a user as a primary or secondary delegate for a
                     current member of a role. The delegate has the same permissions as the role
@@ -842,12 +842,12 @@
                         </tbody>
                     </table>
                 </para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Process Overview</title>
-        <sect2>
+        <section>
             <title>Business Rules</title>
             <itemizedlist>
                 <listitem>
@@ -873,12 +873,12 @@
                         default.</para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Routing</title>
             <para>Only members of the KR-SYS Technical Administrator or similar application specific
                 roles can initiate Person documents.  In base Rice, person documents do not route
                 for approval.</para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

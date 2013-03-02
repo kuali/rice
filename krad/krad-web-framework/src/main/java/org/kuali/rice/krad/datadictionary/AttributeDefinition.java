@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
@@ -214,6 +215,14 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     public void setValidationPattern(ValidationPattern validationPattern) {
         this.validationPattern = validationPattern;
+    }
+
+    /**
+     * Indicates whether a validation pattern has been set
+     * @return boolean
+     */
+    public boolean hasValidationPattern() {
+        return (validationPattern != null);
     }
 
     /**
@@ -508,6 +517,22 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
         this.attributeSecurity = attributeSecurity;
+    }
+
+    public boolean hasAttributeSecurity() {
+        return (attributeSecurity != null);
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (StringUtils.isEmpty(name)) {
+            throw new RuntimeException("blank name for bean: " + id);
+        }
     }
 
     /**

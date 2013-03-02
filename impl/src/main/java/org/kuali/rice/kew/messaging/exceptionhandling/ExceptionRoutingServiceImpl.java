@@ -118,7 +118,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             	exceptionRequests = generateKimExceptionRequests(routeContext);
             }
             if (exceptionRequests.isEmpty()) {
-            	throw new RiceRuntimeException("Failed to generate exception requests for exception routing!");
+                LOG.warn("Failed to generate exception requests for exception routing!");
             }
             activateExceptionRequests(routeContext, exceptionRequests, errorMessage, invokePostProcessor);
 

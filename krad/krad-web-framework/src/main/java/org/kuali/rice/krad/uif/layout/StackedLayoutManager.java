@@ -197,9 +197,9 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             // add the actions to the line group if isActionsInLineGroup flag is true
             if (isActionsInLineGroup()) {
                 groupFields.addAll(actions);
+                lineGroup.setRenderFooter(false);
             }else{
                 lineGroup.getFooter().setItems(actions);
-                lineGroup.setRenderFooter(false);
             }
         }
 

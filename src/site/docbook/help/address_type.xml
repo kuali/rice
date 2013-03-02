@@ -23,7 +23,7 @@
         records in KIM.   </para>
     <note><para>Address types cannot be edited via the interface. Technical assistance is required to add
         new or edit existing address types.</para></note>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para><figure><title>Address Type Lookup with results</title>
             <mediaobject>
@@ -64,5 +64,5 @@
                 </tr>
             </tbody>
         </table>
-    </sect1>
+    </section>
 </chapter>

@@ -18,8 +18,8 @@
 -->
 <chapter xml:id="writing_unit_tests" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Writing Unit Tests</title>
-    <sect1>
+    <section>
         <title>Title</title>
         <para></para>
-    </sect1>
+    </section>
 </chapter>

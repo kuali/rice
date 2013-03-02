@@ -27,7 +27,7 @@
             <emphasis role="bold">Administration</emphasis> menu tab, the system displays the County
         Lookup screen. After the user selects a county or clicks the <emphasis role="bold">create
             new</emphasis> button, the system presents the County Maintenance document.</para>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para><figure><title>County Maintenance document, create mode</title>
             <mediaobject>
@@ -77,5 +77,5 @@
                 </tbody>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

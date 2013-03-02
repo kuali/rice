@@ -29,7 +29,7 @@
         KFS-PURAP.</para>
     <para>This document can only be initiated by members of the KR-SYS Technical Administrator role
         or a suitable application role and does not route for approval.</para>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para><figure><title>Namespace document</title>
             <mediaobject>
@@ -81,5 +81,5 @@
                 </tbody>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

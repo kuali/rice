@@ -50,7 +50,11 @@
                 <listitem>
                     <para><emphasis role="bold">Release Notes</emphasis> (<link xlink:show="new"
                             xlink:href="release-notes.html">HTML</link> / <link xlink:show="new"
-                            xlink:href="../pdf/release-notes.pdf">PDF</link> ) - list of changes </para>
+                            xlink:href="../pdf/release-notes.pdf">PDF</link> ) - List of changes </para>
+                    <itemizedlist><listitem><para><link xlink:show="new"
+                                    xlink:href="https://wiki.kuali.org/display/KULRICE/Post-2.0+impacting+changes"
+                                    >Impacting Changes</link> - List of major impacting changes post
+                                2.0 release</para></listitem></itemizedlist>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Installation Guide</emphasis> (<link

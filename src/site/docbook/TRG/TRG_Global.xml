@@ -1130,126 +1130,14 @@ alter system set sessions=150 scope=spfile;
         <title>Creating Rice Enabled Applications</title>
         <section>
             <title>Creating a Rice Client Application Project Skeleton</title>
-            <para>The Kuali Rice source code comes with a script (written in a language called
-                Groovy) which will create a skeleton client application project that bundles Rice.
-                If you do not have Groovy installed on your machine, you will need to download and
-                install it from <link xlink:href="http://groovy.codehaus.org/"
-                    >http://groovy.codehaus.org/</link></para>
-            <section>
-                <title>Preparation Steps</title>
-                <para>To get ready to run the script:<orderedlist>
-                        <listitem>
-                            <para>Open a shell window or command prompt window. </para>
-                        </listitem>
-                        <listitem>
-                            <para>Change your current directory to the scripts directory within the
-                                Rice source code tree (for example, if you unpacked the source code
-                                into a directory named <emphasis role="bold"
-                                    >/java/projects/rice</emphasis>, you want to navigate to
-                                    <emphasis role="bold">/java/projects/rice/scripts</emphasis>).
-                            </para>
-                        </listitem>
-                        <listitem>
-                            <para>If the Groovy interpreter is not on your command path (entering
-                                the command groovy results in an error stating that the command was
-                                not found), enter the command: . <emphasis role="bold"
-                                    >./setenv.sh</emphasis> in Unix or <emphasis role="bold"
-                                    >setenv.bat</emphasis> in Windows. </para>
-                        </listitem>
-                        <listitem>
-                            <para>Verify that you have Groovy installed by typing the command
-                                    <emphasis role="bold">groovy</emphasis> at the comment line.
-                                This should print out the groovy usage message. </para>
-                        </listitem>
-                    </orderedlist></para>
-            </section>
-            <section>
-                <title>Command Syntax</title>
-                <para>Enter groovy createproject.groovy followed by one or more of the following
-                    parameters, separated by spaces:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">-name</emphasis> defines the name of the
-                                project. It must be followed by a space and the desired project
-                                name. The project name should consist of letters, numbers, dashes,
-                                and underscores only. This parameter is required. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-pdir</emphasis> specifies the directory to
-                                hold the new project. It must be followed by a space and the
-                                directory. A directory named the same as the project name will be
-                                created in this directory. If not specified, the directory <emphasis
-                                    role="bold">/java/projects</emphasis> will be used. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-rdir</emphasis> specifies the directory
-                                containing the Rice project. It must be followed by a space and the
-                                directory. If not specified, the directory /java/projects/rice will
-                                be used. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-mdir</emphasis> specifies the home
-                                directory for Maven, which is required to set up the Eclipse
-                                project’s class path information. It must be followed by a space and
-                                the directory. If not specified, the script will attempt to find
-                                Maven using the following sources: <itemizedlist>
-                                    <listitem>
-                                        <para>An environment variable named <emphasis role="bold"
-                                                >M2_HOME</emphasis>
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                        <para>An environment variable named <emphasis role="bold"
-                                                >m2.home</emphasis>
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                        <para>A property named <emphasis role="bold"
-                                                >maven.home.directory</emphasis> in the file
-                                                <emphasis role="bold">kuali
-                                                build.properties</emphasis> in your home
-                                            directory</para>
-                                    </listitem>
-                                </itemizedlist></para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-sampleapp</emphasis> requests the sample
-                                application to be included in the new project. This can serve as an
-                                example for building a Rice application. If not specified, the
-                                sample application is not included. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">-standalone</emphasis> requests the client
-                                project be set up to be run with a standalone rice server. This sets
-                                the default configuration files to containing the necessary settings
-                                to connect to standalone rice. The rice url and database properties
-                                will still need be updated manually. </para>
-                        </listitem>
-                    </itemizedlist></para>
-            </section>
-            <section>
-                <title>Sample Script Execution</title>
-                <programlisting>groovy createproject.groovy -name MyFirstProject -sampleapp</programlisting>
-                <para>Further instructions on how to open the project and run it will be printed to
-                    the console when the script has finished executing. At this point, you now have
-                    a skeleton of a Kuali Rice client application that you can use to begin building
-                    your own application. However, before running the application, you will need to
-                    create a Rice database (if you’re using the sampleapp, you’ll need to set up the
-                        <emphasis role="bold">demo</emphasis> database; otherwise, you’ll set up a
-                    stripped-down <emphasis role="bold">bootstrap</emphasis> database).</para>
-                <para>The configuration of this application uses a <emphasis role="bold"
-                        >bundled</emphasis> model where the Rice server and client pieces are all
-                    being included and loaded by your sample application. This is useful for
-                    development purposes since it makes it very easy to get the application running.
-                    It is not recommended for an enterprise deployment where you may want to have
-                    more than one application integrating with Kuali Rice. In these cases, you would
-                    want to install and integrate with a Standalone Rice server. For more
-                    information on installing and configuring a standalone server, see the
-                    Installation Guide.</para>
-            </section>
-        </section>
+            <para>In order to install a Rice client as a standalone server, please see the
+                <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/IG.html#standalone_server">installation
+                    guide instructions for Standalone Server Setup</link> section in the
+                Installation Guide.</para>
+                        </section>
         <section>
             <title>Reorder Eclipse Classpath</title>
-            <para>Once the sample script execution has completed, you will need to import your
+            <para>Once you have completed the installation, you will need to import your
                 project into eclipse and reorder the eclipse classpath to account for a change in
                 how the classpath was generated by maven. Navigate to your project properties and
                 select the Order and Export tab from the Java Build Path project property. There

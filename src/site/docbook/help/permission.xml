@@ -186,7 +186,7 @@
                 <imagedata fileref="../images/help/permission_inquiry.png"/>
             </imageobject>
         </mediaobject></figure></para>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para>The Permission document includes <emphasis role="bold">Document Overview</emphasis>,
                 <emphasis role="bold">Permission Info</emphasis>, and <emphasis role="bold"
@@ -198,7 +198,7 @@
                 </imageobject>
             </mediaobject>
         </figure></para>
-        <sect2>
+        <section>
             <title>Permission Info Tab</title>
             <para>This tab identifies the permissions with a unique system-assigned ID number, a
                 template, namespace, name and description.</para>
@@ -254,8 +254,8 @@
                     </tbody>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Permission Details Tab</title>
             <para>This tab identifies the permission values that KIM needs to make this permission
                 function. These values vary greatly depending on the type of permission being
@@ -289,6 +289,6 @@
                     </tbody>
                 </table>
             </para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

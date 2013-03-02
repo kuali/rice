@@ -207,7 +207,7 @@
             </imageobject>
         </mediaobject>
     </figure></para>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para>The Responsibility document includes <emphasis role="bold">Document
                 Overview</emphasis>, <emphasis role="bold">Responsibility Info</emphasis>, and
@@ -219,7 +219,7 @@
                 </imageobject>
             </mediaobject>
         </figure></para>
-        <sect2>
+        <section>
             <title>Responsibility Info Tab</title>
             <para>This tab identifies the responsibility with a unique system-assigned ID number, a
                 namespace, name and description.</para>
@@ -274,8 +274,8 @@
                     </tbody>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Responsibility Details Tab</title>
             <para>This tab identifies the document type and route node associated with this
                 responsibility. It also defines other responsibility information such as whether or
@@ -333,6 +333,6 @@
                     </tbody>
                 </table>
             </para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

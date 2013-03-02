@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -92,7 +93,7 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
         if (StringUtils.isNotBlank(typeId)) {
             KewTypeDefinition typeDefinition = KewApiServiceLocator.getKewTypeRepositoryService().getTypeById(typeId);
             PeopleFlowTypeService peopleFlowTypeService = GlobalResourceLoader.<PeopleFlowTypeService>getService(
-                    typeDefinition.getServiceName());
+                QName.valueOf(typeDefinition.getServiceName()));
             remoteFields = peopleFlowTypeService.getAttributeFields(typeId);
         }
 

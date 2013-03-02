@@ -27,7 +27,7 @@
         refer to particular documents or even specific tabs or fields on documents.</para>
     <para>Only members of the KR-SYS Technical Administrator or an equivalent application role can
         create or edit Component documents.</para>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para><figure><title>Component document</title>
             <mediaobject>
@@ -75,5 +75,5 @@
                 </tbody>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

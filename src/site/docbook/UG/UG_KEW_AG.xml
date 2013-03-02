@@ -18,7 +18,7 @@
 -->
 <chapter xml:id="UG_KEW_AG" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEW Administration Guide</title>
-    <sect1>
+    <section>
         <title>Kuali Enterprise Workflow: Overview</title>
         <para>An extension to the KEW Users Guide, this guide is aimed at providing guidance on the
             more powerful, administrative tools provided.</para>
@@ -30,8 +30,8 @@
             </itemizedlist>
         </para>
         <para>Your institution and Kuali Rice based application may use some or all of these KEW features.</para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
        <title>Document Operation</title>
         <para>The Document Operation screen allows for low-level modifications to document data. It's available from the 
             Administrator channel in the portal.</para>
@@ -68,7 +68,7 @@
             of data then the appropriate button should be selected. This is to guard against unintended or accidental changes 
             to the document.</para>
         <para>Each of the different sections is described in detail below.</para>
-        <sect2>
+        <section>
             <title>Document Actions</title>
             <figure>
                 <title>Document Actions</title>
@@ -124,8 +124,8 @@
                                 </listitem>
                             </itemizedlist></para></listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Document</title>
             <figure>
                 <title>Document</title>
@@ -159,8 +159,8 @@
                     <listitem><para>Doc Content - The XML Content of the document</para></listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Action Requests</title>
             <figure>
                 <title>Action Requests</title>
@@ -203,8 +203,8 @@
                     <listitem><para>Annotation - The value of the annotation on the request</para></listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Actions Taken</title>
             <figure>
                 <title>Actions Taken</title>
@@ -231,8 +231,8 @@
                     <listitem><para>Annotation - The value of the annotation on the Action Taken</para></listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Action Items</title>
             <figure>
                 <title>Action Items</title>
@@ -262,8 +262,8 @@
             </para>
             <para>It is important to note that the ActionItem is a de-normalized representation of an Action Request on the document that is used to render 
                 the Action List in an efficient matter. Therefore, it contains some copies of data from both the document and the request itself.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Route Node Instances</title>
             <figure>
                 <title>Route Node Instances</title>
@@ -289,8 +289,8 @@
             <para>The Route Node Instances are modeled as a Directed Acyclic Graph starting at the node instance pointed to by the Initial Route Node Instances 
                 field in the Document section. Therefore, if you delete a route node instance, it will follow all links through its set of Next Route Node 
                 Instances and delete those as well.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Branch States</title>
             <figure>
                 <title>Branch States</title>
@@ -310,8 +310,8 @@
             </para>
             <para>All documents are required to have at least one branch that is named PRIMARY. Therefore, it is advisable to not rename the PRIMARY branch.
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Annotation</title>
             <figure>
                 <title>Annotation</title>
@@ -325,8 +325,8 @@
                 of the audit trail for the document.</para>
             <para>Once the changes have been made on the document operation screen, hit the Save button and the changes will be executed on the server. Remember 
                 that in order for a change to take place the appropriate radio button must be selected on the data that requires modification.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Practical Uses of Document Operation</title>
             <para>
                 <itemizedlist>
@@ -336,18 +336,18 @@
                 </itemizedlist>
             </para>
             <para>Examples of each are outlined below</para>
-            <sect3>
+            <section>
                 <title>Requeuing a document that was stuck</title>
                 <para></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Moving a document to FINAL</title>
                 <para></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Rolling a document back to a previous point in the route path</title>
                 <para></para>
-            </sect3>
-        </sect2>
-    </sect1>
+            </section>
+        </section>
+    </section>
 </chapter>

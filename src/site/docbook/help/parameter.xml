@@ -32,7 +32,7 @@
     <para>Only members of the KR-SYS Technical Administrator or suitable application roles can
         create or edit Parameter documents.</para>
     <para>The Parameter document does not route for approval.</para>
-    <sect1>
+    <section>
         <title>Document Layout</title>
         <para><figure><title>Parameter document</title>
             <mediaobject>
@@ -109,5 +109,5 @@
                 </tbody>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

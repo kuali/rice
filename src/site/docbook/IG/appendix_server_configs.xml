@@ -18,7 +18,7 @@
 -->
 <appendix xml:id="appendix_server_configs" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Example Server Configurations</title>
-    <sect1>
+    <section>
         <title>Single Server Configuration</title>
         <para>An example setup of a single Tomcat server running MySQL server:<itemizedlist>
             <listitem>
@@ -43,11 +43,11 @@
                 <para>MySQL 5.1.x</para>
             </listitem>
         </itemizedlist></para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Multi Server Configuration</title>
         <para>An example of a multiple server configuration:</para>
-        <sect2>
+        <section>
             <title>Web Servers</title>
             <itemizedlist>
                 <listitem>
@@ -69,8 +69,8 @@
                     <para>Tomcat connector </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Tomcat Servers</title>
             <itemizedlist>
                 <listitem>
@@ -89,8 +89,8 @@
                     <para>Tomcat </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Web Servers – Content/Shared File System</title>
             <itemizedlist>
                 <listitem>
@@ -115,6 +115,6 @@
                     <para>Tomcat connector </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </appendix>

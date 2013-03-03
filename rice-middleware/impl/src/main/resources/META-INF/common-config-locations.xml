@@ -20,7 +20,6 @@
   <param name="environment" override="false">dev</param>
   <param name="external.config.home" override="false">${user.home}/kuali/main/${environment}</param>
 
-  <param name="config.location">classpath:META-INF/framework-config-defaults.xml</param>
   <param name="config.location">${external.config.home}/common-config.xml</param>
   <param name="config.location">${external.config.home}/${module.name}-config.xml</param>
 </config>

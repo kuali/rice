@@ -18,114 +18,7 @@
 -->
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="d37b07b2-fb77-46e3-ae35-c435a56398ec" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minification.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/projectCodeStyle.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-client-contrib.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-api.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-service-api.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-service-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-service-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-service-web.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-service.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core-web.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-core.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-edl-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-edl-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-edl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-config.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-core.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-edl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-internal-tools.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-kcb.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-ken.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-kew.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-kim.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-kns.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-krms.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-ksb.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-location.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-remote.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-vc.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-ken-api.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-ken.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kew-api.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kew-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kew-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kew.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kim-api.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kim-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kim-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kim-ldap.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kim.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-kns.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krms-api.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krms-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krms-gen.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krms-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krms.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-ksb-api.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-ksb-client-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-ksb-server-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-ksb-web.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-ksb.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-location-api.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-location-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-location-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-location-web.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-location.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-middleware.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-sampleapp.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-serviceregistry.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-standalone.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-web.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_7_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_8_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__tomcat_6_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__tomcat_7_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_sampleapp_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_sampleapp_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_serviceregistry__jetty_7_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_serviceregistry_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_serviceregistry_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__jetty_7_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__jetty_8_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__tomcat_6_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__tomcat_7_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_standalone_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_standalone_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_web_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_web_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../core/pom.xml" afterPath="$PROJECT_DIR$/../../../core/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../core-service/pom.xml" afterPath="$PROJECT_DIR$/../../../core-service/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../edl/pom.xml" afterPath="$PROJECT_DIR$/../../../edl/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/pom.xml" afterPath="$PROJECT_DIR$/../../../impl/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../it/pom.xml" afterPath="$PROJECT_DIR$/../../../it/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../ken/pom.xml" afterPath="$PROJECT_DIR$/../../../ken/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/pom.xml" afterPath="$PROJECT_DIR$/../../../kew/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../sampleapp/pom.xml" afterPath="$PROJECT_DIR$/../../../sampleapp/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../web/pom.xml" afterPath="$PROJECT_DIR$/../../../web/pom.xml" />
-    </list>
+    <list default="true" readonly="true" id="d37b07b2-fb77-46e3-ae35-c435a56398ec" name="Default" comment="" />
     <list id="3345e3a9-2979-433c-9eb1-76757eeefe86" name="ignore" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__asm_asm_3_3_1.xml" />
@@ -291,7 +184,7 @@
     </list>
     <ignored path="rice-framework.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347128294" ignored="false" />
+    <file path="/Dummy.txt" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347564533" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../../kradtraining.git/src/main/resources/org/kuali/rice/krtrain/KrtrainMenuView.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1359474148373" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../../kradtraining.git/src/main/resources/org/kuali/rice/krtrain/book/BookEntryView.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1359734472759" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../../kradtraining.git/src/main/resources/org/kuali/rice/krtrain/BaseDefinitionOverrides.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1359403935863" ignored="false" />
@@ -318,7 +211,7 @@
     <file path="/BookEntryForm.java" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1359734630642" ignored="false" />
     <file path="/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360250320231" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-ksb-client-impl/2.3.0-SNAPSHOT/rice-ksb-client-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ksb/config/KsbServiceBusClientSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232179" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../../rice-framework/config/ide/intellij/.idea/workspace.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347454983" ignored="false" />
+    <file path="$PROJECT_DIR$/../../../../rice-framework/config/ide/intellij/.idea/workspace.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347641392" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../rice-framework/krad-sampleapp/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360252493685" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../rice-framework/krad-web-framework/src/main/java/org/kuali/rice/krad/config/KRADConfigurer.java" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360004099444" ignored="false" />
     <file path="/KRADConfigurer.java" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360004063823" ignored="false" />
@@ -609,7 +502,7 @@
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-core-service-web/2.3.0-SNAPSHOT/rice-core-service-web-2.3.0-SNAPSHOT.jar!/org/kuali/rice/coreservice/web/namespace/Namespace.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232184" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-ksb-web/2.3.0-SNAPSHOT/rice-ksb-web-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ksb/config/KsbWebSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232185" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../rice-framework/config/ide/intellij/.idea/runConfigurations/krad_sampleapp__first_run_.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360341417909" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../../rice-framework/krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/KradSampleAppForm.java" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347518368" ignored="false" />
+    <file path="$PROJECT_DIR$/../../../../rice-framework/krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/KradSampleAppForm.java" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347549194" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../rice-framework/krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347452361" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1216,7 +1109,7 @@
     <frame x="-9" y="-9" width="2066" height="1122" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.8150051" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27749228" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1225,17 +1118,17 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3761562" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18181819" sideWeight="0.18499486" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18181819" sideWeight="0.7225077" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28856826" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3761562" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1246,8 +1139,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <option name="myTodoPanelSettings">
       <value>
         <are-packages-shown value="false" />
@@ -1279,7 +1172,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="LAST_COMMIT_MESSAGE" value="KULRICE-8445 - config for rice middleware project" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1292,6 +1185,7 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="KULRICE-8445 - config for rice middleware project" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />

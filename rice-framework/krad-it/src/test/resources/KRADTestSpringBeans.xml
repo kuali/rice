@@ -111,21 +111,7 @@
     <property name="userTransaction" ref="jtaUserTransaction"/>
   </bean>
 
-  <bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-    <property name="services">
-      <list>
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition"
-              p:localServiceName="lookupResultsDDBoLookupable" p:serviceNameSpaceURI=""
-              p:serviceInterface="org.kuali.rice.krad.lookup.Lookupable"
-              p:messageExceptionHandler="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler"
-              p:millisToLive="-1" p:retryAttempts="0" p:priority="5">
-          <property name="service">
-            <ref bean="lookupResultsDDBoLookupable"/>
-          </property>
-        </bean>
-      </list>
-    </property>
-  </bean>
+  <bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"/>
 
   <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 
@@ -141,20 +127,8 @@
 
   <bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
 
-  <bean id="lookupResultsDDBoLookupableHelperService"
-        class="org.kuali.rice.krad.lookup.LookupResultsDDBoLookupableHelperServiceImpl"/>
-
-  <bean id="lookupResultsDDBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl">
-    <property name="lookupableHelperService">
-      <ref bean="lookupResultsDDBoLookupableHelperService"/>
-    </property>
-  </bean>
-
-  <bean id="lookupResultsDDBoLookupableHelperUrl" class="java.net.URL">
-    <constructor-arg value="${serviceServletUrl}"/>
-  </bean>
-
-  <bean id="testModule" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
+  <bean id="testModule" parent="testModule-parentBean"/>
+  <bean id="testModule-parentBean" abstract="true" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
     <property name="moduleConfiguration">
       <bean id="testModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
         <property name="namespaceCode" value="TEST"/>

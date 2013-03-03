@@ -374,7 +374,7 @@
                       <arg>process-resources</arg>
                     </args>
                     <poms>
-                      <param>classpath:org/kuali/common/deploy/mvn/impex-with-sql.xml</param>
+                      <param>classpath:org/kuali/common/deploy/mvn/impex-with-sql-plus-meta.xml</param>
                     </poms>
                     <properties>
                       <property>impex.basedir</property>

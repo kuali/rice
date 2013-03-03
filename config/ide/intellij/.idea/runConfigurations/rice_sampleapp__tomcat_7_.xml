@@ -25,30 +25,30 @@
       <option name="USE_ENV_VARIABLES" value="true" />
       <STARTUP>
         <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="C:/apache-tomcat-7.0.8/bin/catalina.bat" />
+        <option name="SCRIPT" value="" />
         <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value=" run" />
+        <option name="PROGRAM_PARAMETERS" value="" />
       </STARTUP>
       <SHUTDOWN>
         <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="C:/apache-tomcat-7.0.8/bin/catalina.bat" />
+        <option name="SCRIPT" value="" />
         <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value=" stop" />
+        <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
     </ConfigurationWrapper>
     <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
       <option name="USE_ENV_VARIABLES" value="true" />
       <STARTUP>
         <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="C:/apache-tomcat-7.0.8/bin/catalina.bat" />
+        <option name="SCRIPT" value="" />
         <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value=" run" />
+        <option name="PROGRAM_PARAMETERS" value="" />
       </STARTUP>
       <SHUTDOWN>
         <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="C:/apache-tomcat-7.0.8/bin/catalina.bat" />
+        <option name="SCRIPT" value="" />
         <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value=" stop" />
+        <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
     </ConfigurationWrapper>
     <method>

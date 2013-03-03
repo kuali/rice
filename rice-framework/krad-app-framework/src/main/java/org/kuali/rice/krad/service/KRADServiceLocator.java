@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 
 import javax.persistence.EntityManagerFactory;
 
+/**
+ * Service locator for the KRAD App Module
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class KRADServiceLocator {
     public static final String ATTACHMENT_SERVICE = "attachmentService";
     public static final String PERSISTENCE_SERVICE = "persistenceService";
@@ -102,4 +106,5 @@ public class KRADServiceLocator {
     public static InactivateableFromToService getInactivateableFromToService() {
         return (InactivateableFromToService) getService(INACTIVATEABLE_FROM_TO_SERVICE);
     }
+
 }

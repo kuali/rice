@@ -147,8 +147,9 @@
         RTE_VER_NBR="2" VER_NBR="0"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1" DOC_TYP_ID="2994"
         DOC_TYP_NM="IdentityManagementDocument" DOC_TYP_VER_NBR="0"
-        LBL="Undefined" OBJ_ID="944596CD-A7FC-0DEE-EDE1-52A52BED85CC"
-        PARNT_ID="2681" RTE_VER_NBR="2" VER_NBR="0"/>
+        LBL="Identity Management Document"
+        OBJ_ID="944596CD-A7FC-0DEE-EDE1-52A52BED85CC" PARNT_ID="2681"
+        RTE_VER_NBR="2" VER_NBR="0"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kim.url}/identityManagementRoleDocument.do?methodToCall=docHandler"
         DOC_TYP_ID="2995" DOC_TYP_NM="IdentityManagementRoleDocument"

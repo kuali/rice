@@ -17,219 +17,20 @@
 
 -->
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="rice-krad-sampleapp:war exploded" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="d37b07b2-fb77-46e3-ae35-c435a56398ec" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/options" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-it/.classpath" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-it/.project" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/ConvertDateTest.groovy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/ConvertDateTest2.groovy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/ConvertTypedArrayListTest.groovy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAction.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoActionResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoAlphaConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoAlphaNumericConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAlphaNumericPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAlphaPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoAnyCharacterConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAnyCharacterPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoBoxLayoutManager.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoBoxLayoutManagerResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCaseConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoCaseConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoCharsetConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCharsetPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCheckboxGroupControl.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoCheckboxGroupResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionActionPlacement.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoCollectionActionPlacementResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionAddLine.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoCollectionAddLineResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoCollectionGroupResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionSelectLine.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoCollectionSelectLineResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoCollectionSequenceResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoConditionalRefresh.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoConditionalRefreshResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoConfigurationBasedRegexPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoConfigurationBasedRegexResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDataField.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoDataFieldResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDataTable.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoDataTableResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoDateConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDatePatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDialogGroup.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoDialogGroupResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDisable.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoDisableResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDisclosure.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoDisclosureResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoFixedPointConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoFixedPointPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoFloatingPointConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoFloatingPointPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoGridLayoutManager.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoGridLayoutManagerResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoGroup.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoGroupResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoHeader.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoHeaderResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoIframe.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoIframeResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoImage.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoImageResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoIntegerConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoIntegerPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoLabel.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoLabelResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoLink.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoLinkResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoMessage.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoMessageResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoMustOccurConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoMustOccurConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoNumericConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoNumericPatternConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoPrerequisiteConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoPrerequisiteConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoProgressiveDisclosure.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoProgressiveDisclosureResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoRichMessages.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoRichMessagesResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoSimpleConstraint.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoSimpleConstraintResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoSpace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoSpaceResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutDetails.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoTableLayoutDetailsResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutGrouping.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoTableLayoutGroupingResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutTotaling.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoTableLayoutTotalingResources.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/options/FoodKeyValuesFinder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/maintainablexml/MaintainableXMLConversionServiceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/options/SimpleTestKeyValues.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/TestDelegateGlobal.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/TestDelegateGlobalDetail.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/TestDelegateModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/TestDelegateModelDetail.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/TestGlobalDetail.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/TestReviewRole.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/UITestObject.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/webapp/WEB-INF/index.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/krad_sampleapp__first_run_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/krad_sampleapp__tomcat_7_.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-it/.settings/org.eclipse.core.resources.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-it/.settings/org.eclipse.jdt.groovy.core.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-it/.settings/org.eclipse.m2e.core.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/projectCodeStyle.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-it-krad.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krad-app-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krad-development-tools.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krad-sampleapp.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krad-service-impl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krad-web-framework.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rice-krad-web.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_krad_sampleapp_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_krad_sampleapp_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_krad_web_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_krad_web_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/components" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/components" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-it" afterPath="$PROJECT_DIR$/../../../krad-it" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework" afterPath="$PROJECT_DIR$/../../../krad-web-framework" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/maintainablexml" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/maintainablexml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/ApplicationResources.properties" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/ApplicationResources.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/datadictionary/validation/constraint/CaseConstraint.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/datadictionary/validation/constraint/CaseConstraint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/util/ClientValidationUtils.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/util/ClientValidationUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/component/ComponentBase.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/component/ComponentBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/components/ComponentExhibit.java" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/components/ComponentExhibit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/util/ComponentFactory.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/util/ComponentFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/components/ComponentLibraryView.java" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/components/ComponentLibraryView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/maintainablexml/ConvertMaintainableXML.java" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/maintainablexml/ConvertMaintainableXML.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/maintainablexml/FileConverter.java" afterPath="$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/maintainablexml/FileConverter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerView.xml" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerView.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/view/HistoryEntry.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/view/HistoryEntry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/element/Image.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/element/Image.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/test/java/org/kuali/rice/krad/uif/field/InputFieldTest.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/test/java/org/kuali/rice/krad/uif/field/InputFieldTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/widget/Inquiry.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/widget/Inquiry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/KRADApplicationResources.properties" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/KRADApplicationResources.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/config/KRADConfigurer.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/config/KRADConfigurer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/controller/KradSampleAppController.java" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/controller/KradSampleAppController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/KradSampleAppModuleBeans.xml" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/KradSampleAppModuleBeans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/element/Label.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/element/Label.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/element/Link.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/element/Link.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/controller/LookupController.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/controller/LookupController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/lookup/LookupViewAuthorizerBase.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/lookup/LookupViewAuthorizerBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/lookup/Lookupable.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/lookup/Lookupable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/lookup/LookupableImpl.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/lookup/LookupableImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/element/Message.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/element/Message.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/field/MessageField.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/field/MessageField.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/OJB-repository-krad-sampleapp.xml" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/OJB-repository-krad-sampleapp.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-it/src/test/java/org/kuali/rice/krad/service/PessimisticLockServiceTest.java" afterPath="$PROJECT_DIR$/../../../krad-it/src/test/java/org/kuali/rice/krad/service/PessimisticLockServiceTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/widget/QuickFinder.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/widget/QuickFinder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/component/ScriptEventSupport.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/component/ScriptEventSupport.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/layout/StackedLayoutManager.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/layout/StackedLayoutManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/widget/SyntaxHighlighter.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/widget/SyntaxHighlighter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAccountExtension.xml" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAccountExtension.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAlternateViews.xml" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAlternateViews.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/bind/UifConfigurableWebBindingInitializer.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/bind/UifConfigurableWebBindingInitializer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/controller/UifControllerBase.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/controller/UifControllerBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/controller/UifControllerHandlerInterceptor.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/controller/UifControllerHandlerInterceptor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/form/UifFormBase.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/form/UifFormBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/uif/UifGroupDefinitions.xml" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/uif/UifGroupDefinitions.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/UifPropertyPaths.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/UifPropertyPaths.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/bind/UifViewBeanWrapper.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/web/bind/UifViewBeanWrapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/resources/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/view/ViewModel.java" afterPath="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/view/ViewModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/css/global/base.css" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/css/global/base.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/WEB-INF/ftl/components/field/dataInputField.ftl" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/WEB-INF/ftl/components/field/dataInputField.ftl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/WEB-INF/ftl/components/element/header.ftl" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/WEB-INF/ftl/components/element/header.ftl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/META-INF/krad-sampleapp-config.xml" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/META-INF/krad-sampleapp-config.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.initialize.js" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.initialize.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.response.js" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.response.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.utility.js" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.utility.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.validate.js" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.validate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.variables.js" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.variables.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.widget.js" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/scripts/krad.widget.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-it/.settings/org.eclipse.jdt.ui.prefs" afterPath="$PROJECT_DIR$/../../../krad-it/.settings/org.eclipse.jdt.ui.prefs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-app-framework/pom.xml" afterPath="$PROJECT_DIR$/../../../krad-app-framework/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-it/pom.xml" afterPath="$PROJECT_DIR$/../../../krad-it/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/pom.xml" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web-framework/pom.xml" afterPath="$PROJECT_DIR$/../../../krad-web-framework/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/plugins/prettify/prettify.js" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/plugins/prettify/prettify.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/WEB-INF/ftl/components/widget/syntaxHighlighter.ftl" afterPath="$PROJECT_DIR$/../../../krad-web/src/main/webapp/krad/WEB-INF/ftl/components/widget/syntaxHighlighter.ftl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/library/DataTableRestServiceTestImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/krad_sampleapp__tomcat_7_first_run_.xml" />
+      <change type="DELETED" beforePath="C:\java\projects\rice-2.2-split\rice-framework\config\ide\intellij\.idea\runConfigurations\krad_sampleapp__first_run_.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/KradSampleAppForm.java" afterPath="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/KradSampleAppForm.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krad-web/pom.xml" afterPath="$PROJECT_DIR$/../../../krad-web/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="b06cad7b-b4a6-4dc5-99ba-fcd0ec19933b" name="ignore" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" />
@@ -417,7 +218,7 @@
     </list>
     <ignored path="rice-framework.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347041891" ignored="false" />
+    <file path="/Dummy.txt" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347564534" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../../kradtraining.git/src/main/resources/org/kuali/rice/krtrain/KrtrainMenuView.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1359474148373" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../../kradtraining.git/src/main/resources/org/kuali/rice/krtrain/book/BookEntryView.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1359734472759" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../../kradtraining.git/src/main/resources/org/kuali/rice/krtrain/BaseDefinitionOverrides.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1359403935863" ignored="false" />
@@ -562,50 +363,50 @@
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-krad-web-framework/2.3.0-SNAPSHOT/rice-krad-web-framework-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/uif/UifElementDefinitions.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360173318665" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-krad-web-framework/2.3.0-SNAPSHOT/rice-krad-web-framework-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/datadictionary/DocumentHeader.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360173318667" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-krad-web-framework/2.3.0-SNAPSHOT/rice-krad-web-framework-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/uif/UifDocumentDefinitions.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360173318668" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../../rice-middleware/web/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360173611228" ignored="false" />
+    <file path="$PROJECT_DIR$/../../../../rice-middleware/web/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360350654382" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../rice-middleware/sampleapp/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360173652600" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/KewLocalSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231978" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/RuleDelegation.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231959" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/common.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231974" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/DocumentType.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231960" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/XMLSchema.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107801" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/AttributeSet-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231962" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/group-1.0.3.a.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231965" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/notification-common.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231966" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231981" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/WorkflowData.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231968" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/RuleTemplate.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231968" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewEmbeddedServiceBusSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107812" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/schema-for-xslt20.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231969" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/KENLocalSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231979" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/config/RiceSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231989" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/_KenLocalServiceBusSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231979" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Rule.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107821" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Core-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107823" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/_KenCommonSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107824" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/KENRemoteSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107826" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/OJB-repository-ken.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107827" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/RoutingConfig.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231972" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/CitizenshipStatus.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232043" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232045" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EntityNameType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107834" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107836" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232043" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107839" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360338107841" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232041" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232046" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232042" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232047" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/KewLocalSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396692" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/RuleDelegation.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396712" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/common.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396692" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/DocumentType.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396716" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/XMLSchema.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396695" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/AttributeSet-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396697" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/group-1.0.3.a.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396698" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/notification-common.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396698" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396758" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/WorkflowData.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396699" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/RuleTemplate.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396700" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewEmbeddedServiceBusSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396718" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/schema-for-xslt20.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396702" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/KENLocalSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396708" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/config/RiceSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396684" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/_KenLocalServiceBusSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396710" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Rule.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396704" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Core-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396705" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/_KenCommonSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396712" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/KENRemoteSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396714" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/OJB-repository-ken.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396715" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/RoutingConfig.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396706" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/CitizenshipStatus.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396749" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396749" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EntityNameType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396720" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396721" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396731" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396756" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396757" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396743" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396733" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396744" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396734" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-it-internal-tools/2.3.0-SNAPSHOT/rice-it-internal-tools-2.3.0-SNAPSHOT.jar!/META-INF/common-config-test-locations.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231955" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-it-internal-tools/2.3.0-SNAPSHOT/rice-it-internal-tools-2.3.0-SNAPSHOT.jar!/TestHarnessSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231956" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-it-internal-tools/2.3.0-SNAPSHOT/rice-it-internal-tools-2.3.0-SNAPSHOT.jar!/META-INF/test-config-defaults.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231956" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-it-internal-tools/2.3.0-SNAPSHOT/rice-it-internal-tools-2.3.0-SNAPSHOT.jar!/META-INF/maven/org.kuali.rice/rice-it-internal-tools/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231957" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Group-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231958" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/NotificationRequest.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231958" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Group-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396709" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/NotificationRequest.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396710" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/META-INF/maven/org.kuali.rice/rice-edl-impl/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231960" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/ApplicationConstants.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231961" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/ResolverConfig.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231961" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/ApplicationConstants.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396696" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/ResolverConfig.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396696" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/edl/impl/config/EDLLocalSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231963" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/META-INF/edl-orm.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231963" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/edl/impl/config/_EDLCommonSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231964" ignored="false" />
@@ -614,53 +415,53 @@
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/META-INF/EDLConfig.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231967" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/edl/impl/config/OJB-repository-edl.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231967" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/edl/impl/default-widgets.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231969" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Groups-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231970" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Groups-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396703" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteDefinition.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231970" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Group.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231971" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Group.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396706" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-edl-impl/2.3.0-SNAPSHOT/rice-edl-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteAssociation.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231971" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/SearchingConfig.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231972" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/RuleAttribute.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231973" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/EDocLiteDef.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231974" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/SearchingConfig.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396707" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/RuleAttribute.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396708" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/EDocLiteDef.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396694" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/META-INF/common-config-defaults.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231975" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/KewWebSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231976" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231976" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/KewWebSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396689" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396726" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/META-INF/common-config-locations.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231977" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewLocalServiceBusSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231978" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/_KenOjbSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231980" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kcb/config/OJB-repository-kcb.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231981" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kcb/config/KCBSpringBeans-test.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231982" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kcb/config/_KcbOjbSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231983" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentName.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231983" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231984" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231984" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231985" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231986" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231986" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231987" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentPhone.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231987" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/config/RiceServiceRegistrySpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231988" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kns/config/KNSSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231989" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewCommonSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231990" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231990" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewEmbeddedRemoteSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231991" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewLocalServiceBusSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396691" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ken/config/_KenOjbSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396711" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kcb/config/OJB-repository-kcb.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396734" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kcb/config/KCBSpringBeans-test.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396737" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kcb/config/_KcbOjbSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396739" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentName.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396751" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396752" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396753" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396755" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396760" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396760" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396761" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentPhone.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396762" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/config/RiceServiceRegistrySpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396719" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kns/config/KNSSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396687" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewCommonSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396719" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396723" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewEmbeddedRemoteSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396686" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/META-INF/maven/org.kuali.rice/rice-impl/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231991" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339231992" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewDataSourceSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232035" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/KewThinSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232035" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EntityType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232036" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396724" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewDataSourceSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396688" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/KewThinSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396688" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EntityType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396725" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-location-web/2.3.0-SNAPSHOT/rice-location-web-2.3.0-SNAPSHOT.jar!/org/kuali/rice/location/web/postalcode/PostalCode.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232037" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-location-web/2.3.0-SNAPSHOT/rice-location-web-2.3.0-SNAPSHOT.jar!/org/kuali/rice/location/web/postalcode/PostalCodeMaintenanceDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232037" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232038" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232039" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232039" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232040" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EmailType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232042" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232045" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232046" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232048" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232048" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232049" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/DocumentType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232050" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396735" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396737" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396753" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396727" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EmailType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396747" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396732" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396750" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396751" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396736" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396738" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/DocumentType.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396740" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-location-web/2.3.0-SNAPSHOT/rice-location-web-2.3.0-SNAPSHOT.jar!/org/kuali/rice/location/web/county/County.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232056" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-web/2.3.0-SNAPSHOT/rice-web-2.3.0-SNAPSHOT.war!/kcb/WEB-INF/kcb-servlet.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232057" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-web/2.3.0-SNAPSHOT/rice-web-2.3.0-SNAPSHOT.war!/kim/WEB-INF/struts-config.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232058" ignored="false" />
@@ -706,6 +507,44 @@
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-core-service-web/2.3.0-SNAPSHOT/rice-core-service-web-2.3.0-SNAPSHOT.jar!/org/kuali/rice/coreservice/web/namespace/Namespace.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232117" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-ksb-web/2.3.0-SNAPSHOT/rice-ksb-web-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ksb/config/KsbWebSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232118" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-ksb-server-impl/2.3.0-SNAPSHOT/rice-ksb-server-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/ksb/config/OJB-repository-ksb-registry.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360339232119" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396685" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/KewRemoteSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396686" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396690" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/config/_KewEmbeddedOjbSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396690" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/xml.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396693" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/NotificationResponse.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396694" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/Style.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396701" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/User.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396701" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/config.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396703" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/data-1.0.3.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396713" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/mail/defaultEmailStyle.xsl" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396715" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/schema/EDocLite.xsd" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396717" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/config/RiceServiceSpringBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396717" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396722" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396722" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentExternalId.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396724" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396727" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396728" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/bo/datadictionary/Style.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396730" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396739" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396741" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/GroupDocumentMember.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396742" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmploymentInfo.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396742" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396744" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396745" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396746" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/Attachment.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396747" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/Note.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396748" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396754" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396755" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/PersonDocumentCitizenship.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396758" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396759" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396763" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396763" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396764" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396765" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396766" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/org/kuali/rice/rice-impl/2.3.0-SNAPSHOT/rice-impl-2.3.0-SNAPSHOT.jar!/org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360701396766" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -720,6 +559,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -755,7 +595,6 @@
       </breakpoint>
     </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -765,52 +604,82 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/pom.xml">
+      <file leaf-file-name="ViewHelperService.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/service/ViewHelperService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="29" selection-start="2017" selection-end="2017" vertical-scroll-proportion="0.0">
+            <state line="116" column="0" selection-start="4101" selection-end="4101" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="KradSampleAppForm.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ViewHelperServiceImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/service/impl/ViewHelperServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="722" column="15" selection-start="34275" selection-end="34275" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="KradSampleAppForm.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/KradSampleAppForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="23" selection-start="871" selection-end="871" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1360347028462" expanded="true" signature="1316:1330" placeholder="&lt;~&gt;" />
-                <marker date="1360347028462" expanded="true" signature="1335:1349" placeholder="&lt;~&gt;" />
-                <marker date="1360347028462" expanded="true" signature="1367:1381" placeholder="&lt;~&gt;" />
-                <marker date="1360347028462" expanded="true" signature="1732:1788" placeholder="/**...*/" />
-                <marker date="1360347028462" expanded="true" signature="1871:1942" placeholder="/**...*/" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="KradSampleAppBeans.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="446" column="56" selection-start="18562" selection-end="18562" vertical-scroll-proportion="7.4105263">
+            <state line="18" column="43" selection-start="753" selection-end="753" vertical-scroll-proportion="0.21135029">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="krad_sampleapp__first_run_.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/runConfigurations/krad_sampleapp__first_run_.xml">
+      <file leaf-file-name="ViewServiceImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../krad-service-impl/src/main/java/org/kuali/rice/krad/uif/service/impl/ViewServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="41" selection-start="716" selection-end="716" vertical-scroll-proportion="0.0">
+            <state line="166" column="28" selection-start="6942" selection-end="6942" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="krad_sampleapp__tomcat_7_.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/runConfigurations/krad_sampleapp__tomcat_7_.xml">
+      <file leaf-file-name="CollectionGroup.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/container/CollectionGroup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="22" selection-start="561" selection-end="593" vertical-scroll-proportion="0.0">
+            <state line="339" column="41" selection-start="15407" selection-end="15407" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="View.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/view/View.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="236" column="20" selection-start="8338" selection-end="8338" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TravelAccountMaintenance.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAccountMaintenance.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="32" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComponentBase.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/component/ComponentBase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="53" column="53" selection-start="2208" selection-end="2208" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UifDictionaryBeanBase.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/datadictionary/uif/UifDictionaryBeanBase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="34" column="32" selection-start="1177" selection-end="1177" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -838,8 +707,10 @@
         <option value="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoTextControlResources.properties" />
         <option value="$PROJECT_DIR$/../../../krad-sampleapp/pom.xml" />
         <option value="$PROJECT_DIR$/.idea/runConfigurations/krad_sampleapp__first_run_.xml" />
-        <option value="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/KradSampleAppForm.java" />
         <option value="$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml" />
+        <option value="$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/KradSampleAppForm.java" />
+        <option value="$PROJECT_DIR$/../../../krad-web/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/service/impl/ViewHelperServiceImpl.java" />
       </list>
     </option>
   </component>
@@ -901,8 +772,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-9" />
     <option name="y" value="-9" />
-    <option name="width" value="2066" />
-    <option name="height" value="1122" />
+    <option name="width" value="1938" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -1001,12 +872,38 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
+              <option name="myItemId" value="rice-framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rice-framework" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemId" value="krad-sampleapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="uif" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1032,7 +929,19 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="uif" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="form" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1057,22 +966,12 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="rice-framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rice-framework" />
+              <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
+              <option name="myItemId" value="demo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1089,7 +988,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="Template Data Languages" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../krad-sampleapp/target/rice-krad-sampleapp-2.3.0-SNAPSHOT" />
     <property name="project.structure.side.proportion" value="0.25543478" />
     <property name="GoToClass.includeJavaFiles" value="true" />
@@ -1102,7 +1001,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
   </component>
-  <component name="RunManager" selected="Tomcat Server.krad sampleapp (first run)">
+  <component name="RunManager" selected="Tomcat Server.krad sampleapp (tomcat 7:first run)">
     <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -1186,7 +1085,7 @@
       <method />
     </configuration>
     <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Tomcat Server.krad sampleapp (first run)" />
+      <item index="0" class="java.lang.String" itemvalue="Tomcat Server.krad sampleapp (tomcat 7:first run)" />
       <item index="1" class="java.lang.String" itemvalue="Tomcat Server.krad sampleapp (tomcat 7)" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -1270,10 +1169,10 @@
     </option>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="2066" height="1122" extended-state="6" />
-    <editor active="false" />
+    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.8478931" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3618202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1281,17 +1180,17 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5971223" sideWeight="0.4985015" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44398767" sideWeight="0.498002" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26673326" sideWeight="0.7553957" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2002997" sideWeight="0.15210688" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29701954" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18303095" sideWeight="0.6381798" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2963374" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47946727" sideWeight="0.498002" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5755396" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1359,102 +1258,108 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/criteria/CriteriaLookupDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="3" selection-start="912" selection-end="959" vertical-scroll-proportion="0.23127463" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../krad-web/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="68" selection-start="471" selection-end="471" vertical-scroll-proportion="0.38473767" />
+        <state line="16" column="21" selection-start="566" selection-end="566" vertical-scroll-proportion="0.025200458" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/KradSampleAppBeans.xml">
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/view/ViewIndex.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="55" selection-start="1750" selection-end="1750" vertical-scroll-proportion="-22.88" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/config/KRADConfigurer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="48" selection-start="6444" selection-end="6444" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/resources/DemoTextControlResources.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="48" selection-start="2015" selection-end="2015" vertical-scroll-proportion="0.910596" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="165" column="33" selection-start="6121" selection-end="6121" vertical-scroll-proportion="0.3540587" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/pdle/PostDataLoadEncryptionServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="30" selection-start="696" selection-end="696" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-development-tools/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="22" selection-start="622" selection-end="622" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-development-tools/src/main/java/org/kuali/rice/krad/devtools/datadictionary/ReloadingDataDictionary.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="73" selection-start="3600" selection-end="3621" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="33" selection-start="818" selection-end="818" vertical-scroll-proportion="0.81860465">
+        <state line="112" column="24" selection-start="4299" selection-end="4299" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/runConfigurations/krad_sampleapp__first_run_.xml">
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/container/ContainerBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="41" selection-start="716" selection-end="716" vertical-scroll-proportion="0.0">
+        <state line="155" column="26" selection-start="5138" selection-end="5138" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/service/ViewService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="87" column="0" selection-start="3576" selection-end="3576" vertical-scroll-proportion="0.62886596" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/component/ComponentBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="53" selection-start="2208" selection-end="2208" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/runConfigurations/krad_sampleapp__tomcat_7_.xml">
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/datadictionary/uif/UifDictionaryBeanBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="22" selection-start="561" selection-end="593" vertical-scroll-proportion="0.0">
+        <state line="34" column="32" selection-start="1177" selection-end="1177" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/webapp/WEB-INF/index.jsp">
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/field/DataField.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="17" selection-start="728" selection-end="728" vertical-scroll-proportion="0.43326038">
+        <state line="397" column="48" selection-start="17839" selection-end="17839" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/pom.xml">
+    <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAccountMaintenance.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="29" selection-start="2017" selection-end="2017" vertical-scroll-proportion="0.0">
+        <state line="35" column="32" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="236" column="20" selection-start="8338" selection-end="8338" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/component/Component.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="168" column="0" selection-start="5810" selection-end="5810" vertical-scroll-proportion="0.4267442">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/layout/LayoutManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="17" selection-start="1264" selection-end="1264" vertical-scroll-proportion="0.33255813">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-service-impl/src/main/java/org/kuali/rice/krad/uif/service/impl/ViewServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="166" column="28" selection-start="6942" selection-end="6942" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/service/ViewHelperService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="116" column="0" selection-start="4101" selection-end="4101" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/container/CollectionGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="339" column="41" selection-start="15407" selection-end="15407" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../krad-web-framework/src/main/java/org/kuali/rice/krad/uif/service/impl/ViewHelperServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="722" column="15" selection-start="34275" selection-end="34275" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/java/org/kuali/rice/krad/demo/uif/form/KradSampleAppForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="23" selection-start="871" selection-end="871" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1360347028462" expanded="true" signature="1316:1330" placeholder="&lt;~&gt;" />
-            <marker date="1360347028462" expanded="true" signature="1335:1349" placeholder="&lt;~&gt;" />
-            <marker date="1360347028462" expanded="true" signature="1367:1381" placeholder="&lt;~&gt;" />
-            <marker date="1360347028462" expanded="true" signature="1732:1788" placeholder="/**...*/" />
-            <marker date="1360347028462" expanded="true" signature="1871:1942" placeholder="/**...*/" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../krad-sampleapp/src/main/resources/org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="446" column="56" selection-start="18562" selection-end="18562" vertical-scroll-proportion="7.4105263">
+        <state line="18" column="43" selection-start="753" selection-end="753" vertical-scroll-proportion="0.21135029">
           <folding />
         </state>
       </provider>

@@ -571,4 +571,6 @@
 
   <param name="kew.ehcache.config.location" override="false">classpath:org/kuali/rice/kew/impl/config/kew.ehcache.xml</param>
 
+  <param name="config.location">classpath:META-INF/framework-config-defaults.xml</param>
+
 </config>

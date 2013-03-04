@@ -71,4 +71,19 @@ public interface TermRepositoryService {
     @Cacheable(value= TermDefinition.Cache.NAME, key="'id=' + #p0")
     TermDefinition getTerm(@WebParam(name = "termId") String termId) throws RiceIllegalArgumentException;;
 
+    /**
+     * Retrieves all the {@link TermSpecificationDefinition}s that are valid for the context with the given contextId.
+     *
+     * @since 2.1.4
+     * @param contextId the identifier for the context whose valid {@link TermSpecificationDefinition}s are to be retrieved. 
+     * @return all the {@link TermSpecificationDefinition}s that are valid for the context with the given contextId. May be empty but never null
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if the contextId is null or blank.
+     */
+    @WebMethod(operationName = "findAllTermSpecificationsByContextId")
+    @XmlElementWrapper(name = "termSpecifications", required = true)
+    @XmlElement(name = "termSpecification", required = false)
+    @WebResult(name = "termSpecifications")
+    @Cacheable(value= TermSpecificationDefinition.Cache.NAME, key="'id=' + #p0")
+    List<TermSpecificationDefinition> findAllTermSpecificationsByContextId(@WebParam(name = "contextId") String contextId) throws RiceIllegalArgumentException;;
 }

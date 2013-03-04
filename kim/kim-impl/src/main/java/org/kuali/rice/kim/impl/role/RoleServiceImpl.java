@@ -21,7 +21,9 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.cache.CacheKeyUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -48,6 +50,7 @@ import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
@@ -152,7 +155,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public RoleMemberQueryResults findRoleMembers(QueryByCriteria queryByCriteria) throws RiceIllegalStateException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria);
+        LookupCustomizer.Builder<RoleMemberBo> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(AttributeTransform.getInstance());
+
+        GenericQueryResults<RoleMemberBo> results = criteriaLookupService.lookup(RoleMemberBo.class, queryByCriteria, lc.build());
 
         RoleMemberQueryResults.Builder builder = RoleMemberQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -165,7 +171,23 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         builder.setResults(ims);
         return builder.build();
+
+//        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria);
+//
+//        RoleMemberQueryResults.Builder builder = RoleMemberQueryResults.Builder.create();
+//        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+//        builder.setTotalRowCount(results.getTotalRowCount());
+//
+//        final List<RoleMember.Builder> ims = new ArrayList<RoleMember.Builder>();
+//        for (RoleMemberBo bo : results.getResults()) {
+//            ims.add(RoleMember.Builder.create(bo));
+//        }
+//
+//        builder.setResults(ims);
+//        return builder.build();
     }
+
+
 
     @Override
     public Set<String> getRoleTypeRoleMemberIds(String roleId) throws RiceIllegalArgumentException  {

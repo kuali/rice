@@ -15,7 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 

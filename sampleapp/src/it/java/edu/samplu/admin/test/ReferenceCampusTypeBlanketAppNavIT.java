@@ -17,7 +17,6 @@ package edu.samplu.admin.test;
 
 import org.junit.Test;
 
-import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
 import edu.samplu.common.ITUtil;
 
 /**
@@ -25,7 +24,7 @@ import edu.samplu.common.ITUtil;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
+public class ReferenceCampusTypeBlanketAppNavIT extends AdminMenuBlanketAppNavITBase {
 
     @Test
     public void blanketApprove() throws Exception {

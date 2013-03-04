@@ -17,14 +17,13 @@ package edu.samplu.admin.test;
 
 import org.junit.Test;
 
-import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
 
 /**
  * tests that user 'admin', on blanket approving a new Campus maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCampusBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
+public class LocationCampusBlanketAppNavIT extends AdminMenuBlanketAppNavITBase {
     
     @Override
     protected String getLinkLocator() {

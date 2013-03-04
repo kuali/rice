@@ -17,7 +17,6 @@ package edu.samplu.admin.test;
 
 import org.junit.Test;
 
-import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
 import edu.samplu.common.ITUtil;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +28,7 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class ConfigParameterBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
+public class ConfigParameterBlanketAppNavIT extends AdminMenuBlanketAppNavITBase {
     @Override
     protected String getLinkLocator() {
         return "Parameter";

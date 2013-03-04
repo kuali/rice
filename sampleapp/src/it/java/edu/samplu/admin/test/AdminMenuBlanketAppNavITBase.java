@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.common;
+package edu.samplu.admin.test;
 
 import org.openqa.selenium.By;
 
-import edu.samplu.admin.test.AdminMenuNavITBase;
+import edu.samplu.common.MenuNavITBase;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AdminMenuBlanketAppLegacyITBase extends MenuNavITBase{
+public abstract class AdminMenuBlanketAppNavITBase extends MenuNavITBase{
 
     /**
      * blanket approve document, returning docId as a String

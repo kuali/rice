@@ -15,7 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
 import edu.samplu.common.ITUtil;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
@@ -27,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
+public class LocationCountryBlanketAppNavIT extends AdminMenuBlanketAppNavITBase {
 
     @Override
     public String getLinkLocator() {

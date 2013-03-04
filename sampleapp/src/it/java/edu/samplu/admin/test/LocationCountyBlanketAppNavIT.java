@@ -15,7 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
 import edu.samplu.common.ITUtil;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -26,7 +25,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountyBlanketAppNavIT extends AdminMenuBlanketAppLegacyITBase {
+public class LocationCountyBlanketAppNavIT extends AdminMenuBlanketAppNavITBase {
     
     @Override
     protected String getLinkLocator() {

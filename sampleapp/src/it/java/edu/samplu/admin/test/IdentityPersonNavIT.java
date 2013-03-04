@@ -15,7 +15,7 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
+
 import org.junit.Test;
 
 /**
@@ -23,7 +23,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonNavIT extends AdminMenuLegacyITBase {
+public class IdentityPersonNavIT extends AdminMenuNavITBase {
     @Override
     public String getLinkLocator() {
         return "Person";

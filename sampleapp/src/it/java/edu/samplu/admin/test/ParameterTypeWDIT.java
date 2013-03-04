@@ -22,7 +22,6 @@ import java.util.List;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
@@ -35,7 +34,7 @@ public class ParameterTypeWDIT extends WebDriverLegacyITBase {
     /**
      * This overridden method ...
      * 
-     * @see edu.samplu.common.MenuLegacyITBase#getLinkLocator()
+     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
      */
     String docId;
     String parameterType;

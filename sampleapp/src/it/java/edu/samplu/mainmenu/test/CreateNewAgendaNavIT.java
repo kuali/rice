@@ -15,7 +15,6 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.MainMenuLookupLegacyITBase;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ import java.util.Calendar;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateNewAgendaNavIT extends MainMenuLookupLegacyITBase {
+public class CreateNewAgendaNavIT extends MainMenuLookupNavITBase {
     @Override
     protected String getLinkLocator() {
         return "Create New Agenda";

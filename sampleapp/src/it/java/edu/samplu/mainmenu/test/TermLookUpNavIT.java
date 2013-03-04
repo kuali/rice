@@ -17,7 +17,6 @@ package edu.samplu.mainmenu.test;
 
 import org.junit.Test;
 
-import edu.samplu.common.MainMenuLookupLegacyITBase;
 
 /**
  * tests that user 'admin' can display the Term lookup screen, search,
@@ -26,7 +25,7 @@ import edu.samplu.common.MainMenuLookupLegacyITBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpNavIT extends MainMenuLookupLegacyITBase {
+public class TermLookUpNavIT extends MainMenuLookupNavITBase {
     @Override
     public void testLookUp() {} // no-op to avoid https://jira.kuali.org/browse/KULRICE-9047 messing up the server state
 

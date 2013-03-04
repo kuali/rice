@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
@@ -34,7 +33,7 @@ public class ComponentWDIT extends WebDriverLegacyITBase {
     /**
      * This overridden method ...
      * 
-     * @see edu.samplu.common.MenuLegacyITBase#getLinkLocator()
+     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
      */
     String docId;
     String componentName;

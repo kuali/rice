@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
@@ -29,7 +28,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateDocTypeNavIT extends AdminMenuLegacyITBase {
+public class CreateDocTypeNavIT extends AdminMenuNavITBase {
 
     @Override
     protected String getLinkLocator() {

@@ -17,7 +17,6 @@ package edu.samplu.admin.test;
 
 import static org.junit.Assert.assertEquals;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
@@ -29,11 +28,11 @@ import org.openqa.selenium.By;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GroupNavIT extends AdminMenuLegacyITBase {
+public class GroupNavIT extends AdminMenuNavITBase {
     /**
      * This overridden method ...
      * 
-     * @see edu.samplu.common.MenuLegacyITBase#getLinkLocator()
+     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
      */
     @Override
     protected String getLinkLocator() {

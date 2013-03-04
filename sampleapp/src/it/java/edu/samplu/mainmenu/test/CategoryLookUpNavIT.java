@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.MainMenuLookupLegacyITBase;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 
@@ -28,11 +27,11 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CategoryLookUpNavIT extends MainMenuLookupLegacyITBase{
+public class CategoryLookUpNavIT extends MainMenuLookupNavITBase{
     /**
      * This overridden method ...
      * 
-     * @see edu.samplu.common.MenuLegacyITBase#getLinkLocator()
+     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
      */
     @Override
     protected String getLinkLocator() {

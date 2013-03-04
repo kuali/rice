@@ -22,13 +22,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PersonNavIT extends AdminMenuLegacyITBase {
+public class PersonNavIT extends AdminMenuNavITBase {
 
     String docId;
     String personName;

@@ -32,7 +32,6 @@ import com.thoughtworks.selenium.Selenium;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupITBase;
-import edu.samplu.common.MainMenuLookupLegacyITBase;
 import edu.samplu.common.MenuITBase;
 import edu.samplu.common.UpgradedSeleniumITBase;
 
@@ -41,7 +40,7 @@ import edu.samplu.common.UpgradedSeleniumITBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PeopleFlowCreateNewNavIT extends MainMenuLookupLegacyITBase {
+public class PeopleFlowCreateNewNavIT extends MainMenuLookupNavITBase {
 
     @Test
     public void testPeopleFlow() throws Exception {

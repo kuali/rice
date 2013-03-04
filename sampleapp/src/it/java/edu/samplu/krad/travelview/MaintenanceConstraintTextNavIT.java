@@ -15,13 +15,12 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceConstraintTextNavIT extends KradMenuLegacyITBase {
+public class MaintenanceConstraintTextNavIT extends KradMenuNavITBase {
 
     @Override
     protected String getLinkLocator() {

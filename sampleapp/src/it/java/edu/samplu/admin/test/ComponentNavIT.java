@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 
 /**
@@ -29,11 +28,11 @@ import edu.samplu.common.ITUtil;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentNavIT extends AdminMenuLegacyITBase {
+public class ComponentNavIT extends AdminMenuNavITBase {
     /**
      * This overridden method ...
      * 
-     * @see edu.samplu.common.MenuLegacyITBase#getLinkLocator()
+     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
      */
     String docId;
     String componentName;

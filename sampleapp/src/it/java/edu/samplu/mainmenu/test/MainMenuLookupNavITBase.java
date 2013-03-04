@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.common;
+package edu.samplu.mainmenu.test;
 
 import org.openqa.selenium.By;
+
+import edu.samplu.common.MenuNavITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class MainMenuLookupLegacyITBase extends MenuLegacyITBase {
+public abstract class MainMenuLookupNavITBase extends MenuNavITBase {
     @Override
     protected String getCreateNewLinkLocator() {
         return "Create New";

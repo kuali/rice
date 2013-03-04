@@ -18,7 +18,6 @@ package edu.samplu.admin.test;
 import org.junit.Test;
 
 import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 
 /**

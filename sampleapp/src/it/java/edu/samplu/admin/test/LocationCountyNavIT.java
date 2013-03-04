@@ -15,7 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,7 +24,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountyNavIT extends AdminMenuLegacyITBase {
+public class LocationCountyNavIT extends AdminMenuNavITBase {
     @Override
     public String getLinkLocator() {
         return "County";

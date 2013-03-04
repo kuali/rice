@@ -17,7 +17,6 @@ package edu.samplu.mainmenu.test;
 
 import org.junit.Test;
 
-import edu.samplu.common.MainMenuLookupLegacyITBase;
 
 /**
  * tests that user 'admin' can display the Context lookup screen, search,
@@ -26,7 +25,7 @@ import edu.samplu.common.MainMenuLookupLegacyITBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContextLookUpNavIT extends MainMenuLookupLegacyITBase {
+public class ContextLookUpNavIT extends MainMenuLookupNavITBase {
     @Override
     public String getLinkLocator() {
         return "Context Lookup";

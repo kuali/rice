@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 

@@ -17,6 +17,8 @@ package edu.samplu.common;
 
 import org.openqa.selenium.By;
 
+import edu.samplu.admin.test.AdminMenuNavITBase;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -24,7 +26,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
+public abstract class AdminMenuBlanketAppLegacyITBase extends MenuNavITBase{
 
     /**
      * blanket approve document, returning docId as a String
@@ -34,12 +36,12 @@ public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
 
     @Override
     protected String getMenuLinkLocator() {
-        return AdminMenuLegacyITBase.ADMIN_LOCATOR;
+        return AdminMenuNavITBase.ADMIN_LOCATOR;
     }
 
     @Override
     protected String getCreateNewLinkLocator() {
-        return AdminMenuLegacyITBase.CREATE_NEW_LOCATOR;
+        return AdminMenuNavITBase.CREATE_NEW_LOCATOR;
     }
 
 //    @Test

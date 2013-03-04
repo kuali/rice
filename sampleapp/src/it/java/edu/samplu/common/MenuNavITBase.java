@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class MenuLegacyITBase extends WebDriverLegacyITBase {
+public abstract class MenuNavITBase extends WebDriverLegacyITBase {
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;

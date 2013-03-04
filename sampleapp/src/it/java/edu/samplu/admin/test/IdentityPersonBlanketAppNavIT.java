@@ -16,8 +16,8 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppLegacyITBase;
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 

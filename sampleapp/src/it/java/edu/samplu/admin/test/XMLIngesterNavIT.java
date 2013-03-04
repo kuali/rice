@@ -15,8 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
+
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -44,7 +44,7 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XMLIngesterNavIT extends AdminMenuLegacyITBase {
+public class XMLIngesterNavIT extends AdminMenuNavITBase {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 

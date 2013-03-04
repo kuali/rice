@@ -31,7 +31,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocSearchLegacyIT extends WebDriverLegacyITBase {
+public class DocSearchWDIT extends WebDriverLegacyITBase {
 
     String docId;
     String parentName;

@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.common;
+package edu.samplu.admin.test;
+
+import edu.samplu.common.MenuNavITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
+public abstract class AdminMenuNavITBase extends MenuNavITBase {
 
     public static final String CREATE_NEW_LOCATOR = "//img[contains(@alt,'create new')]";
 //    public static final String CREATE_NEW_LOCATOR = "//a[contains(@href,'command=initiate')]"; // not with IE8

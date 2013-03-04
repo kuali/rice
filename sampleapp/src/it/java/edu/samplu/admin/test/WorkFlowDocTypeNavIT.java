@@ -15,9 +15,9 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowDocTypeNavIT extends AdminMenuLegacyITBase {
+public class WorkFlowDocTypeNavIT extends AdminMenuNavITBase {
     @Override
     public String getLinkLocator() {
         return "Document Type";

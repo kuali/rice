@@ -16,7 +16,6 @@
 package edu.samplu.mainmenu.test;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.MainMenuLookupLegacyITBase;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;

@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,7 +22,7 @@ import static org.junit.Assert.*;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteNoteNavIT extends KradMenuLegacyITBase {
+public class MaintenanceAddDeleteNoteNavIT extends KradMenuNavITBase {
 
     @Override
     protected String getLinkLocator() {

@@ -15,13 +15,12 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceButtonsNavIT extends KradMenuLegacyITBase {
+public class MaintenanceButtonsNavIT extends KradMenuNavITBase {
     @Override
     protected String getLinkLocator() {
         return "Travel Account Maintenance (New)";

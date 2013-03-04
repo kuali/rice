@@ -637,7 +637,10 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         // been done for performance optimization KULRICE-8847
         List<RoleBoLite> roleBoLiteList = (List) getPersistenceBrokerTemplate().getCollectionByQuery(q);
 
-        List<RoleBo> roleBos = addMembershipInfo(roleBoLiteList);
+        List<RoleBo> roleBos = new ArrayList<RoleBo>();
+        if(roleBoLiteList.size() > 0){
+            roleBos = addMembershipInfo(roleBoLiteList);
+        }
 
         return roleBos;
     }

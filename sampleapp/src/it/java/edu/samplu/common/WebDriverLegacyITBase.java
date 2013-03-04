@@ -48,6 +48,9 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
+
+import edu.samplu.admin.test.AdminMenuNavITBase;
+
 import java.util.ArrayList;
 
 /**
@@ -1037,7 +1040,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group "
                 + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
-        selectByXpath("//select[@id='document.groupNamespace']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        selectByXpath("//select[@id='document.groupNamespace']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS_TWO);
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1059,9 +1062,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
         selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']",
-                AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
+                AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
         selectByXpath("//select[@name='document.newMaintainableObject.templateId']",
-                AdminMenuLegacyITBase.LABEL_KUALI_DEFAULT);
+                AdminMenuNavITBase.LABEL_KUALI_DEFAULT);
         waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']", "ValidationTestPermission"
                 + ITUtil.DTS_TWO);
         blanketApproveTest();
@@ -1104,7 +1107,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                 "Validation Test Responsibility " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']",
-                AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
+                AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility "
                 + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + ITUtil.DTS_TWO);
@@ -1126,7 +1129,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role "
                 + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
-        selectByXpath("//select[@id='document.roleNamespace']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        selectByXpath("//select[@id='document.roleNamespace']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + ITUtil.DTS_TWO,
                 "No Role Name input to type in.");
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");

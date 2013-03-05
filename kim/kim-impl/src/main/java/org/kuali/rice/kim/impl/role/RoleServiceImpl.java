@@ -631,11 +631,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public RoleQueryResults findRoles(QueryByCriteria queryByCriteria) throws RiceIllegalStateException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        //KULRICE-8972 lookup customizer for attribute transform
-        LookupCustomizer.Builder<RoleBoLite> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        GenericQueryResults<RoleBoLite> results = getCriteriaLookupService().lookup(RoleBoLite.class, queryByCriteria, lc.build());
+        GenericQueryResults<RoleBoLite> results = getCriteriaLookupService().lookup(RoleBoLite.class, queryByCriteria);
 
         RoleQueryResults.Builder builder = RoleQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());

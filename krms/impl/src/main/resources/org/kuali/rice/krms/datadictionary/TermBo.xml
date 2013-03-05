@@ -172,7 +172,7 @@
                 </property>
               </bean>
 
-              <bean parent="TermSpec-Categories" p:readOnly="true" p:propertyName="specification.categories" />
+              <bean parent="TermSpec-Categories" p:readOnly="true" p:propertyName="specification.categories" p:colSpan="2" />
 
               <bean parent="Uif-Disclosure-GridSection" p:layoutManager.numberOfColumns="2" p:colSpan="2"
                     p:refreshWhenChangedPropertyNames="document.newMaintainableObject.dataObject.specificationId"

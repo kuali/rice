@@ -93,8 +93,6 @@ public class LookupView extends FormView {
 
     private boolean triggerOnChange;
 
-    private boolean triggerOnEnter;
-
     private Integer resultSetLimit = null;
     private Integer multipleValuesSelectResultSetLimit = null;
 
@@ -106,7 +104,6 @@ public class LookupView extends FormView {
         setViewTypeName(ViewType.LOOKUP);
         setApplyDirtyCheck(false);
         setTriggerOnChange(false);
-        setTriggerOnEnter(true);
     }
 
     /**
@@ -199,9 +196,9 @@ public class LookupView extends FormView {
 
             for (Component criteriaField : criteriaGroup.getItems()) {
                 if (criteriaField instanceof LookupInputField) {
-                    if (isTriggerOnEnter() || ((LookupInputField)criteriaField).isTriggerOnEnter()) {
-                        criteriaField.setOnKeyPressScript("if(e.which == 13) { e.preventDefault();jQuery('#" + searchButtonId + "' ).click();}");
-                    }
+
+                    criteriaField.setOnKeyPressScript("if(e.which == 13) { e.preventDefault();jQuery('#" + searchButtonId + "' ).click();}");
+
                     if (isTriggerOnChange() || ((LookupInputField)criteriaField).isTriggerOnChange()) {
                         criteriaField.setOnChangeScript("jQuery('#" + searchButtonId + "' ).click();");
                     }
@@ -646,21 +643,4 @@ public class LookupView extends FormView {
         this.triggerOnChange = triggerOnChange;
     }
 
-    /**
-     * Indicates that the search must execute on pressing enter in all lookup input fields
-     *
-     * @return boolean
-     */
-    public boolean isTriggerOnEnter() {
-        return triggerOnEnter;
-    }
-
-    /**
-     * Setter for the trigger search on enter key
-     *
-     * @param triggerOnEnter
-     */
-    public void setTriggerOnEnter(boolean triggerOnEnter) {
-        this.triggerOnEnter = triggerOnEnter;
-    }
 }

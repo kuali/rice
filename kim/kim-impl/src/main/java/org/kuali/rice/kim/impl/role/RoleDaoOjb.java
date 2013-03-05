@@ -408,8 +408,6 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
                         sql.append(" ORDER BY ROLE_MBR_ID ");
 
-                        System.out.println(sql.toString());
-
                         PreparedStatement statement = connection.prepareStatement(sql.toString());
                         int i = 1;
                         for (String param : params) {

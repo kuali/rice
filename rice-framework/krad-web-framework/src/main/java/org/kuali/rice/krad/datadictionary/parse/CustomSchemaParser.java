@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary.parse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hsqldb.lib.StringUtil;
@@ -29,8 +30,10 @@ import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.xml.DomUtils;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -81,6 +84,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
      * @param parserContext - Provided information and functionality regarding current bean set.
      * @param bean - A definition builder used to build a new spring bean from the information it is filled with.
      */
+    @Override
     protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder bean) {
         // Retrieve custom schema information build from the annotations
         Map<String, Map<String, BeanTagAttributeInfo>> attributeProperties =
@@ -114,12 +118,19 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
             String propertyName;
             BeanTagAttribute.AttributeType type;
 
+            if(children.get(i).getTagName().equals("spring:property")){
+                BeanDefinitionParserDelegate delegate = parserContext.getDelegate();
+                delegate.parsePropertyElement(children.get(i), bean.getBeanDefinition());
+                continue;
+            }
+
             // Sets the property name to be used when adding the property value
             if (info == null) {
                 // If the tag is not in the schema map let spring handle the value by forwarding the tag as the
                 // propertyName
                 propertyName = tag;
                 type = findBeanType(children.get(i));
+
             } else {
                 // If the tag is found in the schema map use the connected name stored in the attribute information
                 propertyName = info.getName();
@@ -201,7 +212,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
         if (!key.isEmpty()) {
             return key;
         } else {
-            Element keyTag = DomUtils.getChildElementByTagName(grandchild, "key");
+            Element keyTag = DomUtils.getChildElementByTagName(grandchild, "spring:key");
             if (DomUtils.getChildElements(keyTag).size() == 0) {
                 return keyTag.getTextContent();
             } else {
@@ -222,7 +233,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
         if (!value.isEmpty()) {
             return value;
         } else {
-            Element valueTag = DomUtils.getChildElementByTagName(grandchild, "value");
+            Element valueTag = DomUtils.getChildElementByTagName(grandchild, "spring:value");
             if (DomUtils.getChildElements(valueTag).size() == 0) {
                 return valueTag.getTextContent();
             } else {
@@ -271,15 +282,30 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
         }
 
         // Checks if the element is a list composed of standard types
-        numberChildren = DomUtils.getChildElementsByTagName(tag, "value").size();
+        numberChildren = DomUtils.getChildElementsByTagName(tag, "spring:value").size();
         if (numberChildren > 0) {
             return BeanTagAttribute.AttributeType.LISTVALUE;
         }
 
+        numberChildren = DomUtils.getChildElementsByTagName(tag, "spring:list").size();
+        if (numberChildren > 0) {
+            return BeanTagAttribute.AttributeType.LISTBEAN;
+        }
+
+        numberChildren = DomUtils.getChildElementsByTagName(tag, "spring:set").size();
+        if (numberChildren > 0) {
+            return BeanTagAttribute.AttributeType.SETBEAN;
+        }
+
         // Checks if the element is a map
-        numberChildren = DomUtils.getChildElementsByTagName(tag, "entry").size();
+        numberChildren = DomUtils.getChildElementsByTagName(tag, "spring:entry").size();
         if (numberChildren > 0) {
             return BeanTagAttribute.AttributeType.MAPVALUE;
+        }
+
+        numberChildren = DomUtils.getChildElementsByTagName(tag, "spring:map").size();
+        if (numberChildren > 0) {
+            return BeanTagAttribute.AttributeType.MAPBEAN;
         }
 
         // Checks if the element is a list of beans
@@ -321,8 +347,29 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
             Element temp = tag.getOwnerDocument().createElement("bean");
             temp.setAttribute("parent", tag.getAttribute("bean"));
             tag = temp;
-            return new RuntimeBeanReference(tag.getAttribute("bean"));
+            return new RuntimeBeanReference(tag.getAttribute("parent"));
         }
+
+        //peel off p: properties an make them actual property nodes - p-namespace does not work properly (unknown cause)
+        Document document = tag.getOwnerDocument();
+        NamedNodeMap attributes = tag.getAttributes();
+        for(int i = 0; i < attributes.getLength(); i++){
+            Node attribute = attributes.item(i);
+            String name = attribute.getNodeName();
+            if(name.startsWith("p:")){
+                Element property = document.createElement("property");
+                property.setAttribute("name", StringUtils.removeStart(name, "p:"));
+                property.setAttribute("value", attribute.getTextContent());
+
+                if(tag.getFirstChild() != null){
+                    tag.insertBefore(property, tag.getFirstChild());
+                }
+                else{
+                    tag.appendChild(property);
+                }
+            }
+        }
+
         // Create the bean definition for the grandchild and return it.
         BeanDefinitionParserDelegate delegate = parserContext.getDelegate();
         BeanDefinitionHolder bean = delegate.parseBeanDefinitionElement(tag);
@@ -383,7 +430,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
         for (int i = 0; i < grandChildren.size(); i++) {
             Element grandChild = grandChildren.get(i);
 
-            if (grandChild.getTagName().compareTo("value") == 0) {
+            if (grandChild.getTagName().compareTo("spring:value") == 0) {
                 listItems.add(grandChild.getTextContent());
             } else {
                 listItems.add(parseBean(grandChild, parent, parserContext));
@@ -418,7 +465,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
         for (int i = 0; i < grandChildren.size(); i++) {
             Element grandChild = grandChildren.get(i);
 
-            if (child.getTagName().compareTo("value") == 0) {
+            if (child.getTagName().compareTo("spring:value") == 0) {
                 setItems.add(grandChild.getTextContent());
             } else {
                 setItems.add(parseBean(grandChild, parent, parserContext));
@@ -445,6 +492,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
     private ManagedMap parseMap(ArrayList<Element> grandChildren, Element child, BeanDefinitionBuilder parent,
             ParserContext parserContext) {
         ManagedMap map = new ManagedMap();
+        String merge = child.getAttribute("merge");
 
         for (int j = 0; j < grandChildren.size(); j++) {
             Object key = findKey(grandChildren.get(j));
@@ -452,7 +500,6 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
             map.put(key, value);
         }
 
-        String merge = child.getAttribute("merge");
         if (merge != null) {
             map.setMergeEnabled(Boolean.valueOf(merge));
         }

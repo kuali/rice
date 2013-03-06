@@ -637,6 +637,8 @@ public final class KRADConstants {
     public static final String DATA_TYPE_FLOAT = CoreConstants.DATA_TYPE_FLOAT;
     public static final String DATA_TYPE_BOOLEAN = CoreConstants.DATA_TYPE_BOOLEAN;
 
+    public static final String ACTIONS_COLUMN_TITLE = "Actions";
+
     public static final class Maintenance {
         public static final String REQUEST_MAPPING_MAINTENANCE = "maintenance";
         public static final String METHOD_TO_CALL_NEW = "start";

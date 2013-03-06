@@ -46,6 +46,9 @@ public interface LookupService {
     public <T extends Object> Collection<T> findCollectionBySearchHelper(Class<T> example,
             Map<String, String> formProperties, boolean unbounded);
 
+    public <T extends Object> Collection<T> findCollectionBySearchHelper(Class<T> example,
+            Map<String, String> formProperties, boolean unbounded, Integer searchResultsLimit);
+
     /**
      * Retrieves a Object based on the search criteria, which should uniquely
      * identify a record.

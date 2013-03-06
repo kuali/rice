@@ -24,10 +24,9 @@ import org.apache.ojb.broker.OptimisticLockException;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in.
+ * Provides some simple utilities for working with data access exceptions.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public final class DataAccessUtils {
 

@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "routingTypeDefinition")
+@BeanTag(name = "routingTypeDefinition-bean")
 public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = -5455042765223753531L;
 

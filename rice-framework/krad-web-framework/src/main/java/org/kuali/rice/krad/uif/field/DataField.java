@@ -53,10 +53,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "dataField", parent = "Uif-DataField"),
-        @BeanTag(name = "dataField-labelTop", parent = "Uif-DataField-LabelTop"),
-        @BeanTag(name = "dataField-labelRight", parent = "Uif-DataField-LabelRight"),
-        @BeanTag(name = "dataField-withoutLabel", parent = "Uif-DataField-withoutLabel")})
+@BeanTags({@BeanTag(name = "dataField-bean", parent = "Uif-DataField"),
+        @BeanTag(name = "dataField-labelTop-bean", parent = "Uif-DataField-LabelTop"),
+        @BeanTag(name = "dataField-labelRight-bean", parent = "Uif-DataField-LabelRight"),
+        @BeanTag(name = "dataField-withoutLabel-bean", parent = "Uif-DataField-withoutLabel")})
 public class DataField extends FieldBase implements DataBinding, Helpable {
     private static final long serialVersionUID = -4129678891948564724L;
 

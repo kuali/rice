@@ -115,7 +115,101 @@
                 </requests>
             </routeNodes>
         </documentType>
-	</documentTypes>
+        <documentType>
+            <name>TestAppDocStatusDoc3</name>
+            <parent>TestAppDocStatusDoc2</parent>
+            <description>Create a test document with inherited app doc status</description>
+            <label>Test Status Doc 3</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>_blank</docHandler>
+            <policies>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DOCUMENT_STATUS_POLICY</name>
+                    <stringValue>both</stringValue>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="Initiated" nextNode="step1" nextAppDocStatus="Approval in Progress"/>
+                    <requests name="step1" nextNode="step2" nextAppDocStatus="Submitted"/>
+                    <requests name="step2" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Initiated">
+                    <activationType>P</activationType>
+                </start>
+                <requests name="step1">
+                    <ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate>
+                </requests>
+                <requests name="step2">
+                    <ruleTemplate>TravelRequest-TravelerRouting</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>TestAppDocStatusDoc4</name>
+            <parent>TestAppDocStatusDoc2</parent>
+            <description>Create a parent test document to test application status inheritance</description>
+            <label>Test Status Doc 4</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>_blank</docHandler>
+            <validApplicationStatuses>
+                <category name="Incomplete">
+                    <status>Approval In Progress</status>
+                    <status>Submitted</status>
+                    <status>Pending</status>
+                </category>
+                <category name="Complete">
+                    <status>Completed</status>
+                    <status>Approved</status>
+                    <status>Rejected</status>
+                </category>
+            </validApplicationStatuses>
+        </documentType>
+        <documentType>
+            <name>TestAppDocStatusDoc5</name>
+            <parent>TestAppDocStatusDoc4</parent>
+            <description>Create a test document that inherits valid set of statuses and categories</description>
+            <label>Test Status Doc 5</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+        <docHandler>_blank</docHandler>
+        </documentType>
+        <documentType>
+            <name>TestAppDocStatusDoc6</name>
+            <parent>TestAppDocStatusDoc2</parent>
+            <description>Create a test document with a valid statuses and a KEW document status policy of KEW</description>
+            <label>Test Status Doc 6</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>_blank</docHandler>
+            <policies>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DOCUMENT_STATUS_POLICY</name>
+                    <stringValue>kew</stringValue>
+                </policy>
+            </policies>
+        </documentType>
+    </documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>TestAppDocStatusDoc2</documentType>

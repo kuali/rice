@@ -32,12 +32,12 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "textControl", parent = "Uif-TextControl"),
-        @BeanTag(name = "smallTextControl", parent = "Uif-SmallTextControl"),
-        @BeanTag(name = "mediumTextControl", parent = "Uif-MediumTextControl"),
-        @BeanTag(name = "largeTextControl", parent = "Uif-LargeTextControl"),
-        @BeanTag(name = "currencyTextControl", parent = "Uif-CurrencyTextControl"),
-        @BeanTag(name = "dateControl", parent = "Uif-DateControl")})
+@BeanTags({@BeanTag(name = "textControl-bean", parent = "Uif-TextControl"),
+        @BeanTag(name = "smallTextControl-bean", parent = "Uif-SmallTextControl"),
+        @BeanTag(name = "mediumTextControl-bean", parent = "Uif-MediumTextControl"),
+        @BeanTag(name = "largeTextControl-bean", parent = "Uif-LargeTextControl"),
+        @BeanTag(name = "currencyTextControl-bean", parent = "Uif-CurrencyTextControl"),
+        @BeanTag(name = "dateControl-bean", parent = "Uif-DateControl")})
 public class TextControl extends ControlBase implements SizedControl {
     private static final long serialVersionUID = -8267606288443759880L;
 

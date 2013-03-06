@@ -36,9 +36,9 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "navigationGroup", parent = "Uif-NavigationGroupBase"),
-        @BeanTag(name = "menuNavigationGroup", parent = "Uif-MenuNavigationGroup"),
-        @BeanTag(name = "tabNavigationGroup", parent = "Uif-TabNavigationGroup")})
+@BeanTags({@BeanTag(name = "navigationGroup-bean", parent = "Uif-NavigationGroupBase"),
+        @BeanTag(name = "menuNavigationGroup-bean", parent = "Uif-MenuNavigationGroup"),
+        @BeanTag(name = "tabNavigationGroup-bean", parent = "Uif-TabNavigationGroup")})
 public class NavigationGroup extends Group {
     private static final long serialVersionUID = -7263923392768546340L;
 

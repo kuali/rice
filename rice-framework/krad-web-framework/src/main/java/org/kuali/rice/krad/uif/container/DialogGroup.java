@@ -61,13 +61,13 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "dialogGroup", parent = "Uif-DialogGroup"),
-        @BeanTag(name = "sensitiveData-dialogGroup", parent = "Uif-SensitiveData-DialogGroup"),
-        @BeanTag(name = "ok-cancel-dialogGroup", parent = "Uif-OK-Cancel-DialogGroup"),
-        @BeanTag(name = "yes-no-dialogGroup", parent = "Uif-Yes-No-DialogGroup"),
-        @BeanTag(name = "true-false-dialogGroup", parent = "Uif-True-False-DialogGroup"),
-        @BeanTag(name = "checkbox-dialogGroup", parent = "Uif-Checkbox-DialogGroup"),
-        @BeanTag(name = "radioButton-dialogGroup", parent = "Uif-RadioButton-DialogGroup")})
+@BeanTags({@BeanTag(name = "dialogGroup-bean", parent = "Uif-DialogGroup"),
+        @BeanTag(name = "sensitiveData-dialogGroup-bean", parent = "Uif-SensitiveData-DialogGroup"),
+        @BeanTag(name = "ok-cancel-dialogGroup-bean", parent = "Uif-OK-Cancel-DialogGroup"),
+        @BeanTag(name = "yes-no-dialogGroup-bean", parent = "Uif-Yes-No-DialogGroup"),
+        @BeanTag(name = "true-false-dialogGroup-bean", parent = "Uif-True-False-DialogGroup"),
+        @BeanTag(name = "checkbox-dialogGroup-bean", parent = "Uif-Checkbox-DialogGroup"),
+        @BeanTag(name = "radioButton-dialogGroup-bean", parent = "Uif-RadioButton-DialogGroup")})
 public class DialogGroup extends Group {
     private static final long serialVersionUID = 1L;
 

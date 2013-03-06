@@ -98,5 +98,12 @@
 				<join name="Organization Join"/>
 			</routeNodes>
 		</documentType>
-	</documentTypes>
+        <documentType>
+            <name>DocTypeWithAuthorizer</name>
+            <description>test doc type with document type authorizer</description>
+            <label>test doc type with document type authorizer</label>
+            <authorizer>a.doc.type.authorizer</authorizer>
+            <active>true</active>
+        </documentType>
+    </documentTypes>
 </data>

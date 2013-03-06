@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "methodInvokerConfig", parent = "Uif-MethodInvokerConfig")
+@BeanTag(name = "methodInvokerConfig-bean", parent = "Uif-MethodInvokerConfig")
 public class MethodInvokerConfig extends MethodInvoker implements Serializable {
 
     private String staticMethod;

@@ -533,6 +533,12 @@
         </policy>
       </policies>
     </documentType>
+    <documentType>
+        <name>RecallWithCustomAuthorizer</name>
+        <parent>NotificationTest</parent>
+        <label>RecallTest</label>
+        <authorizer>org.kuali.rice.kew.actions.RecallActionTest$RecallTestDocumentTypeAuthorizer</authorizer>
+    </documentType>
 
     <documentType>
       <name>SUDisapproveWithNotificationTest</name>

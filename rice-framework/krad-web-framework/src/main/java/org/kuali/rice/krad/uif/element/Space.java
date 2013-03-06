@@ -22,7 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "space", parent = "Uif-Space")
+@BeanTag(name = "space-bean", parent = "Uif-Space")
 public class Space extends ContentElementBase {
     private static final long serialVersionUID = 4655642965438419569L;
 

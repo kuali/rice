@@ -30,76 +30,85 @@
   <artifactId>rice-krad-development-tools</artifactId>
 
   <properties>
-      <generateReports>false</generateReports>
-    </properties>
+    <generateReports>false</generateReports>
+    <!-- Default this to the location that works for Unix and Windows -->
+    <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
+  </properties>
 
-    <dependencies>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>rice-impl</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>rice-core-impl</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>rice-krad-app-framework</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-app-framework</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>rice-krad-web-framework</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-web-framework</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>jcl-over-slf4j</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
 
-      <dependency>
-        <groupId>org.kuali.db.ojb</groupId>
-        <artifactId>db-ojb</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>org.kuali.db.ojb</groupId>
+      <artifactId>db-ojb</artifactId>
+    </dependency>
 
-      <dependency>
-        <groupId>org.kuali.commons</groupId>
-        <artifactId>commons-beanutils</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>org.kuali.commons</groupId>
+      <artifactId>commons-beanutils</artifactId>
+    </dependency>
 
-      <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
 
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
 
-      <dependency>
-        <groupId>com.sun.codemodel</groupId>
-        <artifactId>codemodel</artifactId>
-        <version>2.4.1</version>
-      </dependency>
+    <dependency>
+      <groupId>com.sun.codemodel</groupId>
+      <artifactId>codemodel</artifactId>
+      <version>2.4.1</version>
+    </dependency>
 
-      <dependency>
-        <groupId>no.geosoft</groupId>
-        <artifactId>filemonitor</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>no.geosoft</groupId>
+      <artifactId>filemonitor</artifactId>
+    </dependency>
 
-      <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>${mysql.jdbc.artifactId}</artifactId>
-        <version>${mysql.jdbc.version}</version>
-      </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>${mysql.jdbc.artifactId}</artifactId>
+      <version>${mysql.jdbc.version}</version>
+    </dependency>
 
+    <dependency>
+      <groupId>com.sun</groupId>
+      <artifactId>tools</artifactId>
+      <scope>system</scope>
+      <version>1.6</version>
+      <systemPath>${tools.jar.path}</systemPath>
+    </dependency>
+  </dependencies>
 
 </project>

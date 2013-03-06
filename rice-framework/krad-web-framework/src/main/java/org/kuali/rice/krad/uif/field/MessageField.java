@@ -41,8 +41,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "messageField", parent = "Uif-MessageField"),
-        @BeanTag(name = "colGroupingField", parent = "Uif-ColGroupingField")})
+@BeanTags({@BeanTag(name = "messageField-bean", parent = "Uif-MessageField"),
+        @BeanTag(name = "colGroupingField-bean", parent = "Uif-ColGroupingField")})
 public class MessageField extends FieldBase {
     private static final long serialVersionUID = -7045208136391722063L;
 

@@ -360,8 +360,10 @@
         </policy>
 			</policies>
       <validApplicationStatuses>
-        <status>Approval In Progress</status>
-        <status>Submitted</status>
+        <category name="TestCategory">
+          <status>Approval In Progress</status>
+          <status>Submitted</status>
+        </category>
         <status>Pending</status>
         <status>Completed</status>
         <status>Approved</status>

@@ -40,8 +40,8 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "componentConverter-modifier", parent = "Uif-ComponentConverter-Modifier"),
-        @BeanTag(name = "checkboxToRadioConverter-modifier", parent = "Uif-CheckboxToRadioConverter-Modifier")})
+@BeanTags({@BeanTag(name = "componentConverter-modifier-bean", parent = "Uif-ComponentConverter-Modifier"),
+        @BeanTag(name = "checkboxToRadioConverter-modifier-bean", parent = "Uif-CheckboxToRadioConverter-Modifier")})
 public class ComponentConvertModifier extends ComponentModifierBase {
     private static final long serialVersionUID = -7566547737669924605L;
 

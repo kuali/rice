@@ -39,6 +39,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -251,6 +252,73 @@ public class AppDocStatusTest extends KEWTestCase {
     		assertTrue("Expected WorkflowRuntimeException not thrown.", gotException);
     		
     	}
+    }
+
+    /**
+     *
+     * This method is similar to the above test, except that the doctype definition
+     * INHERITS a valid set of application document status values.
+     *
+     * @throws Exception
+     */
+    @Test public void testValidInheritedAppDocStatus() throws Exception {
+        // Create document
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc3");
+        document.saveDocumentData();
+        assertNotNull(document.getDocumentId());
+        assertTrue("Document should be initiatied", document.isInitiated());
+        assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc3");
+        assertTrue(ObjectUtils.isNotNull(documentType));
+        assertTrue(ObjectUtils.isNotNull(documentType.getValidApplicationStatuses()));
+        assertEquals(6,documentType.getValidApplicationStatuses().size());
+        LOG.info("valid application status size: " + documentType.getValidApplicationStatuses().size());
+        assertTrue(ObjectUtils.isNotNull(documentType.getApplicationStatusCategories()));
+        assertEquals(0,documentType.getApplicationStatusCategories().size());
+    }
+
+    /**
+     *
+     * This method an inherited valid set of values and categories.
+     *
+     * @throws Exception
+     */
+    @Test public void testValidInheritedAppDocStatusWithCategories() throws Exception {
+        // Create document
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc5");
+        document.saveDocumentData();
+        assertNotNull(document.getDocumentId());
+        assertTrue("Document should be initiatied", document.isInitiated());
+        assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc5");
+        assertTrue(ObjectUtils.isNotNull(documentType));
+        assertTrue(ObjectUtils.isNotNull(documentType.getValidApplicationStatuses()));
+        LOG.info("valid application status size: " + documentType.getValidApplicationStatuses().size());
+        assertEquals(6,documentType.getValidApplicationStatuses().size());
+        assertTrue(ObjectUtils.isNotNull(documentType.getApplicationStatusCategories()));
+        assertEquals(2,documentType.getApplicationStatusCategories().size());
+    }
+
+    /**
+     *
+     * This method tests a valid set of application document status values that are not inherited due to KEW status (KULRICE-8943).
+     *
+     * @throws Exception
+     */
+    @Test public void testInheritedAppDocStatusWithKEWStatus() throws Exception {
+        // Create document
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc6");
+        document.saveDocumentData();
+        assertNotNull(document.getDocumentId());
+        assertTrue("Document should be initiatied", document.isInitiated());
+        assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc6");
+        assertTrue(ObjectUtils.isNotNull(documentType));
+        assertTrue(ObjectUtils.isNotNull(documentType.getValidApplicationStatuses()));
+        assertEquals(0,documentType.getValidApplicationStatuses().size());
+        LOG.info("valid application status size: " + documentType.getValidApplicationStatuses().size());
+        assertTrue(ObjectUtils.isNotNull(documentType.getApplicationStatusCategories()));
+        assertEquals(0,documentType.getApplicationStatusCategories().size());
     }
 
     @Test public void testSearching() throws InterruptedException {

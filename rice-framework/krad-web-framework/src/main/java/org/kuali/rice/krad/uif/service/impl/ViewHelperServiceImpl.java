@@ -1035,7 +1035,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param view - view instance for component
      * @param component - component instance to push context to
      */
-    protected Map<String, Object> getCommonContext(View view, Component component) {
+    public Map<String, Object> getCommonContext(View view, Component component) {
         Map<String, Object> context = new HashMap<String, Object>();
 
         context.putAll(view.getContext());

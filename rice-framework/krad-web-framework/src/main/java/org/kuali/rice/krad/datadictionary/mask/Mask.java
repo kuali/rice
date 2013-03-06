@@ -25,7 +25,7 @@ import java.io.Serializable;
  * be used to hide the value from un-authorized users.
  * There are three types of masking.
  */
-@BeanTag(name = "mask")
+@BeanTag(name = "mask-bean")
 public class Mask implements Serializable {
     private static final long serialVersionUID = 4035984416568235531L;
 

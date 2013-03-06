@@ -269,7 +269,7 @@ public class EncryptionService {
      */
     protected void checkEnabled() {
         if (!isEnabled()) {
-            throw new IllegalStateException("Illegal use of encryption service.  Ecryption service is disabled, to enable please configure 'encryption.key'.");
+            throw new IllegalStateException("Illegal use of encryption service.  Encryption service is disabled, to enable please configure 'encryption.key'.");
         }
     }
 

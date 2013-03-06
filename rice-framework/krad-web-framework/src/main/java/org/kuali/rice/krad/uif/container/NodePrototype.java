@@ -22,7 +22,7 @@ import org.kuali.rice.krad.uif.element.Message;
 
 import java.io.Serializable;
 
-@BeanTag(name="nodePrototype")
+@BeanTag(name = "nodePrototype-bean")
 public class NodePrototype extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 1L;
 

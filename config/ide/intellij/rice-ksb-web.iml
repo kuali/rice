@@ -113,12 +113,13 @@
     <orderEntry type="library" name="Maven: commons-httpclient:commons-httpclient:3.1" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />
+    <orderEntry type="module" module-name="rice-kim-api" />
+    <orderEntry type="module" module-name="rice-kew-api" />
+    <orderEntry type="module" module-name="rice-location-api" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
     <orderEntry type="module" module-name="rice-core-service-framework" />
     <orderEntry type="module" module-name="rice-core-service-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
-    <orderEntry type="module" module-name="rice-kew-api" />
-    <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.18" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.8" level="project" />
@@ -160,7 +161,6 @@
     <orderEntry type="module" module-name="rice-core-service-web" />
     <orderEntry type="module" module-name="rice-core-web" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" />
-    <orderEntry type="module" module-name="rice-location-api" />
     <orderEntry type="module" module-name="rice-location-framework" />
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />

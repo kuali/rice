@@ -15,10 +15,16 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+
 /**
  * List layout manager is a layout manager for group types to output their items as either ordered or
  * unordered lists
  */
+@BeanTags({@BeanTag(name = "listLayout-bean", parent = "Uif-ListLayout"),
+        @BeanTag(name = "orderedListLayout-bean", parent = "Uif-OrderedListLayout")})
 public class ListLayoutManager extends LayoutManagerBase {
 
     private static final long serialVersionUID = -8611267646944565117L;
@@ -29,6 +35,7 @@ public class ListLayoutManager extends LayoutManagerBase {
      *
      * @return true if orderedList, false if unordered
      */
+    @BeanTagAttribute(name = "orderedList")
     public boolean isOrderedList() {
         return orderedList;
     }

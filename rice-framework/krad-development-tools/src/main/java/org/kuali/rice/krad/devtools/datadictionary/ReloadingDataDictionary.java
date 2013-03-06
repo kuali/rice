@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.devtools.datadictionary;
 
+
 import no.geosoft.cc.io.FileListener;
 import no.geosoft.cc.io.FileMonitor;
 import org.apache.commons.collections.ListUtils;
@@ -24,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;

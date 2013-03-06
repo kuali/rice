@@ -24,6 +24,7 @@ import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentAdHocService;
+import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.util.OjbCollectionAware;
 import org.kuali.rice.krad.service.util.OjbCollectionHelper;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -146,6 +147,10 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     }
 
     protected OjbCollectionHelper getOjbCollectionHelper() {
+        if (ojbCollectionHelper == null) {
+            ojbCollectionHelper = KRADServiceLocatorInternal.getOjbCollectionHelper();
+        }
+
         return ojbCollectionHelper;
     }
 

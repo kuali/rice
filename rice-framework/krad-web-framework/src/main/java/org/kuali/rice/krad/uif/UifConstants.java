@@ -40,6 +40,8 @@ public class UifConstants {
     public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
     public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
 
+    public static final String SPACE = " ";
+
     public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
     public static final String REQUEST_FORM = "requestForm";
 
@@ -245,6 +247,7 @@ public class UifConstants {
 
     public static class MessageKeys {
         public static final String QUERY_DATA_NOT_FOUND = "query.dataNotFound";
+        public static final String OPTION_ALL = "option.all";
     }
 
     public static class ClientSideVariables {
@@ -265,6 +268,8 @@ public class UifConstants {
         public static final String DISPLAY_MESSAGES = "displayMessages";
         public static final String COLLAPSE_FIELD_MESSAGES = "collapseFieldMessages";
         public static final String DISPLAY_LABEL = "displayLabel";
+        public static final String SHOW_PAGE_SUMMARY_HEADER = "showPageSummaryHeader";
+        public static final String DISPLAY_HEADER_SUMMARY = "displayHeaderSummary";
         public static final String HAS_OWN_MESSAGES = "hasOwnMessages";
         public static final String PAGE_LEVEL = "pageLevel";
         public static final String FORCE_SHOW = "forceShow";

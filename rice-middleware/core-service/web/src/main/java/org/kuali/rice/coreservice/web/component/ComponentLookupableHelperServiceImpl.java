@@ -49,7 +49,7 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
         if (activeCheck == null) {
             activeCheck = "";
         }
-        int maxResultsCount = LookupUtils.getSearchResultsLimit(ComponentBo.class);
+        int maxResultsCount = LookupUtils.getSearchResultsLimit(ComponentBo.class, null);
         // only bother with the component lookup if returning active components
         if (baseLookup instanceof CollectionIncomplete && !activeCheck.equals("N")) {
             long originalCount = Math.max(baseLookup.size(), ((CollectionIncomplete) baseLookup).getActualSizeIfTruncated());

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.parse;
 
+import java.lang.reflect.Type;
+
 /**
  * Data storage class for information related to a single property of a defined custom tag.
  *
@@ -23,6 +25,8 @@ package org.kuali.rice.krad.datadictionary.parse;
 public class BeanTagAttributeInfo {
     private String name;
     private BeanTagAttribute.AttributeType type;
+    private Class<?> valueType;
+    private Type genericType;
 
     /**
      * Constructor initializing the global variables
@@ -68,5 +72,58 @@ public class BeanTagAttributeInfo {
      */
     public BeanTagAttribute.AttributeType getType() {
         return type;
+    }
+
+    /**
+     * The value type (class or primitive type) of the is attribute
+     *
+     * @return the value type
+     */
+    public Class<?> getValueType() {
+        return valueType;
+    }
+
+    /**
+     * Set the value type
+     *
+     * @param valueType
+     */
+    public void setValueType(Class<?> valueType) {
+        this.valueType = valueType;
+    }
+
+    /**
+     * Gets the type of the generic on the attribute's value type (only matters for lists)
+     *
+     * @return the genericType
+     */
+    public Type getGenericType() {
+        return genericType;
+    }
+
+    /**
+     * Set the generic type
+     *
+     * @param genericType
+     */
+    public void setGenericType(Type genericType) {
+        this.genericType = genericType;
+    }
+
+    /**
+     * Returns true if valueType, type, and name match
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof BeanTagAttributeInfo){
+            return valueType.equals(((BeanTagAttributeInfo)obj).getValueType()) && type.equals(((BeanTagAttributeInfo)obj).getType())
+             && name.equals(((BeanTagAttributeInfo)obj).getName());
+        }
+        else{
+            return false;
+        }
     }
 }

@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in.
+ * A resource loader implementation which checks a child resource loader first and if the resource is not found there,
+ * checks a parent resource loader.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 class ParentChildResourceLoader implements ResourceLoader {
 
@@ -78,7 +78,7 @@ class ParentChildResourceLoader implements ResourceLoader {
 	}
 
 	/**
-	 * Just stopes the internal child resource loader.
+	 * Just stops the internal child resource loader.
 	 * 
 	 * @see org.kuali.rice.core.api.lifecycle.Lifecycle#stop()
 	 */
@@ -124,14 +124,8 @@ class ParentChildResourceLoader implements ResourceLoader {
 		this.child.removeResourceLoader(name);
     }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.api.lifecycle.Lifecycle#isStarted()
-	 */
 	@Override
 	public boolean isStarted() {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
 		return false;
 	}
 
@@ -145,11 +139,6 @@ class ParentChildResourceLoader implements ResourceLoader {
 		return this.name;
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.api.resourceloader.ResourceLoader#getContents(java.lang.String, boolean)
-	 */
 	@Override
 	public String getContents(String indent, boolean servicePerLine) {
 		StringBuilder contents = new StringBuilder();

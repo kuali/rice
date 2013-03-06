@@ -23,7 +23,7 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "workflowAttributeMetadata")
+@BeanTag(name = "workflowAttributeMetadata-bean")
 public class WorkflowAttributeMetadata extends UifDictionaryBeanBase {
     private static final long serialVersionUID = -6250577044174437101L;
 

@@ -47,6 +47,7 @@
   <bean id="Uif-FieldValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
         class="org.kuali.rice.krad.uif.element.FieldValidationMessages">
     <property name="useTooltip" value="true"/>
+    <property name="showIcons" value="false"/>
   </bean>
 
   <bean id="Uif-GroupValidationMessages" parent="Uif-GroupValidationMessages-parentBean"/>
@@ -59,11 +60,14 @@
     </property>
     <property name="displayFieldLabelWithMessages" value="true"/>
     <property name="collapseAdditionalFieldLinkMessages" value="true"/>
+    <property name="displayHeaderMessageSummary" value="true"/>
   </bean>
 
   <bean id="Uif-PageValidationMessages" parent="Uif-PageValidationMessages-parentBean"/>
   <bean id="Uif-PageValidationMessages-parentBean" parent="Uif-GroupValidationMessages"
         class="org.kuali.rice.krad.uif.element.PageValidationMessages">
+    <property name="displayHeaderMessageSummary" value="false"/>
+    <property name="showPageSummaryHeader" value="true"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-pageValidationMessages</value>
@@ -105,12 +109,12 @@
     <property name="captionHeaderPlacementAboveImage" value="true"/>
   </bean>
 
-  <bean id="Uif-ImageCaptionHeader"  parent="Uif-ImageCaptionHeader-parentBean"/>
+  <bean id="Uif-ImageCaptionHeader" parent="Uif-ImageCaptionHeader-parentBean"/>
   <bean id="Uif-ImageCaptionHeader-parentBean" abstract="true" parent="Uif-HeaderFour"/>
 
-  <bean id="Uif-ImageCutineMessage"  parent="Uif-ImageCutineMessage-parentBean"/>
+  <bean id="Uif-ImageCutineMessage" parent="Uif-ImageCutineMessage-parentBean"/>
   <bean id="Uif-ImageCutineMessage-parentBean" abstract="true" parent="Uif-Message">
-     <property name="cssClasses" value="uif-cutlineMessage"/>
+    <property name="cssClasses" value="uif-cutlineMessage"/>
   </bean>
 
   <bean id="Uif-Label" parent="Uif-Label-parentBean"/>

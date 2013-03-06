@@ -22,7 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "tree", parent = "Uif-Tree")
+@BeanTag(name = "tree-bean", parent = "Uif-Tree")
 public class Tree extends WidgetBase {
     private static final long serialVersionUID = -6852455590809381513L;
 

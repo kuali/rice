@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="fieldSecurity")
+@BeanTag(name = "fieldSecurity-bean")
 public class FieldSecurity extends ComponentSecurity {
 
     private boolean editInLineAuthz;

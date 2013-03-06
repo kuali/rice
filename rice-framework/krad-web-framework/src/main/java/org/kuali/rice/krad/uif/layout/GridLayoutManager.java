@@ -43,10 +43,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "gridLayout", parent = "Uif-GridLayoutBase"),
-        @BeanTag(name = "twoColumnGridLayout", parent = "Uif-TwoColumnGridLayout"),
-        @BeanTag(name = "fourColumnGridLayout", parent = "Uif-FourColumnGridLayout"),
-        @BeanTag(name = "sixColumnGridLayout", parent = "Uif-SixColumnGridLayout")})
+@BeanTags({@BeanTag(name = "gridLayout-bean", parent = "Uif-GridLayoutBase"),
+        @BeanTag(name = "twoColumnGridLayout-bean", parent = "Uif-TwoColumnGridLayout"),
+        @BeanTag(name = "fourColumnGridLayout-bean", parent = "Uif-FourColumnGridLayout"),
+        @BeanTag(name = "sixColumnGridLayout-bean", parent = "Uif-SixColumnGridLayout")})
 public class GridLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = 1890011900375071128L;
 

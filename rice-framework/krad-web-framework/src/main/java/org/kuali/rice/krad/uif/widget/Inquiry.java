@@ -57,7 +57,7 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "inquiry", parent = "Uif-Inquiry")
+@BeanTag(name = "inquiry-bean", parent = "Uif-Inquiry")
 public class Inquiry extends WidgetBase {
     private static final long serialVersionUID = -2154388007867302901L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Inquiry.class);
@@ -79,7 +79,7 @@ public class Inquiry extends WidgetBase {
     private boolean adjustInquiryParameters;
     private BindingInfo fieldBindingInfo;
 
-    private boolean parentIsReadOnly;
+    private boolean parentReadOnly;
 
     public Inquiry() {
         super();
@@ -103,10 +103,10 @@ public class Inquiry extends WidgetBase {
         setRender(false);
 
         // used to determine whether a normal or direct inquiry should be enabled
-        parentIsReadOnly = parent.isReadOnly();
+        setParentReadOnly(parent.isReadOnly());
 
         // Do checks for inquiry when read only
-        if (parentIsReadOnly) {
+        if (isParentReadOnly()) {
             if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath())) {
                 return;
             }
@@ -120,7 +120,7 @@ public class Inquiry extends WidgetBase {
         }
 
         // Do checks for direct inquiry when editable
-        if (!parentIsReadOnly && parent instanceof InputField) {
+        if (!isParentReadOnly() && parent instanceof InputField) {
             if (!enableDirectInquiry) {
                 return;
             }
@@ -219,7 +219,7 @@ public class Inquiry extends WidgetBase {
         }
 
         // configure inquiry when read only
-        if (parentIsReadOnly) {
+        if (isParentReadOnly()) {
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
                 String parameterName = inquiryParameter.getKey();
 
@@ -519,5 +519,27 @@ public class Inquiry extends WidgetBase {
      */
     public void setEnableDirectInquiry(boolean enableDirectInquiry) {
         this.enableDirectInquiry = enableDirectInquiry;
+    }
+
+    /**
+     *  Determines whether a normal or direct inquiry should be enabled
+     *
+     * @return true if parent component is read only, false otherwise
+     */
+    protected boolean isParentReadOnly() {
+        return parentReadOnly;
+    }
+
+    /**
+     * Determines whether a normal or direct inquiry should be enabled
+     *
+     * <p>
+     * Used by unit tests and internally
+     * </p>
+     *
+     * @param parentReadOnly true if parent component is read only, false otherwise
+     */
+    protected void setParentReadOnly(boolean parentReadOnly) {
+        this.parentReadOnly = parentReadOnly;
     }
 }

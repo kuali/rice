@@ -26,12 +26,12 @@ import org.kuali.rice.krad.uif.view.View;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "page", parent = "Uif-Page"),
-        @BeanTag(name = "disclosure-page", parent = "Uif-Disclosure-Page"),
-        @BeanTag(name = "documentPage", parent = "Uif-DocumentPage"),
-        @BeanTag(name = "inquiryPage", parent = "Uif-InquiryPage"),
-        @BeanTag(name = "lookupPage", parent = "Uif-LookupPage"),
-        @BeanTag(name = "maintenancePage", parent = "Uif-MaintenancePage")})
+@BeanTags({@BeanTag(name = "page-bean", parent = "Uif-Page"),
+        @BeanTag(name = "disclosure-page-bean", parent = "Uif-Disclosure-Page"),
+        @BeanTag(name = "documentPage-bean", parent = "Uif-DocumentPage"),
+        @BeanTag(name = "inquiryPage-bean", parent = "Uif-InquiryPage"),
+        @BeanTag(name = "lookupPage-bean", parent = "Uif-LookupPage"),
+        @BeanTag(name = "maintenancePage-bean", parent = "Uif-MaintenancePage")})
 public class PageGroup extends Group {
     private static final long serialVersionUID = 7571981300587270274L;
 

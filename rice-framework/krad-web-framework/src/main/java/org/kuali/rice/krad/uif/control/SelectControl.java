@@ -25,8 +25,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "dropdownControl", parent = "Uif-DropdownControl"),
-        @BeanTag(name = "multiSelectControl", parent = "Uif-MultiSelectControl")})
+@BeanTags({@BeanTag(name = "dropdownControl-bean", parent = "Uif-DropdownControl"),
+        @BeanTag(name = "multiSelectControl-bean", parent = "Uif-MultiSelectControl")})
 public class SelectControl extends MultiValueControlBase implements SizedControl {
     private static final long serialVersionUID = 6443247954759096815L;
 

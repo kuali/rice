@@ -83,6 +83,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldDocType.getUnresolvedDocSearchHelpUrl(), newDocType.getUnresolvedDocSearchHelpUrl());
         assertEquals(oldDocType.getLabel(), newDocType.getLabel());
         assertEquals(oldDocType.getPostProcessorName(), newDocType.getPostProcessorName());
+        assertEquals(oldDocType.getAuthorizer(), newDocType.getAuthorizer());
         assertEquals(oldDocType.getRoutingVersion(), newDocType.getRoutingVersion());
         assertWorkgroupsEqual(oldDocType.getBlanketApproveWorkgroup(), newDocType.getBlanketApproveWorkgroup());
         assertEquals(oldDocType.getBlanketApprovePolicy(),newDocType.getBlanketApprovePolicy());

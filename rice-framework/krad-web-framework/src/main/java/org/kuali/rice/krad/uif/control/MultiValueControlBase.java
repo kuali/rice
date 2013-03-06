@@ -152,10 +152,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
-     * Gets the richOptions which contain Message objects with the translated rich message structures, which then can
-     * be used by templates to output the appropriate content.
-     *
-     * @return richOptions which include a message object with the translated value content
+     * @see org.kuali.rice.krad.uif.control.MultiValueControl#getRichOptions()
      */
     public List<KeyMessage> getRichOptions() {
         return richOptions;

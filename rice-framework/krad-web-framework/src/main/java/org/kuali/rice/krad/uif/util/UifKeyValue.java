@@ -17,13 +17,34 @@ package org.kuali.rice.krad.uif.util;
 
 import org.kuali.rice.core.api.util.AbstractKeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
  * KRAD version of KeyValue to enable use in schema
  */
-@BeanTags({@BeanTag(name="keyValuePair", parent="Uif-KeyLabelPair"),
-    @BeanTag(name="keyLabelPair", parent="Uif-KeyLabelPair")})
+@BeanTags({@BeanTag(name = "keyValuePair-bean", parent = "Uif-KeyLabelPair"),
+        @BeanTag(name = "keyLabelPair-bean", parent = "Uif-KeyLabelPair")})
 public class UifKeyValue extends AbstractKeyValue {
     private static final long serialVersionUID = 1176799455504861488L;
+
+    @Override
+    @BeanTagAttribute(name = "key")
+    public String getKey() {
+        return super.getKey();
+    }
+
+    @Override
+    @BeanTagAttribute(name = "value")
+    public String getValue() {
+        return super.getValue();
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

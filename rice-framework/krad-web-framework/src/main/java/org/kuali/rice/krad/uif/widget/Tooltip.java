@@ -32,8 +32,8 @@ import org.kuali.rice.krad.uif.view.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags(
-        {@BeanTag(name = "tooltip", parent = "Uif-Tooltip"), @BeanTag(name = "tooltipHelp", parent = "Uif-TooltipHelp"),
-                @BeanTag(name = "tooltipFocus", parent = "Uif-TooltipFocus")})
+        {@BeanTag(name = "tooltip-bean", parent = "Uif-Tooltip"), @BeanTag(name = "tooltipHelp-bean", parent = "Uif-TooltipHelp"),
+                @BeanTag(name = "tooltipFocus-bean", parent = "Uif-TooltipFocus")})
 public class Tooltip extends WidgetBase {
 
     private String tooltipContent;

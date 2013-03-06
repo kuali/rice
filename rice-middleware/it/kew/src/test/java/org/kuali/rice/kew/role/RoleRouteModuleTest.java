@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kew.role;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -65,6 +67,10 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+// FixMethodOrder will run tests in alphabetical order by test name
+//                to ensure testing of forceAction by each user for
+//                the case of an existing delegate being the initiator.
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class RoleRouteModuleTest extends KEWTestCase {
 
@@ -310,6 +316,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         documentTypeTypeAttribute.setActive(true);
         documentTypeTypeAttribute.setKimAttributeId(chartAttribute.getId());
         documentTypeTypeAttribute.setKimTypeId(kimType.getId());
+        documentTypeTypeAttribute.setSortCode("a");
         documentTypeTypeAttribute = KRADServiceLocator.getBusinessObjectService().save(documentTypeTypeAttribute);
 
         // create nodeNameType KimTypeAttribute
@@ -319,6 +326,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         nodeNameTypeAttribute.setActive(true);
         nodeNameTypeAttribute.setKimAttributeId(orgAttribute.getId());
         nodeNameTypeAttribute.setKimTypeId(kimType.getId());
+        nodeNameTypeAttribute.setSortCode("a");
         nodeNameTypeAttribute = KRADServiceLocator.getBusinessObjectService().save(nodeNameTypeAttribute);
 
         createResponsibilityForRoleRouteModuleTest(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal,
@@ -420,6 +428,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction1.setActionPolicyCode(actionRequestPolicy.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
+        roleResponsibilityAction1.setForceAction(true);
         roleResponsibilityAction1 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
 
         roleResponsibilityActionId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
@@ -430,6 +439,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction2.setActionPolicyCode(actionRequestPolicy.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
+        roleResponsibilityAction2.setForceAction(true);
         roleResponsibilityAction2 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
 
         roleResponsibilityActionId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
@@ -440,6 +450,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction3.setActionPolicyCode(actionRequestPolicy.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
+        roleResponsibilityAction3.setForceAction(true);
         roleResponsibilityAction3 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
 
     }
@@ -484,6 +495,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         DelegateMemberBo user1RoleDelegate = new DelegateMemberBo();
         user1RoleDelegate.setDelegationMemberId(delgMemberId);
         // This is the user the delegation requests should be sent to.
+        // Note: If initiator is same as delegate, forceAction is utilized in responsibilities of approvers.
         Principal kPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
         assertNotNull(kPrincipal);
         user1RoleDelegate.setMemberId(kPrincipal.getPrincipalId());
@@ -693,7 +705,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     }
 
     @Test
-    public void testDelegate() throws Exception{
+    public void testRoleDelegate() throws Exception{
         this.createDelegate();
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
@@ -721,7 +733,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
     }
 
     @Test
-    public void testDelegateApproval() throws Exception{
+    public void testRoleDelegateApproval() throws Exception{
         this.createDelegate();
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");

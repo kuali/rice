@@ -36,7 +36,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.control.Control
  */
-@BeanTag(name = "controlBase", parent = "Uif-ControlBase")
+@BeanTag(name = "controlBase-bean", parent = "Uif-ControlBase")
 public abstract class ControlBase extends ContentElementBase implements Control {
     private static final long serialVersionUID = -7898244978136312663L;
 

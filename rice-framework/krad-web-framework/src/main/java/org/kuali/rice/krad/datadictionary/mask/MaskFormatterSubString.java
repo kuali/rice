@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "maskFormatteSubString")
+@BeanTag(name = "maskFormatteSubString-bean")
 public class MaskFormatterSubString implements MaskFormatter {
     private static final long serialVersionUID = -876112522775686636L;
 

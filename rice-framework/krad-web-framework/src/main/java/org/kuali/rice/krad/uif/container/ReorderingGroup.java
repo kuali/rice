@@ -32,8 +32,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "reorderGroup", parent = "Uif-ReorderGroup"),
-        @BeanTag(name = "reorderSection", parent = "Uif-ReorderSection")})
+@BeanTags({@BeanTag(name = "reorderGroup-bean", parent = "Uif-ReorderGroup"),
+        @BeanTag(name = "reorderSection-bean", parent = "Uif-ReorderSection")})
 public class ReorderingGroup extends Group {
     private static final long serialVersionUID = -9069458348367183223L;
 

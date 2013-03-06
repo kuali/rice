@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name="link", parent="Uif-Link"), @BeanTag(name = "createNewLink", parent = "Uif-CreateNewLink")})
+@BeanTags({@BeanTag(name = "link-bean", parent="Uif-Link"), @BeanTag(name = "createNewLink-bean", parent = "Uif-CreateNewLink")})
 public class Link extends ContentElementBase {
     private static final long serialVersionUID = 8989868231938336068L;
 

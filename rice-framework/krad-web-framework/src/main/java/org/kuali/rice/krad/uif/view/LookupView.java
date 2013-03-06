@@ -24,9 +24,12 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
-import org.kuali.rice.krad.uif.element.Link;
+import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.LookupInputField;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Arrays;
@@ -49,7 +52,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "lookupView", parent = "Uif-LookupView")
+@BeanTag(name = "lookupView-bean", parent = "Uif-LookupView")
 public class LookupView extends FormView {
     private static final long serialVersionUID = 716926008488403616L;
 
@@ -75,6 +78,12 @@ public class LookupView extends FormView {
     private boolean showMaintenanceLinks = false;
     @RequestParameter
     private boolean multipleValuesSelect = false;
+    @RequestParameter
+    private boolean renderLookupCriteria = true;
+    @RequestParameter
+    private boolean renderSearchButtons = true;
+    @RequestParameter
+    private boolean renderHeader = true;
 
     @RequestParameter
     private String returnTarget;
@@ -82,11 +91,12 @@ public class LookupView extends FormView {
     @RequestParameter
     private boolean returnByScript;
 
-    private boolean lookupCriteriaEnabled = true;
-    private boolean supplementalActionsEnabled = false;
-    private boolean disableSearchButtons = false;
+    private boolean triggerOnChange;
+
+    private boolean triggerOnEnter;
 
     private Integer resultSetLimit = null;
+    private Integer multipleValuesSelectResultSetLimit = null;
 
     private String maintenanceUrlMapping;
 
@@ -95,6 +105,8 @@ public class LookupView extends FormView {
 
         setViewTypeName(ViewType.LOOKUP);
         setApplyDirtyCheck(false);
+        setTriggerOnChange(false);
+        setTriggerOnEnter(true);
     }
 
     /**
@@ -110,6 +122,11 @@ public class LookupView extends FormView {
     @Override
     public void performInitialization(View view, Object model) {
         initializeGroups();
+
+        // since we don't have these as prototypes need to assign ids here
+        view.assignComponentIds(getCriteriaGroup());
+        view.assignComponentIds(getResultsGroup());
+
         if (getItems().isEmpty()) {
             setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
         }
@@ -128,7 +145,7 @@ public class LookupView extends FormView {
     }
 
     protected void initializeGroups() {
-        if ((getCriteriaGroup() != null) && (getCriteriaGroup().getItems().isEmpty())) {
+        if (renderLookupCriteria && (getCriteriaGroup() != null) && (getCriteriaGroup().getItems().isEmpty())) {
             getCriteriaGroup().setItems(getCriteriaFields());
         }
 
@@ -143,8 +160,8 @@ public class LookupView extends FormView {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(View, Object,
+     * org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
@@ -160,7 +177,56 @@ public class LookupView extends FormView {
             ((List<Component>) getResultsGroup().getItems()).add(0, getResultsReturnField());
         }
 
+        if (!renderSearchButtons) {
+            criteriaGroup.getFooter().setRender(false);
+        }
+
+        if (!renderLookupCriteria) {
+            criteriaGroup.setRender(false);
+        }
+
+        if (!renderHeader) {
+            getHeader().setRender(false);
+        }
+
+        // Get the search action button for trigger on change and trigger on enter
+        Group actionGroup = criteriaGroup.getFooter();
+        Action searchButton = findSearchButton(actionGroup.getItems());
+
+        // Only add trigger on script if an action with methodToCall search exists
+        if (searchButton != null) {
+            String searchButtonId = searchButton.getId();
+
+            for (Component criteriaField : criteriaGroup.getItems()) {
+                if (criteriaField instanceof LookupInputField) {
+                    if (isTriggerOnEnter() || ((LookupInputField)criteriaField).isTriggerOnEnter()) {
+                        criteriaField.setOnKeyPressScript("if(e.which == 13) { e.preventDefault();jQuery('#" + searchButtonId + "' ).click();}");
+                    }
+                    if (isTriggerOnChange() || ((LookupInputField)criteriaField).isTriggerOnChange()) {
+                        criteriaField.setOnChangeScript("jQuery('#" + searchButtonId + "' ).click();");
+                    }
+                }
+            }
+        }
+
         super.performApplyModel(view, model, parent);
+    }
+
+    /**
+     * Finds an Action with the search methodToCall from a list of Actions
+     *
+     * @param componentList - list of components
+     * @return the Action component with methodToCall of search
+     */
+    private Action findSearchButton(List<? extends Component> componentList) {
+        List<? extends Action> actionList = ComponentUtils.getComponentsOfType(componentList, Action.class);
+        for (Action action : actionList) {
+            String methodToCall = action.getMethodToCall();
+            if (methodToCall != null && methodToCall.equals("search")) {
+                return action;
+            }
+        }
+        return null;
     }
 
     /**
@@ -170,12 +236,8 @@ public class LookupView extends FormView {
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
 
-        components.add(criteriaGroup);
-        components.add(resultsGroup);
         components.add(resultsActionsFieldGroup);
         components.add(resultsReturnField);
-        components.addAll(criteriaFields);
-        components.addAll(resultFields);
 
         return components;
     }
@@ -417,6 +479,36 @@ public class LookupView extends FormView {
     }
 
     /**
+     * Retrieves the maximum number of records that will be listed
+     * as a result of the multiple values select lookup search
+     *
+     * @return Integer multiple values select result set limit
+     */
+    @BeanTagAttribute(name="multipleValuesSelectResultSetLimit")
+    public Integer getMultipleValuesSelectResultSetLimit() {
+        return multipleValuesSelectResultSetLimit;
+    }
+
+    /**
+     * Setter for the multiple values select result set limit
+     *
+     * @param multipleValuesSelectResultSetLimit Integer specifying limit
+     */
+    public void setMultipleValuesSelectResultSetLimit(Integer multipleValuesSelectResultSetLimit) {
+        this.multipleValuesSelectResultSetLimit = multipleValuesSelectResultSetLimit;
+    }
+
+    /**
+     * Indicates whether a multiple values select result
+     * set limit has been specified for the view
+     *
+     * @return true if this instance has a multiple values select result set limit
+     */
+    public boolean hasMultipleValuesSelectResultSetLimit() {
+        return (multipleValuesSelectResultSetLimit != null);
+    }
+
+    /**
      * @param returnTarget the returnTarget to set
      */
     public void setReturnTarget(String returnTarget) {
@@ -472,5 +564,103 @@ public class LookupView extends FormView {
      */
     public void setMaintenanceUrlMapping(String maintenanceUrlMapping) {
         this.maintenanceUrlMapping = maintenanceUrlMapping;
+    }
+
+    /**
+     * Indicates that the action buttons like search in the criteria section should be rendered
+     *
+     * @return boolean
+     */
+    public boolean isRenderSearchButtons() {
+        return renderSearchButtons;
+    }
+
+    /**
+     * Setter for the render search buttons flag
+     *
+     * @param renderSearchButtons
+     */
+    public void setRenderSearchButtons(boolean renderSearchButtons) {
+        this.renderSearchButtons = renderSearchButtons;
+    }
+
+    /**
+     * Indicates whether the lookup criteria group should be rendered
+     *
+     * <p>
+     * Defaults to true. Can be set as bean property or passed as a request parameter in the lookup url.
+     * </p>
+     *
+     * @return boolean
+     */
+    public boolean isRenderLookupCriteria() {
+        return renderLookupCriteria;
+    }
+
+    /**
+     * Setter for the lookup criteria group render flag
+     *
+     * @param renderLookupCriteria
+     */
+    public void setRenderLookupCriteria(boolean renderLookupCriteria) {
+        this.renderLookupCriteria = renderLookupCriteria;
+    }
+
+    /**
+     * Indicates whether the lookup header should be rendered
+     *
+     * <p>
+     * Defaults to true. Can be set as bean property or passed as a request parameter in the lookup url.
+     * </p>
+     *
+     * @return boolean
+     */
+    public boolean isRenderHeader() {
+        return renderHeader;
+    }
+
+    /**
+     * Setter for the header render flag
+     *
+     * @param renderHeader
+     */
+    public void setRenderHeader(boolean renderHeader) {
+        this.renderHeader = renderHeader;
+    }
+
+    /**
+     * Indicates that the search must execute on changing of a value in all lookup input fields
+     *
+     * @return boolean
+     */
+    public boolean isTriggerOnChange() {
+        return triggerOnChange;
+    }
+
+    /**
+     * Setter for the trigger search on change flag
+     *
+     * @param triggerOnChange
+     */
+    public void setTriggerOnChange(boolean triggerOnChange) {
+        this.triggerOnChange = triggerOnChange;
+    }
+
+    /**
+     * Indicates that the search must execute on pressing enter in all lookup input fields
+     *
+     * @return boolean
+     */
+    public boolean isTriggerOnEnter() {
+        return triggerOnEnter;
+    }
+
+    /**
+     * Setter for the trigger search on enter key
+     *
+     * @param triggerOnEnter
+     */
+    public void setTriggerOnEnter(boolean triggerOnEnter) {
+        this.triggerOnEnter = triggerOnEnter;
     }
 }

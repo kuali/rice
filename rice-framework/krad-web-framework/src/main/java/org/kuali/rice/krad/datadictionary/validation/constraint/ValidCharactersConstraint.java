@@ -30,7 +30,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "validCharactersConstraint", parent="ValidCharactersConstraint")
+@BeanTag(name = "validCharactersConstraint-bean", parent="ValidCharactersConstraint")
 public class ValidCharactersConstraint extends BaseConstraint {
 
     protected String value;

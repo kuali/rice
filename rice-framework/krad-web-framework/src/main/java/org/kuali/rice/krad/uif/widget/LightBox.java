@@ -29,8 +29,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "lightBox", parent = "Uif-LightBox"),
-        @BeanTag(name = "lightBoxPost", parent = "Uif-LightBoxPost")})
+@BeanTags({@BeanTag(name = "lightBox-bean", parent = "Uif-LightBox"),
+        @BeanTag(name = "lightBoxPost-bean", parent = "Uif-LightBoxPost")})
 public class LightBox extends WidgetBase {
     private static final long serialVersionUID = -4004284762546700975L;
 

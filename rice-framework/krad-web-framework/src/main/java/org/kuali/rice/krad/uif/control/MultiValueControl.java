@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.krad.uif.util.KeyMessage;
 import org.kuali.rice.krad.uif.view.View;
 import java.util.List;
 
@@ -47,4 +48,12 @@ public interface MultiValueControl {
      * @param options
      */
     public void setOptions(List<KeyValue> options);
+
+    /**
+     * Gets the richOptions which contain Message objects with the translated rich message structures, which then can
+     * be used by templates to output the appropriate content.
+     *
+     * @return richOptions which include a message object with the translated value content
+     */
+    public List<KeyMessage> getRichOptions();
 }

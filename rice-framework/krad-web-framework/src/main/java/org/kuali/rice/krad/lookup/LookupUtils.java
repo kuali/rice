@@ -30,6 +30,7 @@ import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -119,14 +120,17 @@ public class LookupUtils {
 
     /**
      * Parses and returns the lookup result set limit, checking first for the limit
-     * for the class being looked up, and then the global application limit if there isn't a limit
-     * specific to this data object class
+     * for the specific view, then the class being looked up, and then the global application
+     * limit if there isn't a limit specific to this data object class.
      *
      * @param dataObjectClass - class to get limit for
+     * @param lookupForm - LookupForm to use.  May be null if the form is unknown. If lookupForm is null, only the
+     * dataObjectClass will be used to find the search results set limit
      * @return result set limit
      */
-    public static Integer getSearchResultsLimit(Class dataObjectClass) {
-        Integer limit = KRADServiceLocatorWeb.getViewDictionaryService().getResultSetLimitForLookup(dataObjectClass);
+    public static Integer getSearchResultsLimit(Class dataObjectClass, LookupForm lookupForm) {
+        Integer limit = KRADServiceLocatorWeb.getViewDictionaryService().getResultSetLimitForLookup(dataObjectClass,
+                lookupForm);
         if (limit == null) {
             limit = getApplicationSearchResultsLimit();
         }
@@ -158,12 +162,18 @@ public class LookupUtils {
      * @param businessObjectClass BO class to search on / get limit for
      * @param criteria search criteria
      * @param platform database platform
+     * @param limit limit to use.  If limit is null, getSearchResultsLimit will be called using the businessObjectClass
+     * to see if a limit can be found for this particular businessObjectClass.
      */
-    public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria,
-            DatabasePlatform platform) {
-        Integer limit = getSearchResultsLimit(businessObjectClass);
+    public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria, DatabasePlatform platform,
+            Integer limit) {
         if (limit != null) {
             platform.applyLimit(limit, criteria);
+        } else {
+            limit = getSearchResultsLimit(businessObjectClass, null);
+            if (limit != null) {
+                platform.applyLimit(limit, criteria);
+            }
         }
     }
 
@@ -175,7 +185,7 @@ public class LookupUtils {
      */
     public static void applySearchResultsLimit(Class businessObjectClass,
             org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria) {
-        Integer limit = getSearchResultsLimit(businessObjectClass);
+        Integer limit = getSearchResultsLimit(businessObjectClass, null);
         if (limit != null) {
             criteria.setSearchLimit(limit);
         }

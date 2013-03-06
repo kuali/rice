@@ -46,7 +46,7 @@ import java.util.List;
  * "sourceName"
  * "targetName"
  */
-@BeanTag(name = "relationshipDefinition")
+@BeanTag(name = "relationshipDefinition-bean")
 public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 2946722646095412576L;
 

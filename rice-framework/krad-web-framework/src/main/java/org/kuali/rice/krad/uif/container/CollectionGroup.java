@@ -59,40 +59,40 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "collectionGroup", parent = "Uif-CollectionGroupBase"),
-        @BeanTag(name = "stackedCollectionGroup", parent = "Uif-StackedCollectionGroup"),
-        @BeanTag(name = "stackedCollectionSection", parent = "Uif-StackedCollectionSection"),
-        @BeanTag(name = "stackedCollectionSubSection", parent = "Uif-StackedCollectionSubSection"),
-        @BeanTag(name = "stackedSubCollection-withinSection", parent = "Uif-StackedSubCollection-WithinSection"),
-        @BeanTag(name = "stackedSubCollection-withinSubSection", parent = "Uif-StackedSubCollection-WithinSubSection"),
-        @BeanTag(name = "disclosure-stackedCollectionSection", parent = "Uif-Disclosure-StackedCollectionSection"),
-        @BeanTag(name = "disclosure-stackedCollectionSubSection",
+@BeanTags({@BeanTag(name = "collectionGroup-bean", parent = "Uif-CollectionGroupBase"),
+        @BeanTag(name = "stackedCollectionGroup-bean", parent = "Uif-StackedCollectionGroup"),
+        @BeanTag(name = "stackedCollectionSection-bean", parent = "Uif-StackedCollectionSection"),
+        @BeanTag(name = "stackedCollectionSubSection-bean", parent = "Uif-StackedCollectionSubSection"),
+        @BeanTag(name = "stackedSubCollection-withinSection-bean", parent = "Uif-StackedSubCollection-WithinSection"),
+        @BeanTag(name = "stackedSubCollection-withinSubSection-bean", parent = "Uif-StackedSubCollection-WithinSubSection"),
+        @BeanTag(name = "disclosure-stackedCollectionSection-bean", parent = "Uif-Disclosure-StackedCollectionSection"),
+        @BeanTag(name = "disclosure-stackedCollectionSubSection-bean",
                 parent = "Uif-Disclosure-StackedCollectionSubSection"),
-        @BeanTag(name = "disclosure-stackedSubCollection-withinSection",
+        @BeanTag(name = "disclosure-stackedSubCollection-withinSection-bean",
                 parent = "Uif-Disclosure-StackedSubCollection-WithinSection"),
-        @BeanTag(name = "disclosure-stackedSubCollection-withinSubSection",
+        @BeanTag(name = "disclosure-stackedSubCollection-withinSubSection-bean",
                 parent = "Uif-Disclosure-StackedSubCollection-WithinSubSection"),
-        @BeanTag(name = "tableCollectionGroup", parent = "Uif-TableCollectionGroup"),
-        @BeanTag(name = "tableCollectionSection", parent = "Uif-TableCollectionSection"),
-        @BeanTag(name = "tableCollectionSubSection", parent = "Uif-TableCollectionSubSection"),
-        @BeanTag(name = "tableSubCollection-withinSection", parent = "Uif-TableSubCollection-WithinSection"),
-        @BeanTag(name = "tableSubCollection-withinSubSection", parent = "Uif-TableSubCollection-WithinSubSection"),
-        @BeanTag(name = "disclosure-tableCollectionSection", parent = "Uif-Disclosure-TableCollectionSection"),
-        @BeanTag(name = "disclosure-tableCollectionSubSection", parent = "Uif-Disclosure-TableCollectionSubSection"),
-        @BeanTag(name = "disclosure-tableSubCollection-withinSection",
+        @BeanTag(name = "tableCollectionGroup-bean", parent = "Uif-TableCollectionGroup"),
+        @BeanTag(name = "tableCollectionSection-bean", parent = "Uif-TableCollectionSection"),
+        @BeanTag(name = "tableCollectionSubSection-bean", parent = "Uif-TableCollectionSubSection"),
+        @BeanTag(name = "tableSubCollection-withinSection-bean", parent = "Uif-TableSubCollection-WithinSection"),
+        @BeanTag(name = "tableSubCollection-withinSubSection-bean", parent = "Uif-TableSubCollection-WithinSubSection"),
+        @BeanTag(name = "disclosure-tableCollectionSection-bean", parent = "Uif-Disclosure-TableCollectionSection"),
+        @BeanTag(name = "disclosure-tableCollectionSubSection-bean", parent = "Uif-Disclosure-TableCollectionSubSection"),
+        @BeanTag(name = "disclosure-tableSubCollection-withinSection-bean",
                 parent = "Uif-Disclosure-TableSubCollection-WithinSection"),
-        @BeanTag(name = "disclosure-tableSubCollection-withinSubSection",
+        @BeanTag(name = "disclosure-tableSubCollection-withinSubSection-bean",
                 parent = "Uif-Disclosure-TableSubCollection-WithinSubSection"),
-        @BeanTag(name = "listCollectionGroup", parent = "Uif-ListCollectionGroup"),
-        @BeanTag(name = "listCollectionSection", parent = "Uif-ListCollectionSection"),
-        @BeanTag(name = "listCollectionSubSection", parent = "Uif-ListCollectionSubSection"),
-        @BeanTag(name = "documentNotesSection", parent = "Uif-DocumentNotesSection"),
-        @BeanTag(name = "lookupResultsCollectionSection", parent = "Uif-LookupResultsCollectionSection"),
-        @BeanTag(name = "maintenanceStackedCollectionSection", parent = "Uif-MaintenanceStackedCollectionSection"),
-        @BeanTag(name = "maintenanceStackedSubCollection-withinSection",
+        @BeanTag(name = "listCollectionGroup-bean", parent = "Uif-ListCollectionGroup"),
+        @BeanTag(name = "listCollectionSection-bean", parent = "Uif-ListCollectionSection"),
+        @BeanTag(name = "listCollectionSubSection-bean", parent = "Uif-ListCollectionSubSection"),
+        @BeanTag(name = "documentNotesSection-bean", parent = "Uif-DocumentNotesSection"),
+        @BeanTag(name = "lookupResultsCollectionSection-bean", parent = "Uif-LookupResultsCollectionSection"),
+        @BeanTag(name = "maintenanceStackedCollectionSection-bean", parent = "Uif-MaintenanceStackedCollectionSection"),
+        @BeanTag(name = "maintenanceStackedSubCollection-withinSection-bean",
                 parent = "Uif-MaintenanceStackedSubCollection-WithinSection"),
-        @BeanTag(name = "maintenanceTableCollectionSection", parent = "Uif-MaintenanceTableCollectionSection"),
-        @BeanTag(name = "maintenanceTableSubCollection-withinSection",
+        @BeanTag(name = "maintenanceTableCollectionSection-bean", parent = "Uif-MaintenanceTableCollectionSection"),
+        @BeanTag(name = "maintenanceTableSubCollection-withinSection-bean",
                 parent = "Uif-MaintenanceTableSubCollection-withinSection")})
 public class CollectionGroup extends Group implements DataBinding {
     private static final long serialVersionUID = -6496712566071542452L;
@@ -794,7 +794,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<CollectionGroup> sub collections
      */
-    @BeanTagAttribute(name = "subCollection", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "subCollections", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionGroup> getSubCollections() {
         return this.subCollections;
     }

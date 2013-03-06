@@ -159,6 +159,10 @@ delete from krew_usr_optn_t
 
 delete from KRLC_CMP_T
 /
+delete from KRCR_NMSPC_T where NMSPC_CD='KR-SAP'
+/
+delete from KRCR_PARM_T where NMSPC_CD='KR-SAP'
+/
 
 -- ##############
 -- # KEN Tables #
@@ -223,6 +227,7 @@ delete from krim_grp_mbr_t where grp_id not in (select grp_id from krim_grp_t)
 -- delete all entity and principal data except for principalID/entityID = 1 which is the 'kr' system user
 -- and principalID=admin/entityID = 1100 which is the 'admin' user
 -- also keep the 'notsys' user, as it is required for KEN
+-- also keep the 'guest' user (entity_id='KR1000', prncpl_nm='guest'), it is required for guest user access (KULRICE-8349)
 
 delete from krim_entity_addr_t where entity_id not in ('1', '1100', '1131')
 /
@@ -236,7 +241,7 @@ delete from krim_entity_email_t where entity_id not in ('1', '1100', '1131')
 /
 delete from krim_entity_emp_info_t where entity_id not in ('1', '1100', '1131')
 /
-delete from krim_entity_ent_typ_t where entity_id not in ('1', '1100', '1131')
+delete from krim_entity_ent_typ_t where entity_id not in ('1', '1100', '1131', 'KR1000')
 /
 delete from krim_entity_ext_id_t where entity_id not in ('1', '1100', '1131')
 /
@@ -252,10 +257,10 @@ delete from KRIM_ENTITY_RESIDENCY_T where entity_id not in ('1', '1100', '1131')
 /
 delete from KRIM_ENTITY_VISA_T where entity_id not in ('1', '1100', '1131')
 /
-delete from krim_entity_t where entity_id not in ('1', '1100', '1131')
+delete from krim_entity_t where entity_id not in ('1', '1100', '1131', 'KR1000')
 /
 
-delete from krim_prncpl_t where prncpl_id not in ('1', 'admin', 'notsys')
+delete from krim_prncpl_t where prncpl_id not in ('1', 'admin', 'notsys', 'guest')
 /
 
 delete from krim_role_perm_t where role_perm_id = '856'

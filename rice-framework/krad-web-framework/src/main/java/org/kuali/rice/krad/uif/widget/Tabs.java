@@ -23,7 +23,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  * See http://jqueryui.com/demos/tabs/ for usable options
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "tabs", parent = "Uif-Tabs")
+@BeanTag(name = "tabs-bean", parent = "Uif-Tabs")
 public class Tabs extends WidgetBase{
 	private static final long serialVersionUID = 2L;
 

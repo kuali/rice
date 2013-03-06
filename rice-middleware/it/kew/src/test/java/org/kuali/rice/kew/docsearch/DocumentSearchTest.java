@@ -877,4 +877,29 @@ public class DocumentSearchTest extends KEWTestCase {
     private String getPrincipalId(String principalName) {
         return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
+
+    @Test
+    public void testDocSearch_maxResultsCap() throws Exception {
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        int maxResultsCap = docSearchService.getMaxResultCap(criteria.build());
+        assertEquals(500, maxResultsCap);
+
+        criteria.setMaxResults(5);
+        int maxResultsCap1 = docSearchService.getMaxResultCap(criteria.build());
+        assertEquals(5, maxResultsCap1);
+
+        criteria.setMaxResults(2);
+        int maxResultsCap2 = docSearchService.getMaxResultCap(criteria.build());
+        assertEquals(2, maxResultsCap2);
+    }
+
+    @Test
+    public void testDocSearch_fetchMoreIterationLimit() throws Exception {
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        int fetchIterationLimit = docSearchService.getFetchMoreIterationLimit();
+        assertEquals(10, fetchIterationLimit);
+
+    }
 }

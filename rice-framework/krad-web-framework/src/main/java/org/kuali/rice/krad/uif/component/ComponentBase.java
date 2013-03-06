@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "componentBase", parent = "Uif-ComponentBase")
+@BeanTag(name = "componentBase-bean", parent = "Uif-ComponentBase")
 public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
     private static final long serialVersionUID = -4449335748129894350L;
 
@@ -1280,7 +1280,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * When set if the condition is satisfied, the component will be displayed. The component MUST BE a
      * container or field type. progressiveRender is defined in a limited Spring EL syntax. Only valid
-     * form property names, and, or, logical comparison operators (non-arithmetic), and the matches
+     * form property names, and, or, logical comparison operators (non-arithmetic), #listContains, #emptyList, matches
      * clause are allowed. String and regex values must use single quotes ('), booleans must be either true or false,
      * numbers must be a valid double, either negative or positive.
      *
@@ -1314,7 +1314,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * <p>The component MUST BE a container or field type. conditionalRefresh is
      * defined in a limited Spring EL syntax. Only valid form property names,
-     * and, or, logical comparison operators (non-arithmetic), and the matches
+     * and, or, logical comparison operators (non-arithmetic), #listContains, #emptyList, and the matches
      * clause are allowed. String and regex values must use single quotes ('),
      * booleans must be either true or false, numbers must be a valid double
      * either negative or positive.
@@ -1764,7 +1764,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                     "conditionalRefresh = " + getConditionalRefresh()};
             tracer.createWarning("DO NOT use progressiveRender and conditionalRefresh on the same component unless "
                     + "it is known that the component will always be visible in all cases when a conditionalRefresh "
-                    + "happens (ie conditionalRefresh has progressiveRender's condition and with its own condition). "
+                    + "happens (ie conditionalRefresh has progressiveRender's condition anded with its own condition). "
                     + "If a component should be refreshed every time it is shown, use the progressiveRenderAndRefresh "
                     + "option with this property instead.", currentValues);
         }

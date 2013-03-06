@@ -15,21 +15,26 @@
  */
 package org.kuali.rice.kew.actions;
 
+import junit.framework.Assert;
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import org.kuali.rice.coreservice.api.parameter.Parameter;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
-import org.kuali.rice.kew.framework.postprocessor.*;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.impl.KimDocumentTypeAuthorizer;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.KimConstants;
@@ -37,6 +42,8 @@ import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collection;
@@ -58,6 +65,33 @@ public class RecallActionTest extends KEWTestCase {
             afterActionTakenType = performed;
             afterActionTakenEvent = event;
             return super.afterActionTaken(performed, event);
+        }
+    }
+
+    public static class RecallTestDocumentTypeAuthorizer extends KimDocumentTypeAuthorizer {
+        public static String CUSTOM_RECALL_QUALIFIER_NAME = "Dynamic Qualifier";
+        public static String CUSTOM_RECALL_QUALIFIER_VALUE = "Dynamic Qualifier Value";
+        // we have to use a detail already defined for the recall permission - app doc status seems the most application-controlled
+        public static String CUSTOM_RECALL_DETAIL_NAME = KimConstants.AttributeConstants.APP_DOC_STATUS;
+        public static String CUSTOM_RECALL_DETAIL_VALUE = "Dynamic Recall Permission Detail Value";
+
+        public static boolean buildPermissionDetailsInvoked = false;
+        public static boolean buildRoleQualifiersInvoked= false;
+
+        @Override
+        protected Map<String, String> buildDocumentTypePermissionDetails(DocumentType documentType, String documentStatus, String actionRequestedCode, String routeNodeName) {
+            buildPermissionDetailsInvoked = true;
+            Map<String, String> details = super.buildDocumentTypePermissionDetails(documentType, documentStatus, actionRequestedCode, routeNodeName);
+            details.put(CUSTOM_RECALL_DETAIL_NAME, CUSTOM_RECALL_DETAIL_VALUE);
+            return details;
+        }
+
+        @Override
+        protected Map<String, String> buildDocumentRoleQualifiers(DocumentRouteHeaderValue document, String routeNodeName) {
+            buildRoleQualifiersInvoked = true;
+            Map<String, String> qualifiers = super.buildDocumentRoleQualifiers(document, routeNodeName);
+            qualifiers.put(CUSTOM_RECALL_QUALIFIER_NAME, CUSTOM_RECALL_QUALIFIER_VALUE);
+            return qualifiers;
         }
     }
 
@@ -479,6 +513,136 @@ public class RecallActionTest extends KEWTestCase {
         assignRecallPermissionToDocumentRouters();
         // recall as 'admin' user (Tech Admin) user
         testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC);
+    }
+
+    /**
+     * Creates a new role with recall permission qualified with doc type and custom app doc status
+     * @param ns role namespace
+     * @param name role name
+     * @param recallPerm the pre-created Recall permission
+     * @return the new recall-capable Role
+     */
+    protected Role createRoleWithRecallPermission(String ns, String name, Permission recallPerm, String roleQualifierName) {
+        // create a new role
+        Role.Builder role = Role.Builder.create();
+        role.setActive(true);
+        role.setDescription("RecallTest custom recall role");
+        role.setName(ns);
+        role.setNamespaceCode(name);
+        role.setKimTypeId(KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME).getId());
+        Role customRole = KimApiServiceLocator.getRoleService().createRole(role.build());
+
+        // create a custom attribute for role qualification
+        Long chartAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
+        KimAttributeBo chartAttribute = new KimAttributeBo();
+        chartAttribute.setId("" + chartAttributeId);
+        chartAttribute.setAttributeName(roleQualifierName);
+        chartAttribute.setComponentName("org.kuali.rice.kim.bo.impl.KimAttributes");
+        chartAttribute.setNamespaceCode("KR-SYS");
+        chartAttribute.setAttributeLabel(roleQualifierName);
+        chartAttribute.setActive(true);
+        KRADServiceLocator.getBusinessObjectService().save(chartAttribute);
+
+        KimApiServiceLocator.getRoleService().assignPermissionToRole(recallPerm.getId(), customRole.getId());
+
+        List<String> recallCapableRoleIds = KimApiServiceLocator.getPermissionService().getRoleIdsForPermission(recallPerm.getNamespaceCode(), recallPerm.getName());
+        Assert.assertFalse("No recall-capable roles found", recallCapableRoleIds.isEmpty());
+        Assert.assertTrue("New role is not associated with Recall permission", recallCapableRoleIds.contains(customRole.getId()));
+
+        return customRole;
+    }
+
+    /**
+     * Assigns user to role with single qualification
+     * @param principalId the principal to assign to role
+     * @param role the role object
+     * @param roleQualifierName the role qualifier name
+     * @param roleQualifierValue the role qualifier value
+     */
+    protected void assignUserQualifiedRole(String principalId, Role role, String roleQualifierName, String roleQualifierValue) {
+        // assign user to role triggered by dynamic, custom role qualifications
+        Map<String, String> qualifications = new HashMap<String, String>();
+        qualifications.put(roleQualifierName, roleQualifierValue);
+        KimApiServiceLocator.getRoleService().assignPrincipalToRole(getPrincipalIdForName("arh14"), role.getNamespaceCode(), role.getName(), qualifications);
+
+        Collection<String> ids = KimApiServiceLocator.getRoleService().getRoleMemberPrincipalIds(role.getNamespaceCode(), role.getName(), qualifications);
+        Assert.assertTrue("Qualified role assignment failed", ids.contains(principalId));
+    }
+
+    /**
+     * Tests that an application can customize document type routing authorization via documenttypeauthorizer
+     */
+    @Test public void testRecallWithCustomDocumentTypeAuthorizer() throws Exception {
+        // arh14 is not associated with our doc routing, will be authorized by custom documenttypeauthorizer
+        final String ARH14 = getPrincipalIdForName("arh14");
+
+        // remove existing initiator recall permission
+        disableInitiatorRecallPermission();
+
+        RecallTestDocumentTypeAuthorizer.buildPermissionDetailsInvoked = false;
+        RecallTestDocumentTypeAuthorizer.buildRoleQualifiersInvoked = false;
+
+        // confirm arh14 can't recall doc
+        testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("arh14"), RECALL_TEST_DOC, false);
+
+        final String RECALL_ROLE_NM = "CustomRecall";
+        final String RECALL_ROLE_NS = "KR-SYS";
+
+        // assign permission triggered by dynamic, custom permission details
+        Permission recallPerm = createRecallPermission(RECALL_TEST_DOC, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_DETAIL_VALUE, null, null);
+        Role recallRole = createRoleWithRecallPermission(RECALL_ROLE_NM, RECALL_ROLE_NS, recallPerm, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_NAME);
+        assignUserQualifiedRole(ARH14, recallRole, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_NAME, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_VALUE);
+
+        Map<String, String> d = new HashMap<String, String>();
+        d.put(RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_DETAIL_NAME, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_DETAIL_VALUE);
+        d.put(KewApiConstants.DOCUMENT_TYPE_NAME_DETAIL, RECALL_TEST_DOC);
+        d.put(KewApiConstants.ROUTE_NODE_NAME_DETAIL, ROUTE_NODE);
+        d.put(KewApiConstants.DOCUMENT_STATUS_DETAIL, ROUTE_STATUS);
+        Map<String, String> q = new HashMap<String, String>();
+        q.put(RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_NAME, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_VALUE);
+        // test that arh14 has recall permission via new recall role with proper qualifications
+        List<Permission> permissions = KimApiServiceLocator.getPermissionService().getAuthorizedPermissionsByTemplate(ARH14, KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, d, q);
+        Assert.assertEquals(1, permissions.size());
+        Assert.assertEquals(recallPerm.getId(), permissions.get(0).getId());
+
+        // verify that arh14 *still* can't recall doc - we have to set the custom documenttypeauthorizer first
+        testRecallToActionListAfterApprovals(EWESTFAL, ARH14, RECALL_TEST_DOC, false);
+
+        // now update the doctype with custom documenttype authorizer
+        org.kuali.rice.kew.api.doctype.DocumentType dt = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(RECALL_TEST_DOC);
+        org.kuali.rice.kew.api.doctype.DocumentType.Builder b = org.kuali.rice.kew.api.doctype.DocumentType.Builder.create(dt);
+        b.setAuthorizer(RecallTestDocumentTypeAuthorizer.class.getName());
+
+        KEWServiceLocator.getDocumentTypeService().save(DocumentType.from(b));
+
+        Assert.assertEquals(RecallTestDocumentTypeAuthorizer.class.getName(), KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(RECALL_TEST_DOC).getAuthorizer());
+
+        // custom documenttypeauthorizer has not been invoked yet
+        Assert.assertFalse(RecallTestDocumentTypeAuthorizer.buildPermissionDetailsInvoked);
+        Assert.assertFalse(RecallTestDocumentTypeAuthorizer.buildRoleQualifiersInvoked);
+
+        // arh14 should *now* be able to recall!
+        testRecallToActionListAfterApprovals(EWESTFAL, ARH14, RECALL_TEST_DOC);
+
+        Assert.assertTrue(RecallTestDocumentTypeAuthorizer.buildPermissionDetailsInvoked);
+        Assert.assertTrue(RecallTestDocumentTypeAuthorizer.buildRoleQualifiersInvoked);
+
+        // final counter tests - change the actual dynamic values to ensure match fails
+        String orig = RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_VALUE;
+        try {
+            RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_VALUE = "I will not match";
+            testRecallToActionListAfterApprovals(EWESTFAL, ARH14, RECALL_TEST_DOC, false);
+        } finally {
+            RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_VALUE = orig;
+        }
+
+        orig = RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_DETAIL_VALUE;
+        try {
+            RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_DETAIL_VALUE = "I won't match either";
+            testRecallToActionListAfterApprovals(EWESTFAL, ARH14, RECALL_TEST_DOC, false);
+        } finally {
+            RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_DETAIL_VALUE = orig;
+        }
     }
 
     protected void testRecallToActionListAsInitiatorAfterApprovals(String doctype) {

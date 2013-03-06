@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 -->
 <chapter xml:id="TRG_KRMS" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>KRMS</title>
-    <sect1>
+    <section>
         <title>KRMS Overview</title>
-        <sect2>
+        <section>
             <title>What is a Rule Management System, in general?</title>
             <para>Wikipedia defines a business rule management system, in general, as follows: "a
                     <link xlink:href="http://en.wikipedia.org/wiki/Computer_software">software</link> system used to define, deploy, execute, monitor and maintain
@@ -43,8 +43,8 @@
                 for Silver-level customers = 15” ), define the relationships between different
                 rules, and relate some of these rules to IT applications that are affected or need
                 to enforce one or more of the rules."</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>What is Kuali's Rule Management System (KRMS), in particular?</title>
             <para>Kuali's Rule Management System (KRMS) supports the creation, maintenance, storage
                 and retrieval of business rules and agendas (ordered sets of business rules) within
@@ -82,8 +82,8 @@
                     </listitem>
                 </itemizedlist></para>
             <para> </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>What problems or functions does KRMS solve?</title>
             <para/>
             <para>KRMS gives business applications a powerful tool to externalize logic in places
@@ -118,8 +118,8 @@
                 specify a KEW node in the document type for each role, group or individual who might
                 need to approve or be notified.</para>
             <para> </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>What problems does KRMS not address?</title>
             <para>Some rule engines are built upon special algorithms that allow for <link
                     xlink:href="http://en.wikipedia.org/wiki/Forward_chaining">forward</link> or
@@ -131,22 +131,22 @@
                 such an algorithm, and it does not support either forward or backward
                 chaining.</para>
             
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>With which types of applications can KRMS integrate?</title>
             <para>Any Rice-based application can use KRMS.  </para>
             
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Can I use KRMS without building a Rice application?</title>
             <para>The project has aspirations to increase Rice's modularity, and some strides have
                 been made, but at the time of this writing the answer is no.</para>
             
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KRMS Concepts</title>
-        <sect2>
+        <section>
             <title>Namespaces, Contexts, Agendas, Rules and Propositions</title>
             <para>Namespaces are the top level container in KRMS. They contain Contexts, KRMS Types,
                 and all things related to Terms.  There isn't a namespace entity in the KRMS schema,
@@ -172,7 +172,7 @@
             <para>The following diagram outlines the hierarchy of entities in KRMS (note that some
                 entities are omitted) <inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS_conceptual_hierarchy.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRMS_conceptual_hierarchy.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
             <para>You'll also note that many of the entities in the above diagram are KRMS Types.
@@ -198,7 +198,7 @@
                     </listitem>
                 </itemizedlist>
             </para>
-            <sect3>
+            <section>
                 <title>Propositions</title>
                 <para>Rules consist of propositions, and KRMS supports the following three main
                     types of propositions:</para>
@@ -220,7 +220,7 @@
                 </orderedlist>
                 <para>The data model is designed in such a way to support each of these.</para>
                 <para>Next we'll look at each of the proposition tables in detail.</para>
-                <sect4>
+                <section>
                     <title>Proposition - krms_prop_t</title>
                     <para>Every proposition in the repository will have an entry in this table.
                         Propositions are reference by a rule or another proposition (in the case of
@@ -231,7 +231,7 @@
                     </para>
                     <table frame="none">
                         <title>Non-common data elements in the proposition table</title>
-                        <tgroup cols="3">
+                        <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="4.0*"/>
                          <thead>
@@ -265,8 +265,8 @@
                         </tbody>
                         </tgroup>
                     </table>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Proposition Parameters - krms_prop_parm_t</title>
                     <para>Each proposition can have zero or more parameters. The proposition
                         parameter is the primary data element used to define the proposition. These
@@ -413,7 +413,7 @@
                  
                         <table frame="none">
                             <title>Non-common data elements in the proposition parameter table</title>
-                            <tgroup cols="3">
+                            <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                                 <colspec colname="c2" colnum="2" colwidth="4.0*"/>
                                 <thead>
@@ -453,17 +453,17 @@
                    </tgroup>
                  </table> 
                 
-                </sect4>
-            </sect3>
-        </sect2>
+                </section>
+            </section>
+        </section>
         <!-- Commenting out until content is added
-        <sect2>
+        <section>
             <title>Types, Terms, Term resolvers, Term specifications, Term Parameters, and
                 Categories </title>
             <para>(add information here)</para>
-        </sect2> -->
-    </sect1>
-    <sect1>
+        </section> -->
+    </section>
+    <section>
         <title>KRMS Administration Guide</title>
         <para>(work in progress - content tdb.  The below preface is patterned after the KEW TRG -
             what will admins need to administer for KRMS?  I've put in some placeholder
@@ -473,16 +473,16 @@
             development and test environments. However, when moving to a production environment,
             this setup requires adjustments. This document discusses basic administration as well as
             instructions for working with some of KRMS’ administration tools.</para>
-        <sect2>
+        <section>
             <title>Initial Set up tasks</title>
             <para>In this section we cover the types of tasks you'll need to do as a one-time setup
                 at your institute in order for you and others to be able to define KRMS agendas for
                 use by applications.</para>
-            <sect3>
+            <section>
                 <title>What do I have to install so that people can use KRMS?</title>
                 <para/>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>What do I have to create or customize so that people can work with business
                     contexts, agendas, and rules?</title>
                 <para>Below are the constructs you will need to point to or create for your
@@ -512,12 +512,12 @@
                     </listitem>
                 </itemizedlist>
                 <para>Below are the instructions for doing these tasks.</para>
-                <sect4>
+                <section>
                     <title>Point to or Set up Namespaces</title>
                     <para>You can use existing Namespaces or set up Namespaces specifically for KRMS
                         (include information on how to do both of these).</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Point to or Set up an Agenda Type service for KRMS</title>
                     <para>You can use an existing Agenda Type service or set up an Agenda Type
                         service specifically for KRMS (include information on how to do both of
@@ -530,8 +530,8 @@
     &lt;property name="configurationService" ref="configurationService"/>
 &lt;/bean>                                                   </programlisting>
                     </para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Point to or Set up the Types for KRMS</title>
                     <para>You can use existing Types or set up Types for KRMS (include information
                         on how to do both of these).</para>
@@ -560,8 +560,8 @@
                             </listitem>
                         </itemizedlist>
                     </para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Point to or Set up Contexts for KRMS</title>
                     <para>You can use existing Contexts or configure new Contexts for KRMS. There is
                         graphical user interface support for configuring a new Context, through a
@@ -569,21 +569,21 @@
                         Main menu page, under KRMS Rules, select the Context Lookup. </para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png" scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>You can search for existing Contexts or create a new one. To create a new
                         one, select "Create New" at the top right on the context lookup page:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-Context-lookup-page.png" scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-Context-lookup-page.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>The resulting Context Maintenance screen enables you to define a new
                         Context. The Context ID must be unique:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-Context-maintenance-page.png" scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-Context-maintenance-page.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>After creating your Context(s), you must 1) set "CampusAgendaType" as
@@ -610,8 +610,8 @@
                             </listitem>
                         </itemizedlist>
                     </para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Specify the Terms for KRMS</title>
                     <para>You can point to existing terms or specify new terms for KRMS (include
                         information on how to do both of these).</para>
@@ -653,7 +653,7 @@
                         Specification Lookup and, after completing that, select the Term Lookup. </para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png" scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>You can search for existing Term Specifications and Terms or create new
@@ -662,7 +662,7 @@
                         example Term Specification Lookup screen below:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-specification-lookup-screen.png" scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-term-specification-lookup-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>If you copy an existing term specification, be sure to give it a new and
@@ -671,7 +671,7 @@
                         with it.</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png" scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>After creating your term specifications (your categories of terms), you
@@ -682,7 +682,7 @@
                             <title>Term Lookup screen example</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-lookup-screen.png" scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-term-lookup-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                     </mediaobject>
                     </figure>
@@ -696,26 +696,26 @@
                         <title>Term specification screen example</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png" scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </mediaobject>
                     </figure>
                     </para>
-                </sect4>
+                </section>
                 <!-- Commenting out until content is added
-                <sect4>
+                <section>
                     <title>Create Term Resolvers</title>
                     <para>(Need to document this)</para>
                     
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Create Parameterized Terms</title>
                     <para>(Need to document this)</para>
-                </sect4>
+                </section>
                 -->
-            </sect3>
+            </section>
             <!-- Commenting out, there is inaccurate info that needs to be corrected in here
-            <sect3>
+            <section>
                 <title>Do I have to define permissions or approval processes so that people can
                     create and maintain KRMS agendas and rules?</title>
                 <para>The answer is yes.  To set up Permissions for creating and maintaining
@@ -731,7 +731,7 @@
                                 KRMS Agenda' and select the appropriate namespace.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/KRMS-exmpl- - -Identity-permission-creation-screen.png" scalefit="1"/>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -Identity-permission-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -747,7 +747,7 @@
                                 rules.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/KRMS-exmpl- - -role-maintenance-edit-screen.png" scalefit="1"/>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -role-maintenance-edit-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -766,33 +766,33 @@
                         </listitem>
                     </itemizedlist>
                 </para>
-            </sect3> -->
+            </section> -->
             <!--
-            <sect3>
+            <section>
                 <title>(Other? Anything we have to do to setup integration/interaction with KEW?
                     KIM? KEN? KOM? PeopleFlow? with other service bus?)</title>
                 <para/>
-            </sect3>
+            </section>
             -->
-        </sect2>
+        </section>
         <!--
-        <sect2>
+        <section>
             <title>Ongoing Maintenance tasks</title>
             <para>(add information here)</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Troubleshooting and diagnostics</title>
             <para>(add information here)</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Optimizing performance</title>
             <para>Content TBD.  For example, would logging alternatives affect performance?  Are
                 there selectable levels of KRMS execution logging?  Etc., etc..</para>
-        </sect2>
+        </section>
         -->
-    </sect1>
+    </section>
     <!--
-    <sect1>
+    <section>
         <title>KRMS Developer tasks</title>
         <para>(work in progress - content tdb. I've put in some placeholder content-topics for a TOC
             skeleton.)</para>
@@ -801,15 +801,15 @@
             constructs and integrating within applications and/or workflows. It assumes you or
             someone else has already done the initial set up tasks described in the KRMS
             Administration Guide section above.</para>
-        <sect2>
+        <section>
             <title>How do I integrate KRMS into an application?</title>
-            <sect3>
+            <section>
                 <title>Calling a KRMS agenda from within an application</title>
                 <para>The following shows how to call a KRMS agenda (an ordered set of rules,
                     defined for a particular business context) from within an application: (put the
                     xml code example information here).</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Calling a PeopleFlow from within a KRMS agenda</title>
                 <para>Calling a KRMS set of rules (an agenda) from your application can result in a
                     call to a full-blown KEW workflow or to a lighter-weight PeopleFlow, which is a
@@ -842,9 +842,9 @@
                     from within an agenda.)</para>
                 <para>For information on how to create a PeopleFlow, see the KEW Technical Guide
                     (TRG).</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>How do I integrate KRMS into a KEW workflow?  </title>
             <para>The following shows how to call a KRMS agenda (an ordered set of rules, defined
                 for a particular business context) from a KEW node: (put the xml code example
@@ -860,21 +860,21 @@
 </programlisting>
             </para>
             
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Is there anything I should be aware of to optimize performance?</title>
             <para/>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Debugging &amp; deployment - FAQs</title>
             <para/>
-        </sect2> 
-    </sect1> -->
+        </section> 
+    </section> -->
 <!--
-    <sect1>
+    <section>
         <title>KRMS reference information</title>
         <para/>
-        <sect2>
+        <section>
             <title>KRMS Data model</title>
             <para>There are many data elements which are common across many of the tables in the
                 KRMS data model. They include the following:</para>
@@ -932,37 +932,37 @@
             <para>The UML diagram below shows the KRMS data model:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms-ruleModel-20b.png" scalefit="1"/>
+                        <imagedata fileref="../images/krms-ruleModel-20b.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KRMS Architecture diagrams</title>
             <para>Below is a high-level view of how KRMS fits within Rice and applications'
                 architecture:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms-architecture.png" scalefit="1" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/krms-architecture.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KRMS API</title>
             <para>(add information here)</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KRMS Execution log</title>
             <para>Below is a diagram of the KRMS execution log.  (Add how this could be
                 used?)</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS_Execution_Log_Class_Diagram.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRMS_Execution_Log_Class_Diagram.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>(Other?)</title>
             <para/>
-        </sect2>
-    </sect1> -->
+        </section>
+    </section> -->
 </chapter>

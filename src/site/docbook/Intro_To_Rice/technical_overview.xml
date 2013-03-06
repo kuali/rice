@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
          xmlns:ns="http://docbook.org/ns/docbook">
   <title>Technical Overview</title>
 
-  <sect1>
+  <section>
     <title>Architectural Diagram</title>
 
     <para>This is a high-level picture of what an Enterprise Deployment of
@@ -41,9 +41,9 @@
         </imageobject>
       </mediaobject>
     </figure>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title>Modules</title>
 
     <para>Kuali Rice has six core modules, linked together by the Kuali
@@ -116,15 +116,15 @@
           impact changes may incur.</para>
         </listitem>
       </orderedlist></para>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title>Module Architecture</title>
 
     <para>Kuali Rice is designed to run in a clustered environment and can be
     run on virtual machines.</para>
 
-    <sect2>
+    <section>
       <title>KSB (Kuali Service Bus)</title>
 
       <para>The Kuali Service Bus (KSB) is a lightweight service bus designed
@@ -149,7 +149,7 @@
         </mediaobject>
       </figure>
 
-      <sect3>
+      <section>
         <title>KSB Features</title>
 
         <itemizedlist>
@@ -243,18 +243,18 @@
             bus programmatically at runtime.</para>
           </listitem>
         </itemizedlist>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Bean Based Services</title>
 
         <para>Typically, KSB programming is centered on exposing
         Spring-configured beans to other calling code using a number of
         different protocols. Using this paradigm, the client developer and the
         organization can rapidly build and consume services.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Overview of Supported Service Protocols</title>
 
         <para><figure>
@@ -314,10 +314,10 @@
               services to messaging queues for message-driven beans</para>
             </listitem>
           </itemizedlist></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KEW (Kuali Enterprise Workflow)</title>
 
       <para>The Kuali Enterprise Workflow (KEW) is a content-based routing
@@ -347,7 +347,7 @@
           </listitem>
         </itemizedlist></para>
 
-      <sect3>
+      <section>
         <title>KEW Features</title>
 
         <para>KEW is a set of services, APIs, and GUIs with these
@@ -403,10 +403,10 @@
               runtime</para>
             </listitem>
           </itemizedlist></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KEN (Kuali Enterprise Notification)</title>
 
       <para>Kuali Enterprise Notification (KEN) acts as a broker for all
@@ -418,7 +418,7 @@
       end-users can configure their profile to have certain types of messages
       delivered to other end-points such as email, mobile phones, etc.</para>
 
-      <sect3>
+      <section>
         <title>Why Use KEN?</title>
 
         <orderedlist>
@@ -442,9 +442,9 @@
             recipients</para>
           </listitem>
         </orderedlist>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>KEN Features</title>
 
         <para><emphasis role="bold">A Single List for All
@@ -491,10 +491,10 @@
         Basic user and group management are provided, along with hooks for
         customizing KEN to point at other identity management systems, such as
         LDAP.</para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KIM (Kuali Identity Management)</title>
 
       <para>The Kuali Identity Management (KIM) provides identity and access
@@ -513,7 +513,7 @@
         </mediaobject>
       </figure>
 
-      <sect3>
+      <section>
         <title>KIM Features</title>
 
         <para>KIM provides a reference implementation of services. It also
@@ -572,10 +572,10 @@
             </imageobject>
           </mediaobject>
         </figure>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>KNS (Kuali Nervous System)</title>
 
       <para>The Kuali Nervous System (KNS) is the core of the Kuali Rice
@@ -594,7 +594,7 @@
         </mediaobject>
       </figure>
 
-      <sect3>
+      <section>
         <title>What is KNS?</title>
 
         <para>The Kuali Nervous System is a:<itemizedlist>
@@ -616,9 +616,9 @@
               re-use</para>
             </listitem>
           </itemizedlist></para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>KNS Architectural Diagram</title>
 
         <para>The KNS architecture provides a number of important services
@@ -634,14 +634,14 @@
             </imageobject>
           </mediaobject>
         </figure>
-      </sect3>
-    </sect2>
-  </sect1>
+      </section>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Physical Architecture Overview</title>
 
-    <sect2>
+    <section>
       <title>Production Platform</title>
 
       <para>Since the builders of the Rice platform constructed it on open
@@ -651,7 +651,7 @@
       of Rice that are certainly not end solutions. Your solution depends on
       your implementation scale and budget.</para>
 
-      <sect3>
+      <section>
         <title>Production Platform</title>
 
         <para>The production platform that you deploy for your implementation
@@ -731,10 +731,10 @@
               memory</para>
             </listitem>
           </itemizedlist></para>
-      </sect3>
-    </sect2>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Development Platform</title>
 
       <para>The most basic platform for development has the Tomcat container
@@ -755,6 +755,6 @@
       service and HTTP requests. This has the least number of software layers
       between your development/debugging/IDE environment and the Tomcat
       container.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 </chapter>

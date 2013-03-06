@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 <chapter xml:id="UG_LOCATION" xmlns="http://docbook.org/ns/docbook" version="5.0">
   <title>Location</title>
 
-  <sect1>
+  <section>
     <title>Location Overview</title>
 
     <para>The Location module contains common "location" based options that
@@ -27,10 +27,10 @@
     includes screens and services for Campus, Country, State, County, and
     Postal Code.</para>
 
-    <sect2>
+    <section>
       <title>Campus</title>
 
-      <sect3>
+      <section>
         <title>Campus Lookup</title>
 
         <para>The Campus Lookup screen provides detailed information about the
@@ -126,9 +126,9 @@
         <para>You can find information about the fields on this screen under
         Edit Campus Tab in the Campus Maintenance section of this User
         Guide.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Campus Inquiry</title>
 
         <para>Display this screen by clicking <emphasis role="bold">Campus
@@ -148,9 +148,9 @@
         <para>You can find information about the fields on this screen in the
         <emphasis role="bold">Edit Campus Tab</emphasis> section under
         <emphasis role="bold">Campus Maintenance</emphasis>, below.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Campus Maintenance</title>
 
         <para>Use a <emphasis role="bold">Campus</emphasis> document for each
@@ -158,7 +158,7 @@
         institution. A campus may be identified as a fiscal entity, a physical
         entity, or both.</para>
 
-        <sect4>
+        <section>
           <title>To create a new Campus</title>
 
           <para>Click <emphasis role="bold">Campus</emphasis> on the Rice
@@ -183,9 +183,9 @@
           information in all required fields and other fields appropriate to
           this campus, then click the <emphasis role="bold">save</emphasis>
           button to create your new Campus.</para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>To edit Campus information</title>
 
           <para>If you want to edit information about an existing Campus:
@@ -222,9 +222,9 @@
                 document.</para>
               </listitem>
             </orderedlist></para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Document Layout</title>
 
           <para>The Campus Maintenance Document has five sections:
@@ -254,9 +254,9 @@
           except <emphasis role="bold">Edit Campus</emphasis> in the Common
           Features and Functions section of the <emphasis role="bold">User
           Guide</emphasis>.</para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Edit Campus Tab</title>
 
           <figure>
@@ -336,10 +336,10 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
+        </section>
+      </section>
 
-      <sect3>
+      <section>
         <title>Campus Type Lookup</title>
 
         <para>The <emphasis role="bold">Campus Type</emphasis> Lookup function
@@ -414,9 +414,9 @@
 
         <para>Field information on this screen can be found in the <emphasis
         role="bold">Edit Campus Tab</emphasis> section above.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Campus Type Inquiry</title>
 
         <para>Use the <emphasis role="bold">Campus Type Inquiry</emphasis>
@@ -451,9 +451,9 @@
 
         <para>Field information on this screen can be found in the <emphasis
         role="bold">Edit Campus Tab</emphasis> section above.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Campus Type Maintenance</title>
 
         <figure>
@@ -510,7 +510,7 @@
           </mediaobject>
         </figure>
 
-        <sect4>
+        <section>
           <title>Document Layout</title>
 
           <para>The <emphasis role="bold">CampusTypeMaintenance</emphasis>
@@ -528,9 +528,9 @@
               </imageobject>
             </mediaobject>
           </figure>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Edit Campus Type Tab</title>
 
           <para>The Edit Campus Type tab displays the fields that are unique
@@ -603,14 +603,14 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-    </sect2>
+        </section>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Postal Code</title>
 
-      <sect3>
+      <section>
         <title>Postal Code Lookup</title>
 
         <para>The Postal Code Lookup screen provides detailed information
@@ -683,9 +683,9 @@
         <para>Clicking a <emphasis role="bold">State Code</emphasis> from the
         list takes you to the <emphasis role="bold">State Code
         Inquiry</emphasis> screen.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Postal Code Inquiry</title>
 
         <figure>
@@ -700,9 +700,9 @@
 
         <para>Information about these fields can be found in the Postal Code
         Maintenance section below.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Postal Code Maintenance</title>
 
         <para>The <emphasis role="bold">Postal Code Maintenance
@@ -730,16 +730,16 @@
         the <emphasis role="bold">submit</emphasis> button at the bottom of
         the screen.</para>
 
-        <sect4>
+        <section>
           <title>Document Layout</title>
 
           <para>All of the tabs on this screen are standard, except the
           <emphasis role="bold">Edit Postal Codes</emphasis> tab. You can find
           information on standard tabs in the Common Features and Functions
           section of this <emphasis role="bold">User Guide</emphasis>.</para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Edit Postal Codes tab</title>
 
           <para>In edit mode, the <emphasis role="bold">Edit Postal
@@ -835,14 +835,14 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-    </sect2>
+        </section>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>County</title>
 
-      <sect3>
+      <section>
         <title>County Lookup</title>
 
         <para>The <emphasis role="bold">County Lookup</emphasis> screen
@@ -908,9 +908,9 @@
         <para>Clicking a <emphasis role="bold">State</emphasis> code takes you
         to the <emphasis role="bold">State Inquiry</emphasis> function for
         that code.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>County Inquiry</title>
 
         <para>This screen provides a snapshot of the important information
@@ -929,9 +929,9 @@
         <para>You can find information about the fields on this screen in the
         <emphasis role="bold">County Maintenance</emphasis> section
         below.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>County Maintenance</title>
 
         <para>Use the <emphasis role="bold">County Maintenance</emphasis>
@@ -958,16 +958,16 @@
         <emphasis role="bold">Submit</emphasis> button at the bottom of the
         screen.</para>
 
-        <sect4>
+        <section>
           <title>Document Layout</title>
 
           <para>All of the tabs on this screen are standard, except the
           <emphasis role="bold">Edit Counties</emphasis> tab. Information on
           standard tabs can be found in the Common Features and Functions
           section of this User Guide.</para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Edit Counties Tab</title>
 
           <para>In edit mode, the <emphasis role="bold">Edit
@@ -1056,14 +1056,14 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-    </sect2>
+        </section>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>State</title>
 
-      <sect3>
+      <section>
         <title>State Code Lookup</title>
 
         <para>The State Code Lookup function provides a convenient way to find
@@ -1130,9 +1130,9 @@
         <para>You can also export the search results list in CSV, spreadsheet,
         or XML format. Click the appropriate link at the bottom of the search
         results list to do this.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>State Inquiry</title>
 
         <para>The <emphasis role="bold">State Inquiry</emphasis> screen
@@ -1148,9 +1148,9 @@
             </imageobject>
           </mediaobject>
         </figure>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>State Maintenance</title>
 
         <para>The State document defines the U.S. Postal Service codes used to
@@ -1171,7 +1171,7 @@
           </mediaobject>
         </figure>
 
-        <sect4>
+        <section>
           <title>Document Layout</title>
 
           <para>This screen contains five tabs:<itemizedlist>
@@ -1200,9 +1200,9 @@
           to this screen and is described below. The other four tabs are
           described in the Common Features and Functions section of this User
           Guide.</para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Edit States Tab</title>
 
           <para>The Edit States tab can be displayed with two different sets
@@ -1289,14 +1289,14 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-    </sect2>
+        </section>
+      </section>
+    </section>
 
-    <sect2>
+    <section>
       <title>Country</title>
 
-      <sect3>
+      <section>
         <title>Country Lookup</title>
 
         <para>This screen provides information about <emphasis
@@ -1342,9 +1342,9 @@
         <para>You can also export the search results list in CSV, spreadsheet,
         or XML format. Click the appropriate link at the bottom of the search
         results list to do this.</para>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Country Inquiry</title>
 
         <para>The <emphasis role="bold">Country Inquiry</emphasis> screen
@@ -1362,9 +1362,9 @@
             </imageobject>
           </mediaobject>
         </figure>
-      </sect3>
+      </section>
 
-      <sect3>
+      <section>
         <title>Country Maintenance</title>
 
         <para>The Country document is used to assign specific identifying
@@ -1386,7 +1386,7 @@
           </mediaobject>
         </figure>
 
-        <sect4>
+        <section>
           <title>Document Layout</title>
 
           <para>All of the tabs in the <emphasis
@@ -1394,9 +1394,9 @@
           the exception of the <emphasis role="bold">Edit Country</emphasis>
           tab. Documentation on standard tabs can be found in the Common
           Features and Functions section of the User Guide.</para>
-        </sect4>
+        </section>
 
-        <sect4>
+        <section>
           <title>Edit Country tab</title>
 
           <figure>
@@ -1459,8 +1459,8 @@
                 </tbody>
               </tgroup>
             </table></para>
-        </sect4>
-      </sect3>
-    </sect2>
-  </sect1>
+        </section>
+      </section>
+    </section>
+  </section>
 </chapter>

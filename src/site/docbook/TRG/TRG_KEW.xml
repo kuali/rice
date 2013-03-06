@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?> 
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -936,7 +936,7 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                         <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/kew_embedded_deployment2.png"
-                                        scalefit="1"/>
+                                        scalefit="1" width="100%" contentdepth="100%"/>
                                 </imageobject>
                             </mediaobject>
                     </figure>
@@ -1098,7 +1098,7 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                     <title>Bundled deployment diagram</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/bundled_deployment_diagram.png"/>
+                            <imagedata fileref="../images/bundled_deployment_diagram.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                     </figure>
@@ -1297,7 +1297,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <title>Thin client deployment diagram</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/thin_client_deployment_diagram.png"/>
+                            <imagedata fileref="../images/thin_client_deployment_diagram.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1314,7 +1314,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <title>Typical enterprise deployment of Kuali Rice</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/enterprise_deployment.png"/>
+                        <imagedata fileref="../images/enterprise_deployment.png" scalefit="1" width="100%" contentdepth="100%"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -2041,7 +2041,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Ingester</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/ingester.png"/>
+                            <imagedata fileref="../images/ingester.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2050,7 +2050,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Ingestion Complete</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/ingestion_complete.png"/>
+                            <imagedata fileref="../images/ingestion_complete.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2070,7 +2070,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <title>Message Queue Screen</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/route_queue_screen2.png"/>
+                            <imagedata fileref="../images/route_queue_screen2.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                     </figure>
@@ -2177,7 +2177,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <title>Route Queue Entry Edit Screen</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/route_queue_entry_edit.png"/>
+                            <imagedata fileref="../images/route_queue_entry_edit.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                     </figure>
@@ -2192,12 +2192,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <section>
             <title>System Parameters Covered</title>
             <para>
-                <table frame="none">
+                <table frame="none" pgwide="1">
+                    <?dbfo table-width="100%" ?>
                     <title>KEW System Parameters</title>
                     <tgroup cols="3">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="1.9*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.1*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.4*"/>
                         <thead>
                             <row>
                                 <entry>Name</entry>
@@ -2782,6 +2783,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                                     documents) go through.</entry>
                             </row>
                             <row>
+                                <entry>authorizer</entry>
+                                <entry>A component that gets called during the routing process to perform authorization
+                                    checks.  Applications can customize this component on a per-doctype basis.</entry>
+                            </row>
+                            <row>
                                 <entry>superUserGroupName</entry>
                                 <entry>The name of a workgroup whose members are the super users of
                                     this Document Type. Super users of this Document Type can
@@ -3168,7 +3174,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <figure><title>BlanketApproveSequentialTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/BlanketApproveSequentialTest.png"/>
+                                <imagedata fileref="../images/BlanketApproveSequentialTest.png" scalefit="1" contentdepth="600"/>
                             </imageobject>
                     </mediaobject>
                     </figure>
@@ -3395,7 +3401,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <figure><title>BlanketApproveParallelTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/BlanketApproveParallelTest.png"/>
+                                <imagedata fileref="../images/BlanketApproveParallelTest.png" scalefit="1" contentdepth="600"/>
                             </imageobject>
                         </mediaobject>
                         </figure>
@@ -3554,7 +3560,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <figure><title>NotificationTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/NotificationTest.png"/>
+                                <imagedata fileref="../images/NotificationTest.png" scalefit="1" width="100%" contentdepth="100%"/>
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -3783,11 +3789,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </listitem>
                     </itemizedlist>
                 </para>
-                <figure><title>Blankte Approve Mandatory Test</title>
+                <figure><title>Blanket Approve Mandatory Test</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata
-                                fileref="../images/BlanketApproveMandatoryNodeTest_workflow.png"/>
+                                fileref="../images/BlanketApproveMandatoryNodeTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -3902,7 +3908,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Save Action Event Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/SaveActionEventTest_workflow.png"/>
+                            <imagedata fileref="../images/SaveActionEventTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4033,7 +4039,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <mediaobject>
                         <imageobject>
                             <imagedata
-                                fileref="../images/SaveActionEventTestNonInitiator_workflow.png"/>
+                                fileref="../images/SaveActionEventTestNonInitiator_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4144,7 +4150,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Take Workgroup Authority</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/TakeWorkgroupAuthorityDoc_workflow.png"/>
+                            <imagedata fileref="../images/TakeWorkgroupAuthorityDoc_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4293,7 +4299,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Move Sequential Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/MoveSequentialTest_workflow.png"/>
+                            <imagedata fileref="../images/MoveSequentialTest_workflow.png" scalefit="1" contentdepth="600"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4441,7 +4447,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Move In Process Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/MoveInProcessTest_workflow.png"/>
+                            <imagedata fileref="../images/MoveInProcessTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4542,7 +4548,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Adhoc Route Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/AdhocRouteTest_workflow.png"/>
+                            <imagedata fileref="../images/AdhocRouteTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4639,7 +4645,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>PreApproval Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/PreApprovalTest_workflow.png"/>
+                            <imagedata fileref="../images/PreApprovalTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -4935,7 +4941,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <figure><title>Variables Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/VariablesTest_workflow.png"/>
+                            <imagedata fileref="../images/VariablesTest_workflow.png" scalefit="1" contentdepth="600"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -5010,7 +5016,47 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             </section>
         </section>
         <section>
+            <title>Document Type Authorizer</title>
+            <para>The Document Type Authorizer is a component that gets called during the routing process to perform authorization
+                  checks.  Applications can customize this component, for example to introduce custom role qualifiers or permission details,
+                  on a per-doctype basis by registering a custom <programlisting>org.kuali.rice.kew.framework.document.security.DocumentTypeAuthorizer</programlisting>
+                  implementation.
+            </para>
+            <para>The DocumentTypeAuthorizer will be called to make the following checks:
+                <itemizedlist>
+                    <listitem>
+                        <para>canInitiate</para>
+                    </listitem>
+                    <listitem>
+                        <para>canBlanketApprove</para>
+                    </listitem>
+                    <listitem>
+                        <para>canCancel</para>
+                    </listitem>
+                    <listitem>
+                        <para>canRecall</para>
+                    </listitem>
+                    <listitem>
+                        <para>canSave</para>
+                    </listitem>
+                    <listitem>
+                        <para>canRoute</para>
+                    </listitem>
+                    <listitem>
+                        <para>canSuperUserApproveSingleActionRequest</para>
+                    </listitem>
+                    <listitem>
+                        <para>canSuperUserApproveDocument</para>
+                    </listitem>
+                    <listitem>
+                        <para>canSuperUserDisapproveDocument</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
             <title>Document Type Policies</title>
+            <para>Document Type Policies affect workflow routing behavior.</para>
             <para>Current Document Type polices:<itemizedlist>
                     <listitem>
                         <para>DISAPPROVE </para>
@@ -5237,7 +5283,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/super_user_action_on_action_requests.png"
-                            />
+                                scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -5472,6 +5518,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         called throughout the routing process and handles a set of standard events
                         that all eDocs (electronic documents) go through. </para>
                 </listitem>
+                <listitem>
+                    <para><emphasis role="bold">DocumentType Authorizer</emphasis> - A component that gets
+                        called during the routing process to perform authorization checks.  Applications
+                        can customize this component on a per-doctype basis.</para>
+                </listitem>
             </itemizedlist></para>
         <para>These components are contained in a Document Type that is defined in XML. A Document
             Type is the prototype for eDocs. Below is the Document Type configuration that explains
@@ -5485,6 +5536,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             &lt;description>Add/Modify Workflow rules&lt;/description>
             &lt;label>Add/Modify Workflow rules&lt;/label>
             &lt;postProcessorName>your.package.routetemplate.RulePostProcessor&lt;/postProcessorName>
+            &lt;authorizer>your.package.CustomDocumentTypeAuthorizer&lt;/authorizer>
             &lt;superUserGroupName>WorkflowAdmin&lt;/superUserGroupName>
             &lt;blanketApproveGroupName>IU-WORKFLOW-RULE-BLANKET-APPROVERS&lt;/blanketApproveGroupName>
             &lt;defaultExceptionGroupName>YOUR_EXCEPTION_TEAM&lt;/defaultExceptionGroupName>
@@ -5565,6 +5617,12 @@ document.routeDocument("user inputted annotation");
                 <para>The element above determines which class to use for the PostProcessor for this
                     particular Document Type. This component receives event notifications as eDocs
                     travel through routing.</para>
+            </section>
+            <section>
+                <title>DocumentTypeAuthorizer Class</title>
+                <programlisting>&lt;authorizer>your.package.CustomDocumentTypeAuthorizer&lt;/authorizer></programlisting>
+                <para>The element above determines which class to use for the DocumentType Authorizer for this
+                    particular Document Type. This component performs authorization checks as the eDoc travels through routing.</para>
             </section>
             <section>
                 <title>Managed Workgroups</title>
@@ -5687,7 +5745,7 @@ document.routeDocument("user inputted annotation");
                     <title>Parallel and Sequential Activation Types</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/activation_type2.png"/>
+                                <imagedata fileref="../images/activation_type2.png" scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -5697,7 +5755,7 @@ document.routeDocument("user inputted annotation");
                         <title>Parallel-Priority Activation Type</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/pp_activation_type2.png"/>
+                                <imagedata fileref="../images/pp_activation_type2.png" scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -6480,7 +6538,7 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                 <title>EDL Controller Chain</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/edl_controller_chain.png"/>
+                            <imagedata fileref="../images/edl_controller_chain.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
             </figure>
@@ -7190,7 +7248,7 @@ EDL EDoclite Example
             <figure><title>Custom Search Screen:Offer Request Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/offer_request_search.png" scalefit="1" contentwidth="800"/>
+                        <imagedata fileref="../images/offer_request_search.png" scalefit="1" width="100%" contentdepth="100%"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -7399,7 +7457,7 @@ EDL EDoclite Example
             <figure><title>Custom Document Search: Department Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/document_search.png"/>
+                        <imagedata fileref="../images/document_search.png" scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -7414,7 +7472,7 @@ EDL EDoclite Example
         <figure><title>Document Search Screen: Application Document Status Example</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/doc_search_application_status.png" scalefit="1" contentwidth="793"/>
+                    <imagedata fileref="../images/doc_search_application_status.png" scalefit="1" width="100%" contentdepth="100%"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -7807,7 +7865,7 @@ EDL EDoclite Example
             <figure><title>Standard Doc Search Results Set</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/standard_search_result_table.png"/>
+                        <imagedata fileref="../images/standard_search_result_table.png" scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -9191,11 +9249,12 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                     Institutional Plugin. What follows is a list of the most commonly overridden
                     services:</para>
                 <para>
-                    <table frame="none">
+                    <table frame="none" pgwide="1">
+                        <?dbfo table-width="100%" ?>
                         <title>Commonly Overridden Services</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="2.0*"/>
                             <colspec colname="c3" colnum="3" colwidth="1.0*"/>
                             <thead>
                                 <row>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 -->
 <chapter xml:id="UG_KSB" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KSB</title>
-    <sect1>
+    <section>
         <title>What is the Kuali Service Bus?</title>
         <para>The Kuali Service Bus (KSB) is a lightweight service bus designed to allow developers
             to quickly develop and deploy services for remote and local consumption. At the heart of
@@ -38,7 +38,7 @@
         <para>You can deploy services to the bus using Spring or programmatically. Services must be
             named when they are deployed to the bus. Services are acquired from the bus using their
             name. </para>
-        <sect2>
+        <section>
             <title>Features</title>
             <itemizedlist>
                 <listitem>
@@ -114,15 +114,15 @@
                         runtime. </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Bean-Based Services</title>
             <para>Typically, KSB programming is centered on exposing Spring-configured beans to
                 other calling code using a number of different protocols. Using this paradigm the
                 client developer and the organization can rapidly build and consume services, often
                 a daunting challenge using other buses.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Overview of Supported Service Protocols</title>
             <figure>
                 <title>Supported Service Protocols</title>
@@ -169,9 +169,9 @@
                             beans. </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Message Queue</title>
         <para>Use the Message Queue section to administer the KNS message queuing system. You can
             find it on the Administration menu. </para>
@@ -184,7 +184,7 @@
                 </imageobject>
             </mediaobject>
         </figure>
-        <sect2>
+        <section>
             <title>Current Node Info</title>
             <itemizedlist>
                 <listitem>
@@ -216,8 +216,8 @@
                         debugging or testing scenarios. </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Message Filter and Fetch</title>
             <para>The message filter and fetch section of the Message Queue screen lets you search
                 for, filter, and/or isolate messages in the Documents in route queue. To use the
@@ -320,8 +320,8 @@
                     </imageobject>
                 </mediaobject>
             </figure>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Documents Currently in Route Queue</title>
             <table frame="none">
                 <title>Documents Currently in Route Queue: Attributes</title>
@@ -423,8 +423,8 @@
                     </tbody>
                 </tgroup>
             </table>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>View</title>
             <para>When you click View in the Actions menu, KSB displays information about that
                 message. Most of the initial information is the same as that displayed in the
@@ -685,9 +685,9 @@
                         </figure>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Thread Pool</title>
         <para><emphasis role="bold">Thread pool</emphasis> is a feature that improves overall system
             performance by creating a pool of threads which can be independently used by the system
@@ -774,8 +774,8 @@
                 </tgroup>
             </table>
         </para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Service Registry</title>
         <para>The Service Registry lists published and temporary services that are available for the
             local machine. You cannot configure the service registry here; this is only information
@@ -827,8 +827,8 @@
             Firefox, this WSDL will be displayed normally in a separate window.  In Google Chrome or
             Safari, however, you will need to click the link then right click to view the frame source
             to see the WSDL due to current restricts in Chrome and Safari.</para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Quartz</title>
         <para>The Kuali Service Bus (KSB) uses Quartz to schedule delayed tasks, including retry
             attempts for messages that cannot be sent the first time. By default, KSB uses an
@@ -893,8 +893,8 @@
                 </tgroup>
             </table>
         </para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Security Management</title>
         <para>For client applications to consume secured services hosted from a standalone Rice
             server, the implementer must generate a keystore in KSB. KSB security relies on the
@@ -961,5 +961,5 @@
                 </tgroup>
             </table>
         </para>
-    </sect1>
+    </section>
 </chapter>

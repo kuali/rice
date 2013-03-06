@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?> 
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
 -->
 <chapter xml:id="UG_KNS" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KNS</title>
-    <sect1>
+    <section>
         <title>KNS Overview</title>
         <para>The Kuali Nervous System (KNS) is the core of the Kuali Rice system. It embraces a
             document- (business process) centric model that uses workflow as a core concept. </para>
-        <sect2>
+        <section>
             <title>What is KNS?</title>
             <itemizedlist>
                 <listitem>
@@ -39,8 +39,8 @@
                     </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KNS Conceptual View</title>
             <figure><title>KNS: Conceptual View</title>
                 <mediaobject>
@@ -50,8 +50,8 @@
                 </mediaobject></figure>
             <para>KNS is the core technical module in Rice. It has reusable code components to
                 provide functionality. </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KNS Relational View</title>
             <figure><title>KNS: Relational View</title>
                 <mediaobject>
@@ -70,11 +70,11 @@
                         <para>documentService.approve(document); </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Parameter</title>
-        <sect2>
+        <section>
             <title>Parameter Lookup</title>
             <para>KNS parameters are used throughout Rice. They reside in special system tables that
                 are used for configuring the system during runtime. Parameters control whether
@@ -133,8 +133,8 @@
                 export the entire list in CSV, spreadsheet, or XML format. </para>
             <para>Click a Namespace Code in the list of parameters to display more information about
                 that code.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Parameter Inquiry</title>
             <para>You arrive at this screen by clicking a<emphasis role="bold"> Parameter
                     Name</emphasis> on the <emphasis role="bold">Parameter Lookup</emphasis>
@@ -146,11 +146,11 @@
                     </imageobject>
                 </mediaobject>
             </figure>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Parameter Maintenance</title>
             <para>In Rice, Parameters control key aspects of how the system operates.</para>
-            <sect3>
+            <section>
                 <title>Finding the Parameter Maintenance Screen</title>
                 <para>Getting to the <emphasis role="bold">Parameter Maintenance</emphasis> screen
                     requires that you have permission to use the Administration screens in KRice.
@@ -169,8 +169,8 @@
                             </para>
                         </listitem>
                     </orderedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Parameter Maintenance Screen</title>
                 <para>KNS Parameters can be created and edited by selecting the Parameter option on
                     the Rice Administration screen.</para>
@@ -240,8 +240,8 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Document Overview Tab</title>
                 <figure><title>Parameter Maintenance Document:Document Overivew Tab</title>
                     <mediaobject>
@@ -284,8 +284,8 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Edit Parameter Tab</title>
                 <figure><title>Parameter Maintenace Document: Edit Parameter Tab</title>
                     <mediaobject>
@@ -349,9 +349,9 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Process to create a new Parameter</title>
             <para>There are eight mandatory fields on the Document Overview and Edit Parameter tabs
                 that must be filled in before pressing the submit button. If the system finds any
@@ -380,11 +380,11 @@
             <para>You’ll also notice that the screen has changed and now has different buttons at
                 the bottom. Click the close button to close the current screen and return to your
                 starting point.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Parameter Detail</title>
-        <sect2>
+        <section>
             <title>Parameter Component Lookup</title>
             <para>Use the Parameter Component Lookup screen to get information on what <emphasis
                     role="italic">Namespace</emphasis> a <emphasis role="italic">Parameter
@@ -455,8 +455,8 @@
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Parameter Component Inquiry</title>
             <figure><title>Parameter Componenet Inquiry</title>
                 <mediaobject>
@@ -490,11 +490,11 @@
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Parameter Namespace</title>
-        <sect2>
+        <section>
             <title>Namespace Lookup</title>
             <para>Kuali uses Namespaces in all Kuali applications. A Namespace is a set of
                 information about the system and groups of information in the system. Everything is
@@ -541,8 +541,8 @@
                 export the entire list in CSV, spreadsheet, or XML format. </para>
             <para>Click a Namespace Code in the search results list to display more information
                 about that code.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Namespace Inquiry</title>
             <para>Use the <emphasis role="bold">Namespace Inquiry</emphasis> screen to find key
                 information about Namespaces.</para>
@@ -583,11 +583,11 @@
                     </imageobject>
                 </mediaobject>
             </figure>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Parameter Type</title>
-        <sect2>
+        <section>
             <title>Parameter Type Lookup</title>
             <para>The <emphasis role="bold">Parameter Type Lookup</emphasis> function provides a
                 convenient way to obtain key information about the Parameter Types defined in your
@@ -628,8 +628,8 @@
                 also export the entire list in CSV, spreadsheet, or XML format. If you get too many
                 Parameter Types from your search, please enter more information in the search fields
                 and click the <emphasis role="bold">Search</emphasis> button again.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Parameter Type Inquiry</title>
             <para>The <emphasis role="bold">Parameter Type Inquiry</emphasis> screen gives you
                 information about a parameter type. On the <emphasis role="bold">Parameter
@@ -646,8 +646,8 @@
             </figure>
             <para>The fields on this screen are described in the <emphasis role="bold">Parameter
                     Type Maintenance</emphasis> section of this document.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Parameter Type Maintenance</title>
             <para>The Parameter Type Maintenance function allows you to define new Parameter Types
                 or edit information related to <emphasis role="bold">Parameter
@@ -672,7 +672,7 @@
                     </imageobject>
                 </mediaobject>
             </figure>
-            <sect3>
+            <section>
                 <title>Document Layout</title>
                 <para>The Parameter Type Maintenance screen has five main tabs:<itemizedlist>
                         <listitem>
@@ -693,8 +693,8 @@
                     </itemizedlist></para>
                 <para>All of these except the Edit Parameter Type tab are described in the Common
                     Features and Functions section of this User Guide.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Edit Parameter Type tab</title>
                 <figure><title>Parameter Type Maintenance Document: Edit Parameter Tab</title>
                     <mediaobject>
@@ -734,12 +734,12 @@
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Pessimistic Lock</title>
-        <sect2>
+        <section>
             <title>Pessimistic Lock Lookup</title>
             <para>The <emphasis role="bold">Pessimistic Lock Lookup</emphasis> screen lets you
                 review existing locks and manually release them.</para>
@@ -792,6 +792,6 @@
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

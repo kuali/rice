@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 -->
 <chapter xml:id="UG_KRMS" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KRMS</title>
-    <sect1>
+    <section>
         <title>Kuali Rule Management System: Overview</title>
-        <sect2>
+        <section>
             <title>What is KRMS?</title>
             <para xmlns:xlink="http://www.w3.org/1999/xlink">Kuali's Rule Management System (KRMS)
                 supports the creation, maintenance, storage and retrieval of business rules and
@@ -34,8 +34,8 @@
                 when those conditions are met. KRMS enables you to call and use this logic from any
                 application, without having to re-write and manage all the rules' maintenance logic
                 within the application. </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Example Rule</title>
             <para>Previously if a newly hired employee met a set of criteria, they would need to have an 
                 eVerify check ran in addition to the standard I-9 process. The initial requirement stated that
@@ -52,8 +52,8 @@
                 hr.eVerify_comp = "N"
                 THEN ...
             </code></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KRMS Terms and Concepts</title>
             <itemizedlist>
                 <listitem><para><emphasis role="bold">Agenda</emphasis> - a collection of rules in a defined plan.</para></listitem>
@@ -175,15 +175,15 @@
                     </listitem>
                 </varlistentry>
             </variablelist>-->
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>When to use KRMS?</title>
         <para>A big question is, when should you use KRMS rules verses logic directly coded in an application or document?</para>
-    </sect1>
-    <sect1 xmlns:xlink="http://www.w3.org/1999/xlink">
+    </section>
+    <section xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>The KRMS User Interface</title>
-        <sect2>
+        <section>
             <title>KRMS Agenda Editor</title>
             <para>Rules in KRMS are placed into ordered sets called Agendas. The order of the Rules
                 in an Agenda determines the sequencing: which rule gets evaluated first, second and
@@ -235,8 +235,8 @@
                     </mediaobject>
                 </figure>
             </para> -->
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KRMS Rule Editor</title>
             <para>See below for views of editing a Rule from an Agenda in KRMS.</para>
             <para>
@@ -269,6 +269,6 @@
                 parent".  Simple Propositions are configured with a Term and a user-supplied value
                 to compare it with.</para>
             <para>For additional information on KRMS see the KRMS section in the TRG.</para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

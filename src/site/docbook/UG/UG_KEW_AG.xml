@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?> 
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 -->
 <chapter xml:id="UG_KEW_AG" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEW Administration Guide</title>
-    <sect1>
+    <section>
         <title>Kuali Enterprise Workflow: Overview</title>
         <para>An extension to the KEW Users Guide, this guide is aimed at providing guidance on the
             more powerful, administrative tools provided.</para>
@@ -30,8 +30,8 @@
             </itemizedlist>
         </para>
         <para>Your institution and Kuali Rice based application may use some or all of these KEW features.</para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
        <title>Document Operation</title>
         <para>The Document Operation screen allows for low-level modifications to document data. It's available from the 
             Administrator channel in the portal.</para>
@@ -43,7 +43,7 @@
             <title>Initial Screen</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/DocOp_Ex9.png"/>
+                    <imagedata fileref="../images/DocOp_Ex9.png" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -68,13 +68,13 @@
             of data then the appropriate button should be selected. This is to guard against unintended or accidental changes 
             to the document.</para>
         <para>Each of the different sections is described in detail below.</para>
-        <sect2>
+        <section>
             <title>Document Actions</title>
             <figure>
                 <title>Document Actions</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_DocumentActions.png"/>
+                        <imagedata fileref="../images/DocOp_DocumentActions.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -83,33 +83,55 @@
                     <listitem><para>Queue Document - Requeuing and reprocessing the document by the engine</para></listitem>
                     <listitem><para>Index Searchable Attributes - Update searchable data of the document</para></listitem>
                     <listitem><para>Queue Document Requeuer - Refresh document and regenerate request of current node</para></listitem>
-                    <listitem><para>Queue Document Blanket Approve - Move document of blanket approve forward; information of User and 
-                        Action Taken Id are required<itemizedlist>
-                            <listitem><para>User - Enter initiator's network Id</para></listitem>
-                            <listitem><para>Action Taken Id - Enter an entry's action taken Id</para></listitem>
-                        </itemizedlist></para></listitem>
-                    <listitem><para>Queue Document Move - Move document forward or backward; information of Node Name is required
-                        <itemizedlist>
-                            <listitem><para>Node Name - Enter a node name</para></listitem>
-                        </itemizedlist></para>
+                    <listitem><para>Queue Document Blanket Approve - Move blanket approve document forward; User, Action Taken Id,
+                            and Node Names are required<itemizedlist>
+                                <listitem>
+                                    <para>User - Enter initiator's network Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Action Taken Id - Enter an entry's action taken Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Node Names - Enter a comma separated list of node
+                                        names</para>
+                                </listitem>
+                            </itemizedlist></para></listitem>
+                    <listitem><para>Queue Document Move - Move document forward or backward; User, Action Taken Id, and Node Names
+                            are required<itemizedlist>
+                                <listitem>
+                                    <para>User - Enter initiator's network Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Action Taken Id - Enter an entry's action taken Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Node Names - Enter a comma separated list of node
+                                        names</para>
+                                </listitem>
+                            </itemizedlist></para>
                         </listitem>
-                    <listitem><para>Queue Action Invocation - Reassign action request based on initiator, entry ID, and action code; 
-                        information of User, Action Item Id, and Action Code are required
-                        <itemizedlist>
-                            <listitem><para>User - Enter initiator's network Id</para></listitem>
-                            <listitem><para>Action Item Id - Enter an entry's action item Id</para></listitem>
-                            <listitem><para>Action Code - A, F, K, or C; A for Approve, F for FYI, K for acknowledge, and C for Complete</para>
-                            </listitem>
-                        </itemizedlist></para></listitem>
+                    <listitem><para>Queue Action Invocation - Reassign action request based on initiator, entry ID, and action
+                            code; User, Action Item Id, and Action Code are required <itemizedlist>
+                                <listitem>
+                                    <para>User - Enter initiator's network Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Action Item Id - Enter an entry's action item Id</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Action Code - A, F, K, or C; A for Approve, F for FYI, K
+                                        for acknowledge, and C for Complete</para>
+                                </listitem>
+                            </itemizedlist></para></listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Document</title>
             <figure>
                 <title>Document</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_Ex8.png"/>
+                        <imagedata fileref="../images/DocOp_Ex8.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -137,14 +159,14 @@
                     <listitem><para>Doc Content - The XML Content of the document</para></listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Action Requests</title>
             <figure>
                 <title>Action Requests</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_ActionRequest.png"/>
+                        <imagedata fileref="../images/DocOp_ActionRequest.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -181,14 +203,14 @@
                     <listitem><para>Annotation - The value of the annotation on the request</para></listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Actions Taken</title>
             <figure>
                 <title>Actions Taken</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_ActionsTaken.png"/>
+                        <imagedata fileref="../images/DocOp_ActionsTaken.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -209,14 +231,14 @@
                     <listitem><para>Annotation - The value of the annotation on the Action Taken</para></listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Action Items</title>
             <figure>
                 <title>Action Items</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_ActionItems.png"/>
+                        <imagedata fileref="../images/DocOp_ActionItems.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -240,14 +262,14 @@
             </para>
             <para>It is important to note that the ActionItem is a de-normalized representation of an Action Request on the document that is used to render 
                 the Action List in an efficient matter. Therefore, it contains some copies of data from both the document and the request itself.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Route Node Instances</title>
             <figure>
                 <title>Route Node Instances</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_RouteNode.png"/>
+                        <imagedata fileref="../images/DocOp_RouteNode.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -267,14 +289,14 @@
             <para>The Route Node Instances are modeled as a Directed Acyclic Graph starting at the node instance pointed to by the Initial Route Node Instances 
                 field in the Document section. Therefore, if you delete a route node instance, it will follow all links through its set of Next Route Node 
                 Instances and delete those as well.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Branch States</title>
             <figure>
                 <title>Branch States</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_Ex6.png"/>
+                        <imagedata fileref="../images/DocOp_Ex6.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -288,14 +310,14 @@
             </para>
             <para>All documents are required to have at least one branch that is named PRIMARY. Therefore, it is advisable to not rename the PRIMARY branch.
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Annotation</title>
             <figure>
                 <title>Annotation</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/DocOp_Ex7.png"/>
+                        <imagedata fileref="../images/DocOp_Ex7.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -303,8 +325,8 @@
                 of the audit trail for the document.</para>
             <para>Once the changes have been made on the document operation screen, hit the Save button and the changes will be executed on the server. Remember 
                 that in order for a change to take place the appropriate radio button must be selected on the data that requires modification.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Practical Uses of Document Operation</title>
             <para>
                 <itemizedlist>
@@ -314,18 +336,18 @@
                 </itemizedlist>
             </para>
             <para>Examples of each are outlined below</para>
-            <sect3>
+            <section>
                 <title>Requeuing a document that was stuck</title>
                 <para></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Moving a document to FINAL</title>
                 <para></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Rolling a document back to a previous point in the route path</title>
                 <para></para>
-            </sect3>
-        </sect2>
-    </sect1>
+            </section>
+        </section>
+    </section>
 </chapter>

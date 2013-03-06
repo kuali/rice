@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?> 
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
 -->
 <chapter xml:id="software_architecture" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
     <title>Software Architecture</title>
-    <sect1>
+    <section>
         <title>Kuali Rice Implementations</title>
         <para>Kuali Rice is available for two types of implementations, Server (also known as
             client-server) and Bundled (packaged with Kuali applications).</para>
-        <sect2>
+        <section>
             <title>Standalone Server </title>
             <para>The Server is the most versatile implementation of Rice. It is a web application
                 that can provide services to multiple applications that integrate with Kuali Rice at
@@ -30,8 +30,8 @@
                 Kuali Rice standalone server. The Server distribution is the one you should use when
                 your enterprise wants to run multiple Kuali applications or when you want to
                 integrate other applications with Rice. </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Bundled</title>
             <para>When an application bundles all of the Rice functionality (including what is
                 usually handled by the standalone server) into the client application, it’s called a
@@ -41,16 +41,16 @@
                 KFS.</para>
             <para>Bundled Distributions are not recommended for enterprise implementations, but are
                 good for quick start, testing, and demonstrations.</para>
-        </sect2> 
-    </sect1>
-    <sect1>
+        </section> 
+    </section>
+    <section>
         <title>Software Distributions</title>
-        <sect2>
+        <section>
             <title>Source Code Distribution</title>
             <para>The Source Code Distribution is available if you want to build Rice from scratch
                 and create the standalone or binary libraries yourself.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Binary Distribution</title>
             <para>The Binary Distribution (also known as the client distribution) is a collection of
                 JAR files. It is used when other applications need to use your Rice implementation
@@ -60,23 +60,23 @@
                 consisting of application programming interfaces (APIs), libraries, and the web
                 framework. This allows you to construct a Kuali Rice application. All JARs and web
                 content are included in this version.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Server Distribution</title>
             <para>This is the distribution that contains the standalone server WAR.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Which Distribution to Use</title>
             <para>In a typical enterprise deployment of Kuali Rice, a Standalone Rice server hosts
                 numerous shared services and provides the most versatility. The composition of Rice
                 contains an application framework — the APIs, Libraries, and web framework that are
                 used to construct a Rice application. You can configure subsequent Rice client
                 applications to interact with these services as needed. </para>
-        </sect2> 
-    </sect1>
-    <sect1>
+        </section> 
+    </section>
+    <section>
         <title>Obtaining Distributions and Source Code</title>
         <para>All three distributions, as well as the source code of the latest production release are available at <link xlink:href="http://rice.kuali.org/download">here</link>.</para> 
-    </sect1>
+    </section>
 </chapter>
 

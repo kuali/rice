@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,4 +20,12 @@
 	<xsl:import href="appendix.xsl"/>
 	<xsl:import href="xref.xsl"/>
 	<xsl:import href="titlepage.xsl"/>
+    <xsl:attribute-set name="monospace.verbatim.properties">
+        <xsl:attribute name="wrap-option">wrap</xsl:attribute>
+        <xsl:attribute name="font-size">7pt</xsl:attribute>
+        <xsl:attribute name="start-indent">0pt</xsl:attribute>
+    </xsl:attribute-set>
+    <xsl:template name="table.cell.block.properties">
+        <xsl:attribute name="font-size">7pt</xsl:attribute>
+    </xsl:template>
 </xsl:stylesheet>

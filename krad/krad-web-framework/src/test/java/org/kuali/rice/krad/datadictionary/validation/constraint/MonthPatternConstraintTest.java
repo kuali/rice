@@ -19,6 +19,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -89,6 +90,8 @@ public class MonthPatternConstraintTest {
 		invalidMonth3 = "JAN";
 
 		monthPatternConstraint = new ConfigurationBasedRegexPatternConstraint();
+        monthPatternConstraint.setMessageKey("validate.dummykey");
+        monthPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		monthPatternConstraint.setValue(regex);
 
 		monthDefinition = new AttributeDefinition();

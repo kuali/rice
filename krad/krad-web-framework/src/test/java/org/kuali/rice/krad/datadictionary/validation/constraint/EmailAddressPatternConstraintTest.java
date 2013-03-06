@@ -118,6 +118,8 @@ public class EmailAddressPatternConstraintTest {
 		invalidEmailEmployee7.setContactEmail("something@a.o-rg");
 
 		contactEmailAddressPatternConstraint = new ConfigurationBasedRegexPatternConstraint();
+        contactEmailAddressPatternConstraint.setMessageKey("validate.dummykey");
+        contactEmailAddressPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		contactEmailAddressPatternConstraint.setValue(regex);
 
 		contactEmailDefinition = new AttributeDefinition();

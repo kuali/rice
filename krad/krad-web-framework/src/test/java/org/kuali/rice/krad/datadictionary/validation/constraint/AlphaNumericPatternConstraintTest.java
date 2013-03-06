@@ -78,6 +78,8 @@ public class AlphaNumericPatternConstraintTest {
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 
 		street1AlphaNumericPatternConstraint = new AlphaNumericPatternConstraint();
+        street1AlphaNumericPatternConstraint.setMessageKey("validate.dummykey");
+        street1AlphaNumericPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		street1AlphaNumericPatternConstraint.setAllowWhitespace(true);
 
 		street1Definition = new AttributeDefinition();
@@ -87,6 +89,8 @@ public class AlphaNumericPatternConstraintTest {
 
 
 		street2AlphaNumericPatternConstraint = new AlphaNumericPatternConstraint();
+        street2AlphaNumericPatternConstraint.setMessageKey("validate.dummykey");
+        street2AlphaNumericPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		street2AlphaNumericPatternConstraint.setAllowWhitespace(true);
 		street2AlphaNumericPatternConstraint.setAllowParenthesis(true);
 		street2AlphaNumericPatternConstraint.setAllowPeriod(true);
@@ -98,6 +102,8 @@ public class AlphaNumericPatternConstraintTest {
 		attributes.add(street2Definition);
 
 		postalCodeAlphaNumericPatternConstraint = new AlphaNumericPatternConstraint();
+        postalCodeAlphaNumericPatternConstraint.setMessageKey("validate.dummykey");
+        postalCodeAlphaNumericPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 
 		postalCodeDefinition = new AttributeDefinition();
 		postalCodeDefinition.setName("postalCode");
@@ -116,7 +122,6 @@ public class AlphaNumericPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueNotValidChars() {
 		ConstraintValidationResult result = process(newYorkNYAddress, "postalCode", postalCodeAlphaNumericPatternConstraint);
@@ -135,7 +140,6 @@ public class AlphaNumericPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueNotValidCharsAllowWhitespace() {
 		ConstraintValidationResult result = process(sydneyAUSAddress, "street1", street1AlphaNumericPatternConstraint);
@@ -154,7 +158,6 @@ public class AlphaNumericPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueNotValidCharsAllowWhitespaceAndPeriodAndUnderscoreAndParenthesis() {
 		ConstraintValidationResult result = process(newYorkNYAddress, "street2", street2AlphaNumericPatternConstraint);

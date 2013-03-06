@@ -871,11 +871,15 @@ public class View extends ContainerBase {
 
     /**
      * Setter for the <code>ViewHelperService</code> class name
+     * Also initializes the viewHelperService
      *
      * @param viewHelperServiceClass
      */
     public void setViewHelperServiceClass(Class<? extends ViewHelperService> viewHelperServiceClass) {
         this.viewHelperServiceClass = viewHelperServiceClass;
+        if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
+            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClass);
+        }
     }
 
     /**
@@ -885,11 +889,16 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute(name = "viewHelperService", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ViewHelperService getViewHelperService() {
-        if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
-            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClass);
-        }
-
         return viewHelperService;
+    }
+
+    /**
+     * Setter for the <code>ViewHelperService</code>
+     *
+     * @param viewHelperService
+     */
+    public void setViewHelperService(ViewHelperService viewHelperService) {
+        this.viewHelperService = viewHelperService;
     }
 
     /**

@@ -105,6 +105,7 @@ public class UifDataAttributesNavIT extends WebDriverLegacyITBase {
      * @return true if all attributes were found in script, false otherwise
      */
     private boolean verifyAllAttributesInScript(String tagId, String suffix)throws Exception {
+        checkForIncidentReport();
         tagId = tagId + suffix;
         String complexAttributesXpath="//input[@type='hidden' and @data-for='"+ tagId +  "']";
         assertTrue(tagId + ": complex data attributes script not found see https://jira.kuali.org/browse/KULRICE-7752", isElementPresentByXpath(complexAttributesXpath));

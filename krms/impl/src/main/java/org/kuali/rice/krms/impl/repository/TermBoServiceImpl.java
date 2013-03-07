@@ -55,6 +55,16 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 	public TermSpecificationDefinition getTermSpecificationById(String id) {
 		TermSpecificationBo termSpecificationBo = 
 			businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, id);
+
+        // avoid the expense of loading ContextBos by directly looking at ContextValidTermBo reln
+        Collection<ContextValidTermBo> contextValidTerms =
+                businessObjectService.findMatching(ContextValidTermBo.class, Collections.singletonMap("termSpecificationId", id));
+
+        // populate TermSpecificationBo.contextIds collection
+        if (contextValidTerms != null) for (ContextValidTermBo contextValidTerm : contextValidTerms) {
+            termSpecificationBo.getContextIds().add(contextValidTerm.getContextId());
+        }
+
 		return TermSpecificationDefinition.Builder.create(termSpecificationBo).build();
 	}
 	

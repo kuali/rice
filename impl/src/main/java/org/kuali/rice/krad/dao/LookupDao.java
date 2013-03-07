@@ -27,12 +27,12 @@ public interface LookupDao {
 
     /**
      * Retrieves a collection of objects for the businessObjectClass based on the other information passed into the
-     * method.
+     * method
      *
-     * @param businessObjectClass - business object being queried on
-     * @param formProps - map of form properties
-     * @param unbounded - indicates if the search should be unbounded
-     * @param usePrimaryKeyValuesOnly - indicates if only primary key values should be used
+     * @param businessObjectClass business object being queried on
+     * @param formProps map of form properties
+     * @param unbounded indicates if the search should be unbounded
+     * @param usePrimaryKeyValuesOnly indicates if only primary key values should be used
      * @return Object returned from the search
      */
 	public <T extends Object> Collection<T> findCollectionBySearchHelper(
@@ -41,13 +41,13 @@ public interface LookupDao {
 
     /**
      * Retrieves a collection of objects for the businessObjectClass based on the other information passed into the
-     * method.
+     * method
      *
-     * @param businessObjectClass - business object being queried on
-     * @param formProps - map of form properties
-     * @param unbounded - indicates if the search should be unbounded
-     * @param usePrimaryKeyValuesOnly - indicates if only primary key values should be used
-     * @param searchResultsLimit - used to limit the number of items returned
+     * @param businessObjectClass business object being queried on
+     * @param formProps map of form properties
+     * @param unbounded indicates if the search should be unbounded
+     * @param usePrimaryKeyValuesOnly indicates if only primary key values should be used
+     * @param searchResultsLimit used to limit the number of items returned
      * @return Object returned from the search
      */
     public <T extends Object> Collection<T> findCollectionBySearchHelper(
@@ -55,14 +55,14 @@ public interface LookupDao {
             boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit);
 	/**
 	 * Retrieves a Object based on the search criteria, which should uniquely
-	 * identify a record.
+	 * identify a record
 	 * 
 	 * @return Object returned from the search
 	 */
 	public <T extends Object> T findObjectByMap(T example, Map<String, String> formProps);
 
 	/**
-	 * Returns a count of objects based on the given search parameters.
+	 * Returns a count of objects based on the given search parameters
 	 * 
 	 * @return Long returned from the search
 	 */

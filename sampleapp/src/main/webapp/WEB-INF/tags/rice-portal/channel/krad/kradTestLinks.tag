@@ -42,6 +42,8 @@
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Lookup sample with specified results limit"
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Lookup sample with specified results limit call search"
+          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=search&viewId=LookupSampleViewResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Lookup sample with multiple value specified in URL"
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Lookup sample with multiple value specified in view"
@@ -50,7 +52,7 @@
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewUseResultsLimitOnParent&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Lookup sample with headings"
           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewHeadings&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-  </ul>
+ </ul>
 
 </div>
 <channel:portalChannelBottom />

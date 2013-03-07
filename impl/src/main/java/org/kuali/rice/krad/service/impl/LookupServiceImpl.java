@@ -55,7 +55,7 @@ public class LookupServiceImpl implements LookupService {
     }
 
     /**
-     * Since 2.3
+     * @since 2.3
      * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
      * to behave the same way as it did prior to 2.3. In the LookupDao, the value for searchResultsLimit will be
      * retrieved from the KNS version of LookupUtils in the LookupDao.

@@ -26,8 +26,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     CollectionsNavIT.class,
     CollectionsWDIT.class,
-    HelpIT.class,
-    HelpIT2.class})
+    HelpWDIT.class,
+    HelpWDIT2.class})
 public class ConfigViewTestSuite {
 
 }

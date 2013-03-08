@@ -21,7 +21,9 @@ import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -38,6 +40,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -3283,7 +3286,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //get list of options after change
         String[] options2 = getSelectOptionsByXpath(refreshTextSelectLocator);
         //verify that the change has occurred
-        assertFalse(
+        junit.framework.Assert.assertFalse(
                 "Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection",
                 options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
         //confirm that control gets disabled
@@ -4775,5 +4778,315 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         parameterList.add(componentCode);
         
         return parameterList;
+    }
+    
+    /**
+     * Test the tooltip and external help on the view
+     */
+    public void testViewHelp() throws Exception {
+        // test tooltip help
+        fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
+        assertEquals("View help", getText("td.jquerybubblepopup-innerHtml"));
+
+        // test external help
+        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
+        //selenium.waitForPopUp("Open Source Software | www.kuali.org", "30000");
+        //selenium.selectPopUp("HelpWindow");
+        
+        
+        Thread.sleep(5000);
+        switchToWindow("Kuali Foundation");
+        Thread.sleep(5000);
+//        assertEquals("http://www.kuali.org/?view", driver.getLocation());
+        //selenium.deselectPopUp();
+        switchToWindow("Kuali :: Configuration Test View");
+    }
+
+    /**
+     * Test the tooltip and external help on the page
+     */
+    protected void testPageHelp() throws Exception {
+        // test tooltip help
+        fireMouseOverEventByXpath("//h2/span[@class='uif-headerText-span']");
+        assertEquals("Sample text for page help", getText("td.jquerybubblepopup-innerHtml"));
+
+        // test external help
+        waitAndClickByXpath("//input[@alt='Help for Help Page']");
+        Thread.sleep(5000);
+        switchToWindow("Kuali Foundation");
+        Thread.sleep(5000);      
+        switchToWindow("Kuali :: Configuration Test View");
+    }
+
+    /**
+     * Test the tooltip help on the section and fields
+     */
+    protected void testTooltipHelp() throws Exception {
+        // verify that no tooltips are displayed initially
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label left')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label right')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label top')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for check box help')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+        }
+       
+        // test tooltip help of section header
+
+        fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section1']/div/h3[@class='uif-headerText']");
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        
+        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[0].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        Thread.sleep(3000);
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        
+        // verify that no external help exist
+        junit.framework.Assert.assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
+    
+        // test tooltip help of field with label to the left
+        fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
+        Thread.sleep(3000);
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[1].style.display='none'"; 
+        Thread.sleep(3000);
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        System.out.println("==============="+isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+
+        
+        // test tooltip help of field with label to the right
+        fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
+        Thread.sleep(3000);
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[2].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        Thread.sleep(3000);
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
+
+        // test tooltip help of field with label to the top
+        fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
+        Thread.sleep(3000);
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[3].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        Thread.sleep(3000);
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+
+        // verify that standalone help with tooltip is not rendered
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
+
+        // test tooltip help when it overrides a tooltip
+        fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
+        Thread.sleep(3000);
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
+            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+        }
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[4].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        Thread.sleep(3000);
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+
+        // test tooltip help in conjunction with a focus event tooltip
+        fireMouseOverEventByXpath("//input[@id='on-focus-tooltip_control']");
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+        fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[5].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        Thread.sleep(3000);
+                
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[6].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        Thread.sleep(3000);
+    
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+
+        // test tooltip help against a check box - help contains html
+        fireMouseOverEventByXpath("//label[@id='checkbox_label']");
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[7].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        Thread.sleep(3000);
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+    }
+
+    /**
+     * Test the tooltip help on the sub-section and fields that are display only
+     */
+     protected void testDisplayOnlyTooltipHelp() throws Exception {
+        // verify that no tooltips are displayed initially
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for sub-section help')]")) {
+            junit.framework.Assert.assertFalse(isVisible("//td[contains(text(),'Sample text for sub-section help')]"));
+        }
+        if (isElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]")) {
+            junit.framework.Assert.assertFalse(isVisible("//td[contains(text(),'Sample text for read only field help')]"));
+        }
+
+        // test tooltip help of sub-section header
+        fireMouseOverEventByXpath("//span[contains(text(),'Display only fields')]");
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
+        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[0].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
+
+        // test tooltip help of display only data field
+        fireMouseOverEventByXpath("//label[@for='display-field_control']");
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for read only field help')]"));
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
+                "element[0].style.display='none'"; 
+        ((JavascriptExecutor) driver).executeScript(javascript);
+    }
+
+    /**
+     * Test the tooltip help on the section and fields with no content
+     */
+    protected void testMissingTooltipHelp() throws Exception {
+        // verify that no tooltips are displayed initially
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+
+        // verify that no external help exist
+        junit.framework.Assert.assertFalse(isElementPresent("#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
+       
+        // test tooltip help of section header
+        fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section2']/div");
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+
+        // test tooltip help of field
+        fireMouseOverEventByXpath("//label[@id='missing-tooltip-help_label']");
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+    }
+    
+    /**
+     * Assert that clicking an element causes a popup window with a specific URL
+     *
+     * @param by The locating mechanism of the element to be clicked
+     * @param windowName The name of the popup window
+     * @param url The URL of the popup window
+     */
+    protected void assertPopUpWindowUrl(By by, String windowName, String url) {
+        driver.findElement(by).click();
+        String parentWindowHandle = driver.getWindowHandle();
+        // wait page to be loaded
+        driver.switchTo().window(windowName).findElements(By.tagName("head"));
+        assertEquals(url, driver.getCurrentUrl());
+        driver.switchTo().window(parentWindowHandle);
+    }
+    
+
+    /**
+     * Test the tooltip and external help on the view
+     */
+
+    protected void testViewHelp2() throws Exception {
+
+        // test tooltip help
+        if (isElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']")) {
+            junit.framework.Assert.assertFalse(driver.findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
+        }
+        
+        // test tooltip help
+        fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
+        Thread.sleep(2000);
+        
+        assertTrue(isVisibleByXpath("//td[contains(text(),'View help')]"));
+        assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Configuration Test View\"]"), "HelpWindow", "http://www.kuali.org/");
+    }
+
+    /**
+     * Test the external help on the section and fields
+     */
+
+    protected void testExternalHelp2() throws Exception {
+
+        // test external help of section
+        assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for External Help\"]"), "HelpWindow", "http://www.kuali.org/?section");
+
+        // test external help of field with label left
+        assertPopUpWindowUrl(By.xpath("//div[@id='field-label-left-external-help']/fieldset/input[@title='Help for Field Label']"), "HelpWindow",
+                "http://www.kuali.org/?label_left");
+
+        // test external help of field with label right
+        assertPopUpWindowUrl(By.xpath("//div[@id='field-label-right-external-help']/fieldset/input[@title='Help for Field Label']"), "HelpWindow",
+                "http://www.kuali.org/?label_right");
+
+        // test external help of field with label top and help URL from system parameters
+        assertPopUpWindowUrl(By.xpath("//div[@id='field-label-top-external-help']/fieldset/input[@title='Help for Field Label']"), "HelpWindow",
+                "http://www.kuali.org/?system_parm");
+
+        // test external help of standalone help widget
+        assertPopUpWindowUrl(By.id("standalone-external-help"), "HelpWindow", "http://www.kuali.org/?widget_only");
+    }
+
+    /**
+     * Test the external help on the sub-section and display only fields
+     */
+
+    protected void testDisplayOnlyExternalHelp2() throws Exception {
+
+        // test external help of sub-section
+        assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Display only fields\"]"), "HelpWindow", "http://www.kuali.org/?sub_section");
+
+        // test external help of display only data field
+        assertPopUpWindowUrl(By.xpath("//div[@id='display-field-external-help']/fieldset/input[@title='Help for Field Label']"), "HelpWindow",
+                "http://www.kuali.org/?display_field");
+    }
+
+    /**
+     * Test the external help on the section and fields with missing help URL
+     */
+
+    protected void testMissingExternalHelp2() throws Exception {
+
+        // test external help of section is not rendered
+        junit.framework.Assert.assertFalse(isElementPresent(By.cssSelector("input[title=\"Help for Missing External Help\"]")));
+
+        // test external help of field with blank externalHelpURL is not rendered
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//div[@id='external-help-externalHelpUrl-empty']/*[@class='uif-helpImage']"));
+
+        // test external help of field with empty helpDefinition is not rendered
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//div[@id='external-help-helpdefinition-empty']/*[@class='uif-helpImage']"));
+
+        // test external help of field with missing system parameter is not rendered
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//div[@id='external-help-system-parm-missing']/*[@class='uif-helpImage']"));
+
+        // test external help of standalone help widget is not rendered
+        junit.framework.Assert.assertFalse(isElementPresentByXpath("//div[@id='standalone-external-help-missing']"));
     }
 }

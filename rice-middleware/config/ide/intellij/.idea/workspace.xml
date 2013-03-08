@@ -1,24 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    Copyright 2005-2013 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="d37b07b2-fb77-46e3-ae35-c435a56398ec" name="Default" comment="" />
+    <list default="true" readonly="true" id="d37b07b2-fb77-46e3-ae35-c435a56398ec" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/krad/dao" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service/impl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/krad/dao/impl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../kew/framework/src/main/java/org/kuali/rice/kew/framework/document/security/AuthorizableAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../kew/framework/src/main/java/org/kuali/rice/kew/framework/document/security/Authorization.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/DocumentActionsPermissionBase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../kew/framework/src/main/java/org/kuali/rice/kew/framework/document/security/DocumentTypeAuthorizer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceAuthorizerImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceCustomizationTest.groovy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceDelegationTest.groovy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/KimDocumentTypeAuthorizer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/krad/dao/impl/LookupDaoJpaTest.groovy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/krad/dao/impl/LookupDaoOjbTest.groovy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service/impl/TestDocumentTypeAuthorizer.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl" afterPath="$PROJECT_DIR$/../../../impl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew" afterPath="$PROJECT_DIR$/../../../kew" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim" afterPath="$PROJECT_DIR$/../../../kim" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krms/api/src/main/java/org/kuali/rice/krms/api/repository/language" afterPath="$PROJECT_DIR$/../../../krms/api/src/main/java/org/kuali/rice/krms/api/repository/language" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krms/api/src/main/java/org/kuali/rice/krms/api/repository/reference" afterPath="$PROJECT_DIR$/../../../krms/api/src/main/java/org/kuali/rice/krms/api/repository/reference" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/.classpath" afterPath="$PROJECT_DIR$/../../../kew/impl/.classpath" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/.project" afterPath="$PROJECT_DIR$/../../../kew/impl/.project" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionlist/web/ActionListAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionlist/web/ActionListAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionrequest/service/impl/ActionRequestServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionrequest/service/impl/ActionRequestServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionrequest/ActionRequestValue.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionrequest/ActionRequestValue.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/action/ActionType.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/action/ActionType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/AdHocAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/AdHocAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/ApplicationResources.properties" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/ApplicationResources.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/ApplicationResources.properties" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/ApplicationResources.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/BSFRuleExpression.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/BSFRuleExpression.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/BaseSendNotificationController.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/BaseSendNotificationController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/BlanketApproveAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/BlanketApproveAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/engine/node/dao/impl/BranchDAOJpaImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/engine/node/dao/impl/BranchDAOJpaImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/engine/node/dao/impl/BranchDAOOjbImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/engine/node/dao/impl/BranchDAOOjbImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/CancelAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/CancelAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/mail/service/impl/CustomizableActionListEmailServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/mail/service/impl/CustomizableActionListEmailServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kns/web/struts/form/DisplayInactivationBlockersForm.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kns/web/struts/form/DisplayInactivationBlockersForm.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/documentoperation/web/DocumentOperationAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/documentoperation/web/DocumentOperationAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/documentoperation/web/DocumentOperationForm.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/documentoperation/web/DocumentOperationForm.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/DocumentRouteHeaderDAO.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/DocumentRouteHeaderDAO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/impl/DocumentRouteHeaderDAOJpaImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/impl/DocumentRouteHeaderDAOJpaImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/impl/DocumentRouteHeaderDAOOjbImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/impl/DocumentRouteHeaderDAOOjbImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/DocumentRouteHeaderValue.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/DocumentRouteHeaderValue.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaBoLookupableHelperService.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaBoLookupableHelperService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/DocumentSearchCriteriaProcessorKEWAdapter.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/DocumentSearchCriteriaProcessorKEWAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaTranslatorImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaTranslatorImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/dao/DocumentSearchDAO.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/dao/DocumentSearchDAO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/dao/impl/DocumentSearchDAOJdbcImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/dao/impl/DocumentSearchDAOJdbcImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/service/DocumentSearchService.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/service/DocumentSearchService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/service/impl/DocumentSearchServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/service/impl/DocumentSearchServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/document/DocumentStatus.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/document/DocumentStatus.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/bo/DocumentType.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/bo/DocumentType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/DocumentType.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/DocumentType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/schema/DocumentType.xsd" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/schema/DocumentType.xsd" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/bo/DocumentTypeBoTest.groovy" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/bo/DocumentTypeBoTest.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/DocumentTypeContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/DocumentTypeContract.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/DocumentTypePermissionService.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/DocumentTypePermissionService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/test/groovy/org/kuali/rice/kew/api/doctype/DocumentTypeTest.groovy" afterPath="$PROJECT_DIR$/../../../kew/api/src/test/groovy/org/kuali/rice/kew/api/doctype/DocumentTypeTest.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/xml/export/DocumentTypeXmlExporter.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/xml/export/DocumentTypeXmlExporter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/xml/DocumentTypeXmlParser.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/xml/DocumentTypeXmlParser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/identity/external/EntityExternalIdentifierBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/identity/external/EntityExternalIdentifierBo.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/messaging/exceptionhandling/ExceptionRoutingServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/messaging/exceptionhandling/ExceptionRoutingServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/permission/GenericPermissionBo.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/permission/GenericPermissionBo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/document/rule/GenericPermissionMaintenanceDocumentRule.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/document/rule/GenericPermissionMaintenanceDocumentRule.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/group/Group.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/group/Group.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/group/GroupBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/group/GroupBo.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/GroupRuleResponsibility.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/GroupRuleResponsibility.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/IdentityCurrentAndArchivedServiceImpl.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/IdentityCurrentAndArchivedServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/impl/type/IdentityManagementTypeAttributeTransactionalDocument.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/impl/type/IdentityManagementTypeAttributeTransactionalDocument.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-api/src/main/java/org/kuali/rice/kim/api/identity/IdentityService.java" afterPath="$PROJECT_DIR$/../../../kim/kim-api/src/main/java/org/kuali/rice/kim/api/identity/IdentityService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/IdentityServiceImpl.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/IdentityServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kim/service/impl/IdentityServiceImplTest.groovy" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kim/service/impl/IdentityServiceImplTest.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/KewApiServiceLocator.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/KewApiServiceLocator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/export/KewExportDataSet.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/export/KewExportDataSet.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/web/KewKualiAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/web/KewKualiAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KewLocalSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KewLocalSpringBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/common/attribute/KimAttributeBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/common/attribute/KimAttributeBo.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimEmbeddedSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimEmbeddedSpringBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimRemoteSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimRemoteSpringBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimThinSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimThinSpringBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/impl/type/KimTypeLookupableHelperServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/impl/type/KimTypeLookupableHelperServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minification.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minification.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/config/OJB-repository-kew.xml" afterPath="$PROJECT_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/config/OJB-repository-kew.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/src/main/java/org/kuali/rice/kew/impl/peopleflow/PeopleFlowMaintainableImpl.java" afterPath="$PROJECT_DIR$/../../../kew/impl/src/main/java/org/kuali/rice/kew/impl/peopleflow/PeopleFlowMaintainableImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/uif/PeopleFlowViews.xml" afterPath="$PROJECT_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/uif/PeopleFlowViews.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/identity/PersonImpl.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/identity/PersonImpl.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/PersonRuleResponsibility.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/PersonRuleResponsibility.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/PersonServiceImpl.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/PersonServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/ProcessDefinitionContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/ProcessDefinitionContract.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/RecallAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/RecallAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleBo.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/role/RoleBo.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/role/RoleBo.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleDaoOjb.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleDaoOjb.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleMemberAttributeDataBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleMemberAttributeDataBo.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleMemberBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleMemberBo.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/RoleRuleResponsibility.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/RoleRuleResponsibility.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-api/src/main/java/org/kuali/rice/kim/api/role/RoleService.java" afterPath="$PROJECT_DIR$/../../../kim/kim-api/src/main/java/org/kuali/rice/kim/api/role/RoleService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleServiceBase.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleServiceBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleServiceImpl.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/service/RouteHeaderService.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/service/RouteHeaderService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/service/impl/RouteHeaderServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/service/impl/RouteHeaderServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RouteNodeConfigurationParameterContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RouteNodeConfigurationParameterContract.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RouteNodeContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RouteNodeContract.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RoutePathContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RoutePathContract.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleAttributeTypeValuesFinder.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleAttributeTypeValuesFinder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleBaseValuesInquirableImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleBaseValuesInquirableImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleDelegationInquirableImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleDelegationInquirableImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/SaveActionEvent.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/SaveActionEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/SendEventNotificationMessageController.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/SendEventNotificationMessageController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/SendNotificationMessageController.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/SendNotificationMessageController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/mail/service/impl/StyleableEmailContentServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/mail/service/impl/StyleableEmailContentServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/SuperUserActionRequestApproveEvent.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/SuperUserActionRequestApproveEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/service/impl/UiDocumentServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/service/impl/UiDocumentServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml" afterPath="$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/action/WorkflowDocumentActionsService.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/action/WorkflowDocumentActionsService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/action/WorkflowDocumentActionsServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/action/WorkflowDocumentActionsServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/document/WorkflowDocumentService.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/document/WorkflowDocumentService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/WorkflowDocumentServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/WorkflowDocumentServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/_KewEmbeddedOjbSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/_KewEmbeddedOjbSpringBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/_KimOjbSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/_KimOjbSpringBeans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/pom.xml" afterPath="$PROJECT_DIR$/../../../kew/api/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/framework/pom.xml" afterPath="$PROJECT_DIR$/../../../kew/framework/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-api/pom.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-api/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-framework/pom.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-framework/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_7_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_7_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_8_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_8_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__tomcat_6_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__tomcat_6_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__tomcat_7_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__tomcat_7_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/rice_sampleapp_war.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_sampleapp_war.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/rice_sampleapp_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_sampleapp_war_exploded.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_serviceregistry__jetty_7_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_serviceregistry__jetty_7_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/rice_serviceregistry_war.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_serviceregistry_war.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/rice_serviceregistry_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_serviceregistry_war_exploded.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__jetty_7_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__jetty_7_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__jetty_8_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__jetty_8_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__tomcat_6_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__tomcat_6_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__tomcat_7_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_standalone__tomcat_7_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/rice_standalone_war.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_standalone_war.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/rice_standalone_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_standalone_war_exploded.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/rice_web_war.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_web_war.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/rice_web_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/rice_web_war_exploded.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+    </list>
     <list id="3345e3a9-2979-433c-9eb1-76757eeefe86" name="ignore" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__asm_asm_3_3_1.xml" />
@@ -673,6 +811,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -693,7 +832,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -711,8 +849,8 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Tomcat Server.rice sampleapp (tomcat 7)">
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -736,6 +874,20 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="JettyConfiguration" factoryName="Local">
       <deployment />
       <server-settings>
@@ -751,20 +903,6 @@
         </data>
       </server-settings>
       <predefined_log_file id="Jetty" enabled="true" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -1118,17 +1256,17 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3761562" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18181819" sideWeight="0.7225077" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18181819" sideWeight="0.7225077" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28856826" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3761562" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />

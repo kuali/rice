@@ -71,7 +71,7 @@ public class CancelAction extends ActionTakenEvent {
             return "No request for the user is compatible with the Cancel Action";
         }
     	// check state before checking kim
-        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getPrincipal().getPrincipalId(), getDocumentId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getPrincipal().getPrincipalId(), getRouteHeader())) {
             return "User is not authorized to Cancel document";
         }
         return "";

@@ -291,12 +291,12 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id"/>
-        <bean parent="Uif-InputField" p:propertyName="description"/>
-        <bean parent="Uif-InputField" p:propertyName="specification.id" p:label="Specification ID"/>
-        <bean parent="Uif-InputField" p:propertyName="specification.namespace"/>
-        <bean parent="Uif-InputField" p:propertyName="specification.name"/>
-        <bean parent="Uif-InputField" p:propertyName="specification.type"/>
+        <bean parent="Uif-DataField" p:propertyName="id"/>
+        <bean parent="Uif-DataField" p:propertyName="description"/>
+        <bean parent="Uif-DataField" p:propertyName="specification.id" p:label="Specification ID"/>
+        <bean parent="Uif-DataField" p:propertyName="specification.namespace"/>
+        <bean parent="Uif-DataField" p:propertyName="specification.name"/>
+        <bean parent="Uif-DataField" p:propertyName="specification.type"/>
       </list>
     </property>
   </bean>

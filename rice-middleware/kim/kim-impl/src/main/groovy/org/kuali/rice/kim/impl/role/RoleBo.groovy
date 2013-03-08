@@ -33,6 +33,7 @@ import org.joda.time.DateTime
 import org.kuali.rice.kim.api.role.Role
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimTypeInfoService
+import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.framework.role.RoleEbo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
@@ -114,7 +115,14 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
     }
 
     public KimTypeBo getKimRoleType() {
-        return KimTypeBo.from(getTypeInfoService().getKimType(kimTypeId));
+        if (kimTypeId == null) {
+            return null;
+        }
+        KimType type = getTypeInfoService().getKimType(kimTypeId)
+        if (type == null) {
+            return null;
+        }
+        return KimTypeBo.from(type);
     }
 
     private transient static KimTypeInfoService kimTypeInfoService;

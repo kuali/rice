@@ -41,11 +41,11 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id"/>
-        <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
-        <bean parent="Uif-InputField" p:propertyName="name"/>
-        <bean parent="Uif-InputField" p:propertyName="typeId"/>
-        <bean parent="Uif-InputField" p:propertyName="active"/>
+        <bean parent="Uif-DataField" p:propertyName="id"/>
+        <bean parent="Uif-DataField" p:propertyName="namespaceCode"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="typeId"/>
+        <bean parent="Uif-DataField" p:propertyName="active"/>
       </list>
     </property>
   </bean>
@@ -157,7 +157,7 @@
         <bean parent="Uif-InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean parent="PeopleFlow-Member" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChangedPropertyNames="#lp.memberTypeCode"
-              p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
+              p:progressiveRender="#line.memberTypeCode eq 'R' or #line.memberTypeCode eq 'G'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
     <property name="subCollections">

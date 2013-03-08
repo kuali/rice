@@ -25,7 +25,7 @@ import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in.
+ * Inquirable implementation for KEW rule delegations.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

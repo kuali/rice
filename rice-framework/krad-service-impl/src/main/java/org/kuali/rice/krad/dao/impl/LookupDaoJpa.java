@@ -116,15 +116,39 @@ public class LookupDaoJpa implements LookupDao {
 		return (Long) new QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
 	}
 
-	public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-		PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
-		if (usePrimaryKeyValuesOnly) {
-			return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, formProps), unbounded);
-		} else {
-			Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
-			return executeSearch(businessObjectClass, crit, unbounded);
-		}
-	}
+    /**
+     * Since 2.3
+     * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
+     * to behave the same way as it did prior to 2.3. The value for searchResultsLimit will be retrieved from the
+     * KNS version of LookupUtils.
+     *
+     * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean,
+     *      boolean)
+     */
+    public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded,
+            boolean usePrimaryKeyValuesOnly) {
+        Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit(businessObjectClass);
+        return findCollectionBySearchHelper(businessObjectClass, formProps, unbounded, usePrimaryKeyValuesOnly,
+                searchResultsLimit);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean,
+     *      boolean, Integer)
+     *
+     * If searchResultsLimit is null, the search results will not be limited by any other means.
+     */
+    public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded,
+            boolean usePrimaryKeyValuesOnly, Integer searchResultsLimit) {
+        PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
+        if (usePrimaryKeyValuesOnly) {
+            return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(
+                    businessObjectClass, formProps), unbounded, searchResultsLimit);
+        } else {
+            Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
+            return executeSearch(businessObjectClass, crit, unbounded, searchResultsLimit);
+        }
+    }
 
 	public Criteria getCollectionCriteriaFromMap(PersistableBusinessObject example, Map formProps) {
 		Criteria criteria = new Criteria(example.getClass().getName());
@@ -206,53 +230,52 @@ public class LookupDaoJpa implements LookupDao {
 		return businessObject;
 	}
 
-	private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded) {
-		Collection<PersistableBusinessObject> searchResults = new ArrayList<PersistableBusinessObject>();
-		Long matchingResultsCount = null;
-		try {
-			Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(businessObjectClass);
-			if (!unbounded && (searchResultsLimit != null)) {
-				matchingResultsCount = (Long) new QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
-				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().setMaxResults(searchResultsLimit).getResultList();
-			} else {
-				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
-			}
-			if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
-				matchingResultsCount = new Long(0);
-			}
-			// Temp solution for loading extension objects - need to find a
-			// better way
-			// Should look for a JOIN query, for the above query, that will grab
-			// the PBOEs as well (1+n query problem)
-			for (PersistableBusinessObject bo : searchResults) {
-				if (bo.getExtension() != null) {
-					PersistableBusinessObjectExtension boe = bo.getExtension();
-					EntityDescriptor entity = MetadataManager.getEntityDescriptor(bo.getExtension().getClass());
-					Criteria extensionCriteria = new Criteria(boe.getClass().getName());
-					for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
-						try {
-							Field field = bo.getClass().getDeclaredField(fieldDescriptor.getName());
-							field.setAccessible(true);
-							extensionCriteria.eq(fieldDescriptor.getName(), field.get(bo));
-						} catch (Exception e) {
-							LOG.error(e.getMessage(), e);
-						}
-					}
-					try {
-						boe = (PersistableBusinessObjectExtension) new QueryByCriteria(entityManager, extensionCriteria).toQuery().getSingleResult();
-					} catch (PersistenceException e) {}
-					bo.setExtension(boe);
-				}
-			}
-			// populate Person objects in business objects
-			List bos = new ArrayList();
-			bos.addAll(searchResults);
-			searchResults = bos;
-		} catch (DataIntegrityViolationException e) {
-			throw new RuntimeException("LookupDao encountered exception during executeSearch", e);
-		}
-		return new CollectionIncomplete(searchResults, matchingResultsCount);
-	}
+    private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded, Integer searchResultsLimit) {
+   		Collection<PersistableBusinessObject> searchResults = new ArrayList<PersistableBusinessObject>();
+   		Long matchingResultsCount = null;
+   		try {
+   			if (!unbounded && (searchResultsLimit != null)) {
+   				matchingResultsCount = (Long) new QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
+   				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().setMaxResults(searchResultsLimit).getResultList();
+   			} else {
+   				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+   			}
+   			if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
+   				matchingResultsCount = new Long(0);
+   			}
+   			// Temp solution for loading extension objects - need to find a
+   			// better way
+   			// Should look for a JOIN query, for the above query, that will grab
+   			// the PBOEs as well (1+n query problem)
+   			for (PersistableBusinessObject bo : searchResults) {
+   				if (bo.getExtension() != null) {
+   					PersistableBusinessObjectExtension boe = bo.getExtension();
+   					EntityDescriptor entity = MetadataManager.getEntityDescriptor(bo.getExtension().getClass());
+   					Criteria extensionCriteria = new Criteria(boe.getClass().getName());
+   					for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
+   						try {
+   							Field field = bo.getClass().getDeclaredField(fieldDescriptor.getName());
+   							field.setAccessible(true);
+   							extensionCriteria.eq(fieldDescriptor.getName(), field.get(bo));
+   						} catch (Exception e) {
+   							LOG.error(e.getMessage(), e);
+   						}
+   					}
+   					try {
+   						boe = (PersistableBusinessObjectExtension) new QueryByCriteria(entityManager, extensionCriteria).toQuery().getSingleResult();
+   					} catch (PersistenceException e) {}
+   					bo.setExtension(boe);
+   				}
+   			}
+   			// populate Person objects in business objects
+   			List bos = new ArrayList();
+   			bos.addAll(searchResults);
+   			searchResults = bos;
+   		} catch (DataIntegrityViolationException e) {
+   			throw new RuntimeException("LookupDao encountered exception during executeSearch", e);
+   		}
+   		return new CollectionIncomplete(searchResults, matchingResultsCount);
+   	}
 
 	/**
 	 * Return whether or not an attribute is writeable. This method is aware

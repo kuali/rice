@@ -429,8 +429,18 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 
     @Override
 	public Principal getPrincipal(String principalId) {
-		return getInnerIdentityService().getPrincipal(principalId);
-	}
+        Principal principal = getInnerIdentityService().getPrincipal(principalId);
+        if ( principal == null ) {
+            EntityDefault entity = getEntityDefaultByPrincipalId(principalId);
+            if ( entity != null ) {
+                List<Principal> principals = entity.getPrincipals();
+                if ( principals != null && !principals.isEmpty() ) {
+                    principal = principals.get(0);
+                }
+            }
+        }
+        return principal;
+    }
 
     /**
      * Gets a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} from a string list of principalId.
@@ -462,8 +472,42 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 
     @Override
 	public Principal getPrincipalByPrincipalName(String principalName) {
-		return getInnerIdentityService().getPrincipalByPrincipalName(principalName);
+        Principal principal = getInnerIdentityService().getPrincipalByPrincipalName(principalName);
+        if ( principal == null ) {
+            EntityDefault entity = getEntityDefaultByPrincipalName(principalName);
+            if ( entity != null ) {
+                List<Principal> principals = entity.getPrincipals();
+                if ( principals != null && !principals.isEmpty() ) {
+                    principal = principals.get(0);
+                }
+            }
+        }
+        return principal;
 	}
+
+    @Override
+    public List<Principal> getPrincipalsByEntityId(String entityId) {
+        List<Principal> principals = getInnerIdentityService().getPrincipalsByEntityId(entityId);
+        if ( principals == null ) {
+            EntityDefault entity = getIdentityArchiveService().getEntityDefaultFromArchive(entityId);
+            if (entity != null && entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+                principals = entity.getPrincipals();
+            }
+        }
+        return principals;
+    }
+
+    @Override
+    public List<Principal> getPrincipalsByEmployeeId(String employeeId) {
+        List<Principal> principals = getInnerIdentityService().getPrincipalsByEmployeeId(employeeId);
+        if ( principals == null ) {
+            EntityDefault entity = getIdentityArchiveService().getEntityDefaultFromArchive(employeeId);
+            if (entity != null && entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
+                principals = entity.getPrincipals();
+            }
+        }
+        return principals;
+    }
 
     @Override
 	public Principal getPrincipalByPrincipalNameAndPassword(

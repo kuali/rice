@@ -345,9 +345,15 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
         Map<String, AttributeLookupSettings> attributeLookupSettingsMap = getAttributeLookupSettings(criteria);
         for (String field: fields) {
             String documentAttributeName = field.substring(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX.length());
-            // omit the synthetic lower bound field, don't set back into doc attrib values
+            // omit the synthetic lower bound field is there is an upper bound field, don't set back into doc attrib values
             if (documentAttributeName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-                continue;
+                String tempDocumentAttributeName = StringUtils.substringAfter(documentAttributeName,KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX) ;
+                String tempField = fieldValues.get(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + tempDocumentAttributeName);
+                if (StringUtils.isEmpty(tempField)) {
+                    documentAttributeName =  tempDocumentAttributeName;
+                } else {
+                    continue;
+                }
             }
             String value = fieldValues.get(field);
             AttributeLookupSettings lookupSettings = attributeLookupSettingsMap.get(documentAttributeName);

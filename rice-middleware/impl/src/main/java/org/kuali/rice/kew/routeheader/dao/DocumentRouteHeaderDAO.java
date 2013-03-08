@@ -49,6 +49,7 @@ public interface DocumentRouteHeaderDAO {
   public String getDocumentStatus(String documentId);
   public void save(SearchableAttributeValue searchableAttribute);
   public String getAppDocId(String documentId);
+  public String getAppDocStatus(String documentId);
 
   public Collection findByDocTypeAndAppId(String documentTypeName, String appId);
 

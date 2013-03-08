@@ -85,9 +85,11 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         // line based on DocumentType
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
         Person person = KimApiServiceLocator.getPersonService().getPerson(actionItem.getPrincipalId());
-        EmailContent content = getEmailContentGenerator().generateImmediateReminder(person, actionItem, document.getDocumentType());
-        sendEmail(person, new EmailSubject(content.getSubject()),
+        if (person != null) {
+            EmailContent content = getEmailContentGenerator().generateImmediateReminder(person, actionItem, document.getDocumentType());
+            sendEmail(person, new EmailSubject(content.getSubject()),
                         new EmailBody(content.getBody()), document.getDocumentType());
+        }
     }
 
     @Override

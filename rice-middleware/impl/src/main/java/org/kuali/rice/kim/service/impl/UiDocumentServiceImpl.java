@@ -114,6 +114,7 @@ import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleBoLite;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
@@ -536,51 +537,80 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setGroups(docGroups);
     }
 
-	protected void loadRoleToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument) {
-		List <PersonDocumentRole> docRoles = new ArrayList <PersonDocumentRole>();
-		List<RoleBo> roles = getRolesForPrincipal(identityManagementPersonDocument.getPrincipalId());
-		List<String> roleIds = new ArrayList<String>();
-		if(ObjectUtils.isNotNull(roles)){
-	        for (RoleBo role : roles) {
-	        	if (!roleIds.contains(role.getId())) {
-		        	PersonDocumentRole docRole = new PersonDocumentRole();
-		        	docRole.setKimTypeId(role.getKimTypeId());
-		        	docRole.setActive(role.isActive());
-		        	docRole.setNamespaceCode(role.getNamespaceCode());
-		        	docRole.setEdit(true);
-		        	docRole.setRoleId(role.getId());
-		        	docRole.setRoleName(role.getName());
-		        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getNamespaceCode(), role.getMembers(), identityManagementPersonDocument.getPrincipalId(), getAttributeDefinitionsForRole(docRole)));
-		        	docRole.refreshReferenceObject("assignedResponsibilities");
-		        	if(docRole.getRolePrncpls()!=null && !docRole.getRolePrncpls().isEmpty()){
-		        		docRoles.add(docRole);
-		        		roleIds.add(role.getId());
-		        	}
-	        	}
-	        }
-		}
-		for (PersonDocumentRole role : docRoles) {
-			role.setDefinitions(getAttributeDefinitionsForRole(role));
-        	// when post again, it will need this during populate
+	/**
+	 * Used to populate the {@link PersonDocumentRole} ojbects for a {@link IdentityManagementPersonDocument}
+	 *
+	 * @param identityManagementPersonDocument {@link IdentityManagementPersonDocument}
+	 */
+    protected void loadRoleToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument) {
+        List <PersonDocumentRole> docRoles = new ArrayList <PersonDocumentRole>();
+        // a list for Id's of the roles added to docRoles
+        List<String> roleIds = new ArrayList<String>();
+
+        // get the membership objects for the PrincipalId
+        List<RoleMemberBo> roleMembers = getRoleMembersForPrincipal(identityManagementPersonDocument.getPrincipalId());
+
+        // if the PrincipalId is a member of any roles, add those roles to docRoles
+        if(ObjectUtils.isNotNull(roleMembers)){
+            // for each membership get the role and add it to docRoles
+            for (RoleMemberBo member : roleMembers) {
+                loadDocRoles(docRoles, roleIds, member);
+            }
+        }
+
+        // complete the attributes for each role being being returned
+        for (PersonDocumentRole role : docRoles) {
+            role.setDefinitions(getAttributeDefinitionsForRole(role));
+
             KimDocumentRoleMember newRolePrncpl = new KimDocumentRoleMember();
             newRolePrncpl.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
             newRolePrncpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
             role.setNewRolePrncpl(newRolePrncpl);
-            if(role.getDefinitions()!=null){
-	            for (KimAttributeField key : role.getDefinitions()) {
-	            	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
-	            	//qualifier.setQualifierKey(key);
-	            	setAttrDefnIdForQualifier(qualifier,key);
-	            	role.getNewRolePrncpl().getQualifiers().add(qualifier);
-	            }
-            }
-            loadRoleRstAction(role);
-            role.setAttributeEntry( getAttributeEntries( role.getDefinitions() ) );
-		}
-        //
 
+            if(role.getDefinitions()!=null){
+                for (KimAttributeField key : role.getDefinitions()) {
+                    KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
+                    setAttrDefnIdForQualifier(qualifier,key);
+                    role.getNewRolePrncpl().getQualifiers().add(qualifier);
+                }
+            }
+
+            // load the role's ResponsibilityActions
+            loadRoleRstAction(role);
+
+            role.setAttributeEntry( getAttributeEntries( role.getDefinitions() ) );
+        }
+
+        // add the PersonDocumentRoles to the IdentityManagementPersonDocument
         identityManagementPersonDocument.setRoles(docRoles);
-	}
+    }
+
+    /**
+     * Selects a {@link RoleBoLite} for passed {@link RoleMemberBo} and adds to List of {@link PersonDocumentRole} objects
+     *
+     * @param docRoles a list of {@link PersonDocumentRole} roles
+     * @param roleIds a list of the Ids of the Roles already added
+     * @param member a {@link RoleMemberBo} of a {@link RoleBoLite}
+     */
+    private void loadDocRoles(List <PersonDocumentRole> docRoles, List<String> roleIds,  RoleMemberBo member) {
+
+        // get the RoleBoLite object by it's Id from a role membership object
+        RoleBoLite role =  getBusinessObjectService().findBySinglePrimaryKey(RoleBoLite.class, member.getRoleId());
+
+        // if not already found add role to docRoles
+        if (ObjectUtils.isNotNull(role) && !roleIds.contains(role.getId())) {
+            PersonDocumentRole docRole = new PersonDocumentRole();
+            docRole.setKimTypeId(role.getKimTypeId());
+            docRole.setActive(role.isActive());
+            docRole.setNamespaceCode(role.getNamespaceCode());
+            docRole.setEdit(true);
+            docRole.setRoleId(role.getId());
+            docRole.setRoleName(role.getName());
+            docRole.refreshReferenceObject("assignedResponsibilities");
+            docRoles.add(docRole);
+            roleIds.add(role.getId());
+        }
+    }
 
 	protected List<KimAttributeField> getAttributeDefinitionsForRole(PersonDocumentRole role) {
     	KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(KimTypeBo.to(

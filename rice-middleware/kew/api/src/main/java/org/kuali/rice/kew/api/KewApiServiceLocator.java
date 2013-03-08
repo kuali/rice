@@ -182,7 +182,7 @@ public class KewApiServiceLocator {
         return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, applicationId, null, (documentId == null ? null : documentId.toString()), null, waitTime);
     }
 
-    public static Object getServiceAsynchronously(QName serviceName, String documentId, String applicationId) {
+    private static Object getServiceAsynchronously(QName serviceName, String documentId, String applicationId) {
         return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, applicationId, null, null, (documentId == null ? null : documentId.toString()), null);
     }
 }

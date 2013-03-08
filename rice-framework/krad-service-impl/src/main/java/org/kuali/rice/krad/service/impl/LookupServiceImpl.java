@@ -54,10 +54,22 @@ public class LookupServiceImpl implements LookupService {
         return findCollectionBySearchHelper(example, formProps, false);
     }
 
+    /**
+     * Since 2.3
+     * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
+     * to behave the same way as it did prior to 2.3. In the LookupDao, the value for searchResultsLimit will be
+     * retrieved from the KNS version of LookupUtils in the LookupDao.
+     */
     public <T extends Object> Collection<T> findCollectionBySearchHelper(Class<T> example,
             Map<String, String> formProps, boolean unbounded) {
         return lookupDao.findCollectionBySearchHelper(example, formProps, unbounded,
                 allPrimaryKeyValuesPresentAndNotWildcard(example, formProps));
+    }
+
+    public <T extends Object> Collection<T> findCollectionBySearchHelper(Class<T> example,
+            Map<String, String> formProps, boolean unbounded, Integer searchResultsLimit) {
+        return lookupDao.findCollectionBySearchHelper(example, formProps, unbounded,
+                allPrimaryKeyValuesPresentAndNotWildcard(example, formProps), searchResultsLimit);
     }
 
     /**

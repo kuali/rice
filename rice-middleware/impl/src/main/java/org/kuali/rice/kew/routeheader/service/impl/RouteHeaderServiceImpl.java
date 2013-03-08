@@ -192,6 +192,13 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
  	 	return getRouteHeaderDAO().getAppDocId(documentId);
     }
 
+    public String getAppDocStatus(String documentId) {
+        if (documentId == null) {
+            return null;
+        }
+        return getRouteHeaderDAO().getAppDocStatus(documentId);
+    }
+
     public DocumentRouteHeaderDAO getRouteHeaderDAO() {
         return routeHeaderDAO;
     }

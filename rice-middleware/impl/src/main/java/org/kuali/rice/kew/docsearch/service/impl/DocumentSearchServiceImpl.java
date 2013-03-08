@@ -255,14 +255,20 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 if (!documentAttributeNamesCustomized.contains(name)) {
                     documentAttributeNamesCustomized.add(name);
                     newDocumentAttributes.addAll(customizedAttributeMap.get(name));
+                    customizedAttributeMap.remove(name);
                 }
             } else {
-                newDocumentAttributes.add(documentAttribute);
+                if (!documentAttributeNamesCustomized.contains(name)) {
+                    newDocumentAttributes.add(documentAttribute);
+                }
             }
+        }
+
+        for (List<DocumentAttribute.AbstractBuilder<?>> cusotmizedDocumentAttribute : customizedAttributeMap.values()) {
+            newDocumentAttributes.addAll(cusotmizedDocumentAttribute);
         }
         result.setDocumentAttributes(newDocumentAttributes);
     }
-
 
     /**
      * Applies any document type-specific customizations to the lookup criteria.  If no customizations are configured
@@ -750,5 +756,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 		return kualiConfigurationService;
 	}
+
+    @Override
+    public int getMaxResultCap(DocumentSearchCriteria criteria){
+        return docSearchDao.getMaxResultCap(criteria);
+    }
+
+    @Override
+    public int getFetchMoreIterationLimit(){
+        return docSearchDao.getFetchMoreIterationLimit();
+    }
 
 }

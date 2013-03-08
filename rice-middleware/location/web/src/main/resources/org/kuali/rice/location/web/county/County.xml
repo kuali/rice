@@ -51,7 +51,7 @@
     <property name="name" value="code"/>
     <property name="forceUppercase" value="true"/>
     <property name="label" value="County Code"/>
-    <property name="shortLabel" value="County Cd."/>
+    <property name="shortLabel" value="County Code"/>
     <property name="maxLength" value="10"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>

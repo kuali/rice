@@ -32,7 +32,7 @@ import org.kuali.rice.krms.framework.engine.SubAgenda;
 import java.util.List;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * Can perform translations from rules defined in a repository to an executable version consumable by the rules engine.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

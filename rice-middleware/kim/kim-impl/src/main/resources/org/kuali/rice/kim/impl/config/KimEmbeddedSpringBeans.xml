@@ -291,8 +291,30 @@
     </property>
   </bean>
 
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref bean="matchAllTxInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="kimIdentityDelegateService" />
+        <idref local="kimIdentityArchiveService" />
+        <idref local="kimIdentityService" />
+        <idref local="kimRoleService" />
+        <idref local="kimRoleInternalService" />
+        <idref local="kimGroupService" />
+        <idref local="kimPermissionService" />
+        <idref local="kimResponsibilityService" />
+      </list>
+    </property>
+  </bean>
+
   <bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
         p:moduleConfiguration-ref="kimModuleConfiguration"
         p:kualiModuleService-ref="rice.kim.import.kualiModuleService"/>
 
 </beans>
+
+

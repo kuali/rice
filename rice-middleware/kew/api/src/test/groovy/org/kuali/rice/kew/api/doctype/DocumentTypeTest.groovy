@@ -17,6 +17,10 @@ package org.kuali.rice.kew.api.doctype
 
 import org.junit.Test
 import org.junit.Assert
+import org.springframework.core.io.Resource
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver
+import org.springframework.core.io.support.ResourcePatternResolver
+
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
@@ -49,6 +53,7 @@ class DocumentTypeTest {
                 <ns2:entry key="DEFAULT_APPROVE">Y</ns2:entry>
             </policies>
             <versionNumber>0</versionNumber>
+            <authorizer>fakeDocumentTypeAuthorizer</authorizer>
         </documentType>
         """
 
@@ -101,6 +106,7 @@ class DocumentTypeTest {
                policies
             }
             def List<DocumentTypeAttribute> documentTypeAttributes = Collections.EMPTY_LIST
+            def String authorizer = "fakeDocumentTypeAuthorizer"
         }).build()
     }
 }

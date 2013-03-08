@@ -93,23 +93,6 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
 
     public void setDetailValues( String detailValues ) {
         this.detailValues = detailValues;
-        String detailValuesTemp = detailValues;
-        Map<String,String> details = new HashMap<String,String>();
-        if ( detailValuesTemp != null ) {
-            // ensure that all line delimiters are single linefeeds
-            detailValuesTemp = detailValuesTemp.replace( "\r\n", "\n" );
-            detailValuesTemp = detailValuesTemp.replace( '\r', '\n' );
-            if ( StringUtils.isNotBlank( detailValuesTemp ) ) {
-                String[] values = detailValuesTemp.split( "\n" );
-                for ( String attrib : values ) {
-                    if ( attrib.indexOf( '=' ) != -1 ) {
-                        String[] keyValueArray = attrib.split( "=", 2 );
-                        details.put( keyValueArray[0].trim(), keyValueArray[1].trim() );
-                    }
-                }
-            }
-        }
-        this.details = details;
     }
 
     public void setDetailValues( Map<String, String> detailsAttribs ) {
@@ -176,7 +159,24 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
         this.template = template;
     }
 
-    public Map<String,String> getDetails() {
+    public Map<String, String> getDetails() {
+        String detailValuesTemp = this.detailValues;
+        Map<String, String> detailsTemp = new HashMap<String, String>();
+        if (detailValuesTemp != null) {
+            // ensure that all line delimiters are single linefeeds
+            detailValuesTemp = detailValuesTemp.replace("\r\n", "\n");
+            detailValuesTemp = detailValuesTemp.replace('\r', '\n');
+            if (StringUtils.isNotBlank(detailValuesTemp)) {
+                String[] values = detailValuesTemp.split("\n");
+                for (String attrib : values) {
+                    if (attrib.indexOf('=') != -1) {
+                        String[] keyValueArray = attrib.split("=", 2);
+                        detailsTemp.put(keyValueArray[0].trim(), keyValueArray[1].trim());
+                    }
+                }
+            }
+        }
+        this.details = detailsTemp;
         return details;
     }
 

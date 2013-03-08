@@ -19,7 +19,7 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
- * TODO ewestfal don't forget to fill this in. 
+ * Contract interface for the definition of a workflow process.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

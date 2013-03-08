@@ -18,7 +18,7 @@ package org.kuali.rice.kew.rule;
 
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in.
+ * Represents a rule responsibility which points to a role.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

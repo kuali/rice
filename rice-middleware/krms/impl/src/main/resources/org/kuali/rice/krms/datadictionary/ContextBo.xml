@@ -128,10 +128,10 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
-        <bean parent="Uif-InputField" p:propertyName="namespace" />
-        <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Context Type" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="namespace" />
+        <bean parent="Uif-DataField" p:propertyName="typeId" p:label="Context Type" />
       </list>
     </property>
   </bean>

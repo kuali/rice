@@ -38,6 +38,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.remoting.RemoteAccessException;
 
+import javax.xml.ws.WebServiceException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -142,19 +143,20 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 		boolean hasDerivedRoleTypeService = false;
 		KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(kimType);
 		//it is possible that the the roleTypeService is coming from a remote application 
-	    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+	    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
 		try {
-		    if(hasRoleTypeService(kimType, kimTypeService))
+		    if(hasRoleTypeService(kimType, kimTypeService)) {
 		        hasDerivedRoleTypeService = (kimType.getServiceName()!=null && ((RoleTypeService)kimTypeService).isDerivedRoleType());
+            }
 		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), ex);
-		    return hasDerivedRoleTypeService;
 		}
 		// KULRICE-4403: catch org.springframework.remoting.RemoteAccessException
 		catch (RemoteAccessException rae) {
 			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), rae);
-			return hasDerivedRoleTypeService;
-		}
+		} catch (WebServiceException e) {
+            LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), e);
+        }
 		return hasDerivedRoleTypeService;
 	}
 

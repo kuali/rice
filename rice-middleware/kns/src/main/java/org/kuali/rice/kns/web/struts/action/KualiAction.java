@@ -126,7 +126,7 @@ public abstract class KualiAction extends DispatchAction {
                 LOG.debug("methodToCall: '" + methodToCall+"'");
             }
             returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
-            if (returnForward.getRedirect() && returnForward.getName()!=null && returnForward.getName().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
+            if ( returnForward!=null && returnForward.getRedirect() && returnForward.getName()!=null && returnForward.getName().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
                 return returnForward;
             }
         }
@@ -424,7 +424,9 @@ public abstract class KualiAction extends DispatchAction {
         }
         
         if (value != null && boClass != null && getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, parameterName)) {
-            value = getEncryptionService().encrypt(value) + EncryptionService.ENCRYPTION_POST_PREFIX;
+            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                value = getEncryptionService().encrypt(value) + EncryptionService.ENCRYPTION_POST_PREFIX;
+            }
         }
         return value;
     }

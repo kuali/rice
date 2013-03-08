@@ -30,7 +30,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * Defines a set of data to export from Kuali Enterprise Workflow.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

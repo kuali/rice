@@ -166,12 +166,12 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="ruleId" />
-        <bean parent="Uif-InputField" p:propertyName="subAgendaId" />
-        <bean parent="Uif-InputField" p:propertyName="whenTrueId" />
-        <bean parent="Uif-InputField" p:propertyName="whenFalseId" />
-        <bean parent="Uif-InputField" p:propertyName="alwaysId" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="ruleId" />
+        <bean parent="Uif-DataField" p:propertyName="subAgendaId" />
+        <bean parent="Uif-DataField" p:propertyName="whenTrueId" />
+        <bean parent="Uif-DataField" p:propertyName="whenFalseId" />
+        <bean parent="Uif-DataField" p:propertyName="alwaysId" />
       </list>
     </property>
   </bean>

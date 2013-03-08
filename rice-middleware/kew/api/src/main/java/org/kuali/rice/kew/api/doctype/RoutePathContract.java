@@ -18,8 +18,6 @@ package org.kuali.rice.kew.api.doctype;
 import java.util.List;
 
 /**
- * TODO ewestfal don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RoutePathContract {

@@ -110,6 +110,14 @@
       	</annotation>
       </element>
 
+      <element name="authorizer" type="c:ShortStringType" minOccurs="0">
+        <annotation>
+            <documentation>
+                The class or service name of the DocumentTypeAuthorizer used to authorize routing actions
+            </documentation>
+        </annotation>
+      </element>
+
       <element name="superUserGroupName" type="c:GroupNameType" minOccurs="0">
       	<annotation>
       		<documentation>

@@ -17,6 +17,7 @@ package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -232,7 +233,9 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     			if (fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
     				String encryptedValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
     				try {
-    					fieldValue = getEncryptionService().decrypt(encryptedValue);
+                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+    					    fieldValue = getEncryptionService().decrypt(encryptedValue);
+                        }
     				}
     				catch (GeneralSecurityException e) {
             			LOG.error("Error decrypting value for business object " + getBusinessObjectService() + " attribute " + fieldName, e);

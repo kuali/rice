@@ -20,10 +20,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * Data access object for working with service registry data.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface ServiceRegistryDao {
 

@@ -276,7 +276,13 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         query.setParameter("documentId", documentId);
         return (String) query.getSingleResult(); 
  	 }
-    
+
+    public String getAppDocStatus(String documentId) {
+        Query query = entityManager.createNamedQuery("DocumentRouteHeaderValue.GetAppDocStatus");
+        query.setParameter("documentId", documentId);
+        return (String) query.getSingleResult();
+    }
+
     public void save(SearchableAttributeValue searchableAttributeValue) {   	
     	if (searchableAttributeValue.getSearchableAttributeValueId() == null){
     		entityManager.persist(searchableAttributeValue);

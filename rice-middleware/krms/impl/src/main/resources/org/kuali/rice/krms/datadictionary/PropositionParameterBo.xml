@@ -112,11 +112,11 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="id" />
-        <bean parent="Uif-InputField" p:propertyName="description" />
-        <bean parent="Uif-InputField" p:propertyName="ruleId" />
-        <bean parent="Uif-InputField" p:propertyName="typeId" />
-        <bean parent="Uif-InputField" p:propertyName="propositionTypeCode" />
+        <bean parent="Uif-DataField" p:propertyName="id" />
+        <bean parent="Uif-DataField" p:propertyName="description" />
+        <bean parent="Uif-DataField" p:propertyName="ruleId" />
+        <bean parent="Uif-DataField" p:propertyName="typeId" />
+        <bean parent="Uif-DataField" p:propertyName="propositionTypeCode" />
       </list>
     </property>
   </bean>

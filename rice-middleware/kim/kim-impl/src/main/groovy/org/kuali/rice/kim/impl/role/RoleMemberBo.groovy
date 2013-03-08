@@ -50,6 +50,10 @@ import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.krad.service.KRADServiceLocator
 import org.apache.commons.lang.ObjectUtils;
 
+/**
+ * The column names have been used in a native query in RoleDaoOjb and will need to be modified if any changes to the
+ * column names are made here.
+ */
 @Entity
 @Table(name = "KRIM_ROLE_MBR_T")
 public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract {

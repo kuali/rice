@@ -32,6 +32,7 @@ import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.identity.Person
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.framework.group.GroupEbo
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
@@ -204,6 +205,13 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupEbo {
     }
 
     public KimTypeBo getKimTypeInfo() {
-        return KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(this.kimTypeId))
+        if (this.kimTypeId == null) {
+            return null
+        }
+        KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType(this.kimTypeId)
+        if (type == null) {
+            return null
+        }
+        return KimTypeBo.from(type)
     }
 }

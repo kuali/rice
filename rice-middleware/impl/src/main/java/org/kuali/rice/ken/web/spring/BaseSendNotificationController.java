@@ -17,7 +17,7 @@ package org.kuali.rice.ken.web.spring;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.ken.exception.ErrorList;
@@ -26,6 +26,7 @@ import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -125,5 +126,15 @@ public class BaseSendNotificationController extends MultiActionController {
        			return true;
        		}
     	}
+    }
+    protected String getPrincipalIdFromIdOrName(String principalIdOrName) {
+        Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalIdOrName);
+        if (principal == null) {
+            principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalIdOrName);
+        }
+        if (principal == null) {
+            throw new RiceIllegalArgumentException("Could not locate a principal as initiator with the given remoteUser of " + principalIdOrName);
+        }
+        return principal.getPrincipalId();
     }
 }

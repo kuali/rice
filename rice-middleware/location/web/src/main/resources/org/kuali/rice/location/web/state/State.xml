@@ -28,7 +28,7 @@
     <property name="lookupDefinition">
       <ref bean="State-lookupDefinition"/>
     </property>
-    <property name="titleAttribute" value="stateCode"/>
+    <property name="titleAttribute" value="code"/>
     <property name="objectLabel" value="State"/>
     <property name="attributes">
       <list>

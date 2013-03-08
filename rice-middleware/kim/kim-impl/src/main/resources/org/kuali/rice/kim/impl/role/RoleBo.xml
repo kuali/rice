@@ -370,13 +370,13 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="kimRoleType.name"/>
-        <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
-        <bean parent="Uif-InputField" p:propertyName="name">
+        <bean parent="Uif-DataField" p:propertyName="kimRoleType.name"/>
+        <bean parent="Uif-DataField" p:propertyName="namespaceCode"/>
+        <bean parent="Uif-DataField" p:propertyName="name">
            <property name="inquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
            <property name="inquiry.inquiryParameters" value="id:id"/>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="description"/>
+        <bean parent="Uif-DataField" p:propertyName="description"/>
       </list>
     </property>
   </bean>

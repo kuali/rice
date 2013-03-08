@@ -56,6 +56,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -343,13 +344,16 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
                         StringBuffer criteria = new StringBuffer();
 
-                        List<String> params = new ArrayList<String>();
+                        List<String> params1 = new ArrayList<String>();
+                        List<String> params2 = new ArrayList<String>();
+
                         if (roleIDs != null && !roleIDs.isEmpty()) {
                             criteria.append("A0.ROLE_ID IN (");
 
                             for (String roleId : roleIDs) {
                                 criteria.append("?,");
-                                params.add(roleId);
+                                params1.add(roleId);
+                                params2.add(roleId);
                             }
                             criteria.deleteCharAt(criteria.length() - 1);
                             criteria.append(")");
@@ -361,7 +365,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                             }
 
                             criteria.append("A0.MBR_TYP_CD = ?");
-                            params.add(memberTypeCd);
+                            params1.add(memberTypeCd);
+                            params2.add(memberTypeCd);
                         }
 
                         // Assuming that at least a role id or role member type code is specified
@@ -389,8 +394,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                                 if (StringUtils.isNotEmpty(qualifier.getValue())) {
                                     String value = (qualifier.getValue()).replace('*', '%');
                                     sql1.append(" (B1.ATTR_VAL LIKE ? AND B1.KIM_ATTR_DEFN_ID = ? ) ");
-                                    params.add(value);
-                                    params.add(qualifier.getKey());
+                                    params1.add(value);
+                                    params1.add(qualifier.getKey());
                                 }
                                 sql1.append("OR");
                             }
@@ -410,13 +415,13 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
                         PreparedStatement statement = connection.prepareStatement(sql.toString());
                         int i = 1;
-                        for (String param : params) {
+                        for (String param : params1) {
                             statement.setString(i, param);
                             i++;
                         }
 
                         if (sql2.length() > 0) {
-                            for (String param : params) {
+                            for (String param : params2) {
                                 statement.setString(i, param);
                                 i++;
                             }
@@ -431,14 +436,15 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                 try {
                     RoleMemberBo lastRoleMember = null;
                     while (rs.next()) {
+                        boolean processRolemember = true;
 
                         String roleId = rs.getString("ROLE_ID");
                         String id = rs.getString("ROLE_MBR_ID");
                         String memberId = rs.getString("MBR_ID");
 
                         MemberType memberType = MemberType.fromCode(rs.getString("MBR_TYP_CD"));
-                        DateTime activeFromDate = new DateTime(rs.getDate("ROLE_MBR_ACTV_FRM_DT"));
-                        DateTime activeToDate = new DateTime(rs.getDate("ROLE_MBR_ACTV_TO_DT"));
+                        DateTime activeFromDate = rs.getDate("ROLE_MBR_ACTV_FRM_DT") == null ? null: new DateTime(rs.getDate("ROLE_MBR_ACTV_FRM_DT"));
+                        DateTime activeToDate =   rs.getDate("ROLE_MBR_ACTV_TO_DT") == null ? null: new DateTime(rs.getDate("ROLE_MBR_ACTV_TO_DT"));
 
                         // Since we are joining role members and attributes we would have multiple role member rows
                         // but one row per attribute so check if its the first time we are seeing the role member
@@ -454,7 +460,11 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                             List<RoleMemberAttributeDataBo> roleMemAttrBos = new ArrayList<RoleMemberAttributeDataBo>();
 
                             roleMemberBo.setAttributeDetails(roleMemAttrBos);
-                            roleMemberBos.add(roleMemberBo);
+                            if(roleMemberBo.isActive(new Timestamp(System.currentTimeMillis()))){
+                                roleMemberBos.add(roleMemberBo);
+                            } else {
+                                processRolemember = false;
+                            }
 
                             lastRoleMember = roleMemberBo;
                         }
@@ -462,7 +472,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                         String kimTypeId = rs.getString("KIM_TYP_ID");
                         String attrKey = rs.getString("KIM_ATTR_DEFN_ID");
                         String attrVal = rs.getString("ATTR_VAL");
-                        if (StringUtils.isNotEmpty(kimTypeId)) {
+                        if (processRolemember && StringUtils.isNotEmpty(kimTypeId)) {
                             KimType theType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
                             // Create RoleMemberAttributeDataBo for this row
                             RoleMemberAttributeDataBo roleMemAttrDataBo = new RoleMemberAttributeDataBo();

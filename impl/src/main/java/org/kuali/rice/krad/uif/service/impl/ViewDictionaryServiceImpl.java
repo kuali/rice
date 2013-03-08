@@ -144,9 +144,6 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
                     multipleValueSelectSpecifiedOnURL = true;
                 }
             }
-        }
-
-        if (ObjectUtils.isNotNull(lookupForm)) {
             lookupView = (LookupView)lookupForm.getView();
         } else {
             Map<String, String> indexKey = new HashMap<String, String>();

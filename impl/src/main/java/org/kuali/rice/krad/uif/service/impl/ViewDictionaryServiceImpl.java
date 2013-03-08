@@ -128,7 +128,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
      *      org.kuali.rice.krad.web.form.LookupForm)
      *
      *      If the form is null, only the dataObjectClass will be used to find the LookupView and corresponding
-     *      results set limit
+     *      results set limit.  Since the viewID is not known, the default view will be used.
      */
     @Override
     public Integer getResultSetLimitForLookup(Class<?> dataObjectClass, LookupForm lookupForm) {
@@ -136,7 +136,10 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
         boolean multipleValueSelectSpecifiedOnURL = false;
 
         if (ObjectUtils.isNotNull(lookupForm)) {
-            if (lookupForm.getViewRequestParameters().containsKey(UifParameters.MULTIPLE_VALUES_SELECT)) {
+            if (lookupForm.isMultipleValuesSelect()) {
+                multipleValueSelectSpecifiedOnURL = true;
+            }
+            if (!multipleValueSelectSpecifiedOnURL && lookupForm.getViewRequestParameters().containsKey(UifParameters.MULTIPLE_VALUES_SELECT)) {
                 String multiValueSelect = lookupForm.getViewRequestParameters().get(
                         UifParameters.MULTIPLE_VALUES_SELECT);
                 if (multiValueSelect.equalsIgnoreCase("true")) {
@@ -145,15 +148,13 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
             }
         }
 
-        if (ObjectUtils.isNotNull(lookupForm) && ObjectUtils.isNotNull(lookupForm.getViewId())) {
-            View lookupViewforId = getDataDictionary().getViewById(lookupForm.getViewId());
-            if (lookupViewforId != null) {
-                LookupView lView = (LookupView) lookupViewforId;
-                lookupView = lView;
-            }
+        if (ObjectUtils.isNotNull(lookupForm)) {
+            lookupView = (LookupView)lookupForm.getView();
         } else {
-            lookupView = getLimitForLookupBasedOnlyOnDataObjectClass(dataObjectClass);
-        }
+            Map<String, String> indexKey = new HashMap<String, String>();
+            indexKey.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
+            indexKey.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClass.getName());
+            lookupView = (LookupView)getDataDictionary().getViewByTypeIndex(ViewType.LOOKUP, indexKey);        }
 
         if (lookupView != null) {
             if (lookupView.isMultipleValuesSelect() || multipleValueSelectSpecifiedOnURL) {
@@ -163,25 +164,6 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
             }
         }
         return null;
-    }
-
-    protected LookupView getLimitForLookupBasedOnlyOnDataObjectClass(Class<?> dataObjectClass) {
-        LookupView lookupView = null;
-        List<View> lookupViews = getDataDictionary().getViewsForType(UifConstants.ViewType.LOOKUP);
-        for (View view : lookupViews) {
-            LookupView lView = (LookupView) view;
-            if (StringUtils.equals(lView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
-                // if we already found a lookup view, only override if this is the default
-                if (lookupView != null) {
-                    if (StringUtils.equals(lView.getViewName(), UifConstants.DEFAULT_VIEW_NAME)) {
-                        lookupView = lView;
-                    }
-                } else {
-                    lookupView = lView;
-                }
-            }
-        }
-        return lookupView;
     }
 
     protected DataDictionary getDataDictionary() {

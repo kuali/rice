@@ -26,14 +26,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
-
 import com.thoughtworks.selenium.Selenium;
-
-import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.MainMenuLookupITBase;
-import edu.samplu.common.MenuITBase;
-import edu.samplu.common.UpgradedSeleniumITBase;
 
 /**
  * TODO vchauhan don't forget to fill this in.

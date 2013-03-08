@@ -16,7 +16,6 @@
 package edu.samplu.travel.test;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;

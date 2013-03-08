@@ -56,7 +56,7 @@ public class BreadcrumbOptions implements Serializable {
      *
      * @return true if rendering the view breadcrumb, false otherwise
      */
-    @BeanTagAttribute(name="renderViewBreadcrumb")
+    @BeanTagAttribute(name = "renderViewBreadcrumb")
     public boolean isRenderViewBreadcrumb() {
         return renderViewBreadcrumb;
     }
@@ -75,7 +75,7 @@ public class BreadcrumbOptions implements Serializable {
      *
      * @return true if rendering preViewBreadcrumbs, false otherwise
      */
-    @BeanTagAttribute(name="renderPreViewBreadcrumbs")
+    @BeanTagAttribute(name = "renderPreViewBreadcrumbs")
     public boolean isRenderPreViewBreadcrumbs() {
         return renderPreViewBreadcrumbs;
     }
@@ -94,7 +94,7 @@ public class BreadcrumbOptions implements Serializable {
      *
      * @return true if rendering prePageBreadcrumbs, false otherwise
      */
-    @BeanTagAttribute(name="renderPrePageBreadcrumbs")
+    @BeanTagAttribute(name = "renderPrePageBreadcrumbs")
     public boolean isRenderPrePageBreadcrumbs() {
         return renderPrePageBreadcrumbs;
     }
@@ -114,7 +114,7 @@ public class BreadcrumbOptions implements Serializable {
      *
      * @return true if rendering the parent location breadcrumbs, false otherwise
      */
-    @BeanTagAttribute(name="renderParentLocations")
+    @BeanTagAttribute(name = "renderParentLocations")
     public boolean isRenderParentLocations() {
         return renderParentLocations;
     }
@@ -134,7 +134,7 @@ public class BreadcrumbOptions implements Serializable {
      *
      * @return the preViewBreadcrumbs to render
      */
-    @BeanTagAttribute(name="preViewBreadcrumbs", type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "preViewBreadcrumbs", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<BreadcrumbItem> getPreViewBreadcrumbs() {
         return preViewBreadcrumbs;
     }
@@ -154,7 +154,7 @@ public class BreadcrumbOptions implements Serializable {
      *
      * @return the preViewBreadcrumbs to render
      */
-    @BeanTagAttribute(name="prePageBreadcrumbs", type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "prePageBreadcrumbs", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<BreadcrumbItem> getPrePageBreadcrumbs() {
         return prePageBreadcrumbs;
     }
@@ -182,7 +182,7 @@ public class BreadcrumbOptions implements Serializable {
      *
      * @return the breadcrumbOverride list
      */
-    @BeanTagAttribute(name="breadcrumbOverrides", type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "breadcrumbOverrides", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<BreadcrumbItem> getBreadcrumbOverrides() {
         return breadcrumbOverrides;
     }

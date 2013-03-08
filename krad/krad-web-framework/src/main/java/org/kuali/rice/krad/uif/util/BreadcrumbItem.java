@@ -66,13 +66,14 @@ public class BreadcrumbItem extends ContentElementBase {
      *
      * @return the label
      */
-    @BeanTagAttribute(name="label")
+    @BeanTagAttribute(name = "label")
     public String getLabel() {
         return label;
     }
 
     /**
-     * Set the label for this breadcrumbItem.  The label is the textual content that will be displayed for the breadcrumb.
+     * Set the label for this breadcrumbItem.  The label is the textual content that will be displayed for the
+     * breadcrumb.
      *
      * @param label
      */
@@ -85,7 +86,7 @@ public class BreadcrumbItem extends ContentElementBase {
      *
      * @return the url object
      */
-    @BeanTagAttribute(name="url")
+    @BeanTagAttribute(name = "url")
     public KradUrl getUrl() {
         return url;
     }
@@ -105,7 +106,7 @@ public class BreadcrumbItem extends ContentElementBase {
      *
      * @return the sibling component to appear in a popup menu
      */
-    @BeanTagAttribute(name="siblingBreadcrumbComponent", type=BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "siblingBreadcrumbComponent", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Component getSiblingBreadcrumbComponent() {
         return siblingBreadcrumbComponent;
     }
@@ -125,7 +126,7 @@ public class BreadcrumbItem extends ContentElementBase {
      *
      * @return true if rendering as a link, false otherwise
      */
-    @BeanTagAttribute(name="renderAsLink")
+    @BeanTagAttribute(name = "renderAsLink")
     public boolean isRenderAsLink() {
         return renderAsLink;
     }

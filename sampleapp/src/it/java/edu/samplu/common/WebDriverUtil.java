@@ -17,6 +17,7 @@
 package edu.samplu.common;
 
 import org.junit.rules.TestName;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 
@@ -93,4 +94,12 @@ public class WebDriverUtil {
         }
         return null;
     }
+
+    public static void waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        Thread.sleep(1000);
+        driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visiable or enabled.
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    }
+
 }

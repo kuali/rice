@@ -15,24 +15,8 @@
  */
 package edu.samplu.common;
 
+import edu.samplu.admin.test.AdminMenuNavITBase;
 import org.apache.commons.lang.RandomStringUtils;
-
-import static com.thoughtworks.selenium.SeleneseTestBase.fail;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
@@ -40,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -52,9 +35,20 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import edu.samplu.admin.test.AdminMenuNavITBase;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import static com.thoughtworks.selenium.SeleneseTestBase.fail;
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Class to upgrade UpgradedSeleniumITBase tests to WebDriver.
@@ -124,9 +118,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     @After
     public void tearDown() throws Exception {
         try {
-            //            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
-            //                SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
-            //            }
+//            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
+//                SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+//            }
             if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
                 getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
                         + this.toString() + "&user=" + user));
@@ -546,15 +540,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      * @throws InterruptedException
      */
     private void waitFor(By by, String message) throws InterruptedException {
-        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
-        Thread.sleep(1000);
-        driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visiable or enabled.
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
     }
 
     protected void jiraAwareWaitFor(By by, String message) throws InterruptedException {
         try {
-            waitFor(by, message);
+            WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
         } catch (Throwable t) {
             ITUtil.failOnMatchedJira(by.toString());
         }
@@ -600,6 +591,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitAndClickByXpath(String xpath, String message) throws InterruptedException {
         jiraAwareWaitAndClick(By.xpath(xpath), message);
+    }
+
+    protected void waitAndClickMainMenu() throws InterruptedException {
+        waitAndClickByLinkText("Main Menu");
+    }
+
+    protected void waitAndClickLogout() throws InterruptedException {
+         waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
     }
 
     protected void waitAndType(By by, String text) throws InterruptedException {

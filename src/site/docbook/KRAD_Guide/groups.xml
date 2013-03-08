@@ -2133,29 +2133,6 @@ public class Test2Object {
           content you would like to use for the content of details. The input and data fields used
           in this group will automatically inherit the necessary collection binding path just like
           items of the collection itself</para>
-        <para><emphasis role="bold">rowDetailsLinkName</emphasis> – this is the name of the link if an image is not being used. </para>
-        <para><emphasis role="bold">rowDetailsSwapActionImage</emphasis> – this will use an image
-          instead of text for the link. This link with be a + sign when closed and an – sign when
-          opened. If neither a name nor images are set to be used, the link will be called "Details"
-          by default. </para>
-        <para>Sample code using the images option, the group defined is a vertical box group with 2
-          input fields, which are fields of the collection item: </para>
-        <programlisting>&lt;bean id=&quot;Demo-RowDetails-Section2&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
-...
-   &lt;property name=&quot;layoutManager.rowDetailsSwapActionImage&quot; value=&quot;true&quot;/&gt;
-    &lt;property name=&quot;layoutManager.rowDetailsGroup&quot;&gt;
-      &lt;bean parent=&quot;Uif-VerticalBoxGroup&quot;&gt;
-        &lt;property name=&quot;items&quot;&gt;
-          &lt;list&gt;
-            &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field3&quot; p:label=&quot;Field 3&quot;
-                  p:required=&quot;true&quot;/&gt;
-            &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field4&quot; p:label=&quot;Field 4&quot;
-                  p:required=&quot;true&quot;/&gt;
-          &lt;/list&gt;
-        &lt;/property&gt;
-      &lt;/bean&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;</programlisting>
         <para><emphasis role="bold">A note on column width: </emphasis> If you would like the details column to take up less space than it does by default, you must manually alter the column width as follows (20px is the width we are manually setting here and 0 is the index of the details column):</para>
         <programlisting>&lt;property name=&quot;layoutManager.applyDefaultCellWidths&quot; value=&quot;false&quot;/&gt;
     &lt;property name=&quot;layoutManager.richTable.templateOptions&quot;&gt;

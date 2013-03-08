@@ -98,8 +98,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     //row details properties
     private Group rowDetailsGroup;
-    private String rowDetailsLinkName = "Details";
-    private boolean rowDetailsSwapActionImage;
     private boolean rowDetailsOpen;
     private boolean showToggleAllDetails;
     private Action toggleAllDetailsAction;
@@ -1433,45 +1431,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * Name of the link for displaying row details in a TableLayoutManager CollectionGroup
-     *
-     * @return name of the link
-     */
-    @BeanTagAttribute(name = "rowDetailsLinkName")
-    public String getRowDetailsLinkName() {
-        return rowDetailsLinkName;
-    }
-
-    /**
-     * Row details link name
-     *
-     * @param rowDetailsLinkName name of the details link
-     */
-    public void setRowDetailsLinkName(String rowDetailsLinkName) {
-        this.rowDetailsLinkName = rowDetailsLinkName;
-    }
-
-    /**
-     * If true, the row details link will use an image instead of a link to display row details in
-     * a TableLayoutManager CollectionGroup
-     *
-     * @return true if displaying an image instead of a link for row details
-     */
-    @BeanTagAttribute(name = "rowDetailsSwapActionImage")
-    public boolean isRowDetailsSwapActionImage() {
-        return rowDetailsSwapActionImage;
-    }
-
-    /**
-     * Sets row details link use image flag
-     *
-     * @param rowDetailsSwapActionImage true to use image for details, false otherwise
-     */
-    public void setRowDetailsSwapActionImage(boolean rowDetailsSwapActionImage) {
-        this.rowDetailsSwapActionImage = rowDetailsSwapActionImage;
-    }
-
-    /**
      * Creates the details group for the line using the information setup through the setter methods of this
      * interface.  Line details are currently only supported in TableLayoutManagers which use richTable.
      *
@@ -1499,7 +1458,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         Action rowDetailsAction = this.getExpandDetailsActionPrototype();
         rowDetailsAction.addDataAttribute("role", "detailsLink");
-        rowDetailsAction.addDataAttribute("swap", Boolean.toString(this.isRowDetailsSwapActionImage()));
         rowDetailsAction.setId(collectionGroup.getId() + "_detLink");
 
         List<Component> detailsItems = new ArrayList<Component>();

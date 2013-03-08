@@ -14775,12 +14775,6 @@
  as the table header or the regular label]]></xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element maxOccurs="1" minOccurs="0" name="rowDetailsLinkName" type="xsd:string">
-        <xsd:annotation>
-          <xsd:documentation source="org.kuali.rice.krad.uif.layout.TableLayoutManager" xml:lang="en">
-            <![CDATA[Name of the link for displaying row details in a TableLayoutManager CollectionGroup]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
       <xsd:element maxOccurs="1" minOccurs="0" name="hiddenColumns" type="basicList-type">
         <xsd:annotation>
           <xsd:documentation source="org.kuali.rice.krad.uif.layout.TableLayoutManager" xml:lang="en"><![CDATA[Holds propertyNames for the ones meant to be hidden since columns are visible by default
@@ -15080,12 +15074,6 @@
  ]]></xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element maxOccurs="1" minOccurs="0" name="rowDetailsSwapActionImage" type="xsd:string">
-        <xsd:annotation>
-          <xsd:documentation source="org.kuali.rice.krad.uif.layout.TableLayoutManager" xml:lang="en"><![CDATA[If true, the row details link will use an image instead of a link to display row details in
- a TableLayoutManager CollectionGroup]]></xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
       <xsd:element maxOccurs="1" minOccurs="0" name="generateAutoSequence" type="xsd:string">
         <xsd:annotation>
           <xsd:documentation source="org.kuali.rice.krad.uif.layout.TableLayoutManager" xml:lang="en"><![CDATA[Indicates whether the sequence field should be generated with the current
@@ -15211,12 +15199,6 @@
       <xsd:annotation>
         <xsd:documentation source="org.kuali.rice.krad.uif.layout.TableLayoutManager" xml:lang="en"><![CDATA[Indicates whether the short label for the collection field should be used
  as the table header or the regular label]]></xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="rowDetailsLinkName">
-      <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.layout.TableLayoutManager" xml:lang="en">
-          <![CDATA[Name of the link for displaying row details in a TableLayoutManager CollectionGroup]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="hiddenColumns">
@@ -15486,12 +15468,6 @@
  org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel() and the add line actions will
  be placed into the group's footer.
  ]]></xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="rowDetailsSwapActionImage">
-      <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.layout.TableLayoutManager" xml:lang="en"><![CDATA[If true, the row details link will use an image instead of a link to display row details in
- a TableLayoutManager CollectionGroup]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="generateAutoSequence">

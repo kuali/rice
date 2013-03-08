@@ -884,6 +884,9 @@ function openHelpWindow(url) {
  */
 function uppercaseValue(controlId) {
     jQuery("#" + controlId).css('text-transform', 'uppercase');
+    jQuery("#" + controlId).change(function() {
+        this.value = this.value.toUpperCase();
+    });
 }
 
 /**

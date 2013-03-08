@@ -39,11 +39,6 @@
         DOC_TYP_LBL="Travel Request" DOC_TYP_NM="TravelRequest"
         DTYPE="ActionItem" PRNCPL_ID="supervisor"
         ROLE_NM="supervisr supervisr" RQST_CD="K" RSP_ID="0" VER_NBR="1"/>
-    <KREW_ACTN_ITM_T ACTN_ITM_ID="10040" ACTN_RQST_ID="2121"
-        ASND_DT="20080924105519" DOC_HDLR_URL="none" DOC_HDR_ID="2283"
-        DOC_TYP_LBL="SampleThinClientDocument"
-        DOC_TYP_NM="SampleThinClientDocument" DTYPE="ActionItem"
-        PRNCPL_ID="admin" RQST_CD="A" RSP_ID="-1" VER_NBR="1"/>
     <KREW_ACTN_ITM_T ACTN_ITM_ID="10080" ACTN_RQST_ID="2160"
         ASND_DT="20081001102816"
         DOC_HDLR_URL="http://localhost:8080/kr-dev/travelDocument2.do?methodToCall=docHandler"

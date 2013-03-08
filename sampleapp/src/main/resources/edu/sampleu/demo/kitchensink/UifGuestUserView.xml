@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="UifGuestUserView" parent="Uif-FormView">
+  <bean id="UifGuestUserView" parent="Demo-BaseFormView">
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="headerText" value="View that can be opened by guests without login."/>
     <property name="items">

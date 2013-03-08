@@ -21,9 +21,7 @@
     <@krad.div component=view>
 
         <!-- BREADCRUMBS -->
-        <#if view.renderBreadcrumbsInView>
-            <@krad.template component=view.breadcrumbs/>
-        </#if>
+        <div id="Uif-BreadcrumbWrapper"></div>
 
         <!-- VIEW HEADER -->
         <@krad.template component=view.header/>

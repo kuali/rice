@@ -16,44 +16,33 @@
 /** Navigation */
 
 /**
- * Sets the breadcrumb to whatever the current page is, if this view has page navigation
- * Pages are handled by js on the breadcrumb because the page retrieval happens through
- * ajax
+ * Setup the breadcrumbs for this view by replacing the old breadcrumbs with the newest from the page
+ *
+ * @param displayBreadcrumbsWhenOne display the breadcrumbs when there is only one when true, otherwise do not
  */
-function setPageBreadcrumb() {
-    // check to see if page has navigation element, if so show breadcrumb
-    if (jQuery("#Uif-Navigation").html() && jQuery("#breadcrumbs").length) {
-        var pageTitle = jQuery("#pageTitle").val();
-        var pageId = jQuery("#pageId").val();
+function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
+    //clear the old breadcrumbs
+    jQuery("div#Uif-BreadcrumbWrapper").empty();
 
-        jQuery("#breadcrumbs").find("#page_breadcrumb").remove();
+    //find the new ones
+    var breadcrumbList = jQuery("div#Uif-BreadcrumbUpdate > ol").detach();
+    var items = breadcrumbList.find("> li");
 
-        // if page title not set attempt to find from navigation
-        if ((!pageTitle || pageTitle == "&nbsp;") && pageId) {
-            pageTitle = jQuery("a[name='" + escapeName(pageId) + "']").text();
-        }
-
-        if (pageTitle && pageTitle != "&nbsp;") {
-            jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
-            jQuery("#current_breadcrumb_span").hide();
-
-            if (jQuery("#current_breadcrumb_span").parent("li").length) {
-                jQuery("#current_breadcrumb_span").unwrap();
-            }
-
-            jQuery("#current_breadcrumb_anchor").wrap("<li/>");
-            jQuery("#current_breadcrumb_anchor").show();
-        }
-        else {
-            jQuery("#current_breadcrumb_anchor").hide();
-            if (jQuery("#current_breadcrumb_anchor").parent("li").length) {
-                jQuery("#current_breadcrumb_anchor").unwrap();
-            }
-
-            jQuery("#current_breadcrumb_span").wrap("<li/>");
-            jQuery("#current_breadcrumb_span").show();
-        }
+    //dont display if display when one is false and there is only one item
+    if(!displayBreadcrumbsWhenOne && items.length == 1){
+        return;
     }
+
+    //if the last item has a link, make it a span
+    var lastLink = items.last().find("> a");
+    if(lastLink.length){
+        lastLink.replaceWith(function(){
+            return jQuery("<span>" + jQuery(this).html() + "</span>");
+        });
+    }
+
+    //append to the wrapper
+    jQuery("div#Uif-BreadcrumbWrapper").append(breadcrumbList);
 }
 
 /**

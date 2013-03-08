@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="ClientDisableView" parent="Uif-FormView">
+  <bean id="ClientDisableView" parent="Demo-BaseFormView">
     <property name="headerText" value="Client-side Disable"/>
     <property name="items">
       <list>

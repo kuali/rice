@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="ConfigurationTestView-Collections" parent="Uif-FormView">
+  <bean id="ConfigurationTestView-Collections" parent="Demo-BaseFormView">
     <property name="headerText" value="Collection Test View"/>
     <property name="entryPageId" value="Collections-DefaultTests"/>
     <property name="navigation">

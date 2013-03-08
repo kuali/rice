@@ -141,7 +141,7 @@
     </property>
   </bean>
 
-  <bean id="KSFormView" parent="Uif-FormView" p:renderBreadcrumbsInView="false"
+  <bean id="KSFormView" parent="Uif-FormView" p:breadcrumbs.render="false"
         p:breadcrumbs.cssClasses="fl-container-flex75 fl-col breadcrumbs gutter-right">
     <property name="applicationHeader">
       <bean parent="Uif-HeaderOne" p:id="ks-banner" p:template="/WEB-INF/jsp/templates/StudentApplicationHeader.jsp"

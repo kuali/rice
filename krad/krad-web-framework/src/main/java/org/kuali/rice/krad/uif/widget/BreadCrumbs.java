@@ -38,14 +38,10 @@ import java.util.Map;
 public class BreadCrumbs extends WidgetBase {
     private static final long serialVersionUID = -2864287914665842251L;
 
-    private boolean displayHomewardPath;
-    private boolean displayPassedHistory;
     private boolean displayBreadcrumbsWhenOne;
 
-    private List<HistoryEntry> homewardPathList;
-
     public BreadCrumbs() {
-        homewardPathList = new ArrayList<HistoryEntry>();
+
     }
 
     /**
@@ -61,74 +57,6 @@ public class BreadCrumbs extends WidgetBase {
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
-
-        if (homewardPathList != null) {
-            Map<String, Object> context = new HashMap<String, Object>();
-            context.putAll(view.getContext());
-
-            for (HistoryEntry historyEntry : homewardPathList) {
-                ExpressionUtils.populatePropertyExpressionsFromGraph(historyEntry, false);
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
-                        historyEntry, model, context);
-            }
-        }
-    }
-
-    /**
-     * Determines if the homewardPath is to be displayed. Even when this is
-     * setting is on the code may determine to turn off homewardPath display
-     * based on user interaction and ui elements being displayed (ie lightbox)
-     *
-     * @return the displayHomewardPath
-     */
-    @BeanTagAttribute(name="displayHomewardPath")
-    public boolean isDisplayHomewardPath() {
-        return this.displayHomewardPath;
-    }
-
-    /**
-     * @param displayHomewardPath the displayHomewardPath to set
-     */
-    public void setDisplayHomewardPath(boolean displayHomewardPath) {
-        this.displayHomewardPath = displayHomewardPath;
-    }
-
-    /**
-     * Determines if the passedHistory is to be displayed. In most cases this
-     * should not be set through the xml as this is toggled off and on through
-     * code during different ui procedures.
-     *
-     * @return the displayPassedHistory
-     */
-    @BeanTagAttribute(name="displayPassedHistory")
-    public boolean isDisplayPassedHistory() {
-        return this.displayPassedHistory;
-    }
-
-    /**
-     * @param displayPassedHistory the displayPassedHistory to set
-     */
-    public void setDisplayPassedHistory(boolean displayPassedHistory) {
-        this.displayPassedHistory = displayPassedHistory;
-    }
-
-    /**
-     * The homewardPath to be displayed on this representative of the logical
-     * "location" of the view within the site hierarchy, can be set to anything
-     * desired.
-     *
-     * @return the homewardPathList
-     */
-    @BeanTagAttribute(name="homewardPathList",type= BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<HistoryEntry> getHomewardPathList() {
-        return this.homewardPathList;
-    }
-
-    /**
-     * @param homewardPathList the homewardPathList to set
-     */
-    public void setHomewardPathList(List<HistoryEntry> homewardPathList) {
-        this.homewardPathList = homewardPathList;
     }
 
     /**

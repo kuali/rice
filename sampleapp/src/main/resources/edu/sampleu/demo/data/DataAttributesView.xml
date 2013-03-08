@@ -27,7 +27,7 @@
             Data Attributes View -  for use in a selenium test to verify that data attributes for all controls are rendered ok
   ********************************************************************************************************************
   -->
-  <bean id="dataAttributesView_selenium" parent="Uif-FormView">
+  <bean id="dataAttributesView_selenium" parent="Demo-BaseFormView">
     <property name="headerText" value="Data Attributes View"/>
     <property name="entryPageId" value="dataAttributesView-Page1"/>
     <property name="navigation">

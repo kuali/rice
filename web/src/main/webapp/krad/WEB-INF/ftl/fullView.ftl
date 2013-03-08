@@ -48,8 +48,10 @@
         <@krad.script value="${KualiForm.lightboxScript!}"/>
 
         <#-- set focus and perform jump to -->
-        <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
-                                      '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
+        <#if KualiForm.view.currentPage?has_content>
+            <@krad.script value="performFocusAndJumpTo(${KualiForm.view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
+                                          '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
+        </#if>
 
     </div>
 

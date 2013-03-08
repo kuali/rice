@@ -696,4 +696,30 @@ public final class KRADUtils {
 
         return message;
     }
+
+    /**
+     * Generate the request parameter portion of the url based on the map of key value pairs passed in
+     *
+     * @param requestParameters the request parameters to use in the string
+     * @return a request parameter string starting with "?" with "&" separators, or blank if the mapped passed in is
+     * blank
+     */
+    public static String getRequestStringFromMap (Map<String,String> requestParameters){
+        String requestString = "";
+
+        if(requestParameters.isEmpty()){
+            return requestString;
+        }
+
+        for(String key: requestParameters.keySet()){
+            if(StringUtils.isNotBlank(requestString)){
+                requestString = requestString + "&" + key + "=" + requestParameters.get(key);
+            }
+            else{
+                requestString = key + "=" + requestParameters.get(key);
+            }
+        }
+
+        return "?" + requestString;
+    }
 }

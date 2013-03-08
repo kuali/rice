@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="ConfigurationTestView-Help" parent="Uif-FormView">
+  <bean id="ConfigurationTestView-Help" parent="Demo-BaseFormView">
     <property name="headerText" value="Configuration Test View - Help"/>
     <property name="namespaceCode" value="KR-SAP"/>
     <property name="items">

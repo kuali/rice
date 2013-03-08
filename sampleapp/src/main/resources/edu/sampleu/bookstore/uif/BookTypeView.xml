@@ -23,7 +23,7 @@
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="BookType-InquiryView" parent="Uif-FormView">
+  <bean id="BookType-InquiryView" parent="Demo-BaseFormView">
     <property name="id" value="BookType-InquiryView" />
     <property name="headerText" value="Book Type Inquiry" />
     <property name="navigation">

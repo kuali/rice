@@ -139,8 +139,8 @@ public class UifControllerHelper {
 
             processReturnLocationOverride(form);
 
-            history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
-            history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
+/*            history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
+            history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());*/
 
             // passed settings ALWAYS override the defaults
             if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))) {
@@ -155,7 +155,7 @@ public class UifControllerHelper {
                 history.setAppendPassedHistory(Boolean.parseBoolean(request.getParameter(
                         UifConstants.UrlParams.SHOW_HISTORY)));
             } else {
-                history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
+                /*history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());*/
             }
 
             history.buildCurrentEntryFromRequest(form, request);
@@ -177,7 +177,7 @@ public class UifControllerHelper {
             return;
         }
 
-        List<HistoryEntry> homewardPathList = new ArrayList<HistoryEntry>();
+/*        List<HistoryEntry> homewardPathList = new ArrayList<HistoryEntry>();
         if ((view != null) && (view.getBreadcrumbs() != null) &&
                 (view.getBreadcrumbs().getHomewardPathList() != null)) {
             homewardPathList = view.getBreadcrumbs().getHomewardPathList();
@@ -190,7 +190,7 @@ public class UifControllerHelper {
             homewardPathList.set(0, historyEntry);
         } else {
             homewardPathList.add(0, historyEntry);
-        }
+        }*/
     }
 
     /**

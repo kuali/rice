@@ -130,7 +130,6 @@
         <value>uif-view</value>
       </list>
     </property>
-    <property name="renderBreadcrumbsInView" value="true"/>
     <property name="viewTypeName" value="DEFAULT"/>
     <property name="viewName" value="default"/>
     <property name="viewHelperServiceClass"
@@ -142,7 +141,22 @@
     <property name="breadcrumbs">
       <bean parent="Uif-Breadcrumbs"/>
     </property>
-    <property name="breadcrumbTitleDisplayOption" value="dash"/>
+    <property name="breadcrumbOptions">
+      <bean parent="Uif-BreadcrumbOptions">
+        <property name="renderViewBreadcrumb" value="true"/>
+        <property name="renderPrePageBreadcrumbs" value="true"/>
+        <property name="renderPreViewBreadcrumbs" value="true"/>
+        <property name="renderParentLocations" value="true"/>
+      </bean>
+    </property>
+    <property name="breadcrumbItem">
+      <bean parent="Uif-BreadcrumbItem">
+        <property name="renderAsLink" value="true"/>
+      </bean>
+    </property>
+    <property name="parentLocation">
+      <bean parent="Uif-ParentLocation"/>
+    </property>
     <property name="growlMessagingEnabled" value="true"/>
     <property name="growls">
       <bean parent="Uif-Growls"/>
@@ -217,6 +231,19 @@
     </property>
     <property name="validationMessages">
       <bean parent="Uif-PageValidationMessages"/>
+    </property>
+    <property name="breadcrumbOptions">
+      <bean parent="Uif-BreadcrumbOptions">
+        <property name="renderViewBreadcrumb" value="true"/>
+        <property name="renderPrePageBreadcrumbs" value="true"/>
+        <property name="renderPreViewBreadcrumbs" value="true"/>
+        <property name="renderParentLocations" value="true"/>
+      </bean>
+    </property>
+    <property name="breadcrumbItem">
+      <bean parent="Uif-BreadcrumbItem">
+        <property name="renderAsLink" value="false"/>
+      </bean>
     </property>
     <property name="header">
       <bean parent="Uif-PageHeader">

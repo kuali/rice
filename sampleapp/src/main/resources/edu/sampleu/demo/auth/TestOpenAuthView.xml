@@ -30,7 +30,7 @@
                                            Test Open Auth View
   ********************************************************************************************************************
   -->
-  <bean id="TestOpenAuthView" parent="Uif-FormView">
+  <bean id="TestOpenAuthView" parent="Demo-BaseFormView">
     <property name="headerText" value="Test Open Authorization View"/>
     <property name="instructionalText" value="Editing of this view is controlled by a KIM permission."/>
     <property name="singlePageView" value="true"/>

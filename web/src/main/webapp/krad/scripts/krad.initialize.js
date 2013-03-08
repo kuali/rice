@@ -63,8 +63,6 @@ jQuery(document).ready(function () {
     //skip the page setup if we are performing a redirect
     skipPageSetup = pageRedirect;
 
-    setPageBreadcrumb();
-
     // buttons
     jQuery("input:submit, input:button, a.button, .uif-dialogButtons").button();
     jQuery(".uif-dialogButtons").next('label').addClass('uif-primaryDialogButton');

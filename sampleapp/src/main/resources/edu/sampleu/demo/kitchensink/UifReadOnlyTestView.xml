@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="Demo-ReadOnlyTestView" parent="Uif-FormView">
+  <bean id="Demo-ReadOnlyTestView" parent="Demo-BaseFormView">
     <property name="headerText" value="ReadOnly Test"/>
     <property name="items">
       <list>

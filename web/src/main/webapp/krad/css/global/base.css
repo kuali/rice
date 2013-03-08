@@ -266,29 +266,37 @@ img.uif-disclosure-image {
 
 /** Breadcrumbs *****************************************************************************************/
 
-.uif-breadcrumbs {
+ol.uif-breadcrumbs {
     display: block;
     letter-spacing: 0.02em;
-    padding: 3px 0 3px 15px;
+    padding: 6px 0 3px 15px;
 }
 
-.uif-breadcrumbs .kr-current {
+.uif-breadcrumbs > li > a {
+    text-decoration: none;
+}
+
+.uif-breadcrumbs > li:last-child > span, .uif-breadcrumbs > li:last-child > a{
     font-weight: bold;
 }
 
-.uif-breadcrumbs a {
+.uif-breadcrumbs > li > a:visited {
     text-decoration: none;
 }
 
-.uif-breadcrumbs a:visited {
-    text-decoration: none;
+.uif-breadcrumbs > li:after {
+    content: "\00BB";
 }
 
-.uif-breadcrumbs a:focus, .uif-breadcrumbs a:hover {
+.uif-breadcrumbs > li:last-child:after {
+    content: "";
+}
+
+.uif-breadcrumbs  > li > a:focus, .uif-breadcrumbs > li > a:hover {
     text-decoration: underline;
 }
 
-.uif-breadcrumbs ol, .uif-breadcrumbs li {
+ol.uif-breadcrumbs, .uif-breadcrumbs > li {
     display: inline;
     margin: 0;
     list-style: none;

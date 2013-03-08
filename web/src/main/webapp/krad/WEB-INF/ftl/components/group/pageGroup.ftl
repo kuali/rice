@@ -17,17 +17,16 @@
 -->
 <#macro uif_pageGroup group>
 
+    <div id="Uif-BreadcrumbUpdate" style="display:none;">
+        <@krad.template component=KualiForm.view.breadcrumbs page=group/>
+    </div>
+
     <#include "group.ftl" parse=true/>
     <@uif_group group=group/>
 
     <!-- PAGE RELATED VARS -->
     <#if KualiForm.view.renderForm>
-
         <@spring.formHiddenInput id="pageId" path="KualiForm.view.currentPageId"/>
-        <#if KualiForm.view.currentPage.header??>
-            <@spring.formHiddenInput id="pageTitle" path="KualiForm.view.currentPage.header.headerText"/>
-        </#if>
-
         <@spring.formHiddenInput id="historyParameterString" path="KualiForm.formHistory.historyParameterString"/>
 
     </#if>

@@ -145,10 +145,10 @@ Group component that is backed by a Tree data structure and typically
   </xsd:element>
   <xsd:element name="breadcrumbs-bean" type="breadcrumbs-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.widget.BreadCrumbs
+      <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[<![CDATA[Backing Class: org.kuali.rice.krad.uif.widget.Breadcrumbs
 
 The breadcrumb widget contains various settings for setting up
- Breadcrumb/History support on the view]]></xsd:documentation>
+ Breadcrumb/History support on the view]]>]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="helpDefinition-bean" type="helpDefinition-bean-type">

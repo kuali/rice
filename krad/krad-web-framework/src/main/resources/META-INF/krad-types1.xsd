@@ -6477,19 +6477,19 @@
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
           <xsd:element maxOccurs="1" minOccurs="0" name="onChangeScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onChange event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onChange event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyPressScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="refreshTimer" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Time in seconds that the component will be automatically refreshed
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Time in seconds that the component will be automatically refreshed
 
  
  This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
@@ -6499,7 +6499,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="disableSessionPersistence" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Disables the storage of the component in session (when the framework determines it needs to be due to a
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Disables the storage of the component in session (when the framework determines it needs to be due to a
  refresh condition)
 
  
@@ -6511,13 +6511,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onDblClickScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onDblClick event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onDblClick event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalComponentsToRefresh" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Returns a list of componentIds which will be also be refreshed when this component is refreshed
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Returns a list of componentIds which will be also be refreshed when this component is refreshed
 
  
  This will be a comma separated list of componentIds that need to be refreshed when a refresh
@@ -6527,13 +6527,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onBlurScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en">
                 <![CDATA[Script that should be executed when the component's onBlur event is fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="selfRendered" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Indicates whether the component contains its own render output (through
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Indicates whether the component contains its own render output (through
  the renderOutput property)
 
  
@@ -6545,7 +6545,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="required" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Indicates whether the component is required
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Indicates whether the component is required
 
  
  At the general component level required means there is some action the
@@ -6558,7 +6558,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodToCall" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[The name of the method that should be invoked for finalizing the component
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[The name of the method that should be invoked for finalizing the component
  configuration (full method name, without parameters or return type)
 
  
@@ -6583,19 +6583,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="resetDataOnRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
  component is refreshed]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyDownScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyDown event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyDown event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="template" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[The path to the JSP file that should be called to render the component
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[The path to the JSP file that should be called to render the component
 
  
  The path should be relative to the web root. An attribute will be available to the component to use under the
@@ -6610,7 +6610,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="homewardPathList">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[The homewardPath to be displayed on this representative of the logical
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[The homewardPath to be displayed on this representative of the logical
  "location" of the view within the site hierarchy, can be set to anything
  desired.]]></xsd:documentation>
             </xsd:annotation>
@@ -6624,7 +6624,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="align" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
 
  
  All components belong to a Container and are placed using a
@@ -6636,7 +6636,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="width" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Width the component should take up in the container
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Width the component should take up in the container
 
  
  All components belong to a Container and are placed using a
@@ -6653,19 +6653,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseDownScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onClickScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onClick event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onClick event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="render" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Indicates whether the component should be rendered in the UI
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Indicates whether the component should be rendered in the UI
 
  
  If set to false, the corresponding component template will not be invoked
@@ -6675,13 +6675,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onLoadScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en">
                 <![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="methodToCallOnRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Name of a method on the controller that should be invoked as part of the component refresh and disclosure
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Name of a method on the controller that should be invoked as part of the component refresh and disclosure
  process
 
  
@@ -6699,7 +6699,7 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodInvoker"
                        type="org.kuali.rice.krad.uif.component.MethodInvokerConfig">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
  for finalizing the component configuration
 
  
@@ -6718,14 +6718,14 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="displayPassedHistory" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Determines if the passedHistory is to be displayed. In most cases this
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Determines if the passedHistory is to be displayed. In most cases this
  should not be set through the xml as this is toggled off and on through
  code during different ui procedures.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="componentModifiers">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[ComponentModifier instances that should be invoked to
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[ComponentModifier instances that should be invoked to
  initialize the component
 
  
@@ -6744,13 +6744,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="componentCode" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
 
  They will be evaluated
  during the view lifecycle to conditionally set properties on the
@@ -6766,13 +6766,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en">
                 <![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="refreshWhenChangedPropertyNames" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Specifies a property by name that when its value changes will automatically perform
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Specifies a property by name that when its value changes will automatically perform
  a refresh on this component
 
  
@@ -6786,25 +6786,25 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseUpScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseUp event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseUp event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="renderedHtmlOutput" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
  response (can contain static text and HTML)]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyUpScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="colSpan" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Number of places the component should take up horizontally in the
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Number of places the component should take up horizontally in the
  container
 
  
@@ -6821,13 +6821,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onCloseScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onClose event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onClose event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="id" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[The unique id (within a given tree) for the component
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[The unique id (within a given tree) for the component
 
  
  The id will be used by renderers to set the HTML element id. This gives a way to find various elements
@@ -6837,7 +6837,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="title" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[The component title
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[The component title
 
  
  Depending on the component can be used in various ways. For example with a Container component the title is
@@ -6848,7 +6848,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="style" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[CSS style string to be applied to the component
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[CSS style string to be applied to the component
 
  
  Any style override or additions can be specified with this attribute.
@@ -6863,13 +6863,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="order" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
 
  The component MUST BE a container or field type. conditionalRefresh is
  defined in a limited Spring EL syntax. Only valid form property names,
@@ -6888,13 +6888,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodAdditionalArguments">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[The List of Object instances that should be passed as arguments to the finalize method
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[The List of Object instances that should be passed as arguments to the finalize method
 
  
  These arguments are passed to the finalize method after the standard model and component
@@ -6911,7 +6911,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Number of places the component should take up vertically in the container
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Number of places the component should take up vertically in the container
 
  
  All components belong to a Container and are placed using a
@@ -6927,13 +6927,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="namespaceCode" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRender" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST BE a
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST BE a
  container or field type. progressiveRender is defined in a limited Spring EL syntax. Only valid
  form property names, and, or, logical comparison operators (non-arithmetic), #listContains, #emptyList, matches
  clause are allowed. String and regex values must use single quotes ('), booleans must be either true or false,
@@ -6953,26 +6953,26 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateOptionsJSString" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options
  that will export that options as a JavaScript Map for use in js and
  jQuery plugins]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="displayBreadcrumbsWhenOne" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[If true, breadcrumbs will not be displayed if only one breadcrumb is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[If true, breadcrumbs will not be displayed if only one breadcrumb is
  going to be shown, this improves visual clarity of the page]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOutScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOut event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOut event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateOptions">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[The options that are passed through to the Component renderer
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[The options that are passed through to the Component renderer
 
  
  The Map key is the option name, with the Map value as the option value. See
@@ -6989,19 +6989,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="toolTip" type="org.kuali.rice.krad.uif.widget.Tooltip">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[The Tooltip widget that renders a tooltip with additional information about the element on
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[The Tooltip widget that renders a tooltip with additional information about the element on
  specified trigger event]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOverScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dataAttributes">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Get the dataAttributes setup for this component - to be written to the html/jQuery data
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Get the dataAttributes setup for this component - to be written to the html/jQuery data
 
  The attributes that are complex objects (contain {}) they will be written through script.
  The attritubes that are simple (contain no objects) will be written directly to the html of the
@@ -7019,13 +7019,13 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="componentSecurity"
                        type="org.kuali.rice.krad.uif.component.ComponentSecurity">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en">
                 <![CDATA[Security object that indicates what authorization (permissions) exist for the component]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="readOnly" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Indicates whether the component can be edited
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Indicates whether the component can be edited
 
  
  When readOnly the controls and widgets of Field components
@@ -7042,20 +7042,20 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="displayHomewardPath" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Determines if the homewardPath is to be displayed. Even when this is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Determines if the homewardPath is to be displayed. Even when this is
  setting is on the code may determine to turn off homewardPath display
  based on user interaction and ui elements being displayed (ie lightbox)]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseMoveScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseMove event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseMove event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderAndRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[If true, when the progressiveRender condition is satisfied, the component
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[If true, when the progressiveRender condition is satisfied, the component
  will always be retrieved from the server and shown(as opposed to being
  stored on the client, but hidden, after the first retrieval as is the
  case with the progressiveRenderViaAJAX option).
@@ -7067,7 +7067,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="hidden" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Indicates whether the component should be hidden in the UI
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Indicates whether the component should be hidden in the UI
 
  
  How the hidden data is maintained depends on the views persistence mode.
@@ -7085,13 +7085,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="skipInTabOrder" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Flag indicating that this component and its nested components must be
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Flag indicating that this component and its nested components must be
  skipped when keyboard tabbing.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="context">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Context map for the component
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Context map for the component
 
  
  Any el statements configured for the components properties (e.g.
@@ -7129,13 +7129,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onUnloadScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onUnload event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onUnload event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="forceSessionPersistence" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Indicates whether the component should be stored with the session view regardless of configuration
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Indicates whether the component should be stored with the session view regardless of configuration
 
  
  By default the framework nulls out any components that do not have a refresh condition or are needed for
@@ -7147,7 +7147,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="valign" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Vertical alignment of the component within its container
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Vertical alignment of the component within its container
 
  
  All components belong to a Container and are placed using a
@@ -7160,7 +7160,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderViaAJAX" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved
  from the server when it first satisfies its progressive render condition.
 
  After the first retrieval, it is hidden/shown in the html by the js when
@@ -7171,19 +7171,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onFocusScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
 
  
  Declares style classes for the component. Multiple classes are specified
@@ -7198,20 +7198,20 @@
         </xsd:choice>
         <xsd:attribute name="displayPassedHistory">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Determines if the passedHistory is to be displayed. In most cases this
+            <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Determines if the passedHistory is to be displayed. In most cases this
  should not be set through the xml as this is toggled off and on through
  code during different ui procedures.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="displayBreadcrumbsWhenOne">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[If true, breadcrumbs will not be displayed if only one breadcrumb is
+            <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[If true, breadcrumbs will not be displayed if only one breadcrumb is
  going to be shown, this improves visual clarity of the page]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="displayHomewardPath">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.widget.BreadCrumbs" xml:lang="en"><![CDATA[Determines if the homewardPath is to be displayed. Even when this is
+            <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[Determines if the homewardPath is to be displayed. Even when this is
  setting is on the code may determine to turn off homewardPath display
  based on user interaction and ui elements being displayed (ie lightbox)]]></xsd:documentation>
           </xsd:annotation>

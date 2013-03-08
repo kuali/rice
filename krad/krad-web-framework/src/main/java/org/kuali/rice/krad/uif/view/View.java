@@ -33,7 +33,6 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.NavigationGroup;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
@@ -43,10 +42,9 @@ import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ParentLocation;
 import org.kuali.rice.krad.uif.widget.BlockUI;
-import org.kuali.rice.krad.uif.widget.BreadCrumbs;
+import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -105,7 +103,7 @@ public class View extends ContainerBase {
     private Group applicationFooter;
 
     // Breadcrumbs
-    private BreadCrumbs breadcrumbs;
+    private Breadcrumbs breadcrumbs;
     private BreadcrumbOptions breadcrumbOptions;
     private BreadcrumbItem breadcrumbItem;
     private ParentLocation parentLocation;
@@ -1350,14 +1348,14 @@ public class View extends ContainerBase {
      * @return the breadcrumbs
      */
     @BeanTagAttribute(name = "breadcrumbs", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BreadCrumbs getBreadcrumbs() {
+    public Breadcrumbs getBreadcrumbs() {
         return this.breadcrumbs;
     }
 
     /**
      * @param breadcrumbs the breadcrumbs to set
      */
-    public void setBreadcrumbs(BreadCrumbs breadcrumbs) {
+    public void setBreadcrumbs(Breadcrumbs breadcrumbs) {
         this.breadcrumbs = breadcrumbs;
     }
 

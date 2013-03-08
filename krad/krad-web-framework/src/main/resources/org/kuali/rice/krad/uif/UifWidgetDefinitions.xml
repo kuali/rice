@@ -218,7 +218,7 @@
 
   <!-- Breadcrumbs and History -->
   <bean id="Uif-Breadcrumbs" parent="Uif-Breadcrumbs-parentBean"/>
-  <bean id="Uif-Breadcrumbs-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.BreadCrumbs"
+  <bean id="Uif-Breadcrumbs-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Breadcrumbs"
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/widget/breadcrumbs.ftl"/>
     <property name="templateName" value="uif_breadcrumbs"/>

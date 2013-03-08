@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -29,7 +28,6 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.LookupView;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -154,7 +152,8 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
             Map<String, String> indexKey = new HashMap<String, String>();
             indexKey.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
             indexKey.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClass.getName());
-            lookupView = (LookupView)getDataDictionary().getViewByTypeIndex(ViewType.LOOKUP, indexKey);        }
+            lookupView = (LookupView)getDataDictionary().getViewByTypeIndex(ViewType.LOOKUP, indexKey);
+        }
 
         if (lookupView != null) {
             if (lookupView.isMultipleValuesSelect() || multipleValueSelectSpecifiedOnURL) {

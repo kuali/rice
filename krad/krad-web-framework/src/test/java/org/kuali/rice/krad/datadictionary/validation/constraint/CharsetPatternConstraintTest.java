@@ -73,6 +73,8 @@ public class CharsetPatternConstraintTest {
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 
 		countryCharsetPatternConstraint = new CharsetPatternConstraint();
+        countryCharsetPatternConstraint.setMessageKey("validate.dummykey");
+        countryCharsetPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		countryCharsetPatternConstraint.setValidChars("USA");
 
 		countryDefinition = new AttributeDefinition();
@@ -82,6 +84,8 @@ public class CharsetPatternConstraintTest {
 
 
 		postalCodeCharsetPatternConstraint = new CharsetPatternConstraint();
+        countryCharsetPatternConstraint.setMessageKey("validate.dummykey");
+        countryCharsetPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		postalCodeCharsetPatternConstraint.setValidChars("(ZH-123456)");
 
 		postalCodeDefinition = new AttributeDefinition();

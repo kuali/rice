@@ -146,6 +146,7 @@ public class View extends ContainerBase {
     private Map<String, String> expressionVariables;
 
     private boolean singlePageView;
+    private boolean mergeWithPageItems;
     private PageGroup page;
 
     private List<? extends Group> items;
@@ -172,6 +173,7 @@ public class View extends ContainerBase {
 
     public View() {
         singlePageView = false;
+        mergeWithPageItems = true;
         translateCodesOnReadOnlyDisplay = false;
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
@@ -213,6 +215,11 @@ public class View extends ContainerBase {
         // populate items on page for single paged view
         if (singlePageView) {
             if (page != null) {
+                // remove default sections of page when requested
+                if (!mergeWithPageItems) {
+                    page.setItems(new ArrayList<Group>());
+                }
+
                 view.assignComponentIds(page);
 
                 // add the items configured on the view to the page items, and set as the
@@ -1193,6 +1200,26 @@ public class View extends ContainerBase {
      */
     public void setSinglePageView(boolean singlePageView) {
         this.singlePageView = singlePageView;
+    }
+
+    /**
+     * Indicates whether the default sections specified in the page items list
+     * should be included for this view.  This only applies to single paged views.
+     *
+     * @return boolean true if the view should contain the default sections
+     *         specified in the page
+     */
+    public boolean isMergeWithPageItems() {
+        return mergeWithPageItems;
+    }
+
+    /**
+     * Setter for the include page default sections indicator
+     *
+     * @param mergeWithPageItems
+     */
+    public void setMergeWithPageItems(boolean mergeWithPageItems) {
+        this.mergeWithPageItems = mergeWithPageItems;
     }
 
     /**

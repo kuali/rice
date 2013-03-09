@@ -81,6 +81,8 @@ public class ZipcodePatternConstraintTest {
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 
 		postalCodePatternConstraint = new ConfigurationBasedRegexPatternConstraint();
+        postalCodePatternConstraint.setMessageKey("validate.dummykey");
+        postalCodePatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		postalCodePatternConstraint.setValue(regex);
 
 		postalCodeDefinition = new AttributeDefinition();

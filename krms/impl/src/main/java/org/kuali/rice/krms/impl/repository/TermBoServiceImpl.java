@@ -29,6 +29,8 @@ import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
+import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
+import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -55,6 +57,16 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 	public TermSpecificationDefinition getTermSpecificationById(String id) {
 		TermSpecificationBo termSpecificationBo = 
 			businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, id);
+
+        // avoid the expense of loading ContextBos by directly looking at ContextValidTermBo reln
+        Collection<ContextValidTermBo> contextValidTerms =
+                businessObjectService.findMatching(ContextValidTermBo.class, Collections.singletonMap("termSpecificationId", id));
+
+        // populate TermSpecificationBo.contextIds collection
+        if (contextValidTerms != null) for (ContextValidTermBo contextValidTerm : contextValidTerms) {
+            termSpecificationBo.getContextIds().add(contextValidTerm.getContextId());
+        }
+
 		return TermSpecificationDefinition.Builder.create(termSpecificationBo).build();
 	}
 	
@@ -201,6 +213,30 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
             for (TermResolverBo termResolverBo : termResolverBos) if (termResolverBo != null) {
                 results.add(TermResolverBo.to(termResolverBo));
             }
+        } else {
+            results = Collections.emptyList();
+        }
+
+        return results;
+    }
+    
+    @Override
+    public List<TermSpecificationDefinition> findAllTermSpecificationsByContextId(String contextId){
+        List<TermSpecificationDefinition> results = null;
+        
+        if (StringUtils.isBlank(contextId)){
+            throw new RiceIllegalArgumentException("contextId must not be blank or null");        
+        }
+        
+        Collection<ContextValidTermBo> contextValidTerms = 
+                    businessObjectService.findMatching(ContextValidTermBo.class, 
+                                    Collections.singletonMap("contextId", contextId));
+        
+        if (!CollectionUtils.isEmpty(contextValidTerms)) {
+            results = new ArrayList<TermSpecificationDefinition>(contextValidTerms.size());
+            for (ContextValidTermBo validTerm : contextValidTerms) {
+                results.add(TermSpecificationBo.to(validTerm.getTermSpecification()));
+            }        
         } else {
             results = Collections.emptyList();
         }

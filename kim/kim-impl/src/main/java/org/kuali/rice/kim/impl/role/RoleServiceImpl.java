@@ -21,7 +21,9 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.cache.CacheKeyUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -48,6 +50,7 @@ import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
@@ -152,7 +155,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public RoleMemberQueryResults findRoleMembers(QueryByCriteria queryByCriteria) throws RiceIllegalStateException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria);
+        //KULRICE-8972 lookup customizer for attribute transform
+        LookupCustomizer.Builder<RoleMemberBo> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(AttributeTransform.getInstance());
+
+        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria, lc.build());
 
         RoleMemberQueryResults.Builder builder = RoleMemberQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -165,7 +172,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         builder.setResults(ims);
         return builder.build();
+
     }
+
+
 
     @Override
     public Set<String> getRoleTypeRoleMemberIds(String roleId) throws RiceIllegalArgumentException  {
@@ -214,7 +224,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public DelegateMemberQueryResults findDelegateMembers(QueryByCriteria queryByCriteria) throws RiceIllegalStateException  {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<DelegateMemberBo> results = getCriteriaLookupService().lookup(DelegateMemberBo.class, queryByCriteria);
+        //KULRICE-8972 lookup customizer for attribute transform
+        LookupCustomizer.Builder<DelegateMemberBo> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(AttributeTransform.getInstance());
+
+        GenericQueryResults<DelegateMemberBo> results = getCriteriaLookupService().lookup(DelegateMemberBo.class, queryByCriteria, lc.build());
 
         DelegateMemberQueryResults.Builder builder = DelegateMemberQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -243,7 +257,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected Role loadRole(String roleId) {
         Role role = getRoleFromCache(roleId);
         if (role == null) {
-        	RoleBoLite roleBo = getRoleBoLite(roleId);
+            RoleBoLite roleBo = getRoleBoLite(roleId);
             if (roleBo != null) {
                 role = RoleBoLite.to(roleBo);
                 putRoleInCache(role);
@@ -536,7 +550,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
         for (Map.Entry<String, List<RoleMembership>> entry : roleIdToMembershipMap.entrySet()) {
             RoleTypeService roleTypeService = getRoleTypeService(entry.getKey());
-            //it is possible that the the roleTypeService is coming from a remote   
+            //it is possible that the the roleTypeService is coming from a remote
             // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
                 List<RoleMembership> matchingMembers = roleTypeService.getMatchingRoleMemberships(qualification,
@@ -588,7 +602,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         boolean hasRole = this.getProxiedRoleService().principalHasRole(principalId, roleIds, qualification, true);
-        
+
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Result: " + hasRole );
         }
@@ -657,7 +671,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public RoleMembershipQueryResults findRoleMemberships( QueryByCriteria queryByCriteria) throws RiceIllegalStateException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria);
+        //KULRICE-8972 lookup customizer for attribute transform
+        LookupCustomizer.Builder<RoleMemberBo> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(AttributeTransform.getInstance());
+
+        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria, lc.build());
 
         RoleMembershipQueryResults.Builder builder = RoleMembershipQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -802,11 +820,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         // get the member role object
                         RoleBoLite memberRole = getRoleBoLite(mi.getMemberId());
                         nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
-                                        roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
-                                        roles.get(roleMemberBo.getRoleId()).getName(),
-                                        memberRole.getNamespaceCode(),
-                                        memberRole.getName(),
-                                        qualification);
+                                roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
+                                roles.get(roleMemberBo.getRoleId()).getName(),
+                                memberRole.getNamespaceCode(),
+                                memberRole.getName(),
+                                qualification);
                     }
                     if (this.getProxiedRoleService().isRoleActive(roleMemberBo.getRoleId())) {
                         Collection<RoleMembership> nestedRoleMembers = getNestedRoleMembers(nestedRoleQualification, mi, foundRoleTypeMembers);
@@ -874,49 +892,49 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         // handle derived roles
-    	for ( String roleId : allRoleIds ) {
-    		RoleTypeService roleTypeService = getRoleTypeService( roleId );
-			RoleBoLite role = roles.get( roleId );
-    		// check if a derived role
+        for ( String roleId : allRoleIds ) {
+            RoleTypeService roleTypeService = getRoleTypeService( roleId );
+            RoleBoLite role = roles.get( roleId );
+            // check if a derived role
             try {
                 if ( isDerivedRoleType(roleTypeService) ) {
                     // for each derived role, get the list of principals and groups which are in that role given the qualification (per the role type service)
-        			List<RoleMembership> roleMembers = roleTypeService.getRoleMembersFromDerivedRole(role.getNamespaceCode(), role.getName(), qualification);
-        			if ( !roleMembers.isEmpty()  ) {
-        				matchingRoleIds.add( roleId );
-        			}
-        			for ( RoleMembership rm : roleMembers ) {
+                    List<RoleMembership> roleMembers = roleTypeService.getRoleMembersFromDerivedRole(role.getNamespaceCode(), role.getName(), qualification);
+                    if ( !roleMembers.isEmpty()  ) {
+                        matchingRoleIds.add( roleId );
+                    }
+                    for ( RoleMembership rm : roleMembers ) {
                         RoleMembership.Builder builder = RoleMembership.Builder.create(rm);
                         builder.setRoleId(roleId);
                         builder.setId("*");
                         results.add(builder.build());
-        			}
-        		}
+                    }
+                }
             } catch (Exception ex) {
                 LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
             }
-    	}
+        }
 
-    	if ( followDelegations && !matchingRoleIds.isEmpty() ) {
-	    	// we have a list of RoleMembershipInfo objects
-	    	// need to get delegations for distinct list of roles in that list
-	    	Map<String, DelegateTypeBo> delegationIdToDelegationMap = getStoredDelegationImplMapFromRoleIds(matchingRoleIds);
+        if ( followDelegations && !matchingRoleIds.isEmpty() ) {
+            // we have a list of RoleMembershipInfo objects
+            // need to get delegations for distinct list of roles in that list
+            Map<String, DelegateTypeBo> delegationIdToDelegationMap = getStoredDelegationImplMapFromRoleIds(matchingRoleIds);
             if (!delegationIdToDelegationMap.isEmpty()) {
                 List<RoleMembership.Builder> membershipsWithDelegations =
                         applyDelegationsToRoleMembers(results, delegationIdToDelegationMap.values(), qualification);
                 resolveDelegationMemberRoles(membershipsWithDelegations, qualification, foundRoleTypeMembers);
                 results = ModelObjectUtils.buildImmutableCopy(membershipsWithDelegations);
             }
-    	}
-    	
-    	// sort the results if a single role type service can be identified for
+        }
+
+        // sort the results if a single role type service can be identified for
         // all the matching role members
         if ( results.size() > 1 ) {
             // if a single role: easy case
             if ( matchingRoleIds.size() == 1 ) {
                 String roleId = matchingRoleIds.iterator().next();
                 RoleTypeService roleTypeService = getRoleTypeService( roleId );
-                //it is possible that the the roleTypeService is coming from a remote application 
+                //it is possible that the the roleTypeService is coming from a remote application
                 // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
                     if ( roleTypeService != null ) {
@@ -939,9 +957,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 }
                 if ( !multipleServices ) {
                     String roleId = matchingRoleIds.iterator().next();
-                    //it is possible that the the roleTypeService is coming from a remote application 
+                    //it is possible that the the roleTypeService is coming from a remote application
                     // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
-                    try {                       
+                    try {
                         RoleTypeService kimRoleTypeService = getRoleTypeService( roleId );
                         if ( kimRoleTypeService != null ) {
                             results = kimRoleTypeService.sortRoleMembers( results );
@@ -982,11 +1000,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 DelegationTypeService delegationTypeService = getDelegationTypeService(delegation.getDelegationId());
                 for (DelegateMemberBo delegationMember : delegation.getMembers()) {
                     // Make sure that the delegation member is active
-    	    		if (delegationMember.isActive(DateTime.now()) && (delegationTypeService == null ||
+                    if (delegationMember.isActive(DateTime.now()) && (delegationTypeService == null ||
                             delegationTypeService.doesDelegationQualifierMatchQualification(qualification, delegationMember.getQualifier()))) {
                         DelegateMember.Builder delegateMemberBuilder = DelegateMember.Builder.create(delegationMember);
                         // if the member has no role member id, check qualifications and apply to all matching role memberships on the role
-	    	    	    if (StringUtils.isBlank(delegationMember.getRoleMemberId())) {
+                        if (StringUtils.isBlank(delegationMember.getRoleMemberId())) {
                             RoleTypeService roleTypeService = getRoleTypeService(delegation.getRoleId());
                             for (String roleMembershipId : candidateRoleMembershipIds) {
                                 RoleMembership.Builder roleMembershipBuilder = roleMembershipIdToBuilder.get(roleMembershipId);
@@ -1375,7 +1393,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(roleId, "roleId");
         RoleTypeService service = getRoleTypeService(roleId);
         try {
-            return dynamicRoleMembership(service, getRole(roleId));   
+            return dynamicRoleMembership(service, getRole(roleId));
         } catch (Exception e) {
             LOG.warn("Caught exception while invoking a role type service for role " + roleId, e);
             // Returning true so the role won't be cached
@@ -1469,72 +1487,72 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         continue; // No match on role
                     }
 
-                // OK, the member matches the current user, now check the qualifications
+                    // OK, the member matches the current user, now check the qualifications
 
-                // NOTE: this compare is slightly different than the member enumeration
-                // since the requested qualifier is always being used rather than
-                // the role qualifier for the member (which is not available)
+                    // NOTE: this compare is slightly different than the member enumeration
+                    // since the requested qualifier is always being used rather than
+                    // the role qualifier for the member (which is not available)
 
-                //it is possible that the the roleTypeService is coming from a remote application
-                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
-                try {
-                    if (roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification(qualification, delegateMemberBo.getQualifier())) {
+                    //it is possible that the the roleTypeService is coming from a remote application
+                    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+                    try {
+                        if (roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification(qualification, delegateMemberBo.getQualifier())) {
+                            continue; // no match - skip to next record
+                        }
+                    } catch (Exception ex) {
+                        LOG.warn("Unable to call doesRoleQualifierMatchQualification on role type service for role Id: " + delegation.getRoleId() + " / " + qualification + " / " + delegateMemberBo.getQualifier(), ex);
+                        continue;
+                    }
+
+                    // role service matches this qualifier
+                    // now try the delegateBo service
+                    DelegationTypeService delegationTypeService = getDelegationTypeService(delegateMemberBo.getDelegationId());
+                    // QUESTION: does the qualifier map need to be merged with the main delegateBo qualification?
+                    if (delegationTypeService != null && !delegationTypeService.doesDelegationQualifierMatchQualification(qualification, delegateMemberBo.getQualifier())) {
                         continue; // no match - skip to next record
                     }
-                } catch (Exception ex) {
-                    LOG.warn("Unable to call doesRoleQualifierMatchQualification on role type service for role Id: " + delegation.getRoleId() + " / " + qualification + " / " + delegateMemberBo.getQualifier(), ex);
-                    continue;
-                }
-
-                // role service matches this qualifier
-                // now try the delegateBo service
-                DelegationTypeService delegationTypeService = getDelegationTypeService(delegateMemberBo.getDelegationId());
-                // QUESTION: does the qualifier map need to be merged with the main delegateBo qualification?
-                if (delegationTypeService != null && !delegationTypeService.doesDelegationQualifierMatchQualification(qualification, delegateMemberBo.getQualifier())) {
-                    continue; // no match - skip to next record
-                }
-                // check if a role member ID is present on the delegateBo record
-                // if so, check that the original role member would match the given qualifiers
-                if (StringUtils.isNotBlank(delegateMemberBo.getRoleMemberId())) {
-                    RoleMemberBo rm = getRoleMemberBo(delegateMemberBo.getRoleMemberId());
-                    if (rm != null) {
-                        // check that the original role member's is active and that their
-                        // qualifier would have matched this request's
-                        // qualifications (that the original person would have the permission/responsibility
-                        // for an action)
-                        // this prevents a role-membership based delegateBo from surviving the inactivation/
-                        // changing of the main person's role membership
-                        if (!rm.isActive(new Timestamp(new Date().getTime()))) {
-                            continue;
-                        }
-                        Map<String, String> roleQualifier = rm.getAttributes();
-                        //it is possible that the the roleTypeService is coming from a remote application
-                        // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
-                        try {
-                            if (roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier)) {
+                    // check if a role member ID is present on the delegateBo record
+                    // if so, check that the original role member would match the given qualifiers
+                    if (StringUtils.isNotBlank(delegateMemberBo.getRoleMemberId())) {
+                        RoleMemberBo rm = getRoleMemberBo(delegateMemberBo.getRoleMemberId());
+                        if (rm != null) {
+                            // check that the original role member's is active and that their
+                            // qualifier would have matched this request's
+                            // qualifications (that the original person would have the permission/responsibility
+                            // for an action)
+                            // this prevents a role-membership based delegateBo from surviving the inactivation/
+                            // changing of the main person's role membership
+                            if (!rm.isActive(new Timestamp(new Date().getTime()))) {
                                 continue;
                             }
-                        } catch (Exception ex) {
-                            LOG.warn("Unable to call doesRoleQualifierMatchQualification on role type service for role Id: " + delegation.getRoleId() + " / " + qualification + " / " + roleQualifier, ex);
-                            continue;
+                            Map<String, String> roleQualifier = rm.getAttributes();
+                            //it is possible that the the roleTypeService is coming from a remote application
+                            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+                            try {
+                                if (roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier)) {
+                                    continue;
+                                }
+                            } catch (Exception ex) {
+                                LOG.warn("Unable to call doesRoleQualifierMatchQualification on role type service for role Id: " + delegation.getRoleId() + " / " + qualification + " / " + roleQualifier, ex);
+                                continue;
+                            }
+                        } else {
+                            LOG.warn("Unknown role member ID cited in the delegateBo member table:");
+                            LOG.warn("       assignedToId: " + delegateMemberBo.getDelegationMemberId() + " / roleMemberId: " + delegateMemberBo.getRoleMemberId());
                         }
-                    } else {
-                        LOG.warn("Unknown role member ID cited in the delegateBo member table:");
-                        LOG.warn("       assignedToId: " + delegateMemberBo.getDelegationMemberId() + " / roleMemberId: " + delegateMemberBo.getRoleMemberId());
                     }
+                    // If we've made it here then all of the tests pass so the
+                    // principal must belong to this delegation so set the flag
+                    // to true and break out of this loop
+                    matchesOnRoleDelegation = true;
+                    break;
                 }
-                // If we've made it here then all of the tests pass so the
-                // principal must belong to this delegation so set the flag
-                // to true and break out of this loop
-                matchesOnRoleDelegation = true;
-                break;
-            }
 
-            // If we've found a match for one of the delegations break out
-            // of this loop
-            if(matchesOnRoleDelegation) {
-                break;
-            }
+                // If we've found a match for one of the delegations break out
+                // of this loop
+                if(matchesOnRoleDelegation) {
+                    break;
+                }
             }
             // If the role is not derived nor dynamic then cache the result of
             // this since the principal has the role through one of these
@@ -1908,13 +1926,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo :  attrBos) {
             for (RoleMemberAttributeDataBo oldRoleMemberAttrDataBo :  originalRoleMemberBo.getAttributeDetails()) {
                 if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
-                    newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
-                        newRoleMemberAttrDataBo.setAssignedToId(oldRoleMemberAttrDataBo.getAssignedToId());
-                        newRoleMemberAttrDataBo.setVersionNumber(oldRoleMemberAttrDataBo.getVersionNumber());
-                        newRoleMemberAttrDataBo.setId(oldRoleMemberAttrDataBo.getId());
-                        updateAttrBos.add(newRoleMemberAttrDataBo);
-                        matched = true;
-                        break;
+                        newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
+                    newRoleMemberAttrDataBo.setAssignedToId(oldRoleMemberAttrDataBo.getAssignedToId());
+                    newRoleMemberAttrDataBo.setVersionNumber(oldRoleMemberAttrDataBo.getVersionNumber());
+                    newRoleMemberAttrDataBo.setId(oldRoleMemberAttrDataBo.getId());
+                    updateAttrBos.add(newRoleMemberAttrDataBo);
+                    matched = true;
+                    break;
                 }
             }
             if (!matched) {
@@ -1964,12 +1982,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 for (DelegateMemberAttributeDataBo oldDelegateMemberAttrDataBo :  originalDelegateMemberBo.getAttributeDetails()) {
                     if (newDelegateMemberAttrDataBo.getKimTypeId().equals(oldDelegateMemberAttrDataBo.getKimTypeId()) &&
                             newDelegateMemberAttrDataBo.getKimAttributeId().equals(oldDelegateMemberAttrDataBo.getKimAttributeId())) {
-                            newDelegateMemberAttrDataBo.setAssignedToId(oldDelegateMemberAttrDataBo.getAssignedToId());
-                            newDelegateMemberAttrDataBo.setVersionNumber(oldDelegateMemberAttrDataBo.getVersionNumber());
-                            newDelegateMemberAttrDataBo.setId(oldDelegateMemberAttrDataBo.getId());
-                            updateAttrBos.add(newDelegateMemberAttrDataBo);
-                            matched = true;
-                            break;
+                        newDelegateMemberAttrDataBo.setAssignedToId(oldDelegateMemberAttrDataBo.getAssignedToId());
+                        newDelegateMemberAttrDataBo.setVersionNumber(oldDelegateMemberAttrDataBo.getVersionNumber());
+                        newDelegateMemberAttrDataBo.setId(oldDelegateMemberAttrDataBo.getId());
+                        updateAttrBos.add(newDelegateMemberAttrDataBo);
+                        matched = true;
+                        break;
                     }
                 }
                 if (!matched) {
@@ -2000,7 +2018,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(delegationId,"delegationId");
         DelegateTypeBo delegate = getKimDelegationImpl(delegationId);
         if(delegate==null)   {
-            throw new RiceIllegalStateException("the delegate does not exist: " + delegationId); 
+            throw new RiceIllegalStateException("the delegate does not exist: " + delegationId);
         }
 
         //check member exists
@@ -2109,7 +2127,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         DelegateTypeBo bo = DelegateTypeBo.from(delegateType);
         return DelegateTypeBo.to(getBusinessObjectService().save(bo));
-    	// look up the role
+        // look up the role
         /*RoleBo role = getRoleBo(delegationType.getRoleId());
     	DelegateTypeBo delegation = getDelegationOfType(role.getId(), delegationType.getDelegationTypeCode());
     	// create the new role member object
@@ -2206,9 +2224,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             throw new RiceIllegalArgumentException("qualifier is null");
         }
         // look up the role
-    	RoleBoLite role = getRoleBoLiteByName(namespaceCode, roleName);
-    	// pull all the principal members
-    	// look for an exact qualifier match
+        RoleBoLite role = getRoleBoLiteByName(namespaceCode, roleName);
+        // pull all the principal members
+        // look for an exact qualifier match
         List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier);
         if(CollectionUtils.isEmpty(rms)) {
             rms = getRoleMembersByDefaultStrategy(role.getId(), principalId, MemberType.PRINCIPAL.getCode(), qualifier);
@@ -2236,9 +2254,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         // look up the roleBo
-    	RoleBoLite roleBo = getRoleBoLiteByName(namespaceCode, roleName);
-    	// pull all the group roleBo members
-    	// look for an exact qualifier match
+        RoleBoLite roleBo = getRoleBoLiteByName(namespaceCode, roleName);
+        // pull all the group roleBo members
+        // look for an exact qualifier match
         List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(roleBo, groupId, memberTypeToRoleDaoActionMap.get(MemberType.GROUP.getCode()), qualifier);
         if(CollectionUtils.isEmpty(rms)) {
             rms = getRoleMembersByDefaultStrategy(roleBo.getId(), groupId, MemberType.GROUP.getCode(), qualifier);
@@ -2256,9 +2274,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
 
         // look up the role
-    	RoleBoLite role = getRoleBoLiteByName(namespaceCode, roleName);
-    	// pull all the group role members
-    	// look for an exact qualifier match
+        RoleBoLite role = getRoleBoLiteByName(namespaceCode, roleName);
+        // pull all the group role members
+        // look for an exact qualifier match
         List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, roleId, memberTypeToRoleDaoActionMap.get(MemberType.ROLE.getCode()), qualifier);
         if(CollectionUtils.isEmpty(rms)) {
             rms = getRoleMembersByDefaultStrategy(role.getId(), roleId, MemberType.ROLE.getCode(), qualifier);
@@ -2335,29 +2353,29 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     protected void addDelegationMemberAttributeData( DelegateMemberBo delegationMember, Map<String, String> qualifier, String kimTypeId ) {
-		List<DelegateMemberAttributeDataBo> attributes = new ArrayList<DelegateMemberAttributeDataBo>();
-		for (  Map.Entry<String, String> entry : qualifier.entrySet() ) {
-			DelegateMemberAttributeDataBo delegateMemberAttrBo = new DelegateMemberAttributeDataBo();
-			delegateMemberAttrBo.setAttributeValue(entry.getValue());
-			delegateMemberAttrBo.setKimTypeId(kimTypeId);
-			delegateMemberAttrBo.setAssignedToId(delegationMember.getDelegationMemberId());
-			// look up the attribute ID
-			delegateMemberAttrBo.setKimAttributeId(getKimAttributeId(entry.getKey()));
-	    	Map<String, String> criteria = new HashMap<String, String>();
-	    	criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, delegateMemberAttrBo.getKimAttributeId());
-	    	criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMember.getDelegationMemberId());
-			List<DelegateMemberAttributeDataBo> origDelegationMemberAttributes =
-	    		(List<DelegateMemberAttributeDataBo>)getBusinessObjectService().findMatching(DelegateMemberAttributeDataBo.class, criteria);
-			DelegateMemberAttributeDataBo origDelegationMemberAttribute =
-	    		(origDelegationMemberAttributes!=null && !origDelegationMemberAttributes.isEmpty()) ? origDelegationMemberAttributes.get(0) : null;
-	    	if(origDelegationMemberAttribute!=null){
-	    		delegateMemberAttrBo.setId(origDelegationMemberAttribute.getId());
-	    		delegateMemberAttrBo.setVersionNumber(origDelegationMemberAttribute.getVersionNumber());
-	    	}
-			attributes.add( delegateMemberAttrBo );
-		}
-		delegationMember.setAttributeDetails( attributes );
-	}
+        List<DelegateMemberAttributeDataBo> attributes = new ArrayList<DelegateMemberAttributeDataBo>();
+        for (  Map.Entry<String, String> entry : qualifier.entrySet() ) {
+            DelegateMemberAttributeDataBo delegateMemberAttrBo = new DelegateMemberAttributeDataBo();
+            delegateMemberAttrBo.setAttributeValue(entry.getValue());
+            delegateMemberAttrBo.setKimTypeId(kimTypeId);
+            delegateMemberAttrBo.setAssignedToId(delegationMember.getDelegationMemberId());
+            // look up the attribute ID
+            delegateMemberAttrBo.setKimAttributeId(getKimAttributeId(entry.getKey()));
+            Map<String, String> criteria = new HashMap<String, String>();
+            criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, delegateMemberAttrBo.getKimAttributeId());
+            criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMember.getDelegationMemberId());
+            List<DelegateMemberAttributeDataBo> origDelegationMemberAttributes =
+                    (List<DelegateMemberAttributeDataBo>)getBusinessObjectService().findMatching(DelegateMemberAttributeDataBo.class, criteria);
+            DelegateMemberAttributeDataBo origDelegationMemberAttribute =
+                    (origDelegationMemberAttributes!=null && !origDelegationMemberAttributes.isEmpty()) ? origDelegationMemberAttributes.get(0) : null;
+            if(origDelegationMemberAttribute!=null){
+                delegateMemberAttrBo.setId(origDelegationMemberAttribute.getId());
+                delegateMemberAttrBo.setVersionNumber(origDelegationMemberAttribute.getVersionNumber());
+            }
+            attributes.add( delegateMemberAttrBo );
+        }
+        delegationMember.setAttributeDetails( attributes );
+    }
 
 
 
@@ -2365,26 +2383,26 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     // Persistence Methods
     // --------------------
 
-	private void deleteNullMemberAttributeData(List<RoleMemberAttributeDataBo> attributes) {
-		List<RoleMemberAttributeDataBo> attributesToDelete = new ArrayList<RoleMemberAttributeDataBo>();
-		for(RoleMemberAttributeDataBo attribute: attributes){
-			if(attribute.getAttributeValue()==null){
-				attributesToDelete.add(attribute);
-			}
-		}
-		getBusinessObjectService().delete(attributesToDelete);
-	}
+    private void deleteNullMemberAttributeData(List<RoleMemberAttributeDataBo> attributes) {
+        List<RoleMemberAttributeDataBo> attributesToDelete = new ArrayList<RoleMemberAttributeDataBo>();
+        for(RoleMemberAttributeDataBo attribute: attributes){
+            if(attribute.getAttributeValue()==null){
+                attributesToDelete.add(attribute);
+            }
+        }
+        getBusinessObjectService().delete(attributesToDelete);
+    }
 
     private void deleteNullDelegationMemberAttributeData(List<DelegateMemberAttributeDataBo> attributes) {
         List<DelegateMemberAttributeDataBo> attributesToDelete = new ArrayList<DelegateMemberAttributeDataBo>();
 
-		for(DelegateMemberAttributeDataBo attribute: attributes){
-			if(attribute.getAttributeValue()==null){
-				attributesToDelete.add(attribute);
-			}
-		}
-		getBusinessObjectService().delete(attributesToDelete);
-	}
+        for(DelegateMemberAttributeDataBo attribute: attributes){
+            if(attribute.getAttributeValue()==null){
+                attributesToDelete.add(attribute);
+            }
+        }
+        getBusinessObjectService().delete(attributesToDelete);
+    }
 
     protected void logPrincipalHasRoleCheck(String principalId, List<String> roleIds, Map<String, String> roleQualifiers ) {
         StringBuilder sb = new StringBuilder();
@@ -2414,7 +2432,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         } else {
             sb.append( "               [null]\n" );
         }
-        if (LOG.isTraceEnabled()) { 
+        if (LOG.isTraceEnabled()) {
             LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
         } else {
             LOG.debug(sb.toString());
@@ -2434,7 +2452,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * This gets the proxied version of the role service which will go through
      * Spring's caching mechanism for method calls rather than skipping it when
      * methods are called directly.
-     * 
+     *
      * @return The proxied role service
      */
     protected RoleService getProxiedRoleService() {

@@ -29,6 +29,7 @@ import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -107,13 +108,35 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
      */
     @Override
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {
-
-
-        super.processAfterEdit(document,
-                requestParameters);
-
+        super.processAfterEdit(document, requestParameters);
+        copyContextsOldToNewBo(document);
         document.getDocumentHeader().setDocumentDescription("Edited Term Specification Document");
     }
+
+    @Override
+    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+        super.processAfterCopy(document, requestParameters);
+        copyContextsOldToNewBo(document);
+    }
+
+    /**
+     * Copy the contexts from the old TermSpecificationBo to the newTermSpecificationBo of the maintenance document.
+     * <p>
+     * Since the contexts is a transient field it doesn't get copied by the deepCopy in
+     * MaintenanceDocumentServiceImpl.setupMaintenanceObject, we manually need to copy the values over.
+     * For performance reasons a shallow copy is done since the ContextBo themselves are never changed.
+     * </p>
+     * @param document that contains the old and new TermSpecificationBos
+     */
+    private void copyContextsOldToNewBo(MaintenanceDocument document) {
+        TermSpecificationBo oldTermSpecification = (TermSpecificationBo) document.getOldMaintainableObject().getDataObject();
+        TermSpecificationBo newTermSpecification = (TermSpecificationBo) document.getNewMaintainableObject().getDataObject();
+        newTermSpecification.setContexts(new ArrayList<ContextBo>());
+        for (ContextBo contextBo : oldTermSpecification.getContexts()) {
+            newTermSpecification.getContexts().add(contextBo);
+        }
+    }
+
 
     @Override
     public void saveDataObject() {

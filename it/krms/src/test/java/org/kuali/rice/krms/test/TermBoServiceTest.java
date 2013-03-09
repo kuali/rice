@@ -64,6 +64,11 @@ public class TermBoServiceTest extends AbstractBoTest {
             assertTrue(termSpecificationDefinition.getContextIds().contains(contextId));
         }
 
+        TermSpecificationDefinition fetchedTermSpec = termBoService.getTermSpecificationById(termSpecificationDefinition.getId());
+
+        for (String contextId : Arrays.asList(context1.getId(), context2.getId())) {
+            assertTrue(fetchedTermSpec.getContextIds().contains(contextId));
+        }
 	}
 	
 }

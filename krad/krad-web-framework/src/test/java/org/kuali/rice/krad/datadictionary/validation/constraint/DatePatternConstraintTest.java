@@ -100,6 +100,8 @@ public class DatePatternConstraintTest {
 		allowedFormats.add("MM-dd-yyyy");
 
 		datePatternConstraint = new DatePatternConstraint();
+        datePatternConstraint.setMessageKey("validate.dummykey");
+        datePatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		datePatternConstraint.setAllowedFormats(allowedFormats);
 
 		dateDefinition = new AttributeDefinition();

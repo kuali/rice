@@ -184,6 +184,7 @@
     <property name="help">
       <bean parent="Uif-Help"/>
     </property>
+    <property name="mergeWithPageItems" value="true"/>
   </bean>
 
   <bean id="Uif-FormView" abstract="true" parent="Uif-FormView-parentBean"/>

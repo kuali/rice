@@ -19,6 +19,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -89,6 +90,8 @@ public class JavaClassPatternConstraintTest {
 		invalidJavaClass3 = "something.mypackage:com";
 
 		javaClassPatternConstraint = new ConfigurationBasedRegexPatternConstraint();
+        javaClassPatternConstraint.setMessageKey("validate.dummykey");
+        javaClassPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		javaClassPatternConstraint.setValue(regex);
 
 		javaClassDefinition = new AttributeDefinition();

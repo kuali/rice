@@ -100,6 +100,8 @@ public class PhoneNumberPatternConstraintTest {
 		invalidPhoneEmployee6.setContactPhone("056\\-012\\-1200");
 
 		contactPhoneNumberPatternConstraint = new ConfigurationBasedRegexPatternConstraint();
+        contactPhoneNumberPatternConstraint.setMessageKey("validate.dummykey");
+        contactPhoneNumberPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		contactPhoneNumberPatternConstraint.setValue(regex);
 
 		contactPhoneDefinition = new AttributeDefinition();

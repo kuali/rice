@@ -216,13 +216,6 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
         //        if ("regex".equalsIgnoreCase(processorType) && !validChars.equals(".*")) {
         if (!fieldValue.toString().matches(validChars)) {
             ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
-            if (validCharsConstraint.getMessageKey() != null) {
-                // FIXME: This shouldn't surface label key itself to the user - it should look up the label key, but this needs to be implemented in Rice
-                constraintValidationResult.setError(RiceKeyConstants.ERROR_CUSTOM,
-                        validCharsConstraint.getMessageKey());
-                return constraintValidationResult;
-            }
-
             constraintValidationResult.setError(RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
             constraintValidationResult.setConstraintLabelKey(validCharsConstraint.getMessageKey());
             constraintValidationResult.setErrorParameters(validCharsConstraint.getValidationMessageParamsArray());

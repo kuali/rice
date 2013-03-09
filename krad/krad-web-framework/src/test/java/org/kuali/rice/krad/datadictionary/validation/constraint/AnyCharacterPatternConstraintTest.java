@@ -72,6 +72,8 @@ public class AnyCharacterPatternConstraintTest {
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 
 		street1AnyCharacterPatternConstraint = new AnyCharacterPatternConstraint();
+        street1AnyCharacterPatternConstraint.setMessageKey("validate.dummykey");
+        street1AnyCharacterPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		street1AnyCharacterPatternConstraint.setAllowWhitespace(true);
 
 		street1Definition = new AttributeDefinition();
@@ -81,6 +83,8 @@ public class AnyCharacterPatternConstraintTest {
 
 
 		street2AnyCharacterPatternConstraint = new AnyCharacterPatternConstraint();
+        street2AnyCharacterPatternConstraint.setMessageKey("validate.dummykey");
+        street2AnyCharacterPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 
 		street2Definition = new AttributeDefinition();
 		street2Definition.setName("street2");

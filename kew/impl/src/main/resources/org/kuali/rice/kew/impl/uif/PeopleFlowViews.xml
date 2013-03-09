@@ -186,7 +186,7 @@
         <bean id="PeopleFlow-MemberDelegate" parent="PeopleFlow-Member" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="delegationTypeCode" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChangedPropertyNames="#lp.memberTypeCode"
-              p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
+              p:progressiveRender="#line.memberTypeCode eq 'R' or #line.memberTypeCode eq 'G'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
   </bean>

@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.InquiryForm;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class PeopleFlowInquirableImpl extends InquirableImpl {
             String typeId = peopleFlow.getTypeId();
             KewTypeDefinition typeDefinition = KewApiServiceLocator.getKewTypeRepositoryService().getTypeById(typeId);
             PeopleFlowTypeService peopleFlowTypeService = GlobalResourceLoader.<PeopleFlowTypeService>getService(
-                    typeDefinition.getServiceName());
+                    QName.valueOf(typeDefinition.getServiceName()));
             remoteFields = peopleFlowTypeService.getAttributeFields(typeId);
         }
 

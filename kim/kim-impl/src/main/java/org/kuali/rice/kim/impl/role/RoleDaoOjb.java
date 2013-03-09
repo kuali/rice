@@ -56,6 +56,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -305,15 +306,20 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                     /*
                      SAMPLE QUERY
 
-                    SELECT
-                    A0.ROLE_MBR_ID,A0.ROLE_ID,A0.MBR_ID,A0.MBR_TYP_CD,A0.VER_NBR,A0.OBJ_ID,A0.ACTV_FRM_DT,A0.ACTV_TO_DT,
-                    BO.KIM_TYP_ID, BO.KIM_ATTR_DEFN_ID, BO.ATTR_VAL, BO.ROLE_MBR_ID, BO.ATTR_DATA_ID, BO.OBJ_ID, BO.VER_NBR
-                    FROM KRIM_ROLE_MBR_T A0 LEFT JOIN KRIM_ROLE_MBR_ATTR_DATA_T BO ON A0.ROLE_MBR_ID = BO.ROLE_MBR_ID
-                    WHERE A0.ROLE_ID in ('111','112','122')
-                    AND A0.MBR_TYP_CD = 'P'
-                    AND EXISTS (SELECT B1.ROLE_MBR_ID FROM KRIM_ROLE_MBR_ATTR_DATA_T B1 WHERE ((B1.ATTR_VAL LIKE '%IN%' AND B1.KIM_ATTR_DEFN_ID = '47') OR ( B1.ATTR_VAL LIKE '%000%' AND B1.KIM_ATTR_DEFN_ID = '48') ) AND B1.ROLE_MBR_ID = A0.ROLE_MBR_ID)ORDER BY A0.ROLE_MBR_ID
-                    ORDER BY A0.ROLE_MBR_ID
+                    SELECT A0.ROLE_MBR_ID AS ROLE_MBR_ID,A0.ROLE_ID AS ROLE_ID,A0.MBR_ID AS MBR_ID,A0.MBR_TYP_CD AS MBR_TYP_CD,A0.VER_NBR AS ROLE_MBR_VER_NBR,A0.OBJ_ID AS ROLE_MBR_OBJ_ID,A0.ACTV_FRM_DT AS ROLE_MBR_ACTV_FRM_DT ,A0.ACTV_TO_DT AS ROLE_MBR_ACTV_TO_DT,
+                    BO.KIM_TYP_ID AS KIM_TYP_ID, BO.KIM_ATTR_DEFN_ID AS KIM_ATTR_DEFN_ID, BO.ATTR_VAL AS ATTR_VAL, BO.ATTR_DATA_ID AS ATTR_DATA_ID, BO.OBJ_ID AS ATTR_DATA_OBJ_ID, BO.VER_NBR AS ATTR_DATA_VER_NBR,
+                    CO.OBJ_ID AS ATTR_DEFN_OBJ_ID, CO.VER_NBR as ATTR_DEFN_VER_NBR, CO.NM AS ATTR_NAME, CO.LBL as ATTR_DEFN_LBL, CO.ACTV_IND as ATTR_DEFN_ACTV_IND, CO.NMSPC_CD AS ATTR_DEFN_NMSPC_CD, CO.CMPNT_NM AS ATTR_DEFN_CMPNT_NM
+                    FROM KRIM_ROLE_MBR_T A0 JOIN KRIM_ROLE_MBR_ATTR_DATA_T BO ON A0.ROLE_MBR_ID = BO.ROLE_MBR_ID  JOIN KRIM_ATTR_DEFN_T CO ON BO.KIM_ATTR_DEFN_ID = CO.KIM_ATTR_DEFN_ID
+                    WHERE A0.ROLE_ID in ('100000')
 
+                    UNION ALL
+
+                    SELECT D0.ROLE_MBR_ID AS ROLE_MBR_ID,D0.ROLE_ID AS ROLE_ID,D0.MBR_ID AS MBR_ID,D0.MBR_TYP_CD AS MBR_TYP_CD,D0.VER_NBR AS ROLE_MBR_VER_NBR,D0.OBJ_ID AS ROLE_MBR_OBJ_ID,D0.ACTV_FRM_DT AS ROLE_MBR_ACTV_FRM_DT ,D0.ACTV_TO_DT AS ROLE_MBR_ACTV_TO_DT,
+                    '' AS KIM_TYP_ID, '' AS KIM_ATTR_DEFN_ID, '' AS ATTR_VAL, '' AS ATTR_DATA_ID, '' AS ATTR_DATA_OBJ_ID, NULL AS ATTR_DATA_VER_NBR,
+                    '' AS ATTR_DEFN_OBJ_ID, NULL as ATTR_DEFN_VER_NBR, '' AS ATTR_NAME, '' as ATTR_DEFN_LBL, '' as ATTR_DEFN_ACTV_IND, '' AS ATTR_DEFN_NMSPC_CD, '' AS ATTR_DEFN_CMPNT_NM
+                    FROM KRIM_ROLE_MBR_T D0
+                    WHERE D0.ROLE_MBR_ID NOT IN (SELECT DISTINCT (E0.ROLE_MBR_ID) FROM KRIM_ROLE_MBR_ATTR_DATA_T E0)
+                    AND D0.ROLE_ID IN ('100000')
                     */
 
                     public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -322,57 +328,105 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                          and role data in a single query (even though we are duplicating the role information across the role members). The cost of this
                          comes out to be cheaper than firing indiviudual queries for each role in cases where there are over 500 roles
                         */
-                        StringBuffer sql = new StringBuffer("SELECT "
-                                + "A0.ROLE_MBR_ID,A0.ROLE_ID,A0.MBR_ID,A0.MBR_TYP_CD,A0.VER_NBR,A0.OBJ_ID,A0.ACTV_FRM_DT,A0.ACTV_TO_DT, A0.VER_NBR AS ROLE_MBR_VER_NBR, A0.OBJ_ID AS ROLE_MBR_OBJ_ID, "
-                                + "BO.KIM_TYP_ID, BO.KIM_ATTR_DEFN_ID, BO.ATTR_VAL, BO.ROLE_MBR_ID, BO.ATTR_DATA_ID AS ATTR_DATA_ID, BO.OBJ_ID AS ATTR_DATA_OBJ_ID, BO.VER_NBR AS ATTR_DATA_VER_NBR,  "
-                                + "CO.OBJ_ID AS ATTR_DEFN_OBJ_ID, CO.VER_NBR as ATTR_DEFN_VER_NBR, CO.NM AS ATTR_NAME, CO.LBL as ATTR_DEFN_LBL, CO.ACTV_IND as ATTR_DEFN_ACTV_IND, CO.NMSPC_CD AS ATTR_DEFN_NMSPC_CD, CO.CMPNT_NM AS ATTR_DEFN_CMPNT_NM "
-                                + "FROM KRIM_ROLE_MBR_T A0 LEFT OUTER JOIN KRIM_ROLE_MBR_ATTR_DATA_T BO ON A0.ROLE_MBR_ID = BO.ROLE_MBR_ID "
-                                + " LEFT JOIN KRIM_ATTR_DEFN_T CO ON BO.KIM_ATTR_DEFN_ID = CO.KIM_ATTR_DEFN_ID  ");
+                        StringBuffer sql1 = new StringBuffer("SELECT "
+                                + " A0.ROLE_MBR_ID AS ROLE_MBR_ID,A0.ROLE_ID AS ROLE_ID,A0.MBR_ID AS MBR_ID,A0.MBR_TYP_CD AS MBR_TYP_CD,A0.VER_NBR AS ROLE_MBR_VER_NBR,A0.OBJ_ID AS ROLE_MBR_OBJ_ID,A0.ACTV_FRM_DT AS ROLE_MBR_ACTV_FRM_DT ,A0.ACTV_TO_DT AS ROLE_MBR_ACTV_TO_DT, "
+                                + " BO.KIM_TYP_ID AS KIM_TYP_ID, BO.KIM_ATTR_DEFN_ID AS KIM_ATTR_DEFN_ID, BO.ATTR_VAL AS ATTR_VAL, BO.ATTR_DATA_ID AS ATTR_DATA_ID, BO.OBJ_ID AS ATTR_DATA_OBJ_ID, BO.VER_NBR AS ATTR_DATA_VER_NBR,  "
+                                + " C0.KIM_ATTR_DEFN_ID AS KIM_ATTR_DEFN_ID, C0.OBJ_ID AS ATTR_DEFN_OBJ_ID, C0.VER_NBR as ATTR_DEFN_VER_NBR, C0.NM AS ATTR_NAME, C0.LBL as ATTR_DEFN_LBL, C0.ACTV_IND as ATTR_DEFN_ACTV_IND, C0.NMSPC_CD AS ATTR_DEFN_NMSPC_CD, C0.CMPNT_NM AS ATTR_DEFN_CMPNT_NM "
+                                + " FROM KRIM_ROLE_MBR_T A0 JOIN KRIM_ROLE_MBR_ATTR_DATA_T BO ON A0.ROLE_MBR_ID = BO.ROLE_MBR_ID "
+                                + " JOIN KRIM_ATTR_DEFN_T C0 ON BO.KIM_ATTR_DEFN_ID = C0.KIM_ATTR_DEFN_ID  ");
 
-                        List<String> params = new ArrayList<String>();
+                        StringBuffer sql2 = new StringBuffer("SELECT"
+                                + " D0.ROLE_MBR_ID AS ROLE_MBR_ID,D0.ROLE_ID AS ROLE_ID,D0.MBR_ID AS MBR_ID,D0.MBR_TYP_CD AS MBR_TYP_CD,D0.VER_NBR AS ROLE_MBR_VER_NBR,D0.OBJ_ID AS ROLE_MBR_OBJ_ID,D0.ACTV_FRM_DT AS ROLE_MBR_ACTV_FRM_DT ,D0.ACTV_TO_DT AS ROLE_MBR_ACTV_TO_DT, "
+                                + " '' AS KIM_TYP_ID, '' AS KIM_ATTR_DEFN_ID, '' AS ATTR_VAL, '' AS ATTR_DATA_ID, '' AS ATTR_DATA_OBJ_ID, NULL AS ATTR_DATA_VER_NBR,"
+                                + " '' AS KIM_ATTR_DEFN_ID,'' AS ATTR_DEFN_OBJ_ID, NULL as ATTR_DEFN_VER_NBR, '' AS ATTR_NAME, '' as ATTR_DEFN_LBL, '' as ATTR_DEFN_ACTV_IND, '' AS ATTR_DEFN_NMSPC_CD, '' AS ATTR_DEFN_CMPNT_NM "
+                                + " FROM KRIM_ROLE_MBR_T D0 "
+                                + " WHERE D0.ROLE_MBR_ID NOT IN (SELECT DISTINCT (E0.ROLE_MBR_ID) FROM KRIM_ROLE_MBR_ATTR_DATA_T E0)");
+
+                        StringBuffer criteria = new StringBuffer();
+
+                        List<String> params1 = new ArrayList<String>();
+                        List<String> params2 = new ArrayList<String>();
+
                         if (roleIDs != null && !roleIDs.isEmpty()) {
-                            sql.append(" WHERE A0.ROLE_ID IN (");
-                            for (String roleId : roleIDs) {
-                                sql.append("?,");
-                                params.add(roleId);
-                            }
-                            sql.deleteCharAt(sql.length() - 1);
-                            sql.append(")");
-                        }
+                            criteria.append("A0.ROLE_ID IN (");
 
-                        if (memberTypeCd != null && (roleIDs == null || roleIDs.isEmpty())) {
-                            sql.append(" WHERE");
-                        } else if (memberTypeCd != null) {
-                            sql.append(" AND ");
+                            for (String roleId : roleIDs) {
+                                criteria.append("?,");
+                                params1.add(roleId);
+                                params2.add(roleId);
+                            }
+                            criteria.deleteCharAt(criteria.length() - 1);
+                            criteria.append(")");
                         }
 
                         if (memberTypeCd != null) {
-                            sql.append("A0.MBR_TYP_CD = ?");
-                            params.add(memberTypeCd);
+                            if (criteria.length() > 0) {
+                                criteria.append(" AND ");
+                            }
+
+                            criteria.append("A0.MBR_TYP_CD = ?");
+                            params1.add(memberTypeCd);
+                            params2.add(memberTypeCd);
+                        }
+
+                        // Assuming that at least a role id or role member type code is specified
+                        if (criteria.length() > 0) {
+                            sql1.append(" WHERE ");
+                            sql2.append(" AND ");
+                            sql1.append(criteria);
+                            sql2.append(criteria.toString().replaceAll("A0", "D0"));
                         }
 
                         if (qual != null && CollectionUtils.isNotEmpty(qual.keySet())) {
-                            sql.append(" AND EXISTS (SELECT B1.ROLE_MBR_ID FROM KRIM_ROLE_MBR_ATTR_DATA_T B1 WHERE (");
+
+                            // If Qualifiers present then sql2 should not be returning any result as it finds
+                            // rolemembers with now attributes
+                            sql2 = new StringBuffer();
+
+                            if (criteria.length() > 0) {
+                                sql1.append(" AND ");
+                            } else {
+                                sql1.append(" WHERE ");
+                            }
+
+                            sql1.append(" EXISTS (SELECT B1.ROLE_MBR_ID FROM KRIM_ROLE_MBR_ATTR_DATA_T B1 WHERE (");
                             for (Map.Entry<String, String> qualifier : qual.entrySet()) {
                                 if (StringUtils.isNotEmpty(qualifier.getValue())) {
                                     String value = (qualifier.getValue()).replace('*', '%');
-                                    sql.append(" (B1.ATTR_VAL LIKE ? AND B1.KIM_ATTR_DEFN_ID = ? ) ");
-                                    params.add(value);
-                                    params.add(qualifier.getKey());
+                                    sql1.append(" (B1.ATTR_VAL LIKE ? AND B1.KIM_ATTR_DEFN_ID = ? ) ");
+                                    params1.add(value);
+                                    params1.add(qualifier.getKey());
                                 }
-                                sql.append("OR");
+                                sql1.append("OR");
                             }
-                            sql.delete(sql.length() - 2, sql.length());
-                            sql.append(") AND B1.ROLE_MBR_ID = A0.ROLE_MBR_ID )");
+                            sql1.delete(sql1.length() - 2, sql1.length());
+                            sql1.append(") AND B1.ROLE_MBR_ID = A0.ROLE_MBR_ID )");
 
                         }
-                        sql.append(" ORDER BY A0.ROLE_MBR_ID ");
+
+                        StringBuffer sql = new StringBuffer(sql1.toString());
+
+                        if (sql2.length() > 0) {
+                            sql.append(" UNION ALL ");
+                            sql.append(sql2.toString());
+                        }
+
+                        sql.append(" ORDER BY ROLE_MBR_ID ");
+
                         PreparedStatement statement = connection.prepareStatement(sql.toString());
                         int i = 1;
-                        for (String param : params) {
+                        for (String param : params1) {
                             statement.setString(i, param);
                             i++;
                         }
+
+                        if (sql2.length() > 0) {
+                            for (String param : params2) {
+                                statement.setString(i, param);
+                                i++;
+                            }
+                        }
+
                         return statement;
                     }
                 }, new PreparedStatementCallback<List<RoleMemberBo>>() {
@@ -382,14 +436,15 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                 try {
                     RoleMemberBo lastRoleMember = null;
                     while (rs.next()) {
+                        boolean processRolemember = true;
 
                         String roleId = rs.getString("ROLE_ID");
                         String id = rs.getString("ROLE_MBR_ID");
                         String memberId = rs.getString("MBR_ID");
 
                         MemberType memberType = MemberType.fromCode(rs.getString("MBR_TYP_CD"));
-                        DateTime activeFromDate = new DateTime(rs.getDate("ACTV_FRM_DT"));
-                        DateTime activeToDate = new DateTime(rs.getDate("ACTV_TO_DT"));
+                        DateTime activeFromDate = rs.getDate("ROLE_MBR_ACTV_FRM_DT") == null ? null: new DateTime(rs.getDate("ROLE_MBR_ACTV_FRM_DT"));
+                        DateTime activeToDate =   rs.getDate("ROLE_MBR_ACTV_TO_DT") == null ? null: new DateTime(rs.getDate("ROLE_MBR_ACTV_TO_DT"));
 
                         // Since we are joining role members and attributes we would have multiple role member rows
                         // but one row per attribute so check if its the first time we are seeing the role member
@@ -405,8 +460,11 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                             List<RoleMemberAttributeDataBo> roleMemAttrBos = new ArrayList<RoleMemberAttributeDataBo>();
 
                             roleMemberBo.setAttributeDetails(roleMemAttrBos);
-                            roleMemberBos.add(roleMemberBo);
-
+                            if(roleMemberBo.isActive(new Timestamp(System.currentTimeMillis()))){
+                                roleMemberBos.add(roleMemberBo);
+                            } else {
+                                processRolemember = false;
+                            }
 
                             lastRoleMember = roleMemberBo;
                         }
@@ -414,13 +472,14 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                         String kimTypeId = rs.getString("KIM_TYP_ID");
                         String attrKey = rs.getString("KIM_ATTR_DEFN_ID");
                         String attrVal = rs.getString("ATTR_VAL");
-                        if(StringUtils.isNotEmpty(kimTypeId)){
+                        if (processRolemember && StringUtils.isNotEmpty(kimTypeId)) {
                             KimType theType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
                             // Create RoleMemberAttributeDataBo for this row
                             RoleMemberAttributeDataBo roleMemAttrDataBo = new RoleMemberAttributeDataBo();
 
                             KimAttribute.Builder attrBuilder = KimAttribute.Builder.create(rs.getString(
-                                    "ATTR_DEFN_CMPNT_NM"), rs.getString("ATTR_NAME"), rs.getString("ATTR_DEFN_NMSPC_CD"));
+                                    "ATTR_DEFN_CMPNT_NM"), rs.getString("ATTR_NAME"), rs.getString(
+                                    "ATTR_DEFN_NMSPC_CD"));
                             attrBuilder.setActive(Truth.strToBooleanIgnoreCase(rs.getString("ATTR_DEFN_ACTV_IND")));
                             attrBuilder.setAttributeLabel(rs.getString("ATTR_DEFN_LBL"));
                             attrBuilder.setId(rs.getString("KIM_ATTR_DEFN_ID"));
@@ -479,8 +538,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         Criteria c = new Criteria();
         List<RoleMemberBo> parentRoleMembers = new ArrayList<RoleMemberBo>();
 
-        if (StringUtils.isEmpty(memberId)
-                || StringUtils.isEmpty(memberType)) {
+        if (StringUtils.isEmpty(memberId) || StringUtils.isEmpty(memberType)) {
             return parentRoleMembers;
         }
 
@@ -587,7 +645,10 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         // been done for performance optimization KULRICE-8847
         List<RoleBoLite> roleBoLiteList = (List) getPersistenceBrokerTemplate().getCollectionByQuery(q);
 
-        List<RoleBo> roleBos = addMembershipInfo(roleBoLiteList);
+        List<RoleBo> roleBos = new ArrayList<RoleBo>();
+        if(roleBoLiteList.size() > 0){
+            roleBos = addMembershipInfo(roleBoLiteList);
+        }
 
         return roleBos;
     }
@@ -625,7 +686,6 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
         return roleBos;
     }
-
 
     private List<String> getPrincipalIdsForPrincipalName(String principalName) {
         QueryByCriteria.Builder qb = QueryByCriteria.Builder.create();
@@ -845,7 +905,6 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         ResponsibilityService responsibilityService = KimApiServiceLocator.getResponsibilityService();
         ResponsibilityQueryResults results = responsibilityService.findResponsibilities(queryByCriteriaBuilder.build());
         List<Responsibility> responsibilities = results.getResults();
-
 
         List<String> roleIds = new ArrayList<String>();
         for (Responsibility responsibility : responsibilities) {

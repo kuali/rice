@@ -21,6 +21,7 @@ import org.junit.Test;
  * @deprecated use WebDriverITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public abstract class MainMenuLookupITBase extends MenuITBase {
     @Override
     protected String getCreateNewLinkLocator() {

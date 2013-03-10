@@ -437,7 +437,7 @@
                                 <c:set var="checkboxPresentOnFormAnnotationFieldName" value="${field.propertyName}${Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION}" />
                                 ${kfunc:registerEditableProperty(KualiForm, checkboxPresentOnFormAnnotationFieldName)}
                                 <input type="checkbox" id='${field.propertyName}' name="${field.propertyName}"
-                                    ${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
+                                    ${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' || field.propertyValue eq 'Y' || field.propertyValue eq 'on' ? 'checked="checked"' : ''}
                                     ${onblurcall} ${onchangecall} tabIndex="${tabIndex}"/>
                                 <input type="hidden" name="${checkboxPresentOnFormAnnotationFieldName}" value="present"/>
 

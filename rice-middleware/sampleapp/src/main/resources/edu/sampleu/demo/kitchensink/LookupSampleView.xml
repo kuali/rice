@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="LookupSampleView" parent="Uif-LookupView">
+    <property name="viewName" value="LookupSampleView"/>
+    <property name="headerText" value="Lookup Sample" />
+    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="subAccount"/>
+        <bean parent="Uif-DataField" p:propertyName="createDate" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LookupSampleViewAlwaysMultipleValuesSelect" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewAlwaysMultipleValuesSelect"/>
+    <property name="headerText" value="Lookup Sample - Multiple Value Specified in View (will return return 5 rows)" />
+    <property name="multipleValuesSelectResultSetLimit" value="5" />
+    <property name="multipleValuesSelect" value="true" />
+  </bean>
+
+  <bean id="LookupSampleViewResultsLimit" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewResultsLimit"/>
+    <property name="headerText" value="Lookup Sample with Results Limit  (2 for typical lookup, 4 for multiple lookup)" />
+    <property name="resultSetLimit" value="2" />
+    <property name="multipleValuesSelectResultSetLimit" value="4" />
+  </bean>
+
+  <bean id="LookupSampleViewUseResultsLimitOnParent" parent="LookupSampleViewResultsLimit">
+    <property name="viewName" value="LookupSampleViewUseResultsLimitOnParent"/>
+    <property name="headerText" value="Lookup Sample with Results Limit on Parent View  (2 for typical lookup, 4 for multiple lookup)" />
+  </bean>
+
+  <bean id="LookupSampleViewHeadings" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewHeadings"/>
+    <property name="headerText" value="Lookup Sample with Headings" />
+
+    <property name="header.upperGroup">
+      <bean parent="Uif-HeaderUpperGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Upper Group of headerText"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+
+    <property name="header.rightGroup">
+      <bean parent="Uif-HeaderRightGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Right Group of headerText"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+
+    <property name="header.lowerGroup">
+      <bean parent="Uif-HeaderLowerGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Lower Group of headerText"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+
+    <property name="page.header.lowerGroup.items">
+      <list merge="true">
+        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
+                p:actionScript="alert('JavaScript triggered action.')"/>
+      </list>
+    </property>
+  </bean>
+</beans>

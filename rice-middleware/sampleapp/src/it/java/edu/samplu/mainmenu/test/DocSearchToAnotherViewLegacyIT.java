@@ -50,7 +50,7 @@ public class DocSearchToAnotherViewLegacyIT extends WebDriverLegacyITBase {
 		waitAndTypeByName("document.documentHeader.documentDescription", "sample description");
 		fireEvent("document.documentHeader.explanation", "focus");
 		waitAndTypeByName("document.documentHeader.explanation", "sample explanation");		
-		((JavascriptExecutor)driver).executeScript("document.getElementById(\"uif-cancel\").focus();");
+//		((JavascriptExecutor)driver).executeScript("document.getElementById(\"uif-cancel\").focus();");
 		waitAndClickByLinkText("Cancel");
 		Thread.sleep(5000);
 		final String text = "Form has unsaved data. Do you want to leave anyway?";

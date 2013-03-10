@@ -19,7 +19,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<title>Kuali Portal Index</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Kuali Portal Index</title>
 <c:forEach items="${fn:split(ConfigProperties.portal.css.files, ',')}" var="cssFile">
 	<c:if test="${fn:length(fn:trim(cssFile)) > 0}">
         <link href="${pageContext.request.contextPath}/${fn:trim(cssFile)}" rel="stylesheet" type="text/css" />

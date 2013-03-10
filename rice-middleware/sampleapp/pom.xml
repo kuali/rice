@@ -47,12 +47,13 @@
           <include>**/META-INF/*.xml</include>
         </includes>
       </resource>
-       <resource>
+      <resource>
         <directory>src/it/resources</directory>
         <filtering>true</filtering>
         <includes>
           <include>**/*.xml</include>
           <include>XML/*.*</include>
+          <include>NeustarJSTemplate/*.*</include>
         </includes>
       </resource>
       <resource>
@@ -95,6 +96,40 @@
           </configuration>
         </plugin>
       </plugins>
+
+      <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>
+    									com.soebes.maven.plugins
+    								</groupId>
+    								<artifactId>
+    									maven-echo-plugin
+    								</artifactId>
+    								<versionRange>[0.1,)</versionRange>
+    								<goals>
+    									<goal>echo</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore />
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
     </build>
 
   <profiles>
@@ -109,9 +144,11 @@
       <id>stests</id>
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
-        <maven.failsafe.includes>**/XMLIngesterLegacyIT.java</maven.failsafe.includes>
-        <maven.failsafe.excludes>**/XMLIngesterLegacyIT.java</maven.failsafe.excludes>
+        <maven.failsafe.includes>**/*IT.java</maven.failsafe.includes>
+        <maven.failsafe.excludes>**/XMLIngesterNavIT.java</maven.failsafe.excludes>
         <maven.failsafe.excludes>**/IdentityPersonRoleWDIT.java</maven.failsafe.excludes>
+        <!-- TravelAccountMaintenanceDocumentTest.java is an Integration test, not a Smoke test -->
+        <maven.failsafe.excludes>**/TravelAccountMaintenanceDocumentTest.java</maven.failsafe.excludes>
       </properties>
       <build>
         <plugins>
@@ -119,14 +156,14 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>selenium-maven-plugin</artifactId>
             <executions>
-                <!--
-              <execution>
+              <!--
+                <execution>
                 <id>xvfb</id>
                 <phase>pre-integration-test</phase>
                 <goals>
-                  <goal>xvfb</goal>
+                <goal>xvfb</goal>
                 </goals>
-              </execution>
+                </execution>
               -->
               <execution>
                 <id>start-selenium-server</id>
@@ -197,6 +234,12 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-edl-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-development-tools</artifactId>
       <version>${project.version}</version>
     </dependency>
 

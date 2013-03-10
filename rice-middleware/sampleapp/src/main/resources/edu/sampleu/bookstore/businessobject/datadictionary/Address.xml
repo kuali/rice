@@ -185,13 +185,13 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="addressId"/>
-        <bean parent="Uif-InputField" p:propertyName="addressType.type"/>
-        <bean parent="Uif-InputField" p:propertyName="street1"/>
-        <bean parent="Uif-InputField" p:propertyName="street2"/>
-        <bean parent="Uif-InputField" p:propertyName="city"/>
-        <bean parent="Uif-InputField" p:propertyName="province"/>
-        <bean parent="Uif-InputField" p:propertyName="country"/>
+        <bean parent="Uif-DataField" p:propertyName="addressId"/>
+        <bean parent="Uif-DataField" p:propertyName="addressType.type"/>
+        <bean parent="Uif-DataField" p:propertyName="street1"/>
+        <bean parent="Uif-DataField" p:propertyName="street2"/>
+        <bean parent="Uif-DataField" p:propertyName="city"/>
+        <bean parent="Uif-DataField" p:propertyName="province"/>
+        <bean parent="Uif-DataField" p:propertyName="country"/>
       </list>
     </property>
   </bean>

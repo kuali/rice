@@ -56,11 +56,11 @@ public class HelpIT extends UpgradedSeleniumITBase {
         //selenium.waitForPopUp("Open Source Software | www.kuali.org", "30000");
         //selenium.selectPopUp("HelpWindow");
         Thread.sleep(5000);
-        selectWindow("Open Source Software | www.kuali.org");
+        selectWindow("Kuali Foundation");
         Thread.sleep(5000);
         assertEquals("http://www.kuali.org/?view", getLocation());
         //selenium.deselectPopUp();
-        selectWindow("Kuali :: Configuration Test View - Help");
+        selectWindowContaining("Kuali :: Configuration Test View");
     }
 
     /**
@@ -77,11 +77,11 @@ public class HelpIT extends UpgradedSeleniumITBase {
         //selenium.waitForPopUp("HelpWindow", "30000");
         //selenium.selectPopUp("HelpWindow");
         Thread.sleep(5000);
-        selectWindow("Open Source Software | www.kuali.org");
+        selectWindow("Kuali Foundation");
         Thread.sleep(5000);      
         assertEquals("http://www.kuali.org/?page", getLocation());
         //selenium.deselectPopUp();
-        selectWindow("Kuali :: Configuration Test View - Help");
+        selectWindowContaining("Kuali :: Configuration Test View");
     }
 
     /**

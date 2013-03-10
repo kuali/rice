@@ -9,9 +9,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        AgendaLookUpLegacyIT.class,
-        ContextLookUpLegacyIT.class,
-        TermLookUpLegacyIT.class,
-        TermSpecificationLookUpLegacyIT.class
+        AgendaLookUpNavIT.class,
+        ContextLookUpNavIT.class,
+        TermLookUpNavIT.class,
+        TermSpecificationLookUpNavIT.class
 })
 public class MainLookupSuite {}

@@ -22,6 +22,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
+@Deprecated
 public abstract class AdminMenuITBase extends MenuITBase {
 
     public static final String LABEL_KUALI_KUALI_SYSTEMS = "label=KUALI - Kuali Systems";

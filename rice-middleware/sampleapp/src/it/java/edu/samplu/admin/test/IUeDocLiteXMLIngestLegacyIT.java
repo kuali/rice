@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import edu.samplu.common.AdminMenuLegacyITBase;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IUeDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
+public class IUeDocLiteXMLIngestLegacyIT extends AdminMenuNavITBase {
     // values set by default for repeatable testing; left as configurable for load tests
     private List<File> fileUploadList;
 
@@ -124,7 +124,7 @@ public class IUeDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
     /**
      * This overridden method ...
      * 
-     * @see edu.samplu.common.MenuLegacyITBase#getLinkLocator()
+     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
      */
     @Override
     protected String getLinkLocator() {

@@ -32,9 +32,9 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="typeCode" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
-        <bean parent="Uif-InputField" p:propertyName="description" />
+        <bean parent="Uif-DataField" p:propertyName="typeCode" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="description" />
       </list>
     </property>
   </bean>

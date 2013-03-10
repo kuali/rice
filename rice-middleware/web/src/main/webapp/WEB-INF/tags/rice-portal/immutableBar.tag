@@ -20,7 +20,7 @@
 
 <div class="header2">
   <div class="header2-left-focus">
-    <div class="breadcrumb-focus"><a href="asdf.html"/> 
+    <div class="breadcrumb-focus">
     	<portal:portalLink displayTitle="false" title='Action List' url='${ConfigProperties.kew.url}/ActionList.do'>
    		<img src="rice-portal/images/icon-port-actionlist.gif" alt="action list" width="91" height="19" border="0"></portal:portalLink>
     	<portal:portalLink displayTitle="false" title='Document Search' url='${ConfigProperties.workflow.documentsearch.base.url}'>

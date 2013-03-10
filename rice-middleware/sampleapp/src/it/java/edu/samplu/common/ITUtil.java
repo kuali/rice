@@ -26,6 +26,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -89,7 +90,14 @@ public class ITUtil {
 
         jiraMatches.put("java.sql.SQLSyntaxErrorException: ORA-00904: \"ROUTEHEADERID\": invalid identifier",
                 "KULRICE-8277 Several ITs fail with OJB operation; bad SQL grammar []; nested exception is java.sql.SQLException: ORA-00904: \"ROUTEHEADERID\": invalid identifier");
-//        jiraMatches.put("",
+
+        jiraMatches.put("By.xpath: //button[@data-loadingmessage='Adding Line...']",
+                "KULRICE-9044 KRAD \"stacked\" collection elements are not rendering add/delete buttons ");
+
+        jiraMatches.put("Error: on line 135, column 39 in krad/WEB-INF/ftl/lib/grid.ftl",
+                "KULRICE-9047 Term maintenance freemarker exception ");
+
+        //        jiraMatches.put("",
 //                "");
 
     }
@@ -232,6 +240,9 @@ public class ITUtil {
                 return new FirefoxDriver(profile);
             } else if ("chrome".equalsIgnoreCase(driverParam)) {
                 return new ChromeDriver();
+            } else if ("safari".equals(driverParam)) {
+                System.out.println("SafariDriver probably won't work, if it does please contact Erik M.");
+                return new SafariDriver();
             }
         } else {
             try {
@@ -545,57 +556,118 @@ public class ITUtil {
     }
 
     protected static void checkForIncidentReport(String contents, String linkLocator, String message) {
-        if (contents != null &&
-                contents.contains("Incident Report") &&
-                !contents.contains("portal.do?channelTitle=Incident%20Report") && // Incident Report link on sampleapp KRAD tab
-                !contents.contains("portal.do?channelTitle=Incident Report") && // Incident Report link on sampleapp KRAD tab IE8
-                !contents.contains("uitest?viewId=Travel-testView2") && 
-                !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
+        if (contents == null) { //guard clause
+            return;
+        }
+
+        if (contents.contains("Incident Report") &&
+           !contents.contains("portal.do?channelTitle=Incident%20Report") && // Incident Report link on sampleapp KRAD tab
+           !contents.contains("portal.do?channelTitle=Incident Report") &&   // Incident Report link on sampleapp KRAD tab IE8
+           !contents.contains("uitest?viewId=Travel-testView2") &&
+           !contents.contains("SeleniumException")) {                        // selenium timeouts have Incident Report in them
             try {
-                if (contents.indexOf("Incident Feedback") > -1) {
-                    Iterator<String> iter = jiraMatches.keySet().iterator();
-                    String key = null;
-                    while (iter.hasNext()) {
-                        key = iter.next();
-                        if (contents.contains(key)) {
-                            Assert.fail("https://jira.kuali.org/browse/" + jiraMatches.get(key));
-                        }
-                    }
-
-                    String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
-                    String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
-                    docId = docId.substring(0, docId.indexOf("</span>"));
-                    docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
-
-                    String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
-                    viewId = viewId.substring(0, viewId.indexOf("</span>"));
-                    viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
-
-                    String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
-                    stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
-                    stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
-
-                    //            System.out.println(docId);
-                    //            System.out.println(viewId);
-                    //            System.out.println(stackTrace);
-                    Assert.fail("\nIncident report " + message + " navigating to "
-                            + linkLocator
-                            + " : View Id: "
-                            + viewId.trim()
-                            + " Doc Id: "
-                            + docId.trim()
-                            + "\nStackTrace: "
-                            + stackTrace.trim());
-                } else {
-                    Assert.fail("\nIncident report detected " + message + "\nContents that triggered exception: " + deLinespace(contents));
-                }
+                processIncidentReport(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
-                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + deLinespace(
-                        contents));
+                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage()
+                        + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: "
+                        + deLinespace(contents));
             }
-        } else {
-            if (contents.contains("HTTP Status 404")) {
-                Assert.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
+        }
+
+        if (contents.contains("HTTP Status 404")) {
+            Assert.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
+        }
+
+        if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
+            try {
+                processFreemarkerException(contents, linkLocator, message);
+            } catch (IndexOutOfBoundsException e) {
+                Assert.fail("\nFreemarker exception detected " + message + " but there was an exception during processing: "
+                        + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e)
+                        + "\nContents that triggered exception: " + deLinespace(contents));
+            }
+
+        }
+    }
+
+    private static void processFreemarkerException(String contents, String linkLocator, String message) {
+        failOnMatchedJira(contents);
+
+        String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
+
+        Assert.fail("\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: "  + stackTrace.trim());
+    }
+
+    private static void processIncidentReport(String contents, String linkLocator, String message) {
+        failOnMatchedJira(contents);
+
+        if (contents.indexOf("Incident Feedback") > -1) {
+            failWithReportInfo(contents, linkLocator, message);
+        }
+
+        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
+            failWithReportInfoForKim(contents, linkLocator, message);
+        }
+
+        Assert.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(contents));
+    }
+
+    private static void failWithReportInfo(String contents, String linkLocator, String message) {
+        String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
+        String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
+        docId = docId.substring(0, docId.indexOf("</span>"));
+        docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
+
+        String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
+        viewId = viewId.substring(0, viewId.indexOf("</span>"));
+        viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
+
+        String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
+        stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
+        stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
+
+        //            System.out.println(docId);
+        //            System.out.println(viewId);
+        //            System.out.println(stackTrace);
+        Assert.fail("\nIncident report "
+                + message
+                + " navigating to "
+                + linkLocator
+                + " : View Id: "
+                + viewId.trim()
+                + " Doc Id: "
+                + docId.trim()
+                + "\nStackTrace: "
+                + stackTrace.trim());
+    }
+
+    private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
+        String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
+        String docIdPre = "type=\"hidden\" value=\"";
+        String docId = chunk.substring(chunk.indexOf(docIdPre) + docIdPre.length(), chunk.indexOf("\" name=\"documentId\""));
+
+        String stackTrace = chunk.substring(chunk.lastIndexOf("name=\"displayMessage\""), chunk.length());
+        String stackTracePre = "value=\"";
+        stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
+
+        Assert.fail("\nIncident report "
+                + message
+                + " navigating to "
+                + linkLocator
+                + " Doc Id: "
+                + docId.trim()
+                + "\nStackTrace: "
+                + stackTrace.trim());
+    }
+
+    public static void failOnMatchedJira(String contents) {
+        Iterator<String> iter = jiraMatches.keySet().iterator();
+        String key = null;
+        
+        while (iter.hasNext()) {
+            key = iter.next();
+            if (contents.contains(key)) {
+                Assert.fail("https://jira.kuali.org/browse/" + jiraMatches.get(key));
             }
         }
     }

@@ -83,11 +83,11 @@
     props: {
       style: {
         width: "100%",
-        height: window.innerHeight - 250 + "px"  // initial height
+        height: screen.height - 350 + "px"  // initial height set to a reasonable value in case messaging doesn't work
       }
     },
     onMessage: function(message, origin) {
-      var availableHeight = window.innerHeight - 250;
+      var availableHeight = jQuery(window).height() - 250;
       if (availableHeight > message) {
         this.container.getElementsByTagName("iframe")[0].style.height = availableHeight + "px";
       } else {

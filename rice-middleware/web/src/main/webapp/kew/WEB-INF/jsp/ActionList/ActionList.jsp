@@ -63,6 +63,12 @@
 <bean:define id="outboxActionItemDelete">
     Delete Item
   </bean:define>
+<bean:define id="emptyActionListMessage">
+	<bean-el:message key="actionList.ActionList.emptyList" />
+</bean:define>
+<bean:define id="emptyOutboxMessage">
+	<bean-el:message key="actionList.Outbox.emptyList" />
+</bean:define>  
     <c:url var="actionListURI" value="ActionList.do">
     <c:param name="methodToCall" value="start"/>
     <c:param name="currentPage" value="${ActionListForm.currentPage}"/>
@@ -96,7 +102,7 @@
 		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-preferences.gif" property="methodToCall.viewPreferences" styleClass="tinybutton" alt="preferences" title="preferences" />
       </div>
       <div style="float:left; width:52px">
-		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-refresh.gif" property="methodToCall.start" styleClass="tinybutton" alt="refresh" title="refresh" />
+		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-refresh.gif" property="methodToCall.refresh" styleClass="tinybutton" alt="refresh" title="refresh" />
       </div>
       <div style="float:left; width:39px">
 		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-filter.gif" property="methodToCall.viewFilter" styleClass="tinybutton" alt="filter" title="filter" />
@@ -258,6 +264,14 @@
 					<display:setProperty name="export.banner" value="" />
 					<display:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display:setProperty name="css.tr.odd" value="actionlist_anyRow" />
+                    <c:choose>
+                        <c:when test="${ActionListForm.viewOutbox}">
+                            <display:setProperty name="basic.msg.empty_list" value="${emptyOutboxMessage}" />
+                        </c:when>
+                        <c:otherwise>
+                            <display:setProperty name="basic.msg.empty_list" value="${emptyActionListMessage}" />
+                        </c:otherwise>
+                    </c:choose>
           <c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasDisplayParameters}">
           <display:column title="&nbsp;">
 						<c:choose>

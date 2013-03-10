@@ -9,20 +9,20 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        MaintenanceAddDeleteFiscalOfficerLegacyIT.class,
-        MaintenanceAddDeleteNoteLegacyIT.class,
-        MaintenanceAdHocRecipientsLegacyIT.class,
-        MaintenanceButtonsLegacyIT.class,
-        MaintenanceConstraintTextLegacyIT.class,
-        MaintenanceDisclosuresLegacyIT.class,
-        MaintenanceDocumentOverviewLegacyIT.class,
-        MaintenanceExpandCollapseLegacyIT.class,
-        MaintenanceFieldsLegacyIT.class,
-        MaintenanceHeaderLegacyIT.class,
-        MaintenanceLookupAddMultipleLinesLegacyIT.class,
-        MaintenanceNotesAndAttachmentsLegacyIT.class,
-        MaintenanceQuickfinderIconsLegacyIT.class,
-        MaintenanceRouteLogLegacyIT.class,
-        MaintenanceSubsidizedPercentWatermarkLegacyIT.class
+        MaintenanceAddDeleteFiscalOfficerNavIT.class,
+        MaintenanceAddDeleteNoteNavIT.class,
+        MaintenanceAdHocRecipientsNavIT.class,
+        MaintenanceButtonsNavIT.class,
+        MaintenanceConstraintTextNavIT.class,
+        MaintenanceDisclosuresNavIT.class,
+        MaintenanceDocumentOverviewNavIT.class,
+        MaintenanceExpandCollapseNavIT.class,
+        MaintenanceFieldsNavIT.class,
+        MaintenanceHeaderNavIT.class,
+        MaintenanceLookupAddMultipleLinesNavIT.class,
+        MaintenanceNotesAndAttachmentsNavIT.class,
+        MaintenanceQuickfinderIconsNavIT.class,
+        MaintenanceRouteLogNavIT.class,
+        MaintenanceSubsidizedPercentWatermarkNavIT.class
 })
 public class TravelMaintSuite {}

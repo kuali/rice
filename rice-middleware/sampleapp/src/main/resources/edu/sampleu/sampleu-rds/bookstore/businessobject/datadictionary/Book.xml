@@ -216,12 +216,12 @@
       <lookupInputField parent="Uif-LookupCriteriaInputField" propertyName="rating"/>
     </criteriaFields>
     <resultFields>
-      <inputField parent="Uif-InputField" propertyName="id"/>
-      <inputField parent="Uif-InputField" propertyName="title"/>
-      <inputField parent="Uif-InputField" propertyName="bookType.name"/>
-      <inputField parent="Uif-InputField" propertyName="isbn"/>
-      <inputField parent="Uif-InputField" propertyName="publisher"/>
-      <inputField parent="Uif-InputField" propertyName="price"/>
+      <inputField parent="Uif-DataField" propertyName="id"/>
+      <inputField parent="Uif-DataField" propertyName="title"/>
+      <inputField parent="Uif-DataField" propertyName="bookType.name"/>
+      <inputField parent="Uif-DataField" propertyName="isbn"/>
+      <inputField parent="Uif-DataField" propertyName="publisher"/>
+      <inputField parent="Uif-DataField" propertyName="price"/>
     </resultFields>
   </lookupView>
 </spring:beans>

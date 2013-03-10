@@ -40,12 +40,12 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="documentTypeId" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
-        <bean parent="Uif-InputField" p:propertyName="parentDocType.name" />
-        <bean parent="Uif-InputField" p:propertyName="label" />
-        <bean parent="Uif-InputField" p:propertyName="active" />
-        <bean parent="Uif-InputField" p:propertyName="displayableApplicationId" />
+        <bean parent="Uif-DataField" p:propertyName="documentTypeId" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="parentDocType.name" />
+        <bean parent="Uif-DataField" p:propertyName="label" />
+        <bean parent="Uif-DataField" p:propertyName="active" />
+        <bean parent="Uif-DataField" p:propertyName="displayableApplicationId" />
       </list>
     </property>
   </bean>

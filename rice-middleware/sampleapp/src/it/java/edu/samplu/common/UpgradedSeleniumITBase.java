@@ -23,6 +23,7 @@ import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
+import static edu.samplu.common.WebDriverLegacyITBase.gotoNestedFrame;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertTrue;
 
@@ -30,6 +31,7 @@ import static org.junit.Assert.assertTrue;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public abstract class UpgradedSeleniumITBase {
     private Selenium selenium;
     protected WebDriver driver;
@@ -227,12 +229,20 @@ public abstract class UpgradedSeleniumITBase {
         selenium.select(locator, select);
     }
 
-    protected void selectFrame(String frameName) {
-        try {
-            selenium.selectFrame(frameName);
-        } catch (NoSuchFrameException nsfe) {
-            // do nothing, don't fail on a missing iframe
+    protected void selectFrame(String locator) {
+        if ("iframeportlet".equals(locator)) {
+            gotoNestedFrame(driver);
+        } else {
+            try {
+                driver.switchTo().frame(locator);
+            } catch (NoSuchFrameException nsfe) {
+                // don't fail
+            }
         }
+    }
+
+    protected void selectTopFrame() {
+        driver.switchTo().defaultContent();
     }
 
     protected void setSpeed(String speed) {
@@ -241,6 +251,16 @@ public abstract class UpgradedSeleniumITBase {
 
     protected void selectWindow(String windowName) {
         selenium.selectWindow(windowName);
+    }
+
+    protected void selectWindowContaining(String windowName) {
+        String[] windowNames = selenium.getAllWindowNames();
+        for (int i = 0, s = windowNames.length; i < s; i++) {
+            if (windowNames[i] != null && windowNames[i].contains(windowName)) {
+                selenium.selectWindow(windowNames[i]);
+                break;
+            }
+        }
     }
 
     protected void uncheck(String locator) {

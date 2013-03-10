@@ -4,6 +4,7 @@ package edu.samplu.common;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public abstract class MenuITBase extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {

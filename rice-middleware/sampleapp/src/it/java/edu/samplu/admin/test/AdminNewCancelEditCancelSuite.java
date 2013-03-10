@@ -9,21 +9,21 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        ConfigNameSpaceLegacyIT.class,
-        ConfigParameterLegacyIT.class,
-        ConfigParameterTypeLegacyIT.class,
-        IdentityGroupBlanketAppLegacyIT.class,
-        IdentityGroupLegacyIT.class,
-        IdentityPermissionBlanketAppLegacyIT.class,
-        IdentityPermissionLegacyIT.class,
-        IdentityPersonLegacyIT.class,
-        IdentityResponsibilityLegacyIT.class,
-        IdentityRoleBlanketAppLegacyIT.class,
-        LocationCampusLegacyIT.class,
-        LocationCountryLegacyIT.class,
-        LocationCountyLegacyIT.class,
-        LocationPostCodeLegacyIT.class,
-        LocationStateLegacyIT.class
+        ConfigNameSpaceNavIT.class,
+        ConfigParameterNavIT.class,
+        ConfigParameterTypeNavIT.class,
+        IdentityGroupBlanketAppNavIT.class,
+        IdentityGroupNavIT.class,
+        IdentityPermissionBlanketAppNavIT.class,
+        IdentityPermissionNavIT.class,
+        IdentityPersonNavIT.class,
+        IdentityResponsibilityNavIT.class,
+        IdentityRoleBlanketAppNavIT.class,
+        LocationCampusNavIT.class,
+        LocationCountryNavIT.class,
+        LocationCountyNavIT.class,
+        LocationPostCodeNavIT.class,
+        LocationStateNavIT.class
 })
 
 public class AdminNewCancelEditCancelSuite {}

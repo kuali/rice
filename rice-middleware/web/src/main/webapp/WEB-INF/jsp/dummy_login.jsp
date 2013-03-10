@@ -19,6 +19,7 @@
 
 <html>
   <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title>Login</title>
 	<c:forEach items="${fn:split(ConfigProperties.portal.css.files, ',')}" var="cssFile">
 		<c:if test="${fn:length(fn:trim(cssFile)) > 0}">

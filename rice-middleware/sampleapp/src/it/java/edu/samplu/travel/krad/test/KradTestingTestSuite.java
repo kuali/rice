@@ -24,13 +24,14 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-        CollectionTotallingIT.class,
-        ConfigurationTestViewIT.class,
-        ConfigurationTestViewLegacyIT.class,
+        CollectionTotallingNavIT.class,
+        CollectionTotallingWDIT.class,
+        ConfigurationTestViewNavIT.class,
+        ConfigurationTestViewWDIT.class,
         DirtyFieldsCheckIT.class,
-        UIFComponentValidationRegexPatternIT.class,
-        UIFComponentValidationRegexPatternLegacyIT.class,
-        UifDataAttributesLegacyIT.class,
+        UIFComponentValidationRegexPatternNavIT.class,
+        UIFComponentValidationRegexPatternWDIT.class,
+        UifDataAttributesNavIT.class,
         WatermarkValidationIT.class})
 public class KradTestingTestSuite {
 

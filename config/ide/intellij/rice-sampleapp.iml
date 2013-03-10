@@ -83,11 +83,12 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-test-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />

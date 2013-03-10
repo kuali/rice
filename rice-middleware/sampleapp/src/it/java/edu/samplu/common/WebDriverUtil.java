@@ -17,6 +17,7 @@
 package edu.samplu.common;
 
 import org.junit.rules.TestName;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 
@@ -24,9 +25,11 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver for more reuse without having to extend
+ * WebDriverLegacyITBase.  For the first example see waitFor
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class WebDriverUtil {
 
     public static int DEFAULT_IMPLICIT_WAIT_TIME = 30;
@@ -93,4 +96,22 @@ public class WebDriverUtil {
         }
         return null;
     }
+
+    /**
+     * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the
+     * by cannot be found.  No action is performed on the by, so it is possible that the by found is not visible or enabled.
+     *
+     * @param driver WebDriver
+     * @param waitSeconds int
+     * @param by By
+     * @param message String
+     * @throws InterruptedException
+     */
+    public static void waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        Thread.sleep(1000);
+        driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visiable or enabled.
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    }
+
 }

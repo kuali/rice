@@ -316,6 +316,35 @@
       </list>
     </property>
   </bean>
+
+  <bean id="Demo-StandardLayout-CollectionSection2-SubCollection"
+        parent="Uif-Disclosure-TableSubCollection-WithinSection">
+    <property name="headerText" value="SubCollection Title"/>
+    <property name="collectionObjectClass"
+              value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+    <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.numberOfColumns" value="4"/>
+    <property name="propertyName" value="subList"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group">
+          <property name="group.validationMessages.displayMessages" value="false"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
+                            p:required="true" p:constraintText="Type A to make subfield 2 appear"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
+                                  p:required="true" p:progressiveRender="@{#lp.field1 eq 'A'}"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
+              p:required="true" p:constraintText="Change to refresh subfield 4"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
+                            p:required="true" p:refreshWhenChangedPropertyNames="#lp.field3"/>
+      </list>
+    </property>
+  </bean>
   <!-- ex:Demo-TableLayoutDetails-Example4 end-->
 
   <!-- details in details -->

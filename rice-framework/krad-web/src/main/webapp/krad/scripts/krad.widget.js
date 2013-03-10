@@ -16,44 +16,33 @@
 /** Navigation */
 
 /**
- * Sets the breadcrumb to whatever the current page is, if this view has page navigation
- * Pages are handled by js on the breadcrumb because the page retrieval happens through
- * ajax
+ * Setup the breadcrumbs for this view by replacing the old breadcrumbs with the newest from the page
+ *
+ * @param displayBreadcrumbsWhenOne display the breadcrumbs when there is only one when true, otherwise do not
  */
-function setPageBreadcrumb() {
-    // check to see if page has navigation element, if so show breadcrumb
-    if (jQuery("#Uif-Navigation").html() && jQuery("#breadcrumbs").length) {
-        var pageTitle = jQuery("#pageTitle").val();
-        var pageId = jQuery("#pageId").val();
+function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
+    //clear the old breadcrumbs
+    jQuery("div#Uif-BreadcrumbWrapper").empty();
 
-        jQuery("#breadcrumbs").find("#page_breadcrumb").remove();
+    //find the new ones
+    var breadcrumbList = jQuery("div#Uif-BreadcrumbUpdate > ol").detach();
+    var items = breadcrumbList.find("> li");
 
-        // if page title not set attempt to find from navigation
-        if ((!pageTitle || pageTitle == "&nbsp;") && pageId) {
-            pageTitle = jQuery("a[name='" + escapeName(pageId) + "']").text();
-        }
-
-        if (pageTitle && pageTitle != "&nbsp;") {
-            jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
-            jQuery("#current_breadcrumb_span").hide();
-
-            if (jQuery("#current_breadcrumb_span").parent("li").length) {
-                jQuery("#current_breadcrumb_span").unwrap();
-            }
-
-            jQuery("#current_breadcrumb_anchor").wrap("<li/>");
-            jQuery("#current_breadcrumb_anchor").show();
-        }
-        else {
-            jQuery("#current_breadcrumb_anchor").hide();
-            if (jQuery("#current_breadcrumb_anchor").parent("li").length) {
-                jQuery("#current_breadcrumb_anchor").unwrap();
-            }
-
-            jQuery("#current_breadcrumb_span").wrap("<li/>");
-            jQuery("#current_breadcrumb_span").show();
-        }
+    //dont display if display when one is false and there is only one item
+    if(!displayBreadcrumbsWhenOne && items.length == 1){
+        return;
     }
+
+    //if the last item has a link, make it a span
+    var lastLink = items.last().find("> a");
+    if(lastLink.length){
+        lastLink.replaceWith(function(){
+            return jQuery("<span>" + jQuery(this).html() + "</span>");
+        });
+    }
+
+    //append to the wrapper
+    jQuery("div#Uif-BreadcrumbWrapper").append(breadcrumbList);
 }
 
 /**
@@ -865,6 +854,66 @@ function createTree(divId, options) {
     jQuery(document).ready(function () {
         jQuery("#" + divId).jstree(options);
     });
+}
+
+/**
+ * Adds a ZeroClipboard flash movie to the copy trigger element which will copy the content of the content element
+ * on mousedown. This uses the ZeroClipboard plugin bundled with the Datatables plugin
+ *
+ * @param componentId - id of the parent component
+ * @param copyTriggerId - id of the element that must trigger the copy action
+ * @param contentElementId - id of the element that the value must be copied from
+ * @param showCopyConfirmation [optional] if supplied and true, a dialog will be triggered displaying the copied value
+ * after copy action
+ */
+function createCopyToClipboard(componentId, copyTriggerId, contentElementId, showCopyConfirmation) {
+
+    // the ZeroClipboard flash movie can only be added to visible elements so must be added on dosument ready
+    jQuery(document).ready(function () {
+
+        // Do not add flash to hidden syntax highlighters as this causes exception
+        if (jQuery("#" + componentId).is(':visible')) {
+
+            // setup new client for this component
+            ZeroClipboard.setMoviePath( '../krad/plugins/rice/datatables/copy_cvs_xls_pdf.swf' );
+            var clip = new ZeroClipboard.Client();
+
+            // copy text on mousedown
+            clip.addEventListener('mousedown',function(client) {
+                clip.setText(jQuery("#" + contentElementId).text());
+            });
+
+            // show dialog
+            if (showCopyConfirmation) {
+                clip.addEventListener('complete',function(client,text) {
+                    alert('Copied to Clipboard :\n\n' + text);
+                });
+            }
+
+            // the element needs to be visible when adding the flah movie to it
+            // just reset the display css on the element after showing it
+            jQuery('#' + copyTriggerId).show();
+            clip.glue(jQuery('#' + copyTriggerId).get(0));
+            jQuery('#' + copyTriggerId).css("display", "");
+        }
+
+    });
+}
+
+function createAccordion(id, options, active){
+    if(active == false){
+        active = "false";
+    }
+
+    options = options || {};
+    options = jQuery.extend({
+        active: active,
+        heightStyle: "content",
+        collapsible: true
+    }, options);
+
+    jQuery("#" + id + " > ul").accordion(options);
+    //jQuery("#id > ul").accordion("option", "active", active);
 }
 
 // Creates tabs for the tabs div id specified, this div is created by tabGroup

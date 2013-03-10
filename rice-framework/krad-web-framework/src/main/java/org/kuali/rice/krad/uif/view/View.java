@@ -33,16 +33,18 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.NavigationGroup;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
+import org.kuali.rice.krad.uif.util.BreadcrumbItem;
+import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
+import org.kuali.rice.krad.uif.util.ParentLocation;
 import org.kuali.rice.krad.uif.widget.BlockUI;
-import org.kuali.rice.krad.uif.widget.BreadCrumbs;
+import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -80,8 +82,8 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "view-bean", parent = "Uif-View"), @BeanTag(name = "view-knsTheme-bean", parent = "Uif-View-KnsTheme")
-})
+@BeanTags({@BeanTag(name = "view-bean", parent = "Uif-View"),
+        @BeanTag(name = "view-knsTheme-bean", parent = "Uif-View-KnsTheme")})
 public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
 
@@ -101,11 +103,10 @@ public class View extends ContainerBase {
     private Group applicationFooter;
 
     // Breadcrumbs
-    private BreadCrumbs breadcrumbs;
-    private String breadcrumbTitlePropertyName;
-    private String breadcrumbTitleDisplayOption;
-
-    private boolean renderBreadcrumbsInView;
+    private Breadcrumbs breadcrumbs;
+    private BreadcrumbOptions breadcrumbOptions;
+    private BreadcrumbItem breadcrumbItem;
+    private ParentLocation parentLocation;
 
     // Growls support
     private Growls growls;
@@ -145,6 +146,7 @@ public class View extends ContainerBase {
     private Map<String, String> expressionVariables;
 
     private boolean singlePageView;
+    private boolean mergeWithPageItems;
     private PageGroup page;
 
     private List<? extends Group> items;
@@ -171,11 +173,11 @@ public class View extends ContainerBase {
 
     public View() {
         singlePageView = false;
+        mergeWithPageItems = true;
         translateCodesOnReadOnlyDisplay = false;
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
         formClass = UifFormBase.class;
-        renderBreadcrumbsInView = true;
         supportsRequestOverrideOfReadOnlyFields = true;
         persistFormToSession = true;
 
@@ -213,6 +215,11 @@ public class View extends ContainerBase {
         // populate items on page for single paged view
         if (singlePageView) {
             if (page != null) {
+                // remove default sections of page when requested
+                if (!mergeWithPageItems) {
+                    page.setItems(new ArrayList<Group>());
+                }
+
                 view.assignComponentIds(page);
 
                 // add the items configured on the view to the page items, and set as the
@@ -306,6 +313,29 @@ public class View extends ContainerBase {
 
         this.setOnDocumentReadyScript(onReadyScript + "jQuery.extend(jQuery.validator.messages, " +
                 ClientValidationUtils.generateValidatorMessagesOption() + ");");
+
+        //set breadcrumbItem label same as the header, if not set
+        if (StringUtils.isBlank(breadcrumbItem.getLabel()) && this.getHeader() != null && !StringUtils.isBlank(
+                this.getHeader().getHeaderText())) {
+            breadcrumbItem.setLabel(this.getHeader().getHeaderText());
+        }
+
+        //if label still blank, don't render
+        if (StringUtils.isBlank(breadcrumbItem.getLabel())) {
+            breadcrumbItem.setRender(false);
+        }
+
+        //automatically set breadcrumbItem UifUrl properties if not set
+        if (breadcrumbItem.getUrl().getControllerMapping() == null && model instanceof UifFormBase) {
+            breadcrumbItem.getUrl().setControllerMapping(((UifFormBase) model).getControllerMapping());
+        }
+
+        if (breadcrumbItem.getUrl().getViewId() == null) {
+            breadcrumbItem.getUrl().setViewId(view.getId());
+        }
+
+        //handle parentLocation breadcrumb chain
+        parentLocation.constructParentLocationBreadcrumbItems(view, model, view.getContext());
     }
 
     /**
@@ -361,6 +391,9 @@ public class View extends ContainerBase {
         components.add(viewMenuLink);
         components.add(navigationBlockUI);
         components.add(refreshBlockUI);
+        components.add(breadcrumbItem);
+        components.add(parentLocation.getPageBreadcrumbItem());
+        components.add(parentLocation.getViewBreadcrumbItem());
 
         // Note super items should be added after navigation and other view components so
         // conflicting ids between nav and page do not occur on page navigation via ajax
@@ -871,11 +904,15 @@ public class View extends ContainerBase {
 
     /**
      * Setter for the <code>ViewHelperService</code> class name
+     * Also initializes the viewHelperService
      *
      * @param viewHelperServiceClass
      */
     public void setViewHelperServiceClass(Class<? extends ViewHelperService> viewHelperServiceClass) {
         this.viewHelperServiceClass = viewHelperServiceClass;
+        if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
+            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClass);
+        }
     }
 
     /**
@@ -885,11 +922,16 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute(name = "viewHelperService", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ViewHelperService getViewHelperService() {
-        if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
-            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClass);
-        }
-
         return viewHelperService;
+    }
+
+    /**
+     * Setter for the <code>ViewHelperService</code>
+     *
+     * @param viewHelperService
+     */
+    public void setViewHelperService(ViewHelperService viewHelperService) {
+        this.viewHelperService = viewHelperService;
     }
 
     /**
@@ -1161,6 +1203,26 @@ public class View extends ContainerBase {
     }
 
     /**
+     * Indicates whether the default sections specified in the page items list
+     * should be included for this view.  This only applies to single paged views.
+     *
+     * @return boolean true if the view should contain the default sections
+     *         specified in the page
+     */
+    public boolean isMergeWithPageItems() {
+        return mergeWithPageItems;
+    }
+
+    /**
+     * Setter for the include page default sections indicator
+     *
+     * @param mergeWithPageItems
+     */
+    public void setMergeWithPageItems(boolean mergeWithPageItems) {
+        this.mergeWithPageItems = mergeWithPageItems;
+    }
+
+    /**
      * For single paged views ({@link #isSinglePageView()}, gives the page
      * <code>Group</code> the view should render. The actual items for the page
      * is taken from the group's items list ({@link #getItems()}, and set onto
@@ -1313,41 +1375,15 @@ public class View extends ContainerBase {
      * @return the breadcrumbs
      */
     @BeanTagAttribute(name = "breadcrumbs", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BreadCrumbs getBreadcrumbs() {
+    public Breadcrumbs getBreadcrumbs() {
         return this.breadcrumbs;
     }
 
     /**
      * @param breadcrumbs the breadcrumbs to set
      */
-    public void setBreadcrumbs(BreadCrumbs breadcrumbs) {
+    public void setBreadcrumbs(Breadcrumbs breadcrumbs) {
         this.breadcrumbs = breadcrumbs;
-    }
-
-    /**
-     * Indicates whether the breadcrumbs should be rendered in the view or if they have been rendered in
-     * the application header
-     *
-     * <p>
-     * For layout purposes it is sometimes necessary to render the breadcrumbs in the application header. This flag
-     * indicates that is being done (by setting to false) and therefore should not be rendered in the view template.
-     * </p>
-     *
-     * @return boolean true if breadcrumbs should be rendered in the view, false if not (are rendered in the
-     *         application header)
-     */
-    @BeanTagAttribute(name = "renderBreadcrumbsInView")
-    public boolean isRenderBreadcrumbsInView() {
-        return renderBreadcrumbsInView;
-    }
-
-    /**
-     * Setter for the render breadcrumbs in view indicator
-     *
-     * @param renderBreadcrumbsInView
-     */
-    public void setRenderBreadcrumbsInView(boolean renderBreadcrumbsInView) {
-        this.renderBreadcrumbsInView = renderBreadcrumbsInView;
     }
 
     /**
@@ -1474,60 +1510,6 @@ public class View extends ContainerBase {
     @BeanTagAttribute(name = "translateCodesOnReadOnlyDisplay")
     public boolean isTranslateCodesOnReadOnlyDisplay() {
         return translateCodesOnReadOnlyDisplay;
-    }
-
-    /**
-     * The property name to be used to determine what will be used in the
-     * breadcrumb title of this view
-     *
-     * <p>
-     * The title can be determined from a combination of this and viewLabelFieldbindingInfo: If only
-     * viewLabelFieldPropertyName is set, the title we be determined against the
-     * defaultBindingObjectPath. If only viewLabelFieldbindingInfo is set it
-     * must provide information about what object(bindToForm or explicit) and
-     * path to use. If both viewLabelFieldbindingInfo and viewLabelFieldPropertyName are set,
-     * the bindingInfo will be used with a
-     * the viewLabelFieldPropertyName as its bindingPath. If neither are set,
-     * the default title attribute from the dataObject's metadata (determined by the
-     * defaultBindingObjectPath's object) will be used.
-     * </p>
-     *
-     * @return String property name whose value should be displayed in view label
-     */
-    @BeanTagAttribute(name = "breadcrumbTitlePropertyName")
-    public String getBreadcrumbTitlePropertyName() {
-        return this.breadcrumbTitlePropertyName;
-    }
-
-    /**
-     * Setter for the view label property name
-     *
-     * @param breadcrumbTitlePropertyName the viewLabelFieldPropertyName to set
-     */
-    public void setBreadcrumbTitlePropertyName(String breadcrumbTitlePropertyName) {
-        this.breadcrumbTitlePropertyName = breadcrumbTitlePropertyName;
-    }
-
-    /**
-     * The option to use when appending the view label on the breadcrumb title.
-     * Available options: 'dash', 'parenthesis', and 'replace'(don't append -
-     * simply replace the title). MUST be set for the viewLabelField to be used
-     * in the breadcrumb, if not set no appendage will be added.
-     *
-     * @return the appendOption
-     */
-    @BeanTagAttribute(name = "breadcrumbTitleDisplayOption")
-    public String getBreadcrumbTitleDisplayOption() {
-        return this.breadcrumbTitleDisplayOption;
-    }
-
-    /**
-     * Setter for the append option
-     *
-     * @param breadcrumbTitleDisplayOption the appendOption to set
-     */
-    public void setBreadcrumbTitleDisplayOption(String breadcrumbTitleDisplayOption) {
-        this.breadcrumbTitleDisplayOption = breadcrumbTitleDisplayOption;
     }
 
     /**
@@ -1786,4 +1768,75 @@ public class View extends ContainerBase {
         super.completeValidation(tracer.getCopy());
     }
 
+    /**
+     * The breadcrumbOptions for this view.
+     *
+     * <p>Render options set at the view level are always ignored (only apply to
+     * page level BreadcrumbOptions).  BreadcrumbOptions for preViewBreadcrumbs, prePageBreadcrumbs,
+     * and breadcrumbOverrides are inherited by
+     * child pages unless they override them themselves.</p>
+     *
+     * @return the BreadcrumbOptions for this view
+     */
+    @BeanTagAttribute(name = "breadcrumbOptions", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public BreadcrumbOptions getBreadcrumbOptions() {
+        return breadcrumbOptions;
+    }
+
+    /**
+     * Set the breadcrumbOptions
+     *
+     * @param breadcrumbOptions
+     */
+    public void setBreadcrumbOptions(BreadcrumbOptions breadcrumbOptions) {
+        this.breadcrumbOptions = breadcrumbOptions;
+    }
+
+    /**
+     * The View's breadcrumbItem defines settings for the breadcrumb which appears in the breadcrumb list for this
+     * view.
+     *
+     * @return the breadcrumbItem
+     */
+    @BeanTagAttribute(name = "breadcrumbItem", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public BreadcrumbItem getBreadcrumbItem() {
+        return breadcrumbItem;
+    }
+
+    /**
+     * Set the breadcrumbItem
+     *
+     * @param breadcrumbItem
+     */
+    public void setBreadcrumbItem(BreadcrumbItem breadcrumbItem) {
+        this.breadcrumbItem = breadcrumbItem;
+    }
+
+    /**
+     * The parentLocation defines urls that represent the parent of a View in a conceptial site hierarchy.
+     *
+     * <p>
+     * By defining a parent with these urls defined, a breadcrumb chain can be generated and displayed automatically
+     * before this View's breadcrumbItem(s).  To chain multiple views, the urls must be defining viewId and
+     * controllerMapping settings instead of setting an href directly (this will end the chain).  If labels are
+     * not set on parentLocations, the labels will attempt to be derived from parent views/pages breadcrumbItem
+     * and headerText - if these contain expressions which cannot be evaluated in the current context an exception
+     * will be thrown.
+     * </p>
+     *
+     * @return the parentLocation
+     */
+    @BeanTagAttribute(name = "parentLocation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public ParentLocation getParentLocation() {
+        return parentLocation;
+    }
+
+    /**
+     * Set the parentLocation
+     *
+     * @param parentLocation
+     */
+    public void setParentLocation(ParentLocation parentLocation) {
+        this.parentLocation = parentLocation;
+    }
 }

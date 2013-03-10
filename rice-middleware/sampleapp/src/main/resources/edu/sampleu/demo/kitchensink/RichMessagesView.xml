@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="RichMessagesView" parent="Uif-FormView">
+  <bean id="RichMessagesView" parent="Demo-BaseFormView">
     <property name="headerText" value="Rich Messages"/>
     <property name="items">
       <list>

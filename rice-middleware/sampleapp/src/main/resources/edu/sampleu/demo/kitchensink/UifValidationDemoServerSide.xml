@@ -29,7 +29,7 @@
                                            UIF Components View (Kitchen Sink)
   ********************************************************************************************************************
   -->
-  <bean id="Demo-ValidationServerSide" parent="Uif-FormView">
+  <bean id="Demo-ValidationServerSide" parent="Demo-BaseFormView">
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="headerText" value="Validation Server-side Test View"/>
     <property name="footer">

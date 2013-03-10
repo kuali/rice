@@ -27,7 +27,7 @@
                                            UIF Layout View
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView" parent="Uif-FormView">
+  <bean id="UifLayoutView" parent="Demo-BaseFormView">
     <property name="headerText" value="Layout View"/>
     <property name="entryPageId" value="UifLayoutView-Page1"/>
     <property name="navigation">

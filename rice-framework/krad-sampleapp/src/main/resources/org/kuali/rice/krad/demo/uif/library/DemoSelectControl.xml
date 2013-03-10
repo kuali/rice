@@ -45,7 +45,7 @@
             <bean parent="Uif-DropdownControl"/>
           </property>
           <property name="optionsFinder">
-            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
           </property>
         </bean>
         <!-- ex:Demo-SelectControl-Example1 end-->
@@ -87,7 +87,7 @@
             <bean parent="Uif-DropdownControl" p:disabled="true"/>
           </property>
           <property name="optionsFinder">
-            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
           </property>
         </bean>
         <!-- ex:Demo-SelectControl-Example3 end-->

@@ -23,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @RunWith(Suite.class)
-@SuiteClasses({FiscalOfficerInfoMaintenanceNewIT.class})
+@SuiteClasses({FiscalOfficerInfoMaintenanceNewNavIT.class})
 public class FiscalOfficerMaintTestSuite {
 
 }

@@ -77,7 +77,7 @@
                                      queryMethodToCall="retrieveTravelAccountsByNumber"
                                      returnFieldMapping="name:field80,subAccountName:field81">
             <spring:property name="queryMethodInvokerConfig.targetObject">
-              <spring:bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+              <spring:bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
                 <spring:property name="serviceName" value="testAttributeQueryService"/>
               </spring:bean>
             </spring:property>

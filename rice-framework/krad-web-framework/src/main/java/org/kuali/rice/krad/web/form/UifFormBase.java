@@ -75,6 +75,7 @@ public class UifFormBase implements ViewModel {
     protected String focusId;
 
     protected String formPostUrl;
+    protected String controllerMapping;
 
     protected String state;
     protected boolean defaultsApplied;
@@ -161,6 +162,9 @@ public class UifFormBase implements ViewModel {
     public void postBind(HttpServletRequest request) {
         // default form post URL to request URL
         formPostUrl = request.getRequestURL().toString();
+
+        //set controller mapping property
+        controllerMapping = request.getPathInfo();
 
         // get any sent client view state and parse into map
         if (request.getParameterMap().containsKey(UifParameters.CLIENT_VIEW_STATE)) {
@@ -931,4 +935,12 @@ public class UifFormBase implements ViewModel {
         return addedCollectionItems.contains(item);
     }
 
+    /**
+     * Name of the controllerMapping for this form (includes slash)
+     *
+     * @return the controllerMapping string
+     */
+    public String getControllerMapping() {
+        return controllerMapping;
+    }
 }

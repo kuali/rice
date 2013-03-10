@@ -28,7 +28,7 @@
                                                Dialog Test View
   ********************************************************************************************************************
   -->
-  <bean id="DialogTestView" parent="Uif-FormView">
+  <bean id="DialogTestView" parent="Demo-BaseFormView">
     <property name="headerText" value="Dialog Test View"/>
     <property name="items">
       <list>

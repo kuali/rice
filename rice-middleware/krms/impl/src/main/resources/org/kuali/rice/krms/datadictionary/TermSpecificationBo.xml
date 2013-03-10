@@ -120,6 +120,7 @@
     <property name="headerText" value="Term Specification"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
     <property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.ui.TermSpecificationMaintainable"/>
+    <property name="mergeWithPageItems" value="false"/>
     <property name="items">
       <list>
         <ref bean="TermSpec-MainSection"/>

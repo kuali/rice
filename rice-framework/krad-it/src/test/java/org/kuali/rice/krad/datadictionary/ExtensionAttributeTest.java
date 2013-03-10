@@ -76,8 +76,10 @@ public class ExtensionAttributeTest extends KRADTestCase {
         dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml");
         dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml");
         dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifActionDefinitions.xml");
-        //dd.addConfigFileLocation("classpath:org/kuali/rice/krad/bo/datadictionary");
-        dd.addConfigFileLocation("KR-NS","file:" + getUserDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
+        dd.addConfigFileLocation("KR-NS",
+                "classpath:org/kuali/rice/krad/datadictionary/DataDictionaryBaseTypes.xml");
+        dd.addConfigFileLocation("KR-NS",
+                "classpath:org/kuali/rice/krad/datadictionary/AttributeReference.xml");
 		dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
 		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
 		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");

@@ -13,20 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.uif.library;
-
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
-import org.kuali.rice.core.api.util.KeyValue;
+package org.kuali.rice.krad.demo.uif.components;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-/**
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
-public class TestSuggestClass {
+public class ComponentSuggestClass {
+    public static class TestLabelValue {
+        private String label;
+        private String value;
+
+        public TestLabelValue() {
+        }
+
+        public TestLabelValue(String value, String label) {
+            this.value = value;
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
+    public static class TestSuggestObject extends TestLabelValue {
+        private String description;
+
+        public TestSuggestObject(String value, String label, String description) {
+            super(value, label);
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
 
     public static List<String> getLanguages(String term) {
         List<String> matchingLanguages = new ArrayList<String>();
@@ -74,52 +112,4 @@ public class TestSuggestClass {
 
         return options;
     }
-
-    public static class TestLabelValue {
-        private String label;
-        private String value;
-
-        public TestLabelValue() {
-
-        }
-
-        public TestLabelValue(String value, String label) {
-            this.value = value;
-            this.label = label;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public void setLabel(String label) {
-            this.label = label;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-    }
-    
-     public static class TestSuggestObject extends TestLabelValue {
-         private String description;
-         
-         public TestSuggestObject(String value, String label, String description) {
-             super(value, label);
-             this.description = description;
-         }
-
-         public String getDescription() {
-             return description;
-         }
-
-         public void setDescription(String description) {
-             this.description = description;
-         }
-     }
-
 }

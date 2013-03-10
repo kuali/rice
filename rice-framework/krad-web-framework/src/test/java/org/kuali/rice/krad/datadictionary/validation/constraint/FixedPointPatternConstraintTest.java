@@ -87,6 +87,8 @@ public class FixedPointPatternConstraintTest {
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 
 		totalBalanceFixedPointPatternConstraint = new FixedPointPatternConstraint();
+        totalBalanceFixedPointPatternConstraint.setMessageKey("validate.dummykey");
+        totalBalanceFixedPointPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		totalBalanceFixedPointPatternConstraint.setPrecision(6);
 		totalBalanceFixedPointPatternConstraint.setScale(2);
 
@@ -96,6 +98,8 @@ public class FixedPointPatternConstraintTest {
 		attributes.add(totalBalanceDefinition);
 
 		debitBalanceFixedPointPatternConstraint = new FixedPointPatternConstraint();
+        debitBalanceFixedPointPatternConstraint.setMessageKey("validate.dummykey");
+        debitBalanceFixedPointPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		debitBalanceFixedPointPatternConstraint.setPrecision(6);
 		debitBalanceFixedPointPatternConstraint.setScale(2);
 		debitBalanceFixedPointPatternConstraint.setAllowNegative(true);
@@ -106,6 +110,8 @@ public class FixedPointPatternConstraintTest {
 		attributes.add(debitBalanceDefinition);
 
 		creditBalanceFixedPointPatternConstraint = new FixedPointPatternConstraint();
+        creditBalanceFixedPointPatternConstraint.setMessageKey("validate.dummykey");
+        creditBalanceFixedPointPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		creditBalanceFixedPointPatternConstraint.setPrecision(0);
 		creditBalanceFixedPointPatternConstraint.setScale(0);
 
@@ -115,10 +121,14 @@ public class FixedPointPatternConstraintTest {
 		attributes.add(creditBalanceDefinition);
 
 		creditBalanceFixedPointPatternConstraint1 = new FixedPointPatternConstraint();
+        creditBalanceFixedPointPatternConstraint1.setMessageKey("validate.dummykey");
+        creditBalanceFixedPointPatternConstraint1.setValidationMessageParams( new ArrayList<String>());
 		creditBalanceFixedPointPatternConstraint1.setPrecision(2);
 		creditBalanceFixedPointPatternConstraint1.setScale(3);
 
 		creditBalanceFixedPointPatternConstraint2 = new FixedPointPatternConstraint();
+        creditBalanceFixedPointPatternConstraint2.setMessageKey("validate.dummykey");
+        creditBalanceFixedPointPatternConstraint2.setValidationMessageParams( new ArrayList<String>());
 		creditBalanceFixedPointPatternConstraint2.setPrecision(-2);
 		creditBalanceFixedPointPatternConstraint2.setScale(-3);
 
@@ -143,7 +153,6 @@ public class FixedPointPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueInvalidPositiveNumber() {
 		ConstraintValidationResult result = process(citibankAccount, "totalBalance", totalBalanceFixedPointPatternConstraint);
@@ -153,7 +162,6 @@ public class FixedPointPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueInvalidNegativeNumber() {
 		ConstraintValidationResult result = process(morganAccount, "totalBalance", totalBalanceFixedPointPatternConstraint);
@@ -172,7 +180,6 @@ public class FixedPointPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueInvalidNegativeNumber1() {
 		ConstraintValidationResult result = process(iciciAccount, "debitBalance", debitBalanceFixedPointPatternConstraint);
@@ -182,7 +189,6 @@ public class FixedPointPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueInvalidPositiveNumber1() {
 		ConstraintValidationResult result = process(citibankAccount, "debitBalance", debitBalanceFixedPointPatternConstraint);

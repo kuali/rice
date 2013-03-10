@@ -95,28 +95,31 @@ function submitForm(methodToCall, additionalData, validate, ajaxSubmit, successC
  * if errors are encountered)
  */
 function validateForm() {
+    clientErrorStorage = new Object();
+    var summaryTextExistence = new Object();
     var validForm = true;
 
     jQuery.watermark.hideAll();
     pauseTooltipDisplay = true;
 
-    if(validateClient){
+    if (validateClient) {
         // turn on this flag to enable the page level summaries to now be shown for errors
         messageSummariesShown = true;
         validForm = jq("#kualiForm").valid();
     }
 
-	if(!validForm){
+    if (!validForm) {
         validForm = false;
 
         //ensure all non-visible controls are visible to the user
-        jQuery(".error:not(:visible)").each(function(){
+        jQuery(".error:not(:visible)").each(function () {
             cascadeOpen(jQuery(this));
         });
 
-		jumpToTop();
+        jumpToTop();
         showClientSideErrorNotification();
-	}
+        jQuery(".uif-pageValidationMessages li.uif-errorMessageItem:first > a").focus();
+    }
 
     jq.watermark.showAll();
     pauseTooltipDisplay = false;
@@ -188,7 +191,7 @@ function validateAddLine(collectionGroupId, addViaLightbox) {
 
     var valid = validateLineFields(controlsToValidate);
     if (!valid) {
-        if(!addViaLightbox){
+        if (!addViaLightbox) {
             showClientSideErrorNotification();
         }
 
@@ -235,9 +238,9 @@ function validateLineFields(controlsToValidate) {
 
         haltValidationMessaging = true;
 
-        if(!control.prop("disabled") && !control.hasClass("uif-readOnlyContent")){
+        if (!control.prop("disabled") && !control.hasClass("uif-readOnlyContent")) {
             control.valid();
-            if(control.hasClass("error")){
+            if (control.hasClass("error")) {
                 validValue = false;
             }
         }
@@ -245,7 +248,7 @@ function validateLineFields(controlsToValidate) {
         haltValidationMessaging = false;
 
         //details visibility check
-        if (control.not(":visible") && !validValue){
+        if (control.not(":visible") && !validValue) {
             cascadeOpen(control);
         }
 
@@ -268,16 +271,16 @@ function validateLineFields(controlsToValidate) {
  * @param componentObject the object to check for visibility of and "open" parent containing elements to make
  * it visible
  */
-function cascadeOpen(componentObject){
-    if(componentObject.not(":visible")){
+function cascadeOpen(componentObject) {
+    if (componentObject.not(":visible")) {
         var detailsDivs = componentObject.parents("div[data-role='details']");
-        detailsDivs.each(function(){
+        detailsDivs.each(function () {
             jQuery(this).parent().find("> a").click();
         });
 
         var disclosureDivs = componentObject.parents("div[data-role='disclosureContent']");
-        disclosureDivs.each(function(){
-            if(!jQuery(this).data("open")){
+        disclosureDivs.each(function () {
+            if (!jQuery(this).data("open")) {
                 jQuery(this).parent().find("a[data-linkfor='" + jQuery(this).attr("id") + "']").click();
             }
         });
@@ -334,38 +337,38 @@ function setupRefreshCheck(controlName, refreshId, condition, methodToCall) {
  * @param condition function that if returns true disables the component, and if returns false enables the component
  * @param onKeyUp true if evaluating on keyUp, only applies to textarea/text inputs
  */
-function setupDisabledCheck(controlName, disableCompId, disableCompType, condition, onKeyUp){
+function setupDisabledCheck(controlName, disableCompId, disableCompType, condition, onKeyUp) {
     var theControl = jQuery("[name='" + escapeName(controlName) + "']");
     var eventType = 'change';
 
-    if(onKeyUp && (theControl.is("textarea") || theControl.is("input[type='text'], input[type='password']"))){
+    if (onKeyUp && (theControl.is("textarea") || theControl.is("input[type='text'], input[type='password']"))) {
         eventType = 'keyup';
     }
 
-    if(disableCompType == "radioGroup" || disableCompType == "checkboxGroup"){
-        theControl.on(eventType, function (){
-            if(condition()){
+    if (disableCompType == "radioGroup" || disableCompType == "checkboxGroup") {
+        theControl.on(eventType, function () {
+            if (condition()) {
                 jQuery("input[id^='" + disableCompId + "']").prop("disabled", true);
             }
-            else{
+            else {
                 jQuery("input[id^='" + disableCompId + "']").prop("disabled", false);
             }
         });
     }
-    else{
-        theControl.on(eventType, function (){
+    else {
+        theControl.on(eventType, function () {
             var disableControl = jQuery("#" + disableCompId);
-            if(condition()){
+            if (condition()) {
                 disableControl.prop("disabled", true);
                 disableControl.addClass("disabled");
-                if(disableCompType === "actionLink" || disableCompType === "action"){
+                if (disableCompType === "actionLink" || disableCompType === "action") {
                     disableControl.attr("tabIndex", "-1");
                 }
             }
-            else{
+            else {
                 disableControl.prop("disabled", false);
                 disableControl.removeClass("disabled");
-                if(disableCompType === "actionLink" || disableCompType === "action"){
+                if (disableCompType === "actionLink" || disableCompType === "action") {
                     disableControl.attr("tabIndex", "0");
                 }
             }

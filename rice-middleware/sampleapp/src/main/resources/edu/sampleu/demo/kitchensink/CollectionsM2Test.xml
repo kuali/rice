@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="CollectionsM2Test" parent="Uif-FormView">
+  <bean id="CollectionsM2Test" parent="Demo-BaseFormView">
     <property name="headerText" value="Collection 2.2 M2 Items Test View"/>
     <property name="items">
       <list>

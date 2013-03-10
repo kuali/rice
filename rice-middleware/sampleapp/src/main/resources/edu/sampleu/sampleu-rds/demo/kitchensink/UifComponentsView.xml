@@ -30,6 +30,8 @@
       <spring:ref bean="UifCompView-Menu"/>
     </navigation>
     <items>
+      <accordionGroup-bean >
+      </accordionGroup-bean>
       <page-bean id="UifCompView-Page1" parent="UifCompViewPageWithFooter">
         <help>
           <help-bean>

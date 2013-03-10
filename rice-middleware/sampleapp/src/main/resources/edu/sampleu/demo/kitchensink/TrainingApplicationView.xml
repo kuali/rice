@@ -27,7 +27,7 @@
   ********************************************************************************************************************
   -->
   <!-- College Application view -->
-  <bean id="Training-CollegeApplicationView" parent="Uif-FormView">
+  <bean id="Training-CollegeApplicationView" parent="Demo-BaseFormView">
     <property name="headerText" value="Kuali University Student Application Form"/>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.TrainingApplicationForm"/>
     <property name="items">

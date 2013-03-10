@@ -153,4 +153,37 @@
 
   <bean id="Uif-ViewTheme" class="org.kuali.rice.krad.uif.view.ViewTheme" scope="prototype"/>
 
+  <bean id="Uif-BreadcrumbItem" class="org.kuali.rice.krad.uif.util.BreadcrumbItem" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/breadcrumb.ftl"/>
+    <property name="templateName" value="uif_breadcrumb"/>
+    <property name="renderAsLink" value="true"/>
+    <property name="url">
+      <bean parent="Uif-Url"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-BreadcrumbOptions" class="org.kuali.rice.krad.uif.util.BreadcrumbOptions" scope="prototype"/>
+
+  <bean id="Uif-Url" class="org.kuali.rice.krad.uif.util.KradUrl" scope="prototype">
+    <property name="baseUrl" value="@{#ConfigProperties['krad.url']}"/>
+    <property name="methodToCall" value="start"/>
+  </bean>
+
+  <bean id="Uif-ParentLocation" class="org.kuali.rice.krad.uif.util.ParentLocation" scope="prototype">
+
+    <property name="parentViewUrl">
+      <bean parent="Uif-Url"/>
+    </property>
+    <property name="parentPageUrl">
+      <bean parent="Uif-Url"/>
+    </property>
+    <property name="viewBreadcrumbItem">
+      <bean parent="Uif-BreadcrumbItem"/>
+    </property>
+    <property name="pageBreadcrumbItem">
+      <bean parent="Uif-BreadcrumbItem"/>
+    </property>
+  </bean>
+
+
 </beans>

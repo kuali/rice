@@ -27,7 +27,7 @@
                                                Configuration Test View
   ********************************************************************************************************************
   -->
-  <bean id="ConfigurationTestView" parent="Uif-FormView">
+  <bean id="ConfigurationTestView" parent="Demo-BaseFormView">
     <property name="headerText" value="Configuration Test View"/>
     <property name="entryPageId" value="ConfigurationTestView-ProgressiveRender-Page"/>
     <property name="namespaceCode" value="KR-NS"/>

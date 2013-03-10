@@ -35,7 +35,6 @@
         <ref bean="Demo-InputField-Example6"/>
         <ref bean="Demo-InputField-Example7"/>
         <ref bean="Demo-InputField-Example8"/>
-        <ref bean="Demo-InputField-Example9"/>
         <ref bean="Demo-InputField-Example10"/>
         <ref bean="Demo-InputField-Example11"/>
       </list>
@@ -126,7 +125,7 @@
         <!-- ex:Demo-InputField-Example7 start-->
         <bean parent="Uif-InputField-LabelTop" p:label="Quickfinder Field" p:propertyName="inputField7"
               p:instructionalText="Click the quickfinder to select a value, TravelAccount number will be returned">
-          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
           <property name="quickfinder.fieldConversions">
             <map>
               <entry key="number" value="inputField7"/>
@@ -146,7 +145,7 @@
         <bean parent="Uif-InputField-LabelTop" p:label="Inquiry Field" p:propertyName="inputField8"
               p:instructionalText="Click the inquiry image to see details of TravelAccount with number corresponding
                   to the input" p:constraintText="Input a1-a9" p:defaultValue="a2">
-          <property name="inquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+          <property name="inquiry.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
           <property name="inquiry.inquiryParameters">
             <map>
               <entry key="inputField8" value="number"/>
@@ -154,24 +153,6 @@
           </property>
         </bean>
         <!-- ex:Demo-InputField-Example8 end-->
-      </list>
-    </property>
-  </bean>
-
-  <!-- Suggest -->
-  <bean id="Demo-InputField-Example9" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-InputField-Example9 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Suggest Field"
-              p:instructionalText="Enter ca or ea to see a TravelAccountType accountTypeCode suggestion"
-              p:propertyName="inputField9" p:required="true">
-          <property name="suggest">
-              <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="accountTypeCode"
-                    p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
-          </property>
-        </bean>
-        <!-- ex:Demo-InputField-Example9 end-->
       </list>
     </property>
   </bean>

@@ -19,6 +19,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -86,6 +87,8 @@ public class TimestampPatternConstraintTest {
 		invalidTimestamp3 = "28-07-2011 15:10:36.300";
 
 		timestampPatternConstraint = new ConfigurationBasedRegexPatternConstraint();
+        timestampPatternConstraint.setMessageKey("validate.dummykey");
+        timestampPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		timestampPatternConstraint.setValue(regex);
 
 		timestampDefinition = new AttributeDefinition();

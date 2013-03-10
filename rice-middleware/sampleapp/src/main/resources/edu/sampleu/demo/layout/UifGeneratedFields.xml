@@ -20,7 +20,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="UifGeneratedFields" parent="Uif-FormView">
+  <bean id="UifGeneratedFields" parent="Demo-BaseFormView">
     <property name="headerText" value="Generated Fields"/>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="viewHelperServiceClass"

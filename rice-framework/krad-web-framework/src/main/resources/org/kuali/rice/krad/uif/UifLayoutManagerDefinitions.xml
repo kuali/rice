@@ -169,7 +169,6 @@
     <property name="expandDetailsActionPrototype">
       <bean parent="Uif-ExpandDetailsAction"/>
     </property>
-    <property name="rowDetailsSwapActionImage" value="true"/>
     <property name="totalLabel">
       <bean parent="Uif-Label" p:labelText="Total"/>
     </property>

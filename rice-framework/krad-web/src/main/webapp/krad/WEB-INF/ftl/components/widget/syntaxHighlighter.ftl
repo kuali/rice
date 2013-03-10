@@ -21,20 +21,30 @@ Create pre tags containing the text to highlight adding the css class used by th
 -->
 <#macro uif_syntaxHighlighter widget >
 
-    <div id="${widget.id}" class="uif-syntaxHighlighter">
-        <#if widget.header?has_content>
-            <@krad.template component=widget.header/>
+<div id="${widget.id}">
+    <#if widget.header?has_content>
+        <@krad.template component=widget.header/>
+    </#if>
+    <div class="uif-syntaxHighlighter">
+        <#if widget.allowCopy>
+            <a class="uif-copyPaste" id="${widget.id}_syntaxHighlightCopy"></a>
         </#if>
-        <div>
-            <pre class="${widget.pluginCssClass}">
-                <#if widget.sourceCode?has_content>
+        <pre class="${widget.pluginCssClass}">
+            <#if widget.sourceCode?has_content>
                     ${widget.sourceCode}
                 </#if>
-            </pre>
-        </div>
+        </pre>
     </div>
+    <#if widget.sourceCode?has_content>
+        <div id="${widget.id}_syntaxOriginalText" style="display: none;">${widget.sourceCode}</div>
+    </#if>
+</div>
 
-    <@krad.script value="prettyPrint();" />
+    <@krad.script value="prettyPrint();"/>
+    <#if widget.allowCopy>
+        <@krad.script value="createCopyToClipboard('${widget.id}', '${widget.id}_syntaxHighlightCopy',
+            '${widget.id}_syntaxOriginalText', ${widget.showCopyConfirmation?string})" />
+    </#if>
 </#macro>
 
 

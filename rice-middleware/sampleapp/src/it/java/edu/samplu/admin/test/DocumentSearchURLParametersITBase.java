@@ -17,7 +17,6 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
 import edu.samplu.common.WebDriverITBase;
 import edu.samplu.common.WebDriverUtil;
 import org.openqa.selenium.By;

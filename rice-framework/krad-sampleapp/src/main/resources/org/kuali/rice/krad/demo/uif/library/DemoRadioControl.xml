@@ -50,7 +50,7 @@
             <bean parent="Uif-VerticalRadioControl"/>
           </property>
           <property name="optionsFinder">
-            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
           </property>
         </bean>
         <!-- ex:Demo-RadioControl-Example1 end-->

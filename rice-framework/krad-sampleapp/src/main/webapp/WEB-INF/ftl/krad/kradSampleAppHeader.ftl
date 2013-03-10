@@ -20,7 +20,7 @@
 <div class="demo-appHeader">
     <div>
         <div class="demo-headerFooterContainer">
-            <a href="index.html" class="demo-brand">
+            <a href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start" class="demo-brand">
                 <div class="demo-brandLogo">
                 <#--Image placeholder-->
                 </div>

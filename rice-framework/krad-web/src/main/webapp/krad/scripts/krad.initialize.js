@@ -27,7 +27,12 @@ var messageSummariesShown = false;
 var pauseTooltipDisplay = false;
 var haltValidationMessaging = false;
 var gAutoFocus = false;
+var clientErrorStorage = new Object();
+var summaryTextExistence = new Object();
+var clientErrorExistsCheck = false;
+var skipPageSetup = false;
 
+var originalPageTitle;
 var errorImage;
 var errorGreyImage;
 var warningImage;
@@ -37,12 +42,12 @@ var detailsCloseImage;
 var ajaxReturnHandlers = {};
 
 //delay function
-var delay = (function(){
-  var timer = 0;
-  return function(callback, ms){
-    clearTimeout (timer);
-    timer = setTimeout(callback, ms);
-  };
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
 })();
 
 // map of componentIds and refreshTimers
@@ -50,7 +55,13 @@ var refreshTimerComponentMap = {};
 
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
-    setPageBreadcrumb();
+    //page redirect variables
+    var hashPageId = getUrlParameter("pageId", document.location.hash);
+    var currentPageIdField = jQuery("input#pageId");
+    var pageRedirect = hashPageId && currentPageIdField.length && currentPageIdField.val() != hashPageId;
+
+    //skip the page setup if we are performing a redirect
+    skipPageSetup = pageRedirect;
 
     // buttons
     jQuery("input:submit, input:button, a.button, .uif-dialogButtons").button();
@@ -71,6 +82,7 @@ jQuery(document).ready(function () {
         hideLoading();
     });
 
+    //run all the scripts
     runHiddenScripts("");
 
     // show the page
@@ -79,7 +91,36 @@ jQuery(document).ready(function () {
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
+    //add listener for popstate to change pages
+    window.addEventListener("popstate", function (e) {
+        var currentPageId = jQuery("input#pageId").val();
+        if (e.state && e.state.pageId && e.state.pageId != currentPageId) {
+            var request = new KradRequest();
+            request.methodToCall = "navigate";
+            request.additionalData = {"actionParameters[navigateToPageId]":e.state.pageId};
+            request.send();
+        }
+    });
+
+    //add listener on hashchange to change pages when pageId hash changes
+    window.addEventListener("hashchange", function (e) {
+        var pageId = null;
+        if (document.location.hash) {
+            pageId = getUrlParameter("pageId", document.location.hash);
+        }
+
+        if (pageId && jQuery("input#pageId").length && pageId != jQuery("input#pageId").val()) {
+            handleHashPageId(pageId);
+        }
+    });
+
+    //focus on first field
     performFocus("FIRST");
+
+    //handle hash pageId redirect (old IE bookmark support)
+    if (pageRedirect) {
+        handleHashPageId(hashPageId);
+    }
 });
 
 /**
@@ -345,7 +386,7 @@ function initFieldHandlers() {
                                 //never had a client error before, so pop-up and delay close
                                 showMessageTooltip(id, true, true);
                             }
-                            else if (!mouseInTooltip){
+                            else if (!mouseInTooltip) {
                                 hideMessageTooltip(id);
                             }
                         }
@@ -373,19 +414,21 @@ function initFieldHandlers() {
                         //never had a client error before, so pop-up and delay
                         showMessageTooltip(id, true, true);
                     }
-                    else if (!mouseInTooltip){
+                    else if (!mouseInTooltip) {
                         hideMessageTooltip(id);
                     }
                 }
             });
 
-    jQuery(document).on("change", "table.dataTable div[data-role='InputField'][data-total='change'] :input", function(){
+    jQuery(document).on("change", "table.dataTable div[data-role='InputField'][data-total='change'] :input", function () {
         refreshDatatableCellRedraw(this);
     });
 
-    jQuery(document).on("keyup", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function(){
+    jQuery(document).on("keyup", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function () {
         var input = this;
-        delay(function(){refreshDatatableCellRedraw(input)}, 300);
+        delay(function () {
+            refreshDatatableCellRedraw(input)
+        }, 300);
     });
 
 }
@@ -401,8 +444,8 @@ function initFieldHandlers() {
 function initBubblePopups() {
     //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
     jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
-                    + "select, textarea, .uif-tooltip", {   manageMouseEvents:false,
-                                        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
+            + "select, textarea, .uif-tooltip", {   manageMouseEvents:false,
+        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
 
 }
 
@@ -421,7 +464,14 @@ function hideBubblePopups(element) {
  * Sets up the validator and the dirty check and other page scripts
  */
 function setupPage(validate) {
+    //if we are skipping this page setup, reset the flag, and return (this logic is for redirects)
+    if (skipPageSetup) {
+        skipPageSetup = false;
+        return;
+    }
+
     jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+    originalPageTitle = document.title;
 
     setupImages();
 
@@ -433,9 +483,27 @@ function setupPage(validate) {
     validateClient = validate;
 
     //select current page
-    var pageId = jQuery("[name='view.currentPageId']").val();
+    var pageId = jQuery("input[name='view.currentPageId']").val();
     jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage:pageId});
     jQuery("ul.uif-tabMenu").selectTab({selectPage:pageId});
+
+    //handle page history/url
+    if (history.replaceState) {
+        //HTML5 history is supported...
+        var urlPageId = getUrlParameter("pageId");
+        if (urlPageId && pageId && urlPageId != pageId) {
+            //push state if new page
+            history.pushState({pageId:pageId}, null, getHistoryQueryString("pageId", pageId));
+        }
+        else {
+            //otherwise replace state
+            history.replaceState({pageId:pageId}, null, getHistoryQueryString("pageId", pageId));
+        }
+    }
+    else {
+        //Add to hash if no HTML5 history support (old IE support)
+        document.location.hash = "#?pageId=" + pageId;
+    }
 
     //skip input field iteration and validation message writing, if no server messages
     var hasServerMessagesData = jQuery("[data-type='Page']").data("server-messages");
@@ -559,21 +627,23 @@ function setupValidator(form) {
                             }
                         }
 
-                        if (data && !exists) {
+                        if (!exists) {
                             data.errors = [];
                             data.errors.push(message);
                             jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                        }
 
+                        if (data) {
                             if (messageSummariesShown) {
                                 handleMessagesAtField(id);
                             }
                             else {
                                 writeMessagesAtField(id);
                             }
+                        }
 
-                            if (!pauseTooltipDisplay) {
-                                showMessageTooltip(id, false, true);
-                            }
+                        if (data && !exists && !pauseTooltipDisplay) {
+
                         }
                     }
 

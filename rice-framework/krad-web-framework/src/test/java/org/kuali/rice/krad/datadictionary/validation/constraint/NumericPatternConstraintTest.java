@@ -69,6 +69,8 @@ public class NumericPatternConstraintTest {
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 
 		postalCodeNumericPatternConstraint = new NumericPatternConstraint();
+        postalCodeNumericPatternConstraint.setMessageKey("validate.dummykey");
+        postalCodeNumericPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 
 		postalCodeDefinition = new AttributeDefinition();
 		postalCodeDefinition.setName("postalCode");
@@ -87,7 +89,6 @@ public class NumericPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueNotValidChars() {
 		ConstraintValidationResult result = process(newYorkNYAddress, "postalCode", postalCodeNumericPatternConstraint);

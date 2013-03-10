@@ -222,6 +222,12 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-development-tools</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-api</artifactId>
       <version>${project.version}</version>
     </dependency>

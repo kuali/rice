@@ -56,7 +56,7 @@
 }
 
 .demo-sampleAppHome-splashWrapper {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/back-splash.png");
+    background-image: url("../../images/krad/back-splash.png");
     color: #FFFFFF;
 }
 
@@ -107,7 +107,7 @@
 }
 
 .demo-mainGraphic {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/splashGraphic1.png");
+    background-image: url("../../images/krad/splashGraphic1.png");
     height: 299px;
     margin-left: 465px;
     margin-top: -105px;
@@ -145,31 +145,31 @@
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point2 .uif-instructionalMessage {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sellingPoints-image1.png");
+    background-image: url("../../images/krad/sellingPoints-image1.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point1 .uif-instructionalMessage {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sellingPoints-image2.png");
+    background-image: url("../../images/krad/sellingPoints-image2.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point4 .uif-instructionalMessage {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sellingPoints-image3.png");
+    background-image: url("../../images/krad/sellingPoints-image3.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point3 .uif-instructionalMessage {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sellingPoints-image4.png");
+    background-image: url("../../images/krad/sellingPoints-image4.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point6 .uif-instructionalMessage {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sellingPoints-image5.png");
+    background-image: url("../../images/krad/sellingPoints-image5.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point5 .uif-instructionalMessage {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sellingPoints-image6.png");
+    background-image: url("../../images/krad/sellingPoints-image6.png");
 }
 
 .demo-sampleAppHome-testimonialsWrapper {
-    background-image: url(../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sectionShadow.png);
+    background-image: url(../../images/krad/sectionShadow.png);
     background-repeat: no-repeat;
     background-position: center top;
     background-color: #F6F6F6;
@@ -226,7 +226,7 @@
 }
 
 .demo-componentLibHome .demo-sampleAppPage h3 {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sprite-navIcons.png");
+    background-image: url("../../images/krad/sprite-navIcons.png");
     background-position: left top;
     background-repeat: no-repeat, no-repeat;
     background-color: transparent;
@@ -269,44 +269,50 @@
     margin-bottom: 10px;
 }
 
+.demo-componentLibView > .uif-viewContentWrapper > .uif-pageContentWrapper {
+    float: left;
+    margin-left: 20px;
+    width: 700px;
+}
+
 /** Component Exhibit *********************************************************************/
 
-#ComponentLibraryTabGroup{
+#ComponentLibrary-TabGroup{
     margin-left: -5px;
 }
 
-#ComponentLibraryTabGroup_tabs {
+#ComponentLibrary-TabGroup_tabs {
     width: 100%;
 }
 
-#ComponentLibraryTabGroup_tabs > div.ui-tabs-panel {
+#ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel {
     min-height: 200px;
-    overflow: auto;
+    overflow: hidden;
     width: 72%;
     border: 1px solid #CCCCCC;
     border-radius: 4px 4px 4px 4px;
     padding: 12px;
 }
 
-#ComponentLibraryTabGroup_tabList {
+#ComponentLibrary-TabGroup_tabList {
     width: 23%;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     margin-top: 20px;
 }
 
-#ComponentLibraryTabGroup_tabList .uif-validationImage {
+#ComponentLibrary-TabGroup_tabList .uif-validationImage {
     display: none !important;
 }
 
-#ComponentLibraryTabGroup_tabList li {
+#ComponentLibrary-TabGroup_tabList li {
     border-style: none !important;
     padding-bottom: 2px;
     padding-left: 16px;
     padding-top: 2px;
     margin-top: 0;
     background-color: transparent !important;
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/widgetNavDivider.png");
+    background-image: url("../../images/krad/widgetNavDivider.png");
     background-position: 12px 0;
     background-repeat: no-repeat;
     margin-left: -14px;
@@ -316,15 +322,15 @@
     box-shadow: none;
 }
 
-#ComponentLibraryTabGroup_tabList li:last-child{
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/widgetNavDivider.png"), url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/widgetNavDivider.png");
+#ComponentLibrary-TabGroup_tabList li:last-child{
+    background-image: url("../../images/krad/widgetNavDivider.png"), url("../../images/krad/widgetNavDivider.png");
     background-position: 12px 0, 12px bottom;
     background-repeat: no-repeat, no-repeat;
 }
 
-#ComponentLibraryTabGroup_tabList li.ui-state-active {
+#ComponentLibrary-TabGroup_tabList li.ui-state-active {
     background-color: #FFFFFF;
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/widgetNavBorder.png"), url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/widgetNavBorder.png"), url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/widgetNavCorner.png");
+    background-image: url("../../images/krad/widgetNavBorder.png"), url("../../images/krad/widgetNavBorder.png"), url("../../images/krad/widgetNavCorner.png");
     background-position: 1px top, -2px bottom, left center;
     background-repeat: no-repeat, no-repeat, no-repeat;
     border-style: none;
@@ -333,12 +339,12 @@
     cursor: pointer !important;
 }
 
-#ComponentLibraryTabGroup_tabList a:focus{
+#ComponentLibrary-TabGroup_tabList a:focus{
     outline: thin dotted #333333;
     outline-offset: -2px;
 }
 
-#ComponentLibraryTabGroup_tabList a {
+#ComponentLibrary-TabGroup_tabList a {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 0.85em;
     color: #666666;
@@ -349,7 +355,7 @@
     width: 100%;
 }
 
-#ComponentLibraryTabGroup_tabList li.ui-state-active a {
+#ComponentLibrary-TabGroup_tabList li.ui-state-active a {
     color: black;
 }
 
@@ -357,11 +363,42 @@
     display: none;
 }
 
-.demo-noTabs > div.ui-tabs > div.ui-tabs-panel {
-    width: 680px !important;
+.demo-noTabs > #ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel {
+    width: 675px;
+    float: left;
+}
+
+.demo-xLargeLibraryView > .uif-viewContentWrapper > .uif-pageContentWrapper{
+    width: 940px;
+}
+
+.demo-xLargeLibraryView div#Uif-Navigation{
+    display: none;
+}
+
+.demo-xLargeLibraryView .demo-noTabs > #ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel{
+    width: 916px;
+}
+
+.demo-componentLibView .uif-pageHeader .uif-header-upperGroup{
+    display: none;
+}
+
+.demo-xLargeLibraryView .uif-pageHeader .uif-header-upperGroup{
+    display: block;
+    position: absolute;
+    top: -25px;
+}
+
+.demo-xLargeLibraryView .demo-sampleAppPage {
+    padding-top: 50px;
 }
 
 /**** Source code viewer *********************************************************/
+
+#ComponentLibrary-AdditionalCodeViewer1, #ComponentLibrary-AdditionalCodeViewer2{
+    display: none;
+}
 
 .demo-componentLibView .demo-sampleAppPage > div > .uif-syntaxHighlighter h3 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -385,7 +422,7 @@
     float: left;
     margin-left: 20px;
     width: 220px;
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/navShadow.png");
+    background-image: url("../../images/krad/navShadow.png");
     background-position: right top;
     background-repeat: no-repeat;
     min-height: 500px;
@@ -394,15 +431,11 @@
     margin-top: 7px;
 }
 
-.demo-componentLibView > .uif-viewContentWrapper > .uif-pageContentWrapper {
-    float: left;
-    margin-left: 20px;
-    width: 700px;
-}
+
 
 .demo-componentLibNav .ui-accordion-header {
 
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sprite-navIcons.png"), url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/navDivider.png");
+    background-image: url("../../images/krad/sprite-navIcons.png"), url("../../images/krad/navDivider.png");
     background-position: left top;
     background-repeat: no-repeat, no-repeat;
     background-color: transparent;
@@ -487,14 +520,14 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 }
 
 .demo-componentLibNav-subList > ul {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/navDivider.png");
+    background-image: url("../../images/krad/navDivider.png");
     background-position: center top;
     background-repeat: no-repeat;
     margin: 0;
 }
 
 .demo-componentLibNav-subList > ul > li {
-    list-style-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/navBullet.png");
+    list-style-image: url("../../images/krad/navBullet.png");
     list-style-type: none;
     margin-left: 36px;
     padding-bottom: 2px;
@@ -537,11 +570,11 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 }
 
 .demo-detailsGroup h3 img.uif-disclosure-image[alt="collapse"] {
-    background: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/collapse-black.png") no-repeat scroll 0 0 transparent;
+    background: url("../../images/krad/collapse-black.png") no-repeat scroll 0 0 transparent;
 }
 
 .demo-detailsGroup h3 img.uif-disclosure-image[alt="expand"] {
-    background: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/expand-black.png") no-repeat scroll 0 0 transparent;
+    background: url("../../images/krad/expand-black.png") no-repeat scroll 0 0 transparent;
 }
 
 /**** All tab styles are done with important because difficulty to override from themes ***/
@@ -674,7 +707,7 @@ a.demo-documentationLink {
 .demo-brandLogo {
     width: 170px;
     height: 69px;
-    background-image: url(../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/logo.png);
+    background-image: url(../../images/krad/logo.png);
     position: absolute;
     top: 0px;
 }
@@ -726,7 +759,7 @@ a.demo-documentationLink {
 }
 
 .demo-appFooter .demo-foundationInfo {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/logo-kuali.png");
+    background-image: url("../../images/krad/logo-kuali.png");
     background-position: 0 14px;
     background-repeat: no-repeat;
     padding-bottom: 22px;
@@ -776,7 +809,7 @@ a.demo-documentationLink {
 }
 
 .demo-thirdTier .demo-contactInfo ul li a {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/sprite-stayInTouch.png");
+    background-image: url("../../images/krad/sprite-stayInTouch.png");
     background-position: left top;
     background-repeat: no-repeat;
     padding-left: 22px;
@@ -892,23 +925,47 @@ a.demo-documentationLink {
 }
 
 div#KradSampleAppDemo-Row1-Demo1 {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/demo-inquiry.png");
+    background-image: url("../../images/krad/demo-inquiry.png");
 }
 
 div#KradSampleAppDemo-Row1-Demo2 {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/demo-new.png");
+    background-image: url("../../images/krad/demo-new.png");
 }
 
 div#KradSampleAppDemo-Row1-Demo3 {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/demo-edit.png");
+    background-image: url("../../images/krad/demo-edit.png");
 }
 
 div#KradSampleAppDemo-Row2-Demo1, div#KradSampleAppDemo-Row2-Demo2, div#KradSampleAppDemo-Row2-Demo3 {
-    background-image: url("../../../../../../../rice-middleware/sampleapp/src/main/webapp/images/krad/demo-lookup.png");
+    background-image: url("../../images/krad/demo-lookup.png");
 }
 
 /* example specific css */
 
-div#Demo-InputField-View div#ComponentLibraryTabGroup_tabs > .ui-tabs-panel{
+div#Demo-InputField-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 290px;
 }
+
+div#Demo-RichMessages-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
+    min-height: 360px;
+}
+
+div#Demo-TableLayoutDetails-View input[type="text"], div#Demo-TableLayoutTotaling-View input[type="text"],
+div#Demo-TableLayoutGrouping-View input[type="text"]{
+    width: 10em;
+}
+
+div#Demo-BoxLayoutManager-View .demo-borderBottom{
+    border-bottom: 1px solid green !important;
+    padding-bottom: 5px;
+}
+
+.demo-outlineItem{
+    background-color: rgba(173,216,230, 0.4);
+    border: 1px dotted white;
+}
+
+.demo-outlineGroup{
+    border: 1px dashed gray;
+}
+

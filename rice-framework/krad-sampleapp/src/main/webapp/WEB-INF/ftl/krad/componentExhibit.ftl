@@ -26,9 +26,27 @@
         </#list>
     </div>
 
+    <div id="demo-additionalExhibitSource1" style="display:none;">
+        <#list element.additionalDemoSourceCode1 as sourceCode>
+            <#if sourceCode?has_content>
+                <pre class="${element.sourceCodeViewer.pluginCssClass}"
+                      data-index="${sourceCode_index}">${sourceCode}</pre>
+            </#if>
+        </#list>
+    </div>
+
+    <div id="demo-additionalExhibitSource2" style="display:none;">
+        <#list element.additionalDemoSourceCode2 as sourceCode>
+            <#if sourceCode?has_content>
+                <pre class="${element.sourceCodeViewer.pluginCssClass}"
+                      data-index="${sourceCode_index}">${sourceCode}</pre>
+            </#if>
+        </#list>
+    </div>
+
     <@krad.template component=element.sourceCodeViewer/>
-
-
+    <@krad.template component=element.additionalSourceCodeViewer1/>
+    <@krad.template component=element.additionalSourceCodeViewer2/>
 
     <@krad.script value="setupExhibitHandlers()" />
 </#macro>

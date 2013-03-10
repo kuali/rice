@@ -19,6 +19,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -89,6 +90,8 @@ public class YearPatternConstraintTest {
 		invalidYear3 = "99999";
 
 		yearPatternConstraint = new ConfigurationBasedRegexPatternConstraint();
+        yearPatternConstraint.setMessageKey("validate.dummykey");
+        yearPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		yearPatternConstraint.setValue(regex);
 
 		yearDefinition = new AttributeDefinition();

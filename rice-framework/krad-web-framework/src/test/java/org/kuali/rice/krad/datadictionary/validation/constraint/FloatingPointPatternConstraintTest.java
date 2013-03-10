@@ -85,6 +85,8 @@ public class FloatingPointPatternConstraintTest {
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 
 		totalBalanceFloatingPointPatternConstraint = new FloatingPointPatternConstraint();
+        totalBalanceFloatingPointPatternConstraint.setMessageKey("validate.dummykey");
+        totalBalanceFloatingPointPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		totalBalanceFloatingPointPatternConstraint.setValue(regex);
 
 		totalBalanceDefinition = new AttributeDefinition();
@@ -93,6 +95,8 @@ public class FloatingPointPatternConstraintTest {
 		attributes.add(totalBalanceDefinition);
 
 		debitBalanceFloatingPointPatternConstraint = new FloatingPointPatternConstraint();
+        debitBalanceFloatingPointPatternConstraint.setMessageKey("validate.dummykey");
+        debitBalanceFloatingPointPatternConstraint.setValidationMessageParams( new ArrayList<String>());
 		debitBalanceFloatingPointPatternConstraint.setValue("-?"+regex);
 		debitBalanceFloatingPointPatternConstraint.setAllowNegative(true);
 
@@ -123,7 +127,6 @@ public class FloatingPointPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueInvalidNegativeNumber() {
 		ConstraintValidationResult result = process(morganAccount, "totalBalance", totalBalanceFloatingPointPatternConstraint);
@@ -142,7 +145,6 @@ public class FloatingPointPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueInvalidNegativeNumber1() {
 		ConstraintValidationResult result = process(morganAccount, "debitBalance", debitBalanceFloatingPointPatternConstraint);
@@ -152,7 +154,6 @@ public class FloatingPointPatternConstraintTest {
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 
-    @Ignore
 	@Test
 	public void testValueInvalidPositiveNumber() {
 		ConstraintValidationResult result = process(citibankAccount, "debitBalance", debitBalanceFloatingPointPatternConstraint);

@@ -69,9 +69,6 @@ KradResponse.prototype = {
         // update page contents from response
         jQuery(pageInLayout).empty().append(page.find(">*"));
 
-        // process breadcrumbs
-        setPageBreadcrumb();
-
         pageValidatorReady = false;
         runHiddenScripts(jQuery(pageInLayout).attr("id"), false, true);
 

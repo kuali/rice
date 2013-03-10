@@ -112,7 +112,7 @@
             <suggestQuery>
               <attributeQueryConfig-bean queryMethodToCall="retrieveTravelAccounts" sortPropertyNames="subAccountName">
                 <spring:property name="queryMethodInvokerConfig.targetObject">
-                  <spring:bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+                  <spring:bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
                     <spring:property name="serviceName" value="testSuggestService"/>
                   </spring:bean>
                 </spring:property>

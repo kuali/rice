@@ -15,13 +15,20 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.BreadcrumbItem;
+import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,9 +44,45 @@ public class PageGroup extends Group {
 
     private boolean autoFocus = false;
 
+    private BreadcrumbOptions breadcrumbOptions;
+    private BreadcrumbItem breadcrumbItem;
+
+    /**
+     * Setup various breadcrumbOptions inherited from view if not explicitly set.
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        BreadcrumbOptions viewBreadcrumbOptions = view.getBreadcrumbOptions();
+
+        //inherit prePageBreadcrumbs, preViewBreadcrumbs, and overrides from the view if not set
+        if (breadcrumbOptions.getPrePageBreadcrumbs() == null
+                && viewBreadcrumbOptions != null
+                && viewBreadcrumbOptions.getPrePageBreadcrumbs() != null) {
+            breadcrumbOptions.setPrePageBreadcrumbs(viewBreadcrumbOptions.getPrePageBreadcrumbs());
+        }
+
+        if (breadcrumbOptions.getPreViewBreadcrumbs() == null
+                && viewBreadcrumbOptions != null
+                && viewBreadcrumbOptions.getPreViewBreadcrumbs() != null) {
+            breadcrumbOptions.setPreViewBreadcrumbs(viewBreadcrumbOptions.getPreViewBreadcrumbs());
+        }
+
+        if (breadcrumbOptions.getBreadcrumbOverrides() == null
+                && viewBreadcrumbOptions != null
+                && viewBreadcrumbOptions.getBreadcrumbOverrides() != null) {
+            breadcrumbOptions.setBreadcrumbOverrides(viewBreadcrumbOptions.getBreadcrumbOverrides());
+        }
+    }
+
     /**
      * Perform finalize here adds to its document ready script the
-     * setupValidator js function for setting up the validator for this view.
+     * setupValidator js function for setting up the validator for this view.  Also setup various breadcrumb related
+     * settings for the page.
      *
      * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
@@ -60,6 +103,43 @@ public class PageGroup extends Group {
         } else {
             this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
         }
+
+        //set breadcrumbItem label same as the header, if not set
+        if (StringUtils.isBlank(breadcrumbItem.getLabel()) && this.getHeader() != null && StringUtils.isNotBlank(
+                this.getHeader().getHeaderText())) {
+            breadcrumbItem.setLabel(this.getHeader().getHeaderText());
+        }
+
+        //if label still blank, dont render
+        if (StringUtils.isBlank(breadcrumbItem.getLabel())) {
+            breadcrumbItem.setRender(false);
+        }
+
+        //automatically set breadcrumbItem UifUrl properties if not set
+        if (breadcrumbItem.getUrl().getControllerMapping() == null && model instanceof UifFormBase) {
+            breadcrumbItem.getUrl().setControllerMapping(((UifFormBase) model).getControllerMapping());
+        }
+
+        if (breadcrumbItem.getUrl().getViewId() == null) {
+            breadcrumbItem.getUrl().setViewId(view.getId());
+        }
+
+        if (breadcrumbItem.getUrl().getPageId() == null) {
+            breadcrumbItem.getUrl().setPageId(this.getId());
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = new ArrayList<Component>();
+
+        components.add(breadcrumbItem);
+        components.addAll(super.getComponentsForLifecycle());
+
+        return components;
     }
 
     /**
@@ -99,5 +179,59 @@ public class PageGroup extends Group {
         }
 
         super.completeValidation(tracer.getCopy());
+    }
+
+    /**
+     * The breadcrumbOptions specific to this page.
+     *
+     * <p>
+     * Important note: breadcrumbOptions for preViewBreadcrumbs, prePageBreadcrumbs, and
+     * breadcrumbOverrides are inherited from the View if not explicitly set from the PageGroup level's
+     * breadcrumbOptions
+     * (if they contain a value at the view level and the property is null at the page level - default behavior).
+     * Explicitly providing an empty list or setting these properties at the PageGroup level will
+     * override this inheritance.
+     * </p>
+     *
+     * @return the breadcrumbOptions
+     */
+    @BeanTagAttribute(name = "breadcrumbOptions", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public BreadcrumbOptions getBreadcrumbOptions() {
+        return breadcrumbOptions;
+    }
+
+    /**
+     * Set the breadcrumbOptions
+     *
+     * @param breadcrumbOptions
+     */
+    public void setBreadcrumbOptions(BreadcrumbOptions breadcrumbOptions) {
+        this.breadcrumbOptions = breadcrumbOptions;
+    }
+
+    /**
+     * The breadcrumbItem for this page.  This is the item that (generally) appears last in the breadcrumb list.
+     *
+     * <p>
+     * If a label is not explicitly defined, the label is retrieved from the headerText of the PageGroup's header.
+     * If this is also not defined, the breadcrumbItem is NOT rendered.  The url properties do not need to be provided
+     * for this breadcrumbItem because it is automatically determined based on the this PageGroup's pageId, viewId,
+     * and controllerMapping retrieved from the initial controller request.
+     * </p>
+     *
+     * @return the breadcrumbItem for this page
+     */
+    @BeanTagAttribute(name = "breadcrumbItem", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public BreadcrumbItem getBreadcrumbItem() {
+        return breadcrumbItem;
+    }
+
+    /**
+     * Set the breadcrumbItem for this PageGroup
+     *
+     * @param breadcrumbItem
+     */
+    public void setBreadcrumbItem(BreadcrumbItem breadcrumbItem) {
+        this.breadcrumbItem = breadcrumbItem;
     }
 }

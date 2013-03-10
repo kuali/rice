@@ -65,7 +65,7 @@ abstract class RoleServiceBase {
     private GroupService groupService;
     private ResponsibilityInternalService responsibilityInternalService;
     private RoleDao roleDao;
-    private CriteriaLookupService criteriaLookupService;
+    protected CriteriaLookupService criteriaLookupService;
 
     /**
      * A helper enumeration for indicating which KimRoleDao method to use when attempting to get role/delegation-related lists that are not in the cache.

@@ -101,6 +101,7 @@
     <property name="headerText" value="Term"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermBo"/>
     <property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.ui.TermMaintainable"/>
+    <property name="mergeWithPageItems" value="false"/>
     <property name="items">
       <list>
         <ref bean="Term-MainSection"/>
@@ -172,7 +173,7 @@
                 </property>
               </bean>
 
-              <bean parent="TermSpec-Categories" p:readOnly="true" p:propertyName="specification.categories" />
+              <bean parent="TermSpec-Categories" p:readOnly="true" p:propertyName="specification.categories" p:colSpan="2" />
 
               <bean parent="Uif-Disclosure-GridSection" p:layoutManager.numberOfColumns="2" p:colSpan="2"
                     p:refreshWhenChangedPropertyNames="document.newMaintainableObject.dataObject.specificationId"

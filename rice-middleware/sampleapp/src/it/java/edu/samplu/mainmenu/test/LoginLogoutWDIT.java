@@ -20,19 +20,20 @@ import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.Test;
 
 public class LoginLogoutWDIT extends WebDriverLegacyITBase {
+
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
     }
+
     @Override
     public String getUserName() {
         return "admin";
     }
+
     @Test
     public void testLogout() throws Exception {
-        waitAndClickByLinkText("Main Menu");
-        waitForPageToLoad();
-        waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
+        waitAndClickLogout();
         passed();
     }
 }

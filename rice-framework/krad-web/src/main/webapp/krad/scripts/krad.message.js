@@ -23,10 +23,10 @@
 function showGrowl(message, title, theme) {
     var context = getContext();
     if (theme) {
-        context.jGrowl(message, { header: title, theme: theme});
+        context.jGrowl(message, { header:title, theme:theme});
     }
     else {
-        context.jGrowl(message, { header: title});
+        context.jGrowl(message, { header:title});
     }
 }
 
@@ -176,7 +176,7 @@ function showChangeIconOnGroupHeader(fieldId, idSuffix) {
     var headerIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (targetElement.length > 0 && headerIcon.length == 0) {
-        targetElement.append("<img id='" + fieldId + "_changeIcon' class='" + kradVariables.CHANGED_HEADER_ICON_CLASS+"' alt='" + getMessage(kradVariables.MESSAGE_CHANGE) + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "asterisk_orange.png'>");
+        targetElement.append("<img id='" + fieldId + "_changeIcon' class='" + kradVariables.CHANGED_HEADER_ICON_CLASS + "' alt='" + getMessage(kradVariables.MESSAGE_CHANGE) + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "asterisk_orange.png'>");
     }
 }
 
@@ -212,5 +212,5 @@ function showClientSideErrorNotification(message) {
         message = getMessage(kradVariables.MESSAGE_FORM_CONTAINS_ERRORS);
     }
 
-    showLightboxContent(message);
+    showGrowl(message, getMessage(kradVariables.MESSAGE_ERROR), 'errorGrowl');
 }

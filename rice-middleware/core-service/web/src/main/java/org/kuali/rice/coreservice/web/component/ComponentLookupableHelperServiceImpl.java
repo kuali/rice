@@ -23,7 +23,7 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.Collection;
@@ -49,7 +49,7 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
         if (activeCheck == null) {
             activeCheck = "";
         }
-        int maxResultsCount = LookupUtils.getSearchResultsLimit(ComponentBo.class, null);
+        int maxResultsCount = LookupUtils.getSearchResultsLimit(ComponentBo.class);
         // only bother with the component lookup if returning active components
         if (baseLookup instanceof CollectionIncomplete && !activeCheck.equals("N")) {
             long originalCount = Math.max(baseLookup.size(), ((CollectionIncomplete) baseLookup).getActualSizeIfTruncated());

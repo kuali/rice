@@ -4,26 +4,25 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../it/internal-tools/src/main/resources/TestHarnessSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/src/main/resources/TestHarnessSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/internal-tools/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/internal-tools/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../it/internal-tools">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/generated-test-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/internal-tools/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -68,7 +67,7 @@
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.9.Final" level="project" />
-    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
+    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch4" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.10" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol-interceptors:1.0.1" level="project" />
@@ -168,6 +167,7 @@
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />
@@ -175,8 +175,8 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-ksb-web" />
     <orderEntry type="library" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
-    <orderEntry type="library" name="Maven: junit:junit:4.10" level="project" />
-    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" name="Maven: junit:junit:4.11" level="project" />
+    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
   </component>

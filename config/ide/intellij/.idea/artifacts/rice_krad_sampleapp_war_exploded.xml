@@ -1,0 +1,47 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="rice-krad-sampleapp:war exploded">
+    <output-path>$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/target/rice-krad-sampleapp-2.3.0-split-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="rice-krad-sampleapp/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="rice-krad-sampleapp" />
+          <element id="module-output" name="rice-krad-app-framework" />
+          <element id="module-output" name="rice-kim-api" />
+          <element id="module-output" name="rice-core-api" />
+          <element id="module-output" name="rice-kew-api" />
+          <element id="module-output" name="rice-ksb-api" />
+          <element id="module-output" name="rice-location-api" />
+          <element id="module-output" name="rice-core-framework" />
+          <element id="module-output" name="rice-krad-web-framework" />
+          <element id="module-output" name="rice-core-service-framework" />
+          <element id="module-output" name="rice-core-service-api" />
+          <element id="module-output" name="rice-kew-framework" />
+          <element id="module-output" name="rice-kim-framework" />
+          <element id="module-output" name="rice-web" />
+          <element id="module-output" name="rice-ken-api" />
+          <element id="module-output" name="rice-kew-impl" />
+          <element id="module-output" name="rice-kim-impl" />
+          <element id="module-output" name="rice-kns" />
+          <element id="module-output" name="rice-core-impl" />
+          <element id="module-output" name="rice-core-service-impl" />
+          <element id="module-output" name="rice-core-service-web" />
+          <element id="module-output" name="rice-core-web" />
+          <element id="module-output" name="rice-ksb-client-impl" />
+          <element id="module-output" name="rice-ksb-server-impl" />
+          <element id="module-output" name="rice-location-framework" />
+          <element id="module-output" name="rice-location-impl" />
+          <element id="module-output" name="rice-location-web" />
+          <element id="module-output" name="rice-edl-framework" />
+          <element id="module-output" name="rice-krms-impl" />
+          <element id="module-output" name="rice-krms-framework" />
+          <element id="module-output" name="rice-krms-api" />
+          <element id="module-output" name="rice-ksb-web" />
+          <element id="module-output" name="rice-edl-impl" />
+          <element id="module-output" name="rice-krad-development-tools" />
+        </element>
+      </element>
+      <element id="artifact" artifact-name="rice-web:war exploded" />
+    </root>
+  </artifact>
+</component>

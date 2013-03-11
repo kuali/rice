@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../location/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../location/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../location">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/location/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/location/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/location">
       <excludeFolder url="file://$MODULE_DIR$/../../../location/target" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/location/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

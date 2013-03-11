@@ -6,25 +6,26 @@
       <module fileurl="file://$PROJECT_DIR$/rice-archetype.iml" filepath="$PROJECT_DIR$/rice-archetype.iml" group="rice-config and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-archetype-quickstart.iml" filepath="$PROJECT_DIR$/rice-archetype-quickstart.iml" group="rice-config and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-checkstyle.iml" filepath="$PROJECT_DIR$/rice-checkstyle.iml" group="rice-config and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-client-contrib.iml" filepath="$PROJECT_DIR$/rice-client-contrib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-client-contrib.iml" filepath="$PROJECT_DIR$/rice-client-contrib.iml" group="rice-middleware and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-config.iml" filepath="$PROJECT_DIR$/rice-config.iml" group="rice-config and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core.iml" filepath="$PROJECT_DIR$/rice-core.iml" group="rice-core and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-api.iml" filepath="$PROJECT_DIR$/rice-core-api.iml" group="rice-core and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-framework.iml" filepath="$PROJECT_DIR$/rice-core-framework.iml" group="rice-core and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-impl.iml" filepath="$PROJECT_DIR$/rice-core-impl.iml" group="rice-core and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-service.iml" filepath="$PROJECT_DIR$/rice-core-service.iml" group="rice-core-service and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-service-api.iml" filepath="$PROJECT_DIR$/rice-core-service-api.iml" group="rice-core-service and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-service-framework.iml" filepath="$PROJECT_DIR$/rice-core-service-framework.iml" group="rice-core-service and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-service-impl.iml" filepath="$PROJECT_DIR$/rice-core-service-impl.iml" group="rice-core-service and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-service-web.iml" filepath="$PROJECT_DIR$/rice-core-service-web.iml" group="rice-core-service and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-web.iml" filepath="$PROJECT_DIR$/rice-core-web.iml" group="rice-core and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core.iml" filepath="$PROJECT_DIR$/rice-core.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-api.iml" filepath="$PROJECT_DIR$/rice-core-api.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-framework.iml" filepath="$PROJECT_DIR$/rice-core-framework.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-impl.iml" filepath="$PROJECT_DIR$/rice-core-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service.iml" filepath="$PROJECT_DIR$/rice-core-service.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service-api.iml" filepath="$PROJECT_DIR$/rice-core-service-api.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service-framework.iml" filepath="$PROJECT_DIR$/rice-core-service-framework.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service-impl.iml" filepath="$PROJECT_DIR$/rice-core-service-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service-web.iml" filepath="$PROJECT_DIR$/rice-core-service-web.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-web.iml" filepath="$PROJECT_DIR$/rice-core-web.iml" group="rice-middleware and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-db.iml" filepath="$PROJECT_DIR$/rice-db.iml" group="rice-db and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-deploy.iml" filepath="$PROJECT_DIR$/rice-deploy.iml" group="rice-config and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-development-tools.iml" filepath="$PROJECT_DIR$/rice-development-tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-dist.iml" filepath="$PROJECT_DIR$/rice-dist.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-edl.iml" filepath="$PROJECT_DIR$/rice-edl.iml" group="rice-edl and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-edl-framework.iml" filepath="$PROJECT_DIR$/rice-edl-framework.iml" group="rice-edl and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-edl-impl.iml" filepath="$PROJECT_DIR$/rice-edl-impl.iml" group="rice-edl and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl.iml" filepath="$PROJECT_DIR$/rice-edl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl-framework.iml" filepath="$PROJECT_DIR$/rice-edl-framework.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl-impl.iml" filepath="$PROJECT_DIR$/rice-edl-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-framework.iml" filepath="$PROJECT_DIR$/rice-framework.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-impex.iml" filepath="$PROJECT_DIR$/rice-impex.iml" group="rice-db and modules/rice-impex and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-impex-client.iml" filepath="$PROJECT_DIR$/rice-impex-client.iml" group="rice-db and modules/rice-impex and modules/rice-impex-client and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-impex-client-bootstrap.iml" filepath="$PROJECT_DIR$/rice-impex-client-bootstrap.iml" group="rice-db and modules/rice-impex and modules/rice-impex-client and modules" />
@@ -33,58 +34,63 @@
       <module fileurl="file://$PROJECT_DIR$/rice-impex-server.iml" filepath="$PROJECT_DIR$/rice-impex-server.iml" group="rice-db and modules/rice-impex and modules/rice-impex-server and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-impex-server-bootstrap.iml" filepath="$PROJECT_DIR$/rice-impex-server-bootstrap.iml" group="rice-db and modules/rice-impex and modules/rice-impex-server and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-impex-server-demo.iml" filepath="$PROJECT_DIR$/rice-impex-server-demo.iml" group="rice-db and modules/rice-impex and modules/rice-impex-server and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-impl.iml" filepath="$PROJECT_DIR$/rice-impl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it.iml" filepath="$PROJECT_DIR$/rice-it.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-config.iml" filepath="$PROJECT_DIR$/rice-it-config.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-core.iml" filepath="$PROJECT_DIR$/rice-it-core.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-edl.iml" filepath="$PROJECT_DIR$/rice-it-edl.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-impl.iml" filepath="$PROJECT_DIR$/rice-it-impl.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-internal-tools.iml" filepath="$PROJECT_DIR$/rice-it-internal-tools.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-kcb.iml" filepath="$PROJECT_DIR$/rice-it-kcb.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-ken.iml" filepath="$PROJECT_DIR$/rice-it-ken.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-kew.iml" filepath="$PROJECT_DIR$/rice-it-kew.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-kim.iml" filepath="$PROJECT_DIR$/rice-it-kim.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-krad.iml" filepath="$PROJECT_DIR$/rice-it-krad.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-krms.iml" filepath="$PROJECT_DIR$/rice-it-krms.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-ksb.iml" filepath="$PROJECT_DIR$/rice-it-ksb.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-location.iml" filepath="$PROJECT_DIR$/rice-it-location.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-remote.iml" filepath="$PROJECT_DIR$/rice-it-remote.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-it-vc.iml" filepath="$PROJECT_DIR$/rice-it-vc.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ken.iml" filepath="$PROJECT_DIR$/rice-ken.iml" group="rice-ken and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ken-api.iml" filepath="$PROJECT_DIR$/rice-ken-api.iml" group="rice-ken and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kew.iml" filepath="$PROJECT_DIR$/rice-kew.iml" group="rice-kew and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kew-api.iml" filepath="$PROJECT_DIR$/rice-kew-api.iml" group="rice-kew and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kew-framework.iml" filepath="$PROJECT_DIR$/rice-kew-framework.iml" group="rice-kew and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kew-impl.iml" filepath="$PROJECT_DIR$/rice-kew-impl.iml" group="rice-kew and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kim.iml" filepath="$PROJECT_DIR$/rice-kim.iml" group="rice-kim and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kim-api.iml" filepath="$PROJECT_DIR$/rice-kim-api.iml" group="rice-kim and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kim-framework.iml" filepath="$PROJECT_DIR$/rice-kim-framework.iml" group="rice-kim and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kim-impl.iml" filepath="$PROJECT_DIR$/rice-kim-impl.iml" group="rice-kim and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kim-ldap.iml" filepath="$PROJECT_DIR$/rice-kim-ldap.iml" group="rice-kim and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kns.iml" filepath="$PROJECT_DIR$/rice-kns.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-krad.iml" filepath="$PROJECT_DIR$/rice-krad.iml" group="rice-krad and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-krad-app-framework.iml" filepath="$PROJECT_DIR$/rice-krad-app-framework.iml" group="rice-krad and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-krad-web-framework.iml" filepath="$PROJECT_DIR$/rice-krad-web-framework.iml" group="rice-krad and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" group="rice-krms and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-krms-api.iml" filepath="$PROJECT_DIR$/rice-krms-api.iml" group="rice-krms and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-krms-framework.iml" filepath="$PROJECT_DIR$/rice-krms-framework.iml" group="rice-krms and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-krms-gen.iml" filepath="$PROJECT_DIR$/rice-krms-gen.iml" group="rice-krms and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-krms-impl.iml" filepath="$PROJECT_DIR$/rice-krms-impl.iml" group="rice-krms and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ksb.iml" filepath="$PROJECT_DIR$/rice-ksb.iml" group="rice-ksb and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ksb-api.iml" filepath="$PROJECT_DIR$/rice-ksb-api.iml" group="rice-ksb and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ksb-client-impl.iml" filepath="$PROJECT_DIR$/rice-ksb-client-impl.iml" group="rice-ksb and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ksb-server-impl.iml" filepath="$PROJECT_DIR$/rice-ksb-server-impl.iml" group="rice-ksb and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ksb-web.iml" filepath="$PROJECT_DIR$/rice-ksb-web.iml" group="rice-ksb and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-location.iml" filepath="$PROJECT_DIR$/rice-location.iml" group="rice-location and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-location-api.iml" filepath="$PROJECT_DIR$/rice-location-api.iml" group="rice-location and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-location-framework.iml" filepath="$PROJECT_DIR$/rice-location-framework.iml" group="rice-location and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-location-impl.iml" filepath="$PROJECT_DIR$/rice-location-impl.iml" group="rice-location and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-location-web.iml" filepath="$PROJECT_DIR$/rice-location-web.iml" group="rice-location and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-sampleapp.iml" filepath="$PROJECT_DIR$/rice-sampleapp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-serviceregistry.iml" filepath="$PROJECT_DIR$/rice-serviceregistry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-impl.iml" filepath="$PROJECT_DIR$/rice-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it.iml" filepath="$PROJECT_DIR$/rice-it.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-config.iml" filepath="$PROJECT_DIR$/rice-it-config.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-core.iml" filepath="$PROJECT_DIR$/rice-it-core.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-edl.iml" filepath="$PROJECT_DIR$/rice-it-edl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-impl.iml" filepath="$PROJECT_DIR$/rice-it-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-internal-tools.iml" filepath="$PROJECT_DIR$/rice-it-internal-tools.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-kcb.iml" filepath="$PROJECT_DIR$/rice-it-kcb.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-ken.iml" filepath="$PROJECT_DIR$/rice-it-ken.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-kew.iml" filepath="$PROJECT_DIR$/rice-it-kew.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-kim.iml" filepath="$PROJECT_DIR$/rice-it-kim.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-kns.iml" filepath="$PROJECT_DIR$/rice-it-kns.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-krad.iml" filepath="$PROJECT_DIR$/rice-it-krad.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-krms.iml" filepath="$PROJECT_DIR$/rice-it-krms.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-ksb.iml" filepath="$PROJECT_DIR$/rice-it-ksb.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-location.iml" filepath="$PROJECT_DIR$/rice-it-location.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-remote.iml" filepath="$PROJECT_DIR$/rice-it-remote.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-vc.iml" filepath="$PROJECT_DIR$/rice-it-vc.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ken.iml" filepath="$PROJECT_DIR$/rice-ken.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ken-api.iml" filepath="$PROJECT_DIR$/rice-ken-api.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kew.iml" filepath="$PROJECT_DIR$/rice-kew.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kew-api.iml" filepath="$PROJECT_DIR$/rice-kew-api.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kew-framework.iml" filepath="$PROJECT_DIR$/rice-kew-framework.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kew-impl.iml" filepath="$PROJECT_DIR$/rice-kew-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim.iml" filepath="$PROJECT_DIR$/rice-kim.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim-api.iml" filepath="$PROJECT_DIR$/rice-kim-api.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim-framework.iml" filepath="$PROJECT_DIR$/rice-kim-framework.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim-impl.iml" filepath="$PROJECT_DIR$/rice-kim-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim-ldap.iml" filepath="$PROJECT_DIR$/rice-kim-ldap.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kns.iml" filepath="$PROJECT_DIR$/rice-kns.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-app-framework.iml" filepath="$PROJECT_DIR$/rice-krad-app-framework.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-development-tools.iml" filepath="$PROJECT_DIR$/rice-krad-development-tools.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-sampleapp.iml" filepath="$PROJECT_DIR$/rice-krad-sampleapp.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-service-impl.iml" filepath="$PROJECT_DIR$/rice-krad-service-impl.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-web.iml" filepath="$PROJECT_DIR$/rice-krad-web.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-web-framework.iml" filepath="$PROJECT_DIR$/rice-krad-web-framework.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-api.iml" filepath="$PROJECT_DIR$/rice-krms-api.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-framework.iml" filepath="$PROJECT_DIR$/rice-krms-framework.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-gen.iml" filepath="$PROJECT_DIR$/rice-krms-gen.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-impl.iml" filepath="$PROJECT_DIR$/rice-krms-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ksb.iml" filepath="$PROJECT_DIR$/rice-ksb.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ksb-api.iml" filepath="$PROJECT_DIR$/rice-ksb-api.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ksb-client-impl.iml" filepath="$PROJECT_DIR$/rice-ksb-client-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ksb-server-impl.iml" filepath="$PROJECT_DIR$/rice-ksb-server-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ksb-web.iml" filepath="$PROJECT_DIR$/rice-ksb-web.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-location.iml" filepath="$PROJECT_DIR$/rice-location.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-location-api.iml" filepath="$PROJECT_DIR$/rice-location-api.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-location-framework.iml" filepath="$PROJECT_DIR$/rice-location-framework.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-location-impl.iml" filepath="$PROJECT_DIR$/rice-location-impl.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-location-web.iml" filepath="$PROJECT_DIR$/rice-location-web.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-middleware.iml" filepath="$PROJECT_DIR$/rice-middleware.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-sampleapp.iml" filepath="$PROJECT_DIR$/rice-sampleapp.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-serviceregistry.iml" filepath="$PROJECT_DIR$/rice-serviceregistry.iml" group="rice-middleware and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-sql.iml" filepath="$PROJECT_DIR$/rice-sql.iml" group="rice-db and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-standalone.iml" filepath="$PROJECT_DIR$/rice-standalone.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-web.iml" filepath="$PROJECT_DIR$/rice-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-standalone.iml" filepath="$PROJECT_DIR$/rice-standalone.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-web.iml" filepath="$PROJECT_DIR$/rice-web.iml" group="rice-middleware and modules" />
     </modules>
   </component>
 </project>

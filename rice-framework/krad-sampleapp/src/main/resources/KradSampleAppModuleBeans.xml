@@ -1,0 +1,286 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+  <bean id="kradSampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+    <property name="namespaceCode" value="KR-SAP"/>
+    <property name="initializeDataDictionary" value="true"/>
+    <property name="dataDictionaryPackages">
+      <list>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficer.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerInfo.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficer-Extension.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerView.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/fiscalofficer/FiscalOfficerLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccount.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountInfo.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountExtension.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountType.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountUseRate.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountInquiry.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountTypeLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountMaintenance.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAlternateViews.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelAuthorizationDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelAuthorizationView.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelerDetailLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/datadictionary/TravelerDetail.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/datadictionary/PrimaryDestination.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/authorization/PrimaryDestinationLookup.xml</value>
+
+        <!-- KRAD sample app - component library -->
+        <value>classpath:org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoInputField.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextAreaControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCheckboxControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCheckboxGroupControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoRadioControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSelectControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoFileControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSpinnerControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoImageField.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLinkField.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMessageField.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoKIMUserControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoKIMGroupControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoHiddenControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLinkGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAccordionGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoActionField.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTabGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSimpleConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAlphaPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAlphaNumericPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoNumericPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAnyCharacterPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCaseConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCharsetPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoConfigurationBasedRegexPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDatePatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoFixedPointPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoFloatingPointPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoIntegerPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMustOccurConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoPrerequisiteConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDialogGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoNavigationGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoReorderingGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutDetails.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutTotaling.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutGrouping.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAction.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoImage.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoHeader.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSpace.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoIframe.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLink.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLabel.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDataTable.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoBoxLayoutManager.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoGridLayoutManager.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMessage.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDisclosure.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionAddLine.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionSelectLine.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionActionPlacement.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoRichMessages.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDisable.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoProgressiveDisclosure.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoConditionalRefresh.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDataField.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSuggest.xml</value>
+      </list>
+    </property>
+    <property name="databaseRepositoryFilePaths">
+      <list>
+        <value>OJB-repository-krad-sampleapp.xml</value>
+      </list>
+    </property>
+    <property name="packagePrefixes">
+      <list>
+        <value>org.kuali.rice.krad.demo</value>
+      </list>
+    </property>
+    <property name="resourceBundleNames">
+      <list>
+        <value>org.kuali.rice.krad.demo.uif.components.resources.KradSampleAppResources</value>
+        <value>org.kuali.rice.krad.devtools.documentation.PropertiesDescription</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMessageFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextAreaControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCheckboxControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCheckboxGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoRadioControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSelectControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoFileControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSpinnerControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoKIMUserControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoKIMGroupControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoHiddenControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAccordionGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoActionFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTabGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSimpleConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAlphaConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAlphaNumericConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoNumericConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAnyCharacterConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCaseConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCharsetConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoConfigurationBasedRegexResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDateConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoFixedPointConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoFloatingPointConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoIntegerConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMustOccurConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPrerequisiteConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDialogGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoNavigationGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoReorderingGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSequenceResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutDetailsResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutTotalingResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutGroupingResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoActionResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoHeaderResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSpaceResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoIframeResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLabelResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDataTableResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoBoxLayoutManagerResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoGridLayoutManagerResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMessageResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDisclosureResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionAddLineResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSelectLineResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionActionPlacementResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoRichMessagesResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDisableResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoProgressiveDisclosureResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoConditionalRefreshResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDataFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSuggestResources</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="kradSampleAppModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
+    <property name="moduleConfiguration" ref="kradSampleAppModuleConfiguration"/>
+  </bean>
+
+  <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
+    <property name="localServiceName" value="SampleAppContext"/>
+  </bean>
+
+  <bean id="fiscalOfficerService"
+        class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerTravelAccountServiceImpl"/>
+
+  <alias alias="travelAccountService" name="fiscalOfficerService"/>
+
+  <bean id="fiscalOfficerInfoInquiryViewHelperService"
+        class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerInfoInquiryViewHelperServiceImpl">
+    <property name="dataDictionaryService">
+      <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+        <property name="serviceName" value="dataDictionaryService"/>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="fiscalOfficerInfoLookupViewHelperService"
+        class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerInfoLookupViewHelperServiceImpl"
+        scope="prototype">
+
+    <property name="dataDictionaryService">
+      <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+        <property name="serviceName" value="dataDictionaryService"/>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="configurationService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kualiConfigurationService"/>
+  </bean>
+
+  <bean id="fiscalOfficerInfoMaintainable"
+        class="org.kuali.rice.krad.demo.travel.fiscalofficer.FiscalOfficerInfoMaintainableImpl"
+        scope="prototype">
+
+    <property name="dataDictionaryService">
+      <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+        <property name="serviceName" value="dataDictionaryService"/>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="rice.ksb.serviceBus"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="rice.ksb.serviceBus"/>
+  </bean>
+
+  <bean id="dataTableRestServiceTest" class="org.kuali.rice.krad.demo.uif.library.DataTableRestServiceTestImpl"/>
+
+  <bean id="DataTableRestServiceTest" class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">
+    <property name="serviceNameSpaceURI" value="KR-SAP"/>
+    <property name="service" ref="dataTableRestServiceTest"/>
+    <property name="resourceClass"
+              value="org.kuali.rice.krad.demo.uif.library.DataTableRestServiceTestImpl"/>
+    <property name="localServiceName" value="dataTableRestServiceTest"/>
+  </bean>
+
+  <bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition" ref="DataTableRestServiceTest"/>
+  </bean>
+
+  <bean id="testSuggestService" class="org.kuali.rice.krad.demo.uif.library.TestSuggestServiceImpl"/>
+
+  <bean id="testAttributeQueryService" class="org.kuali.rice.krad.demo.uif.library.TestAttributeQueryServiceImpl"/>
+
+  <bean id="componentViewHelperService" class="org.kuali.rice.krad.demo.uif.components.ComponentViewHelperServiceImpl"/>
+</beans>
+

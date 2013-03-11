@@ -1108,7 +1108,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         the data dictionary BusinessObjectEntry.</para>
                     <para><emphasis role="italic">Example:</emphasis></para>
                     <programlisting>&lt;bean id="TravelAccountUseRate-parentBean" abstract="true" parent="BusinessObjectEntry">
-    &lt;property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccountUseRate"/>
+    &lt;property name="businessObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccountUseRate"/>
     &lt;property name="inquiryDefinition">
         &lt;ref bean="TravelAccountUseRate-inquiryDefinition"/>
     &lt;/property>
@@ -4353,8 +4353,8 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                     tag</emphasis> must be utilized, precisely as it is on <emphasis role="bold"
                     >travelRequest2.jsp</emphasis>:</para>
             <programlisting>&lt;kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="${readOnly}" />
-&lt;kul:lookup boClassName="edu.sampleu.travel.bo.TravelAccount" fieldConversions="number:travelAccount.number" />
-&lt;kul:directInquiry boClassName="edu.sampleu.travel.bo.TravelAccount" inquiryParameters="travelAccount.number:number" /></programlisting>
+&lt;kul:lookup boClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" fieldConversions="number:travelAccount.number" />
+&lt;kul:directInquiry boClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" inquiryParameters="travelAccount.number:number" /></programlisting>
             <para>Right after the <emphasis role="bold">travelAccount.number</emphasis> control is
                 rendered, the <emphasis role="bold">kul:lookup</emphasis> tag will render the
                 question mark lookup icon. </para>

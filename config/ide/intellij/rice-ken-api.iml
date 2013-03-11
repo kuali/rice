@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../ken/api/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../ken/api/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../ken/api">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/ken/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -45,8 +44,8 @@
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.6" level="project" />
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
   </component>
 </module>
 

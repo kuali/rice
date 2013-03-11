@@ -4,25 +4,24 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/resources/org/kuali/rice/kim/config/KIMLdapSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/main/resources/org/kuali/rice/kim/config/KIMLdapSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../kim/kim-ldap">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap">
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -79,7 +78,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.9.Final" level="project" />
-    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
+    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch4" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.10" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol-interceptors:1.0.1" level="project" />
@@ -171,6 +170,7 @@
     <orderEntry type="module" module-name="rice-core-service-web" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />

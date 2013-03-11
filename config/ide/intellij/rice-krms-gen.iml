@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../krms/gen/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../krms/gen/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/krms/gen/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/krms/gen/target/test-classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../krms/gen">
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/krms/gen">
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/gen/target" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/krms/gen/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -50,7 +51,7 @@
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.9.Final" level="project" />
-    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
+    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch4" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.10" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol-interceptors:1.0.1" level="project" />
@@ -138,14 +139,14 @@
     <orderEntry type="module" module-name="rice-core-service-impl" />
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
-    <orderEntry type="module" module-name="rice-krms-framework" />
+    <orderEntry type="module" module-name="rice-krms-framework" production-on-test="" />
     <orderEntry type="module" module-name="rice-krms-api" />
-    <orderEntry type="module" module-name="rice-krms-api" />
+    <orderEntry type="module" module-name="rice-krms-api" production-on-test="" />
     <orderEntry type="module" module-name="rice-krms-impl" />
     <orderEntry type="module" module-name="rice-krms-framework" />
-    <orderEntry type="module" module-name="rice-krms-impl" />
-    <orderEntry type="library" name="Maven: junit:junit:4.10" level="project" />
-    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="module" module-name="rice-krms-impl" production-on-test="" />
+    <orderEntry type="library" name="Maven: junit:junit:4.11" level="project" />
+    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: org.mockito:mockito-core:1.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.objenesis:objenesis:1.0" level="project" />
     <orderEntry type="module" module-name="rice-development-tools" />
@@ -161,6 +162,7 @@
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />

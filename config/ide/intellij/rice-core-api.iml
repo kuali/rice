@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../core/api/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../core/api/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../core/api">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/core/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-test-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/generated-test-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/wsdl" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="groovy-1.8.5" level="application" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
@@ -42,8 +46,8 @@
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4.4" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:11.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.6" level="project" />

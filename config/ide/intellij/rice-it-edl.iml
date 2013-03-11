@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/edl/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/edl/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../it/edl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/edl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/edl/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/edl/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/edl/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/edl/src/test/groovy" isTestSource="true" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/it/edl">
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/edl/target" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/edl/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -65,7 +67,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-web:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-entitymanager:3.6.9.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: xapool:xapool:1.5.0-patch4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ow2.jotm:jotm-core:2.1.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ow2.carol:carol-interceptors:1.0.1" level="project" />
@@ -154,6 +156,7 @@
     <orderEntry type="module" module-name="rice-location-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" scope="TEST" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" scope="TEST" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />
@@ -162,8 +165,8 @@
     <orderEntry type="module" module-name="rice-it-internal-tools" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.ant:ant:1.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.18" level="project" />

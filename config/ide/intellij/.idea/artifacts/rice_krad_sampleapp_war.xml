@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="rice-krad-sampleapp:war">
+    <output-path>$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/target</output-path>
+    <root id="archive" name="rice-krad-sampleapp-2.3.0-split-SNAPSHOT.war">
+      <element id="artifact" artifact-name="rice-krad-sampleapp:war exploded" />
+    </root>
+  </artifact>
+</component>

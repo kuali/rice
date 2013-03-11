@@ -4,8 +4,8 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../development-tools/src/main/resources/org/kuali/rice/devtools/krad/datadictionary/ReloadingDataDictionarySpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../development-tools/src/main/resources/org/kuali/rice/devtools/pdle/PostDataLoadEncryptionSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-development-tools/src/main/resources/org/kuali/rice/krad/devtools/datadictionary/ReloadingDataDictionarySpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-development-tools/src/main/resources/org/kuali/rice/krad/devtools/pdle/PostDataLoadEncryptionSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -21,6 +21,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../development-tools/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -77,7 +78,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.9.Final" level="project" />
-    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
+    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch4" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.10" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol-interceptors:1.0.1" level="project" />
@@ -166,6 +167,7 @@
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />

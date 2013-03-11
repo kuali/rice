@@ -8,34 +8,36 @@
         <datasource-mapping>
           <factory-entry name="edl-unit" />
         </datasource-mapping>
-        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources/META-INF/edl-persistence.xml" />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/resources/META-INF/edl-persistence.xml" />
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../edl/impl/src/main/resources/org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteAssociation.xml</file>
-          <file>file://$MODULE_DIR$/../../../edl/impl/src/main/resources/org/kuali/rice/edl/impl/config/EDLLocalSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../edl/impl/src/main/resources/org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteDefinition.xml</file>
-          <file>file://$MODULE_DIR$/../../../edl/impl/src/main/resources/org/kuali/rice/edl/impl/config/_EDLCommonSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../edl/impl/src/main/resources/org/kuali/rice/edl/impl/config/_EDLOjbSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/resources/org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteAssociation.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/resources/org/kuali/rice/edl/impl/config/EDLLocalSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/resources/org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteDefinition.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/resources/org/kuali/rice/edl/impl/config/_EDLCommonSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/resources/org/kuali/rice/edl/impl/config/_EDLOjbSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../edl/impl/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../edl/impl/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../edl/impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl">
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/edl/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -91,7 +93,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.9.Final" level="project" />
-    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
+    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch4" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.10" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol-interceptors:1.0.1" level="project" />
@@ -180,6 +182,7 @@
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="module" module-name="rice-krad-service-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />

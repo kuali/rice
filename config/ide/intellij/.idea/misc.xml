@@ -7,10 +7,10 @@
     <file url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
     <file url="file://$PROJECT_DIR$/../../../serviceregistry/overlays" />
     <file url="file://$PROJECT_DIR$/../../../standalone/overlays" />
-    <file type="web" url="file://$PROJECT_DIR$/../../../sampleapp" />
-    <file type="web" url="file://$PROJECT_DIR$/../../../serviceregistry" />
-    <file type="web" url="file://$PROJECT_DIR$/../../../standalone" />
-    <file type="web" url="file://$PROJECT_DIR$/../../../web" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../rice-middleware/sampleapp" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../rice-middleware/serviceregistry" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../rice-middleware/standalone" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../rice-middleware/web" />
     <type id="Osmorc" />
   </component>
   <component name="IdProvider" IDEtalkID="A852111713F178A034A16367BA05A747" />
@@ -37,57 +37,22 @@
         <option value="$PROJECT_DIR$/../../../pom.xml" />
       </list>
     </option>
-  </component>
-  <component name="NullableNotNullManager">
-    <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
-    <option name="myDefaultNotNull" value="org.jetbrains.annotations.NotNull" />
-    <option name="myNullables">
-      <value>
-        <list size="3">
-          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
-          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
-          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
-        </list>
-      </value>
-    </option>
-    <option name="myNotNulls">
-      <value>
-        <list size="3">
-          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
-          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
-          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
-        </list>
-      </value>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../../../rice-middleware/it/krad/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.7u5" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
         <entry key="$PROJECT_DIR$/../../..">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
-                  <option value="https://test.kuali.org/svn/rice/inactive" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../client-contrib">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -142,78 +107,6 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../../deploy">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
-                  <option value="https://test.kuali.org/svn/rice/inactive" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../core">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
-                  <option value="https://test.kuali.org/svn/rice/inactive" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../core-service">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
-                  <option value="https://test.kuali.org/svn/rice/inactive" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../core-service/impl">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
-                  <option value="https://test.kuali.org/svn/rice/inactive" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../core-service/web">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -303,7 +196,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../edl">
+        <entry key="$PROJECT_DIR$/../../../rice-framework/krad-it">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -321,7 +214,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../impl">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/client-contrib">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -339,7 +232,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../it">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/core">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -357,7 +250,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../it/core">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/core-service">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -375,7 +268,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../it/internal-tools">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/core-service/impl">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -393,7 +286,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../it/kew">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/core-service/web">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -411,7 +304,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../it/kim">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/edl">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -429,7 +322,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../it/krad">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/impl">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -447,7 +340,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../it/krms">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/it">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -465,7 +358,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../it/ksb">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/it/core">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -483,7 +376,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../ken">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/it/internal-tools">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -501,7 +394,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../kew/api">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/it/kew">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -519,7 +412,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../kew/framework">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/it/kim">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -537,7 +430,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../kew/impl">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/it/krms">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -555,7 +448,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../kim">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/it/ksb">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -573,7 +466,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../kim/kim-framework">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/ken">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -591,7 +484,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../kns">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/kew/api">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -609,7 +502,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../krad">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/kew/framework">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -627,7 +520,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../krms">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/kew/impl">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -645,7 +538,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../krms/api">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/kim">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -663,7 +556,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../krms/framework">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/kim/kim-framework">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -681,7 +574,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../ksb">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/kns">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -699,7 +592,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../ksb/client-impl">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/krms">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -717,7 +610,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../location">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/krms/api">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -735,7 +628,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../location/framework">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/krms/framework">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -753,7 +646,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../location/impl">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/ksb">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -771,7 +664,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../sampleapp">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/ksb/client-impl">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -789,7 +682,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../standalone">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/location">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">
@@ -807,7 +700,79 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../web">
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/location/framework">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/location/impl">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/sampleapp">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/standalone">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../rice-middleware/web">
           <value>
             <SvnBranchConfiguration>
               <option name="branchUrls">

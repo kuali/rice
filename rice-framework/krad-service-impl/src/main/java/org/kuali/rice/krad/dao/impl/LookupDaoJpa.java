@@ -230,52 +230,52 @@ public class LookupDaoJpa implements LookupDao {
 		return businessObject;
 	}
 
-    private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded, Integer searchResultsLimit) {
-   		Collection<PersistableBusinessObject> searchResults = new ArrayList<PersistableBusinessObject>();
-   		Long matchingResultsCount = null;
-   		try {
-   			if (!unbounded && (searchResultsLimit != null)) {
-   				matchingResultsCount = (Long) new QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
-   				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().setMaxResults(searchResultsLimit).getResultList();
-   			} else {
-   				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
-   			}
-   			if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
-   				matchingResultsCount = new Long(0);
-   			}
-   			// Temp solution for loading extension objects - need to find a
-   			// better way
-   			// Should look for a JOIN query, for the above query, that will grab
-   			// the PBOEs as well (1+n query problem)
-   			for (PersistableBusinessObject bo : searchResults) {
-   				if (bo.getExtension() != null) {
-   					PersistableBusinessObjectExtension boe = bo.getExtension();
-   					EntityDescriptor entity = MetadataManager.getEntityDescriptor(bo.getExtension().getClass());
-   					Criteria extensionCriteria = new Criteria(boe.getClass().getName());
-   					for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
-   						try {
-   							Field field = bo.getClass().getDeclaredField(fieldDescriptor.getName());
-   							field.setAccessible(true);
-   							extensionCriteria.eq(fieldDescriptor.getName(), field.get(bo));
-   						} catch (Exception e) {
-   							LOG.error(e.getMessage(), e);
-   						}
-   					}
-   					try {
-   						boe = (PersistableBusinessObjectExtension) new QueryByCriteria(entityManager, extensionCriteria).toQuery().getSingleResult();
-   					} catch (PersistenceException e) {}
-   					bo.setExtension(boe);
-   				}
-   			}
-   			// populate Person objects in business objects
-   			List bos = new ArrayList();
-   			bos.addAll(searchResults);
-   			searchResults = bos;
-   		} catch (DataIntegrityViolationException e) {
-   			throw new RuntimeException("LookupDao encountered exception during executeSearch", e);
-   		}
-   		return new CollectionIncomplete(searchResults, matchingResultsCount);
-   	}
+	private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded, Integer searchResultsLimit) {
+		Collection<PersistableBusinessObject> searchResults = new ArrayList<PersistableBusinessObject>();
+		Long matchingResultsCount = null;
+		try {
+			if (!unbounded && (searchResultsLimit != null)) {
+				matchingResultsCount = (Long) new QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult();
+				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().setMaxResults(searchResultsLimit).getResultList();
+			} else {
+				searchResults = new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+			}
+			if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
+				matchingResultsCount = new Long(0);
+			}
+			// Temp solution for loading extension objects - need to find a
+			// better way
+			// Should look for a JOIN query, for the above query, that will grab
+			// the PBOEs as well (1+n query problem)
+			for (PersistableBusinessObject bo : searchResults) {
+				if (bo.getExtension() != null) {
+					PersistableBusinessObjectExtension boe = bo.getExtension();
+					EntityDescriptor entity = MetadataManager.getEntityDescriptor(bo.getExtension().getClass());
+					Criteria extensionCriteria = new Criteria(boe.getClass().getName());
+					for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
+						try {
+							Field field = bo.getClass().getDeclaredField(fieldDescriptor.getName());
+							field.setAccessible(true);
+							extensionCriteria.eq(fieldDescriptor.getName(), field.get(bo));
+						} catch (Exception e) {
+							LOG.error(e.getMessage(), e);
+						}
+					}
+					try {
+						boe = (PersistableBusinessObjectExtension) new QueryByCriteria(entityManager, extensionCriteria).toQuery().getSingleResult();
+					} catch (PersistenceException e) {}
+					bo.setExtension(boe);
+				}
+			}
+			// populate Person objects in business objects
+			List bos = new ArrayList();
+			bos.addAll(searchResults);
+			searchResults = bos;
+		} catch (DataIntegrityViolationException e) {
+			throw new RuntimeException("LookupDao encountered exception during executeSearch", e);
+		}
+		return new CollectionIncomplete(searchResults, matchingResultsCount);
+	}
 
 	/**
 	 * Return whether or not an attribute is writeable. This method is aware
@@ -342,7 +342,7 @@ public class LookupDaoJpa implements LookupDao {
 	}
 	
     public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria) {
-    	return createCriteria( example, searchValue, propertyName, false, false, criteria, null );
+    	return createCriteria( example, searchValue, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, null );
     }
 
 	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria, Map searchValues) {

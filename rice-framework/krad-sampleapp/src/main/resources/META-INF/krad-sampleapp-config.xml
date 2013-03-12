@@ -24,6 +24,7 @@
   <param name="module.name">krad-sampleapp</param>
   <param name="application.id">KRAD-SAMPLEAPP</param>
   <param name="standalone.application.id">${application.id}</param>
+  <param name="app.code" override="false">krad</param>
 
   <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
   <param name="filtermapping.login.1">/*</param>

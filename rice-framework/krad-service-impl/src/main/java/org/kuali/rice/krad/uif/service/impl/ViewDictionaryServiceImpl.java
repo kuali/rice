@@ -137,6 +137,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
             if (lookupForm.isMultipleValuesSelect()) {
                 multipleValueSelectSpecifiedOnURL = true;
             }
+
             if (!multipleValueSelectSpecifiedOnURL && lookupForm.getViewRequestParameters().containsKey(UifParameters.MULTIPLE_VALUES_SELECT)) {
                 String multiValueSelect = lookupForm.getViewRequestParameters().get(
                         UifParameters.MULTIPLE_VALUES_SELECT);

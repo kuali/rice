@@ -17,6 +17,8 @@
 package edu.samplu.travel.krad.test;
 
 import edu.samplu.common.ITUtil;
+import edu.samplu.common.WebDriverLegacyITBase;
+
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -29,7 +31,7 @@ import edu.samplu.common.WebDriverITBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DirtyFieldsCheckIT extends WebDriverITBase {
+public class DirtyFieldsCheckWDIT extends WebDriverLegacyITBase {
 	@Override
 	public String getTestUrl() {
 		// open Other Examples page in kitchen sink view
@@ -38,43 +40,6 @@ public class DirtyFieldsCheckIT extends WebDriverITBase {
 
 	@Test
 	public void testDirtyFieldsCheck() throws Exception {
-		checkForIncidentReport(getTestUrl());
-		Thread.sleep(5000);
-		
-		waitAndTypeByName("field1", "test 1");
-		waitAndTypeByName("field102", "test 2");
-		
-		assertCancelConfirmation(); 
-	
-		// testing manually
-		waitForElementPresentByName("field100");
-		waitAndTypeByName("field100", "here");
-		waitAndTypeByName("field103", "there");
-		
-	    // 'Validation' navigation link
-		assertCancelConfirmation();
-	
-		// testing manually
-		waitForElementPresentByName("field106");
-		// //Asserting text-field style to uppercase. This style would display
-		// input text in uppercase.
-		assertEquals("text-transform: uppercase;",getAttributeByName("field112", "style"));
-		assertCancelConfirmation(); 
-		waitForElementPresentByName("field101");
-		assertEquals("val", getAttributeByName("field101","value")); 
-		clearTextByName("field101");
-		waitAndTypeByName("field101", "1");
-		waitAndTypeByName("field104", "");
-
-		assertEquals("1", getAttributeByName("field101","value"));
-		waitAndTypeByName("field104", "2");
-		// 'Progressive Disclosure' navigation link
-		assertCancelConfirmation();
-									
-	}
-
-	private void assertCancelConfirmation() throws InterruptedException {
-		waitAndClickByLinkText("Cancel");
-		dismissAlert();
+		super.testDirtyFieldsCheck();
 	}
 }

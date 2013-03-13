@@ -19,6 +19,17 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import edu.samplu.travel.krad.test.CollectionTotallingNavIT;
+import edu.samplu.travel.krad.test.CollectionTotallingWDIT;
+import edu.samplu.travel.krad.test.ConfigurationTestViewNavIT;
+import edu.samplu.travel.krad.test.ConfigurationTestViewWDIT;
+import edu.samplu.travel.krad.test.DirtyFieldsCheckWDIT;
+import edu.samplu.travel.krad.test.TravelAccountMaintenanceDocumentTest;
+import edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternNavIT;
+import edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternWDIT;
+import edu.samplu.travel.krad.test.UifDataAttributesNavIT;
+import edu.samplu.travel.krad.test.WatermarkValidationIT;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -28,7 +39,8 @@ import org.junit.runners.Suite.SuiteClasses;
         CollectionTotallingWDIT.class,
         ConfigurationTestViewNavIT.class,
         ConfigurationTestViewWDIT.class,
-        DirtyFieldsCheckIT.class,
+        DirtyFieldsCheckWDIT.class,
+        TravelAccountMaintenanceDocumentTest.class,
         UIFComponentValidationRegexPatternNavIT.class,
         UIFComponentValidationRegexPatternWDIT.class,
         UifDataAttributesNavIT.class,

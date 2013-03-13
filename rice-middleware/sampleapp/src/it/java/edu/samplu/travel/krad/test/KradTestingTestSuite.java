@@ -24,7 +24,6 @@ import edu.samplu.travel.krad.test.CollectionTotallingWDIT;
 import edu.samplu.travel.krad.test.ConfigurationTestViewNavIT;
 import edu.samplu.travel.krad.test.ConfigurationTestViewWDIT;
 import edu.samplu.travel.krad.test.DirtyFieldsCheckWDIT;
-import edu.samplu.travel.krad.test.TravelAccountMaintenanceDocumentTest;
 import edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternNavIT;
 import edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternWDIT;
 import edu.samplu.travel.krad.test.UifDataAttributesNavIT;
@@ -40,7 +39,6 @@ import edu.samplu.travel.krad.test.WatermarkValidationIT;
         ConfigurationTestViewNavIT.class,
         ConfigurationTestViewWDIT.class,
         DirtyFieldsCheckWDIT.class,
-        TravelAccountMaintenanceDocumentTest.class,
         UIFComponentValidationRegexPatternNavIT.class,
         UIFComponentValidationRegexPatternWDIT.class,
         UifDataAttributesNavIT.class,

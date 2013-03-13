@@ -15,24 +15,27 @@
     limitations under the License.
 
 -->
-<#macro uif_treeGroup group>
+<#macro uif_list items manager container>
 
-    <@krad.groupWrap group=group>
+    <#local listType="ul">
+    <#if manager.orderedList>
+        <#local listType="ol">
+    </#if>
 
-        <div id="${group.id}_tree">
-            <ul>
-                <#list group.treeGroups.rootElement.children as node>
-                       <@krad.treeNode node=node />
-                </#list>
-            </ul>
-        </div>
+    <#if manager.styleClassesAsString?has_content>
+        <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
+    </#if>
 
-        <#-- invoke tree widget -->
-        <#include "../widget/tree.ftl" parse=true/>
-        <@krad.template component=group.tree componentId="${group.id}_tree"/>
+    <#if manager.style?has_content>
+        <#local style="style=\"${manager.style}\""/>
+    </#if>
 
-    </@krad.groupWrap>
+    <${listType!} id="${manager.id}" ${style!} ${styleClass!}>
+        <#list items as item>
+            <li>
+                <@krad.template component=item/>
+            </li>
+        </#list>
+    </${listType!}>
 
 </#macro>
-
-

@@ -15,24 +15,9 @@
     limitations under the License.
 
 -->
-<#macro uif_treeGroup group>
+<#macro uif_accordion widget parent>
 
-    <@krad.groupWrap group=group>
-
-        <div id="${group.id}_tree">
-            <ul>
-                <#list group.treeGroups.rootElement.children as node>
-                       <@krad.treeNode node=node />
-                </#list>
-            </ul>
-        </div>
-
-        <#-- invoke tree widget -->
-        <#include "../widget/tree.ftl" parse=true/>
-        <@krad.template component=group.tree componentId="${group.id}_tree"/>
-
-    </@krad.groupWrap>
+    <@krad.script component=parent value="createAccordion('${parent.id}', ${widget.templateOptionsJSString},
+        ${widget.active});"/>
 
 </#macro>
-
-

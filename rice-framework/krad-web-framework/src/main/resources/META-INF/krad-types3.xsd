@@ -8430,7 +8430,7 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="sourceQueryMethodResults" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="returnFullQueryObject" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Suggest" xml:lang="en"><![CDATA[When set to true the results of a query method will be used directly as the suggestions (
  it will not be assumed the method returns objects from which the source property name is then used
@@ -8700,7 +8700,7 @@
               </xsd:complexContent>
             </xsd:complexType>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="sourcePropertyName" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="valuePropertyName" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Suggest" xml:lang="en"><![CDATA[Name of the property on the query result object that provides
  the options for the suggest, values from this field will be
@@ -9173,7 +9173,7 @@
           </xsd:element>
           <xsd:element maxOccurs="unbounded" minOccurs="0" ref="spring:property"/>
         </xsd:choice>
-        <xsd:attribute name="sourceQueryMethodResults">
+        <xsd:attribute name="returnFullQueryObject">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.widget.Suggest" xml:lang="en"><![CDATA[When set to true the results of a query method will be used directly as the suggestions (
  it will not be assumed the method returns objects from which the source property name is then used
@@ -9186,7 +9186,7 @@
  ]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="sourcePropertyName">
+        <xsd:attribute name="valuePropertyName">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.widget.Suggest" xml:lang="en"><![CDATA[Name of the property on the query result object that provides
  the options for the suggest, values from this field will be

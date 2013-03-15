@@ -237,9 +237,15 @@
 -->
 <#macro formSingleSelect path options id="" attributes="">
     <@bind path/>
+
     <select id="${id!}" name="${status.expression}" ${attributes}>
        <#list options as option>
-          <option value="${option.key?html}"<@checkSelected option.key/>>${option.value?html}</option>
+          <#if option.location?has_content && option.location.href?has_content>
+              <option data-location="${option.location.href}"
+                      value="${option.key?html}"<@checkSelected option.key/>>${option.value?html}</option>
+          <#else>
+              <option value="${option.key?html}"<@checkSelected option.key/>>${option.value?html}</option>
+          </#if>
        </#list>
     </select>
 </#macro>

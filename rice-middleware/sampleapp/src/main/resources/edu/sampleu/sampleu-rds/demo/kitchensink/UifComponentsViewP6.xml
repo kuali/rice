@@ -113,7 +113,7 @@
       </inputField-bean>
       <inputField-bean parent="GenericTextField" propertyName="field61">
         <suggest>
-          <suggest-bean render="true" sourcePropertyName="accountTypeCode"
+          <suggest-bean render="true" valuePropertyName="accountTypeCode"
                         suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
         </suggest>
       </inputField-bean>

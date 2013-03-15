@@ -32,12 +32,21 @@ Standard HTML Select Input
         <#local attributes='${attributes} style="${control.style}"'/>
     </#if>
 
+    <#local bindingPath="KualiForm.extensionData['NO_PATH_${field.id}']"/>
+    <#if field.propertyName?has_content>
+        <#local bindingPath="KualiForm.${field.bindingInfo.bindingPath}"/>
+    </#if>
+
     <#if control.multiple>
-        <@spring.formMultiSelect id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
+        <@spring.formMultiSelect id="${control.id}" path="${bindingPath}" options=control.options
                                   attributes="${attributes}"/>
     <#else>
-        <@spring.formSingleSelect id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
+        <@spring.formSingleSelect id="${control.id}" path="${bindingPath}" options=control.options
                                   attributes="${attributes}"/>
+    </#if>
+
+    <#if control.locationSelect>
+        <@krad.script value="setupLocationSelect('${control.id}');" />
     </#if>
 
     <@krad.disable control=field.control type="select"/>

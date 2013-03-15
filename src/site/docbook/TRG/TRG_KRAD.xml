@@ -1093,7 +1093,7 @@
                                     &lt;property
                                     name="fieldSuggest.suggestQuery.dataObjectClassName"
                                     value="$END$ $CLASS$"/> &lt;property
-                                    name="fieldSuggest.sourcePropertyName" value=""/></entry>
+                                    name="fieldSuggest.valuePropertyName" value=""/></entry>
                             </row>
                             <row>
                                 <entry>group</entry>

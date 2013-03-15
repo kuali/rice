@@ -21,13 +21,14 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.LocationSuggest;
 import org.kuali.rice.krad.uif.widget.Suggest;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
 
@@ -73,7 +74,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
         // add term as a like criteria
         Map<String, String> additionalCriteria = new HashMap<String, String>();
-        additionalCriteria.put(fieldSuggest.getSourcePropertyName(), fieldTerm + "*");
+        additionalCriteria.put(fieldSuggest.getValuePropertyName(), fieldTerm + "*");
 
         // execute suggest query
         Collection<?> results = null;
@@ -89,16 +90,54 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
         // build list of suggest data from result records
         if (results != null) {
-            if (fieldSuggest.isSourceQueryMethodResults()) {
+            if (fieldSuggest.isReturnFullQueryObject()) {
                 queryResult.setResultData((List<Object>) results);
             } else {
                 List<Object> suggestData = new ArrayList<Object>();
                 for (Object result : results) {
-                    Object suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
-                            fieldSuggest.getSourcePropertyName());
+
+                    Map<String, String> propMap = new HashMap<String, String>();
+
+                    //value prop
+                    Object suggestFieldValue = null;
+                    if (StringUtils.isNotBlank(fieldSuggest.getValuePropertyName())) {
+                        suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
+                                fieldSuggest.getValuePropertyName());
+                    } else if (ObjectPropertyUtils.isReadableProperty(result, "value")) {
+                        suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result, "value");
+                    }
+
+                    //set
                     if (suggestFieldValue != null) {
-                        // TODO: need to apply formatter for field or have method in object property utils
-                        suggestData.add(suggestFieldValue.toString());
+                        propMap.put("value", suggestFieldValue.toString());
+                    }
+
+                    //label prop
+                    Object suggestFieldLabel = null;
+                    if (StringUtils.isNotBlank(fieldSuggest.getLabelPropertyName())) {
+                        suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result,
+                                fieldSuggest.getLabelPropertyName());
+                    } else if (ObjectPropertyUtils.isReadableProperty(result, "label")) {
+                        suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result, "label");
+                    }
+
+                    //set
+                    if (suggestFieldLabel != null) {
+                        propMap.put("label", suggestFieldLabel.toString());
+                    }
+
+                    //location suggest specific properties
+                    if (fieldSuggest instanceof LocationSuggest) {
+                        handleLocationSuggestProperties((LocationSuggest)fieldSuggest, result, propMap);
+                    }
+
+                    //additional properties
+                    handleAdditionalSuggestProperties(fieldSuggest, result, propMap);
+
+                    //only add if there was a property to send back
+                    if (!propMap.isEmpty()) {
+                        //TODO: need to apply formatter for field or have method in object property utils
+                        suggestData.add(propMap);
                     }
                 }
 
@@ -107,6 +146,85 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         }
 
         return queryResult;
+    }
+
+    /**
+     * Handle the custom additionalProperties set back for a suggestion query.  These will be added to the propMap.
+     *
+     * @param fieldSuggest the suggest
+     * @param result the result to pull properties from
+     * @param propMap the propMap to add properties to
+     */
+    private void handleAdditionalSuggestProperties(Suggest fieldSuggest, Object result, Map<String, String> propMap){
+        if (fieldSuggest.getAdditionalPropertiesToReturn() != null){
+            //add properties for each valid property name
+            for(String propName: fieldSuggest.getAdditionalPropertiesToReturn()){
+                Object propValue = null;
+
+                if(StringUtils.isNotBlank(propName)
+                                        && ObjectPropertyUtils.isReadableProperty(result, propName)){
+                    propValue = ObjectPropertyUtils.getPropertyValue(result, propName);
+                }
+
+                if (propValue != null){
+                    propMap.put(propName, propValue.toString());
+                }
+            }
+        }
+    }
+
+    /**
+     * Handle the LocationSuggest specific properties and add them to the map.
+     *
+     * @param fieldSuggest the suggest
+     * @param result the result to pull properties from
+     * @param propMap the propMap to add properties to
+     */
+    private void handleLocationSuggestProperties(LocationSuggest fieldSuggest, Object result, Map<String, String> propMap){
+
+        //href property
+        Object suggestHrefValue = null;
+        if(StringUtils.isNotBlank(fieldSuggest.getHrefPropertyName())
+                && ObjectPropertyUtils.isReadableProperty(result, fieldSuggest.getHrefPropertyName())){
+            suggestHrefValue = ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getHrefPropertyName());
+        }
+
+        //add if found
+        if(suggestHrefValue != null){
+            propMap.put(fieldSuggest.getHrefPropertyName(), suggestHrefValue.toString());
+        }
+
+        //url addition/appendage property
+        Object addUrlValue = null;
+        if(StringUtils.isNotBlank(fieldSuggest.getAdditionalUrlPathPropertyName())
+                        && ObjectPropertyUtils.isReadableProperty(result, fieldSuggest.getAdditionalUrlPathPropertyName())){
+            addUrlValue = ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getAdditionalUrlPathPropertyName());
+        }
+
+        //add if found
+        if(addUrlValue != null){
+            propMap.put(fieldSuggest.getAdditionalUrlPathPropertyName(), addUrlValue.toString());
+        }
+
+        if(fieldSuggest.getRequestParameterPropertyNames() == null){
+            return;
+        }
+
+        //add properties for each valid requestParameter property name
+        for(String key: fieldSuggest.getRequestParameterPropertyNames().keySet()){
+            String prop = fieldSuggest.getRequestParameterPropertyNames().get(key);
+            Object propValue = null;
+
+            if(StringUtils.isNotBlank(prop)
+                                    && ObjectPropertyUtils.isReadableProperty(result, prop)){
+                propValue = ObjectPropertyUtils.getPropertyValue(result, prop);
+            }
+
+            if (propValue != null){
+                propMap.put(prop, propValue.toString());
+            }
+        }
+
     }
 
     /**

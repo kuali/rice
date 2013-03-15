@@ -15,17 +15,19 @@
     limitations under the License.
 
 -->
-<#macro uif_suggest widget parent>
+<#macro uif_locationSuggest widget parent>
 
     <#--
     Invokes JS method to implement suggest (autocomplete) functionality
     -->
 
     <@krad.script value="
-      createSuggest('${parent.control.id}', ${widget.templateOptionsJSString}, '${parent.id}',
+      createLocationSuggest('${widget.baseUrl!}', '${widget.hrefPropertyName!}', '${widget.additionalUrlPathPropertyName!}',
+       ${widget.requestParameterPropertyNameJsObject}, '${widget.additionalRequestParameterString}',
+       '${parent.control.id}', ${widget.templateOptionsJSString}, '${parent.id}',
        ${widget.suggestQuery.queryMethodArgumentFieldsJsString}, ${widget.retrieveAllSuggestions?string},
-       ${widget.suggestOptionsJsString!},'${widget.labelPropertyName!}', '${widget.valuePropertyName!}',
-       ${widget.returnFullQueryObject?string});"/>
+       ${widget.suggestOptionsJsString!}, '${widget.labelPropertyName!}', '${widget.valuePropertyName!}',
+              ${widget.returnFullQueryObject?string});"/>
 
 </#macro>
 

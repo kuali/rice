@@ -56,14 +56,14 @@
       <inputField-bean instructionalText="auto-query configuration, type a1 or a2 for suggestions" label="Suggest"
                        propertyName="field61">
         <suggest>
-          <suggest-bean render="true" sourcePropertyName="number"
+          <suggest-bean render="true" valuePropertyName="number"
                         suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"/>
         </suggest>
       </inputField-bean>
       <inputField-bean instructionalText="view helper method configuration, type a1 or a2 for suggestions"
                        label="Suggest 2" propertyName="field62">
         <suggest>
-          <suggest-bean render="true" sourcePropertyName="number">
+          <suggest-bean render="true" valuePropertyName="number">
             <suggestQuery>
               <attributeQueryConfig-bean queryMethodToCall="retrieveTravelAccounts"/>
             </suggestQuery>
@@ -77,7 +77,7 @@
           <inputField-bean instructionalText="type a6-sub" label="Sub-Account" propertyName="field63"/>
           <inputField-bean instructionalText="type a for suggestions" label="Account" propertyName="field64">
             <suggest>
-              <suggest-bean render="true" sourcePropertyName="number">
+              <suggest-bean render="true" valuePropertyName="number">
                 <suggestQuery>
                   <attributeQueryConfig-bean queryMethodArgumentFieldList="field63"
                                              queryMethodToCall="retrieveTravelAccountsBySubAcct"/>
@@ -94,7 +94,7 @@
               instructionalText="static method and query result suggestions option, type a or c for suggestions"
               label="Suggest 4" propertyName="field65">
         <suggest>
-          <suggest-bean render="true" sourceQueryMethodResults="true">
+          <suggest-bean render="true" returnFullQueryObject="true">
             <suggestQuery>
               <attributeQueryConfig-bean
                       queryMethodInvokerConfig.staticMethod="edu.sampleu.demo.kitchensink.TestSuggestClass.getLanguages"/>
@@ -108,7 +108,7 @@
       <inputField-bean instructionalText="service method and sorting configuration, type sub for suggestions"
                        label="Suggest 5" propertyName="field66">
         <suggest>
-          <suggest-bean render="true" sourcePropertyName="subAccountName">
+          <suggest-bean render="true" valuePropertyName="subAccountName">
             <suggestQuery>
               <attributeQueryConfig-bean queryMethodToCall="retrieveTravelAccounts" sortPropertyNames="subAccountName">
                 <spring:property name="queryMethodInvokerConfig.targetObject">

@@ -2840,11 +2840,11 @@ public class QueryUtils {
         'Uif-Suggest'. We again have the two mechanisms for configuring the query (automatic with
         dataObjectClassName, or build our own query and specify queryMethodToCall). After we have
         configured the data object or the query method, we can then specify the property name for
-        the data object class that provides values using the <emphasis role="bold">suggest.sourcePropertyName</emphasis>:</para>
+        the data object class that provides values using the <emphasis role="bold">suggest.valuePropertyName</emphasis>:</para>
       <programlisting>
 &lt;bean parent="Uif-InputField" p:propertyName="rentedBookTitle"&gt;
     &lt;property name="suggest"&gt;
-        &lt;bean parent=&quot;Uif-Suggest&quot; p:sourcePropertyName =&quot;bookTitle&quot;
+        &lt;bean parent=&quot;Uif-Suggest&quot; p:valuePropertyName =&quot;bookTitle&quot;
             p:suggestQuery.dataObjectClassName=&quot;edu.myedu.sample.Book&quot;/&gt;
     &lt;/property&gt;
     &lt;/bean&gt;
@@ -2854,7 +2854,7 @@ public class QueryUtils {
                 the property names to sort by with the attribute query <emphasis role="bold">sortPropertyNames</emphasis> property:</para>
       <programlisting>
 &lt;property name="suggest"&gt;
-    &lt;bean parent=&quot;Uif-Suggest&quot; p:sourcePropertyName =&quot;bookTitle&quot;
+    &lt;bean parent=&quot;Uif-Suggest&quot; p:valuePropertyName =&quot;bookTitle&quot;
         p:suggestQuery.dataObjectClassName=&quot;edu.myedu.sample.Book&quot;
         p:suggestQuery.sortPropertyNames="bookTitle"/&gt;
 &lt;/property&gt;
@@ -2991,7 +2991,7 @@ public class QueryUtils {
           </listitem>
           <listitem>
             <para>To configure the property on the returned data objects that maps to
-                            the input field we set <emphasis role="bold">sourcePropertyName</emphasis></para>
+                            the input field we set <emphasis role="bold">valuePropertyName</emphasis></para>
           </listitem>
           <listitem>
             <para>Query results can be sorted by setting the <emphasis role="bold">sortPropertyNames</emphasis> property to the list of properties the sort should be

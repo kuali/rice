@@ -215,7 +215,7 @@
                 <!-- suggest context names -->
                 <!--
                 <property name="suggest.render" value="true" />
-                <property name="suggest.sourcePropertyName" value="name" />
+                <property name="suggest.valuePropertyName" value="name" />
                 <property name="suggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo" />
                 <property name="suggest.suggestQuery.queryFieldMapping" value="namespace:namespace" />
                 <property name="suggest.suggestQuery.additionalCriteria">

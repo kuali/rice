@@ -71,6 +71,96 @@ public class TestSuggestClass {
         return options;
     }
 
+    public static List<TestLocationObject> getLocationOptions() {
+        List<TestLocationObject> options = new ArrayList<TestLocationObject>();
+
+        options.add(new TestLocationObject(null, "Google", "http://www.google.com"));
+        options.add(new TestLocationObject(null, "Kuali", "http://www.kuali.org"));
+        options.add(new TestLocationObject(null, "Jira", "https://jira.kuali.org"));
+
+        return options;
+    }
+
+    public static List<TestViewObject> getViewOptions() {
+        List<TestViewObject> options = new ArrayList<TestViewObject>();
+
+        options.add(new TestViewObject("UifCompView"));
+        options.add(new TestViewObject("RichMessagesView"));
+        options.add(new TestViewObject("ConfigurationTestView-Collections"));
+        options.add(new TestViewObject("ConfigurationTestView"));
+
+        return options;
+    }
+
+    public static List<TestObject> getObjectOptions(String term) {
+        List<TestObject> options = new ArrayList<TestObject>();
+
+        options.add(new TestObject("Apple", "AppleType", "aaa"));
+        options.add(new TestObject("Orange", "OrangeType", "ooo"));
+        options.add(new TestObject("Strawberry", "StrawberryType", "sss"));
+
+        return options;
+    }
+
+    public static class TestObject {
+        private String name;
+        private String val;
+        private String data;
+
+        public TestObject(String name, String val, String data) {
+            this.name = name;
+            this.val = val;
+            this.data = data;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getVal() {
+            return val;
+        }
+
+        public void setVal(String val) {
+            this.val = val;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+    }
+
+    public static class TestViewObject extends TestLabelValue{
+
+        private String id;
+
+        public TestViewObject(String id){
+            super(id, id);
+            this.id = id;
+        }
+
+        public TestViewObject(String value, String label, String id) {
+            super(value, label);
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+    }
+
     public static class TestLabelValue {
         private String label;
         private String value;
@@ -100,22 +190,39 @@ public class TestSuggestClass {
             this.value = value;
         }
     }
-    
-     public static class TestSuggestObject extends TestLabelValue {
-         private String description;
-         
-         public TestSuggestObject(String value, String label, String description) {
-             super(value, label);
-             this.description = description;
-         }
 
-         public String getDescription() {
-             return description;
-         }
+    public static class TestSuggestObject extends TestLabelValue {
+        private String description;
 
-         public void setDescription(String description) {
-             this.description = description;
-         }
-     }
+        public TestSuggestObject(String value, String label, String description) {
+            super(value, label);
+            this.description = description;
+        }
 
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
+
+    private static class TestLocationObject extends TestLabelValue {
+        private String href;
+
+        public TestLocationObject(String value, String label, String href) {
+            super(value, label);
+            this.href = href;
+        }
+
+        public String getHref() {
+            return href;
+        }
+
+        public void setHref(String href) {
+            this.href = href;
+        }
+
+    }
 }

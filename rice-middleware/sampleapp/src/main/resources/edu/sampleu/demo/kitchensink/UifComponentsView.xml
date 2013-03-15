@@ -44,7 +44,8 @@
           <property name="help">
             <bean parent="Uif-Help">
               <property name="helpDefinition">
-                <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
+                <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM"
+                      p:parameterDetailType="TEST_COMPONENT"/>
               </property>
             </bean>
           </property>
@@ -118,7 +119,8 @@
         <bean id="UifCompView-Page7" parent="UifCompViewPageWithFooter">
           <property name="items">
             <list>
-              <bean parent="Uif-PrimaryActionButton" id="Page7ActionButton" p:methodToCall="genCollectionServerMessages"/>
+              <bean parent="Uif-PrimaryActionButton" id="Page7ActionButton"
+                    p:methodToCall="genCollectionServerMessages"/>
               <ref bean="collection1"/>
               <ref bean="collection2"/>
               <ref bean="collection6"/>
@@ -198,7 +200,7 @@
               value="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl"/>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
   </bean>
-  
+
   <bean id="UifCompViewPageWithFooter" parent="Uif-Page">
     <property name="footer">
       <bean parent="Uif-FormFooter"/>
@@ -244,9 +246,12 @@
     <property name="items">
       <list>
         <bean parent="Uif-JumpToBottomLink" id="UifCompView-Header2"/>
-        <bean id="ActionLinkField_JumpToField119" parent="Uif-ActionLink" p:actionScript="jumpToElementByName('field119');"/>
-        <bean id="ActionLinkField_FocusOnField107" parent="Uif-ActionLink" p:actionScript="focusOnElementByName('field107');"/>
-        <bean id="ActionLinkField_FocusOnIdMyDate" parent="Uif-ActionLink" p:actionScript="focusOnElementById('myDate_control');"/>
+        <bean id="ActionLinkField_JumpToField119" parent="Uif-ActionLink"
+              p:actionScript="jumpToElementByName('field119');"/>
+        <bean id="ActionLinkField_FocusOnField107" parent="Uif-ActionLink"
+              p:actionScript="focusOnElementByName('field107');"/>
+        <bean id="ActionLinkField_FocusOnIdMyDate" parent="Uif-ActionLink"
+              p:actionScript="focusOnElementById('myDate_control');"/>
       </list>
     </property>
   </bean>
@@ -309,10 +314,10 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" id="UifCompView-Field102" p:propertyName="field102" p:labelPlacement="LEFT">
-                  <property name="control">
-                    <bean parent="Uif-TextControl"/>
-                  </property>
-                </bean>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
 
         <bean parent="Uif-InputField" id="UifCompView-Field102B" p:propertyName="field102" p:labelPlacement="RIGHT">
           <property name="control">
@@ -431,65 +436,65 @@
         <bean id="myDate" parent="Uif-InputField-LabelTop" p:propertyName="date2" p:required="false">
           <property name="control">
             <bean parent="Uif-DateControl">
-            <property name="datePicker.templateOptions">
-              <map>
-                <entry key="showOn" value="button"/>
-                <entry key="constrainInput" value="false"/>
-                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
-                <entry key="buttonImageOnly" value="true"/>
-                <entry key="showAnim" value="fadeIn"/>
-                <entry key="showButtonPanel" value="true"/>
-                <entry key="changeMonth" value="true"/>
-                <entry key="changeYear" value="true"/>
+              <property name="datePicker.templateOptions">
+                <map>
+                  <entry key="showOn" value="button"/>
+                  <entry key="constrainInput" value="false"/>
+                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImageOnly" value="true"/>
+                  <entry key="showAnim" value="fadeIn"/>
+                  <entry key="showButtonPanel" value="true"/>
+                  <entry key="changeMonth" value="true"/>
+                  <entry key="changeYear" value="true"/>
 
-                <entry key="numberOfMonths" value="1"/>
-              </map>
-            </property>
+                  <entry key="numberOfMonths" value="1"/>
+                </map>
+              </property>
             </bean>
           </property>
         </bean>
 
-        <bean id="date3" parent="Uif-InputField-LabelTop"  p:propertyName="field132" p:required="false">
+        <bean id="date3" parent="Uif-InputField-LabelTop" p:propertyName="field132" p:required="false">
           <property name="control">
             <bean parent="Uif-DateControl">
-            <property name="datePicker.templateOptions">
-              <map>
-                <entry key="showOn" value="button"/>
-                <entry key="dateFormat" value="mm-dd-y"/>
-                <entry key="constrainInput" value="false"/>
-                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
-                <entry key="buttonImageOnly" value="true"/>
-                <entry key="showAnim" value="fadeIn"/>
-                <entry key="showButtonPanel" value="true"/>
-                <entry key="changeMonth" value="true"/>
-                <entry key="changeYear" value="true"/>
-                <entry key="numberOfMonths" value="1"/>
-              </map>
-            </property>
+              <property name="datePicker.templateOptions">
+                <map>
+                  <entry key="showOn" value="button"/>
+                  <entry key="dateFormat" value="mm-dd-y"/>
+                  <entry key="constrainInput" value="false"/>
+                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImageOnly" value="true"/>
+                  <entry key="showAnim" value="fadeIn"/>
+                  <entry key="showButtonPanel" value="true"/>
+                  <entry key="changeMonth" value="true"/>
+                  <entry key="changeYear" value="true"/>
+                  <entry key="numberOfMonths" value="1"/>
+                </map>
+              </property>
             </bean>
           </property>
         </bean>
 
         <bean id="myDate4" parent="Uif-InputField-LabelTop" p:propertyName="field133" p:required="false">
           <property name="validCharactersConstraint">
-            <bean parent="BasicDatePatternConstraint" />
+            <bean parent="BasicDatePatternConstraint"/>
           </property>
           <property name="control">
             <bean parent="Uif-DateControl">
-            <property name="datePicker.templateOptions">
-              <map>
-                <entry key="showOn" value="button"/>
-                <entry key="dateFormat" value="mm-dd-yy"/>
-                <entry key="constrainInput" value="false"/>
-                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
-                <entry key="buttonImageOnly" value="true"/>
-                <entry key="showAnim" value="fadeIn"/>
-                <entry key="showButtonPanel" value="true"/>
-                <entry key="changeMonth" value="true"/>
-                <entry key="changeYear" value="true"/>
-                <entry key="numberOfMonths" value="1"/>
-              </map>
-            </property>
+              <property name="datePicker.templateOptions">
+                <map>
+                  <entry key="showOn" value="button"/>
+                  <entry key="dateFormat" value="mm-dd-yy"/>
+                  <entry key="constrainInput" value="false"/>
+                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImageOnly" value="true"/>
+                  <entry key="showAnim" value="fadeIn"/>
+                  <entry key="showButtonPanel" value="true"/>
+                  <entry key="changeMonth" value="true"/>
+                  <entry key="changeYear" value="true"/>
+                  <entry key="numberOfMonths" value="1"/>
+                </map>
+              </property>
             </bean>
           </property>
         </bean>
@@ -497,43 +502,43 @@
         <bean id="myDate4B" parent="Uif-InputField-LabelTop" p:propertyName="date4" p:required="false">
           <property name="control">
             <bean parent="Uif-DateControl">
-            <property name="datePicker.templateOptions">
-              <map>
-                <entry key="showOn" value="button"/>
-                <entry key="dateFormat" value="mm-dd-yy"/>
-                <entry key="constrainInput" value="false"/>
-                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
-                <entry key="buttonImageOnly" value="true"/>
-                <entry key="showAnim" value="fadeIn"/>
-                <entry key="showButtonPanel" value="true"/>
-                <entry key="changeMonth" value="true"/>
-                <entry key="changeYear" value="true"/>
-                <entry key="numberOfMonths" value="1"/>
-              </map>
-            </property>
+              <property name="datePicker.templateOptions">
+                <map>
+                  <entry key="showOn" value="button"/>
+                  <entry key="dateFormat" value="mm-dd-yy"/>
+                  <entry key="constrainInput" value="false"/>
+                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImageOnly" value="true"/>
+                  <entry key="showAnim" value="fadeIn"/>
+                  <entry key="showButtonPanel" value="true"/>
+                  <entry key="changeMonth" value="true"/>
+                  <entry key="changeYear" value="true"/>
+                  <entry key="numberOfMonths" value="1"/>
+                </map>
+              </property>
             </bean>
           </property>
         </bean>
 
         <bean id="myDate5" parent="Uif-InputField-LabelTop" p:propertyName="date5" p:required="false">
           <property name="validCharactersConstraint">
-            <bean parent="BasicDatePatternConstraint" />
+            <bean parent="BasicDatePatternConstraint"/>
           </property>
           <property name="control">
             <bean parent="Uif-DateControl">
-            <property name="datePicker.templateOptions">
-              <map>
-                <entry key="showOn" value="button"/>
-                <entry key="constrainInput" value="true"/>
-                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
-                <entry key="buttonImageOnly" value="true"/>
-                <entry key="showAnim" value="fadeIn"/>
-                <entry key="showButtonPanel" value="true"/>
-                <entry key="changeMonth" value="true"/>
-                <entry key="changeYear" value="true"/>
-                <entry key="numberOfMonths" value="1"/>
-              </map>
-            </property>
+              <property name="datePicker.templateOptions">
+                <map>
+                  <entry key="showOn" value="button"/>
+                  <entry key="constrainInput" value="true"/>
+                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImageOnly" value="true"/>
+                  <entry key="showAnim" value="fadeIn"/>
+                  <entry key="showButtonPanel" value="true"/>
+                  <entry key="changeMonth" value="true"/>
+                  <entry key="changeYear" value="true"/>
+                  <entry key="numberOfMonths" value="1"/>
+                </map>
+              </property>
             </bean>
           </property>
         </bean>
@@ -690,6 +695,88 @@
             <bean parent="Uif-MultiSelectControl" p:size="3" p:options-ref="test-options"/>
           </property>
         </bean>
+
+        <bean parent="Uif-InputField" p:label='Dropdown Navigation' p:width="auto" >
+          <property name="control">
+            <bean parent="Uif-DropdownControl">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyValueLocation" p:key="1" p:value="" p:location.href=""/>
+                  <bean parent="Uif-KeyValueLocation" p:key="2" p:value="Kuali.org"
+                        p:location.href="http://www.kuali.org"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="3" p:value="Jira"
+                        p:location.href="https://jira.kuali.org"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="4" p:value="Rich Messages View"
+                        p:location.viewId="RichMessagesView"
+                        p:location.controllerMapping="/uicomponents"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:width="auto" p:defaultValue="4">
+          <property name="control">
+            <bean parent="Uif-DropdownControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValueLocations" p:blankOption="true"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:label='Nav Option List'>
+          <property name="control">
+            <bean parent="Uif-OptionListControl">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyValueLocation" p:key="2" p:value="Kuali.org"
+                        p:location.href="http://www.kuali.org"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="3" p:value="Jira"
+                        p:location.href="https://jira.kuali.org"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="4" p:value="Rich Messages View"
+                        p:location.viewId="RichMessagesView"
+                        p:location.controllerMapping="/uicomponents"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:label='2 selection'
+              p:propertyName="stringList3">
+          <property name="control">
+            <bean parent="Uif-OptionListControl">
+              <property name="showOnlySelected" value="true"/>
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyValueLocation" p:key="String1" p:value="Kuali.org"
+                        p:location.href="http://www.kuali.org"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="3" p:value="Jira"
+                        p:location.href="https://jira.kuali.org"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="String2" p:value="Rich Messages View"
+                        p:location.viewId="RichMessagesView"
+                        p:location.controllerMapping="/uicomponents"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:label='1 Selection'
+                      p:propertyName="mField1">
+          <property name="control">
+            <bean parent="Uif-OptionListControl">
+              <property name="showOnlySelected" value="true"/>
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Dont Show"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="SecretInfo555" p:value="Show This!"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Dont Show"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -716,7 +803,8 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" id="UifCompView-TestPerson-PrincipalName" p:propertyName="testPerson.principalName">
+        <bean parent="Uif-InputField" id="UifCompView-TestPerson-PrincipalName"
+              p:propertyName="testPerson.principalName">
           <property name="control">
             <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="testPersonId"
                   p:personNamePropertyName="testPerson.name"/>
@@ -735,13 +823,13 @@
               <property name="spinner">
                 <bean parent="Uif-Spinner">
                   <property name="templateOptions">
-                  <map merge="true">
-                    <entry key="start" value="5"/>
-                    <entry key="step" value="25"/>
-                    <entry key="max" value="2500"/>
-                    <entry key="numberFormat" value="C"/>
-                    <entry key="culture" value="en-GB"/>
-                  </map>
+                    <map merge="true">
+                      <entry key="start" value="5"/>
+                      <entry key="step" value="25"/>
+                      <entry key="max" value="2500"/>
+                      <entry key="numberFormat" value="C"/>
+                      <entry key="culture" value="en-GB"/>
+                    </map>
                   </property>
                 </bean>
               </property>

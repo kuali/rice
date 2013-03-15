@@ -66,25 +66,6 @@
 <@krad.script value="setupBreadcrumbs(${widget.displayBreadcrumbsWhenOne?string});" />
 
 </#macro>
-<#--    <#local current=KualiForm.formHistory.generatedCurrentBreadcrumb/>
-    <#local crumbs=KualiForm.formHistory.generatedBreadcrumbs/>
-
-    <#if (crumbs?size >= 1) || widget.displayBreadcrumbsWhenOne>
-        <label id="breadcrumb_label" class="offScreen">Breadcrumbs</label>
-
-        <span class="${widget.styleClassesAsString!}">
-            <ol id="breadcrumbs" role="navigation" aria-labelledby="breadcrumb_label">
-
-                <#list crumbs as crumb>
-                    <li><a href="${crumb.url!}">${crumb.title!}</a><span role="presentation"> &raquo; </span></li>
-                </#list>
-
-                <span class="kr-current" id="current_breadcrumb_span">${current.title!}</span>
-                <a style="display:none;" id="current_breadcrumb_anchor" href="${current.url!}">${current.title!}</a>
-            </ol>
-        </span>
-
-    </#if>-->
 
 
 

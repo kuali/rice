@@ -70,6 +70,12 @@
 
   <bean id="Uif-KeyLabelPair" class="org.kuali.rice.krad.uif.util.UifKeyValue" scope="prototype"/>
 
+  <bean id="Uif-KeyValueLocation" class="org.kuali.rice.krad.uif.util.UifKeyValueLocation" scope="prototype">
+    <property name="location">
+      <bean parent="Uif-Url"/>
+    </property>
+  </bean>
+
   <bean id="Uif-ColumnCalculationInfo" class="org.kuali.rice.krad.uif.util.ColumnCalculationInfo" scope="prototype"
         abstract="true">
     <property name="showTotal" value="true"/>
@@ -164,7 +170,7 @@
 
   <bean id="Uif-BreadcrumbOptions" class="org.kuali.rice.krad.uif.util.BreadcrumbOptions" scope="prototype"/>
 
-  <bean id="Uif-Url" class="org.kuali.rice.krad.uif.util.KradUrl" scope="prototype">
+  <bean id="Uif-Url" class="org.kuali.rice.krad.uif.util.UrlInfo" scope="prototype">
     <property name="baseUrl" value="@{#ConfigProperties['krad.url']}"/>
     <property name="methodToCall" value="start"/>
   </bean>

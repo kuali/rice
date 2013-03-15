@@ -31,7 +31,7 @@ import java.util.Map;
 @BeanTag(name = "breadcrumbItem-bean", parent = "Uif-BreadcrumbItem")
 public class BreadcrumbItem extends ContentElementBase {
     private String label;
-    private KradUrl url;
+    private UrlInfo url;
     private Component siblingBreadcrumbComponent;
     private boolean renderAsLink;
 
@@ -86,7 +86,7 @@ public class BreadcrumbItem extends ContentElementBase {
      * @return the url object
      */
     @BeanTagAttribute(name = "url")
-    public KradUrl getUrl() {
+    public UrlInfo getUrl() {
         return url;
     }
 
@@ -95,7 +95,7 @@ public class BreadcrumbItem extends ContentElementBase {
      *
      * @param urlObject
      */
-    public void setUrl(KradUrl urlObject) {
+    public void setUrl(UrlInfo urlObject) {
         this.url = urlObject;
     }
 

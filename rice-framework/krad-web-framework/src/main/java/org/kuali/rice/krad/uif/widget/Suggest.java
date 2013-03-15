@@ -46,8 +46,11 @@ public class Suggest extends WidgetBase {
 
     private AttributeQuery suggestQuery;
 
-    private String sourcePropertyName;
-    private boolean sourceQueryMethodResults;
+    private String valuePropertyName;
+    private String labelPropertyName;
+    private List<String> additionalPropertiesToReturn;
+
+    private boolean returnFullQueryObject;
 
     private boolean retrieveAllSuggestions;
     private List<Object> suggestOptions;
@@ -74,7 +77,7 @@ public class Suggest extends WidgetBase {
         super.performFinalize(view, model, parent);
 
         // if source property name or query method or options not set then we can't render the Suggest widget
-        if (StringUtils.isBlank(sourcePropertyName) &&
+        if (StringUtils.isBlank(valuePropertyName) &&
                 !suggestQuery.hasConfiguredMethod() &&
                 (suggestOptions == null || suggestOptions.isEmpty())) {
             setRender(false);
@@ -167,50 +170,109 @@ public class Suggest extends WidgetBase {
     /**
      * Name of the property on the query result object that provides
      * the options for the suggest, values from this field will be
-     * collected and sent back on the result to provide as suggest options
+     * collected and sent back on the result to provide as suggest options.
+     *
+     * <p>If a labelPropertyName is also set,
+     * the property specified by it will be used as the label the user selects (the suggestion), but the value will
+     * be the value retrieved by this property.  If only one of labelPropertyName or valuePropertyName is set,
+     * the property's value on the object will be used for both the value inserted on selection and the suggestion
+     * text (most default cases only a valuePropertyName would be set).</p>
      *
      * @return String source property name
      */
-    @BeanTagAttribute(name = "sourcePropertyName")
-    public String getSourcePropertyName() {
-        return sourcePropertyName;
+    @BeanTagAttribute(name = "valuePropertyName")
+    public String getValuePropertyName() {
+        return valuePropertyName;
     }
 
     /**
-     * Setter for the source property name
+     * Setter for the value property name
      *
-     * @param sourcePropertyName
+     * @param valuePropertyName
      */
-    public void setSourcePropertyName(String sourcePropertyName) {
-        this.sourcePropertyName = sourcePropertyName;
+    public void setValuePropertyName(String valuePropertyName) {
+        this.valuePropertyName = valuePropertyName;
     }
 
     /**
-     * When set to true the results of a query method will be used directly as the suggestions (
-     * it will not be assumed the method returns objects from which the source property name is then used
-     * to pull out the suggestions)
+     * Name of the property on the query result object that provides the label for the suggestion.
+     *
+     * <p>This should
+     * be set when the label that the user selects is different from the value that is inserted when a user selects a
+     * suggestion. If only one of labelPropertyName or valuePropertyName is set,
+     * the property's value on the object will be used for both the value inserted on selection and the suggestion
+     * text (most default cases only a valuePropertyName would be set).</p>
+     *
+     * @return labelPropertyName representing the property to use for the suggestion label of the item
+     */
+    @BeanTagAttribute(name = "labelPropertyName")
+    public String getLabelPropertyName() {
+        return labelPropertyName;
+    }
+
+    /**
+     * Set the labelPropertyName
+     *
+     * @param labelPropertyName
+     */
+    public void setLabelPropertyName(String labelPropertyName) {
+        this.labelPropertyName = labelPropertyName;
+    }
+
+    /**
+     * List of additional properties to return in the result objects to the plugin's success callback.
+     *
+     * <p>In most cases, this should not be set.  The main use case
+     * of setting this list is to use additional properties in the select function on the plugin's options, so
+     * it is only recommended that this property be set when doing heavy customization to the select function.
+     * This list is not used if the full result object is already being returned.</p>
+     *
+     * @return the list of additional properties to send back
+     */
+    @BeanTagAttribute(name = "additionalPropertiesToReturn", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getAdditionalPropertiesToReturn() {
+        return additionalPropertiesToReturn;
+    }
+
+    /**
+     * Set the list of additional properties to return to the plugin success callback results
+     *
+     * @param additionalPropertiesToReturn
+     */
+    public void setAdditionalPropertiesToReturn(List<String> additionalPropertiesToReturn) {
+        this.additionalPropertiesToReturn = additionalPropertiesToReturn;
+    }
+
+    /**
+     * When set to true the results of a query method will be sent back as-is (in translated form) with all properties
+     * intact.
      *
      * <p>
-     * Note this is not supported for auto queries (only custom method queries). The query method can return
-     * a list of Strings which will be used for the suggestions, a list of object with 'label' and 'value' properties,
-     * or a custom object (if the plugin has been customized to handle the object)
+     * Note this is not supported for highly complex objects (ie, most auto-query objects - will throw exception).
+     * Intended usage of this flag is with custom query methods which return simple data objects.
+     * The query method can return
+     * a list of Strings which will be used for the suggestions, a list of objects with 'label' and 'value' properties,
+     * or a custom object.  In the case of using a customObject labelPropertyName or valuePropertyName MUST be
+     * specified (or both) OR the custom object must contain a property named "label" or "value" (or both)
+     * for the suggestions to appear.  In cases where this is not used, the data sent back represents a slim
+     * subset of the properties on the object.
      * </p>
      *
      * @return boolean true if the query method results should be used as the suggestions, false to assume
      *         objects are returned and suggestions are formed using the source property name
      */
-    @BeanTagAttribute(name = "sourceQueryMethodResults")
-    public boolean isSourceQueryMethodResults() {
-        return sourceQueryMethodResults;
+    @BeanTagAttribute(name = "returnFullQueryObject")
+    public boolean isReturnFullQueryObject() {
+        return returnFullQueryObject;
     }
 
     /**
-     * Setter for the source query method results indicator
+     * Setter for the for returning the full object of the query
      *
-     * @param sourceQueryMethodResults
+     * @param returnFullQueryObject
      */
-    public void setSourceQueryMethodResults(boolean sourceQueryMethodResults) {
-        this.sourceQueryMethodResults = sourceQueryMethodResults;
+    public void setReturnFullQueryObject(boolean returnFullQueryObject) {
+        this.returnFullQueryObject = returnFullQueryObject;
     }
 
     /**

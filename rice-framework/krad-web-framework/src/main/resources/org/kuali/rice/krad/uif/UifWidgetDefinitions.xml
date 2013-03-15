@@ -277,6 +277,15 @@
     </property>
   </bean>
 
+  <bean id="Uif-LocationSuggest" parent="Uif-LocationSuggest-parentBean"/>
+    <bean id="Uif-LocationSuggest-parentBean" parent="Uif-Suggest" abstract="true"
+          class="org.kuali.rice.krad.uif.widget.LocationSuggest" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/ftl/components/widget/locationSuggest.ftl"/>
+      <property name="templateName" value="uif_locationSuggest"/>
+      <property name="baseUrl" value="@{#ConfigProperties['krad.url']}"/>
+      <property name="hrefPropertyName" value="href"/>
+    </bean>
+
   <bean id="Uif-Reorderer" parent="Uif-Reorderer-parentBean"/>
   <bean id="Uif-Reorderer-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Reorderer"
         scope="prototype" parent="Uif-WidgetBase">

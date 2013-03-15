@@ -41,8 +41,8 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
     private static final long serialVersionUID = -6242148809697931126L;
     //private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ParentLocation.class);
 
-    private KradUrl parentViewUrl;
-    private KradUrl parentPageUrl;
+    private UrlInfo parentViewUrl;
+    private UrlInfo parentPageUrl;
     private String parentViewLabel;
     private String parentPageLabel;
 
@@ -314,7 +314,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      * @return the parent view url
      */
     @BeanTagAttribute(name = "parentViewUrl", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public KradUrl getParentViewUrl() {
+    public UrlInfo getParentViewUrl() {
         return parentViewUrl;
     }
 
@@ -323,7 +323,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      *
      * @param parentViewUrl
      */
-    public void setParentViewUrl(KradUrl parentViewUrl) {
+    public void setParentViewUrl(UrlInfo parentViewUrl) {
         this.parentViewUrl = parentViewUrl;
     }
 
@@ -341,7 +341,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      * @return the parent page url
      */
     @BeanTagAttribute(name = "parentPageUrl", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public KradUrl getParentPageUrl() {
+    public UrlInfo getParentPageUrl() {
         return parentPageUrl;
     }
 
@@ -350,7 +350,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      *
      * @param parentPageUrl
      */
-    public void setParentPageUrl(KradUrl parentPageUrl) {
+    public void setParentPageUrl(UrlInfo parentPageUrl) {
         this.parentPageUrl = parentPageUrl;
     }
 

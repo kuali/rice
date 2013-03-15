@@ -29,20 +29,72 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
     var items = breadcrumbList.find("> li");
 
     //dont display if display when one is false and there is only one item
-    if(!displayBreadcrumbsWhenOne && items.length == 1){
+    if (!displayBreadcrumbsWhenOne && items.length == 1) {
         return;
     }
 
     //if the last item has a link, make it a span
     var lastLink = items.last().find("> a");
-    if(lastLink.length){
-        lastLink.replaceWith(function(){
+    if (lastLink.length) {
+        lastLink.replaceWith(function () {
             return jQuery("<span>" + jQuery(this).html() + "</span>");
         });
     }
 
     //append to the wrapper
     jQuery("div#Uif-BreadcrumbWrapper").append(breadcrumbList);
+}
+
+function setupLocationSelect(controlId) {
+    var control = jQuery("select#" + controlId);
+    if (control.length) {
+        //navigate if the value changes
+        control.on("change", function () {
+            var selectedOption = jQuery(this).find("option:selected");
+            if (!selectedOption.length) {
+                return;
+            }
+
+            var location = selectedOption.data("location");
+            if (!location) {
+                return;
+            }
+
+            window.location.href = location;
+        });
+
+        //navigate when the same option is clicked
+        control.find("option").on("mouseup", function () {
+            var selectedOption = jQuery(this);
+            if (!selectedOption && selectedOption.is("selected")) {
+                return;
+            }
+
+            var location = selectedOption.data("location");
+            if (!location) {
+                return;
+            }
+
+            window.location.href = location;
+        });
+
+        //navigate on enter event
+        control.on("keyup", function (e) {
+            if (e.keyCode == 13) {
+                var selectedOption = jQuery(this).find("option:selected");
+                if (!selectedOption.length) {
+                    return;
+                }
+
+                var location = selectedOption.data("location");
+                if (!location) {
+                    return;
+                }
+
+                window.location.href = location;
+            }
+        });
+    }
 }
 
 /**
@@ -94,7 +146,7 @@ function createVerticalMenu(listId, options) {
  * @param imageUrl - the url for the popout icon
  */
 function setupTextPopout(id, label, summary, constraint, imageUrl) {
-    var options = {label:label, summary:summary, constraint:constraint};
+    var options = {label: label, summary: summary, constraint: constraint};
     jQuery("#" + id).initPopoutText(options, imageUrl);
 }
 
@@ -203,7 +255,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
 
                 var jsonViewState = getSerializedViewState();
                 if (jsonViewState) {
-                    jQuery.extend(data, {clientViewState:jsonViewState});
+                    jQuery.extend(data, {clientViewState: jsonViewState});
                 }
 
                 // TODO: we need a fix here so dirty fields don't get cleared out
@@ -215,8 +267,8 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
 
                 // Do the Ajax submit on the kualiForm form
                 jQuery("#kualiForm").ajaxSubmit({
-                    data:data,
-                    success:function (data) {
+                    data: data,
+                    success: function (data) {
                         // Perform cleanup when lightbox is closed
                         // TODO: this stomps on the post form (clear out) so need to another
                         // way to clear forms when the lightbox performs a post back
@@ -319,14 +371,14 @@ function returnLookupResultByScript(fieldName, value) {
 function setMultiValueReturnTarget() {
     if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
         // portal and content on same domain
-        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('#' + kradVariables.KUALI_FORM).attr('target',kradVariables.PORTAL_IFRAME_ID);
+        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('#' + kradVariables.KUALI_FORM).attr('target', kradVariables.PORTAL_IFRAME_ID);
     } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
         // portal and content on different domain
-        parent.jQuery('#' + kradVariables.KUALI_FORM).attr('target',kradVariables.PORTAL_IFRAME_ID);
+        parent.jQuery('#' + kradVariables.KUALI_FORM).attr('target', kradVariables.PORTAL_IFRAME_ID);
     } else if (parent != null) {
-        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target',parent.name);
+        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target', parent.name);
     } else {
-        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target','_parent');
+        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target', '_parent');
     }
 }
 
@@ -618,17 +670,17 @@ function createTable(tableId, options, groupingOptions) {
         var oTable = table.dataTable(options);
 
         //handle row details related functionality setup
-        if(detailsOpen != undefined){
-            jQuery(oTable).on("dataTables.tableDraw", function(){
-                if(table.data("open")){
+        if (detailsOpen != undefined) {
+            jQuery(oTable).on("dataTables.tableDraw", function () {
+                if (table.data("open")) {
                     openAllDetails(tableId);
                 }
-                else{
+                else {
                     closeAllDetails(tableId);
                 }
             });
 
-            if(detailsOpen){
+            if (detailsOpen) {
                 openAllDetails(tableId, false);
             }
         }
@@ -685,9 +737,9 @@ function openAllDetails(tableId, animate, forceOpen) {
             var row = jQuery(this);
             //Means the row is not open and the user has not interacted with it (or force if forceOpen is true)
             //This is done to retain row details "state" between table draws for rows the user may have interacted with
-            if(!oTable.fnIsOpen(this) && (!row.data("det-interact") || forceOpen)){
+            if (!oTable.fnIsOpen(this) && (!row.data("det-interact") || forceOpen)) {
                 var actionComponent = row.find("a[data-role='detailsLink']");
-                
+
                 openDetails(oTable, row, actionComponent, animate);
 
                 //reset user interaction flag
@@ -706,7 +758,7 @@ function openAllDetails(tableId, animate, forceOpen) {
  * or ajaxRetrieval
  * @param animate if true, the open will have an animation effect
  */
-function openDetails(oTable, row, actionComponent, animate){
+function openDetails(oTable, row, actionComponent, animate) {
     var detailsGroup = row.find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
     var ajaxRetrieval = jQuery(detailsGroup).is("span[data-role='placeholder']");
     var detailsId = jQuery(detailsGroup).attr("id");
@@ -718,17 +770,17 @@ function openDetails(oTable, row, actionComponent, animate){
     var newRow = oTable.fnOpenCustom(row[0], detailsGroup, "uif-rowDetails");
     detailsGroup = jQuery(newRow).find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
 
-    if(animate && !ajaxRetrieval){
+    if (animate && !ajaxRetrieval) {
         detailsGroup.slideDown();
     }
-    else{
+    else {
         detailsGroup.show();
     }
 
-    if(ajaxRetrieval){
+    if (ajaxRetrieval) {
         var kradRequest = new KradRequest(jQuery(actionComponent));
 
-        if(!kradRequest.methodToCall){
+        if (!kradRequest.methodToCall) {
             kradRequest.methodToCall = kradVariables.REFRESH_METHOD_TO_CALL;
         }
 
@@ -776,7 +828,7 @@ function closeAllDetails(tableId, animate, forceClose) {
  * @param actionComponent [optional] actionComponent used to invoke the action, required if using image swap
  * @param animate if true, the close will have an animation effect
  */
-function closeDetails(oTable, row, actionComponent, animate){
+function closeDetails(oTable, row, actionComponent, animate) {
     var fieldGroupWrapper = row.find("div[data-role='detailsFieldGroup'] fieldset div.uif-verticalBoxLayout");
     var detailsContent = row.next().first().find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
 
@@ -784,13 +836,13 @@ function closeDetails(oTable, row, actionComponent, animate){
         jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
     }
 
-    if(animate){
+    if (animate) {
         detailsContent.slideUp(function () {
             fieldGroupWrapper.append(detailsContent.detach());
             oTable.fnClose(row[0]);
         });
     }
-    else{
+    else {
         detailsContent.hide();
         fieldGroupWrapper.append(detailsContent.detach());
         oTable.fnClose(row[0]);
@@ -803,16 +855,16 @@ function closeDetails(oTable, row, actionComponent, animate){
  *
  * @param actionComponent the calling action component
  */
-function toggleRowDetails(actionComponent){
+function toggleRowDetails(actionComponent) {
     var action = jQuery(actionComponent);
     var tableId = action.data("tableid");
     var open = action.data("open");
-    if(open){
+    if (open) {
         closeAllDetails(tableId, true, true);
         action.data("open", false);
         jQuery("#" + tableId).data("open", false);
     }
-    else{
+    else {
         openAllDetails(tableId, true, true);
         action.data("open", true);
         jQuery("#" + tableId).data("open", true);
@@ -875,17 +927,17 @@ function createCopyToClipboard(componentId, copyTriggerId, contentElementId, sho
         if (jQuery("#" + componentId).is(':visible')) {
 
             // setup new client for this component
-            ZeroClipboard.setMoviePath( '../krad/plugins/rice/datatables/copy_cvs_xls_pdf.swf' );
+            ZeroClipboard.setMoviePath('../krad/plugins/rice/datatables/copy_cvs_xls_pdf.swf');
             var clip = new ZeroClipboard.Client();
 
             // copy text on mousedown
-            clip.addEventListener('mousedown',function(client) {
+            clip.addEventListener('mousedown', function (client) {
                 clip.setText(jQuery("#" + contentElementId).text());
             });
 
             // show dialog
             if (showCopyConfirmation) {
-                clip.addEventListener('complete',function(client,text) {
+                clip.addEventListener('complete', function (client, text) {
                     alert('Copied to Clipboard :\n\n' + text);
                 });
             }
@@ -900,8 +952,8 @@ function createCopyToClipboard(componentId, copyTriggerId, contentElementId, sho
     });
 }
 
-function createAccordion(id, options, active){
-    if(active == false){
+function createAccordion(id, options, active) {
+    if (active == false) {
         active = "false";
     }
 
@@ -920,20 +972,20 @@ function createAccordion(id, options, active){
 function createTabs(id, options, position) {
     var tabs = jQuery("#" + id + "_tabs").tabs(options);
 
-    if(position == "BOTTOM"){
-        tabs.addClass( "ui-tabs-bottom" );
-        jQuery( ".ui-tabs-bottom .ui-tabs-nav, .ui-tabs-bottom .ui-tabs-nav > *" )
-                    .removeClass( "ui-corner-all ui-corner-top" )
-                    .addClass( "ui-corner-bottom" );
-        jQuery( ".ui-tabs-bottom .ui-tabs-nav" ).appendTo( ".ui-tabs-bottom" );
+    if (position == "BOTTOM") {
+        tabs.addClass("ui-tabs-bottom");
+        jQuery(".ui-tabs-bottom .ui-tabs-nav, .ui-tabs-bottom .ui-tabs-nav > *")
+                .removeClass("ui-corner-all ui-corner-top")
+                .addClass("ui-corner-bottom");
+        jQuery(".ui-tabs-bottom .ui-tabs-nav").appendTo(".ui-tabs-bottom");
     }
-    else if(position == "RIGHT"){
+    else if (position == "RIGHT") {
         tabs.addClass('ui-tabs-vertical ui-tabs-vertical-right ui-helper-clearfix');
         tabs.find("li").removeClass('ui-corner-top').addClass('ui-corner-right');
     }
-    else if(position == "LEFT"){
-        tabs.addClass( "ui-tabs-vertical ui-tabs-vertical-left ui-helper-clearfix" );
-        tabs.find("li").removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+    else if (position == "LEFT") {
+        tabs.addClass("ui-tabs-vertical ui-tabs-vertical-left ui-helper-clearfix");
+        tabs.find("li").removeClass("ui-corner-top").addClass("ui-corner-left");
     }
 }
 
@@ -941,26 +993,61 @@ function createTabs(id, options, position) {
  * Uses jQuery UI Auto-complete widget to provide suggest options for the given field. See
  * <link>http://jqueryui.com/demos/autocomplete/</link> for documentation on this widget
  *
- * @param controlId -
- *           id for the html control the autocomplete will be enabled for
- * @param options -
- *           map of option settings (option name/value pairs) for the widget
- * @param queryFieldId -
- *          id for the attribute field the control belongs to, used when making the
+ * @param controlId id for the html control the autocomplete will be enabled for
+ * @param options map of option settings (option name/value pairs) for the widget
+ * @param queryFieldId id for the attribute field the control belongs to, used when making the
  * request to execute the associated attribute query
- * @param queryParameters -
- *         map of parameters that should be sent along with the query. map key gives
+ * @param queryParameters map of parameters that should be sent along with the query. map key gives
  * @param localSource indicates whether the suggest options will be provided locally instead of by
  * a query
  * @param suggestOptions when localSource is set to true provides the suggest options
  * the name of the parameter to send, and the value gives the name of the field to pull the value from
+ * @param labelProp the property name that holds the label for the plugin
+ * @param valueProp the property name that holds the value for the plugin
+ * @param returnCustomObj if true, the full object is expected as return value
  */
-function createSuggest(controlId, options, queryFieldId, queryParameters, localSource, suggestOptions) {
+function createSuggest(controlId, options, queryFieldId, queryParameters, localSource, suggestOptions,
+                       labelProp, valueProp, returnCustomObj) {
     if (localSource) {
         options.source = suggestOptions;
     }
     else {
+
+
         options.source = function (request, response) {
+            var successFunction = function (data) {
+                        response(data.resultData);
+            };
+
+            //special success logic for the object return case with label/value props specified
+            if (returnCustomObj && (labelProp || valueProp)) {
+                successFunction = function (data) {
+                    var isObject = false;
+
+                    if (data.resultData && data.resultData.length && data.resultData[0]) {
+                        isObject = (data.resultData[0].constructor === Object);
+                    }
+
+                    if (data.resultData && data.resultData.length && isObject) {
+                        //find and match props, and set them into each object so the autocomplete plugin can read them
+                        jQuery.each(data.resultData, function (index, object) {
+                            if (labelProp && object[labelProp]) {
+                                object.label = object[labelProp];
+                            }
+
+                            if (valueProp && object[valueProp]) {
+                                object.value = object[valueProp];
+                            }
+                        });
+                        response(data.resultData);
+                    }
+                    else {
+                        response(data.resultData);
+                    }
+
+                };
+            }
+
             var queryData = {};
 
             queryData.methodToCall = 'performFieldSuggest';
@@ -975,15 +1062,13 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
             }
 
             jQuery.ajax({
-                url:jQuery("form#kualiForm").attr("action"),
-                dataType:"json",
-                beforeSend:null,
-                complete:null,
-                error:null,
-                data:queryData,
-                success:function (data) {
-                    response(data.resultData);
-                }
+                url: jQuery("form#kualiForm").attr("action"),
+                dataType: "json",
+                beforeSend: null,
+                complete: null,
+                error: null,
+                data: queryData,
+                success: successFunction
             });
         };
     }
@@ -991,6 +1076,79 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
     jQuery(document).ready(function () {
         jQuery("#" + controlId).autocomplete(options);
     });
+}
+
+/**
+ * Create a locationSuggest which overrides the select method with one that will navigate the user based on url
+ * settings
+ *
+ * @param baseUrl baseUrl of the urls being built
+ * @param hrefProperty href url property name - if found use this always (do not build url)
+ * @param addUrlProperty additional url appendage property name for built urls
+ * @param requestParamNamesObj obj containing key/propertyName pairs for requestParameters on a built url
+ * @param requestParameterString static request parameter string to append
+ * @param controlId id for the html control the autocomplete will be enabled for
+ * @param options map of option settings (option name/value pairs) for the widget
+ * @param queryFieldId id for the attribute field the control belongs to, used when making the
+ * request to execute the associated attribute query
+ * @param queryParameters map of parameters that should be sent along with the query. map key gives
+ * @param localSource indicates whether the suggest options will be provided locally instead of by
+ * a query
+ * @param suggestOptions when localSource is set to true provides the suggest options
+ * the name of the parameter to send, and the value gives the name of the field to pull the value from
+ * @param labelProp the property name that holds the label for the plugin
+ * @param valueProp the property name that holds the value for the plugin
+ * @param returnCustomObj if true, the full object is expected as return value
+ */
+function createLocationSuggest(baseUrl, hrefProperty, addUrlProperty, requestParamNamesObj, requestParameterString,
+                               controlId, options, queryFieldId, queryParameters, localSource, suggestOptions,
+                               labelProp, valueProp, returnCustomObj) {
+
+    var originalFunction = undefined;
+    if (options.select != undefined) {
+        originalFunction = options.select;
+    }
+
+    options.select = function (event, object) {
+        var originalFunctionResult = true;
+        if (originalFunction) {
+            originalFunctionResult = originalFunction();
+        }
+
+        if (object && object.item && hrefProperty && object.item[hrefProperty]) {
+            window.location.href = object.item[hrefProperty];
+        }
+        else if (object && object.item && baseUrl) {
+            var builtUrl = baseUrl;
+
+            if (addUrlProperty && object.item[addUrlProperty]) {
+                builtUrl = builtUrl + object.item[addUrlProperty];
+            }
+
+            var addParams = "";
+            if (requestParamNamesObj) {
+                jQuery.each(requestParamNamesObj, function (key, propName) {
+                    if (object.item[propName]) {
+                        addParams = addParams + "&" + key + "=" + object.item[propName];
+                    }
+                });
+            }
+
+            if (requestParameterString) {
+                builtUrl = builtUrl + requestParameterString + addParams;
+            }
+            else if (addParams) {
+                builtUrl = builtUrl + "?" + addParams.substr(1, addParams.length);
+            }
+
+            window.location.href = builtUrl;
+        }
+
+        return originalFunctionResult;
+    };
+
+    createSuggest(controlId, options, queryFieldId, queryParameters, localSource, suggestOptions,
+            labelProp, valueProp, returnCustomObj);
 }
 
 /**
@@ -1192,8 +1350,8 @@ function getTooltipElement(fieldId) {
         elementInfo.type = "";
         if (elementInfo.element.is("input:checkbox")) {
             elementInfo.themeMargins = {
-                total:'13px',
-                difference:'0px'
+                total: '13px',
+                difference: '0px'
             };
         }
     }
@@ -1203,8 +1361,8 @@ function getTooltipElement(fieldId) {
         elementInfo.element = jQuery("#" + fieldId).find("fieldset, fieldset input, fieldset label");
         elementInfo.type = "fieldset";
         elementInfo.themeMargins = {
-            total:'13px',
-            difference:'2px'
+            total: '13px',
+            difference: '2px'
         };
     }
     else {
@@ -1253,13 +1411,13 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
     }
 
     jQuery.ajax({
-        url:jQuery("form#kualiForm").attr("action"),
-        dataType:"json",
-        data:queryData,
-        beforeSend:null,
-        complete:null,
-        error:null,
-        success:function (data) {
+        url: jQuery("form#kualiForm").attr("action"),
+        dataType: "json",
+        data: queryData,
+        beforeSend: null,
+        complete: null,
+        error: null,
+        success: function (data) {
             // write out return message (or blank)
             var returnMessageSpan = jQuery("#" + queryFieldId + "_info_message");
             if (returnMessageSpan.length > 0) {

@@ -41,7 +41,7 @@ import java.util.Map;
  * </p>
  */
 @BeanTag(name = "url-bean", parent = "Uif-Url")
-public class KradUrl extends UifDictionaryBeanBase implements Serializable {
+public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
 
     private static final long serialVersionUID = 3195177614468120958L;
     private String href;
@@ -54,6 +54,36 @@ public class KradUrl extends UifDictionaryBeanBase implements Serializable {
     private String formKey;
     private String methodToCall;
     private Map<String, String> requestParameters;
+
+    /**
+     * Base constructor
+     */
+    public UrlInfo(){}
+
+    /**
+     * Constructor that initializes an href value
+     *
+     * @param href the href value
+     */
+    public UrlInfo(String href){
+        this.href = href;
+        this.originalHref = href;
+    }
+
+    /**
+     * Constructor that sets the base url construction properties
+     *
+     * @param baseUrl the baseUrl
+     * @param controllerMapping the controllerMapping
+     * @param viewId the id of the view
+     * @param methodToCall the methodToCall
+     */
+    public UrlInfo(String baseUrl, String controllerMapping, String viewId, String methodToCall) {
+        this.baseUrl = baseUrl;
+        this.controllerMapping = controllerMapping;
+        this.viewId = viewId;
+        this.methodToCall = methodToCall;
+    }
 
     /**
      * Generate the url based on properties of this object
@@ -302,5 +332,15 @@ public class KradUrl extends UifDictionaryBeanBase implements Serializable {
      */
     public String getOriginalHref() {
         return originalHref;
+    }
+
+    /**
+     * toString override returns the href value of url
+     *
+     * @return href value
+     */
+    @Override
+    public String toString(){
+        return this.getHref();
     }
 }

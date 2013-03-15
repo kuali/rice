@@ -116,7 +116,7 @@
           </bean>
           <bean parent="GenericTextField" p:propertyName="field61">
             <property name="suggest">
-                <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="accountTypeCode"
+                <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="accountTypeCode"
                       p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
             </property>
           </bean>

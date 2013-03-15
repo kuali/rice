@@ -559,8 +559,35 @@ function setupPage(validate) {
  * @param form
  */
 function setupValidator(form) {
-    jQuery(form).validate(
-            {
+    jQuery(form).validate();
+}
+
+/**
+ * Initializes all of the image variables
+ */
+function setupImages() {
+    errorImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error.png' alt='" + getMessage(kradVariables.MESSAGE_ERROR) + "' /> ";
+    errorGreyImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error-grey.png' alt='" + getMessage(kradVariables.MESSAGE_ERROR_FIELD_MODIFIED) + "' /> ";
+    warningImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/warning.png' alt='" + getMessage(kradVariables.MESSAGE_WARNING) + "' /> ";
+    infoImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/info.png' alt='" + getMessage(kradVariables.MESSAGE_INFORMATION) + "' /> ";
+    detailsOpenImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_open.png' alt='" + getMessage(kradVariables.MESSAGE_DETAILS) + "' /> ");
+    detailsCloseImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_close.png' alt='" + getMessage(kradVariables.MESSAGE_CLOSE_DETAILS) + "' /> ");
+}
+
+/**
+ * Retrieves the value for a configuration parameter
+ *
+ * @param paramName - name of the parameter to retrieve
+ */
+function getConfigParam(paramName) {
+    var configParams = jQuery(document).data("ConfigParameters");
+    if (configParams) {
+        return configParams[paramName];
+    }
+    return "";
+}
+
+jQuery.validator.setDefaults({
                 onsubmit:false,
                 ignore:".ignoreValid",
                 wrapper:"",
@@ -673,32 +700,6 @@ function setupValidator(form) {
                     }
                 }
             });
-}
-
-/**
- * Initializes all of the image variables
- */
-function setupImages() {
-    errorImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error.png' alt='" + getMessage(kradVariables.MESSAGE_ERROR) + "' /> ";
-    errorGreyImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error-grey.png' alt='" + getMessage(kradVariables.MESSAGE_ERROR_FIELD_MODIFIED) + "' /> ";
-    warningImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/warning.png' alt='" + getMessage(kradVariables.MESSAGE_WARNING) + "' /> ";
-    infoImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/info.png' alt='" + getMessage(kradVariables.MESSAGE_INFORMATION) + "' /> ";
-    detailsOpenImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_open.png' alt='" + getMessage(kradVariables.MESSAGE_DETAILS) + "' /> ");
-    detailsCloseImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_close.png' alt='" + getMessage(kradVariables.MESSAGE_CLOSE_DETAILS) + "' /> ");
-}
-
-/**
- * Retrieves the value for a configuration parameter
- *
- * @param paramName - name of the parameter to retrieve
- */
-function getConfigParam(paramName) {
-    var configParams = jQuery(document).data("ConfigParameters");
-    if (configParams) {
-        return configParams[paramName];
-    }
-    return "";
-}
 
 jQuery.validator.addMethod("minExclusive", function (value, element, param) {
     if (param.length == 1 || param[1]()) {

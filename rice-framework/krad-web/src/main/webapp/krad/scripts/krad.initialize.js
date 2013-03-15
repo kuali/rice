@@ -41,6 +41,8 @@ var detailsOpenImage;
 var detailsCloseImage;
 var ajaxReturnHandlers = {};
 
+var gCurrentBubblePopupId;
+
 //delay function
 var delay = (function () {
     var timer = 0;
@@ -52,6 +54,11 @@ var delay = (function () {
 
 // map of componentIds and refreshTimers
 var refreshTimerComponentMap = {};
+
+//setup handler for opening form content popups with errors
+jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function (event) {
+    openPopupContentsWithErrors();
+});
 
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
@@ -129,6 +136,7 @@ jQuery(document).ready(function () {
  * on the client
  */
 function initFieldHandlers() {
+
     // var HANDLE_FIELD_MESSAGES_EVENT = "handleFieldsetMessages";
     var validationTooltipOptions = {
         position:"top",

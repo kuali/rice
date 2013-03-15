@@ -107,9 +107,9 @@
       <list>
         <bean id="UifCompView-SyntaxHighlighter1" parent="Uif-SyntaxHighlighter" p:sourceCode='@{sourceCodeField}'/>
         <bean id="UifCompView-SyntaxHighlighter2" parent="Uif-SyntaxHighlighter" p:sourceCode='@{sourceCodeField}'
-              p:showCopyConfirmation="true" />
+              p:showCopyConfirmation="true"/>
         <bean id="UifCompView-SyntaxHighlighter3" parent="Uif-SyntaxHighlighter" p:sourceCode='@{sourceCodeField}'
-              p:allowCopy="false" />
+              p:allowCopy="false"/>
       </list>
     </property>
   </bean>
@@ -170,6 +170,43 @@
   <bean id="UifCompView-ActionFields" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="items">
       <list>
+        <bean parent="Uif-SecondaryActionButton-Small" id="submitButton1">
+          <property name="actionLabel" value="Popover Form Action"/>
+          <property name="actionScript"
+                    value="openPopupContent(e,'UifCompView-PopoverContent-1');"/>
+        </bean>
+        <bean id="UifCompView-PopoverContent-1" parent="Uif-HorizontalBoxSection">
+          <property name="cssClasses">
+            <list>
+              <value>uif-bubblepopup-content</value>
+            </list>
+          </property>
+          <property name="style" value="margin-bottom:0;padding-left:10px;"/>
+          <property name="hidden" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop">
+                <property name="propertyName" value="field100"/>
+                <property name="label" value="Field 1"/>
+                <property name="helpSummary" value="Standard KRAD 'helpSummary' property"/>
+              </bean>
+              <bean parent="Uif-InputField-LabelTop">
+                <property name="propertyName" value="field101"/>
+                <property name="label" value="Field 2"/>
+              </bean>
+              <bean parent="Uif-InputField-LabelTop">
+                <property name="propertyName" value="field102"/>
+                <property name="label" value="Field 3"/>
+                <property name="required" value="true"/>
+              </bean>
+              <bean parent="Uif-SecondaryActionButton-Small">
+                <property name="style" value="margin-top:1.5em;"/>
+                <property name="actionLabel" value="Button"/>
+                <property name="actionScript" value="alert('You clicked a button!');"/>
+              </bean>
+            </list>
+          </property>
+        </bean>
         <bean id="UifCompView-ActionField1" parent="Uif-ActionLink" p:actionScript="alert('You clicked the link');"/>
 
         <bean id="UifCompView-ActionField2" parent="Uif-ActionLink" p:methodToCall="refresh"
@@ -481,5 +518,6 @@
       </list>
     </property>
   </bean>
+
 
 </beans>

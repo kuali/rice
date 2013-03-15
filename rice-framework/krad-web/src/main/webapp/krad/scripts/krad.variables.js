@@ -118,7 +118,15 @@ JavascriptKradVariables.prototype = {
      WARNING_MESSAGE_ITEM_CLASS : "uif-warningMessageItem-field",
      GROUP_CLASS : "uif-group",
      ROW_DETAILS_CLASS : "uif-rowDetails",
-     NEXT_INPUT : "NEXT_INPUT:"
+     NEXT_INPUT : "NEXT_INPUT:",
+     FORM_BUBBLEPOPUP_DEFAULT_OPTIONS : {
+        position: 'bottom',
+        align: 'left',
+        tail: { align: 'left', hidden: false },
+        manageMouseEvents: false,
+        themePath: '../krad/plugins/tooltip/jquerybubblepopup-theme/',
+        themeName: 'popup-form'
+    }
 }
 
 var kradVariables = new JavascriptKradVariables();

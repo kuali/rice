@@ -283,7 +283,10 @@
                     skipInit = true;
                 }
                 if(!skipInit){
-                    jQuery("body > div[data-for='" + w.id + "']").remove();
+                    /* Kuali customization */
+                    //jQuery("body > div[data-for='" + w.id + "']").remove();
+                    jQuery("form > div[data-for='" + w.id + "'], body > div[data-for='" + w.id + "']").remove();
+                    /* end Kuali customization */
                     var u = g(e);
                     u.privateVars.creation_datetime = f();
                     u.privateVars.id = u.baseClass + "-" + u.privateVars.creation_datetime + "-" + v;
@@ -484,6 +487,11 @@
                 }
                 if (o(u.tail.align, r.alignHorizontalValues)) {
                     a("#" + u.privateVars.id).find("td." + u.baseClass + "-" + t).css("text-align", u.tail.align)
+                    /* kuali customization */
+                    if (t == "top-middle") {
+                        a("#" + u.privateVars.id).find("td." + u.baseClass + "-" + t + " img").css("margin-bottom","-4px");
+                    }
+                    /* end kuali customization */
                 } else {
                     a("#" + u.privateVars.id).find("td." + u.baseClass + "-" + t).css("vertical-align", u.tail.align)
                 }
@@ -977,14 +985,22 @@
                     }
                     d(this, H);
                     b(H);
-                    if (a("#" + H.privateVars.id).length > 0) {
+                    /* kuali customization */
+/*                    if (a("#" + H.privateVars.id).length > 0) {
                         a("#" + H.privateVars.id).remove()
                     }
                     var y = {};
                     var B = p(H);
                     y = a(B);
                     y.appendTo("body");
-                    y = a("#" + H.privateVars.id);
+                    y = a("#" + H.privateVars.id);*/
+                    var y = a("#" + H.privateVars.id);
+                    if (y.length == 0) {
+                        var B = p(H);
+                        y = a(B);
+                        y.appendTo( (a('form').length > 0) ? "form" : "body" );
+                    }
+                    /* end kuali customization */
                     y.attr("data-for", w.id);
                     y.css({
                         opacity:0,

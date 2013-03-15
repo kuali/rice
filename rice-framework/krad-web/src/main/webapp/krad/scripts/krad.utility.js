@@ -2170,3 +2170,20 @@ function getHistoryQueryString(appendageId, appendageValue) {
 
     return queryString;
 }
+
+/**
+ *  Prevent event from bubbling up
+ **/
+function stopEvent(e) {
+    if (!e) {
+        var e = window.event;
+    }
+    if (e.stopPropagation) {
+        e.preventDefault();
+        e.stopPropagation();
+    } else {
+        e.returnValue = false;
+        e.cancelBubble = true;
+    }
+    return false;
+}

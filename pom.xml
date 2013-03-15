@@ -1023,10 +1023,10 @@
   <modules>
     <module>db</module>
     <module>development-tools</module>
-    <module>dist</module>
-    <module>config</module>
     <module>rice-middleware</module>
     <module>rice-framework</module>
+    <module>config</module>
+    <module>dist</module>
   </modules>
 
   <repositories>

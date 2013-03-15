@@ -115,10 +115,6 @@
     </property>
   </bean>
 
-  <bean id="rice.kew.documentTypeService" class="org.kuali.rice.kew.impl.doctype.DocumentTypeServiceImpl">
-    <property name="documentTypeDao" ref="enDocumentTypeDAO"/>
-  </bean>
-
   <bean id="rice.kew.preferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" />
 
   <!--  NoteService -->
@@ -234,7 +230,6 @@
         <idref local="rice.kew.groupMembershipChangeQueue"/>
         <idref local="enActionListEmailService"/>
         <idref local="enQuickLinksService"/>
-        <idref local="rice.kew.documentTypeService"/>
         <idref local="rice.kew.noteService"/>
         <idref local="rice.kew.preferencesService"/>
         <idref local="rice.kew.ruleService"/>

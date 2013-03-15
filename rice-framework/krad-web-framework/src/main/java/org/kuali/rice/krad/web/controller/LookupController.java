@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.web.controller;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
+import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -173,12 +175,13 @@ public class LookupController extends UifControllerBase {
             throw new RuntimeException("Lookupable is null.");
         }
         lookupable.initSuppressAction(lookupForm);
-
+        // Need to process date range fields before validating
+        Map<String, String> searchCriteria = LookupUtils.preprocessDateFields(lookupForm.getLookupCriteria());
         // validate search parameters
-        boolean searchValid = lookupable.validateSearchParameters(lookupForm, lookupForm.getLookupCriteria());
+        boolean searchValid = lookupable.validateSearchParameters(lookupForm, searchCriteria);
 
         if (searchValid) {
-            Collection<?> displayList = lookupable.performSearch(lookupForm, lookupForm.getLookupCriteria(), true);
+            Collection<?> displayList = lookupable.performSearch(lookupForm, searchCriteria, true);
 
             if (displayList instanceof CollectionIncomplete<?>) {
                 request.setAttribute("reqSearchResultsActualSize",

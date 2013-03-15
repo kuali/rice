@@ -242,13 +242,14 @@ public class LookupUtils {
 
     /**
      * Changes from/to dates into the range operators the lookupable dao expects ("..",">" etc) this method modifies
-     * the passed in map and returns a list containing only the modified fields
+     * the passed in map and returns an updated search criteria map
      *
      * @param searchCriteria - map of criteria currently set for which the date criteria will be adjusted
-     * @return map of modified fields
+     * @return map updated search criteria
      */
     public static Map<String, String> preprocessDateFields(Map<String, String> searchCriteria) {
         Map<String, String> fieldsToUpdate = new HashMap<String, String>();
+        Map<String, String> searchCriteriaUpdated = new HashMap<String, String>(searchCriteria);
         Set<String> fieldsForLookup = searchCriteria.keySet();
         for (String propName : fieldsForLookup) {
             if (propName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
@@ -273,10 +274,10 @@ public class LookupUtils {
         // update lookup values from found date values to update
         Set<String> keysToUpdate = fieldsToUpdate.keySet();
         for (String updateKey : keysToUpdate) {
-            searchCriteria.put(updateKey, fieldsToUpdate.get(updateKey));
+            searchCriteriaUpdated.put(updateKey, fieldsToUpdate.get(updateKey));
         }
 
-        return fieldsToUpdate;
+        return searchCriteriaUpdated;
     }
 
     /**

@@ -25,14 +25,19 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.control.TextAreaControl;
+import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.LookupInputField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.LookupForm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -97,6 +102,8 @@ public class LookupView extends FormView {
     private Integer multipleValuesSelectResultSetLimit = null;
 
     private String maintenanceUrlMapping;
+
+    private FieldGroup rangeFieldGroupPrototype;
 
     public LookupView() {
         super();
@@ -186,6 +193,8 @@ public class LookupView extends FormView {
             getHeader().setRender(false);
         }
 
+        setupLookupCriteriaFields();
+
         // Get the search action button for trigger on change and trigger on enter
         Group actionGroup = criteriaGroup.getFooter();
         Action searchButton = findSearchButton(actionGroup.getItems());
@@ -227,6 +236,61 @@ public class LookupView extends FormView {
     }
 
     /**
+     * Helper method to do any lookup specific changes to the criteria fields
+     */
+    private void setupLookupCriteriaFields() {
+
+        int rangeIndex = 0;
+        HashMap<Integer, Component> dateRangeFieldMap = new HashMap<Integer, Component>();
+
+        for (Component criteriaField : criteriaGroup.getItems()) {
+
+            // Set the max length on the controls to allow for wildcards
+            Control control = ((LookupInputField)criteriaField).getControl();
+            if (control instanceof TextControl) {
+                ((TextControl) control).setMaxLength(null);
+            } else if (control instanceof TextAreaControl) {
+                ((TextAreaControl) control).setMaxLength(null);
+            }
+
+            if (((LookupInputField)criteriaField).isRanged()) {
+                // Create field group
+                FieldGroup rangeFieldGroup = ComponentUtils.copy(rangeFieldGroupPrototype, criteriaField.getId());
+                rangeFieldGroup.setLabel(((LookupInputField)criteriaField).getLabel());
+                List<Component> fieldGroupItems = new ArrayList<Component>();
+
+                // Create a new from date field
+                LookupInputField fromDate = (LookupInputField)ComponentUtils.copy(criteriaField, KRADConstants.LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
+                fromDate.getBindingInfo().setBindingName(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
+                fromDate.setPropertyName(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
+
+                // Set the criteria fields labels
+                fromDate.setLabel("");
+                fromDate.getFieldLabel().setRenderColon(false);
+                ((LookupInputField)criteriaField).setLabel("to");
+                ((LookupInputField)criteriaField).getFieldLabel().setRenderColon(false);
+
+                // Add the cirteria fields to the field group
+                fieldGroupItems.add(fromDate);
+                fieldGroupItems.add(criteriaField);
+                rangeFieldGroup.setItems(fieldGroupItems);
+
+                // Add fieldgroup to map with index as key
+                dateRangeFieldMap.put(rangeIndex, rangeFieldGroup);
+            }
+            rangeIndex++;
+        }
+
+        // Replace original fields with range fieldgroups
+        List<Component> itemList = (List<Component>)criteriaGroup.getItems();
+        for (Integer index : dateRangeFieldMap.keySet()) {
+                itemList.set(index, dateRangeFieldMap.get(index));
+        }
+
+        criteriaGroup.setItems(itemList);
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
      */
     @Override
@@ -235,6 +299,7 @@ public class LookupView extends FormView {
 
         components.add(resultsActionsFieldGroup);
         components.add(resultsReturnField);
+        components.add(rangeFieldGroupPrototype);
 
         return components;
     }
@@ -643,4 +708,21 @@ public class LookupView extends FormView {
         this.triggerOnChange = triggerOnChange;
     }
 
+    /**
+     * The field group prototype that will be copied and used for range fields
+     *
+     * @return FieldGroup
+     */
+    public FieldGroup getRangeFieldGroupPrototype() {
+        return rangeFieldGroupPrototype;
+    }
+
+    /**
+     * Setter for the range FieldGroup prototype
+     *
+     * @param rangeFieldGroupPrototype
+     */
+    public void setRangeFieldGroupPrototype(FieldGroup rangeFieldGroupPrototype) {
+        this.rangeFieldGroupPrototype = rangeFieldGroupPrototype;
+    }
 }

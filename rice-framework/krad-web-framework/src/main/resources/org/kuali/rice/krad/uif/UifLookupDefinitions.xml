@@ -63,6 +63,9 @@
         <property name="finalizeMethodToCall" value="getReturnUrlForResults"/>
       </bean>
     </property>
+    <property name="rangeFieldGroupPrototype">
+      <bean parent="Uif-HorizontalFieldGroup"/>
+    </property>
   </bean>
 
   <bean id="Uif-LookupView-ResultActions" parent="Uif-LinkGroup">

@@ -125,8 +125,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     public Collection<?> performSearch(LookupForm form, Map<String, String> searchCriteria, boolean bounded) {
         Collection<?> displayList;
 
-        LookupUtils.preprocessDateFields(searchCriteria);
-
         // TODO: force uppercase will be done in binding at some point
         displayList = getSearchResults(form, LookupUtils.forceUppercase(getDataObjectClass(), searchCriteria),
                 !bounded);
@@ -498,10 +496,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     public boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria) {
         boolean valid = true;
 
-        if (!getViewDictionaryService().isLookupable(getDataObjectClass())) {
-            throw new RuntimeException("Lookup not defined for data object " + getDataObjectClass());
-        }
-
         // if postedView is null then we are executing the search from get request, in which case we
         // can't validate the criteria
         if (form.getPostedView() == null) {
@@ -528,7 +522,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 validateSearchParameterWildcardAndOperators(inputField, searchPropertyValue);
             } else {
                 // TODO: should we consider hiddenPropertyNames for input fields before throwing an exception?
-                throw new RuntimeException("Invalid search field sent for property name: " + searchPropertyName);
+                if (!searchPropertyName.contains(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+                    throw new RuntimeException("Invalid search field sent for property name: " + searchPropertyName);
+                }
             }
         }
 

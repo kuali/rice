@@ -62,6 +62,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public static final String REMOTE_PUBLIC_USER_PROPERTY = "remote.public.user";
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
     public static final String DOC_ID_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
+    public static final String DOC_ID_TABLE_LINK_XPATH="//table[@id='row']/tbody/tr[1]/td[1]/a";
 
     public abstract String getTestUrl();
 
@@ -85,6 +86,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public static void createAndStartService() throws Exception {
         // this isn't so great... if the chrome driver isn't configured null is returned, but chromeDriverService needs to run before.
         chromeDriverService = WebDriverUtil.createAndStartService();
+        
         if (chromeDriverService != null)
             chromeDriverService.start();
     }
@@ -99,7 +101,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // {"test":"1","user":"1"}
         try {
             waitSeconds = Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + ""));
-            
             if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
                 user = System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
             } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
@@ -119,11 +120,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     @After
     public void tearDown() throws Exception {
-        try {
-			//            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
-			//                SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
-			//            }
-            
+        try {		          
         	if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
                 getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
                         + this.toString() + "&user=" + user));
@@ -131,10 +128,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         } catch (Exception e) {
             System.out.println("Exception in tearDown " + e.getMessage());
             e.printStackTrace();
-        } finally {
-            
-        	if (driver != null) {
-                
+        } finally {            
+        	if (driver != null) {                
         		if (ITUtil.dontTearDownPropertyNotSet()) {
                     driver.close();
                     driver.quit();
@@ -152,6 +147,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         BufferedReader rd;
         String line;
         String result = "";
+        
         try {
             url = new URL(urlToRead);
             conn = (HttpURLConnection) url.openConnection();
@@ -164,6 +160,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
         return result;
     }
 
@@ -220,20 +217,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
 
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
-            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
+            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();         
             if (errorText != null && errorText.contains("error(s) found on page.")) {
-                errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
+                errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);                
                 if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
                     errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
                             By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
                 }
-
-                //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
-                //                    errorText = errorText + " " + selenium.getText("//div[@class='left-errmsg']/div/div[1]");
-                //                }
                 Assert.fail(errorText);
             }
         }
+        
         ITUtil.checkForIncidentReport(driver.getPageSource(), "//img[@alt='doc search']", "Blanket Approve failure");
         waitAndClickByXpath("//img[@alt='doc search']");
         assertEquals("Kuali Portal Index", driver.getTitle());
@@ -271,6 +265,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected String getAttribute(By by, String attribute) throws InterruptedException {
         jiraAwareWaitFor(by, "");
+        
         return driver.findElement(by).getAttribute(attribute);
     }
 
@@ -333,14 +328,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void gotoNestedFrame() {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.switchTo().defaultContent();
+       
         if (driver.findElements(By.xpath("//iframe")).size() > 0) {
             WebElement containerFrame = driver.findElement(By.xpath("//iframe"));
             driver.switchTo().frame(containerFrame);
         }
+        
         if (driver.findElements(By.xpath("//iframe")).size() > 0) {
             WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
             driver.switchTo().frame(contentFrame);
         }
+        
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
@@ -361,6 +359,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
             driver.switchTo().frame(contentFrame);
         }
+        
         driver.manage().timeouts().implicitlyWait(Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + "")), TimeUnit.SECONDS);
     }
 
@@ -389,6 +388,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void selectFrame(String locator) {
+        
         if ("iframeportlet".equals(locator)) {
             gotoNestedFrame();
         } else {
@@ -436,29 +436,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
         selectFrame("iframeportlet");
         waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.DTS_TWO);
-        waitAndTypeByName(
-                "newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number",
-                "1234567890");
-        waitAndTypeByName(
-                "newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
-
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number","1234567890");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
         waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");
-
         waitForElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
-
-        assertEquals(
-                "1234567890",
-                getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number",
-                        "value"));
-        assertEquals("2",
-                getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId", "value"));
-
+        assertEquals("1234567890",getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number","value"));
+        assertEquals("2",getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId", "value"));
         waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
         Thread.sleep(3000);
-        junit.framework.Assert
-                .assertEquals(
-                        Boolean.FALSE,
-                        (Boolean) isElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
+        junit.framework.Assert.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
         passed();
     }
 
@@ -485,14 +471,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndSearch() throws InterruptedException {
-        waitAndClickByXpath("//input[@value='search']");
-        //        waitAndClickByXpath("//input[@name='methodToCall.search']");
-        //        jiraAwareWaitAndClick("input[alt='search']");
-        //        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath("//input[@value='search']");     
     }
 
     protected String waitForDocId() throws InterruptedException {
         waitForElementPresentByXpath(DOC_ID_XPATH);
+        
         return driver.findElement(By.xpath(DOC_ID_XPATH)).getText();
     }
 
@@ -515,14 +499,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitForTitleToEqualKualiPortalIndex(String message) throws InterruptedException {
         Thread.sleep(2000);
         // This started failing in CI....
-        //        boolean failed = false;
-        //        for (int second = 0;; second++) {
-        //            Thread.sleep(1000);
-        //            if (second >= waitSeconds) failed = true;
-        //            try { if (failed || ITUtil.KUALI_PORTAL_TITLE.equals(driver.getTitle())) break; } catch (Exception e) {}
-        //        }
-        //        WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
-        //        if (failed) fail("timeout of " + waitSeconds + " seconds " + message);
+        // boolean failed = false;
+        //         
+        // for (int second = 0;; second++) {
+        //     Thread.sleep(1000);
+        //     if (second >= waitSeconds) failed = true;
+        //     try { if (failed || ITUtil.KUALI_PORTAL_TITLE.equals(driver.getTitle())) break; } catch (Exception e) {}
+        // }
+         
+        // WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
+        // if (failed) fail("timeout of " + waitSeconds + " seconds " + message);
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {
@@ -651,8 +637,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void select(By by, String selectText) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
-        for (WebElement option : options) {
-            
+        
+        for (WebElement option : options) {            
         	if (option.getText().equals(selectText)) {
                 option.click();
                 break;
@@ -671,8 +657,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void selectOption(By by, String optionValue) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
-        for (WebElement option : options) {
-            
+        
+        for (WebElement option : options) {            
         	if (option.getAttribute("value").equals(optionValue)) {
                 option.click();
                 break;
@@ -685,10 +671,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         List<WebElement> options = select1.findElements(By.tagName("option"));
         String[] optionValues = new String[options.size()];
         int counter = 0;
+        
         for (WebElement option : options) {
             optionValues[counter] = option.getAttribute("value");
             counter++;
         }
+        
         return optionValues;
     }
 
@@ -713,6 +701,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         final String error_locator = "//li[@class='uif-errorMessageItem']";
         assertElementPresentByXpath(error_locator);
         String errorText = null;
+        
         try {
             errorText = getTextByXpath(error_locator);
         } catch (InterruptedException e) {
@@ -722,7 +711,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         if (errorText != null && errorText.contains("errors")) {
             Assert.fail(errorText + message);
         }
-
     }
 
     protected boolean isVisible(String locator) {
@@ -738,16 +726,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitNotVisible(By by) throws InterruptedException {
-        for (int second = 0;; second++) {
-            
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-
             if (!isVisible(by)) {
                 break;
             }
-
             Thread.sleep(1000);
         }
     }
@@ -757,12 +742,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitIsVisible(By by) throws InterruptedException {
-        for (int second = 0;; second++) {
-            
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
                 Assert.fail("timeout");
-            }
-           
+            }           
         	if (isVisible(by)) {
                 break;
             }
@@ -772,17 +755,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
         boolean failed = false;
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds)
                 failed = true;
-            try {
-                
+            try {                
             	if (failed || (driver.findElements(By.cssSelector(elementLocator))).size() > 0)
                     break;
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
+        
         checkForIncidentReport(elementLocator); // after timeout to be sure page is loaded
         
         if (failed)
@@ -800,7 +783,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void colapseExpandByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
-
         waitAndClickByXpath(clickLocator);
         waitIsVisibleByXpath(visibleLocator);
     }
@@ -808,7 +790,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void expandColapseByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
         waitAndClickByXpath(clickLocator);
         waitIsVisibleByXpath(visibleLocator);
-
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
     }
@@ -817,8 +798,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Set<String> windows = driver.getWindowHandles();
 
         for (String window : windows) {
-            driver.switchTo().window(window);
-            
+            driver.switchTo().window(window);            
             if (driver.getTitle().contains(title)) {
                 return;
             }
@@ -846,8 +826,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void uncheck(By by) throws InterruptedException {
-        WebElement element = driver.findElement(by);
-        
+        WebElement element = driver.findElement(by);        
         if (element.isSelected()) {
             element.click();
         }
@@ -890,7 +869,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Actions builder = new Actions(driver);
         Actions hover = builder.moveToElement(driver.findElement(by));
         hover.perform();
-
     }
 
     protected Boolean isTextPresent(String text)
@@ -898,6 +876,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         if (driver.getPageSource().contains(text)) {
             return Boolean.TRUE;
         }
+        
         return Boolean.FALSE;
     }
 
@@ -915,16 +894,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         // click refresh  several times
         for (int i = 0; i < 6; i++) {
-            for (int second = 0;; second++) {
+            for (int second = 0;; second++) {               
                 if (second >= waitSeconds)
                     Assert.fail("timeout");
-                try {
+                try {                    
                     if (isElementPresent(".kr-refresh-button"))
                         break;
                 } catch (Exception e) {}
                 Thread.sleep(1000);
             }
-
             waitAndClick("button.kr-refresh-button");
         }
     }
@@ -932,19 +910,18 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void assertBlanketApproveButtonsPresent() {
         assertElementPresentByName("methodToCall.route");
         assertElementPresentByName("methodToCall.save");
-        assertElementPresentByName("methodToCall.blanketApprove", "Blanket Approve button not present does " + user
-                + " have permssion?");
+        assertElementPresentByName("methodToCall.blanketApprove", "Blanket Approve button not present does " + user + " have permssion?");
         assertElementPresentByName("methodToCall.close");
         assertElementPresentByName("methodToCall.cancel");
     }
 
     protected void assertDocFinal(String docId) throws InterruptedException {
         jiraAwareWaitFor(By.linkText("spreadsheet"), "");
+        
         if (isElementPresent(By.linkText(docId))) {
             assertEquals("FINAL", getDocStatus());
         } else {
-            junit.framework.Assert.assertEquals(docId,
-                    driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
+            junit.framework.Assert.assertEquals(docId,driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
             assertEquals("FINAL", getDocStatus());
         }
     }
@@ -955,18 +932,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected String configNameSpaceBlanketApprove() throws Exception {
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace "
-                + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace "+ ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "VTN" + ITUtil.DTS_TWO);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
-                "Validation Test NameSpace " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']","Validation Test NameSpace " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
+        
         return docId;
     }
 
     protected void testConfigNamespaceBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = configNameSpaceBlanketApprove();
@@ -976,7 +951,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testConfigParamaterBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
@@ -984,20 +958,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertBlanketApproveButtonsPresent();
         assertEquals("", getTextByName("methodToCall.cancel"));
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", "KR-NS - Kuali Nervous System");
-
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(componentLookUp);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitAndClickByLinkText("return value");
-
         String parameterName = "ValidationTestParameter" + ITUtil.DTS;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", parameterName);
         waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']",
                 "Validation Test Parameter Description" + ITUtil.DTS);
         selectByXpath("//select[@id='document.newMaintainableObject.parameterTypeCode']", "Document Validation");
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
-
         waitForPageToLoad();
         blanketApproveTest();
         assertDocFinal(docId);
@@ -1013,10 +984,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testCreateDocType() throws Exception {
         selectFrame("iframeportlet");
         waitAndCreateNew();
-        assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
-                "save button does not exist on the page");
-//        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-//        String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
+        assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
+        
+        //waitForElementPresentByXpath(DOC_ID_XPATH);
+        //String docId = driver.findElement(By.xpath(DOC_ID_XPATH)).getText();
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Creating new Document Type");
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
@@ -1030,36 +1001,29 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String docTypeName = "TestDocType" + ITUtil.DTS;
         waitForElementPresentByXpath("//input[@id='document.newMaintainableObject.name']");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']",
-                "${kr.url}/maintenance.do?methodToCall=docHandler");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']","${kr.url}/maintenance.do?methodToCall=docHandler");
+        
         //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "TestDocument Label");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
-                "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
-
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']","default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         waitAndClickByXpath("//*[@name='methodToCall.route' and @alt='submit']");
         checkForIncidentReport();
         waitForPageToLoad();
         driver.switchTo().defaultContent();
-
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-
         assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")).getText());
-
     }
 
     protected void testIdentityGroupBlanketApprove() throws Exception
     {
         selectFrame("iframeportlet");
-        waitAndCreateNew();
-
+        waitAndCreateNew();                
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group "
-                + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group "+ ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.groupNamespace']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS_TWO);
@@ -1068,39 +1032,31 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByLinkText("return value");
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
-
         blanketApproveTest();
         assertDocFinal(docId);
     }
 
     protected void testIdentityPermissionBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
-        waitAndCreateNew();
+        waitAndCreateNew();        
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']",
-                "Validation Test Permission " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
-        selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']",
-                AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        selectByXpath("//select[@name='document.newMaintainableObject.templateId']",
-                AdminMenuNavITBase.LABEL_KUALI_DEFAULT);
-        waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']", "ValidationTestPermission"
-                + ITUtil.DTS_TWO);
+        selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']",AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        selectByXpath("//select[@name='document.newMaintainableObject.templateId']",AdminMenuNavITBase.LABEL_KUALI_DEFAULT);
+        waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']", "ValidationTestPermission" + ITUtil.DTS_TWO);
         blanketApproveTest();
         assertDocFinal(docId);
     }
 
     protected void testIdentityPersonBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
-        waitAndCreateNew();
+        waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.principalName']", "principal"
-                + RandomStringUtils.randomAlphabetic(3).toLowerCase());
+        waitAndTypeByXpath("//input[@id='document.principalName']", "principal" + RandomStringUtils.randomAlphabetic(3).toLowerCase());
         selectByName("newAffln.affiliationTypeCode", "Affiliate");
         selectByName("newAffln.campusCode", "BX - BLGTN OFF CAMPUS");
         selectByName("newAffln.campusCode", "BL - BLOOMINGTON");
@@ -1120,17 +1076,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityResponsibilityBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
-        waitAndCreateNew();
+        waitAndCreateNew();        
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']",
-                "Validation Test Responsibility " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
-        selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']",
-                AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility "
-                + ITUtil.DTS_TWO);
+        selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + ITUtil.DTS_TWO);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
@@ -1140,19 +1092,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityRoleBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
-        waitAndClickByLinkText("return value", "No return value link");
-
+        waitAndClickByLinkText("return value", "No return value link");        
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role "
-                + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.roleNamespace']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + ITUtil.DTS_TWO,
-                "No Role Name input to type in.");
+        waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + ITUtil.DTS_TWO,"No Role Name input to type in.");
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
         waitAndClickByLinkText("return value", "No return value link");
@@ -1160,13 +1108,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         blanketApproveTest();
         assertDocFinal(docId);
-
     }
 
     protected void testLocationCampusBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
-        waitAndCreateNew();
+        waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus");
         assertBlanketApproveButtonsPresent();
@@ -1179,9 +1125,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationCountryBlanketApprove() throws InterruptedException {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
-        waitAndCreateNew();
+        waitAndCreateNew();        
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
         String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
@@ -1195,9 +1140,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationCountyBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
-        waitAndCreateNew();
+        waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
         assertBlanketApproveButtonsPresent();
@@ -1207,8 +1151,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("code", "US");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitAndClickByLinkText("return value");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2)
-                .toUpperCase());
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(stateLookUp);
@@ -1223,9 +1166,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationPostBlanketApprove() throws Exception {
-        //         open(ITUtil.getBaseUrlString()+getTestUrl());
         selectFrame("iframeportlet");
-        waitAndCreateNew();
+        waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");
         assertBlanketApproveButtonsPresent();
@@ -1249,12 +1191,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationStateBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
         assertBlanketApproveButtonsPresent();
+        
         //jiraAwareWaitAndClick("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
@@ -1271,13 +1213,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testReferenceCampusTypeBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type "
-                + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type "+ ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2));
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + ITUtil.DTS_TWO);
         blanketApproveTest();
@@ -1285,13 +1225,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testWorkFlowDocTypeBlanketApprove() throws Exception {
-        //        open(ITUtil.getBaseUrlString() + getTestUrl());
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']",
-                "Validation Test Document Type " + ITUtil.DTS);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']","Validation Test Document Type " + ITUtil.DTS);
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(parentDocType);
@@ -1299,13 +1237,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByLinkText("return value");
         String docTypeName = "DocType" + ITUtil.DTS;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']",
-                "${kr.url}/maintenance.do?methodToCall=docHandler");
-        //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']",
-                "Workflow Maintenance Document Type Document");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
-                "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']","${kr.url}/maintenance.do?methodToCall=docHandler");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']","Workflow Maintenance Document Type Document");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']","default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         blanketApproveTest();
         assertDocFinal(docId);
     }
@@ -1318,21 +1252,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
         waitAndClick("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         waitForElementPresentByName("document.notes[0].noteText");
-
         assertEquals("Test note", getTextByXpath("//pre"));
         waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-        junit.framework.Assert.assertEquals(Boolean.FALSE,
-                (Boolean) isElementPresentByName("document.notes[0].noteText"));
+        junit.framework.Assert.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByName("document.notes[0].noteText"));
         passed();
     }
 
     protected void testVerifyAdHocRecipientsLegacy() throws Exception {
         selectFrame("iframeportlet");
         waitAndClickByLinkText("Fiscal Officer Accounts");
-
         assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRoutePersons'].actionRequested\"]");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRoutePersons'].name\" and @type=\"text\"]");
-
         assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].actionRequested\"]");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']");
@@ -1351,20 +1281,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testVerifyConstraintText() throws Exception {
         selectFrame("iframeportlet");
-        assertEquals(
-                "* indicates required field",
+        assertEquals("* indicates required field",
                 getText("div.uif-boxLayout.uif-horizontalBoxLayout.clearfix > span.uif-message.uif-requiredInstructionsMessage.uif-boxLayoutHorizontalItem"));
-
-        assertEquals(
-                "Must not be more than 10 characters",
+        assertEquals("Must not be more than 10 characters",
                 getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-
-        assertEquals(
-                "Must not be more than 10 characters",
+        assertEquals("Must not be more than 10 characters",
                 getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Sub Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-
-        assertEquals(
-                "Must not be more than 10 characters",
+        assertEquals("Must not be more than 10 characters",
                 getText("div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
         passed();
     }
@@ -1378,23 +1301,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
         assertElementPresentByXpath("//span[contains(text(),'Ad Hoc Recipients')]");
         assertElementPresentByXpath("//span[contains(text(),'Route Log')]");
-
-        colapseExpandByXpath("//span[contains(text(),'Document Overview')]//img",
-                "//label[contains(text(),'Organization Document Number')]");
-        colapseExpandByXpath("//span[contains(text(),'Account Information')]//img",
-                "//label[contains(text(),'Travel Account Type Code')]");
-        colapseExpandByXpath("//span[contains(text(),'Fiscal Officer Accounts')]//img",
-                "//a[contains(text(),'Lookup/Add Multiple Lines')]");
-
-        expandColapseByXpath("//span[contains(text(),'Notes and Attachments')]//img",
-                "//label[contains(text(),'Note Text')]");
-        expandColapseByXpath("//span[contains(text(),'Ad Hoc Recipients')]",
-                "//span[contains(text(),'Ad Hoc Group Requests')]");
+        colapseExpandByXpath("//span[contains(text(),'Document Overview')]//img", "//label[contains(text(),'Organization Document Number')]");
+        colapseExpandByXpath("//span[contains(text(),'Account Information')]//img","//label[contains(text(),'Travel Account Type Code')]");
+        colapseExpandByXpath("//span[contains(text(),'Fiscal Officer Accounts')]//img","//a[contains(text(),'Lookup/Add Multiple Lines')]");
+        expandColapseByXpath("//span[contains(text(),'Notes and Attachments')]//img","//label[contains(text(),'Note Text')]");
+        expandColapseByXpath("//span[contains(text(),'Ad Hoc Recipients')]","//span[contains(text(),'Ad Hoc Group Requests')]");
 
         // Handle frames
         waitAndClickByXpath("//span[contains(text(),'Route Log')]//img");
         selectFrame("routeLogIFrame");
-
         waitIsVisibleByXpath("//img[@alt='refresh']");
 
         // relative=top iframeportlet might look weird but either alone results in something not found.
@@ -1402,7 +1317,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//span[contains(text(),'Route Log')]//img");
         selectFrame("routeLogIFrame");
-
         waitNotVisibleByXpath("//img[@alt='refresh']");
         passed();
     }
@@ -1457,6 +1371,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
         assertElementPresentByXpath("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]");
         assertElementPresentByXpath("//input[@name='attachmentFile']");
+        
         //assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]");
         passed();
     }
@@ -1468,6 +1383,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//*[@id='quickfinder2']");
         assertElementPresentByXpath("//*[@id='quickfinder3']");
         assertElementPresentByXpath("//*[@id='quickfinder4_add']");
+        
         // TODO it would be better to test that the image isn't 404
         passed();
     }
@@ -1488,12 +1404,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.newMaintainableObject.dataObject.subAccount", "a1");
         waitAndClick("button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
         Thread.sleep(2000);
+        
         // checkErrorMessageItem(" also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
         passed();
     }
 
     protected void testVerifySubsidizedPercentWatermarkLegacy() throws Exception {
         selectFrame("iframeportlet");
+        
         // May be blowing up due to multiple locators
         //assertTrue(isElementPresent("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @placeholder='##.##   ']"));
         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent']");
@@ -1503,6 +1421,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     private void testLookUp() throws Exception {
         waitForPageToLoad();
         selectFrame("iframeportlet");
+        
         // Mixed capitalization
         waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
         waitAndClickByLinkText("edit", "edit button not present does user " + user + " have permission?");
@@ -1512,7 +1431,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertTextPresent("pprove");
         assertTextPresent("lose");
         assertTextPresent("ancel");
-
     }
 
     protected void agendaLookupAssertions() throws Exception {
@@ -1531,7 +1449,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
         waitAndClickByLinkText("1000");
         waitForPageToLoad();
-
         driver.findElement(By.tagName("body")).getText().contains("Attribute Inquiry");
         driver.findElement(By.tagName("body")).getText().contains("KRMS Attributes");
         driver.findElement(By.tagName("body")).getText().contains("Attribute Label");
@@ -1539,19 +1456,19 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         driver.findElement(By.tagName("body")).getText().contains("peopleFlowId");
         driver.findElement(By.tagName("body")).getText().contains("KR-RULE");
         driver.findElement(By.tagName("body")).getText().contains("PeopleFlow");
-        //         selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
-        //         jiraAwareWaitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
-        //         Thread.sleep(500);
-        //         jiraAwareWaitAndClick("css=button:contains(cancel)");
-
+        
+        // selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
+        // jiraAwareWaitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
+        // Thread.sleep(500);
+        // jiraAwareWaitAndClick("css=button:contains(cancel)");
         // AttributeDefinition's don't have actions (yet)
-        //         jiraAwareWaitAndClick("id=u80");
-        //         waitForPageToLoad();
-        //         jiraAwareWaitAndClick("id=u86");
-        //         waitForPageToLoad();
-        //         selectWindow("null");
-        //         jiraAwareWaitAndClick("xpath=(//input[@name='imageField'])[2]");
-        //         waitForPageToLoad();
+        // jiraAwareWaitAndClick("id=u80");
+        // waitForPageToLoad();
+        // jiraAwareWaitAndClick("id=u86");
+        // waitForPageToLoad();
+        // selectWindow("null");
+        // jiraAwareWaitAndClick("xpath=(//input[@name='imageField'])[2]");
+        // waitForPageToLoad();
         passed();
     }
 
@@ -1585,60 +1502,50 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testPeopleFlow() throws Exception {
         selectFrame("iframeportlet");
+        
         //Click Main Menu and Create New
-        //         waitAndCreateNew();
-        //         waitForPageToLoad();
+        // waitAndCreateNew();
+        // waitForPageToLoad();
         waitAndClickByLinkText("Create New");
-        //         jiraAwareWaitAndClick(By.linkText("Create New"));
+        
+        //jiraAwareWaitAndClick(By.linkText("Create New"));
         //Save docId
         waitForElementPresent("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
         String docId = getText("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
-
         driver.findElement(By.name("document.documentHeader.documentDescription")).clear();
         driver.findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
-        new Select(driver.findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode")))
-                .selectByVisibleText("KUALI - Kuali Systems");
+        new Select(driver.findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode"))).selectByVisibleText("KUALI - Kuali Systems");
         driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys(
-                "Document Name" + ITUtil.DTS);
+        driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + ITUtil.DTS);
 
         //Add Row1
-        driver.findElement(
-                By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        driver.findElement(
-                By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName"))
-                .sendKeys("kr");
+        driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
+        driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("kr");
         driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
         Thread.sleep(3000);
+        
         //Add Row2
-        driver.findElement(
-                By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        driver.findElement(
-                By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName"))
-                .sendKeys("admin");
+        driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
+        driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("admin");
         driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
         Thread.sleep(3000);
 
         //Blanket approve
-        driver.findElement(
-                By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button"))
-                .click();
+        driver.findElement(By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button")).click();
         Thread.sleep(5000);
+        
         //Close the Doc
-        //         driver.findElement(By.id("uif-close")).click();
-        //         Thread.sleep(3000);
-
+        //driver.findElement(By.id("uif-close")).click();
+        //Thread.sleep(3000);
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
         driver.findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
         Thread.sleep(5000);
-
         selectFrame("iframeportlet");
         driver.findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         Thread.sleep(5000);
         assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
         driver.switchTo().defaultContent();
         driver.findElement(By.name("imageField")).click();
-
     }
 
     protected void testTermLookupAssertions() throws Exception {
@@ -1660,8 +1567,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();
         waitForPageToLoad();
-        assertElementPresentByXpath("//*[@name='methodToCall.save' and @alt='save']",
-                "save button does not exist on the page");
+        assertElementPresentByXpath("//*[@name='methodToCall.save' and @alt='save']", "save button does not exist on the page");
+        
         //Enter details for Namespace.
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding PEANUTS");
         waitAndTypeByXpath("//*[@id='document.documentHeader.explanation']", "I want to add PEANUTS to test KIM");
@@ -1671,22 +1578,19 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//*[@name='methodToCall.save' and @alt='save']");
         waitForPageToLoad();
         checkForIncidentReport();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]",
-                "Document is not saved successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]", "Document is not saved successfully");
+        
         //checks it is saved and initiator is admin.
         assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a"))
-                .getText());
-
+        assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
     }
 
     protected void testAddingBrownGroup() throws Exception {
-
         selectFrame("iframeportlet");
         waitAndCreateNew();
         waitForPageToLoad();
-        //        String docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
         String docId = waitForDocId();
+        
         //Enter details for BrownGroup.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Brown Group");
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
@@ -1697,13 +1601,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByName("document.active");
         waitAndClickByXpath("//*[@name='methodToCall.save' and @alt='save']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]",
-                "Document is not saved successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]","Document is not saved successfully");
         checkForIncidentReport();
+        
         //checks it is saved and initiator is admin.
         assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a"))
-                .getText());
+        assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1715,8 +1618,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByLinkText("Administration");
         waitForPageToLoad();
@@ -1733,7 +1635,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@title='Search Parent Name']");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
-        //waitForPageToLoad();
         waitAndClickByXpath("//table[@id='row']/tbody/tr[contains(td[3],'RiceDocument')]/td[1]/a");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
@@ -1751,13 +1652,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("documentTypeId", docIdOld);
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[2], '" + docIdOld + "')]");
-
     }
 
     protected List<String> testCreateNewParameter(String docId, String parameterName) throws Exception
     {
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter");
@@ -1770,25 +1669,24 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.newMaintainableObject.description", "for testing");
         selectOptionByName("document.newMaintainableObject.parameterTypeCode", "HELP");
         waitAndClickByXpath("//input[@name='document.newMaintainableObject.evaluationOperatorCode' and @value='A']");
-
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("--------------------------------New Parameter Created-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
+        
         return params;
     }
 
@@ -1810,8 +1708,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
-        return params;
-
+        
+        return params;     
     }
 
     protected List<String> testEditParameter(String docId, String parameterName) throws Exception
@@ -1819,7 +1717,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
         clearTextByName("document.newMaintainableObject.value");
@@ -1827,15 +1724,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Edited-------------------------");
@@ -1862,6 +1758,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
+        
         return params;
     }
 
@@ -1870,7 +1767,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
@@ -1881,21 +1777,21 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Edited-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
+        
         return params;
     }
 
@@ -1916,47 +1812,44 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
+        
         return params;
     }
 
-    protected List<String> testCreateNewParameterType(String docId, String parameterType, String parameterCode)
-            throws Exception
+    protected List<String> testCreateNewParameterType(String docId, String parameterType, String parameterCode)throws Exception
     {
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
+        
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter Type");
         parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
         waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
         parameterType = "testing " + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
-
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("--------------------------------New Parameter Type Created-------------------------");
-
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
+        
         return params;
     }
 
-    protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode)
-            throws Exception
+    protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         waitAndTypeByName("name", parameterType);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1966,27 +1859,23 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim()
-                .toLowerCase());
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim()
-                .toLowerCase());
+        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
+        
         return params;
-
     }
 
-    protected List<String> testEditParameterType(String docId, String parameterType, String parameterCode)
-            throws Exception
+    protected List<String> testEditParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         selectFrame("iframeportlet");
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
         clearTextByName("document.newMaintainableObject.name");
@@ -1995,15 +1884,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Type Edited-------------------------");
@@ -2011,11 +1899,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
+        
         return params;
     }
 
-    protected List<String> testVerifyEditedParameterType(String docId, String parameterType, String parameterCode)
-            throws Exception
+    protected List<String> testVerifyEditedParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         waitAndTypeByName("name", parameterType);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -2025,26 +1913,23 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim()
-                .toLowerCase());
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim()
-                .toLowerCase());
+        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
+        
         return params;
     }
 
-    protected List<String> testCopyParameterType(String docId, String parameterType, String parameterCode)
-            throws Exception
+    protected List<String> testCopyParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         selectFrame("iframeportlet");
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
         parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
@@ -2055,28 +1940,26 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Type Edited-------------------------");
-
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
+        
         return params;
     }
 
-    protected List<String> testVerifyCopyParameterType(String docId, String parameterType, String parameterCode)
-            throws Exception
+    protected List<String> testVerifyCopyParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         waitAndTypeByName("name", parameterType);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -2086,15 +1969,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        //        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim()
-                .toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
+        
         return params;
     }
 
@@ -2102,10 +1984,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     {
         waitForPageToLoad();
         Thread.sleep(2000);
-		        /*assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
-		                "save button does not exist on the page");*/
-		//        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-		//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitForPageToLoad();
@@ -2118,7 +1996,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//div[contains(.,'Permission Namespace (Permission Namespace) is a required field.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'Permission Name (Permission Name) is a required field.')]/img[@alt='error']");
         System.out.println("------------------------------------Validation Test Successful--------------------------");
-
         selectOptionByName("document.newMaintainableObject.templateId", "36");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-SYS");
         permissionName = "removeme" + ITUtil.DTS_TWO;
@@ -2131,15 +2008,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
-        System.out
-                .println("------------------------------------Permission document submitted successfully--------------------------");
-
+        System.out.println("------------------------------------Permission document submitted successfully--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
+        
         return params;
     }
 
@@ -2150,10 +2025,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         isElementPresentByLinkText(permissionName);
         System.out.println("----------------------------------Lookup successful-----------------------------");
-
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
+        
         return params;
     }
 
@@ -2166,13 +2041,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         uncheckByName("document.newMaintainableObject.active");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
-        System.out
-                .println("------------------------------------Inactivation of Permission successfull--------------------------");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        System.out.println("------------------------------------Inactivation of Permission successfull--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
+        
         return params;
     }
 
@@ -2183,24 +2057,20 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@title='Active Indicator - No']");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         isElementPresentByLinkText(permissionName);
-
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
+        
         return params;
     }
 
     protected List<String> testCreateNewPerson(String docId, String personName) throws Exception
     {
         waitForPageToLoad();
-		//        Thread.sleep(2000);
-		        /*assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']",
-		                "save button does not exist on the page");*/
-		//        waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-		//        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding Charlie Brown");
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Charlie Brown to test KIM");
+        
         //here You should also check for lower case validation for principalName, but it is skipped for now as there is an incident report error there.
         personName = "cbrown" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.principalName", personName);
@@ -2212,14 +2082,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'At least one name must be entered.')]/img[@alt='error']");
-        System.out.println("------------------------------------Validation Test Successful--------------------------");
-
+        System.out.println("------------------------------------Validation Test Successful--------------------------");     
         selectOptionByName("newAffln.affiliationTypeCode", "STDNT");
         selectOptionByName("newAffln.campusCode", "BL");
         checkByName("newAffln.dflt");
         waitAndClickByName("methodToCall.addAffln.anchor");
-        waitForPageToLoad();
-        //waitAndClickByName("methodToCall.toggleTab.tabContact");
         waitForPageToLoad();
         Thread.sleep(3000);
         selectOptionByName("newName.nameCode", "PRM");
@@ -2231,15 +2098,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
         assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
-        System.out
-                .println("------------------------------------Person document submitted successfully--------------------------");
-
+        System.out.println("------------------------------------Person document submitted successfully--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
+        
         return params;
     }
 
@@ -2262,10 +2127,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         isElementPresentByLinkText(personName);
         System.out.println("----------------------------------Lookup successful-----------------------------");
-
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
+        
         return params;
     }
 
@@ -2277,8 +2142,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         switchToWindow("Kuali :: Person");
         Thread.sleep(2000);
         assertEquals(personName, getTextByXpath("//div[@class='tab-container']/table//tr[2]/td[1]/div").trim());
-        assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div")
-                .trim());
+        assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div").trim());
         assertEquals("Student", getTextByXpath("//select/option[@selected]").trim());
         assertElementPresentByXpath("//table[@class='tab']//input[@title='close Overview']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Contact']");
@@ -2298,11 +2162,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Membership']");
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
-        System.out
-                .println("------------------------------------Viewing from Inquiry Framework Test Successful--------------------------");
+        System.out.println("------------------------------------Viewing from Inquiry Framework Test Successful--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
+        
         return params;
     }
 
@@ -2463,11 +2327,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case4']");
         fireEvent("field24", "blur");
-        for (int second = 0;; second++) {
+        
+        for (int second = 0;; second++) {           
             if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
+            try {                
                 if (getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
                     break;
                 }
@@ -2481,11 +2346,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         clearTextByName("field25");
         waitAndTypeByName("field25", "$100");
         fireEvent("field25", "blur");
-        for (int second = 0;; second++) {
+        
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
+            try {                
                 if (getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
                     break;
                 }
@@ -2496,11 +2362,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case2']");
         fireEvent("field24", "blur");
-        for (int second = 0;; second++) {
+        
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
+            try {                
                 if (getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
                     break;
                 }
@@ -2518,11 +2385,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         clearTextByName("field26");
         waitAndTypeByName("field26", "6000");
         fireEvent("field26", "blur");
-        for (int second = 0;; second++) {
+        
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
+            try {               
                 if (getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
                     break;
                 }
@@ -2544,11 +2412,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent("field26", "blur");
         checkByXpath("//*[@name='field24' and @value='case3']");
         fireEvent("field24", "blur");
-        for (int second = 0;; second++) {
+        
+        for (int second = 0;; second++) {           
             if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
+            try {               
                 if (getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
                     break;
                 }
@@ -2564,11 +2433,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         clearTextByName("field28");
         waitAndTypeByName("field28", "");
         fireEvent("field28", "blur");
-        for (int second = 0;; second++) {
+        
+        for (int second = 0;; second++) {           
             if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
+            try {               
                 if (getAttributeByName("field28", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
                     break;
                 }
@@ -2579,11 +2449,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case3']");
         fireEvent("field24", "blur");
-        for (int second = 0;; second++) {
+        
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
+            try {                
                 if (getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
                     break;
                 }
@@ -2597,11 +2468,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent("field28", "blur");
         checkByXpath("//*[@name='field24' and @value='case4']");
         fireEvent("field24", "blur");
-        for (int second = 0;; second++) {
+        
+        for (int second = 0;; second++) {        
             if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
+            try {               
                 if (getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
                     break;
                 }
@@ -2634,26 +2506,29 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // click on collections page link
         waitAndClickByLinkText("Collections");
         Thread.sleep(5000);
-        // wait for collections page to load by checking the presence of a sub collection line item
-
+        
+        // wait for collections page to load by checking the presence of a sub collection line item       
         waitForElementPresentByName("list4[0].subList[0].field1");
+        
         // change a value in the line to be deleted
         waitAndTypeByName("list4[0].subList[0].field1", "selenium");
+        
         // click the delete button
         waitAndClickByXpath("//div[@id='collection4_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div[@class='uif-group uif-gridGroup uif-collectionItem uif-gridCollectionItem']/table/tbody/tr[5]/td/div/fieldset/div/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button");
         Thread.sleep(2000);
+        
         // confirm that the input box containing the modified value is not present
-
-        for (int second = 0;; second++) {
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds)
                 fail("timeout");
             try {
-                System.out.println("Loop ----- " + second);
+                System.out.println("Loop ----- " + second);                
                 if (!"selenium".equals(getAttributeByName("list4[0].subList[0].field1", "value")))
                     break;
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
+        
         // verify that the value has changed for the input box in the line that has replaced the deleted one
         assertNotSame("selenium", getAttributeByName("list4[0].subList[0].field1", "value"));
         passed();
@@ -2663,23 +2538,18 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // check if tooltip opens on focus
         fireEvent(NAME_FIELD_1, "focus");
         fireMouseOverEventByName(NAME_FIELD_1);
-        //        Assert.assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
-        Assert.assertEquals("This tooltip is triggered by focus or and mouse over.",
-                getText("td.jquerybubblepopup-innerHtml"));
+        
+        // Assert.assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
+        Assert.assertEquals("This tooltip is triggered by focus or and mouse over.",getText("td.jquerybubblepopup-innerHtml"));
 
         // check if tooltip closed on blur
         fireEvent(NAME_FIELD_1, "blur");
-        Assert.assertFalse(isVisible("div.jquerybubblepopup.jquerybubblepopup-black")
-                && isVisible("td.jquerybubblepopup-innerHtml"));
-        //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
-
+        Assert.assertFalse(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
         Thread.sleep(5000);
         fireEvent("field119", "focus");
+        
         // check if tooltip opens on mouse over
-        fireMouseOverEventByName(NAME_FIELD_2);
-        //        Assert.assertTrue(isVisible("td.jquerybubblepopup-innerHtml"));
-        //        Assert.assertTrue(isVisibleByXpath("//td[@class='jquerybubblepopup-innerHtml']"));
-        //        Assert.assertEquals("This is a tool-tip with different position and tail options", getText("td.jquerybubblepopup-innerHtml"));
+        fireMouseOverEventByName(NAME_FIELD_2);        
         Assert.assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
         // check if tooltip closed on mouse out
@@ -2690,16 +2560,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         // check that default tooltip does not display when there are an error message on the field
         waitAndTypeByName(NAME_FIELD_1, "1");
         fireEvent(NAME_FIELD_1, "blur");
-        //        fireEvent(NAME_FIELD_1, "focus");
         fireMouseOverEventByName(NAME_FIELD_1);
         Thread.sleep(10000);
-        junit.framework.Assert
-                .assertTrue(
-                        "https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
+        junit.framework.Assert.assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
                         isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
                                 !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
-        // TODO figure out this last assert
-        //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
+       
+        // TODO figure out this last assert     
         passed();
     }
 
@@ -2893,29 +2760,28 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testSubCollectionSize() throws Exception {
         checkForIncidentReport("link=Collections");
-        //        // click on collections page link
+        
+        // click on collections page link
         waitAndClickByLinkText("Collections");
-        //        // wait for collections page to load by checking the presence of a sub collection line item
-        for (int second = 0;; second++) {
+        
+        // wait for collections page to load by checking the presence of a sub collection line item
+        for (int second = 0;; second++) {                   
             if (second >= waitSeconds)
                 fail("timeout");
-            try {
-                if (getText(
-                        "div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span")
+            try {                
+                if (getText("div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span")
                         .equals("SubCollection - (3 lines)"))
                 {
                     break;
                 }
-
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
+        
         // verify that sub collection sizes are displayed as expected
-        assertEquals(
-                "SubCollection - (3 lines)",
+        assertEquals("SubCollection - (3 lines)",
                 getText("div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span"));
         assertEquals("SubCollection - (2 lines)", getTextByXpath("//a[@id='subCollection1_line1_toggle']/span"));
-
     }
 
     protected void verifyRichMessagesValidationBasicFunctionality() throws Exception
@@ -2944,7 +2810,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/span[contains(., 'Color')]"));
         Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/i/b[contains(., 'Html')]"));
         Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/img[@class='uif-image inlineBlock']"));
-
         Thread.sleep(3000);
     }
 
@@ -2952,22 +2817,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     {
         //For letters only Validation
         Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field5']"));
-        waitAndTypeByXpath(
-                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']",
-                "abc");
+        waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']","abc");
         Assert.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']");
-        waitAndTypeByXpath(
-                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']",
-                "abc12");
-
+        waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']","abc12");
         waitAndTypeByXpath("//input[@name= 'field6']", "");
         Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         Thread.sleep(3000);
         clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']");
-        waitAndTypeByXpath(
-                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']",
-                "abc");
+        waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']","abc");
         waitAndTypeByXpath("//input[@name= 'field6']", "");
 
         //For numbers only validation
@@ -2978,7 +2836,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent("field6", "blur");
         Thread.sleep(5000);
         Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
-
         Thread.sleep(3000);
     }
 
@@ -2999,7 +2856,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //Checkbox Control
         Assert.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='bField1']"));
         Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field103']"));
-
     }
 
     protected void verifyRichMessagesValidationLinkDeclarationsFunctionality() throws Exception
@@ -3012,8 +2868,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         //Testing methodToCall Action
         waitAndClickByXpath("//div[contains(., 'Testing methodToCall action')]/a");
-        Thread.sleep(3000);
-        //        Assert.assertTrue(isElementPresentByXpath("//div[@class='fancybox-wrap fancybox-desktop fancybox-type-html fancybox-opened']"));
+        Thread.sleep(3000);        
         Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
         Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
         Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
@@ -3036,10 +2891,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("newCollectionLines['list1'].field4", "asdf4");
         waitAndClickByXpath("//button[contains(.,'add')]"); // the first button is the one we want
 
-        for (int second = 0;; second++) {
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds)
                 Assert.fail("timeout");
-            try {
+            try {               
                 if (getAttributeByName("newCollectionLines['list1'].field1", "value").equals(""))
                     break;
             } catch (Exception e) {}
@@ -3054,7 +2909,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertEquals("asdf2", getAttributeByName("list1[0].field2", "value"));
         Assert.assertEquals("asdf3", getAttributeByName("list1[0].field3", "value"));
         Assert.assertEquals("asdf4", getAttributeByName("list1[0].field4", "value"));
-
         Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
         passed();
     }
@@ -3076,7 +2930,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
         Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible woudl be better
         assertElementPresentByName("list1[0].field1");
-
         assertTableLayout();
         Assert.assertEquals("", getAttributeByName("list1[0].field1", "value"));
         Assert.assertEquals("", getAttributeByName("list1[0].field2", "value"));
@@ -3086,7 +2939,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertEquals("6", getAttributeByName("list1[1].field2", "value"));
         Assert.assertEquals("7", getAttributeByName("list1[1].field3", "value"));
         Assert.assertEquals("8", getAttributeByName("list1[1].field4", "value"));
-
         Assert.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         waitAndTypeByName("list1[0].field1", "1");
         waitAndTypeByName("list1[0].field2", "1");
@@ -3094,7 +2946,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("list1[0].field4", "1");
         Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         passed();
-
     }
 
     /**
@@ -3104,16 +2955,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //Lack of proper locators its not possible to uniquely identify/locate this elements without use of ID's.
         //This restricts us to use the XPath to locate elements from the dome. 
         //This test is prone to throw error in case of any changes in the dom Html graph.
-
         waitAndClickByLinkText("Column Sequence");
         Thread.sleep(2000);
+        
         //jiraAwareWaitAndClick("css=div.jGrowl-close");
         // check if actions column RIGHT by default
         //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
-        for (int second = 0;; second++) {
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds)
                 Assert.fail("timeout");
-            try {
+            try {                
                 if (isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"))
                     break;
             } catch (Exception e) {}
@@ -3123,10 +2974,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         // check if actions column is LEFT
         //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
-        for (int second = 0;; second++) {
+        for (int second = 0;; second++) {           
             if (second >= waitSeconds)
                 Assert.fail("timeout");
-            try {
+            try {                
                 if (isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"))
                     break;
             } catch (Exception e) {}
@@ -3136,10 +2987,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         // check if actions column is 3rd in a sub collection
         //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
-        for (int second = 0;; second++) {
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds)
                 Assert.fail("timeout");
-            try {
+            try {                
                 if (isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"))
                     break;
             } catch (Exception e) {}
@@ -3147,11 +2998,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
         Assert.assertTrue(isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
         passed();
-
     }
 
     protected void testAddViaLightbox() throws Exception {
-
         waitAndClickByLinkText("Add Via Lightbox");
         Assert.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
@@ -3167,7 +3016,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testColumnSequence() throws Exception {
-
         waitAndClickByLinkText("Column Sequence");
         Thread.sleep(3000);
         waitAndTypeByName("newCollectionLines['list1'].field1", "1");
@@ -3199,10 +3047,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("newCollectionLines['list1'].field2", "1");
         waitAndTypeByName("newCollectionLines['list1'].field3", "1");
         waitAndTypeByName("newCollectionLines['list1'].field4", "1");
-
         waitAndClickByXpath("//button[contains(.,'add')]");
         Thread.sleep(3000);
-
+        
         //Check if row has been added really or not
         Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
         Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
@@ -3223,37 +3070,26 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testCollectionTotalling() throws Exception {
         //Scenario Asserts Changes in Total at client side        
         waitForElementPresent("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']");
-        assertEquals("Total: 419",
-                getText("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
-
+        assertEquals("Total: 419",getText("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
         clearText("div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']");
-        waitAndType(
-                "div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']",
-                "10");
+        waitAndType("div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']","10");
         waitAndClick("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']");
-
         Thread.sleep(5000);
-        assertEquals("Total: 424",
-                getText("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
-
+        assertEquals("Total: 424",getText("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
+        
         //Scenario Asserts Changes in Total at client side on keyUp
-        assertEquals("Total: 419",
-                getText("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
+        assertEquals("Total: 419", getText("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
         clearText("div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']");
-        waitAndType(
-                "div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']",
-                "9");
+        waitAndType("div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']","9");
         waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
-
         Thread.sleep(5000);
-        assertEquals("Total: 423",
-                getText("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
+        assertEquals("Total: 423",getText("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
 
         //Asserts absence of Total in 2nd column at the footer for Demonstrating totaling on only some columns 
         assertEquals("", getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[2]"));
+        
         //Asserts Presence of Total in 2nd column at the footer for Demonstrating totaling on only some columns 
-        assertEquals("Total: 369",
-                getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[3]/div/fieldset/div/div[2]/div[2]"));
+        assertEquals("Total: 369", getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[3]/div/fieldset/div/div[2]/div[2]"));
 
         //Asserts Presence of Total in left most column only being one with no totaling itself 
         assertEquals("Total:", getTextByXpath("//*[@id='u100213_span']"));
@@ -3262,45 +3098,43 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //Asserts changes in value in Total and Decimal for Demonstrating multiple types of calculations for a single column (also setting average to 3 decimal places to demonstrate passing data to calculation function) 
         assertEquals("Total: 382", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
         clearText("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']");
-        waitAndType(
-                "div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']",
-                "11");
+        waitAndType("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']","11");
         waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
-
         Thread.sleep(5000);
         assertEquals("Total: 385", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
 
         // Assert changes in Decimal..
         clearText("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']");
-        waitAndType(
-                "div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']",
-                "15.25");
+        waitAndType("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']","15.25");
         waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
-
         Thread.sleep(5000);
         assertEquals("Page Average: 11.917", getTextByXpath("//div[2]/fieldset/div/div[2]/div"));
     }
 
     protected void testConfigurationTestView(String idPrefix) throws Exception {
         waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        
         // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
         String styleValue = getAttributeByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']", "style");
+        
         // log.info("styleValue is " + styleValue);
-        Assert.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue
-                .replace(" ", "").contains(
-                        "color:red"));
+        Assert.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
+        
         // get current list of options
         String refreshTextSelectLocator = "//select[@id='" + idPrefix + "RefreshTextField_control']";
         String[] options1 = getSelectOptionsByXpath(refreshTextSelectLocator);
         String dropDownSelectLocator = "//select[@id='" + idPrefix + "DropDown_control']";
         selectByXpath(dropDownSelectLocator, "Vegetables");
         Thread.sleep(3000);
+        
         //get list of options after change
         String[] options2 = getSelectOptionsByXpath(refreshTextSelectLocator);
+        
         //verify that the change has occurred
         junit.framework.Assert.assertFalse(
                 "Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection",
                 options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
+        
         //confirm that control gets disabled
         selectByXpath(dropDownSelectLocator, "None");
         Thread.sleep(3000);
@@ -3332,10 +3166,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(5000); //allow for ajax refresh        
         waitAndClickByXpath("//button");
         Thread.sleep(5000); //allow for line to be added
+        
         //confirm that line has been added
-        junit.framework.Assert
-                .assertTrue(
-                        "line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
+        junit.framework.Assert.assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
                         isElementPresentByXpath("//input[@value='7:06']"));
         passed();
     }
@@ -3358,6 +3191,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
         waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
         confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
+        
         //store number of rows before adding the lines
         String cssCountRows = "div#ConfigurationTestView-ProgressiveRender-TimeInfoSection.uif-group div#ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent.uif-disclosureContent table tbody tr";
         int rowCount = (getCssCount(cssCountRows));
@@ -3366,6 +3200,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath(allDayId);
         waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
         Thread.sleep(5000); //allow for line to be added
+        
         //confirm that line has been added (by checking for the new delete button)
         assertEquals("line was not added", rowCount + 1, (getCssCount(cssCountRows)));
         passed();
@@ -3398,6 +3233,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testValidCharacterConstraint() throws Exception {
         waitAndClickByXpath("//a[contains(text(),'Validation - Regex')]");
+        
         //---------------------------------------------Fixed Point------------------------------//       
         waitAndTypeByName("field50", "123.123");
         fireEvent("field50", "blur");
@@ -3720,7 +3556,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         focus("//input[@name='field57']");
         Thread.sleep(100);
         assertTrue(isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
-        
         */
         waitAndTypeByXpath("//input[@name='field56']", "2099-12-12 12:12:12.103");
         fireEvent("field56", "blur");
@@ -3936,16 +3771,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void validateErrorImage(boolean validateVisible) throws Exception {
         Thread.sleep(500);
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= 5)
                 Assert.fail("timeout");
-            try {
-                if (validateVisible) {
+            try {                
+                if (validateVisible) {                   
                     if (isElementPresentByXpath("//input[@aria-invalid]"))
                         ;
                     break;
-                } else {
+                } else {                    
                     if (!isElementPresentByXpath("//input[@aria-invalid]"))
                         break;
                 }
@@ -3962,9 +3797,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     //Code for Validation Messages package tests.
     protected void testClientErrors() throws Exception {
-
         fireEvent("field1", "focus");
-        //        waitAndTypeByName("field1","");
         fireEvent("field1", "blur");
         System.out.println("This is value ----------------" + getAttributeByName("field1", "aria-invalid"));
         Thread.sleep(3000);
@@ -3972,15 +3805,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertEquals("true", getAttributeByName("field1", "aria-invalid"));
         Assert.assertTrue(getAttributeByName("field1", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         Assert.assertTrue(isTextPresent("Required"));
-        //        fireEvent("field1", "focus");
         fireMouseOverEventByName("field1");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= 10) {
                 Assert.fail("timeout");
             }
-            try {
-                
+            try {                
             	if (isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
                     break;
                 }
@@ -3992,13 +3823,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("field1", "a");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= 10) {
                 Assert.fail("timeout");
             }
-            try {
-                
+            try {                
             	if (!isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
                     break;
                 }
@@ -4012,7 +3842,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(getAttributeByName("field1", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         Assert.assertTrue(isTextPresent("Required"));
         fireEvent("field2", "focus");
-        //        waitAndTypeByName("field2", "");
         fireEvent("field2", "blur");
         fireMouseOverEventByName("field2");
         Assert.assertEquals("true", getAttributeByName("field2", "aria-invalid"));
@@ -4025,12 +3854,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(getAttributeByName("field2", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         Assert.assertFalse(isElementPresentByXpath("//textarea[@name='field2']/../img[@alt='Error']"));
         fireEvent("field3", "focus");
-        //        selectByName("field3", "");
         fireEvent("field3", "blur");
         fireMouseOverEventByName("field3");
         Assert.assertEquals("true", getAttributeByName("field3", "aria-invalid"));
         Assert.assertTrue(getAttributeByName("field3", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        //        Assert.assertTrue(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
         Assert.assertTrue(isTextPresent("Required"));
         fireEvent("field3", "focus");
         selectByName("field3", "Option 1");
@@ -4039,14 +3866,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Assert.assertTrue(getAttributeByName("field3", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         Assert.assertFalse(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
         fireEvent("field114", "focus");
-        //    removeAllSelectionsByName("field114");
         fireMouseOverEventByName("field114");
         driver.findElement(By.name("field114")).findElements(By.tagName("option")).get(0).click();
         fireEvent("field114", "blur");
         Assert.assertEquals("true", getAttributeByName("field114", "aria-invalid"));
         Assert.assertTrue(getAttributeByName("field114", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         Assert.assertTrue(isTextPresent("Required"));
-        //        Assert.assertTrue(isElementPresentByXpath("//select[@name='field114']/../img[@alt='Error']"));
         fireEvent("field114", "focus");
         selectByName("field114", "Option 1");
         fireEvent("field114", "blur");
@@ -4057,13 +3882,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         uncheckByXpath("//*[@name='field117' and @value='3']");
         fireEvent("field117", "blur");
         fireMouseOverEventByName("field117");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= 10) {
                 Assert.fail("timeout");
             }
-            try {
-                
+            try {                
             	if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
                     break;
                 }
@@ -4072,20 +3896,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
 
         Assert.assertEquals("true", getAttributeByXpath("//*[@name='field117' and @value='1']", "aria-invalid"));
-        Assert.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches(
-                "^[\\s\\S]*error[\\s\\S]*$"));
-        //        Assert.assertTrue(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
+        Assert.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         Assert.assertTrue(isTextPresent("Required"));
         fireEvent("field117", "3", "focus");
         checkByXpath("//*[@name='field117' and @value='3']");
         fireEvent("field117", "3", "blur");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
-                
+            try {                
             	if (!isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']")) {
                     break;
                 }
@@ -4094,8 +3915,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
 
         Assert.assertFalse(isElementPresentByXpath("//*[@name='field117' and @value='3' and @aria-invalid]"));
-        Assert.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches(
-                "^[\\s\\S]*valid[\\s\\S]*$"));
+        Assert.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         Assert.assertFalse(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
         fireEvent("bField1", "focus");
         uncheckByName("bField1");
@@ -4103,28 +3923,24 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireMouseOverEventByName("bField1");
         Assert.assertEquals("true", getAttributeByName("bField1", "aria-invalid"));
         Assert.assertTrue(getAttributeByName("bField1", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        //        Assert.assertTrue(isElementPresentByXpath(
-        //                "//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
         Assert.assertTrue(isTextPresent("Required"));
         fireEvent("bField1", "focus");
         checkByName("bField1");
         fireEvent("bField1", "blur");
         Assert.assertFalse(isElementPresentByXpath("//*[@name='bField1' and @aria-invalid]"));
         Assert.assertTrue(getAttributeByName("bField1", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(isElementPresentByXpath(
-                "//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
+        Assert.assertFalse(isElementPresentByXpath("//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
         fireEvent("field115", "3", "focus");
         uncheckByXpath("//*[@name='field115' and @value='3']");
         uncheckByXpath("//*[@name='field115' and @value='4']");
         fireEvent("field115", "blur");
         fireMouseOverEventByName("field115");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
-                
+            try {                
             	if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
                     break;
                 }
@@ -4133,21 +3949,18 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
 
         Assert.assertEquals("true", getAttributeByXpath("//*[@name='field115' and @value='1']", "aria-invalid"));
-        Assert.assertTrue(getAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches(
-                "^[\\s\\S]*error[\\s\\S]*$"));
-        //        Assert.assertTrue(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
+        Assert.assertTrue(getAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         Assert.assertTrue(isTextPresent("Required"));
         fireEvent("field115", "3", "focus");
         checkByXpath("//*[@name='field115' and @value='3']");
         checkByXpath("//*[@name='field115' and @value='4']");
         fireEvent("field115", "blur");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
-                
+            try {                
             	if (!isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']")) {
                     break;
                 }
@@ -4163,41 +3976,33 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testServerErrorsIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Error Messages')]");
         waitForPageToLoad();
-        //        Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]")); // bugged isVisible? you can see it on the screen...
         Thread.sleep(5000);
         assertElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem");
         waitIsVisibleByXpath("//div[@data-headerfor='Demo-ValidationLayout-Section1']");
         assertElementPresentByXpath("//*[@data-messageitemfor='Demo-ValidationLayout-Section1' and @class='uif-errorMessageItem']");
         assertElementPresent("div[data-role=\"InputField\"] img[alt=\"Error\"]");
         assertElementPresentByXpath("//a[contains(.,'Section 1 Title')]");
-        // waitAndClickByXpath("//a[contains(.,'Section 1 Title')]");
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
         assertElementPresent(".uif-errorMessageItem-field");
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
         Thread.sleep(2000);
         waitIsVisible(".jquerybubblepopup-innerHtml");
-
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems");
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
         waitIsVisible(".jquerybubblepopup-innerHtml");
-
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems");
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field");
         waitAndTypeByName("field1", "t");
-        //    keyDown(By.name("field1"), Keys('t'));
-        //    keyPress("name=field1", "t");
-        //    keyUp("field1", "t");
-        for (int second = 0;; second++) {
-            
+
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
                 Assert.fail("timeout");
             }
-            try {
-                
+            try {                
             	if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
                     break;
                 }
@@ -4211,10 +4016,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testServerInfoIT() throws Exception {
-
         waitAndClickByXpath("//button[contains(.,'Get Info Messages')]");
         waitIsVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']");
-        //Thread.sleep(3000);
         Assert.assertTrue(isVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']"));
         Assert.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
         Assert.assertTrue(isVisible("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
@@ -4223,12 +4026,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
         Assert.assertTrue(isElementPresent(".uif-infoHighlight"));
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds)
                 Assert.fail("timeout");
-            try {
-                
+            try {                
             	if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
             } catch (Exception e) {}
@@ -4240,12 +4042,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds)
                 Assert.fail("timeout");
-            try {
-                
+            try {                
             	if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
             } catch (Exception e) {}
@@ -4253,11 +4054,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
 
         Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
-        for (int second = 0;; second++) {
+        for (int second = 0;; second++) {            
             if (second >= waitSeconds)
                 Assert.fail("timeout");
-            try {
-                
+            try {                
             	if (isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
                     break;
             } catch (Exception e) {}
@@ -4268,16 +4068,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("field1", "b");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
-        for (int second = 0;; second++) {
-            
+        
+        for (int second = 0;; second++) {            
         	if (second >= waitSeconds)
                 Assert.fail("timeout");
-            try {
+            try {                
                 if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
                     break;
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
+        
         fireEvent("field1", "blur");
         Thread.sleep(3000);
         Assert.assertTrue(!isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
@@ -4294,11 +4095,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//button[contains(.,'Get Warning Messages')]");
         waitForPageToLoad();
         Thread.sleep(3000);
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                "div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible",
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible",
                 isVisible("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
-        com.thoughtworks.selenium.SeleneseTestBase
-                .assertTrue(
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
                         "div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem not present",
                         isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem"));
         com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
@@ -4316,7 +4115,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                 isElementPresent(".uif-warningHighlight"));
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
         waitForElementVisible(".jquerybubblepopup-innerHtml", " after click on //a[contains(.,'Field 1')]");
-
         com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
                 ".jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", isVisible(
                 ".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
@@ -4326,49 +4124,33 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-        //   fireEvent("field1","hover");
         waitForElementVisible(".jquerybubblepopup-innerHtml",
                 " not visible after typing nothing in name=field1 then firing blur and focus events");
-
-        com.thoughtworks.selenium.SeleneseTestBase
-                .assertTrue(
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
                         ".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
                         isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
-
         waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-clientMessageItems",
                 " not visible after typing nothing in name=field1 then firing blur and focus events");
-
-        com.thoughtworks.selenium.SeleneseTestBase
-                .assertTrue(
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
                         ".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
                         isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
-
         waitAndTypeByName("field1", "b");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-        //  fireEvent("field1","hover");
         waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-serverMessageItems", "");
-
-        com.thoughtworks.selenium.SeleneseTestBase
-                .assertTrue(
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
                         ".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
                         isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
         com.thoughtworks.selenium.SeleneseTestBase.assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems",
                 !isElementPresent(
                 ".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
-
-        //        waitAndTypeByName("field1", "");
         clearTextByName("field1");
-        //     fireEvent("field1", "focus");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-        //        fireEvent("field1","hover");
-        com.thoughtworks.selenium.SeleneseTestBase
-                .assertTrue(
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
                         ".uif-hasError is not present after typing nothing in name=field1 and then firing focus and blur events",
                         isElementPresent(".uif-hasError"));
-        com.thoughtworks.selenium.SeleneseTestBase
-                .assertTrue(
+        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
                         "img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",
                         isElementPresent("img[src*=\"error.png\"]"));
         passed();
@@ -4387,15 +4169,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000);
         waitForPageToLoad();
         driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
+        
         // Category's don't have actions (yet)
-        //        waitAndClick("id=u80");
-        //        waitForPageToLoad();
-        //        waitAndClick("id=u86");
-        //        waitForPageToLoad();
-        //        selectWindow("null");
-        //        waitAndClick("xpath=(//input[@name='imageField'])[2]");
-        //        waitForPageToLoad();
-        passed();
+        //waitAndClick("id=u80");
+        //waitForPageToLoad();
+        //waitAndClick("id=u86");
+        //waitForPageToLoad();
+        //selectWindow("null");
+        //waitAndClick("xpath=(//input[@name='imageField'])[2]");
+        //waitForPageToLoad();
+        //passed();
     }
 
     protected void testCreateSampleEDocLite() throws Exception {
@@ -4405,6 +4188,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
+        
         // click on the create new.
         waitAndClickByLinkText("Create Document");
         waitForPageToLoad();
@@ -4417,11 +4201,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//td[@class='datacell']/div/img");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@value='submit']");
-        junit.framework.Assert.assertEquals(Boolean.FALSE,
-                (Boolean) isElementPresentByXpath("//input[@value='submit']"));
+        junit.framework.Assert.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='submit']"));
         junit.framework.Assert.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='save']"));
-        junit.framework.Assert.assertEquals(Boolean.FALSE,
-                (Boolean) isElementPresentByXpath("//input[@value='cancel']"));
+        junit.framework.Assert.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='cancel']"));
         waitForPageToLoad();
         selectTopFrame();
         waitAndClickByXpath("//img[@alt='doc search']");
@@ -4430,13 +4212,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
         isElementPresent(By.linkText(docId));
-
     }
 
     public void testTermLookUp() throws Exception {
-        //        waitAndClickByLinkText(getLinkLocator());
         waitForPageToLoad();
         selectFrame("iframeportlet");
+        
         // Mixed capitalization
         waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
         waitAndClickByLinkText("edit", "edit button not present does user " + user + " have permission?");
@@ -4456,62 +4237,80 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000);
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
+        
         // click on the create new button
         waitAndClickByXpath("//img[@alt='create new']");
         waitForPageToLoad();
+        
         // lookup on the Document Type Name
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         waitForPageToLoad();
+        
         // type in the name field the text RoutingRuleDocument
         waitAndTypeByName("name", "RoutingRuleDocument");
+        
         // click the search button
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
+        
         // click the return value link
         waitAndClickByLinkText("return value");
         waitForPageToLoad();
+        
         // lookup on the Rule Template Name
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         waitForPageToLoad();
+        
         // type in the name field the text RuleRoutingTemplate
         waitAndTypeByName("name", "RuleRoutingTemplate");
+        
         // click the search button
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
+        
         // click the return value link
         waitAndClickByLinkText("return value");
         waitForPageToLoad();
+        
         // click the create new button
         waitAndClickByName("methodToCall.createRule");
         waitForPageToLoad();
-		//        Thread.sleep(3000);
-		//        String docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         String docId = waitForDocId();
         junit.framework.Assert.assertTrue(isElementPresentByName("methodToCall.cancel"));
+       
         // type in the Document Overview Description the text Test Routing Rule
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
+       
         // click the Force Action checkbox
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.forceAction']");
+       
         // type in the Description text area the text Test Routing Rule1
         waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
+       
         // type in the Document type name field the text DocumentTypeDocument
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']",
                 "DocumentTypeDocument");
+        
         // lookup on Person
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
         waitForPageToLoad();
+       
         // click the search button
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
+        
         // click the return value
         waitAndClickByLinkText("return value");
         waitForPageToLoad();
+        
         // select from the Action Request ACKNOWLEDGE
         selectByXpath("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']",
                 "ACKNOWLEDGE");
+        
         // type in the Priority field the text 1
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
+       
         // click the add button
         waitAndClickByName("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!).(:::;15;:::).anchor15");
         waitForPageToLoad();
@@ -4526,8 +4325,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
-
-        //docId= "link=" + docId;
         junit.framework.Assert.assertTrue(isElementPresent(By.linkText(docId)));
         
         if (isElementPresent(By.linkText(docId))) {
@@ -4536,7 +4333,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]"));
             assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         }
-
     }
 
     protected void testEditRouteRulesDelegation() throws Exception {
@@ -4544,7 +4340,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000);
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
-        //  setSpeed("2000");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         Thread.sleep(3000);
@@ -4566,10 +4361,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         waitForPageToLoad();
-        //     Thread.sleep(6000);
         waitAndClickByXpath("//td[@class='infoline']/input[@name='methodToCall.search']");
         waitForPageToLoad();
-        //   Thread.sleep(6000);
         waitAndClick("a[title=\"return valueRule Id=1046 \"]");
         waitForPageToLoad();
         waitAndClickByName("parentResponsibilityId");
@@ -4578,10 +4371,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000);
         waitAndClickByName("methodToCall.cancel");
         waitForPageToLoad();
-        //Thread.sleep(3000);
         waitAndClickByName("methodToCall.processAnswer.button0");
         waitForPageToLoad();
-        //Thread.sleep(3000);
         driver.switchTo().defaultContent();
         waitAndClickByXpath("(//input[@name='imageField'])[2]");
         waitForPageToLoad();
@@ -4594,17 +4385,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClickByXpath("//img[@alt='create new']");
-        //        selectFrame("relative=up");
         waitForPageToLoad();
         Thread.sleep(3000);
-        waitAndClickByName("methodToCall.cancel",
-                "https://jira.kuali.org/browse/KULRICE-8161 Work Flow Route Rules cancel new yields 404 not found");
-        //setSpeed("3000");
+        waitAndClickByName("methodToCall.cancel","https://jira.kuali.org/browse/KULRICE-8161 Work Flow Route Rules cancel new yields 404 not found");
+   
         // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
         waitForPageToLoad();
         Thread.sleep(3000);
-        waitAndClickByName(
-                "methodToCall.processAnswer.button0",
+        waitAndClickByName("methodToCall.processAnswer.button0",
                 "https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.");
         passed();
     }
@@ -4632,8 +4420,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testCreateNewComponent(String docId, String componentName, String componentCode) throws Exception
     {
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
+        
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Component");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
@@ -4642,23 +4430,20 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         componentName = "testing" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
         checkByName("document.newMaintainableObject.active");
-
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
-        System.out.println("--------------------------------New Component Created-------------------------");
-        
+        System.out.println("--------------------------------New Component Created-------------------------");        
         List<String> parameterList=new ArrayList<String>();
         parameterList.add(docId);
         parameterList.add(componentName);
@@ -4683,8 +4468,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
-        System.out.println("--------------------------------Lookup And View Successful-------------------------");
-        
+        System.out.println("--------------------------------Lookup And View Successful-------------------------");        
         List<String> parameterList=new ArrayList<String>();
         parameterList.add(docId);
         parameterList.add(componentName);
@@ -4699,7 +4483,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Component");
         clearTextByName("document.newMaintainableObject.name");
@@ -4708,19 +4491,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
-        System.out.println("-----------------------------------Component Edited-------------------------");
-        
+        System.out.println("-----------------------------------Component Edited-------------------------");        
         List<String> parameterList=new ArrayList<String>();
         parameterList.add(docId);
         parameterList.add(componentName);
@@ -4742,8 +4523,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
         assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
-        switchToWindow("null");
-        
+        switchToWindow("null");        
         List<String> parameterList=new ArrayList<String>();
         parameterList.add(docId);
         parameterList.add(componentName);
@@ -4758,7 +4538,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
-        //        docId = getTextByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Component");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
@@ -4770,19 +4549,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]",
-                "Document is not submitted successfully");
+        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a"));
+        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
-        System.out.println("-----------------------------------Component Copied-------------------------");
-        
+        System.out.println("-----------------------------------Component Copied-------------------------");        
         List<String> parameterList=new ArrayList<String>();
         parameterList.add(docId);
         parameterList.add(componentName);
@@ -4804,8 +4581,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
         assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
-        switchToWindow("null");
-        
+        switchToWindow("null");        
         List<String> parameterList=new ArrayList<String>();
         parameterList.add(docId);
         parameterList.add(componentName);
@@ -4824,15 +4600,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         // test external help
         waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
-        //selenium.waitForPopUp("Open Source Software | www.kuali.org", "30000");
-        //selenium.selectPopUp("HelpWindow");
-        
-        
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);
-        //        assertEquals("http://www.kuali.org/?view", driver.getLocation());
-        //selenium.deselectPopUp();
         switchToWindow("Kuali :: Configuration Test View");
     }
 
@@ -4898,12 +4668,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
        
         // test tooltip help of section header
-
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section1']/div/h3[@class='uif-headerText']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
-        
-        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[0].style.display='none'"; 
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));        
+        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[0].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
@@ -4921,14 +4688,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         ((JavascriptExecutor) driver).executeScript(javascript);
         System.out.println("==============="+isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
-
         
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[2].style.display='none'"; 
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[2].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
@@ -4937,8 +4702,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[3].style.display='none'"; 
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[3].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
@@ -4950,12 +4714,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
-       
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
             junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
-        }
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[4].style.display='none'"; 
+        }        
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[4].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
@@ -4965,24 +4727,19 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[5].style.display='none'"; 
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[5].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-                
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[6].style.display='none'"; 
+        Thread.sleep(3000);                
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[6].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-    
+        Thread.sleep(3000);    
         junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
         junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
 
         // test tooltip help against a check box - help contains html
         fireMouseOverEventByXpath("//label[@id='checkbox_label']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[7].style.display='none'"; 
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[7].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
@@ -5067,8 +4824,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         // test tooltip help
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        Thread.sleep(2000);
-        
+        Thread.sleep(2000);        
         assertTrue(isVisibleByXpath("//td[contains(text(),'View help')]"));
         assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Configuration Test View\"]"), "HelpWindow", "http://www.kuali.org/");
     }
@@ -5102,7 +4858,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      */
 
     protected void testDisplayOnlyExternalHelp2() throws Exception {
-
         // test external help of sub-section
         assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Display only fields\"]"), "HelpWindow", "http://www.kuali.org/?sub_section");
 
@@ -5139,49 +4894,46 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//button[contains(text(),'Search')]");
         Thread.sleep(2000);
 
-        //        --------------------------------Further code will not run due to page exception------------------------------------
-        //        assertElementPresentByLinkText("a1");
-        //        assertElementPresentByLinkText("a2");
-        //        assertElementPresentByLinkText("a3");
-        //        
-        //        //QuickFinder Lookup
-        //        waitAndTypeByName("lookupCriteria[number]", "a*");
-        //        waitAndClickByXpath("//*[@id='u18']");
-        //        Thread.sleep(2000);
-        //        assertElementPresentByLinkText("a1");
-        //        assertElementPresentByLinkText("a2");
-        //        assertElementPresentByLinkText("a3");
-        //        waitAndClickByXpath("//button[@id='u19']");
-        //        Thread.sleep(2000);
-        //        
-        //        //search with each field
-        //        waitAndTypeByName("lookupCriteria[number]", "a2");
-        //        waitAndClickByXpath("//*[@id='u18']");
-        //        Thread.sleep(2000);
-        //        assertElementPresentByLinkText("a2");
-        //        waitAndClickByXpath("//button[@id='u19']");
-        //        Thread.sleep(2000);
-        //        
-        //        waitAndTypeByName("lookupCriteria[foId]", "1");
-        //        waitAndClickByXpath("//*[@id='u18']");
-        //        Thread.sleep(2000);
-        //        assertEquals("1", getTextByXpath("//table[@id='u27']//tr//td[8]").trim().substring(0, 1));
-        //        waitAndClickByXpath("//button[@id='u19']");
-        //        Thread.sleep(2000);
-        //        
-        //        selectOptionByName("lookupCriteria[extension.accountTypeCode]", "CAT");
-        //        waitAndClickByXpath("//*[@id='u18']");
-        //        waitAndClickByXpath("//table[@id='u27']//tr//td[2]//a");
-        //        Thread.sleep(2000);
-        //        selectTopFrame();
-        //        Thread.sleep(5000);
-        //        WebElement iframe1= driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
-        //        driver.switchTo().frame(iframe1);
-        //        assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
-        //        assertEquals("CAT - Clearing Account Type", getTextByXpath("//*[@id='u44_control']").trim());
-        //        waitAndClickByXpath("//button[@id='u13']");
-        //        selectFrame("iframeportlet");
-
+        //  --------------------------------Further code will not run due to page exception------------------------------------
+        //assertElementPresentByLinkText("a1");
+        //ssertElementPresentByLinkText("a2");
+        //assertElementPresentByLinkText("a3");
+        
+        //QuickFinder Lookup
+        //waitAndTypeByName("lookupCriteria[number]", "a*");
+        //waitAndClickByXpath("//*[@id='u18']");
+        //Thread.sleep(2000);
+        //assertElementPresentByLinkText("a1");
+        //assertElementPresentByLinkText("a2");
+        //assertElementPresentByLinkText("a3");
+        //waitAndClickByXpath("//button[@id='u19']");
+        //Thread.sleep(2000);        
+        
+        //search with each field
+        //waitAndTypeByName("lookupCriteria[number]", "a2");
+        //waitAndClickByXpath("//*[@id='u18']");
+        //Thread.sleep(2000);
+        //assertElementPresentByLinkText("a2");
+        //waitAndClickByXpath("//button[@id='u19']");
+        //Thread.sleep(2000);               
+        // waitAndTypeByName("lookupCriteria[foId]", "1");
+        //waitAndClickByXpath("//*[@id='u18']");
+        //Thread.sleep(2000);
+        //assertEquals("1", getTextByXpath("//table[@id='u27']//tr//td[8]").trim().substring(0, 1));
+        //waitAndClickByXpath("//button[@id='u19']");
+        //Thread.sleep(2000);        
+        //selectOptionByName("lookupCriteria[extension.accountTypeCode]", "CAT");
+        //waitAndClickByXpath("//*[@id='u18']");
+        //waitAndClickByXpath("//table[@id='u27']//tr//td[2]//a");
+        //Thread.sleep(2000);
+        //selectTopFrame();
+        //Thread.sleep(5000);
+        //WebElement iframe1= driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
+        //driver.switchTo().frame(iframe1);
+        //assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
+        //assertEquals("CAT - Clearing Account Type", getTextByXpath("//*[@id='u44_control']").trim());
+        //waitAndClickByXpath("//button[@id='u13']");
+        //selectFrame("iframeportlet");
     }
 
     protected void testInquiry() throws Exception {
@@ -5196,41 +4948,38 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByLinkText("a1");
         waitAndClickByXpath("//button[@id='u16']"); // close
         selectFrame("iframeportlet");
-
         waitAndClickByXpath("//button[contains(text(),'Clear Values')]");
 
         //        -----------------------------Code will not work as page has freemarker exceptions------------------------
-        //        Thread.sleep(2000);
-        //        waitAndClickByXpath("//*[@alt='Direct Inquiry']");
-        //        Alert a1 = driver.switchTo().alert();
-        //        assertEquals("Please enter a value in the appropriate field.", a1.getText());
-        //        a1.accept();
-        //        switchToWindow("null");
-        //        selectFrame("iframeportlet");
-        //
-        //        //No Direct Inquiry Option for Fiscal Officer.
-        //        waitAndTypeByName("lookupCriteria[foId]", "1");
-        //        waitAndClickByXpath("//*[@id='u229']");
-        //        selectTopFrame();
-        //        Thread.sleep(5000);
-        //        WebElement iframe2 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
-        //        driver.switchTo().frame(iframe2);
-        //        assertEquals("Fiscal Officer Lookup", getTextByXpath("//h1/span").trim());
-        //        assertEquals("1", getAttributeByName("lookupCriteria[id]", "value"));
-        //        waitAndClickByXpath("//div[contains(button, 'Search')]/button[3]");
-        //        selectFrame("iframeportlet");
-        //
-        //        selectOptionByName("lookupCriteria[extension.accountTypeCode]", "CAT");
-        //        waitAndClickByXpath("//fieldset[@id='u232_fieldset']/input[@alt='Search Field']");
-        //        selectTopFrame();
-        //        Thread.sleep(5000);
-        //        WebElement iframe3 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
-        //        driver.switchTo().frame(iframe3);
-        //        assertEquals("Travel Account Type Lookup", getTextByXpath("//h1/span").trim());
-        //        assertEquals("CAT", getAttributeByName("lookupCriteria[accountTypeCode]", "value"));
-        //        waitAndClickByXpath("//div[contains(button, 'Search')]/button[3]");
-        //        selectFrame("iframeportlet");
+        //Thread.sleep(2000);
+        //waitAndClickByXpath("//*[@alt='Direct Inquiry']");
+        //Alert a1 = driver.switchTo().alert();
+        //assertEquals("Please enter a value in the appropriate field.", a1.getText());
+        //a1.accept();
+        //switchToWindow("null");
+        //selectFrame("iframeportlet");
 
+        //No Direct Inquiry Option for Fiscal Officer.
+        //waitAndTypeByName("lookupCriteria[foId]", "1");
+        //waitAndClickByXpath("//*[@id='u229']");
+        //selectTopFrame();
+        //Thread.sleep(5000);
+        //WebElement iframe2 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
+        //driver.switchTo().frame(iframe2);
+        //assertEquals("Fiscal Officer Lookup", getTextByXpath("//h1/span").trim());
+        //assertEquals("1", getAttributeByName("lookupCriteria[id]", "value"));
+        //waitAndClickByXpath("//div[contains(button, 'Search')]/button[3]");
+        //selectFrame("iframeportlet");
+        //selectOptionByName("lookupCriteria[extension.accountTypeCode]", "CAT");
+        //waitAndClickByXpath("//fieldset[@id='u232_fieldset']/input[@alt='Search Field']");
+        //selectTopFrame();
+        //Thread.sleep(5000);
+        //WebElement iframe3 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
+        //driver.switchTo().frame(iframe3);
+        //assertEquals("Travel Account Type Lookup", getTextByXpath("//h1/span").trim());
+        //assertEquals("CAT", getAttributeByName("lookupCriteria[accountTypeCode]", "value"));
+        //waitAndClickByXpath("//div[contains(button, 'Search')]/button[3]");
+        //selectFrame("iframeportlet");       
     }
     
     /**
@@ -5257,11 +5006,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected void testDirtyFieldsCheck() throws Exception {
         checkForIncidentReport(getTestUrl());
-        Thread.sleep(5000);
-        
+        Thread.sleep(5000);        
         waitAndTypeByName("field1", "test 1");
-        waitAndTypeByName("field102", "test 2");
-        
+        waitAndTypeByName("field102", "test 2");        
         assertCancelConfirmation(); 
     
         // testing manually
@@ -5274,6 +5021,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
         // testing manually
         waitForElementPresentByName("field106");
+        
         // //Asserting text-field style to uppercase. This style would display
         // input text in uppercase.
         assertEquals("text-transform: uppercase;",getAttributeByName("field112", "style"));
@@ -5283,12 +5031,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         clearTextByName("field101");
         waitAndTypeByName("field101", "1");
         waitAndTypeByName("field104", "");
-
         assertEquals("1", getAttributeByName("field101","value"));
         waitAndTypeByName("field104", "2");
+        
         // 'Progressive Disclosure' navigation link
-        assertCancelConfirmation();
-                                    
+        assertCancelConfirmation();                                    
     }
     
     private void assertCancelConfirmation() throws InterruptedException {
@@ -5298,15 +5045,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected void testFiscalOfficerInfoMaintenanceNew() throws Exception {
       selectFrame("iframeportlet");
-      // String docId = getText("//span[contains(@id , '_attribute_span')][position()=1]");
       checkForIncidentReport("", "https://jira.kuali.org/browse/KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
       String docId = getTextByXpath("//*[@id='u13_control']");
       waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");
       waitAndTypeByXpath("//input[@name='document.newMaintainableObject.dataObject.id']", "5");
-      waitAndTypeByXpath("//input[@name='document.newMaintainableObject.dataObject.userName']", "Jigar");
-      
-      waitAndClickByXpath("//button[@id='usave']");
-      
+      waitAndTypeByXpath("//input[@name='document.newMaintainableObject.dataObject.userName']", "Jigar");      
+      waitAndClickByXpath("//button[@id='usave']");      
       Integer docIdInt = Integer.valueOf(docId).intValue(); 
       selectTopFrame();
       waitAndClickByXpath("//img[@alt='action list']");
@@ -5320,39 +5064,38 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
       }
             
 		//      ------------------------------- Not working in code when click docId link in list--------------------------
-		//      Thread.sleep(5000); 
-		//      String[] windowTitles = getAllWindowTitles();
-		//      selectWindow(windowTitles[1]);
-		//      windowFocus();
-		//      assertEquals(windowTitles[1], getTitle());
-		//      checkForIncidentReport("Action List Id link opened window.", "https://jira.kuali.org/browse/KULRICE-9062 Action list id links result in 404 or NPE");
-		//      
-		//      //------submit-----//
-		//      selectFrame("relative=up");
-		//      waitAndClick("//button[@value='submit']");
-		//      waitForPageToLoad50000();
-		//      close();
-		//      //------submit over---//        
-		//      
-		//      //----step 2----//  
-		//      selectWindow("null");
-		//      windowFocus();
-		//      waitAndClick("//img[@alt='doc search']");
-		//      waitForPageToLoad50000();
-		//      assertEquals(windowTitles[0], getTitle());
-		//      selectFrame("iframeportlet");
-		//      waitAndClick("//input[@name='methodToCall.search' and @value='search']");
-		//      waitForPageToLoad50000();
-		//      //----step 2 over ----//
-		//      
-		//      //-----Step 3 verifies that doc is final-------//        
-		//      assertEquals("FINAL", getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-		//      selectFrame("relative=up");
-		//      waitAndClick("link=Main Menu");
-		//      waitForPageToLoad50000();
-		//      assertEquals(windowTitles[0], getTitle());
-		//      System.out.println("---------------------- :: Test complete :: ----------------------");
-		//      //-----Step 3 verified that doc is final -------//      
-		//   
+      //Thread.sleep(5000); 
+      //String[] windowTitles = getAllWindowTitles();
+      //selectWindow(windowTitles[1]);
+      //windowFocus();
+      //assertEquals(windowTitles[1], getTitle());
+      //checkForIncidentReport("Action List Id link opened window.", "https://jira.kuali.org/browse/KULRICE-9062 Action list id links result in 404 or NPE");
+      
+      //------submit-----//
+      //selectFrame("relative=up");
+      //waitAndClick("//button[@value='submit']");
+      //waitForPageToLoad50000();
+      //close();
+      //------submit over---//        
+      
+      //----step 2----//  
+      //selectWindow("null");
+      //windowFocus();
+      //waitAndClick("//img[@alt='doc search']");
+      //waitForPageToLoad50000();
+      //assertEquals(windowTitles[0], getTitle());
+      //selectFrame("iframeportlet");
+      //waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+      //waitForPageToLoad50000();
+      //----step 2 over ----//
+      
+      //-----Step 3 verifies that doc is final-------//        
+      //assertEquals("FINAL", getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+      //selectFrame("relative=up");
+      //waitAndClick("link=Main Menu");
+      //waitForPageToLoad50000();
+      //assertEquals(windowTitles[0], getTitle());
+      //System.out.println("---------------------- :: Test complete :: ----------------------");
+      //-----Step 3 verified that doc is final -------
   }
 }

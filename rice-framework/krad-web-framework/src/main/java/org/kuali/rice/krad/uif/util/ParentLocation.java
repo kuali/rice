@@ -37,7 +37,7 @@ import java.util.Map;
  * This information is used internally to generate BreadcrumbItems that can appear before the View's breadcrumbs.
  */
 @BeanTags({@BeanTag(name = "parentLocation-bean", parent = "Uif-ParentLocation"),
-        @BeanTag(name = "ricePortalParentLocation", parent = "ricePortalParentLocation")})
+        @BeanTag(name = "ricePortalParentLocation", parent = "Uif-RicePortalParentLocation")})
 public class ParentLocation extends UifDictionaryBeanBase implements Serializable {
 
     private static final long serialVersionUID = -6242148809697931126L;

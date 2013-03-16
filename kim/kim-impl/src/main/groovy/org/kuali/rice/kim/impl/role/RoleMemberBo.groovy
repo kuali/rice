@@ -133,25 +133,13 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
     }
 
     protected BusinessObject getMember(MemberType memberType, String memberId) {
-        Class<? extends BusinessObject> roleMemberTypeClass = null;
-        String roleMemberIdName = "";
         if (MemberType.PRINCIPAL.equals(memberType)) {
-            roleMemberTypeClass = PrincipalBo.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
-            Principal principalInfo = KimApiServiceLocator.getIdentityService().getPrincipal(memberId);
+            return PrincipalBo.from(KimApiServiceLocator.getIdentityService().getPrincipal(memberId));
         } else if (MemberType.GROUP.equals(memberType)) {
-            roleMemberTypeClass = GroupBo.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
-            Group groupInfo = null;
-            groupInfo = KimApiServiceLocator.getGroupService().getGroup(memberId);
+           return GroupBo.from(KimApiServiceLocator.getGroupService().getGroup(memberId));
         } else if (MemberType.ROLE.equals(memberType)) {
-            roleMemberTypeClass = RoleBo.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
-            Role role = KimApiServiceLocator.getRoleService().getRole(memberId);
+           return RoleBo.from(KimApiServiceLocator.getRoleService().getRole(memberId));
         }
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put(roleMemberIdName, memberId);
-        return KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
     }
 
     public String getMemberName() {

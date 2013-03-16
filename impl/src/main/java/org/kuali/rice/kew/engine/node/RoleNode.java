@@ -146,11 +146,9 @@ public class RoleNode extends RequestsNode {
                         }
                     }
                 }
-                return null;
             }
 			docType = docType.getParentDocType();
 		}
-
 		return null;
 	}
 

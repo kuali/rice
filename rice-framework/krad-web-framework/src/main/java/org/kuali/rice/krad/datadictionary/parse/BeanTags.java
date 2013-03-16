@@ -19,11 +19,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Brian
- * Date: 11/14/12
- * Time: 4:30 PM
- * To change this template use File | Settings | File Templates.
+ * BeanTags annotation for holding multiple BeanTag annotations, for krad beans
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BeanTags {

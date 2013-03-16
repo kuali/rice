@@ -30,7 +30,10 @@
                                            UIF Components View (Kitchen Sink)
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView" parent="Demo-BaseFormView">
+  <bean id="UifCompView" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="help">
       <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
     </property>

@@ -19,7 +19,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-  <bean id="Demo-RowDetails" parent="Demo-BaseFormView">
+  <bean id="Demo-RowDetails" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
     </property>

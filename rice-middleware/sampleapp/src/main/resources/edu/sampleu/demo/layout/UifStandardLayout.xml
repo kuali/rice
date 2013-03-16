@@ -19,7 +19,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-  <bean id="Demo-StandardLayout" parent="Demo-BaseFormView">
+  <bean id="Demo-StandardLayout" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
     </property>
@@ -240,8 +243,8 @@
         <bean parent="Uif-AddLineAction" p:focusOnIdAfterSubmit="SELF"/>
       </list>
     </property>
-    <property name="layoutManager.summaryTitle" value="Collection Item Title" />
-        <property name="layoutManager.summaryFields" value="field1" />
+    <property name="layoutManager.summaryTitle" value="Collection Item Title"/>
+    <property name="layoutManager.summaryFields" value="field1"/>
     <property name="propertyName" value="list1"/>
     <property name="items">
       <list>
@@ -265,8 +268,8 @@
         <bean parent="Uif-AddLineAction" p:focusOnIdAfterSubmit="NEXT_INPUT"/>
       </list>
     </property>
-    <property name="layoutManager.summaryTitle" value="Collection Item Title" />
-    <property name="layoutManager.summaryFields" value="field1" />
+    <property name="layoutManager.summaryTitle" value="Collection Item Title"/>
+    <property name="layoutManager.summaryFields" value="field1"/>
     <property name="propertyName" value="list4"/>
     <property name="items">
       <list>
@@ -298,16 +301,16 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
-                            p:required="true" p:constraintText="Type A to make subfield 2 appear"/>
+                    p:required="true" p:constraintText="Type A to make subfield 2 appear"/>
               <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
-                                  p:required="true" p:progressiveRender="@{#lp.field1 eq 'A'}"/>
+                    p:required="true" p:progressiveRender="@{#lp.field1 eq 'A'}"/>
             </list>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true" p:constraintText="Change to refresh subfield 4"/>
-              <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
-                            p:required="true" p:refreshWhenChangedPropertyNames="#lp.field3"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
+              p:required="true" p:refreshWhenChangedPropertyNames="#lp.field3"/>
       </list>
     </property>
   </bean>
@@ -339,8 +342,8 @@
               value="Collection as a SubSection"/>
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
-    <property name="layoutManager.summaryTitle" value="Collection Item Title" />
-        <property name="layoutManager.summaryFields" value="field1" />
+    <property name="layoutManager.summaryTitle" value="Collection Item Title"/>
+    <property name="layoutManager.summaryFields" value="field1"/>
     <property name="propertyName" value="list5"/>
     <property name="items">
       <list>
@@ -363,8 +366,8 @@
               value="SubCollection with postfix -withinSubSection *Important*"/>
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
-    <property name="layoutManager.summaryTitle" value="SubCollection Item Title" />
-    <property name="layoutManager.summaryFields" value="field1" />
+    <property name="layoutManager.summaryTitle" value="SubCollection Item Title"/>
+    <property name="layoutManager.summaryFields" value="field1"/>
     <property name="propertyName" value="subList"/>
 
     <property name="items">

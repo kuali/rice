@@ -20,7 +20,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="Demo-CollectionGrouping" parent="Demo-BaseFormView">
+  <bean id="Demo-CollectionGrouping" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
     </property>

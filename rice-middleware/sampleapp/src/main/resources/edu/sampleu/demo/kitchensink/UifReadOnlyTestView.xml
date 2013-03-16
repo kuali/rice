@@ -21,7 +21,10 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="Demo-ReadOnlyTestView" parent="Demo-BaseFormView">
+  <bean id="Demo-ReadOnlyTestView" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="headerText" value="ReadOnly Test"/>
     <property name="items">
       <list>
@@ -98,7 +101,7 @@
         <bean parent="Uif-InputField-LabelTop" p:propertyName="bField1" p:label="Checkbox"
               p:defaultValue="true"
               p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by
-            default" >
+            default">
           <property name="control">
             <bean parent="Uif-CheckboxControl"
                   p:checkboxLabel="Checkbox Label"/>
@@ -200,7 +203,6 @@
       </list>
     </property>
   </bean>
-
 
 
 </beans>

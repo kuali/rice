@@ -55,4 +55,10 @@
     </property>
   </bean>
 
+  <bean id="Uif-RicePortalParentLocation" parent="Uif-RicePortalParentLocation-parentBean"/>
+  <bean id="Uif-RicePortalParentLocation-parentBean" parent="Uif-ParentLocation">
+    <property name="parentViewLabel" value="Home"/>
+    <property name="parentViewUrl.href" value="@{#ConfigProperties['application.url']}/portal.do"/>
+  </bean>
+
 </beans>

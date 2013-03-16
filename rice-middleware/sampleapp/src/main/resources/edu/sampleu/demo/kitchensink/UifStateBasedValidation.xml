@@ -17,11 +17,8 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                           http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
   <!--
@@ -29,7 +26,10 @@
                                            UIF Components View (Kitchen Sink)
   ********************************************************************************************************************
   -->
-  <bean id="Demo-StateBasedValidation-Server" parent="Demo-BaseFormView">
+  <bean id="Demo-StateBasedValidation-Server" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="headerText" value="State-based Validation Server-side Test View"/>
     <property name="stateMapping">
@@ -172,7 +172,7 @@
   <bean id="Demo-StateBasedValidation-ClientCustom" parent="Demo-StateBasedValidation-Server">
     <property name="headerText" value="State-based Validation Custom client-side Test View"/>
     <property name="validateClientSide" value="true"/>
-          <property name="instructionalText" value="Demonstration of custom client side validation settings: when in
+    <property name="instructionalText" value="Demonstration of custom client side validation settings: when in
                           either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after
                           client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"/>
     <property name="stateMapping.customClientSideValidationStates">

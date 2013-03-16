@@ -20,7 +20,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="UifGeneratedFields" parent="Demo-BaseFormView">
+  <bean id="UifGeneratedFields" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="headerText" value="Generated Fields"/>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="viewHelperServiceClass"
@@ -153,27 +156,27 @@
   </bean>
 
   <bean id="subCollection1generated" parent="Uif-Disclosure-TableSubCollection-WithinSection"
-       p:layoutManager.numberOfColumns="4">
-       <property name="headerText" value="SubCollection" />
-       <property name="instructionalText"
-         value="A table collection within an item of a stacked collection" />
-       <property name="collectionObjectClass"
-         value="edu.sampleu.demo.kitchensink.UITestObject" />
-       <property name="propertyName" value="subList" />
-       <property name="layoutManager.sequencePropertyName" value="field1" />
-       <property name="layoutManager.richTable.render" value="true" />
-       <property name="items">
-         <list>
-           <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
-             p:required="true"/>
-           <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
-             p:required="true">
-           </bean>
-           <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
-             p:required="true" />
-           <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
-             p:required="true" />
-         </list>
-       </property>
-     </bean>
+        p:layoutManager.numberOfColumns="4">
+    <property name="headerText" value="SubCollection"/>
+    <property name="instructionalText"
+              value="A table collection within an item of a stacked collection"/>
+    <property name="collectionObjectClass"
+              value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="propertyName" value="subList"/>
+    <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.richTable.render" value="true"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
+              p:required="true">
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
+              p:required="true"/>
+      </list>
+    </property>
+  </bean>
 </beans>

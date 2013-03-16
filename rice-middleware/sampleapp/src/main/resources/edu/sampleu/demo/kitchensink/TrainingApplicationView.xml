@@ -27,7 +27,10 @@
   ********************************************************************************************************************
   -->
   <!-- College Application view -->
-  <bean id="Training-CollegeApplicationView" parent="Demo-BaseFormView">
+  <bean id="Training-CollegeApplicationView" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="headerText" value="Kuali University Student Application Form"/>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.TrainingApplicationForm"/>
     <property name="items">
@@ -288,8 +291,8 @@
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="propertyName" value="references"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.TrainingApplicationReference"/>
-    <property name="layoutManager.separateAddLine" value="true" />
-    <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8" />
+    <property name="layoutManager.separateAddLine" value="true"/>
+    <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Name" p:propertyName="name" p:required="true"/>
@@ -324,17 +327,17 @@
   </bean>
 
   <bean id="Training-PreviousEducation" parent="Uif-Disclosure-StackedCollectionSection">
-    <property name="headerText" value="Previous Education" />
-    <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.TrainingApplicationPreviousEducation" />
-    <property name="propertyName" value="previousEducation" />
-    <property name="layoutManager.summaryTitle" value="Course" />
-    <property name="layoutManager.summaryFields" value="course,university" />
+    <property name="headerText" value="Previous Education"/>
+    <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.TrainingApplicationPreviousEducation"/>
+    <property name="propertyName" value="previousEducation"/>
+    <property name="layoutManager.summaryTitle" value="Course"/>
+    <property name="layoutManager.summaryFields" value="course,university"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="University" p:propertyName="university" p:required="true"/>
         <bean parent="Uif-InputField" p:label="College" p:propertyName="college" p:required="true"/>
         <bean parent="Uif-InputField" p:label="Course" p:propertyName="course" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Completion Date" p:propertyName="completionDate" >
+        <bean parent="Uif-InputField" p:label="Completion Date" p:propertyName="completionDate">
           <property name="control">
             <bean parent="Uif-DateControl"/>
           </property>

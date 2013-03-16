@@ -16,54 +16,60 @@
     limitations under the License.
 
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans  
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="LookupSampleView" parent="Uif-LookupView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="viewName" value="LookupSampleView"/>
-    <property name="headerText" value="Lookup Sample" />
-    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+    <property name="headerText" value="Lookup Sample"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-DataField" p:propertyName="number" />
-        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="number"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
         <bean parent="Uif-DataField" p:propertyName="subAccount"/>
-        <bean parent="Uif-DataField" p:propertyName="createDate" />
+        <bean parent="Uif-DataField" p:propertyName="createDate"/>
       </list>
     </property>
   </bean>
 
   <bean id="LookupSampleViewAlwaysMultipleValuesSelect" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewAlwaysMultipleValuesSelect"/>
-    <property name="headerText" value="Lookup Sample - Multiple Value Specified in View (will return return 5 rows)" />
-    <property name="multipleValuesSelectResultSetLimit" value="5" />
-    <property name="multipleValuesSelect" value="true" />
+    <property name="headerText" value="Lookup Sample - Multiple Value Specified in View (will return return 5 rows)"/>
+    <property name="multipleValuesSelectResultSetLimit" value="5"/>
+    <property name="multipleValuesSelect" value="true"/>
   </bean>
 
   <bean id="LookupSampleViewResultsLimit" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewResultsLimit"/>
-    <property name="headerText" value="Lookup Sample with Results Limit  (2 for typical lookup, 4 for multiple lookup)" />
-    <property name="resultSetLimit" value="2" />
-    <property name="multipleValuesSelectResultSetLimit" value="4" />
+    <property name="headerText"
+              value="Lookup Sample with Results Limit  (2 for typical lookup, 4 for multiple lookup)"/>
+    <property name="resultSetLimit" value="2"/>
+    <property name="multipleValuesSelectResultSetLimit" value="4"/>
   </bean>
 
   <bean id="LookupSampleViewUseResultsLimitOnParent" parent="LookupSampleViewResultsLimit">
     <property name="viewName" value="LookupSampleViewUseResultsLimitOnParent"/>
-    <property name="headerText" value="Lookup Sample with Results Limit on Parent View  (2 for typical lookup, 4 for multiple lookup)" />
+    <property name="headerText"
+              value="Lookup Sample with Results Limit on Parent View  (2 for typical lookup, 4 for multiple lookup)"/>
   </bean>
 
   <bean id="LookupSampleViewHeadings" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewHeadings"/>
-    <property name="headerText" value="Lookup Sample with Headings" />
+    <property name="headerText" value="Lookup Sample with Headings"/>
 
     <property name="header.upperGroup">
       <bean parent="Uif-HeaderUpperGroup">
@@ -98,7 +104,7 @@
     <property name="page.header.lowerGroup.items">
       <list merge="true">
         <bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
-                p:actionScript="alert('JavaScript triggered action.')"/>
+              p:actionScript="alert('JavaScript triggered action.')"/>
       </list>
     </property>
   </bean>

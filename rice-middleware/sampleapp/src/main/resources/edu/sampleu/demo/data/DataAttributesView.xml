@@ -27,7 +27,10 @@
             Data Attributes View -  for use in a selenium test to verify that data attributes for all controls are rendered ok
   ********************************************************************************************************************
   -->
-  <bean id="dataAttributesView_selenium" parent="Demo-BaseFormView">
+  <bean id="dataAttributesView_selenium" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="headerText" value="Data Attributes View"/>
     <property name="entryPageId" value="dataAttributesView-Page1"/>
     <property name="navigation">
@@ -56,7 +59,7 @@
   <bean id="dataAttributesView-Menu" parent="Uif-TabNavigationGroup">
     <property name="items">
       <list>
-         <ref bean="navigationLink_attrs"/>
+        <ref bean="navigationLink_attrs"/>
       </list>
     </property>
   </bean>
@@ -82,21 +85,22 @@
                                            A section to hold input fields
   ********************************************************************************************************************
   -->
-  <bean id="dataAttributesView-BoxSection1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+  <bean id="dataAttributesView-BoxSection1" parent="Uif-Disclosure-VerticalBoxSection"
+        p:layoutManager.orientation="VERTICAL">
     <property name="headerText" value="InputFields"/>
     <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
     <property name="items">
       <list>
-      <ref bean="textInputField_attrs"/>
-      <ref bean="textAreaInputField_attrs"/>
-      <ref bean="dropDown_attrs"/>
-      <ref bean="datePicker_attrs"/>
-      <ref bean="checkBox_attrs"/>
-      <ref bean="radioButton_attrs"/>
-      <ref bean="fileUpload_attrs"/>
-      <ref bean="userControl_attrs"/>
-      <ref bean="spinnerControl_attrs"/>
-      <ref bean="hiddenControl_attrs"/>
+        <ref bean="textInputField_attrs"/>
+        <ref bean="textAreaInputField_attrs"/>
+        <ref bean="dropDown_attrs"/>
+        <ref bean="datePicker_attrs"/>
+        <ref bean="checkBox_attrs"/>
+        <ref bean="radioButton_attrs"/>
+        <ref bean="fileUpload_attrs"/>
+        <ref bean="userControl_attrs"/>
+        <ref bean="spinnerControl_attrs"/>
+        <ref bean="hiddenControl_attrs"/>
       </list>
     </property>
   </bean>
@@ -106,7 +110,8 @@
                                            A section to hold various fields
   ********************************************************************************************************************
   -->
-  <bean id="dataAttributesView-BoxSection2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+  <bean id="dataAttributesView-BoxSection2" parent="Uif-Disclosure-VerticalBoxSection"
+        p:layoutManager.orientation="VERTICAL">
     <property name="headerText" value="Various Fields"/>
     <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
     <property name="items">
@@ -173,7 +178,7 @@
         p:label="Field Label" p:labelPlacement="TOP"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
-        p:required="true"  p:propertyName="field2">
+        p:required="true" p:propertyName="field2">
     <property name="control">
       <bean parent="Uif-TextAreaControl" p:textExpand="true" p:rows="5"
             p:cols="40" p:watermarkText="Text Here...">
@@ -188,7 +193,7 @@
             <entry key="dataTypeAttribute" value="type"/>
           </map>
         </property>
-       </bean>
+      </bean>
     </property>
   </bean>
 
@@ -217,7 +222,7 @@
       </bean>
     </property>
   </bean>
-  
+
   <!-- date picker -->
   <bean id="datePicker_attrs" parent="Uif-InputField" p:propertyName="field3" p:label="Date 2"
         p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
@@ -358,7 +363,7 @@
       </bean>
     </property>
   </bean>
-  
+
   <!-- image field -->
   <bean id="imageField_attrs" parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
         p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:cssClasses="kr-photo"
@@ -395,10 +400,12 @@
   </bean>
 
   <!-- action link no image -->
-  <bean id="actionLink-noImage_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField" p:actionScript="alert('You clicked the link');"/>
-  
+  <bean id="actionLink-noImage_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField"
+        p:actionScript="alert('You clicked the link');"/>
+
   <!-- action link with image right -->
-  <bean id="actionLink-imageRight_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image right" p:actionImagePlacement="RIGHT"
+  <bean id="actionLink-imageRight_attrs" parent="Uif-ActionLink-with-data-attributes"
+        p:actionLabel="ActionLinkField image right" p:actionImagePlacement="RIGHT"
         p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
@@ -407,7 +414,8 @@
   </bean>
 
   <!-- action link with image left -->
-  <bean id="actionLink-imageLeft_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image left (default)"
+  <bean id="actionLink-imageLeft_attrs" parent="Uif-ActionLink-with-data-attributes"
+        p:actionLabel="ActionLinkField image left (default)"
         p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
@@ -428,10 +436,11 @@
         <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-   </bean>
+  </bean>
 
   <!-- action button - rendered as an image -->
-  <bean id="imageAction_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionScript="alert('You clicked a button');">
+  <bean id="imageAction_attrs" parent="Uif-PrimaryActionButton-with-data-attributes"
+        p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png"
             p:altText="ActionImageField demonstration"/>
@@ -440,10 +449,12 @@
   </bean>
 
   <!-- action button - no image - text only -->
-  <bean id="buttonTextOnly_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="ActionField" p:actionScript="alert('You clicked a button');"/>
+  <bean id="buttonTextOnly_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="ActionField"
+        p:actionScript="alert('You clicked a button');"/>
 
   <!-- action button - image bottom -->
-  <bean id="buttonImageBottom_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image BOTTOM" p:actionImagePlacement="BOTTOM"
+  <bean id="buttonImageBottom_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image BOTTOM"
+        p:actionImagePlacement="BOTTOM"
         p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -451,7 +462,8 @@
   </bean>
 
   <!-- action button - image top -->
-  <bean id="buttonImageTop_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image TOP" p:actionImagePlacement="TOP"
+  <bean id="buttonImageTop_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image TOP"
+        p:actionImagePlacement="TOP"
         p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -459,7 +471,8 @@
   </bean>
 
   <!-- button image left -->
-  <bean id="buttonImageLeft_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image LEFT" p:actionImagePlacement="LEFT"
+  <bean id="buttonImageLeft_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image LEFT"
+        p:actionImagePlacement="LEFT"
         p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -467,7 +480,8 @@
   </bean>
 
   <!-- button image right -->
-  <bean id="buttonImageRight_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image RIGHT" p:actionImagePlacement="RIGHT"
+  <bean id="buttonImageRight_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image RIGHT"
+        p:actionImagePlacement="RIGHT"
         p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -504,7 +518,7 @@
         <entry key="dataTypeAttribute" value="type"/>
       </map>
     </property>
-   </bean>
+  </bean>
 
   <bean id="hiddenControl_attrs" parent="Uif-InputField" p:propertyName="field6" p:showLabel="false" p:render="true">
     <property name="control">
@@ -551,9 +565,10 @@
       </map>
     </property>
   </bean>
-  
-  <bean id="linkElement_attrs" parent="Uif-Link" p:href="http://wiki.kuali.org" p:target="_blank" p:linkText="Kuali Wiki"
-          p:title="opens in new window">
+
+  <bean id="linkElement_attrs" parent="Uif-Link" p:href="http://wiki.kuali.org" p:target="_blank"
+        p:linkText="Kuali Wiki"
+        p:title="opens in new window">
     <property name="dataAttributes">
       <map>
         <entry key="iconTemplateName" value="cool-icon-%s.png"/>

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.Component;
@@ -35,7 +36,8 @@ import java.util.Map;
  * View.  Essentially, this class provides a way to determine a conceptual hierarchy of view/page locations.
  * This information is used internally to generate BreadcrumbItems that can appear before the View's breadcrumbs.
  */
-@BeanTag(name = "parentLocation-bean", parent = "Uif-ParentLocation")
+@BeanTags({@BeanTag(name = "parentLocation-bean", parent = "Uif-ParentLocation"),
+        @BeanTag(name = "ricePortalParentLocation", parent = "ricePortalParentLocation")})
 public class ParentLocation extends UifDictionaryBeanBase implements Serializable {
 
     private static final long serialVersionUID = -6242148809697931126L;

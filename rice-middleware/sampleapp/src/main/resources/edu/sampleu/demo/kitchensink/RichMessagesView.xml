@@ -21,7 +21,10 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="RichMessagesView" parent="Demo-BaseFormView">
+  <bean id="RichMessagesView" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
     <property name="headerText" value="Rich Messages"/>
     <property name="items">
       <list>
@@ -49,7 +52,8 @@
     </property>
   </bean>
 
-  <bean id="Demo-BasicMessagesSection" p:headerText="Basic [css='fl-text-underline']Functionality[/css]" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-BasicMessagesSection" p:headerText="Basic [css='fl-text-underline']Functionality[/css]"
+        parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-Message">
@@ -113,14 +117,16 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field100" p:label="Label With [color=green]Color[/color]">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field100"
+              p:label="Label With [color=green]Color[/color]">
         </bean>
 
         <bean parent="Uif-InputField-LabelTop" p:propertyName="field101" p:label="Label With [i][b]Html[/b][/i]">
-                </bean>
+        </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field102" p:label="Label With [id=Demo-RichMessagesImage]Image">
-                        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field102"
+              p:label="Label With [id=Demo-RichMessagesImage]Image">
+        </bean>
 
         <bean parent="Uif-Message">
           <property name="messageText"
@@ -221,12 +227,12 @@
         </bean>
 
         <bean parent="Uif-InputField-LabelTop" p:propertyName="bField1" p:label="CheckboxControl">
-                  <property name="control">
-                    <bean parent="Uif-CheckboxControl" p:checkboxLabel="I,
+          <property name="control">
+            <bean parent="Uif-CheckboxControl" p:checkboxLabel="I,
                     [id=Demo-SampleMessageInput4 propertyName=field103], agree to the terms
                     and conditions of this form">
-                    </bean>
-                  </property>
+            </bean>
+          </property>
         </bean>
       </list>
     </property>

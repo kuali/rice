@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 package edu.samplu.common;
 
+import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.admin.test.AdminMenuNavITBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -47,9 +47,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Class to upgrade UpgradedSeleniumITBase tests to WebDriver.
@@ -63,6 +62,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
     public static final String DOC_ID_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
     public static final String DOC_ID_TABLE_LINK_XPATH="//table[@id='row']/tbody/tr[1]/td[1]/a";
+    public static final String LOGOUT_XPATH = "//input[@name='imageField' and @value='Logout']";
 
     public abstract String getTestUrl();
 
@@ -176,7 +176,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             driver.findElement(By.name(name));
         } catch (Exception e) {
-            Assert.fail(name + " not present " + message);
+            SeleneseTestBase.fail(name + " not present " + message);
         }
     }
 
@@ -188,7 +188,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             driver.findElement(By.xpath(locator));
         } catch (Exception e) {
-            Assert.fail(locator + " not present " + message);
+            SeleneseTestBase.fail(locator + " not present " + message);
         }
     }
 
@@ -206,7 +206,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void assertTextPresent(String text, String message) {
         if (!driver.getPageSource().contains(text)) {
-            Assert.fail(text + " not present " + message);
+            SeleneseTestBase.fail(text + " not present " + message);
         }
     }
 
@@ -224,13 +224,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                     errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
                             By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
                 }
-                Assert.fail(errorText);
+                SeleneseTestBase.fail(errorText);
             }
         }
         
         ITUtil.checkForIncidentReport(driver.getPageSource(), "//img[@alt='doc search']", "Blanket Approve failure");
         waitAndClickByXpath("//img[@alt='doc search']");
-        assertEquals("Kuali Portal Index", driver.getTitle());
+        SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
     }
@@ -440,11 +440,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
         waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
-        assertEquals("1234567890",getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number","value"));
-        assertEquals("2",getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId", "value"));
+        SeleneseTestBase.assertEquals("1234567890",getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number","value"));
+        SeleneseTestBase.assertEquals("2",getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId", "value"));
         waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
         Thread.sleep(3000);
-        junit.framework.Assert.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
+        SeleneseTestBase.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
         passed();
     }
 
@@ -536,11 +536,25 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
     }
 
+    private void jiraAwareFail(By by, String message, Throwable t) {
+        ITUtil.failOnMatchedJira(by.toString());
+        // if there isn't a matched jira to fail on, then fail
+        fail(t.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
+    }
+
     protected void jiraAwareWaitFor(By by, String message) throws InterruptedException {
         try {
             WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
         } catch (Throwable t) {
-            ITUtil.failOnMatchedJira(by.toString());
+            jiraAwareFail(by, message, t);
+        }
+    }
+
+    protected void jiraAwareWaitFor(By by, String message, SeleneseFailable failable) throws InterruptedException {
+        try {
+            WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
+        } catch (Throwable t) {
+            jiraAwareFail(by, message, t);
         }
     }
 
@@ -548,13 +562,25 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         jiraAwareWaitAndClick(by, "");
     }
 
+    protected void waitAndClick(By by, SeleneseFailable failable) throws InterruptedException {
+        jiraAwareWaitAndClick(by, "", failable);
+    }
+
     protected void jiraAwareWaitAndClick(By by, String message) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message);
             (driver.findElement(by)).click();
         } catch (Exception e) {
-            ITUtil.failOnMatchedJira(by.toString());
-            fail(e.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
+            jiraAwareFail(by, message, e);
+        }
+    }
+
+    protected void jiraAwareWaitAndClick(By by, String message, SeleneseFailable failable) throws InterruptedException {
+        try {
+            jiraAwareWaitFor(by, message, failable);
+            (driver.findElement(by)).click();
+        } catch (Exception e) {
+            jiraAwareFail(by, message, e);
         }
     }
 
@@ -570,12 +596,20 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         jiraAwareWaitAndClick(By.linkText(text), message);
     }
 
+    protected void waitAndClickByLinkText(String text, SeleneseFailable failable) throws InterruptedException {
+        jiraAwareWaitAndClick(By.linkText(text), "", failable);
+    }
+
     protected void waitAndClickByName(String name) throws InterruptedException {
         jiraAwareWaitAndClick(By.name(name), "");
     }
 
     protected void waitAndClickByXpath(String xpath) throws InterruptedException {
         waitAndClick(By.xpath(xpath));
+    }
+
+    protected void waitAndClickByXpath(String xpath, SeleneseFailable failable) throws InterruptedException {
+        waitAndClick(By.xpath(xpath), failable);
     }
 
     protected void waitAndClickByName(String name, String message) throws InterruptedException {
@@ -586,12 +620,20 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         jiraAwareWaitAndClick(By.xpath(xpath), message);
     }
 
+    protected void waitAndClickLogout() throws InterruptedException {
+         waitAndClickByXpath(LOGOUT_XPATH);
+    }
+
+    protected void waitAndClickLogout(SeleneseFailable failable) throws InterruptedException {
+        waitAndClickByXpath(LOGOUT_XPATH, failable);
+    }
+
     protected void waitAndClickMainMenu() throws InterruptedException {
         waitAndClickByLinkText("Main Menu");
     }
 
-    protected void waitAndClickLogout() throws InterruptedException {
-         waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
+    protected void waitAndClickMainMenu(SeleneseFailable failable) throws InterruptedException {
+        waitAndClickByLinkText("Main Menu", failable);
     }
 
     protected void waitAndType(By by, String text) throws InterruptedException {
@@ -709,7 +751,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
         
         if (errorText != null && errorText.contains("errors")) {
-            Assert.fail(errorText + message);
+            SeleneseTestBase.fail(errorText + message);
         }
     }
 
@@ -728,7 +770,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitNotVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             if (!isVisible(by)) {
                 break;
@@ -744,7 +786,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitIsVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }           
         	if (isVisible(by)) {
                 break;
@@ -896,7 +938,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         for (int i = 0; i < 6; i++) {
             for (int second = 0;; second++) {               
                 if (second >= waitSeconds)
-                    Assert.fail("timeout");
+                    SeleneseTestBase.fail("timeout");
                 try {                    
                     if (isElementPresent(".kr-refresh-button"))
                         break;
@@ -919,10 +961,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         jiraAwareWaitFor(By.linkText("spreadsheet"), "");
         
         if (isElementPresent(By.linkText(docId))) {
-            assertEquals("FINAL", getDocStatus());
+            SeleneseTestBase.assertEquals("FINAL", getDocStatus());
         } else {
-            junit.framework.Assert.assertEquals(docId,driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
-            assertEquals("FINAL", getDocStatus());
+            SeleneseTestBase.assertEquals(docId,driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
+            SeleneseTestBase.assertEquals("FINAL", getDocStatus());
         }
     }
 
@@ -956,7 +998,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
         assertBlanketApproveButtonsPresent();
-        assertEquals("", getTextByName("methodToCall.cancel"));
+        SeleneseTestBase.assertEquals("", getTextByName("methodToCall.cancel"));
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", "KR-NS - Kuali Nervous System");
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
@@ -1015,7 +1057,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")).getText());
+        SeleneseTestBase.assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")).getText());
     }
 
     protected void testIdentityGroupBlanketApprove() throws Exception
@@ -1252,9 +1294,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
         waitAndClick("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         waitForElementPresentByName("document.notes[0].noteText");
-        assertEquals("Test note", getTextByXpath("//pre"));
+        SeleneseTestBase.assertEquals("Test note", getTextByXpath("//pre"));
         waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-        junit.framework.Assert.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByName("document.notes[0].noteText"));
+        SeleneseTestBase.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByName("document.notes[0].noteText"));
         passed();
     }
 
@@ -1281,13 +1323,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testVerifyConstraintText() throws Exception {
         selectFrame("iframeportlet");
-        assertEquals("* indicates required field",
+        SeleneseTestBase.assertEquals("* indicates required field",
                 getText("div.uif-boxLayout.uif-horizontalBoxLayout.clearfix > span.uif-message.uif-requiredInstructionsMessage.uif-boxLayoutHorizontalItem"));
-        assertEquals("Must not be more than 10 characters",
+        SeleneseTestBase.assertEquals("Must not be more than 10 characters",
                 getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-        assertEquals("Must not be more than 10 characters",
+        SeleneseTestBase.assertEquals("Must not be more than 10 characters",
                 getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Sub Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-        assertEquals("Must not be more than 10 characters",
+        SeleneseTestBase.assertEquals("Must not be more than 10 characters",
                 getText("div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
         passed();
     }
@@ -1543,7 +1585,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         driver.findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         Thread.sleep(5000);
-        assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        SeleneseTestBase.assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
         driver.switchTo().defaultContent();
         driver.findElement(By.name("imageField")).click();
     }
@@ -1581,8 +1623,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]", "Document is not saved successfully");
         
         //checks it is saved and initiator is admin.
-        assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
+        SeleneseTestBase.assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
     }
 
     protected void testAddingBrownGroup() throws Exception {
@@ -1605,8 +1647,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkForIncidentReport();
         
         //checks it is saved and initiator is admin.
-        assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
+        SeleneseTestBase.assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
@@ -1638,7 +1680,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//table[@id='row']/tbody/tr[contains(td[3],'RiceDocument')]/td[1]/a");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
-        assertEquals("RiceDocument", getTextByXpath("//table[@id='row']/tbody/tr/td[4]/a"));
+        SeleneseTestBase.assertEquals("RiceDocument", getTextByXpath("//table[@id='row']/tbody/tr/td[4]/a"));
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("name", "Kuali*D");
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
@@ -1679,8 +1721,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("--------------------------------New Parameter Created-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1700,8 +1742,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
+        SeleneseTestBase.assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        SeleneseTestBase.assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         System.out.println("--------------------------------Lookup And View Successful-------------------------");
@@ -1731,8 +1773,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Edited-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1751,8 +1793,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
+        SeleneseTestBase.assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        SeleneseTestBase.assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
@@ -1784,8 +1826,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Edited-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1805,8 +1847,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
+        SeleneseTestBase.assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        SeleneseTestBase.assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
@@ -1837,8 +1879,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("--------------------------------New Parameter Type Created-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1859,8 +1901,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        SeleneseTestBase.assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
@@ -1891,8 +1933,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Type Edited-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1913,8 +1955,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        SeleneseTestBase.assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
@@ -1947,8 +1989,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Type Edited-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1969,7 +2011,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
@@ -2005,11 +2047,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]");
-        assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
+        SeleneseTestBase.assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
-        assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
+        SeleneseTestBase.assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
         System.out.println("------------------------------------Permission document submitted successfully--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -2077,7 +2119,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]");
-        assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
+        SeleneseTestBase.assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
@@ -2099,7 +2141,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
-        assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
+        SeleneseTestBase.assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
         System.out.println("------------------------------------Person document submitted successfully--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -2141,9 +2183,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(5000);
         switchToWindow("Kuali :: Person");
         Thread.sleep(2000);
-        assertEquals(personName, getTextByXpath("//div[@class='tab-container']/table//tr[2]/td[1]/div").trim());
-        assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div").trim());
-        assertEquals("Student", getTextByXpath("//select/option[@selected]").trim());
+        SeleneseTestBase.assertEquals(personName, getTextByXpath("//div[@class='tab-container']/table//tr[2]/td[1]/div").trim());
+        SeleneseTestBase.assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div").trim());
+        SeleneseTestBase.assertEquals("Student", getTextByXpath("//select/option[@selected]").trim());
         assertElementPresentByXpath("//table[@class='tab']//input[@title='close Overview']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Contact']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Privacy Preferences']");
@@ -2175,162 +2217,162 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent("field9", "focus");
         waitAndTypeByName("field9", "1");
         fireEvent("field9", "blur");
-        Assert.assertTrue(getAttributeByName("field9", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field9", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field9", "focus");
         clearTextByName("field9");
         waitAndTypeByName("field9", "12345");
         fireEvent("field9", "blur");
-        Assert.assertTrue(getAttributeByName("field9", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field9", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field10", "focus");
         waitAndTypeByName("field10", "2");
         fireEvent("field10", "blur");
-        Assert.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field10", "focus");
         clearTextByName("field10");
         waitAndTypeByName("field10", "51");
         fireEvent("field10", "blur");
-        Assert.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field10", "focus");
         clearTextByName("field10");
         waitAndTypeByName("field10", "25");
         fireEvent("field10", "blur");
-        Assert.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field10", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field6", "focus");
         waitAndTypeByName("field6", "A");
         fireEvent("field6", "blur");
         waitAndTypeByName("field7", "");
         fireEvent("field7", "blur");
-        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         waitAndTypeByName("field7", "B");
         fireEvent("field7", "blur");
-        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         waitAndTypeByName("field8", "");
         fireEvent("field8", "blur");
-        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field8");
         waitAndTypeByName("field8", "C");
         fireEvent("field8", "blur");
-        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field6");
         waitAndTypeByName("field6", "");
         fireEvent("field6", "blur");
-        Assert.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field7");
         waitAndTypeByName("field7", "");
         fireEvent("field7", "blur");
-        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field8");
         waitAndTypeByName("field8", "");
         fireEvent("field8", "blur");
-        Assert.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field8");
         waitAndTypeByName("field8", "C");
         fireEvent("field8", "blur");
-        Assert.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field6");
         waitAndTypeByName("field6", "A");
         fireEvent("field6", "blur");
-        Assert.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field6", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field7", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field8", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         waitAndTypeByName("field14", "A");
         fireEvent("field14", "blur");
-        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field11");
         waitAndTypeByName("field11", "A");
         fireEvent("field11", "blur");
-        Assert.assertTrue(getAttributeByName("field11", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field11", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field11");
         waitAndTypeByName("field11", "");
         fireEvent("field11", "blur");
-        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field12");
         waitAndTypeByName("field12", "A");
         fireEvent("field12", "blur");
-        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field13");
         waitAndTypeByName("field13", "A");
         fireEvent("field13", "blur");
-        Assert.assertTrue(getAttributeByName("field13", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field13", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field11");
         waitAndTypeByName("field11", "A");
         fireEvent("field11", "blur");
-        Assert.assertTrue(getAttributeByName("field11", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field11", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field14", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         waitAndTypeByName("field18", "A");
         fireEvent("field18", "blur");
-        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         waitAndTypeByName("field15", "A");
         fireEvent("field15", "blur");
-        Assert.assertTrue(getAttributeByName("field15", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field15", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field15");
         waitAndTypeByName("field15", "");
         fireEvent("field15", "blur");
-        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field6");
         waitAndTypeByName("field16", "A");
         fireEvent("field16", "blur");
-        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field17");
         waitAndTypeByName("field17", "A");
         fireEvent("field17", "blur");
-        Assert.assertTrue(getAttributeByName("field17", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field17", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field15");
         waitAndTypeByName("field15", "A");
         fireEvent("field15", "blur");
-        Assert.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field18", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         waitAndTypeByName("field23", "A");
         fireEvent("field23", "blur");
-        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field19");
         waitAndTypeByName("field19", "A");
         fireEvent("field19", "blur");
-        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field19");
         waitAndTypeByName("field19", "");
         fireEvent("field19", "blur");
         waitAndTypeByName("field20", "B");
         fireEvent("field20", "blur");
-        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field20");
         waitAndTypeByName("field20", "");
         fireEvent("field20", "blur");
-        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field21");
         waitAndTypeByName("field21", "C");
         fireEvent("field21", "blur");
-        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field22");
         waitAndTypeByName("field22", "D");
         fireEvent("field22", "blur");
-        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field19");
         waitAndTypeByName("field19", "D");
         fireEvent("field19", "blur");
-        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field20");
         waitAndTypeByName("field20", "D");
         fireEvent("field20", "blur");
-        Assert.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field23", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case1']");
         clearTextByName("field25");
         waitAndTypeByName("field25", "");
         fireEvent("field25", "blur");
-        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case4']");
         fireEvent("field24", "blur");
         
         for (int second = 0;; second++) {           
             if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
                 if (getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
@@ -2340,7 +2382,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case1']");
         fireEvent("field24", "blur");
         clearTextByName("field25");
@@ -2349,7 +2391,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {            
             if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
                 if (getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
@@ -2359,13 +2401,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case2']");
         fireEvent("field24", "blur");
         
         for (int second = 0;; second++) {            
             if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
                 if (getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
@@ -2375,11 +2417,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field25");
         waitAndTypeByName("field25", "A100");
         fireEvent("field25", "blur");
-        Assert.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field25", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case3']");
         fireEvent("field24", "blur");
         clearTextByName("field26");
@@ -2388,7 +2430,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {            
             if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {               
                 if (getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
@@ -2398,15 +2440,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field26");
         waitAndTypeByName("field26", "501");
         fireEvent("field26", "blur");
-        Assert.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field26");
         waitAndTypeByName("field26", "499");
         fireEvent("field26", "blur");
-        Assert.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field26");
         waitAndTypeByName("field26", "6000");
         fireEvent("field26", "blur");
@@ -2415,7 +2457,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {           
             if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {               
                 if (getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
@@ -2425,7 +2467,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field26", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case4']");
         clearTextByName("field27");
         waitAndTypeByName("field27", "A");
@@ -2436,7 +2478,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {           
             if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {               
                 if (getAttributeByName("field28", "class").matches("^[\\s\\S]*error[\\s\\S]*$")) {
@@ -2446,13 +2488,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         checkByXpath("//*[@name='field24' and @value='case3']");
         fireEvent("field24", "blur");
         
         for (int second = 0;; second++) {            
             if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
                 if (getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
@@ -2462,7 +2504,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field28");
         waitAndTypeByName("field28", "B");
         fireEvent("field28", "blur");
@@ -2471,7 +2513,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {        
             if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {               
                 if (getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$")) {
@@ -2481,24 +2523,24 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field28", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field31");
         waitAndTypeByName("field31", "B");
         clearTextByName("field32");
         waitAndTypeByName("field32", "B");
         waitAndTypeByName("field33", "");
         fireEvent("field33", "blur");
-        Assert.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         clearTextByName("field33");
         waitAndTypeByName("field33", "B");
         fireEvent("field33", "blur");
-        Assert.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         clearTextByName("field32");
         waitAndTypeByName("field32", "A");
         clearTextByName("field33");
         waitAndTypeByName("field33", "");
         fireEvent("field33", "blur");
-        Assert.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field33", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         passed();
     }
 
@@ -2539,30 +2581,30 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent(NAME_FIELD_1, "focus");
         fireMouseOverEventByName(NAME_FIELD_1);
         
-        // Assert.assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
-        Assert.assertEquals("This tooltip is triggered by focus or and mouse over.",getText("td.jquerybubblepopup-innerHtml"));
+        // SeleneseTestBase.assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
+        SeleneseTestBase.assertEquals("This tooltip is triggered by focus or and mouse over.",getText("td.jquerybubblepopup-innerHtml"));
 
         // check if tooltip closed on blur
         fireEvent(NAME_FIELD_1, "blur");
-        Assert.assertFalse(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
+        SeleneseTestBase.assertFalse(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
         Thread.sleep(5000);
         fireEvent("field119", "focus");
         
         // check if tooltip opens on mouse over
         fireMouseOverEventByName(NAME_FIELD_2);        
-        Assert.assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
         // check if tooltip closed on mouse out
         waitAndTypeByName(NAME_FIELD_2, "a");
         Thread.sleep(5000);
-        Assert.assertFalse(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
         // check that default tooltip does not display when there are an error message on the field
         waitAndTypeByName(NAME_FIELD_1, "1");
         fireEvent(NAME_FIELD_1, "blur");
         fireMouseOverEventByName(NAME_FIELD_1);
         Thread.sleep(10000);
-        junit.framework.Assert.assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
+        SeleneseTestBase.assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
                         isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
                                 !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
        
@@ -2574,187 +2616,187 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent("field50", "focus");
         waitAndTypeByName("field50", "12.333");
         fireEvent("field50", "blur");
-        Assert.assertTrue(getAttributeByName("field50", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field50", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field50", "focus");
         waitAndTypeByName("field50", "123.33");
         fireEvent("field50", "blur");
-        Assert.assertTrue(getAttributeByName("field50", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field50", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field51", "focus");
         waitAndTypeByName("field51", "A");
         fireEvent("field51", "blur");
-        Assert.assertTrue(getAttributeByName("field51", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field51", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field51", "focus");
         waitAndTypeByName("field51", "-123.33");
         fireEvent("field51", "blur");
-        Assert.assertTrue(getAttributeByName("field51", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field51", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field77", "focus");
         waitAndTypeByName("field77", "1.1");
         fireEvent("field77", "blur");
-        Assert.assertTrue(getAttributeByName("field77", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field77", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field77", "focus");
         waitAndTypeByName("field77", "12");
         fireEvent("field77", "blur");
-        Assert.assertTrue(getAttributeByName("field77", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field77", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field52", "focus");
         waitAndTypeByName("field52", "5551112222");
         fireEvent("field52", "blur");
-        Assert.assertTrue(getAttributeByName("field52", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field52", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field52", "focus");
         waitAndTypeByName("field52", "555-111-1111");
         fireEvent("field52", "blur");
-        Assert.assertTrue(getAttributeByName("field52", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field52", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field53", "focus");
         waitAndTypeByName("field53", "1ClassName.java");
         fireEvent("field53", "blur");
-        Assert.assertTrue(getAttributeByName("field53", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field53", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field53", "focus");
         waitAndTypeByName("field53", "ClassName.java");
         fireEvent("field53", "blur");
-        Assert.assertTrue(getAttributeByName("field53", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field53", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field54", "focus");
         waitAndTypeByName("field54", "aaaaa");
         fireEvent("field54", "blur");
-        Assert.assertTrue(getAttributeByName("field54", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field54", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field54", "focus");
         waitAndTypeByName("field54", "aaaaa@kuali.org");
         fireEvent("field54", "blur");
-        Assert.assertTrue(getAttributeByName("field54", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field54", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field84", "focus");
         waitAndTypeByName("field84", "aaaaa");
         fireEvent("field84", "blur");
-        Assert.assertTrue(getAttributeByName("field84", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field84", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field84", "focus");
         waitAndTypeByName("field84", "http://www.kuali.org");
         fireEvent("field84", "blur");
-        Assert.assertTrue(getAttributeByName("field84", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field84", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field55", "focus");
         waitAndTypeByName("field55", "023512");
         fireEvent("field55", "blur");
-        Assert.assertTrue(getAttributeByName("field55", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field55", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field55", "focus");
         waitAndTypeByName("field55", "022812");
         fireEvent("field55", "blur");
-        Assert.assertTrue(getAttributeByName("field55", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field55", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field75", "focus");
         waitAndTypeByName("field75", "02/35/12");
         fireEvent("field75", "blur");
-        Assert.assertTrue(getAttributeByName("field75", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field75", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field75", "focus");
         waitAndTypeByName("field75", "02/28/12");
         fireEvent("field75", "blur");
-        Assert.assertTrue(getAttributeByName("field75", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field75", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field82", "focus");
         waitAndTypeByName("field82", "13:22");
         fireEvent("field82", "blur");
-        Assert.assertTrue(getAttributeByName("field82", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field82", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field82", "focus");
         waitAndTypeByName("field82", "02:33");
         fireEvent("field82", "blur");
-        Assert.assertTrue(getAttributeByName("field82", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field82", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field83", "focus");
         waitAndTypeByName("field83", "25:22");
         fireEvent("field83", "blur");
-        Assert.assertTrue(getAttributeByName("field83", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field83", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field83", "focus");
         waitAndTypeByName("field83", "14:33");
         fireEvent("field83", "blur");
-        Assert.assertTrue(getAttributeByName("field83", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field83", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field57", "focus");
         waitAndTypeByName("field57", "0");
         fireEvent("field57", "blur");
-        Assert.assertTrue(getAttributeByName("field57", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field57", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field57", "focus");
         waitAndTypeByName("field57", "2020");
         fireEvent("field57", "blur");
-        Assert.assertTrue(getAttributeByName("field57", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field57", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field58", "focus");
         waitAndTypeByName("field58", "13");
         fireEvent("field58", "blur");
-        Assert.assertTrue(getAttributeByName("field58", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field58", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field58", "focus");
         waitAndTypeByName("field58", "12");
         fireEvent("field58", "blur");
-        Assert.assertTrue(getAttributeByName("field58", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field58", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field61", "focus");
         waitAndTypeByName("field61", "5555-444");
         fireEvent("field61", "blur");
-        Assert.assertTrue(getAttributeByName("field61", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field61", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field61", "focus");
         waitAndTypeByName("field61", "55555-4444");
         fireEvent("field61", "blur");
-        Assert.assertTrue(getAttributeByName("field61", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field61", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field62", "focus");
         waitAndTypeByName("field62", "aa5bb6_a");
         fireEvent("field62", "blur");
-        Assert.assertTrue(getAttributeByName("field62", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field62", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field62", "focus");
         waitAndTypeByName("field62", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890");
         fireEvent("field62", "blur");
-        Assert.assertTrue(getAttributeByName("field62", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field62", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field63", "focus");
         waitAndTypeByName("field63", "fff555$");
         fireEvent("field63", "blur");
-        Assert.assertTrue(getAttributeByName("field63", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field63", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field63", "focus");
         waitAndTypeByName("field63", "aa22 _/");
         fireEvent("field63", "blur");
-        Assert.assertTrue(getAttributeByName("field63", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field63", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field64", "focus");
         waitAndTypeByName("field64", "AABB55");
         fireEvent("field64", "blur");
-        Assert.assertTrue(getAttributeByName("field64", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field64", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field64", "focus");
         waitAndTypeByName("field64", "ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z");
         fireEvent("field64", "blur");
-        Assert.assertTrue(getAttributeByName("field64", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field64", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field76", "focus");
         waitAndTypeByName("field76", "AA~BB%");
         fireEvent("field76", "blur");
-        Assert.assertTrue(getAttributeByName("field76", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field76", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field76", "focus");
         waitAndTypeByName("field76", "abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?");
         fireEvent("field76", "blur");
-        Assert.assertTrue(getAttributeByName("field76", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field76", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field65", "focus");
         waitAndTypeByName("field65", "sdfs$#$# dsffs");
         fireEvent("field65", "blur");
-        Assert.assertTrue(getAttributeByName("field65", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field65", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field65", "focus");
         waitAndTypeByName("field65", "sdfs$#$#sffs");
         fireEvent("field65", "blur");
-        Assert.assertTrue(getAttributeByName("field65", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field65", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field66", "focus");
         waitAndTypeByName("field66", "abcABCD");
         fireEvent("field66", "blur");
-        Assert.assertTrue(getAttributeByName("field66", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field66", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field66", "focus");
         waitAndTypeByName("field66", "ABCabc");
         fireEvent("field66", "blur");
-        Assert.assertTrue(getAttributeByName("field66", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field66", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field67", "focus");
         waitAndTypeByName("field67", "(111)B-(222)A");
         fireEvent("field67", "blur");
-        Assert.assertTrue(getAttributeByName("field67", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field67", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field67", "focus");
         waitAndTypeByName("field67", "(12345)-(67890)");
         fireEvent("field67", "blur");
-        Assert.assertTrue(getAttributeByName("field67", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field67", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field68", "focus");
         waitAndTypeByName("field68", "A.66");
         fireEvent("field68", "blur");
-        Assert.assertTrue(getAttributeByName("field68", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field68", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field68", "focus");
         waitAndTypeByName("field68", "a.4");
         fireEvent("field68", "blur");
-        Assert.assertTrue(getAttributeByName("field68", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field68", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         fireEvent("field56", "focus");
         waitAndTypeByName("field56", "2020-06-02");
         fireEvent("field56", "blur");
-        Assert.assertTrue(getAttributeByName("field56", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field56", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         fireEvent("field56", "focus");
         waitAndTypeByName("field56", "2020-06-02 03:30:30.22");
         fireEvent("field56", "blur");
-        Assert.assertTrue(getAttributeByName("field56", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field56", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         passed();
     }
 
@@ -2779,50 +2821,51 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
         
         // verify that sub collection sizes are displayed as expected
-        assertEquals("SubCollection - (3 lines)",
-                getText("div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span"));
-        assertEquals("SubCollection - (2 lines)", getTextByXpath("//a[@id='subCollection1_line1_toggle']/span"));
+        SeleneseTestBase.assertEquals("SubCollection - (3 lines)", getText(
+                "div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span"));
+        SeleneseTestBase.assertEquals("SubCollection - (2 lines)", getTextByXpath(
+                "//a[@id='subCollection1_line1_toggle']/span"));
     }
 
     protected void verifyRichMessagesValidationBasicFunctionality() throws Exception
     {
-        Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field1']"));
-        Assert.assertTrue(isElementPresentByXpath("//a[contains(text(), 'Kuali')]"));
-        Assert.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='field2']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field1']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//a[contains(text(), 'Kuali')]"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='field2']"));
         Thread.sleep(3000);
     }
 
     protected void verifyRichMessagesValidationAdvancedFunctionality() throws Exception
     {
         //Color Options
-        Assert.assertTrue(isElementPresentByXpath("//span[@style='color: green;']"));
-        Assert.assertTrue(isElementPresentByXpath("//span[@style='color: blue;']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//span[@style='color: green;']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//span[@style='color: blue;']"));
 
         //Css class
-        Assert.assertTrue(isElementPresentByXpath("//span[@class='fl-text-underline fl-text-larger']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//span[@class='fl-text-underline fl-text-larger']"));
 
         //Combinations
-        Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field3']"));
-        Assert.assertTrue(isElementPresentByXpath("//select[@name='field4']"));
-        Assert.assertTrue(isElementPresentByXpath("//button[contains(text(), 'Action Button')]"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field3']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//select[@name='field4']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//button[contains(text(), 'Action Button')]"));
 
         //Rich Message Field
-        Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/span[contains(., 'Color')]"));
-        Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/i/b[contains(., 'Html')]"));
-        Assert.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/img[@class='uif-image inlineBlock']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/span[contains(., 'Color')]"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/i/b[contains(., 'Html')]"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/img[@class='uif-image inlineBlock']"));
         Thread.sleep(3000);
     }
 
     protected void verifyRichMessagesValidationLettersNumbersValidation() throws Exception
     {
         //For letters only Validation
-        Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field5']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field5']"));
         waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']","abc");
-        Assert.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']");
         waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']","abc12");
         waitAndTypeByXpath("//input[@name= 'field6']", "");
-        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         Thread.sleep(3000);
         clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']");
         waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']","abc");
@@ -2830,32 +2873,32 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         //For numbers only validation
         waitAndTypeByXpath("//input[@name= 'field6']", "123");
-        Assert.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         clearTextByXpath("//input[@name= 'field6']");
         waitAndTypeByXpath("//input[@name= 'field6']", "123ab");
         fireEvent("field6", "blur");
         Thread.sleep(5000);
-        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         Thread.sleep(3000);
     }
 
     protected void verifyRichMessagesValidationRadioAndCheckBoxGroupFunctionality() throws Exception
     {
         //Radio Group
-        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='1']"));
-        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='2']"));
-        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='3']"));
-        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='4']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='1']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='2']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='3']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='4']"));
 
         //Checkbox Group
-        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='1']"));
-        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='2']"));
-        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='3']"));
-        Assert.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/label/div/select[@name='field4']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='1']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='2']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='3']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/label/div/select[@name='field4']"));
 
         //Checkbox Control
-        Assert.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='bField1']"));
-        Assert.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field103']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='bField1']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field103']"));
     }
 
     protected void verifyRichMessagesValidationLinkDeclarationsFunctionality() throws Exception
@@ -2869,17 +2912,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //Testing methodToCall Action
         waitAndClickByXpath("//div[contains(., 'Testing methodToCall action')]/a");
         Thread.sleep(3000);        
-        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
-        Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
 
         //Testing methodToCall action (no client validation check)
         waitAndClickByXpath("//div[contains(., 'Testing methodToCall action (no client validation check)')]/a");
-        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages']"));
-        Assert.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
-        Assert.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
         Thread.sleep(3000);
     }
 
@@ -2893,7 +2936,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         for (int second = 0;; second++) {            
             if (second >= waitSeconds)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {               
                 if (getAttributeByName("newCollectionLines['list1'].field1", "value").equals(""))
                     break;
@@ -2901,25 +2944,25 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
-        Assert.assertEquals("asdf1", getAttributeByName("list1[0].field1", "value"));
-        Assert.assertEquals("asdf2", getAttributeByName("list1[0].field2", "value"));
-        Assert.assertEquals("asdf3", getAttributeByName("list1[0].field3", "value"));
-        Assert.assertEquals("asdf4", getAttributeByName("list1[0].field4", "value"));
-        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
+        SeleneseTestBase.assertEquals("asdf1", getAttributeByName("list1[0].field1", "value"));
+        SeleneseTestBase.assertEquals("asdf2", getAttributeByName("list1[0].field2", "value"));
+        SeleneseTestBase.assertEquals("asdf3", getAttributeByName("list1[0].field3", "value"));
+        SeleneseTestBase.assertEquals("asdf4", getAttributeByName("list1[0].field4", "value"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
         passed();
     }
 
     protected void assertTableLayout() {
-        Assert.assertTrue(driver.getPageSource().contains("Table Layout"));
-        Assert.assertTrue(driver.getPageSource().contains("Field 1"));
-        Assert.assertTrue(driver.getPageSource().contains("Field 2"));
-        Assert.assertTrue(driver.getPageSource().contains("Field 3"));
-        Assert.assertTrue(driver.getPageSource().contains("Field 4"));
-        Assert.assertTrue(driver.getPageSource().contains("Actions"));
+        SeleneseTestBase.assertTrue(driver.getPageSource().contains("Table Layout"));
+        SeleneseTestBase.assertTrue(driver.getPageSource().contains("Field 1"));
+        SeleneseTestBase.assertTrue(driver.getPageSource().contains("Field 2"));
+        SeleneseTestBase.assertTrue(driver.getPageSource().contains("Field 3"));
+        SeleneseTestBase.assertTrue(driver.getPageSource().contains("Field 4"));
+        SeleneseTestBase.assertTrue(driver.getPageSource().contains("Actions"));
     }
 
     /**
@@ -2931,20 +2974,20 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible woudl be better
         assertElementPresentByName("list1[0].field1");
         assertTableLayout();
-        Assert.assertEquals("", getAttributeByName("list1[0].field1", "value"));
-        Assert.assertEquals("", getAttributeByName("list1[0].field2", "value"));
-        Assert.assertEquals("", getAttributeByName("list1[0].field3", "value"));
-        Assert.assertEquals("", getAttributeByName("list1[0].field4", "value"));
-        Assert.assertEquals("5", getAttributeByName("list1[1].field1", "value"));
-        Assert.assertEquals("6", getAttributeByName("list1[1].field2", "value"));
-        Assert.assertEquals("7", getAttributeByName("list1[1].field3", "value"));
-        Assert.assertEquals("8", getAttributeByName("list1[1].field4", "value"));
-        Assert.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        SeleneseTestBase.assertEquals("", getAttributeByName("list1[0].field1", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("list1[0].field2", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("list1[0].field3", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("list1[0].field4", "value"));
+        SeleneseTestBase.assertEquals("5", getAttributeByName("list1[1].field1", "value"));
+        SeleneseTestBase.assertEquals("6", getAttributeByName("list1[1].field2", "value"));
+        SeleneseTestBase.assertEquals("7", getAttributeByName("list1[1].field3", "value"));
+        SeleneseTestBase.assertEquals("8", getAttributeByName("list1[1].field4", "value"));
+        SeleneseTestBase.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         waitAndTypeByName("list1[0].field1", "1");
         waitAndTypeByName("list1[0].field2", "1");
         waitAndTypeByName("list1[0].field3", "1");
         waitAndTypeByName("list1[0].field4", "1");
-        Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        SeleneseTestBase.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         passed();
     }
 
@@ -2960,49 +3003,49 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         //jiraAwareWaitAndClick("css=div.jGrowl-close");
         // check if actions column RIGHT by default
-        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
+        //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {            
             if (second >= waitSeconds)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {                
                 if (isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"))
                     break;
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        Assert.assertTrue(isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"));
 
         // check if actions column is LEFT
-        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
+        //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {           
             if (second >= waitSeconds)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {                
                 if (isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"))
                     break;
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        Assert.assertTrue(isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"));
 
         // check if actions column is 3rd in a sub collection
-        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
+        //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {            
             if (second >= waitSeconds)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {                
                 if (isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"))
                     break;
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        Assert.assertTrue(isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
         passed();
     }
 
     protected void testAddViaLightbox() throws Exception {
         waitAndClickByLinkText("Add Via Lightbox");
-        Assert.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        SeleneseTestBase.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
         Thread.sleep(3000);
         waitAndTypeByXpath("//form/div/table/tbody/tr/td/div/input", "1");
@@ -3011,7 +3054,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByXpath("//form/div/table/tbody/tr[4]/td/div/input", "1");
         waitAndClickByXpath("//button[@id='Collections-AddViaLightbox-TableTop_add']");
         Thread.sleep(3000);
-        Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        SeleneseTestBase.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         passed();
     }
 
@@ -3026,17 +3069,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000);
 
         //Check if row has been added really or not
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
-        Assert.assertEquals("1", getAttributeByName("list1[0].field1", "value"));
-        Assert.assertEquals("1", getAttributeByName("list1[0].field2", "value"));
-        Assert.assertEquals("1", getAttributeByName("list1[0].field3", "value"));
-        Assert.assertEquals("1", getAttributeByName("list1[0].field4", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field1", "value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field2", "value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field3", "value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field4", "value"));
 
         //Check for the added if delete is present or not
-        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
         passed();
     }
 
@@ -3051,18 +3094,18 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000);
         
         //Check if row has been added really or not
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
-        Assert.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
-        Assert.assertEquals("1", getAttributeByName("list1[0].field1", "value"));
-        Assert.assertEquals("1", getAttributeByName("list1[0].field2", "value"));
-        Assert.assertEquals("1", getAttributeByName("list1[0].field3", "value"));
-        Assert.assertEquals("1", getAttributeByName("list1[0].field4", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
+        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field1", "value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field2", "value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field3", "value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field4", "value"));
 
         //Check for the added if delete is present or not
-        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
-        //        Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        //        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
         passed();
     }
 
@@ -3070,45 +3113,51 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testCollectionTotalling() throws Exception {
         //Scenario Asserts Changes in Total at client side        
         waitForElementPresent("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']");
-        assertEquals("Total: 419",getText("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
+        SeleneseTestBase.assertEquals("Total: 419", getText(
+                "div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
         clearText("div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']");
         waitAndType("div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']","10");
         waitAndClick("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']");
         Thread.sleep(5000);
-        assertEquals("Total: 424",getText("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
+        SeleneseTestBase.assertEquals("Total: 424", getText(
+                "div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
         
         //Scenario Asserts Changes in Total at client side on keyUp
-        assertEquals("Total: 419", getText("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
+        SeleneseTestBase.assertEquals("Total: 419", getText(
+                "div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
         clearText("div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']");
         waitAndType("div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']","9");
         waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
         Thread.sleep(5000);
-        assertEquals("Total: 423",getText("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
+        SeleneseTestBase.assertEquals("Total: 423", getText(
+                "div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
 
         //Asserts absence of Total in 2nd column at the footer for Demonstrating totaling on only some columns 
-        assertEquals("", getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[2]"));
+        SeleneseTestBase.assertEquals("", getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[2]"));
         
         //Asserts Presence of Total in 2nd column at the footer for Demonstrating totaling on only some columns 
-        assertEquals("Total: 369", getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[3]/div/fieldset/div/div[2]/div[2]"));
+        SeleneseTestBase.assertEquals("Total: 369", getTextByXpath(
+                "//div[3]/div[3]/table/tfoot/tr/th[3]/div/fieldset/div/div[2]/div[2]"));
 
         //Asserts Presence of Total in left most column only being one with no totaling itself 
-        assertEquals("Total:", getTextByXpath("//*[@id='u100213_span']"));
-        assertEquals("419", getTextByXpath("//div[4]/div[3]/table/tfoot/tr/th[2]/div/fieldset/div/div[2]/div[2]"));
+        SeleneseTestBase.assertEquals("Total:", getTextByXpath("//*[@id='u100213_span']"));
+        SeleneseTestBase.assertEquals("419", getTextByXpath(
+                "//div[4]/div[3]/table/tfoot/tr/th[2]/div/fieldset/div/div[2]/div[2]"));
 
         //Asserts changes in value in Total and Decimal for Demonstrating multiple types of calculations for a single column (also setting average to 3 decimal places to demonstrate passing data to calculation function) 
-        assertEquals("Total: 382", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
+        SeleneseTestBase.assertEquals("Total: 382", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
         clearText("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']");
         waitAndType("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']","11");
         waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
         Thread.sleep(5000);
-        assertEquals("Total: 385", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
+        SeleneseTestBase.assertEquals("Total: 385", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
 
         // Assert changes in Decimal..
         clearText("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']");
         waitAndType("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']","15.25");
         waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
         Thread.sleep(5000);
-        assertEquals("Page Average: 11.917", getTextByXpath("//div[2]/fieldset/div/div[2]/div"));
+        SeleneseTestBase.assertEquals("Page Average: 11.917", getTextByXpath("//div[2]/fieldset/div/div[2]/div"));
     }
 
     protected void testConfigurationTestView(String idPrefix) throws Exception {
@@ -3118,7 +3167,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String styleValue = getAttributeByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']", "style");
         
         // log.info("styleValue is " + styleValue);
-        Assert.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
+        SeleneseTestBase.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
         
         // get current list of options
         String refreshTextSelectLocator = "//select[@id='" + idPrefix + "RefreshTextField_control']";
@@ -3131,14 +3180,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String[] options2 = getSelectOptionsByXpath(refreshTextSelectLocator);
         
         //verify that the change has occurred
-        junit.framework.Assert.assertFalse(
+        SeleneseTestBase.assertFalse(
                 "Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection",
                 options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
         
         //confirm that control gets disabled
         selectByXpath(dropDownSelectLocator, "None");
         Thread.sleep(3000);
-        assertEquals("true", getAttributeByXpath(refreshTextSelectLocator, "disabled"));
+        SeleneseTestBase.assertEquals("true", getAttributeByXpath(refreshTextSelectLocator, "disabled"));
         passed();
     }
 
@@ -3150,7 +3199,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         for (String id : addLineIds) {
             String tagId = "//*[@id='" + idPrefix + id + addLineIdSuffix + "']";
-            junit.framework.Assert.assertTrue("Did not find id " + tagId, isElementPresentByXpath(tagId));
+            SeleneseTestBase.assertTrue("Did not find id " + tagId, isElementPresentByXpath(tagId));
         }
     }
 
@@ -3162,13 +3211,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByXpath(startTimeId, inputTime);
         String amPmSelectLocator = "//*[@id='" + idPrefix + "StartTimeAmPm" + addLineIdSuffix + "']";
         selectByXpath(amPmSelectLocator, "PM");
-        assertEquals("PM", getAttributeByXpath(amPmSelectLocator, "value"));
+        SeleneseTestBase.assertEquals("PM", getAttributeByXpath(amPmSelectLocator, "value"));
         Thread.sleep(5000); //allow for ajax refresh        
         waitAndClickByXpath("//button");
         Thread.sleep(5000); //allow for line to be added
         
         //confirm that line has been added
-        junit.framework.Assert.assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
+        SeleneseTestBase.assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
                         isElementPresentByXpath("//input[@value='7:06']"));
         passed();
     }
@@ -3774,7 +3823,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {            
         	if (second >= 5)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {                
                 if (validateVisible) {                   
                     if (isElementPresentByXpath("//input[@aria-invalid]"))
@@ -3789,9 +3838,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
         
         if (validateVisible) {
-            Assert.assertTrue(isElementPresentByXpath("//input[@aria-invalid]"));
+            SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@aria-invalid]"));
         } else {
-            Assert.assertTrue(!isElementPresentByXpath("//input[@aria-invalid]"));
+            SeleneseTestBase.assertTrue(!isElementPresentByXpath("//input[@aria-invalid]"));
         }
     }
 
@@ -3802,14 +3851,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         System.out.println("This is value ----------------" + getAttributeByName("field1", "aria-invalid"));
         Thread.sleep(3000);
         fireMouseOverEventByName("field1");
-        Assert.assertEquals("true", getAttributeByName("field1", "aria-invalid"));
-        Assert.assertTrue(getAttributeByName("field1", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(isTextPresent("Required"));
+        SeleneseTestBase.assertEquals("true", getAttributeByName("field1", "aria-invalid"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field1", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(isTextPresent("Required"));
         fireMouseOverEventByName("field1");
         
         for (int second = 0;; second++) {            
         	if (second >= 10) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
             	if (isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
@@ -3819,14 +3868,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
         waitAndTypeByName("field1", "a");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
         
         for (int second = 0;; second++) {            
         	if (second >= 10) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
             	if (!isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
@@ -3836,48 +3885,48 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertFalse(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']"));
         fireEvent("field1", "blur");
-        Assert.assertFalse(isElementPresentByXpath("//*[@name='field1' and @aria-invalid]"));
-        Assert.assertTrue(getAttributeByName("field1", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertTrue(isTextPresent("Required"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field1' and @aria-invalid]"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field1", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(isTextPresent("Required"));
         fireEvent("field2", "focus");
         fireEvent("field2", "blur");
         fireMouseOverEventByName("field2");
-        Assert.assertEquals("true", getAttributeByName("field2", "aria-invalid"));
-        Assert.assertTrue(getAttributeByName("field2", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(isTextPresent("Required"));
+        SeleneseTestBase.assertEquals("true", getAttributeByName("field2", "aria-invalid"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field2", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(isTextPresent("Required"));
         fireEvent("field2", "focus");
         waitAndTypeByName("field2", "a");
         fireEvent("field2", "blur");
-        Assert.assertFalse(isElementPresentByXpath("//*[@name='field2' and @aria-invalid]"));
-        Assert.assertTrue(getAttributeByName("field2", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(isElementPresentByXpath("//textarea[@name='field2']/../img[@alt='Error']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field2' and @aria-invalid]"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field2", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//textarea[@name='field2']/../img[@alt='Error']"));
         fireEvent("field3", "focus");
         fireEvent("field3", "blur");
         fireMouseOverEventByName("field3");
-        Assert.assertEquals("true", getAttributeByName("field3", "aria-invalid"));
-        Assert.assertTrue(getAttributeByName("field3", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(isTextPresent("Required"));
+        SeleneseTestBase.assertEquals("true", getAttributeByName("field3", "aria-invalid"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field3", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(isTextPresent("Required"));
         fireEvent("field3", "focus");
         selectByName("field3", "Option 1");
         fireEvent("field3", "blur");
-        Assert.assertFalse(isElementPresentByXpath("//*[@name='field3' and @aria-invalid]"));
-        Assert.assertTrue(getAttributeByName("field3", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field3' and @aria-invalid]"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field3", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
         fireEvent("field114", "focus");
         fireMouseOverEventByName("field114");
         driver.findElement(By.name("field114")).findElements(By.tagName("option")).get(0).click();
         fireEvent("field114", "blur");
-        Assert.assertEquals("true", getAttributeByName("field114", "aria-invalid"));
-        Assert.assertTrue(getAttributeByName("field114", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(isTextPresent("Required"));
+        SeleneseTestBase.assertEquals("true", getAttributeByName("field114", "aria-invalid"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field114", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(isTextPresent("Required"));
         fireEvent("field114", "focus");
         selectByName("field114", "Option 1");
         fireEvent("field114", "blur");
-        Assert.assertFalse(isElementPresentByXpath("//*[@name='field114' and @aria-invalid]"));
-        Assert.assertTrue(getAttributeByName("field114", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(isElementPresentByXpath("//select[@name='field114']/../img[@alt='Error']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field114' and @aria-invalid]"));
+        SeleneseTestBase.assertTrue(getAttributeByName("field114", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//select[@name='field114']/../img[@alt='Error']"));
         fireEvent("field117", "3", "focus");
         uncheckByXpath("//*[@name='field117' and @value='3']");
         fireEvent("field117", "blur");
@@ -3885,7 +3934,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {            
         	if (second >= 10) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
             	if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
@@ -3895,16 +3944,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertEquals("true", getAttributeByXpath("//*[@name='field117' and @value='1']", "aria-invalid"));
-        Assert.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(isTextPresent("Required"));
+        SeleneseTestBase.assertEquals("true", getAttributeByXpath("//*[@name='field117' and @value='1']", "aria-invalid"));
+        SeleneseTestBase.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(isTextPresent("Required"));
         fireEvent("field117", "3", "focus");
         checkByXpath("//*[@name='field117' and @value='3']");
         fireEvent("field117", "3", "blur");
         
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
             	if (!isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']")) {
@@ -3914,22 +3963,22 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertFalse(isElementPresentByXpath("//*[@name='field117' and @value='3' and @aria-invalid]"));
-        Assert.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field117' and @value='3' and @aria-invalid]"));
+        SeleneseTestBase.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
         fireEvent("bField1", "focus");
         uncheckByName("bField1");
         fireEvent("bField1", "blur");
         fireMouseOverEventByName("bField1");
-        Assert.assertEquals("true", getAttributeByName("bField1", "aria-invalid"));
-        Assert.assertTrue(getAttributeByName("bField1", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(isTextPresent("Required"));
+        SeleneseTestBase.assertEquals("true", getAttributeByName("bField1", "aria-invalid"));
+        SeleneseTestBase.assertTrue(getAttributeByName("bField1", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(isTextPresent("Required"));
         fireEvent("bField1", "focus");
         checkByName("bField1");
         fireEvent("bField1", "blur");
-        Assert.assertFalse(isElementPresentByXpath("//*[@name='bField1' and @aria-invalid]"));
-        Assert.assertTrue(getAttributeByName("bField1", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-        Assert.assertFalse(isElementPresentByXpath("//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='bField1' and @aria-invalid]"));
+        SeleneseTestBase.assertTrue(getAttributeByName("bField1", "class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
         fireEvent("field115", "3", "focus");
         uncheckByXpath("//*[@name='field115' and @value='3']");
         uncheckByXpath("//*[@name='field115' and @value='4']");
@@ -3938,7 +3987,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
             	if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
@@ -3948,9 +3997,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertEquals("true", getAttributeByXpath("//*[@name='field115' and @value='1']", "aria-invalid"));
-        Assert.assertTrue(getAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(isTextPresent("Required"));
+        SeleneseTestBase.assertEquals("true", getAttributeByXpath("//*[@name='field115' and @value='1']", "aria-invalid"));
+        SeleneseTestBase.assertTrue(getAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches("^[\\s\\S]*error[\\s\\S]*$"));
+        SeleneseTestBase.assertTrue(isTextPresent("Required"));
         fireEvent("field115", "3", "focus");
         checkByXpath("//*[@name='field115' and @value='3']");
         checkByXpath("//*[@name='field115' and @value='4']");
@@ -3958,7 +4007,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
             	if (!isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']")) {
@@ -3968,8 +4017,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertFalse(isElementPresentByXpath("//*[@name='field115' and @value='3' and @aria-invalid]"));
-        Assert.assertFalse(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field115' and @value='3' and @aria-invalid]"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
         passed();
     }
 
@@ -4000,7 +4049,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds) {
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             }
             try {                
             	if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
@@ -4011,25 +4060,25 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
 
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
-        Assert.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        SeleneseTestBase.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
         passed();
     }
 
     protected void testServerInfoIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Info Messages')]");
         waitIsVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']");
-        Assert.assertTrue(isVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']"));
-        Assert.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
-        Assert.assertTrue(isVisible("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
-        Assert.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
-        Assert.assertTrue(isElementPresentByXpath("//div[@data-role='InputField']//img[@alt='Information']"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']"));
+        SeleneseTestBase.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
+        SeleneseTestBase.assertTrue(isVisible("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
+        SeleneseTestBase.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@data-role='InputField']//img[@alt='Information']"));
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
-        Assert.assertTrue(isElementPresent(".uif-infoHighlight"));
+        SeleneseTestBase.assertTrue(isElementPresent(".uif-infoHighlight"));
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
         
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {                
             	if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
@@ -4037,15 +4086,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
-        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
+        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
         
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {                
             	if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
@@ -4053,10 +4102,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
         for (int second = 0;; second++) {            
             if (second >= waitSeconds)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {                
             	if (isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
                     break;
@@ -4064,14 +4113,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
         waitAndTypeByName("field1", "b");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
         
         for (int second = 0;; second++) {            
         	if (second >= waitSeconds)
-                Assert.fail("timeout");
+                SeleneseTestBase.fail("timeout");
             try {                
                 if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
                     break;
@@ -4081,13 +4130,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         fireEvent("field1", "blur");
         Thread.sleep(3000);
-        Assert.assertTrue(!isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
-        Assert.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        SeleneseTestBase.assertTrue(!isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        SeleneseTestBase.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
         fireEvent("field1", "focus");
         clearTextByName("field1");
         fireEvent("field1", "blur");
-        Assert.assertTrue(isElementPresent("div.uif-hasError"));
-        Assert.assertTrue(isElementPresent("img[src*=\"error.png\"]"));
+        SeleneseTestBase.assertTrue(isElementPresent("div.uif-hasError"));
+        SeleneseTestBase.assertTrue(isElementPresent("img[src*=\"error.png\"]"));
         passed();
     }
 
@@ -4184,7 +4233,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testCreateSampleEDocLite() throws Exception {
         waitForPageToLoad();
         Thread.sleep(3000);
-        assertEquals("Kuali Portal Index", getTitle());
+        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
@@ -4201,9 +4250,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//td[@class='datacell']/div/img");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@value='submit']");
-        junit.framework.Assert.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='submit']"));
-        junit.framework.Assert.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='save']"));
-        junit.framework.Assert.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='cancel']"));
+        SeleneseTestBase.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='submit']"));
+        SeleneseTestBase.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='save']"));
+        SeleneseTestBase.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='cancel']"));
         waitForPageToLoad();
         selectTopFrame();
         waitAndClickByXpath("//img[@alt='doc search']");
@@ -4235,7 +4284,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testWorkFlowRouteRulesBlanketApp() throws Exception {
         waitForPageToLoad();
         Thread.sleep(3000);
-        assertEquals("Kuali Portal Index", getTitle());
+        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         
         // click on the create new button
@@ -4276,7 +4325,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByName("methodToCall.createRule");
         waitForPageToLoad();
         String docId = waitForDocId();
-        junit.framework.Assert.assertTrue(isElementPresentByName("methodToCall.cancel"));
+        SeleneseTestBase.assertTrue(isElementPresentByName("methodToCall.cancel"));
        
         // type in the Document Overview Description the text Test Routing Rule
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
@@ -4321,24 +4370,24 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         waitAndClickByXpath("//img[@alt='doc search']");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", getTitle());
+        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
-        junit.framework.Assert.assertTrue(isElementPresent(By.linkText(docId)));
+        SeleneseTestBase.assertTrue(isElementPresent(By.linkText(docId)));
         
         if (isElementPresent(By.linkText(docId))) {
             assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"), "https://jira.kuali.org/browse/KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
         } else {
-            assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]"));
-            assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+            SeleneseTestBase.assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]"));
+            SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         }
     }
 
     protected void testEditRouteRulesDelegation() throws Exception {
         waitForPageToLoad();
         Thread.sleep(3000);
-        assertEquals("Kuali Portal Index", getTitle());
+        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
@@ -4346,7 +4395,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
         Thread.sleep(3000);
-        junit.framework.Assert.assertTrue(isElementPresentByName("methodToCall.cancel"));
+        SeleneseTestBase.assertTrue(isElementPresentByName("methodToCall.cancel"));
         waitAndClickByName("methodToCall.cancel");
         waitForPageToLoad();
         Thread.sleep(3000);
@@ -4382,7 +4431,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testWorkFlowRouteRulesCreateNew() throws Exception {
         waitForPageToLoad();
         Thread.sleep(5000);
-        assertEquals("Kuali Portal Index", getTitle());
+        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClickByXpath("//img[@alt='create new']");
         waitForPageToLoad();
@@ -4403,7 +4452,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      */
     protected void testWorkFlowRouteRulesEditRouteRules() throws Exception {
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", getTitle());
+        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitAndClickByLinkText("edit");
@@ -4440,8 +4489,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("--------------------------------New Component Created-------------------------");        
         List<String> parameterList=new ArrayList<String>();
@@ -4464,8 +4513,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");
         System.out.println("--------------------------------Lookup And View Successful-------------------------");        
@@ -4498,8 +4547,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Component Edited-------------------------");        
         List<String> parameterList=new ArrayList<String>();
@@ -4520,8 +4569,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");        
         List<String> parameterList=new ArrayList<String>();
@@ -4556,8 +4605,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         Thread.sleep(2000);
-        assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
         System.out.println("-----------------------------------Component Copied-------------------------");        
         List<String> parameterList=new ArrayList<String>();
@@ -4578,8 +4627,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");        
         List<String> parameterList=new ArrayList<String>();
@@ -4596,7 +4645,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public void testViewHelp() throws Exception {
         // test tooltip help
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        assertEquals("View help", getText("td.jquerybubblepopup-innerHtml"));
+        SeleneseTestBase.assertEquals("View help", getText("td.jquerybubblepopup-innerHtml"));
 
         // test external help
         waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
@@ -4612,7 +4661,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testPageHelp() throws Exception {
         // test tooltip help
         fireMouseOverEventByXpath("//h2/span[@class='uif-headerText-span']");
-        assertEquals("Sample text for page help", getText("td.jquerybubblepopup-innerHtml"));
+        SeleneseTestBase.assertEquals("Sample text for page help", getText("td.jquerybubblepopup-innerHtml"));
 
         // test external help
         waitAndClickByXpath("//input[@alt='Help for Help Page']");
@@ -4628,121 +4677,121 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label left')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label right')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label top')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for check box help')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
         }
        
         // test tooltip help of section header
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section1']/div/h3[@class='uif-headerText']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));        
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
         String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[0].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
         
         // verify that no external help exist
-        junit.framework.Assert.assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
+        SeleneseTestBase.assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
     
         // test tooltip help of field with label to the left
         fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
         Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
                 "element[1].style.display='none'"; 
         Thread.sleep(3000);
         ((JavascriptExecutor) driver).executeScript(javascript);
         System.out.println("==============="+isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
         Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[2].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
 
         // test tooltip help of field with label to the top
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
         Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[3].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
 
         // verify that standalone help with tooltip is not rendered
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
 
         // test tooltip help when it overrides a tooltip
         fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
         Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
         }        
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[4].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
 
         // test tooltip help in conjunction with a focus event tooltip
         fireMouseOverEventByXpath("//input[@id='on-focus-tooltip_control']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[5].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);                
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[6].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);    
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
 
         // test tooltip help against a check box - help contains html
         fireMouseOverEventByXpath("//label[@id='checkbox_label']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[7].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
     }
 
     /**
@@ -4751,24 +4800,24 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      protected void testDisplayOnlyTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for sub-section help')]")) {
-            junit.framework.Assert.assertFalse(isVisible("//td[contains(text(),'Sample text for sub-section help')]"));
+            SeleneseTestBase.assertFalse(isVisible("//td[contains(text(),'Sample text for sub-section help')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]")) {
-            junit.framework.Assert.assertFalse(isVisible("//td[contains(text(),'Sample text for read only field help')]"));
+            SeleneseTestBase.assertFalse(isVisible("//td[contains(text(),'Sample text for read only field help')]"));
         }
 
         // test tooltip help of sub-section header
         fireMouseOverEventByXpath("//span[contains(text(),'Display only fields')]");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
         String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
                 "element[0].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
-        junit.framework.Assert.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
+        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
 
         // test tooltip help of display only data field
         fireMouseOverEventByXpath("//label[@for='display-field_control']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for read only field help')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for read only field help')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
                 "element[0].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
@@ -4779,20 +4828,20 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      */
     protected void testMissingTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
 
         // verify that no external help exist
-        junit.framework.Assert.assertFalse(isElementPresent("#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
+        SeleneseTestBase.assertFalse(isElementPresent("#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
        
         // test tooltip help of section header
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section2']/div");
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
 
         // test tooltip help of field
         fireMouseOverEventByXpath("//label[@id='missing-tooltip-help_label']");
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
     }
     
     /**
@@ -4807,7 +4856,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String parentWindowHandle = driver.getWindowHandle();
         // wait page to be loaded
         driver.switchTo().window(windowName).findElements(By.tagName("head"));
-        assertEquals(url, driver.getCurrentUrl());
+        SeleneseTestBase.assertEquals(url, driver.getCurrentUrl());
         driver.switchTo().window(parentWindowHandle);
     }
     
@@ -4819,13 +4868,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testViewHelp2() throws Exception {
         // test tooltip help
         if (isElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']")) {
-            junit.framework.Assert.assertFalse(driver.findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
+            SeleneseTestBase.assertFalse(driver.findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
         }
         
         // test tooltip help
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
         Thread.sleep(2000);        
-        assertTrue(isVisibleByXpath("//td[contains(text(),'View help')]"));
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'View help')]"));
         assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Configuration Test View\"]"), "HelpWindow", "http://www.kuali.org/");
     }
 
@@ -4872,19 +4921,19 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testMissingExternalHelp2() throws Exception {
         // test external help of section is not rendered
-        junit.framework.Assert.assertFalse(isElementPresent(By.cssSelector("input[title=\"Help for Missing External Help\"]")));
+        SeleneseTestBase.assertFalse(isElementPresent(By.cssSelector("input[title=\"Help for Missing External Help\"]")));
 
         // test external help of field with blank externalHelpURL is not rendered
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//div[@id='external-help-externalHelpUrl-empty']/*[@class='uif-helpImage']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='external-help-externalHelpUrl-empty']/*[@class='uif-helpImage']"));
 
         // test external help of field with empty helpDefinition is not rendered
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//div[@id='external-help-helpdefinition-empty']/*[@class='uif-helpImage']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='external-help-helpdefinition-empty']/*[@class='uif-helpImage']"));
 
         // test external help of field with missing system parameter is not rendered
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//div[@id='external-help-system-parm-missing']/*[@class='uif-helpImage']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='external-help-system-parm-missing']/*[@class='uif-helpImage']"));
 
         // test external help of standalone help widget is not rendered
-        junit.framework.Assert.assertFalse(isElementPresentByXpath("//div[@id='standalone-external-help-missing']"));
+        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='standalone-external-help-missing']"));
     }
     
     protected void testTravelAccountLookup() throws Exception {
@@ -4944,7 +4993,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(5000);
         WebElement iframe1 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
         driver.switchTo().frame(iframe1);
-        assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
+        SeleneseTestBase.assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
         assertElementPresentByLinkText("a1");
         waitAndClickByXpath("//button[@id='u16']"); // close
         selectFrame("iframeportlet");
@@ -5024,14 +5073,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         
         // //Asserting text-field style to uppercase. This style would display
         // input text in uppercase.
-        assertEquals("text-transform: uppercase;",getAttributeByName("field112", "style"));
+        SeleneseTestBase.assertEquals("text-transform: uppercase;",getAttributeByName("field112", "style"));
         assertCancelConfirmation(); 
         waitForElementPresentByName("field101");
-        assertEquals("val", getAttributeByName("field101","value")); 
+        SeleneseTestBase.assertEquals("val", getAttributeByName("field101","value"));
         clearTextByName("field101");
         waitAndTypeByName("field101", "1");
         waitAndTypeByName("field104", "");
-        assertEquals("1", getAttributeByName("field101","value"));
+        SeleneseTestBase.assertEquals("1", getAttributeByName("field101","value"));
         waitAndTypeByName("field104", "2");
         
         // 'Progressive Disclosure' navigation link

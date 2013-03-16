@@ -15,9 +15,9 @@
  */
 package edu.samplu.common;
 
+import com.thoughtworks.selenium.SeleneseTestBase;
 import com.thoughtworks.selenium.Selenium;
 import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
@@ -39,10 +39,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
-import static org.junit.Assert.assertEquals;
 
 /**
- * Common selenium test methods that should be reused rather than recreated for each test.
+ * Common selenium test methods that should be reused rather than recreated for each test, without JUnit or TestNG
+ * dependencies.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
@@ -67,6 +67,7 @@ public class ITUtil {
     public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
     public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
     public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
+    public static final String JIRA_BROWSE_URL = "https://jira.kuali.org/browse/";
 
     static {
         jiraMatches = new HashMap<String, String>();
@@ -110,10 +111,10 @@ public class ITUtil {
     public static void assertDocFinal(Selenium selenium, String docId) {
         docId= "link=" + docId;
         if(selenium.isElementPresent(docId)){
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+            SeleneseTestBase.assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+            SeleneseTestBase.assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));
+            SeleneseTestBase.assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }
     }
 
@@ -147,13 +148,13 @@ public class ITUtil {
                 //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
                 //                    errorText = errorText + " " + selenium.getText("//div[@class='left-errmsg']/div/div[1]");
                 //                }
-                Assert.fail(errorText);
+                SeleneseTestBase.fail(errorText);
             }
         }
         ITUtil.checkForIncidentReport(selenium, "//img[@alt='doc search']");
         waitAndClick(selenium, "//img[@alt='doc search']");
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        SeleneseTestBase.assertEquals("Kuali Portal Index", selenium.getTitle());
         try {
             selenium.selectFrame("iframeportlet");
         } catch (NoSuchFrameException nsfe) {
@@ -173,7 +174,7 @@ public class ITUtil {
         if (selenium.isElementPresent(error_locator)) {
             String errorText = selenium.getText(error_locator);
             if (errorText != null && errorText.contains("errors")) {
-                Assert.fail(errorText + message);
+                SeleneseTestBase.fail(errorText + message);
             }
         }
     }
@@ -286,7 +287,7 @@ public class ITUtil {
 
     private static void checkForInvalidUserName(String userName, String contents) {
         if (contents.indexOf("Invalid username") > -1) {
-            Assert.fail("Invalid username " + userName);
+            SeleneseTestBase.fail("Invalid username " + userName);
         }
     }
 
@@ -299,7 +300,7 @@ public class ITUtil {
             try {
                 selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
             } catch (Exception e) {
-                Assert.fail("Login page not loaded app started?");
+                SeleneseTestBase.fail("Login page not loaded app started?");
             }
             if (!"Login".equals(selenium.getTitle())) {
                 fail("Title is not Login as expected, but " + selenium.getTitle());
@@ -568,21 +569,21 @@ public class ITUtil {
             try {
                 processIncidentReport(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
-                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage()
+                SeleneseTestBase.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage()
                         + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: "
                         + deLinespace(contents));
             }
         }
 
         if (contents.contains("HTTP Status 404")) {
-            Assert.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
+            SeleneseTestBase.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
         }
 
         if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
             try {
                 processFreemarkerException(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
-                Assert.fail("\nFreemarker exception detected " + message + " but there was an exception during processing: "
+                SeleneseTestBase.fail("\nFreemarker exception detected " + message + " but there was an exception during processing: "
                         + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e)
                         + "\nContents that triggered exception: " + deLinespace(contents));
             }
@@ -595,7 +596,7 @@ public class ITUtil {
 
         String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
 
-        Assert.fail("\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: "  + stackTrace.trim());
+        SeleneseTestBase.fail("\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: "  + stackTrace.trim());
     }
 
     private static void processIncidentReport(String contents, String linkLocator, String message) {
@@ -609,7 +610,8 @@ public class ITUtil {
             failWithReportInfoForKim(contents, linkLocator, message);
         }
 
-        Assert.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(contents));
+        SeleneseTestBase.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(
+                contents));
     }
 
     private static void failWithReportInfo(String contents, String linkLocator, String message) {
@@ -629,7 +631,7 @@ public class ITUtil {
         //            System.out.println(docId);
         //            System.out.println(viewId);
         //            System.out.println(stackTrace);
-        Assert.fail("\nIncident report "
+        SeleneseTestBase.fail("\nIncident report "
                 + message
                 + " navigating to "
                 + linkLocator
@@ -650,7 +652,7 @@ public class ITUtil {
         String stackTracePre = "value=\"";
         stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
 
-        Assert.fail("\nIncident report "
+        SeleneseTestBase.fail("\nIncident report "
                 + message
                 + " navigating to "
                 + linkLocator
@@ -667,7 +669,19 @@ public class ITUtil {
         while (iter.hasNext()) {
             key = iter.next();
             if (contents.contains(key)) {
-                Assert.fail("https://jira.kuali.org/browse/" + jiraMatches.get(key));
+                SeleneseTestBase.fail(JIRA_BROWSE_URL + jiraMatches.get(key));
+            }
+        }
+    }
+
+    public static void failOnMatchedJira(String contents, SeleneseFailable failable) {
+        Iterator<String> iter = jiraMatches.keySet().iterator();
+        String key = null;
+
+        while (iter.hasNext()) {
+            key = iter.next();
+            if (contents.contains(key)) {
+                failable.seFail(JIRA_BROWSE_URL + jiraMatches.get(key));
             }
         }
     }

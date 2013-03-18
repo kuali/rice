@@ -359,18 +359,24 @@ public class View extends ContainerBase {
         getViewIndex().addSequenceValueToSnapshot(component.getId(), currentSequenceVal);
 
         //handle view specially to insure each page always gets the same generated id
+        boolean isView = false;
         if (component instanceof View) {
-            if (((View) component).isSinglePageView() && ((View) component).getPage() != null && StringUtils.isBlank(
-                    ((View) component).getPage().getId())) {
-                ((View) component).getPage().setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
-            } else if (((View) component).getItems() != null) {
-                for (Component item : ((View) component).getItems()) {
-                    if (item instanceof PageGroup && StringUtils.isBlank(item.getId())) {
-                        item.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
-                    }
+            isView = true;
+        }
+
+        if (isView && ((View) component).isSinglePageView() && ((View) component).getPage() != null && StringUtils.isBlank(
+                ((View) component).getPage().getId())) {
+            //set the id on the single page
+            ((View) component).getPage().setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
+        } else if (isView && ((View) component).getItems() != null) {
+            //get each page and set the id
+            for (Component item : ((View) component).getItems()) {
+                if (item instanceof PageGroup && StringUtils.isBlank(item.getId())) {
+                    item.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
                 }
             }
         }
+
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();

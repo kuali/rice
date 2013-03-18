@@ -93,59 +93,72 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             if (fieldSuggest.isReturnFullQueryObject()) {
                 queryResult.setResultData((List<Object>) results);
             } else {
-                List<Object> suggestData = new ArrayList<Object>();
-                for (Object result : results) {
-
-                    Map<String, String> propMap = new HashMap<String, String>();
-
-                    //value prop
-                    Object suggestFieldValue = null;
-                    if (StringUtils.isNotBlank(fieldSuggest.getValuePropertyName())) {
-                        suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
-                                fieldSuggest.getValuePropertyName());
-                    } else if (ObjectPropertyUtils.isReadableProperty(result, "value")) {
-                        suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result, "value");
-                    }
-
-                    //set
-                    if (suggestFieldValue != null) {
-                        propMap.put("value", suggestFieldValue.toString());
-                    }
-
-                    //label prop
-                    Object suggestFieldLabel = null;
-                    if (StringUtils.isNotBlank(fieldSuggest.getLabelPropertyName())) {
-                        suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result,
-                                fieldSuggest.getLabelPropertyName());
-                    } else if (ObjectPropertyUtils.isReadableProperty(result, "label")) {
-                        suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result, "label");
-                    }
-
-                    //set
-                    if (suggestFieldLabel != null) {
-                        propMap.put("label", suggestFieldLabel.toString());
-                    }
-
-                    //location suggest specific properties
-                    if (fieldSuggest instanceof LocationSuggest) {
-                        handleLocationSuggestProperties((LocationSuggest)fieldSuggest, result, propMap);
-                    }
-
-                    //additional properties
-                    handleAdditionalSuggestProperties(fieldSuggest, result, propMap);
-
-                    //only add if there was a property to send back
-                    if (!propMap.isEmpty()) {
-                        //TODO: need to apply formatter for field or have method in object property utils
-                        suggestData.add(propMap);
-                    }
-                }
-
-                queryResult.setResultData(suggestData);
+                retrievePropertiesOnResults(queryResult, results, fieldSuggest);
             }
         }
 
         return queryResult;
+    }
+
+    /**
+     * Instead of returning the full object this method fills in queryResult with data that contain the properties
+     * of each result object, as configured through the fieldSuggest, from the set of results.
+     *
+     * @param queryResult the queryResult to fill in
+     * @param results the set of original results
+     * @param fieldSuggest the Suggest widget
+     */
+    private void retrievePropertiesOnResults(AttributeQueryResult queryResult, Collection<?> results,
+            Suggest fieldSuggest){
+        List<Object> suggestData = new ArrayList<Object>();
+        for (Object result : results) {
+
+            Map<String, String> propMap = new HashMap<String, String>();
+
+            //value prop
+            Object suggestFieldValue = null;
+            if (StringUtils.isNotBlank(fieldSuggest.getValuePropertyName())) {
+                suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
+                        fieldSuggest.getValuePropertyName());
+            } else if (ObjectPropertyUtils.isReadableProperty(result, "value")) {
+                suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result, "value");
+            }
+
+            //set
+            if (suggestFieldValue != null) {
+                propMap.put("value", suggestFieldValue.toString());
+            }
+
+            //label prop
+            Object suggestFieldLabel = null;
+            if (StringUtils.isNotBlank(fieldSuggest.getLabelPropertyName())) {
+                suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result,
+                        fieldSuggest.getLabelPropertyName());
+            } else if (ObjectPropertyUtils.isReadableProperty(result, "label")) {
+                suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result, "label");
+            }
+
+            //set
+            if (suggestFieldLabel != null) {
+                propMap.put("label", suggestFieldLabel.toString());
+            }
+
+            //location suggest specific properties
+            if (fieldSuggest instanceof LocationSuggest) {
+                handleLocationSuggestProperties((LocationSuggest)fieldSuggest, result, propMap);
+            }
+
+            //additional properties
+            handleAdditionalSuggestProperties(fieldSuggest, result, propMap);
+
+            //only add if there was a property to send back
+            if (!propMap.isEmpty()) {
+                //TODO: need to apply formatter for field or have method in object property utils
+                suggestData.add(propMap);
+            }
+        }
+
+        queryResult.setResultData(suggestData);
     }
 
     /**

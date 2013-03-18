@@ -63,7 +63,7 @@ public class LocationSuggest extends Suggest {
      * <p>One use case for setting this is to retrieve a controllerMapping that changes based on selection.  Note:
      * for suggestions that all point to the same controllerMapping, simply set it as part of the baseUrl.</p>
      *
-     * @return the
+     * @return the additionalUrlPathPropertyName
      */
     @BeanTagAttribute(name = "additionalUrlPropertyName")
     public String getAdditionalUrlPathPropertyName() {

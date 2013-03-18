@@ -151,6 +151,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
  *
@@ -2580,7 +2582,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	protected KimAttributeField getAttributeDefinition(String kimTypId, String attrDefnId) {
 		final KimType type = getKimTypeInfoService().getKimType(kimTypId);
 		if (type != null) {
-			final KimTypeService typeService = (KimTypeService) KimImplServiceLocator.getBean(type.getServiceName());
+			final KimTypeService typeService = GlobalResourceLoader.<KimTypeService>getService(QName.valueOf(type.getServiceName()));
 			if (typeService != null) {
 				final KimTypeAttribute attributeInfo = type.getAttributeDefinitionById(attrDefnId);
 				if (attributeInfo != null) {

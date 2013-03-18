@@ -62,8 +62,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
     public static final String DOC_ID_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
     public static final String DOC_ID_TABLE_LINK_XPATH="//table[@id='row']/tbody/tr[1]/td[1]/a";
+    public static final String DOCUMENT_DESCRIPTION_XPATH="//input[@id='document.documentHeader.documentDescription']";
+    public static final String SEARCH_XPATH="//input[@name='methodToCall.search' and @value='search']";
+    public static final String SAVE_XPATH="//input[@name='methodToCall.save' and @alt='save']";
+    public static final String SUBMIT_XPATH="//input[@name='methodToCall.route' and @alt='submit']";
+    public static final String DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH="//div[contains(div,'Document was successfully submitted.')]";
     public static final String LOGOUT_XPATH = "//input[@name='imageField' and @value='Logout']";
-
     public abstract String getTestUrl();
 
     protected WebDriver driver;
@@ -232,7 +236,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//img[@alt='doc search']");
         SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
     }
 
     protected void checkForIncidentReport() {
@@ -974,7 +978,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected String configNameSpaceBlanketApprove() throws Exception {
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace "+ ITUtil.DTS_TWO);
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Namespace "+ ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "VTN" + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']","Validation Test NameSpace " + ITUtil.DTS_TWO);
@@ -996,14 +1000,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Parameter ");
         assertBlanketApproveButtonsPresent();
         SeleneseTestBase.assertEquals("", getTextByName("methodToCall.cancel"));
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", "KR-NS - Kuali Nervous System");
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(componentLookUp);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("return value");
         String parameterName = "ValidationTestParameter" + ITUtil.DTS;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", parameterName);
@@ -1031,13 +1035,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         //waitForElementPresentByXpath(DOC_ID_XPATH);
         //String docId = driver.findElement(By.xpath(DOC_ID_XPATH)).getText();
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Creating new Document Type");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Creating new Document Type");
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(parentDocType);
         waitForPageToLoad();
         Thread.sleep(2000);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         waitAndClickByLinkText("return value");
         String docTypeName = "TestDocType" + ITUtil.DTS;
@@ -1055,7 +1059,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")).getText());
     }
@@ -1065,12 +1069,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();                
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group "+ ITUtil.DTS_TWO);
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Group "+ ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.groupNamespace']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS_TWO);
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("return value");
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
@@ -1096,7 +1100,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();        
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Person");
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@id='document.principalName']", "principal" + RandomStringUtils.randomAlphabetic(3).toLowerCase());
         selectByName("newAffln.affiliationTypeCode", "Affiliate");
@@ -1121,7 +1125,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();        
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Responsibility " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
@@ -1136,15 +1140,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testIdentityRoleBlanketApprove() throws Exception {
         selectFrame("iframeportlet");
         waitAndCreateNew();
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
+        waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
         waitAndClickByLinkText("return value", "No return value link");        
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Role " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.roleNamespace']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + ITUtil.DTS_TWO,"No Role Name input to type in.");
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
+        waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
         waitAndClickByLinkText("return value", "No return value link");
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
@@ -1173,7 +1177,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertBlanketApproveButtonsPresent();
         String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
         String countryName = "Validation Test Country " + ITUtil.DTS + " " + twoUpperCaseLetters;
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", countryName);
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, countryName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", twoUpperCaseLetters);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoUpperCaseLetters);
@@ -1185,20 +1189,20 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();        
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test County");
         assertBlanketApproveButtonsPresent();
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(countryLookUp);
         waitAndTypeByName("code", "US");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("return value");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(stateLookUp);
         waitAndTypeByName("code", "IN");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("return value");
         String countyName = "Validation Test County" + ITUtil.DTS;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countyName);
@@ -1211,20 +1215,20 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();        
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Postal Code");
         assertBlanketApproveButtonsPresent();
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(countryLookUp);
         waitAndTypeByName("code", "US");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("return value");
         String code = RandomStringUtils.randomNumeric(5);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", code);
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(stateLookUp);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByXpath("//table[@id='row']/tbody/tr[4]/td[1]/a");
         String cityName = "Validation Test Postal Code " + code;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.cityName']", cityName);
@@ -1236,14 +1240,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectFrame("iframeportlet");
         waitAndCreateNew();
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test State");
         assertBlanketApproveButtonsPresent();
         
         //jiraAwareWaitAndClick("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(countryLookUp);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("return value");
         String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", code);
@@ -1259,7 +1263,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type "+ ITUtil.DTS_TWO);
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Campus Type "+ ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2));
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + ITUtil.DTS_TWO);
         blanketApproveTest();
@@ -1271,11 +1275,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']","Validation Test Document Type " + ITUtil.DTS);
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH,"Validation Test Document Type " + ITUtil.DTS);
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(parentDocType);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("return value");
         String docTypeName = "DocType" + ITUtil.DTS;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
@@ -1612,7 +1616,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         assertElementPresentByXpath("//*[@name='methodToCall.save' and @alt='save']", "save button does not exist on the page");
         
         //Enter details for Namespace.
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding PEANUTS");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Adding PEANUTS");
         waitAndTypeByXpath("//*[@id='document.documentHeader.explanation']", "I want to add PEANUTS to test KIM");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "PEANUTS");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "The Peanuts Gang");
@@ -1651,16 +1655,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitForPageToLoad();
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         waitAndClickByLinkText("return value");
         waitForPageToLoad();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByLinkText("Administration");
         waitForPageToLoad();
@@ -1668,7 +1672,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndTypeByName("name", groupName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(groupName);
     }
 
@@ -1711,15 +1715,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.newMaintainableObject.description", "for testing");
         selectOptionByName("document.newMaintainableObject.parameterTypeCode", "HELP");
         waitAndClickByXpath("//input[@name='document.newMaintainableObject.evaluationOperatorCode' and @value='A']");
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -1735,7 +1739,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testLookUpParameter(String docId, String parameterName) throws Exception
     {
         waitAndTypeByName("name", parameterName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(parameterName);
         waitAndClickByLinkText(parameterName);
         waitForPageToLoad();
@@ -1763,15 +1767,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
         clearTextByName("document.newMaintainableObject.value");
         waitAndTypeByName("document.newMaintainableObject.value", "N");
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -1786,7 +1790,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testVerifyEditedParameter(String docId, String parameterName) throws Exception
     {
         waitAndTypeByName("name", parameterName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(parameterName);
         waitAndClickByLinkText(parameterName);
         waitForPageToLoad();
@@ -1816,15 +1820,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
         parameterName = "TestIndicator" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", parameterName);
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -1840,7 +1844,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testVerifyCopyParameter(String docId, String parameterName) throws Exception
     {
         waitAndTypeByName("name", parameterName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(parameterName);
         waitAndClickByLinkText(parameterName);
         waitForPageToLoad();
@@ -1869,15 +1873,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
         parameterType = "testing " + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -1894,7 +1898,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         waitAndTypeByName("name", parameterType);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(parameterType);
         waitAndClickByLinkText(parameterType);
         waitForPageToLoad();
@@ -1923,15 +1927,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         clearTextByName("document.newMaintainableObject.name");
         parameterType = "testing " + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -1948,7 +1952,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testVerifyEditedParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         waitAndTypeByName("name", parameterType);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(parameterType);
         waitAndClickByLinkText(parameterType);
         waitForPageToLoad();
@@ -1979,15 +1983,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         clearTextByName("document.newMaintainableObject.name");
         parameterType = "testing " + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -2004,7 +2008,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testVerifyCopyParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         waitAndTypeByName("name", parameterType);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(parameterType);
         waitAndClickByLinkText(parameterType);
         waitForPageToLoad();
@@ -2027,11 +2031,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         Thread.sleep(2000);
         docId = waitForDocId();
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath(SAVE_XPATH);
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(.,'Document Description (Description) is a required field.')]/img[@alt='error']");
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding Permission removeme");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Adding Permission removeme");
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
         assertElementPresentByXpath("//div[@class='error']");
         assertElementPresentByXpath("//div[contains(.,'Template (Template) is a required field.')]/img[@alt='error']");
@@ -2044,13 +2048,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("document.newMaintainableObject.name", permissionName);
         waitAndTypeByName("document.newMaintainableObject.description", "namespaceCode=KR*");
         checkByName("document.newMaintainableObject.active");
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath(SAVE_XPATH);
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]");
         SeleneseTestBase.assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         SeleneseTestBase.assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
         System.out.println("------------------------------------Permission document submitted successfully--------------------------");
         List<String> params = new ArrayList<String>();
@@ -2064,7 +2068,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     {
         waitForPageToLoad();
         waitAndTypeByName("name", permissionName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(permissionName);
         System.out.println("----------------------------------Lookup successful-----------------------------");
         List<String> params = new ArrayList<String>();
@@ -2079,11 +2083,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
         Thread.sleep(2000);
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Editing Permission removeme");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Editing Permission removeme");
         uncheckByName("document.newMaintainableObject.active");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         System.out.println("------------------------------------Inactivation of Permission successfull--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -2097,7 +2101,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         waitAndTypeByName("name", permissionName);
         waitAndClickByXpath("//input[@title='Active Indicator - No']");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(permissionName);
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -2110,17 +2114,17 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     {
         waitForPageToLoad();
         docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Adding Charlie Brown");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Adding Charlie Brown");
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Charlie Brown to test KIM");
         
         //here You should also check for lower case validation for principalName, but it is skipped for now as there is an incident report error there.
         personName = "cbrown" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.principalName", personName);
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        waitAndClickByXpath(SAVE_XPATH);
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]");
         SeleneseTestBase.assertEquals("SAVED", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'At least one name must be entered.')]/img[@alt='error']");
@@ -2138,9 +2142,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         checkByName("newName.dflt");
         waitAndClickByName("methodToCall.addName.anchor");
         waitForPageToLoad();
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]", "Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         SeleneseTestBase.assertEquals("ENROUTE", getTextByXpath("//table[@class='headerinfo']//tr[1]/td[2]"));
         System.out.println("------------------------------------Person document submitted successfully--------------------------");
         List<String> params = new ArrayList<String>();
@@ -2154,19 +2158,19 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     {
         waitForPageToLoad();
         waitAndTypeByName("principalName", personName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(personName);
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("firstName", "Charlie");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(personName);
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("lastName", "Brown");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(personName);
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("campusCode", "BL");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(personName);
         System.out.println("----------------------------------Lookup successful-----------------------------");
         List<String> params = new ArrayList<String>();
@@ -4299,7 +4303,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("name", "RoutingRuleDocument");
         
         // click the search button
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         
         // click the return value link
@@ -4314,7 +4318,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByName("name", "RuleRoutingTemplate");
         
         // click the search button
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         
         // click the return value link
@@ -4328,7 +4332,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         SeleneseTestBase.assertTrue(isElementPresentByName("methodToCall.cancel"));
        
         // type in the Document Overview Description the text Test Routing Rule
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
+        waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Test Routing Rule");
        
         // click the Force Action checkbox
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.forceAction']");
@@ -4346,7 +4350,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
        
         // click the search button
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         
         // click the return value
@@ -4372,7 +4376,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         SeleneseTestBase.assertTrue(isElementPresent(By.linkText(docId)));
         
@@ -4389,7 +4393,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000);
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         Thread.sleep(3000);
         waitAndClickByLinkText("edit");
@@ -4454,7 +4458,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
         selectFrame("iframeportlet");
@@ -4479,15 +4483,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         componentName = "testing" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
         checkByName("document.newMaintainableObject.active");
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -4506,7 +4510,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     {
         //Lookup
         waitAndTypeByName("name", componentName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(componentName);
         waitAndClickByLinkText(componentName);
         waitForPageToLoad();
@@ -4537,15 +4541,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         clearTextByName("document.newMaintainableObject.name");
         componentName = "testing" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -4562,7 +4566,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testVerifyEditedComponent(String docId, String componentName, String componentCode) throws Exception
     {
         waitAndTypeByName("name", componentName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(componentName);
         waitAndClickByLinkText(componentName);
         waitForPageToLoad();
@@ -4595,15 +4599,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         clearTextByName("document.newMaintainableObject.name");
         componentName = "testing" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
-        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        waitAndClickByXpath("//input[@name='methodToCall.route' and @alt='submit']");
+        waitAndClickByXpath(SAVE_XPATH);
+        waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully submitted.')]","Document is not submitted successfully");
+        assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
@@ -4620,7 +4624,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testVerifyCopyComponent(String docId, String componentName, String componentCode) throws Exception
     {
         waitAndTypeByName("name", componentName);
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(componentName);
         waitAndClickByLinkText(componentName);
         waitForPageToLoad();
@@ -5134,7 +5138,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
       //waitForPageToLoad50000();
       //assertEquals(windowTitles[0], getTitle());
       //selectFrame("iframeportlet");
-      //waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+      //waitAndClick(SEARCH_XPATH);
       //waitForPageToLoad50000();
       //----step 2 over ----//
       

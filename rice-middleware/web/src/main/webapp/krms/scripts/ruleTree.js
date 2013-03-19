@@ -34,6 +34,8 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
         jq('.editModeNode').find(".actionReveal").first().hide();
     };
     retrieveComponent(collectionGroupId, controllerMethod, actionRevealCallBack, {selectedItemInputName: selectedItemId});
+    enableAddParentButton();
+    enableEditButton();
 }
 
 function ajaxCutPropositionTree(controllerMethod, collectionGroupId) {
@@ -89,7 +91,7 @@ function handlePropositionNodeClick(parentLiNode) {
     jq('li').each(function() {
         jq(this).removeClass('ruleBlockSelected');
         // hide edit image links
-        jq(this.parentNode).find(".actionReveal").hide();
+       // jq(this.parentNode).find(".actionReveal").hide();
     });
 
     if (selectedItemTracker.val() == propositionId) {
@@ -162,7 +164,7 @@ function initRuleTree(componentId){
         });
 
         // hide quick action icons (edit and add parent) on proposition tree nodes
-        jq(this).find(".actionReveal").hide();
+        //jq(this).find(".actionReveal").hide();
 
         // selecting the description on an edit node should set it to be selected
         jq('input.editDescription').click( function() {

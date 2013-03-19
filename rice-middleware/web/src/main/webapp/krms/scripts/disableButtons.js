@@ -18,6 +18,8 @@ var CUT='.kr-cut-button';
 var PASTE='.kr-paste-button';
 var DELETE='.kr-delete-button';
 var REFRESH='.kr-refresh-button';
+var ADDPARENT='.kr-addparent-button';
+var EDIT='.kr-edit-button';
 var TREE = '.tree-bar-button';
 
 var ENABLED = true;
@@ -62,6 +64,13 @@ function enableRefreshButton() {
     enableButton(REFRESH);
 }
 
+function enableAddParentButton() {
+    enableButton(ADDPARENT);
+}
+
+function enableEditButton() {
+    enableButton(EDIT);
+}
 function enableTreeButtons() {
     enableButton(TREE);
     if (!pasting) {

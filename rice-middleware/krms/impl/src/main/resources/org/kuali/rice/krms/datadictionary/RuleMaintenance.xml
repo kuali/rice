@@ -352,6 +352,11 @@
             <bean parent="Uif-Image" p:source="../krms/images/node-parent-and-child.png"
                   p:altText="Add Parent"/>
           </property>
+          <property name="cssClasses">
+            <list merge="true">
+              <value>kr-addparent-button</value>
+            </list>
+          </property>
         </bean>
 
         <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('edit');
@@ -363,6 +368,11 @@
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
                   p:altText="Edit Proposition"/>
+          </property>
+          <property name="cssClasses">
+            <list merge="true">
+              <value>kr-edit-button</value>
+            </list>
           </property>
         </bean>
 

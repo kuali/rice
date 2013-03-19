@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.impl.criteria
 
+import org.kuali.rice.core.api.criteria.OrderByField
+import org.kuali.rice.core.api.criteria.OrderDirection
 import org.kuali.rice.core.api.criteria.PredicateFactory as pf
 
 import org.junit.Before
@@ -62,6 +64,26 @@ class CriteriaLookupServiceOjbImplIntTest extends CORETestCase {
         def results = lookup.lookup(ParameterBo.class, builder.build());
         //we at least have more than one result in the system....
         assertTrue "results size are ${results.getResults().size()}", results.getResults().size() > 1
+    }
+
+    @Test
+    void test_order_by_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = equal("namespaceCode", "FOO-NS")
+        builder.orderByFields = Collections.singletonList(OrderByField.Builder.create("name", OrderDirection.ASCENDING).build())
+        def results = lookup.lookup(ParameterBo.class, builder.build())
+
+        assertTrue "name of third parameter is ${results.getResults().get(2).getName()}", "FOO_NUMERIC".equals(results.getResults().get(2).getName())
+    }
+
+    @Test
+    void test_order_by_lookup_desc() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = equal("namespaceCode", "FOO-NS")
+        builder.orderByFields = Collections.singletonList(OrderByField.Builder.create("name", OrderDirection.DESCENDING).build())
+        def results = lookup.lookup(ParameterBo.class, builder.build())
+
+        assertTrue "name of third parameter is ${results.getResults().get(0).getName()}", "TURN_FOO_ON".equals(results.getResults().get(0).getName())
     }
 
     @Test

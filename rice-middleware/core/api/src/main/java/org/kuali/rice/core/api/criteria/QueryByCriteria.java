@@ -18,19 +18,23 @@ package org.kuali.rice.core.api.criteria;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Defines a criteria-based query.  Consists of a {@link Predicate} definition
@@ -61,6 +65,7 @@ import java.util.Collection;
 		QueryByCriteria.Elements.START_AT_INDEX,
 		QueryByCriteria.Elements.MAX_RESULTS,
 		QueryByCriteria.Elements.COUNT_FLAG,
+        QueryByCriteria.Elements.ORDER_BY_FIELDS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class QueryByCriteria extends AbstractDataTransferObject {
 
@@ -98,6 +103,11 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 	@XmlElement(name = Elements.COUNT_FLAG, required = true)
 	private final String countFlag;
 
+    @XmlElementWrapper(name = Elements.ORDER_BY_FIELDS, required = false)
+    @XmlElement(name = Elements.ORDER_BY_FIELD, required = false)
+    private final List<OrderByField> orderByFields;
+
+
 	@SuppressWarnings("unused")
 	@XmlAnyElement
 	private final Collection<Element> _futureElements = null;
@@ -107,6 +117,7 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 		this.startAtIndex = null;
 		this.maxResults = null;
 		this.countFlag = null;
+        this.orderByFields = null;
 	}
 
 	private QueryByCriteria(Builder builder) {
@@ -123,6 +134,7 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 		this.startAtIndex = builder.getStartAtIndex();
 		this.maxResults = builder.getMaxResults();
 		this.countFlag = builder.getCountFlag() == null ? null : builder.getCountFlag().getFlag();
+        this.orderByFields = new ArrayList<OrderByField>(builder.getOrderByFields());
 	}
 
 	/**
@@ -181,15 +193,27 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 		return this.countFlag == null ? null : CountFlag.valueOf(this.countFlag);
 	}
 
+    /**
+     * Returns the a list of fields that will be ordered depending on the orderDirection
+     * when results are returned.
+     *
+     * @return List of field names that will affect the order of the returned rows
+     */
+    public List<OrderByField> getOrderByFields() {
+        return CollectionUtils.unmodifiableListNullSafe(this.orderByFields);
+    }
+
 	public static final class Builder implements ModelBuilder, Serializable {
 
 		private Predicate[] predicates;
 		private Integer startAtIndex;
 		private Integer maxResults;
 		private CountFlag countFlag;
+        private List<OrderByField> orderByFields;
 
 		private Builder() {
-			this.countFlag = CountFlag.NONE;
+			setCountFlag(CountFlag.NONE);
+            setOrderByFields(new ArrayList<OrderByField>());
 		}
 
 		public static Builder create() {
@@ -231,6 +255,17 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 
             this.countFlag = countFlag;
 		}
+
+        public List<OrderByField> getOrderByFields() {
+            return this.orderByFields;
+        }
+
+        public void setOrderByFields(List<OrderByField> orderByFields) {
+            if (orderByFields == null) {
+                throw new IllegalArgumentException("orderByFields was null");
+            }
+            this.orderByFields = orderByFields;
+        }
 
         /**
          * will return an array of the predicates.  may return null if no predicates were set.
@@ -286,6 +321,8 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 		final static String START_AT_INDEX = "startAtIndex";
 		final static String MAX_RESULTS = "maxResults";
 		final static String COUNT_FLAG = "countFlag";
+        final static String ORDER_BY_FIELDS = "orderByFields";
+        final static String ORDER_BY_FIELD = "orderByField";
 	}
 
 }

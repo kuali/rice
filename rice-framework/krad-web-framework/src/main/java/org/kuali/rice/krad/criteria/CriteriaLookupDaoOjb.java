@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.criteria;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -22,8 +23,6 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.AndPredicate;
 import org.kuali.rice.core.api.criteria.CompositePredicate;
 import org.kuali.rice.core.api.criteria.CountFlag;
-import org.kuali.rice.core.api.criteria.CriteriaDateTimeValue;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.EqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.EqualPredicate;
@@ -45,6 +44,8 @@ import org.kuali.rice.core.api.criteria.NotLikePredicate;
 import org.kuali.rice.core.api.criteria.NotNullPredicate;
 import org.kuali.rice.core.api.criteria.NullPredicate;
 import org.kuali.rice.core.api.criteria.OrPredicate;
+import org.kuali.rice.core.api.criteria.OrderByField;
+import org.kuali.rice.core.api.criteria.OrderDirection;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PropertyPathPredicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -97,7 +98,7 @@ public class CriteriaLookupDaoOjb extends PlatformAwareDaoBaseOjb implements Cri
 
     /** gets results where the actual rows are requested. */
     private <T> GenericQueryResults<T> forRowResults(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria, CountFlag flag, LookupCustomizer.Transform<T, T> transform) {
-        final Query ojbQuery = QueryFactory.newQuery(queryClass, ojbCriteria);
+        final org.apache.ojb.broker.query.QueryByCriteria ojbQuery = QueryFactory.newQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
 
         if (flag == CountFlag.INCLUDE) {
@@ -112,6 +113,16 @@ public class CriteriaLookupDaoOjb extends PlatformAwareDaoBaseOjb implements Cri
             //not subtracting one from MaxResults in order to retrieve
             //one extra row so that the MoreResultsAvailable field can be set
             ojbQuery.setEndAtIndex(criteria.getMaxResults() + startAtIndex);
+        }
+
+        if (CollectionUtils.isNotEmpty(criteria.getOrderByFields())) {
+            for (OrderByField orderByField : criteria.getOrderByFields()) {
+                if (OrderDirection.ASCENDING.equals(orderByField.getOrderDirection())) {
+                    ojbQuery.addOrderBy(orderByField.getFieldName(), true);
+                } else if (OrderDirection.DESCENDING.equals(orderByField.getOrderDirection())) {
+                    ojbQuery.addOrderBy(orderByField.getFieldName(), false);
+                }
+            }
         }
 
         @SuppressWarnings("unchecked")

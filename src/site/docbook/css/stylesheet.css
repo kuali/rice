@@ -79,6 +79,9 @@ div.table td {
   padding-left:  7px;
   padding-right: 7px;
 }
+.oddrow {
+  background:    #EEEEEE;
+}
 
 .sidebar {
     float: right;

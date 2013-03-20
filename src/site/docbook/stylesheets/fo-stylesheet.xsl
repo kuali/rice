@@ -28,4 +28,30 @@
     <xsl:template name="table.cell.block.properties">
         <xsl:attribute name="font-size">7pt</xsl:attribute>
     </xsl:template>
+    <xsl:template name="table.row.properties">
+        <xsl:variable name="tabstyle">
+            <xsl:call-template name="tabstyle"/>
+        </xsl:variable>
+        <xsl:variable name="bgcolor">
+            <xsl:call-template name="dbfo-attribute">
+                <xsl:with-param name="pis" select="processing-instruction('dbfo')"/>
+                <xsl:with-param name="attribute" select="'bgcolor'"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="rownum">
+            <xsl:number from="tgroup" count="row"/>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$bgcolor != ''">
+                <xsl:attribute name="background-color">
+                    <xsl:value-of select="$bgcolor"/>
+                </xsl:attribute>
+            </xsl:when>
+            <xsl:when test="$tabstyle = 'striped'">
+                <xsl:if test="$rownum mod 2 = 0">
+                    <xsl:attribute name="background-color">#EEEEEE</xsl:attribute>
+                </xsl:if>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
 </xsl:stylesheet>

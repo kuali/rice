@@ -72,7 +72,16 @@
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
     </section>
+    <section xml:id="upgrade-guide" xreflabel="Upgrade Guide">
+        <title>Upgrade Guide: Rice 2.2.1 to Rice ${project.version}</title>
+        <caution><para>We recommend backing up your database before performing any upgrade!</para></caution>
+        <section>
+            <title>Upgrading the database</title>
+            <para>Please see the <link linkend="impacting-changes">Impacting Changes</link> section of this document for details on updates to the database.</para>
+        </section>
+    </section>
 <section xml:id="items_addressed_in_rice"><title>Items Addressed in Rice ${project.version}</title> 
+    
     <section>
         <title>Bug Fix</title>
         <para>
@@ -99,13 +108,76 @@
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9094'>KULRICE-9094</link>] - TermBoServiceImpl fails to populate TermSpecificationDefinition.contextIds on retrieval</para>
                 </listitem>
                 <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9095'>KULRICE-9095</link>] - KRAD Error messages in section not displayed correctly</para>
+                </listitem>
+                <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9096'>KULRICE-9096</link>] - Message after initial save prevents additional saves/routing</para>
                 </listitem>
                 <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9097'>KULRICE-9097</link>] - Don't display the common section on KRMS Term and TermSpecification maintenance documents</para>
                 </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9162'>KULRICE-9162</link>] - Role document broken when adding responsibilities</para>
+                </listitem>
             </itemizedlist>
         </para>
-    </section>    
+    </section>
+    
+    
+    <section>
+        <title>Task</title>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9147'>KULRICE-9147</link>] - Toggling the show/hide active button on collections causes an exception</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9152'>KULRICE-9152</link>] - PK for krad_msg_t is too long for MySQL 5.1</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </section>
+    
+    
+</section>
+<section xml:id="impacting-changes" xreflabel="Impacting Changes">
+        <title>Impacting Changes</title>
+        <section>
+            <title>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9152'>KULRICE-9152</link>] - PK for krad_msg_t is too long for MySQL 5.1</title>
+            <para>The script reduces the size of the KRAD_MSG_T.LOC column from a VARCHAR(255) to a VARCHAR(80) (Note: for Oracle, the column is of type VARCHAR2) in order to bring down the total size of the compound primary key to a length supported by MySQL 5.1.</para>
+            <para>Depending on if you are applying this to a client or server schema, and based on your database platform, the scripts to run will differ:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>Server dataset:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>MySQL:</para><para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates/mysql-2013-03-18.sql</code></para>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle:</para><para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates/2013-03-18.sql</code></para>
+                            <para>The above script will leave an extra table behind named OLD_KRAD_MSG_T. 
+                                Once you are satisfied that the data in the new KRAD_MSG_T table is intact, you can drop OLD_KRAD_MSG_T by running 
+                            </para>
+                            <para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates/cleanup-2013-03-18.sql</code></para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>Client dataset:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>MySQL:</para><para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/mysql-2013-03-18.sql</code></para>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle:</para><para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/2013-03-18.sql</code></para>
+                            <para>The above script will leave an extra table behind named OLD_KRAD_MSG_T. 
+                                Once you are satisfied that the data in the new KRAD_MSG_T table is intact, you can drop OLD_KRAD_MSG_T by running 
+                            </para>
+                            <para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/cleanup-2013-03-18.sql</code></para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+            </itemizedlist>
+        </section>
 </section>
 </article>

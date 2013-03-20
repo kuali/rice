@@ -198,6 +198,12 @@
   </bean>
   <bean id="Book-InquiryView" parent="Uif-InquiryView">
     <property name="headerText" value="Book Inquiry"/>
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
+    <property name="breadcrumbItem.siblingBreadcrumbComponent">
+      <bean parent="Uif-InquiryLocationSuggestField" p:suggest.valuePropertyName="title"/>
+    </property>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Book"/>
     <property name="Items">
       <list>

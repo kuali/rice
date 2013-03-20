@@ -16,7 +16,9 @@
     limitations under the License.
 
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   <bean id="BookMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
     <property name="workflowPropertyGroups">
       <list>
@@ -32,7 +34,13 @@
     </property>
   </bean>
   <bean id="Book-MaintenanceView" parent="Uif-MaintenanceView">
-  <property name="headerText" value="Book Maintenance"/>
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation" />
+    </property>
+    <property name="breadcrumbItem.siblingBreadcrumbComponent">
+      <bean parent="Uif-MaintenanceLocationSuggestField" p:suggest.valuePropertyName="title"/>
+    </property>
+    <property name="headerText" value="Book Maintenance"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Book"/>
     <property name="items">
       <list merge="true">
@@ -85,7 +93,8 @@
     <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
     <property name="maintainableClass" value="edu.sampleu.bookstore.maintenance.BookMaintainable"/>
     <property name="documentTypeName" value="BookMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass"
+              value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
       <list>
         <value>id</value>

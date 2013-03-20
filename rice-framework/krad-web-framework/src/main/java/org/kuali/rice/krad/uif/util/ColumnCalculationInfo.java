@@ -21,6 +21,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.field.MessageField;
 
+import java.io.Serializable;
+
 /**
  * ColumnCalculationInfo is used to specify which columns and what types of calculations are performed on those columns
  * of table collection.  This functionality can only be used when the dataTables plugin is being used
@@ -31,7 +33,8 @@ import org.kuali.rice.krad.uif.field.MessageField;
         @BeanTag(name = "columnCalculationInfo-average-bean", parent = "Uif-ColumnCalculationInfo-Average"),
         @BeanTag(name = "columnCalculationInfo-max-bean", parent = "Uif-ColumnCalculationInfo-Max"),
         @BeanTag(name = "columnCalculationInfo-min-bean", parent = "Uif-ColumnCalculationInfo-Min")})
-public class ColumnCalculationInfo extends UifDictionaryBeanBase {
+public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Serializable {
+    private static final long serialVersionUID = 148856717025808296L;
     private Integer columnNumber;
     private String propertyName;
 

@@ -37,6 +37,8 @@ public class UITestObject implements Serializable {
     private boolean bfield;
     private List<String> stringList = Arrays.asList("String1", "String2", "String3");
 
+    private UITestObject innerObject;
+
     private Map<String, Object> remoteFieldValuesMap;
 
     private List<UITestObject> subList = new ArrayList<UITestObject>();
@@ -61,6 +63,12 @@ public class UITestObject implements Serializable {
         remoteFieldValuesMap.put("remoteField3", true);
         remoteFieldValuesMap.put("remoteField4", "Fruit");
 
+    }
+
+    public UITestObject(String field1, String field2, String field3, String field4, UITestObject innerObject) {
+        this(field1,field2,field3,field4);
+
+        this.innerObject = innerObject;
     }
 
     /**
@@ -169,5 +177,13 @@ public class UITestObject implements Serializable {
 
     public void setStringList(List<String> stringList) {
         this.stringList = stringList;
+    }
+
+    public UITestObject getInnerObject() {
+        return innerObject;
+    }
+
+    public void setInnerObject(UITestObject innerObject) {
+        this.innerObject = innerObject;
     }
 }

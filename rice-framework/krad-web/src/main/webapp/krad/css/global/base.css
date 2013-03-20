@@ -276,7 +276,7 @@ ol.uif-breadcrumbs {
     text-decoration: none;
 }
 
-.uif-breadcrumbs > li:last-child > span, .uif-breadcrumbs > li:last-child > a{
+.uif-breadcrumbs > li:last-child > span, .uif-breadcrumbs > li:last-child > a {
     font-weight: bold;
 }
 
@@ -301,6 +301,18 @@ ol.uif-breadcrumbs, .uif-breadcrumbs > li {
     margin: 0;
     list-style: none;
     width: auto;
+}
+
+.uif-breadcrumbSiblingContent {
+    position: absolute;
+    background: white;
+    /*border: 1px solid black;*/
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    min-width: 180px;
+    padding: 10px;
+    z-index: 1000;
 }
 
 /** Buttons *********************************************************************************************/

@@ -26,12 +26,13 @@
     <#if element.render && element.label?has_content && element.label != "&nbsp;">
     <li>
         <#if element.renderAsLink>
-            <a ${id} href="${element.url.href}" ${krad.attrBuild(element)}>${element.label}</a>
+            <a ${id} data-role="breadcrumb" href="${element.url.href}" ${krad.attrBuild(element)}>${element.label}</a>
         <#else>
-            <span ${id} ${krad.attrBuild(element)}>${element.label}</span>
+            <span data-role="breadcrumb" ${id} ${krad.attrBuild(element)}>${element.label}</span>
         </#if>
 
-        <#if element.siblingBreadcrumbComponent?has_content>
+        <#if element.siblingBreadcrumbComponent?has_content && element.siblingBreadcrumbComponent.render>
+            <a class="uif-breadcrumbSiblingLink">&#9660;</a>
             <div class="uif-breadcrumbSiblingContent" style="display: none;">
                 <@krad.template component=element.siblingBreadcrumbComponent/>
             </div>

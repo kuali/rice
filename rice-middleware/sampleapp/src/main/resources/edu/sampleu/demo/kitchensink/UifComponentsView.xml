@@ -34,6 +34,33 @@
     <property name="parentLocation">
       <bean parent="Uif-RicePortalParentLocation"/>
     </property>
+    <property name="breadcrumbItem.siblingBreadcrumbComponent">
+      <bean parent="Uif-InputField" p:label="Navigate to" p:propertyName="viewId">
+        <property name="control">
+          <bean parent="Uif-DropdownControl">
+            <property name="options">
+              <list>
+                <bean parent="Uif-KeyValueLocation" p:key="UifCompView" p:value="Uif Components View"
+                      p:location.viewId="UifCompView"
+                      p:location.controllerMapping="/uicomponents"/>
+                <bean parent="Uif-KeyValueLocation" p:key="ConfigurationTestView" p:value="Configuration Test View"
+                      p:location.viewId="ConfigurationTestView"
+                      p:location.controllerMapping="/uicomponents"/>
+                <bean parent="Uif-KeyValueLocation" p:key="RichMessagesView" p:value="Rich Messages View"
+                      p:location.viewId="RichMessagesView"
+                      p:location.controllerMapping="/uicomponents"/>
+                <bean parent="Uif-KeyValueLocation" p:key="Demo-ReadOnlyTestView" p:value="ReadOnly Test View"
+                      p:location.viewId="Demo-ReadOnlyTestView"
+                      p:location.controllerMapping="/uicomponents"/>
+                <bean parent="Uif-KeyValueLocation" p:key="ClientDisableView" p:value="Client Disable View"
+                      p:location.viewId="ClientDisableView"
+                      p:location.controllerMapping="/uicomponents"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
     <property name="help">
       <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
     </property>
@@ -205,9 +232,49 @@
   </bean>
 
   <bean id="UifCompViewPageWithFooter" parent="Uif-Page">
+    <property name="breadcrumbItem.siblingBreadcrumbComponent">
+      <bean parent="Uif-InputField" p:propertyName="pageId">
+        <property name="control">
+          <bean parent="Uif-OptionListControl">
+            <property name="options">
+              <list>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page1"
+                      p:value="Input Fields and Controls"
+                      p:location.pageId="UifCompView-Page1"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page2" p:value="Other Fields"
+                      p:location.pageId="UifCompView-Page2"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page3" p:value="Validation"
+                      p:location.pageId="UifCompView-Page3"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page4" p:value="Validation - Regex"
+                      p:location.pageId="UifCompView-Page4"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page5" p:value="Progressive Disclosure"
+                      p:location.pageId="UifCompView-Page5"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page6" p:value="Lookups, etc"
+                      p:location.pageId="UifCompView-Page6"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page7" p:value="Collections"
+                      p:location.pageId="UifCompView-Page7"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page8" p:value="Button/Header Levels"
+                      p:location.pageId="UifCompView-Page8"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page9" p:value="Authorization"
+                      p:location.pageId="UifCompView-Page9"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page10" p:value="Other Examples"
+                      p:location.pageId="UifCompView-Page10"/>
+                <bean parent="UifCompView-KeyValueLocation" p:key="UifCompView-Page11" p:value="Event Examples"
+                      p:location.pageId="UifCompView-Page11"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
     <property name="footer">
       <bean parent="Uif-FormFooter"/>
     </property>
+  </bean>
+
+  <bean id="UifCompView-KeyValueLocation" parent="Uif-KeyValueLocation">
+    <property name="location.viewId" value="UifCompView"/>
+    <property name="location.controllerMapping" value="/uicomponents"/>
   </bean>
 
   <bean id="UifCompView_KNS" parent="UifCompView">
@@ -699,7 +766,8 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:label='Dropdown Navigation' p:width="auto" >
+        <bean parent="Uif-InputField" p:label='Dropdown Navigation' p:instructionalText="Navigate on dropdown selection"
+              p:width="auto">
           <property name="control">
             <bean parent="Uif-DropdownControl">
               <property name="options">
@@ -718,7 +786,8 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:width="auto" p:defaultValue="4">
+        <bean parent="Uif-InputField" p:label="Dropdown Nav" p:instructionalText="Backed by a custom KeyValuesFinder"
+              p:width="auto" p:defaultValue="4">
           <property name="control">
             <bean parent="Uif-DropdownControl"/>
           </property>
@@ -745,7 +814,28 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:label='2 selection'
+        <bean parent="Uif-InputField" p:label="Option List Nav - UrlInfo configured" p:propertyName="pageId">
+          <property name="control">
+            <bean parent="Uif-OptionListControl">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyValueLocation" p:key="UifCompView-Page1" p:value="Input Fields and Controls"
+                        p:location.viewId="UifCompView" p:location.pageId="UifCompView-Page1"
+                        p:location.controllerMapping="/uicomponents"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="UifCompView-Page2" p:value="Other Fields"
+                        p:location.viewId="UifCompView" p:location.pageId="UifCompView-Page2"
+                        p:location.controllerMapping="/uicomponents"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="UifCompView-Page3" p:value="Validation"
+                        p:location.viewId="UifCompView" p:location.pageId="UifCompView-Page3"
+                        p:location.controllerMapping="/uicomponents"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:label='OptionList 2 selection' p:instructionalText="Backed by a list property,
+        showing only values that match those in that property"
               p:propertyName="stringList3">
           <property name="control">
             <bean parent="Uif-OptionListControl">
@@ -765,8 +855,9 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:label='1 Selection'
-                      p:propertyName="mField1">
+        <bean parent="Uif-InputField" p:label='1 Selection' p:instructionalText="Backed by a simple property,
+                showing only the value that matches"
+              p:propertyName="mField1">
           <property name="control">
             <bean parent="Uif-OptionListControl">
               <property name="showOnlySelected" value="true"/>

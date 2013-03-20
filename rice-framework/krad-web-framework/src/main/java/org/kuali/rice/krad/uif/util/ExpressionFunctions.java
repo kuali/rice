@@ -19,7 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.KualiModuleService;
+import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.ArrayList;
@@ -64,7 +68,7 @@ public class ExpressionFunctions {
      * @param value the list
      * @return true if the list is null or empty, false otherwise
      */
-    public static boolean emptyList(List<?> list){
+    public static boolean emptyList(List<?> list) {
         return (list == null) || list.isEmpty();
     }
 
@@ -82,29 +86,26 @@ public class ExpressionFunctions {
      * @param values the values to be to check for in the list
      * @return true if all values exist in the list and both values and list are non-null/not-empty, false otherwise
      */
-    public static boolean listContains(List<?> list, Object[] values){
-        if(list != null && values != null && values.length > 0 && !list.isEmpty()){
+    public static boolean listContains(List<?> list, Object[] values) {
+        if (list != null && values != null && values.length > 0 && !list.isEmpty()) {
             //conversion for if the values are non-string but the list is string (special case)
-            if(list.get(0) instanceof String && !(values[0] instanceof String)){
+            if (list.get(0) instanceof String && !(values[0] instanceof String)) {
                 String[] stringValues = new String[values.length];
-                for(int i = 0; i < values.length; i++){
+                for (int i = 0; i < values.length; i++) {
                     stringValues[i] = values[i].toString();
                 }
                 return list.containsAll(Arrays.asList(stringValues));
-            }
-            else if(list.get(0) instanceof Date && values[0] instanceof String){
+            } else if (list.get(0) instanceof Date && values[0] instanceof String) {
                 //TODO date conversion
                 return false;
-            }
-            else if(!(list.get(0) instanceof String) && values[0] instanceof String){
+            } else if (!(list.get(0) instanceof String) && values[0] instanceof String) {
                 //values passed in are string but the list is of objects, use object's toString method
                 List<String> stringList = new ArrayList<String>();
-                for(Object value: list){
+                for (Object value : list) {
                     stringList.add(value.toString());
                 }
                 return stringList.containsAll(Arrays.asList(values));
-            }
-            else{
+            } else {
                 //no conversion for if neither list is String, assume matching types (numeric case)
                 return list.containsAll(Arrays.asList(values));
             }
@@ -180,8 +181,8 @@ public class ExpressionFunctions {
      * @param roleQualifiers - qualification for assigned roles
      * @return boolean true if the current user has the permission, false if not or the permission does not exist
      */
-    public static boolean hasPermDtls(String namespaceCode, String permissionName, Map<String, String> permissionDetails,
-            Map<String, String> roleQualifiers) {
+    public static boolean hasPermDtls(String namespaceCode, String permissionName,
+            Map<String, String> permissionDetails, Map<String, String> roleQualifiers) {
         Person user = GlobalVariables.getUserSession().getPerson();
 
         return KimApiServiceLocator.getPermissionService().isAuthorized(user.getPrincipalId(), namespaceCode,
@@ -197,7 +198,7 @@ public class ExpressionFunctions {
      * @param permissionDetails - details for the permission check
      * @param roleQualifiers - qualification for assigned roles
      * @return boolean true if the current user has a permission with the given template, false if not or
-     * the permission does not exist
+     *         the permission does not exist
      */
     public static boolean hasPermTmpl(String namespaceCode, String templateName, Map<String, String> permissionDetails,
             Map<String, String> roleQualifiers) {
@@ -215,5 +216,58 @@ public class ExpressionFunctions {
      */
     public static Long sequence(String sequenceName) {
         return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
+    }
+
+    /**
+     * Get the a primary key (valid for inquiry/maintenance view retrieval) for the dataObject by class name passed in
+     *
+     * @param dataObjectClassName the class name to get the key for
+     * @return a key valid for use as a request parameter for retrieving an inquiry or maintenance doc
+     */
+    public static String getDataObjectKey(String dataObjectClassName) {
+
+        if (StringUtils.isBlank(dataObjectClassName)) {
+            throw new RuntimeException("getDataObjectKey SpringEL function failed because the class name was blank");
+        }
+
+        Class dataObjectClass = null;
+
+        try {
+            dataObjectClass = Class.forName(dataObjectClassName);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(
+                    "getDataObjectKey SpringEL function failed when trying to find class " + dataObjectClassName, e);
+        }
+
+        DataObjectMetaDataService dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
+
+        // build list of key values from the map parameters
+        List<String> pkPropertyNames = dataObjectMetaDataService.listPrimaryKeyFieldNames(dataObjectClass);
+
+        //return first primary key found
+        if (pkPropertyNames != null && !pkPropertyNames.isEmpty()) {
+            return pkPropertyNames.get(0);
+        }
+
+        //this likely won't be reached, as most should have a primary key (assumption)
+        KualiModuleService kualiModuleService = KRADServiceLocatorWeb.getKualiModuleService();
+        ModuleService moduleService = kualiModuleService.getResponsibleModuleService(dataObjectClass);
+
+        // some classes might have alternate keys defined for retrieving
+        List<List<String>> altKeys = null;
+        if (moduleService != null) {
+            altKeys = moduleService.listAlternatePrimaryKeyFieldNames(dataObjectClass);
+        }
+
+        if (altKeys != null && !altKeys.isEmpty()) {
+            for (List<String> list : altKeys) {
+                if (list != null && !list.isEmpty()) {
+                    //return any key first found
+                    return list.get(0);
+                }
+            }
+        }
+
+        return null;
     }
 }

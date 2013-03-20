@@ -33,11 +33,52 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
         return;
     }
 
+    //set up sibling breadcrumb handler
+    jQuery(breadcrumbList).on("click", ".uif-breadcrumbSiblingLink", function(){
+        var content = jQuery(this).parent().find("div.uif-breadcrumbSiblingContent");
+        var breadcrumb = jQuery(this).parent().find("[data-role='breadcrumb']");
+        var siblingLink = this;
+
+        if(content.length && !content.is(":visible") && breadcrumb.length && !jQuery(siblingLink).data("close")){
+            content.attr("style", "");
+            content.position({
+            my: "left bottom",
+            at: "left top",
+            of: breadcrumb
+            });
+            content.show();
+
+            jQuery(document).on("mouseup.bc-sibling", function (e)
+            {
+                var container = jQuery("div.uif-breadcrumbSiblingContent:visible");
+
+                //if not in the breadcrumb sibling content, close and remove this handler
+                if (container.has(e.target).length === 0)
+                {
+                    container.hide();
+                    jQuery(document).off("mouseup.bc-sibling");
+                }
+
+                //if the target clicked is the siblingLink, mark it with a close flag (so click handler does not
+                //reopen - processed after the mouseup)
+                if(e.target == siblingLink){
+                   jQuery(siblingLink).data("close", true);
+                }
+            });
+
+        }
+
+        //remove the close flag
+        if(jQuery(siblingLink).data("close")){
+            jQuery(siblingLink).data("close", false);
+        }
+    });
+
     //if the last item has a link, make it a span
-    var lastLink = items.last().find("> a");
+    var lastLink = items.last().find("> a[data-role='breadcrumb']");
     if (lastLink.length) {
         lastLink.replaceWith(function () {
-            return jQuery("<span>" + jQuery(this).html() + "</span>");
+            return jQuery("<span data-role='breadcrumb'>" + jQuery(this).html() + "</span>");
         });
     }
 

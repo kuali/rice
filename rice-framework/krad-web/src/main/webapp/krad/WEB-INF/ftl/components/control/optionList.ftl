@@ -34,7 +34,7 @@ Control for outputting options or selected options (KeyValues) as readOnly.  Als
 
     <#local isSelected=false>
 
-    <#if field.propertyName?has_content && control.showOnlySelected>
+    <#if field.propertyName?has_content>
         <#local path="KualiForm.${field.bindingInfo.bindingPath}"/>
         <@spring.bind path/>
     </#if>
@@ -43,10 +43,11 @@ Control for outputting options or selected options (KeyValues) as readOnly.  Als
     <ul id="${control.id}" ${attributes}>
         <#list control.options as option>
         <#--check for key match if backed by property name-->
-            <#if field.propertyName?has_content && spring.status.actualValue?is_sequence>
+            <#if field.propertyName?has_content && spring.status.actualValue?has_content
+            && spring.status.actualValue?is_sequence>
                 <#local isSelected=spring.contains(spring.status.actualValue?default([""]), option.key)>
-            <#elseif field.propertyName?has_content>
-                <#local isSelected=spring.status.actualValue == option.key>
+            <#elseif field.propertyName?has_content && spring.status.actualValue?has_content>
+                <#local isSelected=spring.status.actualValue?string == option.key>
             </#if>
 
         <#--selected class-->

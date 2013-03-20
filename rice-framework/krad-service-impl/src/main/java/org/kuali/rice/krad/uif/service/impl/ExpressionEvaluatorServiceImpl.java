@@ -295,6 +295,8 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
                     new Class[]{String.class, String.class, Map.class, Map.class}));
             context.registerFunction("sequence", ExpressionFunctions.class.getDeclaredMethod("sequence",
                     new Class[]{String.class}));
+            context.registerFunction("getDataObjectKey", ExpressionFunctions.class.getDeclaredMethod("getDataObjectKey",
+                    new Class[]{String.class}));
         } catch (NoSuchMethodException e) {
             LOG.error("Custom function for el expressions not found: " + e.getMessage());
             throw new RuntimeException("Custom function for el expressions not found: " + e.getMessage(), e);

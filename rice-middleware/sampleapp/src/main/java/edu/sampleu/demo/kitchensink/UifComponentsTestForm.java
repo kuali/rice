@@ -250,21 +250,21 @@ public class UifComponentsTestForm extends UifFormBase {
                 + "&#32;&#32;&lt;/property&gt;\n"
                 + "&lt;/bean&gt;";
 
-        list1.add(new UITestObject("5", "6", "7", "8"));
-        UITestObject obj1 = new UITestObject("1", "2", "3", "4");
+        list1.add(new UITestObject("5", "6", "7", "8", new UITestObject("1","1","1","1")));
+        UITestObject obj1 = new UITestObject("1", "2", "3", "4", new UITestObject("1","1","1","1"));
         obj1.setStringList(null);
         list1.add(obj1);
-        UITestObject obj2 = new UITestObject("9", "10", "11", "12");
+        UITestObject obj2 = new UITestObject("9", "10", "11", "12", new UITestObject("1","1","1","1"));
         obj2.setStringList(new ArrayList<String>());
         list1.add(obj2);
-        list1.add(new UITestObject("13", "14", "15", "16"));
-        list1.add(new UITestObject("17", "18", "19", "20"));
-        list1.add(new UITestObject("5", "6", "7", "8"));
-        list1.add(new UITestObject("1", "2", "3", "4"));
-        list1.add(new UITestObject("9", "10", "11", "12"));
-        list1.add(new UITestObject("13", "14", "15", "16"));
-        list1.add(new UITestObject("213", "143", "151", "126"));
-        list1.add(new UITestObject("133", "144", "155", "156"));
+        list1.add(new UITestObject("13", "14", "15", "16", new UITestObject("1","1","1","1")));
+        list1.add(new UITestObject("17", "18", "19", "20", new UITestObject("1","1","1","1")));
+        list1.add(new UITestObject("5", "6", "7", "8", new UITestObject("1","1","1","1")));
+        list1.add(new UITestObject("1", "2", "3", "4", new UITestObject("1","1","1","1")));
+        list1.add(new UITestObject("9", "10", "11", "12", new UITestObject("1","1","1","1")));
+        list1.add(new UITestObject("13", "14", "15", "16", new UITestObject("1","1","1","1")));
+        list1.add(new UITestObject("213", "143", "151", "126", new UITestObject("1","1","1","1")));
+        list1.add(new UITestObject("133", "144", "155", "156", new UITestObject("1","1","1","1")));
 
         list2.add(new UITestObject("A", "B", "C", "D"));
         list2.add(new UITestObject("1", "2", "3", "4"));

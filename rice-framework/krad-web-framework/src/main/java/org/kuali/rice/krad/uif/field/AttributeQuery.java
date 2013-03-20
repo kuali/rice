@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -45,7 +46,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "attributeQueryConfig-bean", parent = "Uif-AttributeQueryConfig")
-public class AttributeQuery implements Serializable {
+public class AttributeQuery extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -4569905665441735255L;
 
     private String dataObjectClassName;

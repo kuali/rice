@@ -85,7 +85,6 @@
         <value>classpath:edu/sampleu/demo/course/UifStudentDefinitions.xml</value>
         <value>classpath:edu/sampleu/demo/course/CourseOfferingView.xml</value>
         <value>classpath:edu/sampleu/demo/registration/RegistrationView.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/BaseDefinitions.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsView.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP3.xml</value>

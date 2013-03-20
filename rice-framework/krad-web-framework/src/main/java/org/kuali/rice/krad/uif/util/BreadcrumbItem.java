@@ -22,7 +22,9 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.view.View;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,6 +60,21 @@ public class BreadcrumbItem extends ContentElementBase {
                     context);
 
         }
+    }
+
+    /**
+     * Adds siblingBreadcrumbComponent to the components for the lifecycle
+     *
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = new ArrayList<Component>();
+
+        components.add(siblingBreadcrumbComponent);
+        components.addAll(super.getComponentsForLifecycle());
+
+        return components;
     }
 
     /**

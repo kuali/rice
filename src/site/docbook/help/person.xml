@@ -65,49 +65,51 @@
                 <para>The first section in the <emphasis role="bold">Overview</emphasis> tab is the
                         <emphasis role="bold">Overview</emphasis> section.</para>
                 <para>
-                    <table frame="void">
-                        <caption>Overview section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Overview section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                             <thead>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>Description</td>
-                                </tr>
+                                <row>
+                                    <entry>Title</entry>
+                                    <entry>Description</entry>
+                                </row>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Entity Id</td>
-                                    <td><para>Display-only. The unique ID number identifying this person in your database. An individual may
+                                <row>
+                                    <entry>Entity Id</entry>
+                                    <entry><para>Display-only. The unique ID number identifying this person in your database. An individual may
                                         have multiple principal IDs but only one entity ID. </para>
                                         <para>The system completes this entry automatically when you
                                             save or submit the document.</para>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Principal ID</td>
-                                    <td><para>Display-only. The unique ID number identifying this principal. Whereas Entity ID represents a
+                                    </entry>
+                                </row>
+                                <row>
+                                    <entry>Principal ID</entry>
+                                    <entry><para>Display-only. The unique ID number identifying this principal. Whereas Entity ID represents a
                                             unique person, principal represents a set of login
                                             information for that person. When selecting a person,
-                                            you ordinarily reference his or her principal ID.</para><para>The system completes this entry automatically when you save or submit the document.</para></td>
-                                </tr>
-                                <tr>
-                                    <td>Principal Name</td>
-                                    <td>Required. Enter the user name by which this principal is
-                                        to be identified.</td>
-                                </tr>
-                                <tr>
-                                    <td>Principal Password</td>
-                                    <td>Optional. Enter the password for this principal
-                                        ID.</td>
-                                </tr>
-                                <tr>
-                                    <td>Active</td>
-                                    <td>Check the box to indicate that this principal ID is
+                                            you ordinarily reference his or her principal ID.</para><para>The system completes this entry automatically when you save or submit the document.</para></entry>
+                                </row>
+                                <row>
+                                    <entry>Principal Name</entry>
+                                    <entry>Required. Enter the user name by which this principal is
+                                        to be identified.</entry>
+                                </row>
+                                <row>
+                                    <entry>Principal Password</entry>
+                                    <entry>Optional. Enter the password for this principal
+                                        ID.</entry>
+                                </row>
+                                <row>
+                                    <entry>Active</entry>
+                                    <entry>Check the box to indicate that this principal ID is
                                         active. Uncheck the box to indicate that this principal ID
-                                        is inactive.</td>
-                                </tr>
+                                        is inactive.</entry>
+                                </row>
                             </tbody>
+                        </tgroup>
                     </table></para>
             </section>
             <section>
@@ -117,20 +119,21 @@
                     ID. Depending on the affiliation type added, you may need to complete additional
                     fields.</para>
                 <para>
-                    <table frame="border">
-                        <caption>Affiliations section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Affiliations section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                             <thead>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>Description</td>
-                                </tr>
+                                <row>
+                                    <entry>Title</entry>
+                                    <entry>Description</entry>
+                                </row>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Affiliation Type</td>
-                                    <td><para>Optional. Select the type of affiliation from the list. Options include:<itemizedlist>
+                                <row>
+                                    <entry>Affiliation Type</entry>
+                                    <entry><para>Optional. Select the type of affiliation from the list. Options include:<itemizedlist>
                                                 <listitem>
                                                   <para>Affiliate: An affiliation for users in your
                                                   system that are neither employees nor
@@ -148,26 +151,27 @@
                                                 </listitem>
                                             </itemizedlist></para>
                                     <para>Affiliation types of Faculty and Staff require additional
-                                            information (see below). </para></td>
-                                </tr>
-                                <tr>
-                                    <td>Campus Code</td>
-                                    <td>Required. Select the campus code associated with this
-                                        affiliation. </td>
-                                </tr>
-                                <tr>
-                                    <td>Default</td>
-                                    <td>Check the box to indicate that this affiliation is this
+                                            information (see below). </para></entry>
+                                </row>
+                                <row>
+                                    <entry>Campus Code</entry>
+                                    <entry>Required. Select the campus code associated with this
+                                        affiliation. </entry>
+                                </row>
+                                <row>
+                                    <entry>Default</entry>
+                                    <entry>Check the box to indicate that this affiliation is this
                                         principal's default association with your institution. Each
                                         principal must have at least one default
-                                        affiliation.</td>
-                                </tr>
-                                <tr>
-                                    <td>Actions</td>
-                                    <td>Click the <emphasis role="bold">Add</emphasis> button to
-                                        add the affiliation.</td>
-                                </tr>
+                                        affiliation.</entry>
+                                </row>
+                                <row>
+                                    <entry>Actions</entry>
+                                    <entry>Click the <emphasis role="bold">Add</emphasis> button to
+                                        add the affiliation.</entry>
+                                </row>
                             </tbody>
+                        </tgroup>
                     </table>
                 </para>
                 <para>If you have selected an Affiliation of 'Faculty' or 'Staff,' the system
@@ -181,35 +185,36 @@
                     </mediaobject>
                     </figure></para>
                 <para>
-                    <table frame="border">
-                        <caption>Employment Information fields definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Employment Information fields definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                             <thead>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>Description</td>
-                                </tr>
+                                <row>
+                                    <entry>Title</entry>
+                                    <entry>Description</entry>
+                                </row>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Employee ID</td>
-                                    <td>Optional. Enter the Employment ID number associated with
+                                <row>
+                                    <entry>Employee ID</entry>
+                                    <entry>Optional. Enter the Employment ID number associated with
                                         this faculty or staff affiliation. Ordinarily this entry is
                                         the ID number identifying this principal in your HR
-                                        system.</td>
-                                </tr>
-                                <tr>
-                                    <td>Primary</td>
-                                    <td>Check the box to indicate that this faculty or staff
+                                        system.</entry>
+                                </row>
+                                <row>
+                                    <entry>Primary</entry>
+                                    <entry>Check the box to indicate that this faculty or staff
                                         affiliation represents the principal's primary job with your
                                         institution. Each principal with a faculty or staff
                                         affiliation must have exactly one affiliation marked as
-                                        'primary.</td>
-                                </tr>
-                                <tr>
-                                    <td>Employee Status</td>
-                                    <td><para>Required. Select a value to identify the current status
+                                        'primary.</entry>
+                                </row>
+                                <row>
+                                    <entry>Employee Status</entry>
+                                    <entry><para>Required. Select a value to identify the current status
                                         of this faculty or staff affiliation. Options include:<itemizedlist>
                                             <listitem>
                                                 <para>Active</para>
@@ -232,11 +237,11 @@
                                             <listitem>
                                                 <para>Terminated</para>
                                             </listitem>
-                                        </itemizedlist></para></td>
-                                </tr>
-                                <tr>
-                                    <td>Employee Type</td>
-                                    <td><para>Required. Select a value to indicate the type of
+                                        </itemizedlist></para></entry>
+                                </row>
+                                <row>
+                                    <entry>Employee Type</entry>
+                                    <entry><para>Required. Select a value to indicate the type of
                                         employment for this affiliation. Options include:<itemizedlist>
                                             <listitem>
                                                 <para>Non-Professional</para>
@@ -247,24 +252,25 @@
                                             <listitem>
                                                 <para>Professional</para>
                                             </listitem>
-                                        </itemizedlist></para></td>
-                                </tr>
-                                <tr>
-                                    <td>Base Salary Amount</td>
-                                    <td>Required. Enter the base salary yearly amount earned for
-                                        this faculty or staff affiliation. </td>
-                                </tr>
-                                <tr>
-                                    <td>Primary Department Code</td>
-                                    <td>Optional. Enter the code for the department associated with
-                                    this faculty or staff affiliation.</td>
-                                </tr>
-                                <tr>
-                                    <td>Add</td>
-                                    <td>Click the<emphasis role="bold"> Add</emphasis> button to
-                                        add this row of employment information.</td>
-                                </tr>
+                                        </itemizedlist></para></entry>
+                                </row>
+                                <row>
+                                    <entry>Base Salary Amount</entry>
+                                    <entry>Required. Enter the base salary yearly amount earned for
+                                        this faculty or staff affiliation. </entry>
+                                </row>
+                                <row>
+                                    <entry>Primary Department Code</entry>
+                                    <entry>Optional. Enter the code for the department associated with
+                                    this faculty or staff affiliation.</entry>
+                                </row>
+                                <row>
+                                    <entry>Add</entry>
+                                    <entry>Click the<emphasis role="bold"> Add</emphasis> button to
+                                        add this row of employment information.</entry>
+                                </row>
                             </tbody>
+                        </tgroup>
                     </table>
                 </para>
             </section>
@@ -293,20 +299,21 @@
                     </mediaobject>
                 </figure></para>
                 <para>
-                    <table frame="border">
-                        <caption>Names section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Names section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                            </tr>
+                            <row>
+                                <entry>Title</entry>
+                                <entry>Description</entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Name Code</td>
-                                <td><para>Optional. Select the type of name to be added in this row.
+                            <row>
+                                <entry>Name Code</entry>
+                                <entry><para>Optional. Select the type of name to be added in this row.
                                     Options include:<itemizedlist>
                                         <listitem>
                                             <para>Other</para>
@@ -317,11 +324,11 @@
                                         <listitem>
                                             <para>Primary</para>
                                         </listitem>
-                                    </itemizedlist></para></td>
-                            </tr>
-                            <tr>
-                                <td>Name Prefix</td>
-                                <td><para>Optional. Select the appropriate title for the name being added
+                                    </itemizedlist></para></entry>
+                            </row>
+                            <row>
+                                <entry>Name Prefix</entry>
+                                <entry><para>Optional. Select the appropriate title for the name being added
                                     in this row. Options include:<itemizedlist>
                                         <listitem>
                                             <para>Ms</para>
@@ -335,19 +342,19 @@
                                         <listitem>
                                             <para>Dr</para>
                                         </listitem>
-                                    </itemizedlist></para></td>
-                            </tr>
-                            <tr>
-                                <td>First Name</td>
-                                <td>Optional. Enter the first name for this record.</td>
-                            </tr>
-                            <tr>
-                                <td>Last Name</td>
-                                <td>Optional. Enter the last name for this record.</td>
-                            </tr>
-                            <tr>
-                                <td>Name Suffix</td>
-                                <td><para>Optional. Select a suffix for this name record. Options include:<itemizedlist>
+                                    </itemizedlist></para></entry>
+                            </row>
+                            <row>
+                                <entry>First Name</entry>
+                                <entry>Optional. Enter the first name for this record.</entry>
+                            </row>
+                            <row>
+                                <entry>Last Name</entry>
+                                <entry>Optional. Enter the last name for this record.</entry>
+                            </row>
+                            <row>
+                                <entry>Name Suffix</entry>
+                                <entry><para>Optional. Select a suffix for this name record. Options include:<itemizedlist>
                                         <listitem>
                                             <para>Jr</para>
                                         </listitem>
@@ -360,26 +367,27 @@
                                         <listitem>
                                             <para>MD</para>
                                         </listitem>
-                                    </itemizedlist></para></td>
-                            </tr>
-                            <tr>
-                                <td>Default</td>
-                                <td>Check this box to indicate that this Name record is to be used
+                                    </itemizedlist></para></entry>
+                            </row>
+                            <row>
+                                <entry>Default</entry>
+                                <entry>Check this box to indicate that this Name record is to be used
                                     as the default for this person. Each Person record must have
-                                    exactly one Name record identified as the default.</td>
-                            </tr>
-                            <tr>
-                                <td>Active</td>
-                                <td>Check the box to indicate that this Name record is active.
+                                    exactly one Name record identified as the default.</entry>
+                            </row>
+                            <row>
+                                <entry>Active</entry>
+                                <entry>Check the box to indicate that this Name record is active.
                                     Uncheck the box to indicate that this record should be
-                                    considered inactive.</td>
-                            </tr>
-                            <tr>
-                                <td>Actions</td>
-                                <td>Click the <emphasis role="bold">Add</emphasis> button to add
-                                    this Name record.</td>
-                            </tr>
+                                    considered inactive.</entry>
+                            </row>
+                            <row>
+                                <entry>Actions</entry>
+                                <entry>Click the <emphasis role="bold">Add</emphasis> button to add
+                                    this Name record.</entry>
+                            </row>
                         </tbody>
+                        </tgroup>
                     </table>
                 </para>
             </section>
@@ -393,20 +401,21 @@
                     </mediaobject>
                 </figure></para>
                 <para>
-                    <table frame="border">
-                        <caption>Addresses section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Addresses section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                            </tr>
+                            <row>
+                                <entry>Title</entry>
+                                <entry>Description</entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Address Type</td>
-                                <td><para>Optional. Select the type of address being added on this row.
+                            <row>
+                                <entry>Address Type</entry>
+                                <entry><para>Optional. Select the type of address being added on this row.
                                     Options include:<itemizedlist>
                                         <listitem>
                                             <para>Home</para>
@@ -417,48 +426,49 @@
                                         <listitem>
                                             <para>Work</para>
                                         </listitem>
-                                    </itemizedlist></para></td>
-                            </tr>
-                            <tr>
-                                <td>Line 1-3</td>
-                                <td>Optional. Use lines 1, 2 and 3 to enter the street address for
-                                    this row.</td>
-                            </tr>
-                            <tr>
-                                <td>City</td>
-                                <td>Optional. Enter the city associated with this address.</td>
-                            </tr>
-                            <tr>
-                                <td>State / Province</td>
-                                <td>Optional. Select the state associated with this address from the
-                                    list.</td>
-                            </tr>
-                            <tr>
-                                <td>Postal Code</td>
-                                <td>Optional. Enter the postal code associated with this
-                                    address.</td>
-                            </tr>
-                            <tr>
-                                <td>Country</td>
-                                <td>Optional. Select the country associated with this address.</td>
-                            </tr>
-                            <tr>
-                                <td>Default</td>
-                                <td>Check this box to indicate this address record should be used as
+                                    </itemizedlist></para></entry>
+                            </row>
+                            <row>
+                                <entry>Line 1-3</entry>
+                                <entry>Optional. Use lines 1, 2 and 3 to enter the street address for
+                                    this row.</entry>
+                            </row>
+                            <row>
+                                <entry>City</entry>
+                                <entry>Optional. Enter the city associated with this address.</entry>
+                            </row>
+                            <row>
+                                <entry>State / Province</entry>
+                                <entry>Optional. Select the state associated with this address from the
+                                    list.</entry>
+                            </row>
+                            <row>
+                                <entry>Postal Code</entry>
+                                <entry>Optional. Enter the postal code associated with this
+                                    address.</entry>
+                            </row>
+                            <row>
+                                <entry>Country</entry>
+                                <entry>Optional. Select the country associated with this address.</entry>
+                            </row>
+                            <row>
+                                <entry>Default</entry>
+                                <entry>Check this box to indicate this address record should be used as
                                     the default. A Person record can have no more than one default
-                                    Address record.</td>
-                            </tr>
-                            <tr>
-                                <td>Active</td>
-                                <td>Check this box to indicate that this Address record is active.
-                                    Uncheck the box to indicate that this record is inactive.</td>
-                            </tr>
-                            <tr>
-                                <td>Actions</td>
-                                <td>Click the <emphasis role="bold">Add</emphasis> button to add
-                                    this Address record.</td>
-                            </tr>
+                                    Address record.</entry>
+                            </row>
+                            <row>
+                                <entry>Active</entry>
+                                <entry>Check this box to indicate that this Address record is active.
+                                    Uncheck the box to indicate that this record is inactive.</entry>
+                            </row>
+                            <row>
+                                <entry>Actions</entry>
+                                <entry>Click the <emphasis role="bold">Add</emphasis> button to add
+                                    this Address record.</entry>
+                            </row>
                         </tbody>
+                        </tgroup>
                     </table>
                 </para>
             </section>
@@ -472,20 +482,21 @@
                     </mediaobject>
                 </figure></para>
                 <para>
-                    <table frame="border">
-                        <caption>Phone Numbers section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Phone Numbers section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                            </tr>
+                            <row>
+                                <entry>Title</entry>
+                                <entry>Description</entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Phone Type</td>
-                                <td><para>Optional. Select the type of phone number being added on this
+                            <row>
+                                <entry>Phone Type</entry>
+                                <entry><para>Optional. Select the type of phone number being added on this
                                     row. Options include:<itemizedlist>
                                         <listitem>
                                             <para>Home</para>
@@ -499,39 +510,40 @@
                                         <listitem>
                                             <para>Work</para>
                                         </listitem>
-                                    </itemizedlist></para></td>
-                            </tr>
-                            <tr>
-                                <td>Phone Number</td>
-                                <td>Optional. Enter the area code and phone number.</td>
-                            </tr>
-                            <tr>
-                                <td>Extension</td>
-                                <td>Optional. Enter the appropriate extension.</td>
-                            </tr>
-                            <tr>
-                                <td>Country</td>
-                                <td>Optional. Select the country associated with this Phone Number
-                                    record.</td>
-                            </tr>
-                            <tr>
-                                <td>Default</td>
-                                <td>Check this box to indicate that this Phone Number record should
+                                    </itemizedlist></para></entry>
+                            </row>
+                            <row>
+                                <entry>Phone Number</entry>
+                                <entry>Optional. Enter the area code and phone number.</entry>
+                            </row>
+                            <row>
+                                <entry>Extension</entry>
+                                <entry>Optional. Enter the appropriate extension.</entry>
+                            </row>
+                            <row>
+                                <entry>Country</entry>
+                                <entry>Optional. Select the country associated with this Phone Number
+                                    record.</entry>
+                            </row>
+                            <row>
+                                <entry>Default</entry>
+                                <entry>Check this box to indicate that this Phone Number record should
                                     be used as the default. A Person record can have no more than
-                                    one default Phone Number record.</td>
-                            </tr>
-                            <tr>
-                                <td>Active</td>
-                                <td>Check this box to indicate that this Phone Number record is
+                                    one default Phone Number record.</entry>
+                            </row>
+                            <row>
+                                <entry>Active</entry>
+                                <entry>Check this box to indicate that this Phone Number record is
                                     active. Uncheck the box to indicate that this record is
-                                    inactive.</td>
-                            </tr>
-                            <tr>
-                                <td>Actions</td>
-                                <td>Click the <emphasis role="bold">Add</emphasis> button to add
-                                    this Phone Number record.</td>
-                            </tr>
+                                    inactive.</entry>
+                            </row>
+                            <row>
+                                <entry>Actions</entry>
+                                <entry>Click the <emphasis role="bold">Add</emphasis> button to add
+                                    this Phone Number record.</entry>
+                            </row>
                         </tbody>
+                        </tgroup>
                     </table>
                 </para>
             </section>
@@ -544,26 +556,27 @@
                     </mediaobject>
                 </figure></para>
                 <para>
-                    <table frame="border">
-                        <caption>Email Address section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Email Address section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                         <thead>
-                            <tr>
-                                <th>
+                            <row>
+                                <entry>
                                     <para>Title </para>
-                                </th>
-                                <th>Description</th>
-                            </tr>
+                                </entry>
+                                <entry>Description</entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Email</td>
-                                <td>Optional. Enter the email address for this record.</td>
-                            </tr>
-                            <tr>
-                                <td>Type</td>
-                                <td><para>Optional. Select the type of email address being added on this
+                            <row>
+                                <entry>Email</entry>
+                                <entry>Optional. Enter the email address for this record.</entry>
+                            </row>
+                            <row>
+                                <entry>Type</entry>
+                                <entry><para>Optional. Select the type of email address being added on this
                                     row. Options include:<itemizedlist>
                                         <listitem>
                                             <para>Home</para>
@@ -574,26 +587,27 @@
                                         <listitem>
                                             <para>Work</para>
                                         </listitem>
-                                    </itemizedlist></para></td>
-                            </tr>
-                            <tr>
-                                <td>Default</td>
-                                <td>Check this box to indicate that this Email Address record should
+                                    </itemizedlist></para></entry>
+                            </row>
+                            <row>
+                                <entry>Default</entry>
+                                <entry>Check this box to indicate that this Email Address record should
                                     be used as the default. A Person record can have no more than
-                                    one default Email Address record.</td>
-                            </tr>
-                            <tr>
-                                <td>Active</td>
-                                <td>Check this box to indicate that this Email Address record is
+                                    one default Email Address record.</entry>
+                            </row>
+                            <row>
+                                <entry>Active</entry>
+                                <entry>Check this box to indicate that this Email Address record is
                                     active. Uncheck the box to indicate that this record is
-                                    inactive.</td>
-                            </tr>
-                            <tr>
-                                <td>Actions</td>
-                                <td>Click the <emphasis role="bold">Add</emphasis> button to add
-                                    this Email Address record.</td>
-                            </tr>
+                                    inactive.</entry>
+                            </row>
+                            <row>
+                                <entry>Actions</entry>
+                                <entry>Click the <emphasis role="bold">Add</emphasis> button to add
+                                    this Email Address record.</entry>
+                            </row>
                         </tbody>
+                        </tgroup>
                     </table>
                 </para>
             </section>
@@ -613,42 +627,44 @@
                     </mediaobject>
             </figure>
             <para>
-                <table frame="border">
-                    <caption>Privacy Preferences tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Privacy Preferences tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Suppress Name</td>
-                            <td>Optional. Check this box to specify that the system is not to
-                                display this person's names.</td>
-                        </tr>
-                        <tr>
-                            <td>Suppress Personal</td>
-                            <td>Optional. Do not display this person's personal data.</td>
-                        </tr>
-                        <tr>
-                            <td>Suppress Phone</td>
-                            <td>Optional. Check this box to specify that the system is not to
-                                display this person's phone numbers.</td>
-                        </tr>
-                        <tr>
-                            <td>Suppress Address</td>
-                            <td>Optional. Check this box to specify that the system is not to
-                                display this person's addresses. </td>
-                        </tr>
-                        <tr>
-                            <td>Suppress Email</td>
-                            <td>Optional. Check this box to specify that the system is not to
-                                display this person's email addresses.</td>
-                        </tr>
+                        <row>
+                            <entry>Suppress Name</entry>
+                            <entry>Optional. Check this box to specify that the system is not to
+                                display this person's names.</entry>
+                        </row>
+                        <row>
+                            <entry>Suppress Personal</entry>
+                            <entry>Optional. Do not display this person's personal data.</entry>
+                        </row>
+                        <row>
+                            <entry>Suppress Phone</entry>
+                            <entry>Optional. Check this box to specify that the system is not to
+                                display this person's phone numbers.</entry>
+                        </row>
+                        <row>
+                            <entry>Suppress Address</entry>
+                            <entry>Optional. Check this box to specify that the system is not to
+                                display this person's addresses. </entry>
+                        </row>
+                        <row>
+                            <entry>Suppress Email</entry>
+                            <entry>Optional. Check this box to specify that the system is not to
+                                display this person's email addresses.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>
@@ -672,117 +688,121 @@
             <section>
                 <title>Groups Section</title>
                 <para>
-                    <table frame="border">
-                        <caption>Groups section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Groups section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                            </tr>
+                            <row>
+                                <entry>Title</entry>
+                                <entry>Description</entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Group</td>
-                                <td>Optional. Enter the name of the KIM group you want to assign
+                            <row>
+                                <entry>Group</entry>
+                                <entry>Optional. Enter the name of the KIM group you want to assign
                                     this person to. You can also use the Group lookup to search for
-                                    and select a valid value. </td>
-                            </tr>
-                            <tr>
-                                <td>Namespace Code</td>
-                                <td>Display-only. After you select a group to add this person to,
+                                    and select a valid value. </entry>
+                            </row>
+                            <row>
+                                <entry>Namespace Code</entry>
+                                <entry>Display-only. After you select a group to add this person to,
                                     the namespace code associated with the selected group is
-                                    displayed.</td>
-                            </tr>
-                            <tr>
-                                <td>Name</td>
-                                <td>Display-only. After you select a group to add this person to,
-                                    the name of that group is displayed. </td>
-                            </tr>
-                            <tr>
-                                <td>Type</td>
-                                <td>Display-only. After you select a group to add this person to,
-                                    the type associated with the selected group is displayed.</td>
-                            </tr>
-                            <tr>
-                                <td>Active From Date</td>
-                                <td>Optional. If this user's assignment to this group is to be
-                                    effective as of a certain date, enter that date here.</td>
-                            </tr>
-                            <tr>
-                                <td>Active To Date</td>
-                                <td><para>Optional. If this user's assignment to this group is to terminate as of a certain date, enter
+                                    displayed.</entry>
+                            </row>
+                            <row>
+                                <entry>Name</entry>
+                                <entry>Display-only. After you select a group to add this person to,
+                                    the name of that group is displayed. </entry>
+                            </row>
+                            <row>
+                                <entry>Type</entry>
+                                <entry>Display-only. After you select a group to add this person to,
+                                    the type associated with the selected group is displayed.</entry>
+                            </row>
+                            <row>
+                                <entry>Active From Date</entry>
+                                <entry>Optional. If this user's assignment to this group is to be
+                                    effective as of a certain date, enter that date here.</entry>
+                            </row>
+                            <row>
+                                <entry>Active To Date</entry>
+                                <entry><para>Optional. If this user's assignment to this group is to terminate as of a certain date, enter
                                         that date here.</para>
                                     <para>There is no way to delete a person's assignment to a group. To remove a person from a group,
                                             use this field to specify a date in the past.</para>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Actions</td>
-                                <td>Click the <emphasis role="bold">Add</emphasis> button to add
-                                    this group assignment.</td>
-                            </tr>
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>Actions</entry>
+                                <entry>Click the <emphasis role="bold">Add</emphasis> button to add
+                                    this group assignment.</entry>
+                            </row>
                         </tbody>
+                        </tgroup>
                     </table>
                 </para>
             </section>
             <section>
                 <title>Roles Section</title>
                 <para>
-                    <table frame="border">
-                        <caption>Roles section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Roles section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                            </tr>
+                            <row>
+                                <entry>Title</entry>
+                                <entry>Description</entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Role</td>
-                                <td>Optional. Use the Name lookup to search for and select the role
-                                    you want to assign this person to.</td>
-                            </tr>
-                            <tr>
-                                <td>Namespace Code</td>
-                                <td>Display-only. After you select a role to assign to this Person
+                            <row>
+                                <entry>Role</entry>
+                                <entry>Optional. Use the Name lookup to search for and select the role
+                                    you want to assign this person to.</entry>
+                            </row>
+                            <row>
+                                <entry>Namespace Code</entry>
+                                <entry>Display-only. After you select a role to assign to this Person
                                     record, the system displays the namespace code associated with
-                                    that role. </td>
-                            </tr>
-                            <tr>
-                                <td>Name</td>
-                                <td>Display-only. After you select a role to assign to this Person
+                                    that role. </entry>
+                            </row>
+                            <row>
+                                <entry>Name</entry>
+                                <entry>Display-only. After you select a role to assign to this Person
                                     record, the system displays the name associated with that role.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Type</td>
-                                <td>Display-only. After you select a role to assign to this Person
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>Type</entry>
+                                <entry>Display-only. After you select a role to assign to this Person
                                     record, the system displays the role type associated with the
-                                    selected role here.</td>
-                            </tr>
-                            <tr>
-                                <td>Active From Date</td>
-                                <td>Optional. If this user's assignment to this role is to be
-                                    effective as of a certain date, enter that date here.</td>
-                            </tr>
-                            <tr>
-                                <td>Active To Date</td>
-                                <td><para>Optional. If this user's assignment to this role is to terminate as of a certain date, enter
+                                    selected role here.</entry>
+                            </row>
+                            <row>
+                                <entry>Active From Date</entry>
+                                <entry>Optional. If this user's assignment to this role is to be
+                                    effective as of a certain date, enter that date here.</entry>
+                            </row>
+                            <row>
+                                <entry>Active To Date</entry>
+                                <entry><para>Optional. If this user's assignment to this role is to terminate as of a certain date, enter
                                 that date here.</para>
                                     <para>Note that there is no way to delete a person's assignment to a role. To remove a person from a
                                             role, use this field to specify a date in the
-                                            past.</para></td>
-                            </tr>
-                            <tr>
-                                <td>Actions</td>
-                                <td>Click the <emphasis role="bold">Add</emphasis> button to add
-                                    this role data.</td>
-                            </tr>
+                                            past.</para></entry>
+                            </row>
+                            <row>
+                                <entry>Actions</entry>
+                                <entry>Click the <emphasis role="bold">Add</emphasis> button to add
+                                    this role data.</entry>
+                            </row>
                         </tbody>
+                        </tgroup>
                     </table>
                 </para>
                 <para>When assigning some roles, you may need to supply additional qualifying values that further
@@ -796,50 +816,52 @@
                     member and is able to act on action requests generated for the role member by
                     KIM. </para>
                 <para>
-                    <table frame="border">
-                        <caption>Delegations section definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Delegations section definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                            </tr>
+                            <row>
+                                <entry>Title</entry>
+                                <entry>Description</entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Role Member</td>
-                                <td>Optional. Use the Role Member lookup  to
+                            <row>
+                                <entry>Role Member</entry>
+                                <entry>Optional. Use the Role Member lookup  to
                                     search for and select the role and role member you wish to add a
-                                    delegation for.</td>
-                            </tr>
-                            <tr>
-                                <td>Active From Date</td>
-                                <td>Optional. If this delegation is to be effective as of a certain
-                                    date, enter that date here.</td>
-                            </tr>
-                            <tr>
-                                <td>Active To Date</td>
-                                <td><para>Optional. If this delegation is to terminate as of a certain date, enter that date
+                                    delegation for.</entry>
+                            </row>
+                            <row>
+                                <entry>Active From Date</entry>
+                                <entry>Optional. If this delegation is to be effective as of a certain
+                                    date, enter that date here.</entry>
+                            </row>
+                            <row>
+                                <entry>Active To Date</entry>
+                                <entry><para>Optional. If this delegation is to terminate as of a certain date, enter that date
                                         here.</para>
                                 <para>Note that there is no way to delete a person's delegation. To remove a person from a role, use
-                                    this field to specify a date in the past.</para></td>
-                            </tr>
-                            <tr>
-                                <td>Delegation Type Code</td>
-                                <td>Optional. This defines how the delegate will be able to access
+                                    this field to specify a date in the past.</para></entry>
+                            </row>
+                            <row>
+                                <entry>Delegation Type Code</entry>
+                                <entry>Optional. This defines how the delegate will be able to access
                                     workflow action requests generated to the delegating role
                                     member. Options are 'Secondary' (the user must use the secondary
                                     delegate action list filter to view action requests) and
                                     'Primary' (action requests will route directly to the delegate's
-                                    action list). </td>
-                            </tr>
-                            <tr>
-                                <td>Actions</td>
-                                <td>Click the <emphasis role="bold">Add</emphasis> button to add
-                                    this delegation data.</td>
-                            </tr>
+                                    action list). </entry>
+                            </row>
+                            <row>
+                                <entry>Actions</entry>
+                                <entry>Click the <emphasis role="bold">Add</emphasis> button to add
+                                    this delegation data.</entry>
+                            </row>
                         </tbody>
+                        </tgroup>
                     </table>
                 </para>
             </section>

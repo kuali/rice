@@ -41,34 +41,36 @@
         <para>The Parameter Type document includes the <emphasis role="bold">Edit Parameter Type
             </emphasis>tab.</para>
         <para>
-            <table frame="border">
-                <caption>Edit Parameter Type tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Parameter Type tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Parameter Type Code</td>
-                        <td>Required. Enter the code by which this parameter type will be
-                            identified.</td>
-                    </tr>
-                    <tr>
-                        <td>Parameter Type Name</td>
-                        <td>Required. Enter the long descriptive name for this parameter type.</td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td>Required. Check the box to make this parameter type active and available
+                    <row>
+                        <entry>Parameter Type Code</entry>
+                        <entry>Required. Enter the code by which this parameter type will be
+                            identified.</entry>
+                    </row>
+                    <row>
+                        <entry>Parameter Type Name</entry>
+                        <entry>Required. Enter the long descriptive name for this parameter type.</entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry>Required. Check the box to make this parameter type active and available
                             for selection when creating parameters. Uncheck the box if you wish to
                             inactivate this type of parameter and prevent its selection when
-                            creating new parameters.</td>
-                    </tr>
+                            creating new parameters.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

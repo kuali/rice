@@ -46,26 +46,28 @@
         </figure></para>
         <para>The Campus Type lookup document includes:</para>
         <para>
-            <table frame="border">
-                <caption>Edit Campus Type tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Campus Type tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td> Campus Type Code </td>
-                        <td>A unique code to identify this type of campus.</td>
-                    </tr>
-                    <tr>
-                        <td> Campus Type Name </td>
-                        <td>A descriptive name for this campus type.</td>
-                    </tr>
+                    <row>
+                        <entry> Campus Type Code </entry>
+                        <entry>A unique code to identify this type of campus.</entry>
+                    </row>
+                    <row>
+                        <entry> Campus Type Name </entry>
+                        <entry>A descriptive name for this campus type.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
         <para><figure><title>Campus Type Maintenance document</title>
@@ -77,26 +79,28 @@
         </figure></para>
         <para>The Campus Type maintenance document includes:</para>
         <para>
-            <table frame="border">
-                <caption>Edit Campus Type tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Campus Type tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td> Campus Type Code </td>
-                        <td>Required. Enter a code to identify this type of campus.</td>
-                    </tr>
-                    <tr>
-                        <td> Campus Type Name </td>
-                        <td>Required. Enter a descriptive name for this campus type.</td>
-                    </tr>
+                    <row>
+                        <entry> Campus Type Code </entry>
+                        <entry>Required. Enter a code to identify this type of campus.</entry>
+                    </row>
+                    <row>
+                        <entry> Campus Type Name </entry>
+                        <entry>Required. Enter a descriptive name for this campus type.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

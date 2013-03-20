@@ -37,71 +37,73 @@
             </imageobject>
         </mediaobject></figure></para>
     <para>
-        <table frame="void">
-            <caption>Permission Lookup search criteria</caption>
-            <col width="50%"/>
-            <col width="50%"/>
+        <table frame="none" tabstyle="striped">
+            <title>Permission Lookup search criteria</title>
+            <tgroup cols="2">
+            <colspec colwidth="1.0*"/>
+            <colspec colwidth="1.0*"/>
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                </tr>
+                <row>
+                    <entry>Title</entry>
+                    <entry>Description</entry>
+                </row>
             </thead>
             <tbody>
-                <tr>
-                    <td>Template Namespace</td>
-                    <td>Optional. To search for a permission based on its template namespace (that
+                <row>
+                    <entry>Template Namespace</entry>
+                    <entry>Optional. To search for a permission based on its template namespace (that
                         is, the name of the application and module to which its template belongs),
-                        select the appropriate namespace.</td>
-                </tr>
-                <tr>
-                    <td>Template Name</td>
-                    <td>Optional. To search for a permission based on the name of the template it is
-                        based on, enter the appropriate template name.</td>
-                </tr>
-                <tr>
-                    <td>Permission Namespace</td>
-                    <td>Optional. To search for a permission based on its namespace, select the
-                        appropriate permission namespace. </td>
-                </tr>
-                <tr>
-                    <td>Permission Name</td>
-                    <td>Optional. To search for a permission by name, enter its name. </td>
-                </tr>
-                <tr>
-                    <td>Role Namespace</td>
-                    <td>To search for a permission based on the namespace of the role to which it is
-                        assigned, enter the appropriate role namespace.</td>
-                </tr>
-                <tr>
-                    <td>Role Name</td>
-                    <td>Optional. To search for a permission based on the role to which it is
-                        assigned, enter the appropriate role name.</td>
-                </tr>
-                <tr>
-                    <td>Principal Name</td>
-                    <td>Optional. To search for a permission based on the principals that currently
+                        select the appropriate namespace.</entry>
+                </row>
+                <row>
+                    <entry>Template Name</entry>
+                    <entry>Optional. To search for a permission based on the name of the template it is
+                        based on, enter the appropriate template name.</entry>
+                </row>
+                <row>
+                    <entry>Permission Namespace</entry>
+                    <entry>Optional. To search for a permission based on its namespace, select the
+                        appropriate permission namespace. </entry>
+                </row>
+                <row>
+                    <entry>Permission Name</entry>
+                    <entry>Optional. To search for a permission by name, enter its name. </entry>
+                </row>
+                <row>
+                    <entry>Role Namespace</entry>
+                    <entry>To search for a permission based on the namespace of the role to which it is
+                        assigned, enter the appropriate role namespace.</entry>
+                </row>
+                <row>
+                    <entry>Role Name</entry>
+                    <entry>Optional. To search for a permission based on the role to which it is
+                        assigned, enter the appropriate role name.</entry>
+                </row>
+                <row>
+                    <entry>Principal Name</entry>
+                    <entry>Optional. To search for a permission based on the principals that currently
                         have this permission through their association with a role, enter an
-                        appropriate principal name.</td>
-                </tr>
-                <tr>
-                    <td>Group Namespace</td>
-                    <td>Optional. To search for a permission based on the namespace of groups that
+                        appropriate principal name.</entry>
+                </row>
+                <row>
+                    <entry>Group Namespace</entry>
+                    <entry>Optional. To search for a permission based on the namespace of groups that
                         have this permission through the group's association with a role, enter an
-                        appropriate group namespace.</td>
-                </tr>
-                <tr>
-                    <td>Group Name</td>
-                    <td>Optional. To search for a permission based on the name of a group that has
+                        appropriate group namespace.</entry>
+                </row>
+                <row>
+                    <entry>Group Name</entry>
+                    <entry>Optional. To search for a permission based on the name of a group that has
                         this permission through its association with a role, enter an appropriate
-                        group name.</td>
-                </tr>
-                <tr>
-                    <td>Permission Detail Values</td>
-                    <td>Optional. To find a permission based on a specific permission detail value
-                        associated with it, enter the value.</td>
-                </tr>
+                        group name.</entry>
+                </row>
+                <row>
+                    <entry>Permission Detail Values</entry>
+                    <entry>Optional. To find a permission based on a specific permission detail value
+                        associated with it, enter the value.</entry>
+                </row>
             </tbody>
+            </tgroup>
         </table>
     </para>
     <para><figure><title>Permission Lookup results</title>
@@ -114,46 +116,47 @@
     </para>
     <para>The Permission results display contains the fields described in the table below.</para>
     <para>
-        <table frame="void">
-            <caption>Permission Lookup results fields</caption>
-            <col width="50%"/>
-            <col width="50%"/>
+        <table frame="none" tabstyle="striped">
+            <title>Permission Lookup results fields</title>
+            <tgroup cols="2">
+            <colspec colwidth="1.0*"/>
+            <colspec colwidth="1.0*"/>
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                </tr>
+                <row>
+                    <entry>Title</entry>
+                    <entry>Description</entry>
+                </row>
             </thead>
             <tbody>
-                <tr>
-                    <td>Actions</td>
-                    <td>Actions allow selection of edit or copy for each permission displayed.</td>
-                </tr>
-                <tr>
-                    <td>Template Namespace</td>
-                    <td>The code identifying the application and module the template pertains to.
+                <row>
+                    <entry>Actions</entry>
+                    <entry>Actions allow selection of edit or copy for each permission displayed.</entry>
+                </row>
+                <row>
+                    <entry>Template Namespace</entry>
+                    <entry>The code identifying the application and module the template pertains to.
                         Because templates tend to be general categories, they are often associated
-                        with system-level namespaces.</td>
-                </tr>
-                <tr>
-                    <td>Template Name</td>
-                    <td>The template the permission is based on. A template usually defines, in a
+                        with system-level namespaces.</entry>
+                </row>
+                <row>
+                    <entry>Template Name</entry>
+                    <entry>The template the permission is based on. A template usually defines, in a
                         broad sense, what the permission controls. Similar types of permissions
-                        share the same template.</td>
-                </tr>
-                <tr>
-                    <td>Permission Namespace</td>
-                    <td>The code designating the application and module this permission is
-                        associated with. </td>
-                </tr>
-                <tr>
-                    <td>Permission Name</td>
-                    <td>The descriptive name for this permission. In most cases this will match the
-                        Template Name.</td>
-                </tr>
-                <tr>
-                    <td>Permission Detail Values</td>
-                    <td><para>Display-only. Detailed information that, in combination with the permission name, defines the
+                        share the same template.</entry>
+                </row>
+                <row>
+                    <entry>Permission Namespace</entry>
+                    <entry>The code designating the application and module this permission is
+                        associated with. </entry>
+                </row>
+                <row>
+                    <entry>Permission Name</entry>
+                    <entry>The descriptive name for this permission. In most cases this will match the
+                        Template Name.</entry>
+                </row>
+                <row>
+                    <entry>Permission Detail Values</entry>
+                    <entry><para>Display-only. Detailed information that, in combination with the permission name, defines the
                             permission's function.</para>
                     <para>For example, if the permission name is 'Initiate Document,' the Permission
                             Detail Values field indicates the specific type of document the initiate
@@ -167,14 +170,15 @@
                         <para>routeStatusCode: The routing status that a document must be in for
                             this permission to apply.</para>
                         <para>propertyName: Often, a field or document element that the permission
-                            pertains to.</para></td>
-                </tr>
-                <tr>
-                    <td>Granted to Roles</td>
-                    <td>Lists the namespace and name of roles that have this permission. Click on
-                        the linked name to view the Role inquiry.</td>
-                </tr>
+                            pertains to.</para></entry>
+                </row>
+                <row>
+                    <entry>Granted to Roles</entry>
+                    <entry>Lists the namespace and name of roles that have this permission. Click on
+                        the linked name to view the Role inquiry.</entry>
+                </row>
             </tbody>
+            </tgroup>
         </table>
     </para>
     <para>To view an Inquiry screen for a permission, select the Permission Name of the appropriate
@@ -210,48 +214,50 @@
                 </mediaobject>
             </figure></para>
             <para>
-                <table frame="void">
-                    <caption>Permission Info tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Permission Info tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Permission Identifier </td>
-                            <td>Display-only. The unique, system-assigned ID number that identifies
-                                this permission.</td>
-                        </tr>
-                        <tr>
-                            <td>Template ID</td>
-                            <td>Required. Select the Template this permission is associated with.
-                                Templates identify broad permission types.</td>
-                        </tr>
-                        <tr>
-                            <td>Permission Namespace</td>
-                            <td>Required. An indicator that associates the permission with a
-                                particular application and module.</td>
-                        </tr>
-                        <tr>
-                            <td>Permission Name</td>
-                            <td>Required. A text name identifying this permission.</td>
-                        </tr>
-                        <tr>
-                            <td>Permission Description</td>
-                            <td>Optional. Enter a text description of what this permission
-                                does.</td>
-                        </tr>
-                        <tr>
-                            <td>Active Indicator</td>
-                            <td>Required (defaults to 'Yes'). Change the default selection if you
+                        <row>
+                            <entry>Permission Identifier </entry>
+                            <entry>Display-only. The unique, system-assigned ID number that identifies
+                                this permission.</entry>
+                        </row>
+                        <row>
+                            <entry>Template ID</entry>
+                            <entry>Required. Select the Template this permission is associated with.
+                                Templates identify broad permission types.</entry>
+                        </row>
+                        <row>
+                            <entry>Permission Namespace</entry>
+                            <entry>Required. An indicator that associates the permission with a
+                                particular application and module.</entry>
+                        </row>
+                        <row>
+                            <entry>Permission Name</entry>
+                            <entry>Required. A text name identifying this permission.</entry>
+                        </row>
+                        <row>
+                            <entry>Permission Description</entry>
+                            <entry>Optional. Enter a text description of what this permission
+                                does.</entry>
+                        </row>
+                        <row>
+                            <entry>Active Indicator</entry>
+                            <entry>Required (defaults to 'Yes'). Change the default selection if you
                                 wish this permission to be inactive. Inactive permissions will be
-                                disregarded by KIM when doing permission checks. </td>
-                        </tr>
+                                disregarded by KIM when doing permission checks. </entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>
@@ -270,23 +276,25 @@
                 </mediaobject>
             </figure></para>
             <para>
-                <table frame="void">
-                    <caption>Permission Details tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Permission Details tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Permission Details </td>
-                            <td><para>Optional (though most permissions would require some details to be functional). Enter the permission details specific to this permission. Details should be entered as the name of the property followed by an '=' followed by the value of the property. When entering multiple details they should be separated by a hard return in the text box, such as:</para>
-                                <para>componentName=IdentityManagementPersonDocument</para><para>propertyName=taxId</para></td>
-                        </tr>
+                        <row>
+                            <entry>Permission Details </entry>
+                            <entry><para>Optional (though most permissions would require some details to be functional). Enter the permission details specific to this permission. Details should be entered as the name of the property followed by an '=' followed by the value of the property. When entering multiple details they should be separated by a hard return in the text box, such as:</para>
+                                <para>componentName=IdentityManagementPersonDocument</para><para>propertyName=taxId</para></entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>

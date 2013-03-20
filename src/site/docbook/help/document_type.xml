@@ -50,47 +50,49 @@
                 </mediaobject>
             </figure></para>
             <para>
-                <table frame="border">
-                    <caption>Edit Document Type tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Edit Document Type tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Parent Name</td>
-                            <td><para>Required. Every document type must answer to another document type in a parent/child
+                        <row>
+                            <entry>Parent Name</entry>
+                            <entry><para>Required. Every document type must answer to another document type in a parent/child
                                     relationship. Use the lookup to search for the document type to
                                     which this document type will answer.</para><para>Document types can inherit important attributes from their parent document types, including
-                                    permissions and responsibilities.</para></td>
-                        </tr>
-                        <tr>
-                            <td>Name</td>
-                            <td>Required. The common name of the document type.</td>
-                        </tr>
-                        <tr>
-                            <td>Document Handler URL</td>
-                            <td>Optional. (Technical) Identifies the basic URL that will take a user
-                                to this document type.</td>
-                        </tr>
-                        <tr>
-                            <td>Notification From Address</td>
-                            <td>Optional. The email address that will appear as the 'From' address
+                                    permissions and responsibilities.</para></entry>
+                        </row>
+                        <row>
+                            <entry>Name</entry>
+                            <entry>Required. The common name of the document type.</entry>
+                        </row>
+                        <row>
+                            <entry>Document Handler URL</entry>
+                            <entry>Optional. (Technical) Identifies the basic URL that will take a user
+                                to this document type.</entry>
+                        </row>
+                        <row>
+                            <entry>Notification From Address</entry>
+                            <entry>Optional. The email address that will appear as the 'From' address
                                 on any action list notifications sent by workflow for this document
                                 type. This allows several applications using workflow to maintain
-                                separate notification email addresses.</td>
-                        </tr>
-                        <tr>
-                            <td>Active</td>
-                            <td>Required. The box should be checked if the document type is active
+                                separate notification email addresses.</entry>
+                        </row>
+                        <row>
+                            <entry>Active</entry>
+                            <entry>Required. The box should be checked if the document type is active
                                 and available for use. Uncheck the box to inactivate the document
-                                type.</td>
-                        </tr>
+                                type.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>
@@ -110,45 +112,47 @@
                 </mediaobject>
             </figure></para>
             <para>
-                <table frame="border">
-                    <caption>Fields Available for Retroactive Application tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Fields Available for Retroactive Application tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Label</td>
-                            <td>Optional. The Label appears in most places where document types are
+                        <row>
+                            <entry>Label</entry>
+                            <entry>Optional. The Label appears in most places where document types are
                                 displayed in results (including the action list and document search
                                 screens) and is commonly longer than the document Name, which is
-                                often an abbreviation.</td>
-                        </tr>
-                        <tr>
-                            <td>Description</td>
-                            <td>Optional. A text description of this document type.</td>
-                        </tr>
-                        <tr>
-                            <td>Help Definition URL</td>
-                            <td>Optional. (Technical) Identifies the URL where the online help
-                                content for this document type resides.</td>
-                        </tr>
-                        <tr>
-                            <td>Document Search Help URL</td>
-                            <td>Optional. (Technical) Identifies the URL where the online document
-                                search help content for this document type resides.</td>
-                        </tr>
-                        <tr>
-                            <td>Apply Label Change Retroactively</td>
-                            <td>Optional. Check this box only when updating an existing document
+                                often an abbreviation.</entry>
+                        </row>
+                        <row>
+                            <entry>Description</entry>
+                            <entry>Optional. A text description of this document type.</entry>
+                        </row>
+                        <row>
+                            <entry>Help Definition URL</entry>
+                            <entry>Optional. (Technical) Identifies the URL where the online help
+                                content for this document type resides.</entry>
+                        </row>
+                        <row>
+                            <entry>Document Search Help URL</entry>
+                            <entry>Optional. (Technical) Identifies the URL where the online document
+                                search help content for this document type resides.</entry>
+                        </row>
+                        <row>
+                            <entry>Apply Label Change Retroactively</entry>
+                            <entry>Optional. Check this box only when updating an existing document
                                 type and only if you wish the fields on this tab to be updated on
-                                previously created versions of documents of this type.</td>
-                        </tr>
+                                previously created versions of documents of this type.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>
@@ -166,41 +170,43 @@
                 </mediaobject>
             </figure></para>
             <para>
-                <table frame="border">
-                    <caption>Document Type Inquiry definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Document Type Inquiry definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Parent ID</td>
-                            <td>Display only. The unique, system-generated ID number that identifies
-                                the parent document of this Document Type.</td>
-                        </tr>
-                        <tr>
-                            <td>ID</td>
-                            <td>Display only. The unique, system-generated ID number that identifies
-                                this document type.</td>
-                        </tr>
-                        <tr>
-                            <td>Post Processor Class</td>
-                            <td>Display only. (Technical.) Identifies the post processor this
+                        <row>
+                            <entry>Parent ID</entry>
+                            <entry>Display only. The unique, system-generated ID number that identifies
+                                the parent document of this Document Type.</entry>
+                        </row>
+                        <row>
+                            <entry>ID</entry>
+                            <entry>Display only. The unique, system-generated ID number that identifies
+                                this document type.</entry>
+                        </row>
+                        <row>
+                            <entry>Post Processor Class</entry>
+                            <entry>Display only. (Technical.) Identifies the post processor this
                                 document type calls upon reaching a completed workflow status
                                 (usually 'Final' or 'Processed'). The post processor is the code
                                 that tells and application what tables to update when a document is
-                                approved. </td>
-                        </tr>
-                        <tr>
-                            <td>Service Namespace</td>
-                            <td>Display only. The namespace (large functional category) that is
-                                associated with this document type.</td>
-                        </tr>
+                                approved. </entry>
+                        </row>
+                        <row>
+                            <entry>Service Namespace</entry>
+                            <entry>Display only. The namespace (large functional category) that is
+                                associated with this document type.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>

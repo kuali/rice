@@ -41,44 +41,46 @@
         <para>The Namespace document contains the <emphasis role="bold">Edit Namespace</emphasis>
             tab.</para>
         <para>
-            <table frame="border">
-                <caption>Edit Namespace tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Namespace tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Namespace</td>
-                        <td>Required. Enter the namespace code for this namespace. The convention
+                    <row>
+                        <entry>Namespace</entry>
+                        <entry>Required. Enter the namespace code for this namespace. The convention
                             for most namespaces is application abbreviation and module abbreviation
-                            separated by a dash (KFS-PURAP, KR-WKFLW, etc.)</td>
-                    </tr>
-                    <tr>
-                        <td>Namespace Name</td>
-                        <td>Required. A longer text description for this namespace code.</td>
-                    </tr>
-                    <tr>
-                        <td>Application ID</td>
-                        <td>Optional. An additional namespace identifier which identifies which
+                            separated by a dash (KFS-PURAP, KR-WKFLW, etc.)</entry>
+                    </row>
+                    <row>
+                        <entry>Namespace Name</entry>
+                        <entry>Required. A longer text description for this namespace code.</entry>
+                    </row>
+                    <row>
+                        <entry>Application ID</entry>
+                        <entry>Optional. An additional namespace identifier which identifies which
                             application should recognize this namespace code. This is generally only
                             used in instances where the regular namespace code is not enough to make
                             an attribute unique. This attribute is normally used directly on the
                             Parameter document and not assigned specifically to a namespace on this
-                            table.</td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td>Required. Leave checked to indicate that this namespace is active and
+                            table.</entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry>Required. Leave checked to indicate that this namespace is active and
                             can be associated with permissions, responsibilities, roles and Kuali
                             data elements organized by namespace. Uncheck the box to inactivate this
-                            namespace and make it an invalid choice.</td>
-                    </tr>
+                            namespace and make it an invalid choice.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

@@ -81,7 +81,6 @@
         </section>
     </section>
 <section xml:id="items_addressed_in_rice"><title>Items Addressed in Rice ${project.version}</title> 
-    
     <section>
         <title>Bug Fix</title>
         <para>
@@ -90,7 +89,25 @@
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8538'>KULRICE-8538</link>] - Responsibility Required routing flag not working unless responsibility defined for exact document</para>
                 </listitem>
                 <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8644'>KULRICE-8644</link>] - When trying to copy certain permissions, doc gets stuck 'Enroute'</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8674'>KULRICE-8674</link>] - RouteManagerException: PostProcessor failed to process document</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8857'>KULRICE-8857</link>] - Permission doc says the max length of the Permission Name is 40 characters but KFS has existing values that exceed that </para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8968'>KULRICE-8968</link>] - PeopleFlow Maintenance Document - Unable to set ApprovePolicy when PeopleFlow Member is of type Group</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8972'>KULRICE-8972</link>] - Role Service does not include AttributeTransform for QueryByCriteria calls</para>
+                </listitem>
+                <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9007'>KULRICE-9007</link>] - RoleMemberBo.groovy prevents replacement of KIM services</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9029'>KULRICE-9029</link>] - Bug in PeopleFlowMaintainableImpl retrieveTypeAttributes method</para>
                 </listitem>
                 <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9044'>KULRICE-9044</link>] - KRAD "stacked" collection elements are not rendering add/delete buttons</para>
@@ -102,7 +119,13 @@
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9062'>KULRICE-9062</link>] - Action list id links result in 404 or NPE</para>
                 </listitem>
                 <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9081'>KULRICE-9081</link>] - Stack trace while doing wilcard searches in role lookup while adding role member delegate</para>
+                </listitem>
+                <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9085'>KULRICE-9085</link>] - TermSpecification throws an exception during save/routing</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9092'>KULRICE-9092</link>] - Bug is RoleDaoOjb</para>
                 </listitem>
                 <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9094'>KULRICE-9094</link>] - TermBoServiceImpl fails to populate TermSpecificationDefinition.contextIds on retrieval</para>
@@ -117,17 +140,49 @@
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9097'>KULRICE-9097</link>] - Don't display the common section on KRMS Term and TermSpecification maintenance documents</para>
                 </listitem>
                 <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9106'>KULRICE-9106</link>] - Bug in PeopleFlowInquirableImpl retrieveTypeAttributes method</para>
+                </listitem>
+                <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9162'>KULRICE-9162</link>] - Role document broken when adding responsibilities</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9165'>KULRICE-9165</link>] - Person document not displaying role qualifiers</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9169'>KULRICE-9169</link>] - Bug in UiDocumentServiceImpl </para>
                 </listitem>
             </itemizedlist>
         </para>
     </section>
-    
-    
+    <section>
+        <title>Improvement</title>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8839'>KULRICE-8839</link>] - KIM services need to be @Transactional</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8847'>KULRICE-8847</link>] - Role lookups slow when there are over 200 roles</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </section>
     <section>
         <title>Task</title>
         <para>
             <itemizedlist>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8698'>KULRICE-8698</link>] - Update TRG documentation to reference maven instead of groovy when creating new Rice applications</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8959'>KULRICE-8959</link>] - Investigate if column indices can be added to further improve the performance of getRoleMemberPrincipalId()</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8996'>KULRICE-8996</link>] - Display Term Specification description when it displays in the Term list box while creating propositions for a rule.</para>
+                </listitem>
+                <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9019'>KULRICE-9019</link>] - Like to have a way to fetch all valid TermSpecifications for a context</para>
+                </listitem>
                 <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9147'>KULRICE-9147</link>] - Toggling the show/hide active button on collections causes an exception</para>
                 </listitem>
@@ -137,8 +192,6 @@
             </itemizedlist>
         </para>
     </section>
-    
-    
 </section>
 <section xml:id="impacting-changes" xreflabel="Impacting Changes">
         <title>Impacting Changes</title>

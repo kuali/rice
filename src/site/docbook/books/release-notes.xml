@@ -196,7 +196,9 @@
 <section xml:id="impacting-changes" xreflabel="Impacting Changes">
         <title>Impacting Changes</title>
         <section>
-            <title>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9152'>KULRICE-9152</link>] - PK for krad_msg_t is too long for MySQL 5.1</title>
+            <title>Reduce the size of KRAD_MSG_T.LOC column</title>
+            <para>The changes relate to the following issue:</para>
+            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9152'>KULRICE-9152</link>] - PK for krad_msg_t is too long for MySQL 5.1</para>
             <para>The script reduces the size of the KRAD_MSG_T.LOC column from a VARCHAR(255) to a VARCHAR(80) (Note: for Oracle, the column is of type VARCHAR2) in order to bring down the total size of the compound primary key to a length supported by MySQL 5.1.</para>
             <para>Depending on if you are applying this to a client or server schema, and based on your database platform, the scripts to run will differ:</para>
             <itemizedlist>
@@ -204,14 +206,14 @@
                     <para>Server dataset:</para>
                     <itemizedlist>
                         <listitem>
-                            <para>MySQL:</para><para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates/mysql-2013-03-18.sql</code></para>
+                            <para>MySQL:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates/mysql-2013-03-18.sql</programlisting></para>
                         </listitem>
                         <listitem>
-                            <para>Oracle:</para><para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates/2013-03-18.sql</code></para>
+                            <para>Oracle:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates/2013-03-18.sql</programlisting></para>
                             <para>The above script will leave an extra table behind named OLD_KRAD_MSG_T. 
                                 Once you are satisfied that the data in the new KRAD_MSG_T table is intact, you can drop OLD_KRAD_MSG_T by running 
                             </para>
-                            <para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates/cleanup-2013-03-18.sql</code></para>
+                            <para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates/cleanup-2013-03-18.sql</programlisting></para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -219,14 +221,14 @@
                     <para>Client dataset:</para>
                     <itemizedlist>
                         <listitem>
-                            <para>MySQL:</para><para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/mysql-2013-03-18.sql</code></para>
+                            <para>MySQL:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/mysql-2013-03-18.sql</programlisting></para>
                         </listitem>
                         <listitem>
-                            <para>Oracle:</para><para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/2013-03-18.sql</code></para>
+                            <para>Oracle:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/2013-03-18.sql</programlisting></para>
                             <para>The above script will leave an extra table behind named OLD_KRAD_MSG_T. 
                                 Once you are satisfied that the data in the new KRAD_MSG_T table is intact, you can drop OLD_KRAD_MSG_T by running 
                             </para>
-                            <para><code>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/cleanup-2013-03-18.sql</code></para>
+                            <para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/cleanup-2013-03-18.sql</programlisting></para>
                         </listitem>
                     </itemizedlist>
                 </listitem>

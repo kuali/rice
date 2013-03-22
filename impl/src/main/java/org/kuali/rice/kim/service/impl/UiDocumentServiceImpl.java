@@ -556,7 +556,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         if(ObjectUtils.isNotNull(roleMembers)){
             // for each membership get the role and add it, if not already added
             for (RoleMemberBo member : roleMembers) {
-				if(!roleIds.contains(member.getRoleId())){
+				if(member.isActive() && !roleIds.contains(member.getRoleId())) {
 					loadDocRoles(docRoles, roleIds, member, roleMembers);
 				}
             }

@@ -51,23 +51,86 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
 /**
- * Class to upgrade UpgradedSeleniumITBase tests to WebDriver.
+ * Originally used to upgrade UpgradedSeleniumITBase (Selenium 1.0) tests to WebDriver (Selenium 2.0).
+ *
+ * Now we have a large amount refactoring work ahead.
+ *
+ * 1.  Replace Locator strings with Constants and further wrap them in easier to understand method names.  See
+ * waitAndClickMainMenu and LOGOUT_XPATH as an example.
+ * 2.  Replace large chunks of duplication
+ * 3.  Invert dependencies on fields and extract methods to WebDriverUtil so inheritance doesn't have to be used for
+ * reuse.  See WebDriverUtil.waitFor
+ * 4.  Nav specific stuff should maybe extracted.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
 
+    /**
+     * Default "long" wait period is 30 seconds.  See REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY to configure
+     */
     public static final int DEFAULT_WAIT_SEC = 30;
+
+    /**
+     * You probably don't want to really be using a userpool, set -Dremote.public.userpool= to base url if you must.
+     */
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
+
+    /**
+     * Set -Dremote.public.user= to the username to login as
+     */
     public static final String REMOTE_PUBLIC_USER_PROPERTY = "remote.public.user";
+
+    /**
+     * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC
+     */
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
+
+    /**
+     * //div[@id='headerarea']/div/table/tbody/tr[1]/td[1]
+     */
     public static final String DOC_ID_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
+
+    /**
+     * //table[@id='row']/tbody/tr[1]/td[1]/a
+     */
     public static final String DOC_ID_TABLE_LINK_XPATH="//table[@id='row']/tbody/tr[1]/td[1]/a";
+
+    /**
+     * //input[@id='document.documentHeader.documentDescription']
+     */
     public static final String DOCUMENT_DESCRIPTION_XPATH="//input[@id='document.documentHeader.documentDescription']";
+
+    /**
+     * //input[@name='methodToCall.search' and @value='search']
+     */
     public static final String SEARCH_XPATH="//input[@name='methodToCall.search' and @value='search']";
+
+    /**
+     * //input[@name='methodToCall.save' and @alt='save']
+     */
     public static final String SAVE_XPATH="//input[@name='methodToCall.save' and @alt='save']";
+
+    /**
+     * //input[@name='methodToCall.route' and @alt='submit']
+     */
     public static final String SUBMIT_XPATH="//input[@name='methodToCall.route' and @alt='submit']";
+
+    /**
+     * //div[contains(div,'Document was successfully submitted.')]
+     */
     public static final String DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH="//div[contains(div,'Document was successfully submitted.')]";
+
+    /**
+     * //input[@name='imageField' and @value='Logout']
+     */
     public static final String LOGOUT_XPATH = "//input[@name='imageField' and @value='Logout']";
+    public static final String IFRAMEPORTLET_NAME = "iframeportlet";
+
+    /**
+     * For Bookmark tests this is the url under final test.  For nav tests this is from the url navigation will
+     * start from.
+     * @return string
+     */
     public abstract String getTestUrl();
 
     protected WebDriver driver;
@@ -82,22 +145,30 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     String sessionId = null;
 
+    /**
+     *
+     * @return sessionId
+     */
     public String getSessionId() {
         return sessionId;
     }
 
+    /**
+     * If WebDriverUtil.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
+     * @see WebDriverUtil.chromeDriverCreateCheck()
+     * @throws Exception
+     */
     @BeforeClass
-    public static void createAndStartService() throws Exception {
-        // this isn't so great... if the chrome driver isn't configured null is returned, but chromeDriverService needs to run before.
-        chromeDriverService = WebDriverUtil.createAndStartService();
-        
+    public static void chromeDriverService() throws Exception {
+        chromeDriverService = WebDriverUtil.chromeDriverCreateCheck();
         if (chromeDriverService != null)
             chromeDriverService.start();
     }
 
     /**
-     * Setup the WebDriver test, login and load the tested web page
-     * 
+     * Setup the WebDriver properties, test, and login
+     *
+     * @see WebDriverUtil.setUp()
      * @throws Exception
      */
     @Before
@@ -122,6 +193,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         ITUtil.login(driver, user);
     }
 
+    /**
+     * Tear down test as configured.
+     * @see WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY
+     * @see ITUtil.dontTearDownPropertyNotSet()
+     * @throws Exception
+     */
     @After
     public void tearDown() throws Exception {
         try {		          
@@ -235,7 +312,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         ITUtil.checkForIncidentReport(driver.getPageSource(), "//img[@alt='doc search']", "Blanket Approve failure");
         waitAndClickByXpath("//img[@alt='doc search']");
         SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
     }
 
@@ -393,7 +470,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void selectFrame(String locator) {
         
-        if ("iframeportlet".equals(locator)) {
+        if (IFRAMEPORTLET_NAME.equals(locator)) {
             gotoNestedFrame();
         } else {
             try {
@@ -422,7 +499,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testCreateNewSearchReturnValueCancelConfirmation() throws InterruptedException, Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         waitAndSearch();
         waitAndReturnValue();
@@ -431,14 +508,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testSearchEditCancel() throws InterruptedException {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndSearch();
         waitAndEdit();
         testCancelConfirmation();
     }
 
     protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.DTS_TWO);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number","1234567890");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
@@ -840,6 +917,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitNotVisibleByXpath(visibleLocator);
     }
 
+    /**
+     * If a window contains the given title switchTo it.
+     * @param title
+     */
     public void switchToWindow(String title) {
         Set<String> windows = driver.getWindowHandles();
 
@@ -851,6 +932,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
     }
 
+    /**
+     * @see WebDriver.getWindowHandles()
+     * @return
+     */
     public String[] getAllWindowTitles() {
         return (String[]) driver.getWindowHandles().toArray();
     }
@@ -903,14 +988,26 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                 );
     }
 
+    /**
+     * @see Actions.moveToElement
+     * @param name
+     */
     public void fireMouseOverEventByName(String name) {
         this.fireMouseOverEvent(By.name(name));
     }
 
+    /**
+     * @see Actions.moveToElement
+     * @param locator
+     */
     public void fireMouseOverEventByXpath(String locator) {
         this.fireMouseOverEvent(By.xpath(locator));
     }
 
+    /**
+     * @see Actions.moveToElement
+     * @param by
+     */
     public void fireMouseOverEvent(By by) {
         Actions builder = new Actions(driver);
         Actions hover = builder.moveToElement(driver.findElement(by));
@@ -927,7 +1024,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testAgendaEditRuleRefreshIT() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  jiraAwareWaitAndClick("id=32");
         Thread.sleep(3000);
         waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']",
@@ -988,7 +1085,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testConfigNamespaceBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         String docId = configNameSpaceBlanketApprove();
         blanketApproveTest();
@@ -997,7 +1094,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testConfigParamaterBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Parameter ");
@@ -1022,13 +1119,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testCreateNewCancel() throws Exception
     {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         testCancelConfirmation();
     }
 
     protected void testCreateDocType() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
         
@@ -1058,7 +1155,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         driver.switchTo().defaultContent();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")).getText());
@@ -1066,7 +1163,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testIdentityGroupBlanketApprove() throws Exception
     {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();                
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Group "+ ITUtil.DTS_TWO);
@@ -1083,7 +1180,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityPermissionBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission " + ITUtil.DTS_TWO);
@@ -1097,7 +1194,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityPersonBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Person");
@@ -1122,7 +1219,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityResponsibilityBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Responsibility " + ITUtil.DTS_TWO);
@@ -1138,7 +1235,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testIdentityRoleBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
         waitAndClickByLinkText("return value", "No return value link");        
@@ -1157,7 +1254,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationCampusBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus");
@@ -1171,7 +1268,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationCountryBlanketApprove() throws InterruptedException {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();        
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
@@ -1186,7 +1283,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationCountyBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test County");
@@ -1212,7 +1309,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationPostBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();        
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Postal Code");
@@ -1237,7 +1334,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testLocationStateBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test State");
@@ -1259,7 +1356,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testReferenceCampusTypeBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
@@ -1271,7 +1368,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testWorkFlowDocTypeBlanketApprove() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
@@ -1291,7 +1388,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyAddDeleteNoteLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClick("div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
         waitForElementPresent("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         waitAndClickByName("newCollectionLines['document.notes'].noteText");
@@ -1305,7 +1402,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyAdHocRecipientsLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("Fiscal Officer Accounts");
         assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRoutePersons'].actionRequested\"]");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRoutePersons'].name\" and @type=\"text\"]");
@@ -1316,7 +1413,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyButtonsLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         assertElementPresentByXpath("//button[contains(.,'ubmit')]");
         assertElementPresentByXpath("//button[contains(.,'ave')]");
         assertElementPresentByXpath("//button[contains(.,'lanket approve')]");
@@ -1326,7 +1423,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyConstraintText() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         SeleneseTestBase.assertEquals("* indicates required field",
                 getText("div.uif-boxLayout.uif-horizontalBoxLayout.clearfix > span.uif-message.uif-requiredInstructionsMessage.uif-boxLayoutHorizontalItem"));
         SeleneseTestBase.assertEquals("Must not be more than 10 characters",
@@ -1339,7 +1436,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyDisclosures() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         assertElementPresentByXpath("//span[contains(text(),'Document Overview')]");
         assertElementPresentByXpath("//span[contains(text(),'Document Overview')]");
         assertElementPresentByXpath("//span[contains(text(),'Account Information')]");
@@ -1360,7 +1457,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         // relative=top iframeportlet might look weird but either alone results in something not found.
         selectTopFrame();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//span[contains(text(),'Route Log')]//img");
         selectFrame("routeLogIFrame");
         waitNotVisibleByXpath("//img[@alt='refresh']");
@@ -1368,7 +1465,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyDocumentOverviewLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         assertTextPresent("Document Overview");
         assertElementPresentByXpath("//input[@name='document.documentHeader.documentDescription']");
         assertElementPresentByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']");
@@ -1377,14 +1474,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyExpandCollapse() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         assertElementPresentByXpath("//button[contains(@class, 'uif-expandDisclosuresButton')]");
         assertElementPresentByXpath("//button[contains(@class, 'uif-collapseDisclosuresButton')]");
         passed();
     }
 
     protected void testVerifyFieldsLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @type='text' and @size=10 and @maxlength=10]");
         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.extension.accountTypeCode' and @type='text' and @size=2 and @maxlength=3]");
         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subAccount' and @type='text' and @size=10 and @maxlength=10]");
@@ -1396,7 +1493,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyHeaderFieldsLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         assertElementPresentByXpath("//div[contains(@class, 'uif-documentNumber')]");
         assertElementPresentByXpath("//div[contains(@class, 'uif-documentInitiatorNetworkId')]");
         assertElementPresentByXpath("//div[contains(@class, 'uif-documentStatus')]");
@@ -1405,13 +1502,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyLookupAddMultipleLinesLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         assertElementPresentByXpath("//a[contains(text(),'Lookup/Add Multiple Lines')]");
         passed();
     }
 
     protected void testVerifyNotesAndAttachments() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//span[contains(text(),'Notes and Attachments')]");
         waitForElementPresentByXpath("//button[@title='Add a Note']");
         assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
@@ -1423,7 +1520,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyQuickfinderIconsLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         assertTextPresent("Document Overview");
         assertElementPresentByXpath("//*[@id='quickfinder1']");
         assertElementPresentByXpath("//*[@id='quickfinder2']");
@@ -1435,14 +1532,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifyRouteLog() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("Route Log");
         waitForElementPresent("//iframe[contains(@src,'RouteLog.do')]");
         passed();
     }
 
     protected void testVerifySave() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndTypeByName("document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
         waitAndClickByName("document.newMaintainableObject.dataObject.number");
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", "1234567890");
@@ -1456,7 +1553,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testVerifySubsidizedPercentWatermarkLegacy() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         
         // May be blowing up due to multiple locators
         //assertTrue(isElementPresent("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @placeholder='##.##   ']"));
@@ -1466,7 +1563,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     private void testLookUp() throws Exception {
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         
         // Mixed capitalization
         waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
@@ -1488,7 +1585,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testAttributeDefinitionLookUp() throws Exception {
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//button[contains(.,'earch')]");
         Thread.sleep(3000);
         waitForPageToLoad();
@@ -1526,7 +1623,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testCreateNewAgenda() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");
         String agendaName = "Agenda Date :" + Calendar.getInstance().getTime().toString();
         waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
@@ -1547,7 +1644,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testPeopleFlow() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         
         //Click Main Menu and Create New
         // waitAndCreateNew();
@@ -1586,7 +1683,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
         driver.findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
         Thread.sleep(5000);
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         driver.findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         Thread.sleep(5000);
         SeleneseTestBase.assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
@@ -1610,7 +1707,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void testAddingNamespace() throws Exception
     {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         waitForPageToLoad();
         assertElementPresentByXpath("//*[@name='methodToCall.save' and @alt='save']", "save button does not exist on the page");
@@ -1632,7 +1729,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testAddingBrownGroup() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndCreateNew();
         waitForPageToLoad();
         String docId = waitForDocId();
@@ -1670,14 +1767,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         waitAndClickByLinkText("Group");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndTypeByName("name", groupName);
         waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(groupName);
     }
 
     protected void testDocTypeLookup() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//input[@title='Search Parent Name']");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
@@ -1722,7 +1819,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -1760,7 +1857,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected List<String> testEditParameter(String docId, String parameterName) throws Exception
     {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
         docId = waitForDocId();
@@ -1774,7 +1871,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -1810,7 +1907,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected List<String> testCopyParameter(String docId, String parameterName) throws Exception
     {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
         docId = waitForDocId();
@@ -1827,7 +1924,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -1880,7 +1977,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -1919,7 +2016,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected List<String> testEditParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
         docId = waitForDocId();
@@ -1934,7 +2031,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -1973,7 +2070,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected List<String> testCopyParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
         docId = waitForDocId();
@@ -1990,7 +2087,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -2930,7 +3027,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         Thread.sleep(3000);
     }
 
-    public void testDefaultTestsTableLayout() throws Exception {
+    protected void testDefaultTestsTableLayout() throws Exception {
         assertTableLayout();
         waitAndTypeByName("newCollectionLines['list1'].field1", "asdf1");
         waitAndTypeByName("newCollectionLines['list1'].field2", "asdf2");
@@ -3260,7 +3357,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testTravelAccountTypeLookup() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
 
         //Blank Search
         waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
@@ -4215,9 +4312,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         fireEvent(name, "focus");
     }
 
-    public void testCategoryLookUp() throws Exception {
+    protected void testCategoryLookUp() throws Exception {
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//button[contains(.,'earch')]");
         Thread.sleep(3000);
         waitForPageToLoad();
@@ -4238,7 +4335,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         Thread.sleep(3000);
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
         
@@ -4261,15 +4358,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//img[@alt='doc search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
         isElementPresent(By.linkText(docId));
     }
 
-    public void testTermLookUp() throws Exception {
+    protected void testTermLookUp() throws Exception {
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         
         // Mixed capitalization
         waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
@@ -4289,7 +4386,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         Thread.sleep(3000);
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         
         // click on the create new button
         waitAndClickByXpath("//img[@alt='create new']");
@@ -4375,7 +4472,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//img[@alt='doc search']");
         waitForPageToLoad();
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         SeleneseTestBase.assertTrue(isElementPresent(By.linkText(docId)));
@@ -4392,7 +4489,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         Thread.sleep(3000);
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         waitForPageToLoad();
         Thread.sleep(3000);
@@ -4409,7 +4506,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testCreateNewRRDTravelRequestDestRouting() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClick("img[alt=\"create new\"]");
         waitForPageToLoad();
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
@@ -4436,7 +4533,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitForPageToLoad();
         Thread.sleep(5000);
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//img[@alt='create new']");
         waitForPageToLoad();
         Thread.sleep(3000);
@@ -4457,11 +4554,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void testWorkFlowRouteRulesEditRouteRules() throws Exception {
         waitForPageToLoad();
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         Thread.sleep(3000);
         waitAndClickByName("methodToCall.cancel");
         waitForPageToLoad();
@@ -4490,7 +4587,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -4533,7 +4630,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testEditComponent(String docId, String componentName, String componentCode) throws Exception
     {
         //edit
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("edit");
         waitForPageToLoad();
         docId = waitForDocId();
@@ -4548,7 +4645,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -4588,7 +4685,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected List<String> testCopyComponent(String docId, String componentName, String componentCode) throws Exception
     {
         //copy
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("copy");
         waitForPageToLoad();
         docId = waitForDocId();
@@ -4606,7 +4703,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
         waitForPageToLoad();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
         Thread.sleep(2000);
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
@@ -4646,7 +4743,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     /**
      * Test the tooltip and external help on the view
      */
-    public void testViewHelp() throws Exception {
+    protected void testViewHelp() throws Exception {
         // test tooltip help
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
         SeleneseTestBase.assertEquals("View help", getText("td.jquerybubblepopup-innerHtml"));
@@ -4941,7 +5038,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
     
     protected void testTravelAccountLookup() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
 
         //Blank Search
         waitAndClickByXpath("//button[contains(text(),'Search')]");
@@ -4990,7 +5087,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void testInquiry() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndTypeByName("lookupCriteria[number]", "a1");
         waitAndClickByXpath("//*[@alt='Direct Inquiry']");
         selectTopFrame();
@@ -5000,7 +5097,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         SeleneseTestBase.assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
         assertElementPresentByLinkText("a1");
         waitAndClickByXpath("//button[@id='u16']"); // close
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//button[contains(text(),'Clear Values')]");
 
         //        -----------------------------Code will not work as page has freemarker exceptions------------------------
@@ -5097,7 +5194,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
     
     protected void testFiscalOfficerInfoMaintenanceNew() throws Exception {
-      selectFrame("iframeportlet");
+      selectFrame(IFRAMEPORTLET_NAME);
       checkForIncidentReport("", "https://jira.kuali.org/browse/KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
       String docId = getTextByXpath("//*[@id='u13_control']");
       waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");
@@ -5107,7 +5204,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
       Integer docIdInt = Integer.valueOf(docId).intValue(); 
       selectTopFrame();
       waitAndClickByXpath("//img[@alt='action list']");
-      selectFrame("iframeportlet");
+      selectFrame(IFRAMEPORTLET_NAME);
       
       if(isElementPresentByLinkText("Last")){
           waitAndClickByLinkText("Last");

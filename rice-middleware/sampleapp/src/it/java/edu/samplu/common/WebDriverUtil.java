@@ -25,22 +25,55 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver for more reuse without having to extend
- * WebDriverLegacyITBase.  For the first example see waitFor
+ * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver from WebDriverLegacyITBase for reuse
+ * without having to extend WebDriverLegacyITBase.  For the first example see waitFor
  *
+ * @see WebDriverLegacyITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WebDriverUtil {
 
+    /**
+     * TODO apparent dup WebDriverITBase.DEFAULT_WAIT_SEC
+     * TODO parametrize for JVM Arg
+     */
     public static int DEFAULT_IMPLICIT_WAIT_TIME = 30;
+
+    /**
+     * TODO introduce SHORT_IMPLICIT_WAIT_TIME with param in WebDriverITBase
+     * TODO parametrize for JVM Arg
+     */
     public static int SHORT_IMPLICIT_WAIT_TIME = 1;
+
+    /**
+     * Set -Dremote.driver.saucelabs for running on saucelabs
+     * @see https://wiki.kuali.org/display/KULRICE/How+To+Run+a+Selenium+Test for patch required
+     */
     public static final String REMOTE_DRIVER_SAUCELABS_PROPERTY = "remote.driver.saucelabs";
 
     /**
+     * Selenium's webdriver.chrome.driver parameter, you can set -Dwebdriver.chrome.driver= or Rice's REMOTE_PUBLIC_CHROME
+     */
+    public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
+
+    /**
+     * Set -Dremote.public.chrome= or WEBDRIVER_CHROME_DRIVER
+     */
+    public static final String REMOTE_PUBLIC_CHROME = "remote.public.chrome";
+
+    /**
+     * Time to wait for the URL used in setup to load.  Sometimes this is the first hit on the app and it needs a bit
+     * longer than any other.
+     * TODO parametrize for JVM Arg
+     */
+    public static final int SETUP_URL_LOAD_WAIT_SECONDS = 120;
+
+    /**
+     * Setup the WebDriver test, login, and load the given web page
      *
      * @param username
      * @param url
-     * @return
+     * @return driver
      * @throws Exception
      */
     public static WebDriver setUp(String username, String url) throws Exception {
@@ -48,8 +81,13 @@ public class WebDriverUtil {
     }
 
     /**
-     * Setup the WebDriver test, login and load the tested web page
+     * Setup the WebDriver test, login, and load the given web page
      *
+     * @param username
+     * @param url
+     * @param className
+     * @param testName
+     * @return driver
      * @throws Exception
      */
     public static WebDriver setUp(String username, String url, String className, TestName testName) throws Exception {
@@ -61,32 +99,50 @@ public class WebDriverUtil {
 //            saucelabs.setUp(className, testName);
 //            driver = saucelabs.getDriver();
         }
-        driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(SETUP_URL_LOAD_WAIT_SECONDS, TimeUnit.SECONDS);
         driver.get(url);
         driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
         return driver;
     }
 
+    /**
+     * @see ITUtil.checkForIncidentReport
+     * @param driver
+     * @param locator
+     */
     public static void checkForIncidentReport(WebDriver driver, String locator) {
         checkForIncidentReport(driver, locator, "");
     }
 
+    /***
+     * @see ITUtil.checkForIncidentReport
+     * @param driver
+     * @param locator
+     * @param message
+     */
     public static void checkForIncidentReport(WebDriver driver, String locator, String message) {
         ITUtil.checkForIncidentReport(driver.getPageSource(), locator, message);
     }
 
-    public static ChromeDriverService createAndStartService() {
+    /**
+     * @see http://code.google.com/p/chromedriver/downloads/list
+     * @see REMOTE_PUBLIC_CHROME
+     * @see WEBDRIVER_CHROME_DRIVER
+     * @see ITUtil.HUB_DRIVER_PROPERTY
+     * @return chromeDriverService
+     */
+    public static ChromeDriverService chromeDriverCreateCheck() {
         String driverParam = System.getProperty(ITUtil.HUB_DRIVER_PROPERTY);
         // TODO can the saucelabs driver stuff be leveraged here?
         if (driverParam != null && "chrome".equals(driverParam.toLowerCase())) {
-            if (System.getProperty("webdriver.chrome.driver") == null) {
-                if (System.getProperty("remote.public.chrome") != null) {
-                    System.setProperty("webdriver.chrome.driver", System.getProperty("remote.public.chrome"));
+            if (System.getProperty(WEBDRIVER_CHROME_DRIVER) == null) {
+                if (System.getProperty(REMOTE_PUBLIC_CHROME) != null) {
+                    System.setProperty(WEBDRIVER_CHROME_DRIVER, System.getProperty(REMOTE_PUBLIC_CHROME));
                 }
             }
             try {
                 ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
-                        .usingChromeDriverExecutable(new File(System.getProperty("webdriver.chrome.driver")))
+                        .usingChromeDriverExecutable(new File(System.getProperty(WEBDRIVER_CHROME_DRIVER)))
                         .usingAnyFreePort()
                         .build();
                 return chromeDriverService;

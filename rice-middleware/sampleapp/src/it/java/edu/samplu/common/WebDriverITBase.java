@@ -62,7 +62,7 @@ public abstract class WebDriverITBase {
 
     @BeforeClass
     public static void createAndStartService() throws Exception {
-        chromeDriverService = WebDriverUtil.createAndStartService();
+        chromeDriverService = WebDriverUtil.chromeDriverCreateCheck();
         if (chromeDriverService != null) chromeDriverService.start();
     }
 

@@ -20,8 +20,6 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBo;
@@ -129,14 +127,29 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
      * @param document that contains the old and new TermSpecificationBos
      */
     private void copyContextsOldToNewBo(MaintenanceDocument document) {
-        TermSpecificationBo oldTermSpecification = (TermSpecificationBo) document.getOldMaintainableObject().getDataObject();
-        TermSpecificationBo newTermSpecification = (TermSpecificationBo) document.getNewMaintainableObject().getDataObject();
-        newTermSpecification.setContexts(new ArrayList<ContextBo>());
-        for (ContextBo contextBo : oldTermSpecification.getContexts()) {
-            newTermSpecification.getContexts().add(contextBo);
+        TermSpecificationBo oldTermSpec = (TermSpecificationBo) document.getOldMaintainableObject().getDataObject();
+        TermSpecificationBo newTermSpec = (TermSpecificationBo) document.getNewMaintainableObject().getDataObject();
+        newTermSpec.setContexts(new ArrayList<ContextBo>());
+        for (ContextBo contextBo : oldTermSpec.getContexts()) {
+            newTermSpec.getContexts().add(contextBo);
         }
     }
 
+    /**
+     * Store contexts in contextIds (needed for serialization)
+     *
+     * @see org.kuali.rice.krad.maintenance.Maintainable#prepareForSave
+     */
+    @Override
+    public void prepareForSave() {
+        super.prepareForSave();
+
+        TermSpecificationBo termSpec = (TermSpecificationBo) getDataObject();
+        termSpec.setContextIds(new ArrayList<String>());
+        for (ContextBo context : termSpec.getContexts()) {
+            termSpec.getContextIds().add(context.getId());
+        }
+    }
 
     @Override
     public void saveDataObject() {
@@ -150,14 +163,13 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
                     Collections.singletonMap("termSpecificationId", termSpec.getId()));
 
             // add a new mapping for each context in the collection
-            if (!CollectionUtils.isEmpty(termSpec.getContexts())) for (ContextBo context : termSpec.getContexts()) {
+            for (String contextId : termSpec.getContextIds()) {
                 ContextValidTermBo contextValidTerm = new ContextValidTermBo();
-                contextValidTerm.setContextId(context.getId());
+                contextValidTerm.setContextId(contextId);
                 contextValidTerm.setTermSpecificationId(termSpec.getId());
                 getBoService().save(contextValidTerm);
             }
         }
-
     }
 
     @Override
@@ -165,10 +177,20 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         return TermSpecificationBo.class;
     }
 
+    /**
+     * Recreate the contexts from the contextIDs (needed due to serialization)
+     *
+     * @see org.kuali.rice.krad.maintenance.Maintainable#processAfterRetrieve
+     */
     @Override
-    protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        super.processBeforeAddLine(view, collectionGroup, model, addLine);
+    public void processAfterRetrieve() {
+        super.processAfterRetrieve();
+
+        TermSpecificationBo termSpec = (TermSpecificationBo) getDataObject();
+        termSpec.setContexts(new ArrayList<ContextBo>());
+        for (String contextId : termSpec.getContextIds()) {
+            ContextDefinition context = KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextId);
+            termSpec.getContexts().add(ContextBo.from(context));
+        }
     }
-
-
 }

@@ -596,118 +596,118 @@ function getConfigParam(paramName) {
 }
 
 jQuery.validator.setDefaults({
-                onsubmit:false,
-                ignore:".ignoreValid",
-                wrapper:"",
-                onfocusout:false,
-                onclick:false,
-                onkeyup:function (element) {
-                    if (validateClient) {
-                        var id = getAttributeId(jQuery(element).attr('id'));
-                        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+    onsubmit:false,
+    ignore:".ignoreValid",
+    wrapper:"",
+    onfocusout:false,
+    onclick:false,
+    onkeyup:function (element) {
+        if (validateClient) {
+            var id = getAttributeId(jQuery(element).attr('id'));
+            var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
-                        //if this field previously had errors validate on key up
-                        if (data && data.focusedErrors && data.focusedErrors.length) {
-                            validateFieldValue(element);
-                        }
-                    }
-                },
-                highlight:function (element, errorClass, validClass) {
-                    jQuery(element).addClass(errorClass).removeClass(validClass);
-                    jQuery(element).attr("aria-invalid", "true");
-                },
-                unhighlight:function (element, errorClass, validClass) {
-                    jQuery(element).removeClass(errorClass).addClass(validClass);
-                    jQuery(element).removeAttr("aria-invalid");
+            //if this field previously had errors validate on key up
+            if (data && data.focusedErrors && data.focusedErrors.length) {
+                validateFieldValue(element);
+            }
+        }
+    },
+    highlight:function (element, errorClass, validClass) {
+        jQuery(element).addClass(errorClass).removeClass(validClass);
+        jQuery(element).attr("aria-invalid", "true");
+    },
+    unhighlight:function (element, errorClass, validClass) {
+        jQuery(element).removeClass(errorClass).addClass(validClass);
+        jQuery(element).removeAttr("aria-invalid");
 
-                    var id = getAttributeId(jQuery(element).attr("id"));
-                    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+        var id = getAttributeId(jQuery(element).attr("id"));
+        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
-                    if (data) {
-                        data.errors = [];
-                        jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+        if (data) {
+            data.errors = [];
+            jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
 
-                        if (messageSummariesShown) {
-                            handleMessagesAtField(id);
-                        }
-                        else {
-                            writeMessagesAtField(id);
-                        }
+            if (messageSummariesShown) {
+                handleMessagesAtField(id);
+            }
+            else {
+                writeMessagesAtField(id);
+            }
 
-                        //force hide of tooltip if no messages present
-                        if (!(data.warnings.length || data.info.length || data.serverErrors.length
-                                || data.serverWarnings.length || data.serverInfo.length)) {
-                            hideMessageTooltip(id);
-                        }
-                    }
-                },
-                errorPlacement:function (error, element) {
-                },
-                showErrors:function (nameErrorMap, elementObjectList) {
-                    this.defaultShowErrors();
+            //force hide of tooltip if no messages present
+            if (!(data.warnings.length || data.info.length || data.serverErrors.length
+                    || data.serverWarnings.length || data.serverInfo.length)) {
+                hideMessageTooltip(id);
+            }
+        }
+    },
+    errorPlacement:function (error, element) {
+    },
+    showErrors:function (nameErrorMap, elementObjectList) {
+        this.defaultShowErrors();
 
-                    for (var i in elementObjectList) {
-                        var element = elementObjectList[i].element;
-                        var message = elementObjectList[i].message;
-                        var id = getAttributeId(jQuery(element).attr('id'));
+        for (var i in elementObjectList) {
+            var element = elementObjectList[i].element;
+            var message = elementObjectList[i].message;
+            var id = getAttributeId(jQuery(element).attr('id'));
 
-                        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+            var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
-                        var exists = false;
-                        if (data && data.errors && data.errors.length) {
-                            for (var j in data.errors) {
-                                if (data.errors[j] === message) {
-                                    exists = true;
-                                }
-                            }
-                        }
-
-                        if (!exists) {
-                            data.errors = [];
-                            data.errors.push(message);
-                            jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
-                        }
-
-                        if (data) {
-                            if (messageSummariesShown) {
-                                handleMessagesAtField(id);
-                            }
-                            else {
-                                writeMessagesAtField(id);
-                            }
-                        }
-
-                        if (data && !exists && !pauseTooltipDisplay) {
-
-                        }
-                    }
-
-                },
-                success:function (label) {
-                    var htmlFor = jQuery(label).attr('for');
-                    var id = "";
-                    if (htmlFor.indexOf("_control") >= 0) {
-                        id = getAttributeId(htmlFor);
-                    }
-                    else {
-                        id = jQuery("[name='" + escapeName(htmlFor) + "']:first").attr("id");
-                        id = getAttributeId(id);
-                    }
-
-                    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                    if (data && data.errors && data.errors.length) {
-                        data.errors = [];
-                        jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
-                        if (messageSummariesShown) {
-                            handleMessagesAtField(id);
-                        }
-                        else {
-                            writeMessagesAtField(id);
-                        }
-                        showMessageTooltip(id, false, true);
+            var exists = false;
+            if (data && data.errors && data.errors.length) {
+                for (var j in data.errors) {
+                    if (data.errors[j] === message) {
+                        exists = true;
                     }
                 }
-            });
+            }
+
+            if (!exists) {
+                data.errors = [];
+                data.errors.push(message);
+                jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+            }
+
+            if (data) {
+                if (messageSummariesShown) {
+                    handleMessagesAtField(id);
+                }
+                else {
+                    writeMessagesAtField(id);
+                }
+            }
+
+            if (data && !exists && !pauseTooltipDisplay) {
+
+            }
+        }
+
+    },
+    success:function (label) {
+        var htmlFor = jQuery(label).attr('for');
+        var id = "";
+        if (htmlFor.indexOf("_control") >= 0) {
+            id = getAttributeId(htmlFor);
+        }
+        else {
+            id = jQuery("[name='" + escapeName(htmlFor) + "']:first").attr("id");
+            id = getAttributeId(id);
+        }
+
+        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+        if (data && data.errors && data.errors.length) {
+            data.errors = [];
+            jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+            if (messageSummariesShown) {
+                handleMessagesAtField(id);
+            }
+            else {
+                writeMessagesAtField(id);
+            }
+            showMessageTooltip(id, false, true);
+        }
+    }
+});
 
 jQuery.validator.addMethod("minExclusive", function (value, element, param) {
     if (param.length == 1 || param[1]()) {

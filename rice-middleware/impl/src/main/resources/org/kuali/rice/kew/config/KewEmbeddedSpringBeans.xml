@@ -49,6 +49,10 @@
     <property name="documentTypeDAO" ref="enDocumentTypeDAO"/>
   </bean>
 
+  <bean id="rice.kew.documentTypeService" class="org.kuali.rice.kew.impl.doctype.DocumentTypeServiceImpl">
+    <property name="documentTypeDao" ref="enDocumentTypeDAO"/>
+  </bean>
+
   <!--  Routing Report Service -->
   <bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"
         lazy-init="true"/>
@@ -406,6 +410,7 @@
         <idref local="rice.kew.documentProcessingQueue"/>
         <idref local="rice.kew.documentOrchestrationQueue"/>
         <idref local="rice.kew.documentAttributeIndexingQueue"/>
+        <idref local="rice.kew.documentTypeService"/>
         <idref local="rice.kew.responsibilityChangeQueue"/>
         <idref local="rice.kew.documentRefreshQueue"/>
         <idref local="rice.kew.workflowDocumentActionsService"/>

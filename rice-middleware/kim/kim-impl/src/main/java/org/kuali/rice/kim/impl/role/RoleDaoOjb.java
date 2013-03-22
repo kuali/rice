@@ -646,43 +646,10 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         List<RoleBoLite> roleBoLiteList = (List) getPersistenceBrokerTemplate().getCollectionByQuery(q);
 
         List<RoleBo> roleBos = new ArrayList<RoleBo>();
-        if(roleBoLiteList.size() > 0){
-            roleBos = addMembershipInfo(roleBoLiteList);
-        }
-
-        return roleBos;
-    }
-
-    private List<RoleBo> addMembershipInfo(List<RoleBoLite> roleBoLiteList){
-        List<String> idList = new ArrayList<String>();
-        for (RoleBoLite roleBo : roleBoLiteList) {
-            idList.add(roleBo.getId());
-        }
-
-        List<RoleMemberBo> memberBoList = getRoleMembersForRoleIds(idList, null, null);
-
-        Map<String, RoleBo> roleBoMap = new HashMap<String, RoleBo>();
-
         for (RoleBoLite roleLite : roleBoLiteList) {
             RoleBo role = RoleBo.from(RoleBoLite.to(roleLite));
-            roleBoMap.put(role.getId(), role);
+            roleBos.add(role);
         }
-
-        for (RoleMemberBo roleMemberBo : memberBoList) {
-            RoleBo role = roleBoMap.get(roleMemberBo.getRoleId());
-
-            List<RoleMemberBo> roleMemberBoList = role.getMembers();
-            if (roleMemberBoList == null) {
-                roleMemberBoList = new ArrayList<RoleMemberBo>();
-            }
-
-            roleMemberBoList.add(roleMemberBo);
-            role.setMembers(roleMemberBoList);
-
-            roleBoMap.put(roleMemberBo.getRoleId(), role);
-        }
-
-        List<RoleBo> roleBos = new ArrayList(roleBoMap.values());
 
         return roleBos;
     }

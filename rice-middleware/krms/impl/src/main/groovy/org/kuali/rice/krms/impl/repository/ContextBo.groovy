@@ -106,7 +106,7 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
         bo.active = im.active
 		bo.agendas = new ArrayList<AgendaBo>()
 		for (agenda in im.agendas){
-			bo.agendas.add( AgendaBo.from(agenda) )
+			bo.agendas.add( KrmsRepositoryServiceLocator.getAgendaBoService().from(agenda) )
 		}
 		// build the list of agenda attribute BOs
 		List<ContextAttributeBo> attrs = new ArrayList<ContextAttributeBo>();

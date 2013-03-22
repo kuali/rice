@@ -206,14 +206,14 @@
                     <para>Server dataset:</para>
                     <itemizedlist>
                         <listitem>
-                            <para>MySQL:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates/mysql-2013-03-18.sql</programlisting></para>
+                            <para>MySQL:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/final/update_final_mysql.sql</programlisting></para>
                         </listitem>
                         <listitem>
-                            <para>Oracle:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates/2013-03-18.sql</programlisting></para>
+                            <para>Oracle:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/final/update_final_oracle.sql</programlisting></para>
                             <para>The above script will leave an extra table behind named OLD_KRAD_MSG_T. 
                                 Once you are satisfied that the data in the new KRAD_MSG_T table is intact, you can drop OLD_KRAD_MSG_T by running 
                             </para>
-                            <para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates/cleanup-2013-03-18.sql</programlisting></para>
+                            <para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/final/cleanup_final_oracle.sql</programlisting></para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -221,14 +221,14 @@
                     <para>Client dataset:</para>
                     <itemizedlist>
                         <listitem>
-                            <para>MySQL:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/mysql-2013-03-18.sql</programlisting></para>
+                            <para>MySQL:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/final/update_client_final_mysql.sql</programlisting></para>
                         </listitem>
                         <listitem>
-                            <para>Oracle:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/2013-03-18.sql</programlisting></para>
+                            <para>Oracle:</para><para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/final/update_client_final_oracle.sql</programlisting></para>
                             <para>The above script will leave an extra table behind named OLD_KRAD_MSG_T. 
                                 Once you are satisfied that the data in the new KRAD_MSG_T table is intact, you can drop OLD_KRAD_MSG_T by running 
                             </para>
-                            <para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/db-updates-client/cleanup-2013-03-18.sql</programlisting></para>
+                            <para><programlisting>scripts/upgrades/2.2.1 to 2.2.2/final/cleanup_client_final_oracle.sql</programlisting></para>
                         </listitem>
                     </itemizedlist>
                 </listitem>

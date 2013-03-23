@@ -15,19 +15,16 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.SeleneseFailable;
-
 import static org.testng.AssertJUnit.fail;
 
 /**
- * Abstract base class for TestNG LoginLogout Smoke tests.  Implements SelenseFailable using org.testng.AssertJUnit.fail(String)
+ * Abstract base class for TestNG LoginLogout Smoke Tests.
  *
- * @see SeleneseFailable
  * @see LoginLogoutSTNGNavGen
  * @see LoginLogoutSTNGBkMrkGen
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LoginLogoutSTNGBase extends LoginLogoutAbstractBaseSmokeTest implements SeleneseFailable {
+public abstract class LoginLogoutSTNGBase extends LoginLogoutAbstractBaseSmokeTest {
 
     @Override
     public void seFail(String string) {

@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * JUnit implementation of LoginLogoutSTJUnitBase that goes directly to the page under test by a bookmarkable url,
  * avoiding navigation.  In the future the idea is to generate this class using the test methods from LoginLogoutAbstractBaseSmokeTest and following the
- * simple pattern of super.testTestMethod(SeleneseFailable).
+ * simple pattern of <pre>super.testTestMethod(this);</pre>
  *
  * @see LoginLogoutSTJUnitBase
  * @see LoginLogoutSTJUnitNavGen

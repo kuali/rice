@@ -20,8 +20,8 @@ import org.testng.annotations.Test;
 
 /**
  * TestNG implementation of LoginLogoutSTNGBase that navigates through the UI to the page under test.  In the future
- * the idea is to generate this class using the test methods from LoginLogoutAbstractBaseSmokeTest and following the  simple pattern of
- * super.testNavTestMethod(SeleneseFailable).
+ * the idea is to generate this class using the test methods from LoginLogoutAbstractBaseSmokeTest and following the simple pattern of
+ * <pre>super.testNavTestMethod(this);</pre>.
  *
  * @see LoginLogoutSTNGBase
  * @see LoginLogoutSTNGBkMrkGen

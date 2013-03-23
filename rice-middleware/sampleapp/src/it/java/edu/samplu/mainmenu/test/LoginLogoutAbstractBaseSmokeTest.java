@@ -20,15 +20,15 @@ import edu.samplu.common.SeleneseFailable;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
- * Abstract base class for LoginLogout Smoke tests.  Framework specific classes should not be depended upon in this
- * class but abstracted behind SeleneseFailable.
+ * Abstract base class for LoginLogout Smoke Tests.  Framework specific classes should not be depended upon in this
+ * class but abstracted behind {@link SeleneseFailable}.
  *
  * @see SeleneseFailable
  * @see LoginLogoutSTNGBase
  * @see LoginLogoutSTJUnitBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LoginLogoutAbstractBaseSmokeTest extends WebDriverLegacyITBase {
+public abstract class LoginLogoutAbstractBaseSmokeTest extends WebDriverLegacyITBase implements SeleneseFailable {
 
     @Override
     public String getTestUrl() {

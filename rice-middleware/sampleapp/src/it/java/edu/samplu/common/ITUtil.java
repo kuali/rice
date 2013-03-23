@@ -41,21 +41,26 @@ import java.util.Map;
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 
 /**
- * Common selenium test methods that should be reused rather than recreated for each test, without JUnit or TestNG
- * dependencies.
+ * TODO:
+ * <ol>
+ *   <li>Keep JUnit or TestNG dependencies out of in this class.</li>
+ *   <li>For methods with the only Selenium method used being fail, create a new SeleneseFailable parameterized version. See failOnMatchedJira</li>
+ *   <li>Move Selenium dependent methods (and any constants they reference) to WebDriverLegacyITBase (i.e. most methods in this class)</li>
+ *   <li>Once and Only Once WAIT_DEFAULT_SECONDS and WebDriverLegacyITBase.DEFAULT_WAIT_SEC</li>
+ *   <li>Rename to SmokeTestUtil or such</li>
+ *   <li>Extract jiraMatches data to property file</li>
+ * </ol>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
 public class ITUtil {
 
-    public static final String KUALI_PORTAL_TITLE = "Kuali Portal Index";
     public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
     public final static String PORTAL = "/portal.do";
     public final static String PORTAL_URL =  ITUtil.getBaseUrlString() + ITUtil.PORTAL;
     public final static String PORTAL_URL_ENCODED = URLEncoder.encode(PORTAL_URL);
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
     public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
-    public static String WAIT_TO_END_TEST = "5000";
     public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
     public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
     public static final int WAIT_DEFAULT_SECONDS = 60;
@@ -101,21 +106,6 @@ public class ITUtil {
         //        jiraMatches.put("",
 //                "");
 
-    }
-
-    /**
-     * "FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"
-     * @param selenium
-     * @param docId
-     */
-    public static void assertDocFinal(Selenium selenium, String docId) {
-        docId= "link=" + docId;
-        if(selenium.isElementPresent(docId)){
-            SeleneseTestBase.assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            SeleneseTestBase.assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));
-            SeleneseTestBase.assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
     }
 
     protected static String blanketApprovalCleanUpErrorText(String errorText) {
@@ -665,7 +655,7 @@ public class ITUtil {
     public static void failOnMatchedJira(String contents) {
         Iterator<String> iter = jiraMatches.keySet().iterator();
         String key = null;
-        
+
         while (iter.hasNext()) {
             key = iter.next();
             if (contents.contains(key)) {

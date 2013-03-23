@@ -36,18 +36,20 @@ public class WebDriverUtil {
     /**
      * TODO apparent dup WebDriverITBase.DEFAULT_WAIT_SEC
      * TODO parametrize for JVM Arg
+     * 30 Seconds
      */
     public static int DEFAULT_IMPLICIT_WAIT_TIME = 30;
 
     /**
      * TODO introduce SHORT_IMPLICIT_WAIT_TIME with param in WebDriverITBase
      * TODO parametrize for JVM Arg
+     * 1 Second
      */
     public static int SHORT_IMPLICIT_WAIT_TIME = 1;
 
     /**
      * Set -Dremote.driver.saucelabs for running on saucelabs
-     * @see https://wiki.kuali.org/display/KULRICE/How+To+Run+a+Selenium+Test for patch required
+     * @link https://wiki.kuali.org/display/KULRICE/How+To+Run+a+Selenium+Test for patch required
      */
     public static final String REMOTE_DRIVER_SAUCELABS_PROPERTY = "remote.driver.saucelabs";
 
@@ -63,7 +65,7 @@ public class WebDriverUtil {
 
     /**
      * Time to wait for the URL used in setup to load.  Sometimes this is the first hit on the app and it needs a bit
-     * longer than any other.
+     * longer than any other.  120 Seconds.
      * TODO parametrize for JVM Arg
      */
     public static final int SETUP_URL_LOAD_WAIT_SECONDS = 120;
@@ -106,7 +108,7 @@ public class WebDriverUtil {
     }
 
     /**
-     * @see ITUtil.checkForIncidentReport
+     * @link ITUtil#checkForIncidentReport
      * @param driver
      * @param locator
      */
@@ -115,7 +117,7 @@ public class WebDriverUtil {
     }
 
     /***
-     * @see ITUtil.checkForIncidentReport
+     * @link ITUtil#checkForIncidentReport
      * @param driver
      * @param locator
      * @param message
@@ -125,10 +127,10 @@ public class WebDriverUtil {
     }
 
     /**
-     * @see http://code.google.com/p/chromedriver/downloads/list
-     * @see REMOTE_PUBLIC_CHROME
-     * @see WEBDRIVER_CHROME_DRIVER
-     * @see ITUtil.HUB_DRIVER_PROPERTY
+     * @link http://code.google.com/p/chromedriver/downloads/list
+     * @link #REMOTE_PUBLIC_CHROME
+     * @link #WEBDRIVER_CHROME_DRIVER
+     * @link ITUtil#HUB_DRIVER_PROPERTY
      * @return chromeDriverService
      */
     public static ChromeDriverService chromeDriverCreateCheck() {

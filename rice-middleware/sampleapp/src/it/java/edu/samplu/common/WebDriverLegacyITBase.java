@@ -51,16 +51,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
 /**
- * Originally used to upgrade UpgradedSeleniumITBase (Selenium 1.0) tests to WebDriver (Selenium 2.0).
- *
- * Now we have a large amount refactoring work ahead.
- *
- * 1.  Replace Locator strings with Constants and further wrap them in easier to understand method names.  See
- * waitAndClickMainMenu and LOGOUT_XPATH as an example.
- * 2.  Replace large chunks of duplication
- * 3.  Invert dependencies on fields and extract methods to WebDriverUtil so inheritance doesn't have to be used for
- * reuse.  See WebDriverUtil.waitFor
- * 4.  Nav specific stuff should maybe extracted.
+ * <p>
+ * Originally used to upgrade UpgradedSeleniumITBase (Selenium 1.0) tests to WebDriver (Selenium 2.0).  Now there is
+ * refactoring to be done:
+ * <ol>
+ *   <li>Replace Locator strings with Constants, Javadoc constant with constant value and further wrap them in easier
+ *   to understand method names.  See waitAndClickMainMenu and LOGOUT_XPATH as an example.</li>
+ *   <li>Replace large chunks of duplication</li>
+ *   <li>Invert dependencies on fields and extract methods to WebDriverUtil so inheritance doesn't have to be used for
+ * reuse.  See WebDriverUtil.waitFor</li>
+ *   <li>Extract Nav specific code?</li>
+ *   <li>Rename to WebDriverAbstractSmokeTestBase</li>
+ * </ol>
+ * </p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
@@ -155,7 +158,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     /**
      * If WebDriverUtil.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
-     * @see WebDriverUtil.chromeDriverCreateCheck()
+     * @link WebDriverUtil#chromeDriverCreateCheck()
      * @throws Exception
      */
     @BeforeClass
@@ -168,7 +171,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     /**
      * Setup the WebDriver properties, test, and login
      *
-     * @see WebDriverUtil.setUp()
+     * @link WebDriverUtil#setUp(String, String, String, org.junit.rules.TestName)
      * @throws Exception
      */
     @Before
@@ -195,8 +198,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     /**
      * Tear down test as configured.
-     * @see WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY
-     * @see ITUtil.dontTearDownPropertyNotSet()
+     * @link WebDriverLegacyITBase#REMOTE_PUBLIC_USERPOOL_PROPERTY
+     * @link ITUtil#dontTearDownPropertyNotSet()
      * @throws Exception
      */
     @After
@@ -933,7 +936,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     /**
-     * @see WebDriver.getWindowHandles()
+     * @link WebDriver#getWindowHandles()
      * @return
      */
     public String[] getAllWindowTitles() {
@@ -989,7 +992,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     /**
-     * @see Actions.moveToElement
+     * @link Actions#moveToElement
      * @param name
      */
     public void fireMouseOverEventByName(String name) {
@@ -997,7 +1000,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     /**
-     * @see Actions.moveToElement
+     * @link Actions#moveToElement
      * @param locator
      */
     public void fireMouseOverEventByXpath(String locator) {
@@ -1005,7 +1008,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     /**
-     * @see Actions.moveToElement
+     * @link Actions#moveToElement
      * @param by
      */
     public void fireMouseOverEvent(By by) {

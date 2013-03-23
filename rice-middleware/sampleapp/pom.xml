@@ -145,6 +145,7 @@
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
         <maven.failsafe.includes>**/*IT.java</maven.failsafe.includes>
+        <maven.failsafe.includes>**/*Gen.java</maven.failsafe.includes>
         <maven.failsafe.excludes>**/XMLIngesterNavIT.java</maven.failsafe.excludes>
         <maven.failsafe.excludes>**/IdentityPersonRoleWDIT.java</maven.failsafe.excludes>
         <!-- TravelAccountMaintenanceDocumentTest.java is an Integration test, not a Smoke test -->

@@ -42,39 +42,41 @@
             display-only set of fields on the left and editable fields on the right in which the
             user may enter changes.</para>
         <para>
-            <table frame="border">
-                <caption>Edit Counties tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Counties tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Country Code</td>
-                        <td>The country code for the country in which this county is located. </td>
-                    </tr>
-                    <tr>
-                        <td>County Code </td>
-                        <td>A unique identifying code assigned to this county.</td>
-                    </tr>
-                    <tr>
-                        <td>State</td>
-                        <td>The state abbreviation assigned to the state in which a county is located.</td>
-                    </tr>
-                    <tr>
-                        <td>County Name </td>
-                        <td>Required. The familiar name of this county.</td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td>Indicates whether the county code is active or inactive. Remove the
-                            check mark to deactivate this county code. </td>
-                    </tr>
+                    <row>
+                        <entry>Country Code</entry>
+                        <entry>The country code for the country in which this county is located. </entry>
+                    </row>
+                    <row>
+                        <entry>County Code </entry>
+                        <entry>A unique identifying code assigned to this county.</entry>
+                    </row>
+                    <row>
+                        <entry>State</entry>
+                        <entry>The state abbreviation assigned to the state in which a county is located.</entry>
+                    </row>
+                    <row>
+                        <entry>County Name </entry>
+                        <entry>Required. The familiar name of this county.</entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry>Indicates whether the county code is active or inactive. Remove the
+                            check mark to deactivate this county code. </entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

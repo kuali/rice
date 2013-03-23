@@ -39,40 +39,42 @@
         <para>The Parameter Component document includes the <emphasis role="bold">Edit Parameter
                 Detail Type </emphasis>tab.</para>
         <para>
-            <table frame="border">
-                <caption>Edit Parameter Detail Type tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Parameter Detail Type tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Namespace Name</td>
-                        <td>Required. Select the appropriate Namespace code for the parameter from
+                    <row>
+                        <entry>Namespace Name</entry>
+                        <entry>Required. Select the appropriate Namespace code for the parameter from
                             the <emphasis role="bold">Namespace Name</emphasis> list or search for
-                            it from the lookup.</td>
-                    </tr>
-                    <tr>
-                        <td>Component</td>
-                        <td>Required. Enter the parameter component code or search for it from the
-                                <emphasis role="bold">Component</emphasis> lookup.</td>
-                    </tr>
-                    <tr>
-                        <td>Component Name</td>
-                        <td>Required. Enter the descriptive name of the parameter component being
-                            defined.</td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td>Required. Leave checked to indicate that this parameter component is
+                            it from the lookup.</entry>
+                    </row>
+                    <row>
+                        <entry>Component</entry>
+                        <entry>Required. Enter the parameter component code or search for it from the
+                                <emphasis role="bold">Component</emphasis> lookup.</entry>
+                    </row>
+                    <row>
+                        <entry>Component Name</entry>
+                        <entry>Required. Enter the descriptive name of the parameter component being
+                            defined.</entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry>Required. Leave checked to indicate that this parameter component is
                             active and can be associated with parameters. Uncheck the box to
-                            inactivate this component and make it an invalid choice.</td>
-                    </tr>
+                            inactivate this component and make it an invalid choice.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

@@ -41,76 +41,78 @@
         </figure>
     </para>
     <para>
-        <table frame="void">
-            <caption>Responsibility Lookup search criteria</caption>
-            <col width="50%"/>
-            <col width="50%"/>
+        <table frame="none" tabstyle="striped">
+            <title>Responsibility Lookup search criteria</title>
+            <tgroup cols="2">
+            <colspec colwidth="1.0*"/>
+            <colspec colwidth="1.0*"/>
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                </tr>
+                <row>
+                    <entry>Title</entry>
+                    <entry>Description</entry>
+                </row>
             </thead>
             <tbody>
-                <tr>
-                    <td>Template Namespace </td>
-                    <td>Optional. To search for a responsibility based on its template namespace
+                <row>
+                    <entry>Template Namespace </entry>
+                    <entry>Optional. To search for a responsibility based on its template namespace
                         (that is, the name of the application and module to which its responsibility
-                        template belongs), select the appropriate namespace.</td>
-                </tr>
-                <tr>
-                    <td>Template Name</td>
-                    <td>Optional. To search for a responsibility based on the name of the template
-                        it is based on, enter the appropriate template name.</td>
-                </tr>
-                <tr>
-                    <td>Responsibility Namespace</td>
-                    <td>Optional. To search for a responsibility based on its namespace, select the
-                        appropriate responsibility namespace.</td>
-                </tr>
-                <tr>
-                    <td>Responsibility Name</td>
-                    <td>Optional. To search for a responsibility by name, enter its name.</td>
-                </tr>
-                <tr>
-                    <td>Role Namespace</td>
-                    <td>To search for a responsibility based on the namespace of the role to which
-                        it is assigned, enter the appropriate role namespace.</td>
-                </tr>
-                <tr>
-                    <td>Role Name</td>
-                    <td>Optional. To search for a responsibility based on the role to which it is
-                        assigned, enter the appropriate role name.</td>
-                </tr>
-                <tr>
-                    <td>Principal Name</td>
-                    <td>Optional. To search for a responsibility based on the principals that
+                        template belongs), select the appropriate namespace.</entry>
+                </row>
+                <row>
+                    <entry>Template Name</entry>
+                    <entry>Optional. To search for a responsibility based on the name of the template
+                        it is based on, enter the appropriate template name.</entry>
+                </row>
+                <row>
+                    <entry>Responsibility Namespace</entry>
+                    <entry>Optional. To search for a responsibility based on its namespace, select the
+                        appropriate responsibility namespace.</entry>
+                </row>
+                <row>
+                    <entry>Responsibility Name</entry>
+                    <entry>Optional. To search for a responsibility by name, enter its name.</entry>
+                </row>
+                <row>
+                    <entry>Role Namespace</entry>
+                    <entry>To search for a responsibility based on the namespace of the role to which
+                        it is assigned, enter the appropriate role namespace.</entry>
+                </row>
+                <row>
+                    <entry>Role Name</entry>
+                    <entry>Optional. To search for a responsibility based on the role to which it is
+                        assigned, enter the appropriate role name.</entry>
+                </row>
+                <row>
+                    <entry>Principal Name</entry>
+                    <entry>Optional. To search for a responsibility based on the principals that
                         currently have this responsibility through their association with a role,
-                        enter an appropriate principal name.</td>
-                </tr>
-                <tr>
-                    <td>Group Namespace</td>
-                    <td>Optional. To search for a responsibility based on the namespace of groups
+                        enter an appropriate principal name.</entry>
+                </row>
+                <row>
+                    <entry>Group Namespace</entry>
+                    <entry>Optional. To search for a responsibility based on the namespace of groups
                         that have this responsibility through the group's association with a role,
-                        enter an appropriate group namespace.</td>
-                </tr>
-                <tr>
-                    <td>Group Name</td>
-                    <td>Optional. To search for a responsibility based on the name of a group that
+                        enter an appropriate group namespace.</entry>
+                </row>
+                <row>
+                    <entry>Group Name</entry>
+                    <entry>Optional. To search for a responsibility based on the name of a group that
                         has this responsibility through its association with a role, enter an
-                        appropriate group name.</td>
-                </tr>
-                <tr>
-                    <td>Attribute Value</td>
-                    <td>Optional. To find a responsibility based on a specific responsibility detail
-                        value associated with it, enter the value.</td>
-                </tr>
-                <tr>
-                    <td>Active Indicatior</td>
-                    <td>Defaults to Yes. Opiton to search for Responsibilities that are active, not ative,
-                        or across both.</td>
-                </tr>
+                        appropriate group name.</entry>
+                </row>
+                <row>
+                    <entry>Attribute Value</entry>
+                    <entry>Optional. To find a responsibility based on a specific responsibility detail
+                        value associated with it, enter the value.</entry>
+                </row>
+                <row>
+                    <entry>Active Indicatior</entry>
+                    <entry>Defaults to Yes. Opiton to search for Responsibilities that are active, not ative,
+                        or across both.</entry>
+                </row>
             </tbody>
+            </tgroup>
         </table>
     </para>
     <para><figure><title>Responsibility Lookup results</title>
@@ -122,49 +124,50 @@
     <para>The Responsibility results display contains the fields described in the table
         below.</para>
     <para>
-        <table frame="void">
-            <caption>Responsibility Lookup results fields</caption>
-            <col width="50%"/>
-            <col width="50%"/>
+        <table frame="none" tabstyle="striped">
+            <title>Responsibility Lookup results fields</title>
+            <tgroup cols="2">
+            <colspec colwidth="1.0*"/>
+            <colspec colwidth="1.0*"/>
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                </tr>
+                <row>
+                    <entry>Title</entry>
+                    <entry>Description</entry>
+                </row>
             </thead>
             <tbody>
-                <tr>
-                    <td>Actions</td>
-                    <td>Actions allow selection of edit or copy for each responsibility
-                        displayed.</td>
-                </tr>
-                <tr>
-                    <td>Template Namespace</td>
-                    <td>The code identifying the application and module the template pertains to.
+                <row>
+                    <entry>Actions</entry>
+                    <entry>Actions allow selection of edit or copy for each responsibility
+                        displayed.</entry>
+                </row>
+                <row>
+                    <entry>Template Namespace</entry>
+                    <entry>The code identifying the application and module the template pertains to.
                         Because responsibilities pertain to workflow, most responsibility templates
-                        are associated with the KR-WKFLW (Kuali Rice-Workflow) namespace.</td>
-                </tr>
-                <tr>
-                    <td>Template Name</td>
-                    <td>The template the responsibility is based on. A template usually defines, in
+                        are associated with the KR-WKFLW (Kuali Rice-Workflow) namespace.</entry>
+                </row>
+                <row>
+                    <entry>Template Name</entry>
+                    <entry>The template the responsibility is based on. A template usually defines, in
                         a broad sense, what the responsibility is. Since responsibilities normally
                         are normally associated with action requests for user review, most
-                        responsibilities have a template name of 'Review.</td>
-                </tr>
-                <tr>
-                    <td>Responsibility Namespace</td>
-                    <td>The code designating the application and module this responsibility is
+                        responsibilities have a template name of 'Review.</entry>
+                </row>
+                <row>
+                    <entry>Responsibility Namespace</entry>
+                    <entry>The code designating the application and module this responsibility is
                         associated with. This code usually corresponds to the namespace of the
-                        document type for which the responsibility generates action requests.</td>
-                </tr>
-                <tr>
-                    <td>Responsibility Name</td>
-                    <td><para>The name of this responsibility. In most cases the responsibility name will be the same as the
-                            associated template name ('Review').</para><para>Like permission names, responsibility names are not unique.</para></td>
-                </tr>
-                <tr>
-                    <td>Responsibility Detail Values</td>
-                    <td><para>Display-only. Detailed information that defines what document this responsibility generates
+                        document type for which the responsibility generates action requests.</entry>
+                </row>
+                <row>
+                    <entry>Responsibility Name</entry>
+                    <entry><para>The name of this responsibility. In most cases the responsibility name will be the same as the
+                            associated template name ('Review').</para><para>Like permission names, responsibility names are not unique.</para></entry>
+                </row>
+                <row>
+                    <entry>Responsibility Detail Values</entry>
+                    <entry><para>Display-only. Detailed information that defines what document this responsibility generates
                             action requests for, when the requests are generated and how they are
                             handled by workflow.</para>
                     <para>Unlike permissions, which sometimes have different detail values,
@@ -187,14 +190,15 @@
                             this responsibility, then the document will go into exception status. If
                             the value is 'False' and the responsibility generates no action
                             requests, then the document continues to route as normal.</para>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Granted to Roles</td>
-                    <td>Lists the namespace and name of roles that have this responsibility. Click
-                        on the linked name to view the Role Inquiry.</td>
-                </tr>
+                    </entry>
+                </row>
+                <row>
+                    <entry>Granted to Roles</entry>
+                    <entry>Lists the namespace and name of roles that have this responsibility. Click
+                        on the linked name to view the Role Inquiry.</entry>
+                </row>
             </tbody>
+            </tgroup>
         </table>
     </para>
     <para>To view an Inquiry screen for a responsibility, select the <emphasis role="bold"
@@ -231,47 +235,49 @@
                 </mediaobject>
                 </figure></para>
             <para>
-                <table frame="void">
-                    <caption>Permission Info tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Permission Info tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Responsibility Identifier</td>
-                            <td>Display-only. The unique, system-assigned ID number that identifies
-                                this responsibility.</td>
-                        </tr>
-                        <tr>
-                            <td>Responsibility Namespace</td>
-                            <td>Required. An indicator that associates the responsibility with a
-                                particular application and module.</td>
-                        </tr>
-                        <tr>
-                            <td>Responsibility Name</td>
-                            <td>Required (defaults to 'Review'). A text name identifying this
+                        <row>
+                            <entry>Responsibility Identifier</entry>
+                            <entry>Display-only. The unique, system-assigned ID number that identifies
+                                this responsibility.</entry>
+                        </row>
+                        <row>
+                            <entry>Responsibility Namespace</entry>
+                            <entry>Required. An indicator that associates the responsibility with a
+                                particular application and module.</entry>
+                        </row>
+                        <row>
+                            <entry>Responsibility Name</entry>
+                            <entry>Required (defaults to 'Review'). A text name identifying this
                                 responsibility. Note that this is the only valid value for this
                                 document. You cannot use the Responsibility document to establish or
                                 modify Responsibilities with the name 'Resolve Exception' -these
-                                require a technical resource to modify.</td>
-                        </tr>
-                        <tr>
-                            <td>Responsibility Description</td>
-                            <td>Optional. Enter a text description of what this responsibility
-                                does.</td>
-                        </tr>
-                        <tr>
-                            <td>Active Indicator</td>
-                            <td>Required (defaults to 'Yes'). Change the default selection if you
+                                require a technical resource to modify.</entry>
+                        </row>
+                        <row>
+                            <entry>Responsibility Description</entry>
+                            <entry>Optional. Enter a text description of what this responsibility
+                                does.</entry>
+                        </row>
+                        <row>
+                            <entry>Active Indicator</entry>
+                            <entry>Required (defaults to 'Yes'). Change the default selection if you
                                 wish this responsibility to be inactive. Inactive responsibilities
-                                will be disregarded by Workflow.</td>
-                        </tr>
+                                will be disregarded by Workflow.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>
@@ -288,49 +294,51 @@
                 </mediaobject>
             </figure></para>
             <para>
-                <table frame="void">
-                    <caption>Responsibility Details tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Responsibility Details tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Document Type Name </td>
-                            <td>Required. Enter the name of the document type this responsibility is
+                        <row>
+                            <entry>Document Type Name </entry>
+                            <entry>Required. Enter the name of the document type this responsibility is
                                 associated with or use the <emphasis role="bold">Document Type
-                                    Lookup</emphasis> to search for and select a value.</td>
-                        </tr>
-                        <tr>
-                            <td>Route Node Name</td>
-                            <td>Required. The name of the route node at which this responsibility
-                                should be invoked. </td>
-                        </tr>
-                        <tr>
-                            <td>Action Details at Role Member Level</td>
-                            <td>Required (defaults to False). Check this box if you want role
+                                    Lookup</emphasis> to search for and select a value.</entry>
+                        </row>
+                        <row>
+                            <entry>Route Node Name</entry>
+                            <entry>Required. The name of the route node at which this responsibility
+                                should be invoked. </entry>
+                        </row>
+                        <row>
+                            <entry>Action Details at Role Member Level</entry>
+                            <entry>Required (defaults to False). Check this box if you want role
                                 members associated with this responsibility to be able to define the
                                 type of workflow action they will need to take in order to fulfill
-                                the action request it generates.</td>
-                        </tr>
-                        <tr>
-                            <td>Required</td>
-                            <td>Required (defaults to False). Check this box if you wish documents
+                                the action request it generates.</entry>
+                        </row>
+                        <row>
+                            <entry>Required</entry>
+                            <entry>Required (defaults to False). Check this box if you wish documents
                                 of this type to go into Exception status if this responsibility does
-                                not generate at least one action request.</td>
-                        </tr>
-                        <tr>
-                            <td>Qualifier Resolver Provided Identifier</td>
-                            <td><para>Optional. In most cases this field should be blank. It can be used as an additional identifier
+                                not generate at least one action request.</entry>
+                        </row>
+                        <row>
+                            <entry>Qualifier Resolver Provided Identifier</entry>
+                            <entry><para>Optional. In most cases this field should be blank. It can be used as an additional identifier
                                     KIM will use to choose the correct responsibility information
                                     for a given doc type. The document type must pass the provided
-                                    identifier to KIM.</para></td>
-                        </tr>
+                                    identifier to KIM.</para></entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>

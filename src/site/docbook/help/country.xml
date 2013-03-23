@@ -42,36 +42,38 @@
             display-only set of fields on the left and editable fields on the right in which the
             user may enter changes.</para>
         <para>
-            <table frame="border">
-                <caption>Edit Country tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Country tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Country Code</td>
-                        <td>Required. A unique identifying code assigned to a country.</td>
-                    </tr>
-                    <tr>
-                        <td>Country Name </td>
-                        <td>
+                    <row>
+                        <entry>Country Code</entry>
+                        <entry>Required. A unique identifying code assigned to a country.</entry>
+                    </row>
+                    <row>
+                        <entry>Country Name </entry>
+                        <entry>
                             Required. A familiar name of a specific country.                           
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Country Restricted Indicator</td>
-                        <td>Required. Check the box to indicate that that the country is restricted. This has implications for the Purchasing /Accounts Payable module where restricted countries may not be used in Vendor addresses. Clear the check box if it is not.</td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td>Indicates whether this country code is active or inactive. Remove the check mark to deactivate this country code. </td>
-                    </tr>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Country Restricted Indicator</entry>
+                        <entry>Required. Check the box to indicate that that the country is restricted. This has implications for the Purchasing /Accounts Payable module where restricted countries may not be used in Vendor addresses. Clear the check box if it is not.</entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry>Indicates whether this country code is active or inactive. Remove the check mark to deactivate this country code. </entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

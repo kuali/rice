@@ -52,50 +52,52 @@
             </mediaobject>
         </figure></para>
         <para>
-            <table frame="border">
-                <caption>Overview tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Overview tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Group ID</td>
-                        <td>Display-only. The unique system-assigned ID number that identifies this
+                    <row>
+                        <entry>Group ID</entry>
+                        <entry>Display-only. The unique system-assigned ID number that identifies this
                             group. The system completes this field when you submit the
-                            document.</td>
-                    </tr>
-                    <tr>
-                        <td>Type Name</td>
-                        <td><para>Required. The type of attributes that will be associated with this group. Some group types,
+                            document.</entry>
+                    </row>
+                    <row>
+                        <entry>Type Name</entry>
+                        <entry><para>Required. The type of attributes that will be associated with this group. Some group types,
                                 such as the Default Type, require no attributes to be
                                 collected.</para><para>When creating a new group, you must select the Type before the system can generate the
-                                    document. </para></td>
-                    </tr>
-                    <tr>
-                        <td>Group Namespace</td>
-                        <td>Required. An indicator that associates the group with a particular
-                            application and module.</td>
-                    </tr>
-                    <tr>
-                        <td>Group Name</td>
-                        <td>Required. The common descriptive name by which this group is known.</td>
-                    </tr>
-                    <tr>
-                        <td>Active</td>
-                        <td>Check this box to indicate that this Group is active and is a valid
+                                    document. </para></entry>
+                    </row>
+                    <row>
+                        <entry>Group Namespace</entry>
+                        <entry>Required. An indicator that associates the group with a particular
+                            application and module.</entry>
+                    </row>
+                    <row>
+                        <entry>Group Name</entry>
+                        <entry>Required. The common descriptive name by which this group is known.</entry>
+                    </row>
+                    <row>
+                        <entry>Active</entry>
+                        <entry>Check this box to indicate that this Group is active and is a valid
                             choice for assigning to roles. Uncheck the box to indicate that this
-                            group is inactive (no longer valid when making role assignments).</td>
-                    </tr>
-                    <tr>
-                        <td>Group Description</td>
-                        <td>An optional explaination of the group's need and use.</td>
-                    </tr>
+                            group is inactive (no longer valid when making role assignments).</entry>
+                    </row>
+                    <row>
+                        <entry>Group Description</entry>
+                        <entry>An optional explaination of the group's need and use.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
 
@@ -110,53 +112,55 @@
                 </imageobject>
             </inlinemediaobject></para>
         <para>
-            <table frame="border">
-                <caption>Assignees tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Assignees tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Type Code</td>
-                        <td>Required. Select the type of member you are adding to this group. Group
+                    <row>
+                        <entry>Type Code</entry>
+                        <entry>Required. Select the type of member you are adding to this group. Group
                             members can be principals (as defined on the Person document), roles or
-                            other groups. </td>
-                    </tr>
-                    <tr>
-                        <td>Member Identifier</td>
-                        <td>Required. Enter the ID that identifies the member you are adding or use
+                            other groups. </entry>
+                    </row>
+                    <row>
+                        <entry>Member Identifier</entry>
+                        <entry>Required. Enter the ID that identifies the member you are adding or use
                             the lookup to search for and select a valid Member ID. The lookup
                             directs you to the <emphasis role="bold">Principal</emphasis>, <emphasis
                                 role="bold">Group</emphasis> or <emphasis role="bold"
                                 >Role</emphasis> lookup based on your Member Type Code
-                            selection.</td>
-                    </tr>
-                    <tr>
-                        <td>Name</td>
-                        <td>Display only. Displays the name of the member you've selected.</td>
-                    </tr>
-                    <tr>
-                        <td>Active From Date</td>
-                        <td>Optional. To specify the earliest date on which this member is to be
-                            considered a valid member of this group, enter a From Date.</td>
-                    </tr>
-                    <tr>
-                        <td>Active To Date</td>
-                        <td><para>Optional. To specify a date on which this member is no longer to be considered a valid member
+                            selection.</entry>
+                    </row>
+                    <row>
+                        <entry>Name</entry>
+                        <entry>Display only. Displays the name of the member you've selected.</entry>
+                    </row>
+                    <row>
+                        <entry>Active From Date</entry>
+                        <entry>Optional. To specify the earliest date on which this member is to be
+                            considered a valid member of this group, enter a From Date.</entry>
+                    </row>
+                    <row>
+                        <entry>Active To Date</entry>
+                        <entry><para>Optional. To specify a date on which this member is no longer to be considered a valid member
                                 of this group, enter a To Date.</para><para>Note that you cannot delete or inactivate group members. To remove a member from a group enter
-                                an Active To Date.</para></td>
-                    </tr>
-                    <tr>
-                        <td>Actions</td>
-                        <td>Click the <emphasis role="bold">Add</emphasis> button to add this member
-                            to the group.</td>
-                    </tr>
+                                an Active To Date.</para></entry>
+                    </row>
+                    <row>
+                        <entry>Actions</entry>
+                        <entry>Click the <emphasis role="bold">Add</emphasis> button to add this member
+                            to the group.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

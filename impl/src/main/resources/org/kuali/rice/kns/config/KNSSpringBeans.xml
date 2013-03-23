@@ -121,15 +121,7 @@
     </property>
   </bean>
 
-  <bean id="knsSessionDocumentService" class="org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl">
-    <property name="maxCacheSize" value="${session.document.cache.size}"/>
-    <property name="businessObjectService">
-      <ref bean="businessObjectService"/>
-    </property>
-    <property name="sessionDocumentDao">
-      <ref bean="sessionDocumentDao"/>
-    </property>
-  </bean>
+  <bean id="knsSessionDocumentService" class="org.kuali.rice.kns.service.impl.NoOpSessionDocumentServiceImpl" />
 
   <bean id="knsDictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
     <property name="dataDictionaryService">

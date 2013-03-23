@@ -74,55 +74,57 @@
                     </imageobject>
                 </mediaobject></figure></para>
             <para>
-                <table frame="border">
-                    <caption>Overview tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Overview tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>
                                 <para>Description</para>
-                            </th>
-                        </tr>
+                            </entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Role</td>
-                            <td>Display-only. The unique, system-assigned ID number that identifies
-                                this role.</td>
-                        </tr>
-                        <tr>
-                            <td>Type Name</td>
-                            <td><para>Display-only. Because the role type normally reflects the type of qualifiers this role will
+                        <row>
+                            <entry>Role</entry>
+                            <entry>Display-only. The unique, system-assigned ID number that identifies
+                                this role.</entry>
+                        </row>
+                        <row>
+                            <entry>Type Name</entry>
+                            <entry><para>Display-only. Because the role type normally reflects the type of qualifiers this role will
                                     need to collect when members are added, this name usually
                                     identifies the general types of permissions and responsibilities
                                     associated with it.</para><para>When creating a new role, you must select its type before the system will generate the
-                                    document.</para></td>
-                        </tr>
-                        <tr>
-                            <td>Namespace</td>
-                            <td>Required. An indicator that associates the role with a particular
-                                application and module.</td>
-                        </tr>
-                        <tr>
-                            <td>Role Name</td>
-                            <td>Required. The common descriptive name by which this role is
-                                known.</td>
-                        </tr>
-                        <tr>
-                            <td>Active</td>
-                            <td>Check this box to indicate that this role is active and is,
+                                    document.</para></entry>
+                        </row>
+                        <row>
+                            <entry>Namespace</entry>
+                            <entry>Required. An indicator that associates the role with a particular
+                                application and module.</entry>
+                        </row>
+                        <row>
+                            <entry>Role Name</entry>
+                            <entry>Required. The common descriptive name by which this role is
+                                known.</entry>
+                        </row>
+                        <row>
+                            <entry>Active</entry>
+                            <entry>Check this box to indicate that this role is active and is,
                                 therefore, to be included by KIM when evaluating permissions and
                                 responsibilities. Uncheck the box to indicate that this role is
-                                inactive</td>
-                        </tr>
-                        <tr>
-                            <td>Description</td>
-                            <td>Optional. A longer text box for describing the needs or uses of the 
-                                role.</td>
-                        </tr>
+                                inactive</entry>
+                        </row>
+                        <row>
+                            <entry>Description</entry>
+                            <entry>Optional. A longer text box for describing the needs or uses of the 
+                                role.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>
@@ -139,29 +141,31 @@
                 </mediaobject>
             </figure></para>
             <para>
-                <table frame="void">
-                    <caption>Permissions tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Permissions tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Add Permission ID</td>
-                            <td>To add a permission to this role, enter the appropriate permission
+                        <row>
+                            <entry>Add Permission ID</entry>
+                            <entry>To add a permission to this role, enter the appropriate permission
                                 ID or search for and select a value using the <emphasis role="bold"
-                                    >Permission</emphasis> lookup</td>
-                        </tr>
-                        <tr>
-                            <td>Add</td>
-                            <td>Click the <emphasis role="bold">Add</emphasis> button to add the
-                                selected permission to this Role document.</td>
-                        </tr>
+                                    >Permission</emphasis> lookup</entry>
+                        </row>
+                        <row>
+                            <entry>Add</entry>
+                            <entry>Click the <emphasis role="bold">Add</emphasis> button to add the
+                                selected permission to this Role document.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
             <para>After you add a permission to the document, the system displays additional
@@ -169,51 +173,53 @@
             <note><para>Permissions cannot be edited via the Role document. Use the Permission document to
                 perform this function. </para></note>
             <para>
-                <table frame="void">
-                    <caption>Permissions tab definition, results set</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Permissions tab definition, results set</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Permission Namespace</td>
-                            <td>Display-only. The Namespace identifies the application and module
-                                associated with this permission.</td>
-                        </tr>
-                        <tr>
-                            <td>Permission Identifier</td>
-                            <td>Display-only. The unique system-assigned ID number for this
-                                permission.</td>
-                        </tr>
-                        <tr>
-                            <td>Permission Name</td>
-                            <td>Display-only. The descriptive name of this permission. This often
-                                identifies, in general terms, what the permission authorizes.</td>
-                        </tr>
-                        <tr>
-                            <td>Permission Detail Values</td>
-                            <td>Display-only. The document types, tabs and/or fields this permission
-                                authorizes. Not all permissions have detail values.</td>
-                        </tr>
-                        <tr>
-                            <td>Active Indicator</td>
-                            <td>Display-only. Indicator showing whether this permission is active
-                                within the system or not.</td>
-                        </tr>
-                        <tr>
-                            <td>Actions</td>
-                            <td><para>Click the <emphasis role="bold">Delete</emphasis> button to remove
+                        <row>
+                            <entry>Permission Namespace</entry>
+                            <entry>Display-only. The Namespace identifies the application and module
+                                associated with this permission.</entry>
+                        </row>
+                        <row>
+                            <entry>Permission Identifier</entry>
+                            <entry>Display-only. The unique system-assigned ID number for this
+                                permission.</entry>
+                        </row>
+                        <row>
+                            <entry>Permission Name</entry>
+                            <entry>Display-only. The descriptive name of this permission. This often
+                                identifies, in general terms, what the permission authorizes.</entry>
+                        </row>
+                        <row>
+                            <entry>Permission Detail Values</entry>
+                            <entry>Display-only. The document types, tabs and/or fields this permission
+                                authorizes. Not all permissions have detail values.</entry>
+                        </row>
+                        <row>
+                            <entry>Active Indicator</entry>
+                            <entry>Display-only. Indicator showing whether this permission is active
+                                within the system or not.</entry>
+                        </row>
+                        <row>
+                            <entry>Actions</entry>
+                            <entry><para>Click the <emphasis role="bold">Delete</emphasis> button to remove
                                 this permission from the role.</para>
                                 <para>You may delete a permission only if it has not yet been saved to the database (i.e., you added it to this 
                                     role but have not yet submitted the document).</para>
-                            </td>
-                        </tr>
+                            </entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
         </section>
@@ -230,29 +236,31 @@
                     </imageobject>
                 </mediaobject></figure></para>
             <para>
-                <table frame="void">
-                    <caption>Responsibilities tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Responsibilities tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Add Responsibility ID</td>
-                            <td>To add a responsibility to this role enter the responsibility ID or
+                        <row>
+                            <entry>Add Responsibility ID</entry>
+                            <entry>To add a responsibility to this role enter the responsibility ID or
                                 search for and select a value using the <emphasis role="bold"
-                                    >Responsibility</emphasis> lookup</td>
-                        </tr>
-                        <tr>
-                            <td>Add</td>
-                            <td>Click the <emphasis role="bold">Add</emphasis> button to add the
-                                selected responsibility to this Role document.</td>
-                        </tr>
+                                    >Responsibility</emphasis> lookup</entry>
+                        </row>
+                        <row>
+                            <entry>Add</entry>
+                            <entry>Click the <emphasis role="bold">Add</emphasis> button to add the
+                                selected responsibility to this Role document.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
             <para>After you add a responsibility to the document, the system displays additional
@@ -267,35 +275,36 @@
                     </imageobject>
                 </mediaobject></figure></para>
             <para>
-                <table frame="void">
-                    <caption>Responsibilities tab definition, continued</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Responsibilities tab definition, continued</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Responsibility Namespace</td>
-                            <td>Display-only. The Namespace identifies the application and module
-                                associated with this responsibility.</td>
-                        </tr>
-                        <tr>
-                            <td>Responsibility Identifier</td>
-                            <td>Display-only. The unique system-assigned ID number identifying this
-                                responsibility</td>
-                        </tr>
-                        <tr>
-                            <td>Responsibility Name</td>
-                            <td>Display-only. The descriptive name of this responsibility. For most
-                                Responsibilities the name is 'Review.</td>
-                        </tr>
-                        <tr>
-                            <td>Responsibility Detail Values</td>
-                            <td><para>Display-only. This identifies more specific information about the responsibility.
+                        <row>
+                            <entry>Responsibility Namespace</entry>
+                            <entry>Display-only. The Namespace identifies the application and module
+                                associated with this responsibility.</entry>
+                        </row>
+                        <row>
+                            <entry>Responsibility Identifier</entry>
+                            <entry>Display-only. The unique system-assigned ID number identifying this
+                                responsibility</entry>
+                        </row>
+                        <row>
+                            <entry>Responsibility Name</entry>
+                            <entry>Display-only. The descriptive name of this responsibility. For most
+                                Responsibilities the name is 'Review.</entry>
+                        </row>
+                        <row>
+                            <entry>Responsibility Detail Values</entry>
+                            <entry><para>Display-only. This identifies more specific information about the responsibility.
                                     Responsibility Detail Values are formatted in a standard way
                                     with the following attributes delimited by commas:</para>
                             <para>Route Node: The workflow route level at which this responsibility
@@ -315,22 +324,23 @@
                                     because no one is assigned to the associated Role) then the
                                     document will go into Exception status. If this routing is
                                     optional this value will be False and the document will simply
-                                    skip this responsibility if no requests are generated.</para></td>
-                        </tr>
-                        <tr>
-                            <td>Active Indicator</td>
-                            <td>Display-only. Indicator showing whether this responsibility is
-                                active within the system or not.</td>
-                        </tr>
-                        <tr>
-                            <td>Actions</td>
-                            <td><para>Click the <emphasis role="bold">Delete</emphasis> button to remove this responsibility from
+                                    skip this responsibility if no requests are generated.</para></entry>
+                        </row>
+                        <row>
+                            <entry>Active Indicator</entry>
+                            <entry>Display-only. Indicator showing whether this responsibility is
+                                active within the system or not.</entry>
+                        </row>
+                        <row>
+                            <entry>Actions</entry>
+                            <entry><para>Click the <emphasis role="bold">Delete</emphasis> button to remove this responsibility from
                                     this role.</para>
                             <para>You can delete a responsibility only if it has not yet been saved
                                     to the database (i.e., you have added it to this role but have
-                                    not yet submitted the document).</para></td>
-                        </tr>
+                                    not yet submitted the document).</para></entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
             <section>
@@ -354,40 +364,41 @@
                 </figure>
                 </para>
                 <para>
-                    <table frame="void">
-                        <caption>Responsibility Action Subsection definition</caption>
-                        <col width="50%"/>
-                        <col width="50%"/>
+                    <table frame="none" tabstyle="striped">
+                        <title>Responsibility Action Subsection definition</title>
+                        <tgroup cols="2">
+                        <colspec colwidth="1.0*"/>
+                        <colspec colwidth="1.0*"/>
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                            </tr>
+                            <row>
+                                <entry>Title</entry>
+                                <entry>Description</entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Name</td>
-                                <td>Display-only. The namespace and name of the responsibility
-                                    associated with these action details.</td>
-                            </tr>
-                            <tr>
-                                <td>Action Type Code</td>
-                                <td>Required. The type of action request that the system is to
+                            <row>
+                                <entry>Name</entry>
+                                <entry>Display-only. The namespace and name of the responsibility
+                                    associated with these action details.</entry>
+                            </row>
+                            <row>
+                                <entry>Action Type Code</entry>
+                                <entry>Required. The type of action request that the system is to
                                     generate for this responsibility. Options include Approve, FYI
-                                    and Acknowledge.</td>
-                            </tr>
-                            <tr>
-                                <td>Priority Number</td>
-                                <td>Optional. If multiple requests are generated at the route node
+                                    and Acknowledge.</entry>
+                            </row>
+                            <row>
+                                <entry>Priority Number</entry>
+                                <entry>Optional. If multiple requests are generated at the route node
                                     specified on this responsibility, this value determines in the
                                     order in which the system will generate these requests. The
                                     system processes requests with lower priority numbers before
                                     processing requests with higher numbers. Requests with no number
-                                    are treated as a priority of 1.</td>
-                            </tr>
-                            <tr>
-                                <td>Action Policy Code</td>
-                                <td><para>Required. This value determines what happens if multiple members of this role receive the same
+                                    are treated as a priority of 1.</entry>
+                            </row>
+                            <row>
+                                <entry>Action Policy Code</entry>
+                                <entry><para>Required. This value determines what happens if multiple members of this role receive the same
                                         action request and one of them takes the action. This
                                         currently only applies in situations where a single action
                                         request is generated to multiple role members (i.e. the
@@ -404,17 +415,18 @@
                                         requests for this responsibility that may be in other role
                                         member's action lists.</para>
                                 <para>A value of ALL indicates that each role member must take
-                                        individual action to clear his or her requests.</para></td>
-                            </tr>
-                            <tr>
-                                <td>Force Action</td>
-                                <td>Check the box to indicate that each user must take this action
+                                        individual action to clear his or her requests.</para></entry>
+                            </row>
+                            <row>
+                                <entry>Force Action</entry>
+                                <entry>Check the box to indicate that each user must take this action
                                     for this request even if the user has already previously taken
                                     action on this document. Leaving the box unchecked allows a
                                     request to be immediately fulfilled if the role member has
-                                    previously taken action on this specific document.</td>
-                            </tr>
+                                    previously taken action on this specific document.</entry>
+                            </row>
                         </tbody>
+                        </tgroup>
                     </table>
                 </para>
             </section>
@@ -430,68 +442,70 @@
                     </imageobject>
                 </mediaobject></figure></para>
             <para>
-                <table frame="void">
-                    <caption>Assignees Member tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Assignees Member tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Type Code</td>
-                            <td>Required. Role members can be principals (as defined on the Person
+                        <row>
+                            <entry>Type Code</entry>
+                            <entry>Required. Role members can be principals (as defined on the Person
                                 document), groups or other roles. Select the type of member you want
-                                to add to this Role.</td>
-                        </tr>
-                        <tr>
-                            <td>Member Identifier</td>
-                            <td>Required. Enter the ID of the member you want to add or use the
+                                to add to this Role.</entry>
+                        </row>
+                        <row>
+                            <entry>Member Identifier</entry>
+                            <entry>Required. Enter the ID of the member you want to add or use the
                                 lookup to search for and select a valid value. The lookup directs
                                 you to the <emphasis role="bold">Principal</emphasis>, <emphasis
                                     role="bold">Group</emphasis> or <emphasis role="bold"
                                     >Role</emphasis> lookup based on your <emphasis role="bold"
-                                    >Member Type Code</emphasis> selection.</td>
-                        </tr>
-                        <tr>
-                            <td>Namespace Cd</td>
-                            <td>Display-only. Identifies the namespace code associated with this
+                                    >Member Type Code</emphasis> selection.</entry>
+                        </row>
+                        <row>
+                            <entry>Namespace Cd</entry>
+                            <entry>Display-only. Identifies the namespace code associated with this
                                 role member. Note that only groups and roles will display a
-                                namespace code.</td>
-                        </tr>
-                        <tr>
-                            <td>Name</td>
-                            <td>Display-only. Identifies the name of the member being assigned to
-                                this role.</td>
-                        </tr>
-                        <tr>
-                            <td>Full Name</td>
-                            <td>Display-only. Identifies the default, full name of the member being assigned to
-                                this role.</td>
-                        </tr>
-                        <tr>
-                            <td>Active From Date</td>
-                            <td>Optional. Allows you to qualify this member's association with this
+                                namespace code.</entry>
+                        </row>
+                        <row>
+                            <entry>Name</entry>
+                            <entry>Display-only. Identifies the name of the member being assigned to
+                                this role.</entry>
+                        </row>
+                        <row>
+                            <entry>Full Name</entry>
+                            <entry>Display-only. Identifies the default, full name of the member being assigned to
+                                this role.</entry>
+                        </row>
+                        <row>
+                            <entry>Active From Date</entry>
+                            <entry>Optional. Allows you to qualify this member's association with this
                                 role by date. Entering a from date will define the earliest date on
-                                which this member is a valid member of this role.</td>
-                        </tr>
-                        <tr>
-                            <td>Active To Date</td>
-                            <td><para>Optional. Allows you to deactivate a member's association with a role on a specific date. The
+                                which this member is a valid member of this role.</entry>
+                        </row>
+                        <row>
+                            <entry>Active To Date</entry>
+                            <entry><para>Optional. Allows you to deactivate a member's association with a role on a specific date. The
                                     date you enter defines the date the user is no longer a member
                                     of this role.</para>
                             <para>You cannot delete or inactivate role members. To remove a member
-                                    from a role, specify an active to date.</para></td>
-                        </tr>
-                        <tr>
-                            <td>Actions</td>
-                            <td>Click the <emphasis role="bold">Add</emphasis> button to add this
-                                member to the role.</td>
-                        </tr>
+                                    from a role, specify an active to date.</para></entry>
+                        </row>
+                        <row>
+                            <entry>Actions</entry>
+                            <entry>Click the <emphasis role="bold">Add</emphasis> button to add this
+                                member to the role.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
             <note><para>Additional fields may be required, such as Chart Code or Organization Code,
@@ -523,77 +537,79 @@
                 </mediaobject>
             </figure></para>
             <para>
-                <table frame="void">
-                    <caption>Delegations tab definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
+                <table frame="none" tabstyle="striped">
+                    <title>Delegations tab definition</title>
+                    <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
+                        <row>
+                            <entry>Title</entry>
+                            <entry>Description</entry>
+                        </row>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Role Member</td>
-                            <td>Required. Use the lookup to search for and return the member of this
-                                role you wish to create a delegate for.</td>
-                        </tr>
-                        <tr>
-                            <td>Member Type Code</td>
-                            <td>Required. Delegates may be principals (as defined on the Person
+                        <row>
+                            <entry>Role Member</entry>
+                            <entry>Required. Use the lookup to search for and return the member of this
+                                role you wish to create a delegate for.</entry>
+                        </row>
+                        <row>
+                            <entry>Member Type Code</entry>
+                            <entry>Required. Delegates may be principals (as defined on the Person
                                 document), groups or other roles. Select the type of delegate you
-                                want to add to this role.</td>
-                        </tr>
-                        <tr>
-                            <td>Member Identifier</td>
-                            <td>Required. Enter the ID that identifies the delegate you want to add
+                                want to add to this role.</entry>
+                        </row>
+                        <row>
+                            <entry>Member Identifier</entry>
+                            <entry>Required. Enter the ID that identifies the delegate you want to add
                                 or use the lookup to search for and select a valid value. Note that
                                 the lookup will direct you to the <emphasis role="bold"
                                     >Principal</emphasis>, <emphasis role="bold">Group</emphasis> or
                                     <emphasis role="bold">Role</emphasis> lookup based on your
                                     <emphasis role="bold">Member Type Code</emphasis>
-                                selection.</td>
-                        </tr>
-                        <tr>
-                            <td>Member Namespace Code</td>
-                            <td>Display-only. Identifies the namespace associated with the selected
+                                selection.</entry>
+                        </row>
+                        <row>
+                            <entry>Member Namespace Code</entry>
+                            <entry>Display-only. Identifies the namespace associated with the selected
                                 delegate. Note that only delegations to groups or roles will display
-                                a member namespace code.</td>
-                        </tr>
-                        <tr>
-                            <td>Member Name</td>
-                            <td>Display-only. Shows the name of the selected delegate.</td>
-                        </tr>
-                        <tr>
-                            <td>Active From Date</td>
-                            <td>Optional. If you want you can qualify this delegate's association
+                                a member namespace code.</entry>
+                        </row>
+                        <row>
+                            <entry>Member Name</entry>
+                            <entry>Display-only. Shows the name of the selected delegate.</entry>
+                        </row>
+                        <row>
+                            <entry>Active From Date</entry>
+                            <entry>Optional. If you want you can qualify this delegate's association
                                 with this role by date. Entering a from date will define the
                                 earliest date on which this delegate is a valid delegate for this
-                                role.</td>
-                        </tr>
-                        <tr>
-                            <td>Active To Date</td>
-                            <td><para>Optional. Allows you to deactivate a delegate's association with a role on a specific date.
+                                role.</entry>
+                        </row>
+                        <row>
+                            <entry>Active To Date</entry>
+                            <entry><para>Optional. Allows you to deactivate a delegate's association with a role on a specific date.
                                     The date you enter defines the date on which the user is no
                                     longer a delegate for this role.</para>
                             <para>You cannot delete or deactivate delegates. To remove a delegate
-                                    from a role, enter an active to date.</para></td>
-                        </tr>
-                        <tr>
-                            <td>Delegation Type Code</td>
-                            <td>Required. Select 'Secondary' or 'Primary. Note that this selection
+                                    from a role, enter an active to date.</para></entry>
+                        </row>
+                        <row>
+                            <entry>Delegation Type Code</entry>
+                            <entry>Required. Select 'Secondary' or 'Primary. Note that this selection
                                 only applies to responsibilities associated with the role and
                                 indicates if the delegate will receive documents directly in their
                                 action list (Primary) or may choose to view documents in their
-                                action list using the secondary delegate dropdown (Secondary). </td>
-                        </tr>
-                        <tr>
-                            <td>Actions</td>
-                            <td>Click the <emphasis role="bold">Add</emphasis> button to add this
-                                delegate to the role.</td>
-                        </tr>
+                                action list using the secondary delegate dropdown (Secondary). </entry>
+                        </row>
+                        <row>
+                            <entry>Actions</entry>
+                            <entry>Click the <emphasis role="bold">Add</emphasis> button to add this
+                                delegate to the role.</entry>
+                        </row>
                     </tbody>
+                    </tgroup>
                 </table>
             </para>
             <note><para>Additional fields may be required, such as <emphasis role="bold">Chart

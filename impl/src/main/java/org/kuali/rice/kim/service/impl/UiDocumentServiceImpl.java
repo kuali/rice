@@ -151,6 +151,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
  *
@@ -538,7 +540,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     }
 
 	/**
-	 * Used to populate the {@link PersonDocumentRole} ojbects for a {@link IdentityManagementPersonDocument}
+	 * Used to populate the {@link PersonDocumentRole} objects for a {@link IdentityManagementPersonDocument}
 	 *
 	 * @param identityManagementPersonDocument {@link IdentityManagementPersonDocument}
 	 */
@@ -552,9 +554,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
         // if the PrincipalId is a member of any roles, add those roles to docRoles
         if(ObjectUtils.isNotNull(roleMembers)){
-            // for each membership get the role and add it to docRoles
+            // for each membership get the role and add it, if not already added
             for (RoleMemberBo member : roleMembers) {
-                loadDocRoles(docRoles, roleIds, member);
+				if(member.isActive() && !roleIds.contains(member.getRoleId())) {
+					loadDocRoles(docRoles, roleIds, member, roleMembers);
+				}
             }
         }
 
@@ -591,11 +595,20 @@ public class UiDocumentServiceImpl implements UiDocumentService {
      * @param docRoles a list of {@link PersonDocumentRole} roles
      * @param roleIds a list of the Ids of the Roles already added
      * @param member a {@link RoleMemberBo} of a {@link RoleBoLite}
+	 * @param roleMembers a list of {@link RoleMemberBo} membership objects for the PrincipalId
      */
-    private void loadDocRoles(List <PersonDocumentRole> docRoles, List<String> roleIds,  RoleMemberBo member) {
+    private void loadDocRoles(List <PersonDocumentRole> docRoles, List<String> roleIds,  RoleMemberBo member, List<RoleMemberBo> roleMembers) {
 
         // get the RoleBoLite object by it's Id from a role membership object
         RoleBoLite role =  getBusinessObjectService().findBySinglePrimaryKey(RoleBoLite.class, member.getRoleId());
+
+		// create list of RoleMemberBo's for the same role
+		List<RoleMemberBo> matchingMembers = new ArrayList<RoleMemberBo>();
+		for (RoleMemberBo tempMember : roleMembers) {
+			if (tempMember.getRoleId().equals(member.getRoleId())){
+				matchingMembers.add(tempMember);
+			}
+		}
 
         // if not already found add role to docRoles
         if (ObjectUtils.isNotNull(role) && !roleIds.contains(role.getId())) {
@@ -607,6 +620,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             docRole.setRoleId(role.getId());
             docRole.setRoleName(role.getName());
             docRole.refreshReferenceObject("assignedResponsibilities");
+			docRole.setRolePrncpls(populateDocRolePrncpl(role.getNamespaceCode(), matchingMembers, member.getMemberId(), getAttributeDefinitionsForRole(docRole)));
             docRoles.add(docRole);
             roleIds.add(role.getId());
         }
@@ -2580,7 +2594,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	protected KimAttributeField getAttributeDefinition(String kimTypId, String attrDefnId) {
 		final KimType type = getKimTypeInfoService().getKimType(kimTypId);
 		if (type != null) {
-			final KimTypeService typeService = (KimTypeService) KimImplServiceLocator.getBean(type.getServiceName());
+			final KimTypeService typeService = GlobalResourceLoader.<KimTypeService>getService(QName.valueOf(type.getServiceName()));
 			if (typeService != null) {
 				final KimTypeAttribute attributeInfo = type.getAttributeDefinitionById(attrDefnId);
 				if (attributeInfo != null) {

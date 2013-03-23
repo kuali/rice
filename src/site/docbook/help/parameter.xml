@@ -45,68 +45,70 @@
             tab. This tab is where you define the modules, type, rules, and description of the
             parameters.</para>
         <para>
-            <table frame="border">
-                <caption>Edit Parameter tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Parameter tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Namespace Code</td>
-                        <td>Required. Select the appropriate Namespace code for the parameter from
+                    <row>
+                        <entry>Namespace Code</entry>
+                        <entry>Required. Select the appropriate Namespace code for the parameter from
                             the <emphasis role="bold">Namepsace Code</emphasis> list or search for
-                            it from the lookup.</td>
-                    </tr>
-                    <tr>
-                        <td>Component </td>
-                        <td>Required. Enter the parameter component code or search for it from the
-                                <emphasis role="bold">Parameter Component</emphasis> lookup.</td>
-                    </tr>
-                    <tr>
-                        <td>Application ID</td>
-                        <td>Required. Enter the application namespace to identify the application to
+                            it from the lookup.</entry>
+                    </row>
+                    <row>
+                        <entry>Component </entry>
+                        <entry>Required. Enter the parameter component code or search for it from the
+                                <emphasis role="bold">Parameter Component</emphasis> lookup.</entry>
+                    </row>
+                    <row>
+                        <entry>Application ID</entry>
+                        <entry>Required. Enter the application namespace to identify the application to
                             which this parameter applies. Note that the same parameter can have
-                            different values for different applications.</td>
-                    </tr>
-                    <tr>
-                        <td>Parameter Name</td>
-                        <td>Required. Enter the name of the parameter being defined.</td>
-                    </tr>
-                    <tr>
-                        <td>Parameter Value</td>
-                        <td>Required. Enter the value for the parameter. The nature of a given
+                            different values for different applications.</entry>
+                    </row>
+                    <row>
+                        <entry>Parameter Name</entry>
+                        <entry>Required. Enter the name of the parameter being defined.</entry>
+                    </row>
+                    <row>
+                        <entry>Parameter Value</entry>
+                        <entry>Required. Enter the value for the parameter. The nature of a given
                             parameter determines what form the parameter value should take. In some
                             cases it is text for a  user to view or it could be a value such as an
                             account number or an object code. In cases where multiple values are
                             allowed they should be separated by a semi-colon. Consult with technical
                             resources if you are unsure what format a specific parameter value
-                            should take.</td>
-                    </tr>
-                    <tr>
-                        <td>Parameter Description</td>
-                        <td>Required. Describe the purpose and usage of the parameter. The
-                            description is used for a documentation purpose.</td>
-                    </tr>
-                    <tr>
-                        <td>Parameter Type Code</td>
-                        <td><para>Required. Select the parameter type code from the <emphasis role="bold">Parameter
-                                    Type</emphasis> list or search for it from the lookup.</para><para>Default types include:</para><para>System Configuration: Used to establish institution values not specific to validation.</para><para>Document Validation: Used to establish business rules for documents.</para></td>
-                    </tr>
-                    <tr>
-                        <td>Parameter Constraint Code</td>
-                        <td>Required. Select <emphasis role="bold">Allowed</emphasis> if the
+                            should take.</entry>
+                    </row>
+                    <row>
+                        <entry>Parameter Description</entry>
+                        <entry>Required. Describe the purpose and usage of the parameter. The
+                            description is used for a documentation purpose.</entry>
+                    </row>
+                    <row>
+                        <entry>Parameter Type Code</entry>
+                        <entry><para>Required. Select the parameter type code from the <emphasis role="bold">Parameter
+                                    Type</emphasis> list or search for it from the lookup.</para><para>Default types include:</para><para>System Configuration: Used to establish institution values not specific to validation.</para><para>Document Validation: Used to establish business rules for documents.</para></entry>
+                    </row>
+                    <row>
+                        <entry>Parameter Constraint Code</entry>
+                        <entry>Required. Select <emphasis role="bold">Allowed</emphasis> if the
                             parameter is to allow the defined parameter value within an application.
                             Select <emphasis role="bold">Denied </emphasis>if the parameter is to
                             deny the defined parameter value within the application. Consult with
                             technical resources if you are unsure of the appropriate constraint code
-                            for a given parameter.</td>
-                    </tr>
+                            for a given parameter.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

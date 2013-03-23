@@ -83,10 +83,8 @@ Here is a partial, annotated directory structure for the source distribution:
       interface to Rice
   /licenses  <-- licenses governing the use and redistribution of third-party
       code or libraries used by Rice
-  /scripts/datasets  <-- SQL and configuration files for creating distributions
+  /scripts/dataset  <-- SQL and configuration files for creating distributions
   /scripts/ddl  <-- SQL used to setup a unit test database
-  /scripts/launch  <-- file for launching a Jetty-based, standalone version of
-      Rice within Eclipse 
   /scripts/upgrades  <-- DDL needed for upgrading databases used with previous
       versions of Rice
   /security  <-- SSL-related files
@@ -116,10 +114,8 @@ Here is a partial, annotated directory structure for the binary distribution:
   /lib  <-- the third-party libraries Rice uses
   /licenses  <-- licenses governing the use and redistribution of third-party
       code or libraries used by Rice
-  /scripts/datasets  <-- SQL and configuration files for creating distributions
+  /scripts/dataset  <-- SQL and configuration files for creating distributions
   /scripts/ddl  <-- SQL used to setup a unit test database
-  /scripts/launch  <-- file for launching a Jetty-based, standalone version of
-      Rice within Eclipse 
   /scripts/upgrades  <-- DDL needed for upgrading databases used with previous
       versions of Rice
   /security  <-- SSL-related files
@@ -144,8 +140,6 @@ Here is a partial, annotated directory structure for the server distribution:
       code or libraries used by Rice
   /scripts/dataset  <-- SQL and configuration files for creating distributions
   /scripts/ddl  <-- SQL used to setup a unit test database
-  /scripts/launch  <-- file for launching a Jetty-based, standalone version of
-      Rice within Eclipse 
   /scripts/upgrades  <-- DDL needed for upgrading databases used with previous
       versions of Rice
   /security  <-- SSL-related files

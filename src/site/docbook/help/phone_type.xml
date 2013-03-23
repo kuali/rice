@@ -34,37 +34,39 @@
         </mediaobject>
         </figure></para>
         <para>
-            <table frame="border">
-                <caption>Phone Type Lookup results definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Phone Type Lookup results definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Phone Type Code </td>
-                        <td>Display-only. The code that identifies the type of phone number. </td>
-                    </tr>
-                    <tr>
-                        <td>Phone Type Name </td>
-                        <td>Display-only. The descriptive name for this type of phone number. </td>
-                    </tr>
-                    <tr>
-                        <td>Display Sort Code</td>
-                        <td>Display-only. An alphabetic value that determines the order in which
-                            phone types are displayed in the dropdown list. </td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td>Display-only. Indicates whether this phone type is active (in which case
+                    <row>
+                        <entry>Phone Type Code </entry>
+                        <entry>Display-only. The code that identifies the type of phone number. </entry>
+                    </row>
+                    <row>
+                        <entry>Phone Type Name </entry>
+                        <entry>Display-only. The descriptive name for this type of phone number. </entry>
+                    </row>
+                    <row>
+                        <entry>Display Sort Code</entry>
+                        <entry>Display-only. An alphabetic value that determines the order in which
+                            phone types are displayed in the dropdown list. </entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry>Display-only. Indicates whether this phone type is active (in which case
                             the system displays it in the <emphasis role="bold">Phone Type
-                            </emphasis>dropdown list on the Person document). </td>
-                    </tr>
+                            </emphasis>dropdown list on the Person document). </entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

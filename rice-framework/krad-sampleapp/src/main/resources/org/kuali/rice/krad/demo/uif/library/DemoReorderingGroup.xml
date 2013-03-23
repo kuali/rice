@@ -35,6 +35,19 @@
   <bean id="Demo-ReorderingGroup-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
+        <!-- ex:Demo-ReorderingGroup-Example1 start-->
+        <bean parent="Uif-ReorderSection">
+          <property name="items">
+            <list>
+              <bean id="Demo-ReorderingGroup-Field1" parent="Uif-Message" p:cssClasses="fl-font-size-150,fl-input-outline"/>
+              <bean id="Demo-ReorderingGroup-Field2" parent="Uif-Message" p:cssClasses="fl-font-size-150,fl-input-outline"/>
+              <bean id="Demo-ReorderingGroup-Field3" parent="Uif-Message" p:cssClasses="fl-font-size-150,fl-input-outline"/>
+              <bean id="Demo-ReorderingGroup-Field4" parent="Uif-Message" p:cssClasses="fl-font-size-150,fl-input-outline"/>
+              <bean id="Demo-ReorderingGroup-Field5" parent="Uif-Message" p:cssClasses="fl-font-size-150,fl-input-outline"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-ReorderingGroup-Example1 end-->
       </list>
     </property>
   </bean>

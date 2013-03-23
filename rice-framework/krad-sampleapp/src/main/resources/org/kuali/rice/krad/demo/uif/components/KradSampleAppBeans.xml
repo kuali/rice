@@ -478,8 +478,10 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DialogGroup-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Navigation Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View&amp;methodToCall=start"/>
-        <!--<bean parent="Uif-Link" p:linkText="Reordering Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ReorderingGroup-View&amp;methodToCall=start"/>-->
+        <bean parent="Uif-Link" p:linkText="Reordering Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ReorderingGroup-View&amp;methodToCall=start"/>
+        <!--<bean parent="Uif-Link" p:linkText="Tree Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TreeGroup-View&amp;methodToCall=start"/>-->
       </list>
     </property>
   </bean>
@@ -487,10 +489,14 @@
   <bean id="ComponentLibrary-Nav-LayoutManagers" p:headerText="Layout Managers" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <!--        <bean parent="Uif-Link" p:linkText="Grid Layout"
-        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>-->
+        <bean parent="Uif-Link" p:linkText="Grid Layout"
+        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Box Layout"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManager-View&amp;methodToCall=start"/>
+        <!--<bean parent="Uif-Link" p:linkText="List Layout"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ListLayoutManager-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Stacked Layout"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StackedLayoutManager-View&amp;methodToCall=start"/>-->
       </list>
     </property>
   </bean>

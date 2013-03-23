@@ -29,6 +29,10 @@ import org.testng.annotations.Test;
  */
 public class LoginLogoutSTNGBkMrkGen extends LoginLogoutSTNGBase {
 
+    /**
+     * @link LoginLogoutSTNGBase#testLogout
+     * @throws Exception
+     */
     @Test(groups = { "all", "fast", "default" }, description = "testLogout")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testLogout() throws Exception {

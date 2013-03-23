@@ -26,6 +26,7 @@ public interface SeleneseFailable {
 
     /**
      * Fail in a framework appropriate way.
+     * @link SelenseFailable#seFail
      * @param string message to display for the failure.
      */
     void seFail(String string);

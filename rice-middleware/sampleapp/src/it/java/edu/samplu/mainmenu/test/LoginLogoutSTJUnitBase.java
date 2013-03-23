@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 /**
  * Abstract base class for JUnit LoginLogout Smoke tests.  Implements SelenseFailable using org.junit.Assert.fail(String)
  *
+ * @see SeleneseFailable
  * @see LoginLogoutSTJUnitNavGen
  * @see LoginLogoutSTJUnitBkMrkGen
  * @author Kuali Rice Team (rice.collab@kuali.org)

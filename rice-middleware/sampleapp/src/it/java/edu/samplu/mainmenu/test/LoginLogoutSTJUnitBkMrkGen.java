@@ -28,6 +28,10 @@ import org.junit.Test;
  */
 public class LoginLogoutSTJUnitBkMrkGen extends LoginLogoutSTJUnitBase {
 
+    /**
+     * @link LoginLogoutSTJUnitBase#testLogout
+     * @throws Exception
+     */
     @Test
     public void testLogout() throws Exception {
         super.testLogout(this);

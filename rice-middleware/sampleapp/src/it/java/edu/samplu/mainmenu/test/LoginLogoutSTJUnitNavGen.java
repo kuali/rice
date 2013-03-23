@@ -28,6 +28,10 @@ import org.junit.Test;
  */
 public class LoginLogoutSTJUnitNavGen extends LoginLogoutSTJUnitBase {
 
+    /**
+     * @link LoginLogoutSTJUnitBase#testNavLogout
+     * @throws Exception
+     */
     @Test
     public void testNavLogout() throws Exception {
         super.testNavLogout(this);

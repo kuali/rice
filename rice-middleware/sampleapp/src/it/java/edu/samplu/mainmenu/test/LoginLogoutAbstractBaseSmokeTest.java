@@ -41,9 +41,9 @@ public abstract class LoginLogoutAbstractBaseSmokeTest extends WebDriverLegacyIT
     }
 
     /**
-     * Navigate to the page under test and call testLogout(SeleneseFailable)
-
-     * @param failable SeleneseFailable
+     * Navigate to the page under test and call {@link #testLogout}
+     *
+     * @param failable {@link SeleneseFailable}
      * @throws Exception
      */
     public void testNavLogout(SeleneseFailable failable) throws Exception {
@@ -59,7 +59,7 @@ public abstract class LoginLogoutAbstractBaseSmokeTest extends WebDriverLegacyIT
     /**
      * Test Logout on the current page.  Sets the passed flag (used with SauceLabs, reporting, etc.) as appropriate.
      *
-     * @param failable SeleneseFailable
+     * @param failable {@link SeleneseFailable}
      * @throws Exception
      */
     public void testLogout(SeleneseFailable failable) throws Exception {

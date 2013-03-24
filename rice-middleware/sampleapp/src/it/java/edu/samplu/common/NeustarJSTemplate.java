@@ -16,30 +16,30 @@
 package edu.samplu.common;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 
 /**
- * 
+ * TODO Setup as command line tool or implement gold standard/acceptance testing for the templated result.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NeustarJSTemplate {
+public class NeustarJSTemplate extends FreemarkerSTBase {
 
-    protected final Logger LOG = Logger.getLogger(getClass());
+    /**
+     * This is ugly, I'm doing it to remove the loading property duplication, we should probably turn this class into a
+     * command line tool and do extractions to support that, but isn't the current focus...
+     * @return
+     */
+    @Override
+    public String getTestUrl() {
+        return null;
+    }
 
     // File generation
-    private Configuration cfg;
     private String PROPS_LOCATION = System.getProperty("neustarJS.props.location", null);
     private String DEFAULT_PROPS_LOCATION = "NeustarJSTemplate/neustarJS.properties";
 
@@ -55,7 +55,6 @@ public class NeustarJSTemplate {
     }
 
     private void buildFileList(Properties props) throws Exception {
-        
         Integer pageCount= Integer.parseInt(props.getProperty("pageCount"));
         
         for(int count=1; count<= pageCount;count++ ){
@@ -65,73 +64,29 @@ public class NeustarJSTemplate {
                 
                 // Setting props and building files of KRAD tab
                 props.setProperty("viewId",""+ props.get("view"));                          
-                File f1= new File("Temp" + File.separatorChar + "Env11 Kitchen Sink "+subTitle +" KRAD WebDriver.txt");                   
-                String output1 = FreeMarkerTemplateUtils.processTemplateIntoString(cfg.getTemplate(TMPL_CONTENT), props);
-                FileUtils.writeStringToFile(f1, output1);
-                
+                File f1= new File("Temp" + File.separatorChar + "Env11 Kitchen Sink "+subTitle +" KRAD WebDriver.txt");
+                writeTemplateToFile(f1, cfg.getTemplate(TMPL_CONTENT), props);
+
                 // Setting props and building files of KRAD tab
                 props.setProperty("viewId",""+ props.get("view")+"_KNS");
-                File f2= new File("Temp" + File.separatorChar + "Env11 Kitchen Sink "+subTitle +" KNS WebDriver.txt"); 
-                String output2 = FreeMarkerTemplateUtils.processTemplateIntoString(cfg.getTemplate(TMPL_CONTENT), props);
-                FileUtils.writeStringToFile(f2, output2);
-                
+                File f2= new File("Temp" + File.separatorChar + "Env11 Kitchen Sink "+subTitle +" KNS WebDriver.txt");
+                writeTemplateToFile(f2, cfg.getTemplate(TMPL_CONTENT), props);
+
             } catch( Exception e) {
                 throw new Exception("Unable to generate files for upload", e);
-            }
-            }
-        
-    }
-
-    /**
-     * In case You want to override properties
-     * @param props
-     */
-    private void systemPropertiesOverride(Properties props) {
-        Enumeration<?> names = props.propertyNames();
-        Object nameObject;
-        String name;
-        while (names.hasMoreElements()) {
-            nameObject = names.nextElement();
-            if (nameObject instanceof String) {
-                name = (String)nameObject;
-                props.setProperty(name, System.getProperty("freemarker." + name, props.getProperty(name)));
             }
         }
     }
 
-    /**
-     * Based on load user and groups manual tests; dynamically generates user and group file
-     * and loads into the xml ingester screen
-     *
-     */
     @Test
-    public void testXMLIngesterSuccessfulFileUpload() throws Exception {
+    public void testNeustarTemplating() throws Exception {
         //Configuration Setup
         setUpConfig();
         // update properties with timestamp value if includeDTSinPrefix is true
         Properties props = loadProperties(PROPS_LOCATION, DEFAULT_PROPS_LOCATION);
+        systemPropertiesOverride(props, "NeustarJS");
         //Generate Files
         buildFileList(props);
-    }
-
-    /**
-     * Loads properties from user defined properties file, if not available uses resource file
-     *
-     * @return
-     * @throws IOException
-     */
-    private Properties loadProperties(String fileLocation, String resourceLocation) throws IOException {
-        Properties props = new Properties();
-        InputStream in = null;
-        if(fileLocation != null) {
-            in = new FileInputStream(fileLocation);
-        } else {
-            in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
-        }
-        if(in != null) {
-            props.load(in);
-            in.close();
-        }
-        return props;
+        // TODO gold standard or acceptance testing on generated file.
     }
 }

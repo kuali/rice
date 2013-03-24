@@ -28,7 +28,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @see LoginLogoutSTJUnitBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LoginLogoutAbstractBaseSmokeTest extends WebDriverLegacyITBase implements SeleneseFailable {
+public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase implements SeleneseFailable {
 
     @Override
     public String getTestUrl() {

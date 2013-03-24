@@ -24,7 +24,7 @@ import static org.junit.Assert.fail;
  * @see LoginLogoutSTJUnitBkMrkGen
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LoginLogoutSTJUnitBase extends LoginLogoutAbstractBaseSmokeTest {
+public abstract class LoginLogoutSTJUnitBase extends LoginLogoutAbstractSmokeTestBase {
 
     @Override
     public void seFail(String string) {

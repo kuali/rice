@@ -126,7 +126,26 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      * //input[@name='imageField' and @value='Logout']
      */
     public static final String LOGOUT_XPATH = "//input[@name='imageField' and @value='Logout']";
+
+    /**
+     * iframeportlet
+     */
     public static final String IFRAMEPORTLET_NAME = "iframeportlet";
+
+    /**
+     * Main Menu
+     */
+    public static final String MAIN_MENU_LINK_TEXT = "Main Menu";
+
+    /**
+     * Administration
+     */
+    public static final String ADMINISTRATION_LINK_TEXT = "Administration";
+
+    /**
+     * XML Ingester
+     */
+    public static final String XML_INGESTER_LINK_TEXT = "XML Ingester";
 
     /**
      * For Bookmark tests this is the url under final test.  For nav tests this is from the url navigation will
@@ -719,12 +738,31 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath(LOGOUT_XPATH, failable);
     }
 
-    protected void waitAndClickMainMenu() throws InterruptedException {
-        waitAndClickByLinkText("Main Menu");
+    /**
+     * @link #ADMINISTRATION_LINK_TEXT
+     * @param failable
+     * @throws InterruptedException
+     */
+    protected void waitAndClickAdministration(Failable failable) throws InterruptedException {
+        waitAndClickByLinkText(ADMINISTRATION_LINK_TEXT, failable);
     }
 
+    /**
+     * @link #MAIN_MENU_LINK_TEXT
+     * @param failable
+     * @throws InterruptedException
+     */
     protected void waitAndClickMainMenu(Failable failable) throws InterruptedException {
-        waitAndClickByLinkText("Main Menu", failable);
+        waitAndClickByLinkText(MAIN_MENU_LINK_TEXT, failable);
+    }
+
+    /**
+     * @link #XML_INGESTER_LINK_TEXT
+     * @param failable
+     * @throws InterruptedException
+     */
+    protected void waitAndClickXMLIngester(Failable failable) throws InterruptedException {
+        waitAndClickByLinkText(XML_INGESTER_LINK_TEXT, failable);
     }
 
     protected void waitAndType(By by, String text) throws InterruptedException {

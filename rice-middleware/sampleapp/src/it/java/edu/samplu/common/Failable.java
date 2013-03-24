@@ -16,18 +16,15 @@
 package edu.samplu.common;
 
 /**
- * Possible way to help keep JUnit and NG separate, the idea being that
- * framework specific Failures will be generalized and encapsulated behind
- * the SeleneseFailable
+ * Possible way to help keep JUnit, NG, Se, and SauceLabs failures separate abstracted behind Failable.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface SeleneseFailable {
+public interface Failable {
 
     /**
      * Fail in a framework appropriate way.
-     * @link SelenseFailable#seFail
      * @param string message to display for the failure.
      */
-    void seFail(String string);
+    void fail(String string);
 }

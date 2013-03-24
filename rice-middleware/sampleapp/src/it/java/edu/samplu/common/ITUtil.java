@@ -44,7 +44,7 @@ import static com.thoughtworks.selenium.SeleneseTestBase.fail;
  * TODO:
  * <ol>
  *   <li>Keep JUnit or TestNG dependencies out of in this class.</li>
- *   <li>For methods with the only Selenium method used being fail, create a new SeleneseFailable parameterized version. See failOnMatchedJira</li>
+ *   <li>For methods with the only Selenium method used being fail, create a new Failable parameterized version. See failOnMatchedJira</li>
  *   <li>Move Selenium dependent methods (and any constants they reference) to WebDriverLegacyITBase (i.e. most methods in this class)</li>
  *   <li>Once and Only Once WAIT_DEFAULT_SECONDS and WebDriverLegacyITBase.DEFAULT_WAIT_SEC</li>
  *   <li>Rename to SmokeTestUtil or such</li>
@@ -119,7 +119,7 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void blanketApprove(Selenium selenium) throws InterruptedException {
-        ITUtil.checkForIncidentReport(selenium, "methodToCall.blanketApprove");
+        ITUtil.waitAndCheckForIncidentReport(selenium, "methodToCall.blanketApprove");
         ITUtil.waitAndClick(selenium, "methodToCall.blanketApprove");
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         Thread.sleep(2000);
@@ -141,7 +141,7 @@ public class ITUtil {
                 SeleneseTestBase.fail(errorText);
             }
         }
-        ITUtil.checkForIncidentReport(selenium, "//img[@alt='doc search']");
+        ITUtil.waitAndCheckForIncidentReport(selenium, "//img[@alt='doc search']");
         waitAndClick(selenium, "//img[@alt='doc search']");
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         SeleneseTestBase.assertEquals("Kuali Portal Index", selenium.getTitle());
@@ -372,7 +372,7 @@ public class ITUtil {
         waitForElement(selenium, elementLocator, seconds, message);
         selenium.click(elementLocator);
         Thread.sleep(1000);
-        ITUtil.checkForIncidentReport(selenium, elementLocator, message);
+        ITUtil.waitAndCheckForIncidentReport(selenium, elementLocator, message);
     }
 
     /**
@@ -460,7 +460,7 @@ public class ITUtil {
             try { if (failed || selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        ITUtil.checkForIncidentReport(selenium, elementLocator); // after timeout to be sure page is loaded
+        ITUtil.waitAndCheckForIncidentReport(selenium, elementLocator); // after timeout to be sure page is loaded
         if (failed) fail("timeout of " + seconds + " seconds waiting for " + elementLocator + " " + message);
     }
 
@@ -531,8 +531,8 @@ public class ITUtil {
      * @param selenium
      * @param linkLocator
      */
-    public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
-        checkForIncidentReport(selenium, linkLocator, "");
+    public static void waitAndCheckForIncidentReport(Selenium selenium, String linkLocator) {
+        waitAndCheckForIncidentReport(selenium, linkLocator, "");
     }
 
     /**
@@ -540,7 +540,18 @@ public class ITUtil {
      * @param selenium
      * @param linkLocator used only in the failure message
      */
-    public static void checkForIncidentReport(Selenium selenium, String linkLocator, String message) {
+    public static void waitAndCheckForIncidentReport(Selenium selenium, String linkLocator, Failable failable, String message) {
+        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
+        String contents = selenium.getHtmlSource();
+        checkForIncidentReport(contents, linkLocator, failable, message);
+    }
+
+    /**
+     * Fails if a Incident Report is detected, extracting and reporting the View Id, Document Id, and StackTrace
+     * @param selenium
+     * @param linkLocator used only in the failure message
+     */
+    public static void waitAndCheckForIncidentReport(Selenium selenium, String linkLocator, String message) {
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         String contents = selenium.getHtmlSource();
         checkForIncidentReport(contents, linkLocator, message);
@@ -551,11 +562,7 @@ public class ITUtil {
             return;
         }
 
-        if (contents.contains("Incident Report") &&
-           !contents.contains("portal.do?channelTitle=Incident%20Report") && // Incident Report link on sampleapp KRAD tab
-           !contents.contains("portal.do?channelTitle=Incident Report") &&   // Incident Report link on sampleapp KRAD tab IE8
-           !contents.contains("uitest?viewId=Travel-testView2") &&
-           !contents.contains("SeleniumException")) {                        // selenium timeouts have Incident Report in them
+        if (incidentReported(contents)) {
             try {
                 processIncidentReport(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
@@ -581,12 +588,69 @@ public class ITUtil {
         }
     }
 
+    protected static void checkForIncidentReport(String contents, String linkLocator, Failable failable, String message) {
+        if (contents == null) { //guard clause
+            return;
+        }
+
+        if (incidentReported(contents)) {
+            try {
+                processIncidentReport(contents, linkLocator, failable, message);
+            } catch (IndexOutOfBoundsException e) {
+                failable.fail(
+                        "\nIncident report detected "
+                                + message
+                                + " but there was an exception during processing: "
+                                + e.getMessage()
+                                + "\nStack Trace from processing exception"
+                                + stackTrace(e)
+                                + "\nContents that triggered exception: "
+                                + deLinespace(contents));
+            }
+        }
+
+        if (contents.contains("HTTP Status 404")) {
+            failable.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
+        }
+
+        if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
+            try {
+                processFreemarkerException(contents, linkLocator, failable, message);
+            } catch (IndexOutOfBoundsException e) {
+                failable.fail("\nFreemarker exception detected "
+                        + message
+                        + " but there was an exception during processing: "
+                        + e.getMessage()
+                        + "\nStack Trace from processing exception"
+                        + stackTrace(e)
+                        + "\nContents that triggered exception: "
+                        + deLinespace(contents));
+            }
+
+        }
+    }
+
+    private static boolean incidentReported(String contents) {
+        return contents != null &&
+                contents.contains("Incident Report") &&
+                !contents.contains("portal.do?channelTitle=Incident%20Report") && // Incident Report link on sampleapp KRAD tab
+                !contents.contains("portal.do?channelTitle=Incident Report") &&   // Incident Report link on sampleapp KRAD tab IE8
+                !contents.contains("uitest?viewId=Travel-testView2") &&
+                !contents.contains("SeleniumException"); // selenium timeouts have Incident Report in them
+    }
+
     private static void processFreemarkerException(String contents, String linkLocator, String message) {
         failOnMatchedJira(contents);
-
         String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
-
         SeleneseTestBase.fail("\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: "  + stackTrace.trim());
+    }
+
+    private static void processFreemarkerException(String contents, String linkLocator, Failable failable, String message) {
+        failOnMatchedJira(contents, failable);
+        String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
+        failable.fail(
+                "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + stackTrace
+                        .trim());
     }
 
     private static void processIncidentReport(String contents, String linkLocator, String message) {
@@ -604,7 +668,34 @@ public class ITUtil {
                 contents));
     }
 
+    protected static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
+        failOnMatchedJira(contents, failable);
+
+        if (contents.indexOf("Incident Feedback") > -1) {
+            failWithReportInfo(contents, linkLocator, failable, message);
+        }
+
+        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
+            failWithReportInfoForKim(contents, linkLocator, failable, message);
+        }
+
+        failable.fail("\nIncident report detected "
+                + message
+                + "\n Unable to parse out details for the contents that triggered exception: "
+                + deLinespace(contents));
+    }
+
     private static void failWithReportInfo(String contents, String linkLocator, String message) {
+        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+        SeleneseTestBase.fail(incidentReportInformation);
+    }
+
+    private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
+        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+        failable.fail(incidentReportInformation);
+    }
+
+    private static String extractIncidentReportInfo(String contents, String linkLocator, String message) {
         String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
         String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
         docId = docId.substring(0, docId.indexOf("</span>"));
@@ -621,7 +712,7 @@ public class ITUtil {
         //            System.out.println(docId);
         //            System.out.println(viewId);
         //            System.out.println(stackTrace);
-        SeleneseTestBase.fail("\nIncident report "
+        return "\nIncident report "
                 + message
                 + " navigating to "
                 + linkLocator
@@ -630,10 +721,20 @@ public class ITUtil {
                 + " Doc Id: "
                 + docId.trim()
                 + "\nStackTrace: "
-                + stackTrace.trim());
+                + stackTrace.trim();
     }
 
     private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
+        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
+        SeleneseTestBase.fail(kimIncidentReport);
+    }
+
+    private static void failWithReportInfoForKim(String contents, String linkLocator, Failable failable, String message) {
+        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
+        failable.fail(kimIncidentReport);
+    }
+
+    private static String extractIncidentReportKim(String contents, String linkLocator, String message) {
         String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
         String docIdPre = "type=\"hidden\" value=\"";
         String docId = chunk.substring(chunk.indexOf(docIdPre) + docIdPre.length(), chunk.indexOf("\" name=\"documentId\""));
@@ -642,14 +743,14 @@ public class ITUtil {
         String stackTracePre = "value=\"";
         stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
 
-        SeleneseTestBase.fail("\nIncident report "
+        return "\nIncident report "
                 + message
                 + " navigating to "
                 + linkLocator
                 + " Doc Id: "
                 + docId.trim()
                 + "\nStackTrace: "
-                + stackTrace.trim());
+                + stackTrace.trim();
     }
 
     public static void failOnMatchedJira(String contents) {
@@ -664,19 +765,19 @@ public class ITUtil {
         }
     }
 
-    public static void failOnMatchedJira(String contents, SeleneseFailable failable) {
+    public static void failOnMatchedJira(String contents, Failable failable) {
         Iterator<String> iter = jiraMatches.keySet().iterator();
         String key = null;
 
         while (iter.hasNext()) {
             key = iter.next();
             if (contents.contains(key)) {
-                failable.seFail(JIRA_BROWSE_URL + jiraMatches.get(key));
+                failable.fail(JIRA_BROWSE_URL + jiraMatches.get(key));
             }
         }
     }
 
-    protected static String deLinespace(String contents) {
+    public static String deLinespace(String contents) {
         while (contents.contains("\n\n")) {
             contents = contents.replaceAll("\n\n", "\n");
         }

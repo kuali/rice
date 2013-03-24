@@ -28,7 +28,6 @@ import org.junit.rules.TestName;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -331,6 +330,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         WebDriverUtil.checkForIncidentReport(driver, locator, message);
     }
 
+    protected void checkForIncidentReport(String locator, Failable failable, String message) {
+        WebDriverUtil.checkForIncidentReport(driver, locator, failable, message);
+    }
+
     protected void clearText(By by) throws InterruptedException {
         driver.findElement(by).clear();
     }
@@ -471,16 +474,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         driver.get(url);
     }
 
+    protected void selectFrameIframePortlet() {
+        selectFrame(IFRAMEPORTLET_NAME);
+    }
+
     protected void selectFrame(String locator) {
         
         if (IFRAMEPORTLET_NAME.equals(locator)) {
             gotoNestedFrame();
         } else {
-            try {
-                driver.switchTo().frame(locator);
-            } catch (NoSuchFrameException nsfe) {
-                // don't fail
-            }
+           WebDriverUtil.selectFrameSafe(driver, locator);
         }
     }
 
@@ -634,7 +637,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
     }
 
-    protected void jiraAwareWaitFor(By by, String message, SeleneseFailable failable) throws InterruptedException {
+    protected void jiraAwareWaitFor(By by, String message, Failable failable) throws InterruptedException {
         try {
             WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
         } catch (Throwable t) {
@@ -646,7 +649,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         jiraAwareWaitAndClick(by, "");
     }
 
-    protected void waitAndClick(By by, SeleneseFailable failable) throws InterruptedException {
+    protected void waitAndClick(By by, Failable failable) throws InterruptedException {
         jiraAwareWaitAndClick(by, "", failable);
     }
 
@@ -659,7 +662,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         }
     }
 
-    protected void jiraAwareWaitAndClick(By by, String message, SeleneseFailable failable) throws InterruptedException {
+    protected void jiraAwareWaitAndClick(By by, String message, Failable failable) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message, failable);
             (driver.findElement(by)).click();
@@ -680,8 +683,12 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         jiraAwareWaitAndClick(By.linkText(text), message);
     }
 
-    protected void waitAndClickByLinkText(String text, SeleneseFailable failable) throws InterruptedException {
+    protected void waitAndClickByLinkText(String text, Failable failable) throws InterruptedException {
         jiraAwareWaitAndClick(By.linkText(text), "", failable);
+    }
+
+    protected void waitAndClickByLinkText(String text, String message, Failable failable) throws InterruptedException {
+        jiraAwareWaitAndClick(By.linkText(text), message, failable);
     }
 
     protected void waitAndClickByName(String name) throws InterruptedException {
@@ -692,7 +699,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClick(By.xpath(xpath));
     }
 
-    protected void waitAndClickByXpath(String xpath, SeleneseFailable failable) throws InterruptedException {
+    protected void waitAndClickByXpath(String xpath, Failable failable) throws InterruptedException {
         waitAndClick(By.xpath(xpath), failable);
     }
 
@@ -708,7 +715,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
          waitAndClickByXpath(LOGOUT_XPATH);
     }
 
-    protected void waitAndClickLogout(SeleneseFailable failable) throws InterruptedException {
+    protected void waitAndClickLogout(Failable failable) throws InterruptedException {
         waitAndClickByXpath(LOGOUT_XPATH, failable);
     }
 
@@ -716,7 +723,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByLinkText("Main Menu");
     }
 
-    protected void waitAndClickMainMenu(SeleneseFailable failable) throws InterruptedException {
+    protected void waitAndClickMainMenu(Failable failable) throws InterruptedException {
         waitAndClickByLinkText("Main Menu", failable);
     }
 

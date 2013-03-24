@@ -15,20 +15,20 @@
  */
 package edu.samplu.mainmenu.test;
 
+import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.SeleneseFailable;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * Abstract base class for LoginLogout Smoke Tests.  Framework specific classes should not be depended upon in this
- * class but abstracted behind {@link SeleneseFailable}.
+ * class but abstracted behind {@link edu.samplu.common.Failable}.
  *
- * @see SeleneseFailable
+ * @see edu.samplu.common.Failable
  * @see LoginLogoutSTNGBase
  * @see LoginLogoutSTJUnitBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase implements SeleneseFailable {
+public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase implements Failable {
 
     @Override
     public String getTestUrl() {
@@ -43,15 +43,15 @@ public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyIT
     /**
      * Navigate to the page under test and call {@link #testLogout}
      *
-     * @param failable {@link SeleneseFailable}
+     * @param failable {@link edu.samplu.common.Failable}
      * @throws Exception
      */
-    public void testNavLogout(SeleneseFailable failable) throws Exception {
+    public void testNavLogout(Failable failable) throws Exception {
         navigate(failable);
         testLogout(failable);
     }
 
-    private void navigate(SeleneseFailable failable) throws InterruptedException {
+    private void navigate(Failable failable) throws InterruptedException {
         waitAndClickMainMenu(failable);
         waitForPageToLoad();
     }
@@ -59,10 +59,10 @@ public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyIT
     /**
      * Test Logout on the current page.  Sets the passed flag (used with SauceLabs, reporting, etc.) as appropriate.
      *
-     * @param failable {@link SeleneseFailable}
+     * @param failable {@link edu.samplu.common.Failable}
      * @throws Exception
      */
-    public void testLogout(SeleneseFailable failable) throws Exception {
+    public void testLogout(Failable failable) throws Exception {
         waitAndClickLogout(failable);
         passed();
     }

@@ -15,6 +15,8 @@
  */
 package edu.samplu.mainmenu.test;
 
+import org.testng.AssertJUnit;
+
 import static org.testng.AssertJUnit.fail;
 
 /**
@@ -27,7 +29,7 @@ import static org.testng.AssertJUnit.fail;
 public abstract class LoginLogoutSTNGBase extends LoginLogoutAbstractSmokeTestBase {
 
     @Override
-    public void seFail(String string) {
-        fail(string);
+    public void fail(String string) {
+        AssertJUnit.fail(string);
     }
 }

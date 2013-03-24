@@ -18,6 +18,7 @@ package edu.samplu.common;
 
 import org.junit.rules.TestName;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 
@@ -126,6 +127,17 @@ public class WebDriverUtil {
         ITUtil.checkForIncidentReport(driver.getPageSource(), locator, message);
     }
 
+    /***
+     * @link ITUtil#checkForIncidentReport
+     * @param driver
+     * @param locator
+     * @param message
+     */
+    public static void checkForIncidentReport(WebDriver driver, String locator, Failable failable,
+            String message) {
+        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
+    }
+
     /**
      * @link http://code.google.com/p/chromedriver/downloads/list
      * @link #REMOTE_PUBLIC_CHROME
@@ -155,6 +167,15 @@ public class WebDriverUtil {
         return null;
     }
 
+    protected static void selectFrameSafe(WebDriver driver, String locator) {
+        try {
+            driver.switchTo().frame(locator);
+        } catch (NoSuchFrameException nsfe) {
+            // don't fail
+        }
+    }
+
+
     /**
      * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the
      * by cannot be found.  No action is performed on the by, so it is possible that the by found is not visible or enabled.
@@ -171,5 +192,4 @@ public class WebDriverUtil {
         driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visiable or enabled.
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
-
 }

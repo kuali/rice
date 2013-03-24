@@ -52,6 +52,9 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 	protected String roleId;
 	@Column(name="RSP_ID")
 	protected String responsibilityId;
+	// temporary default value in lieu of optimistic locking
+	@Column(name="VER_NBR")
+	protected Long versionNumber = (long) 0;
 	@Transient
 	protected ResponsibilityBo kimResponsibility;
 	@Transient

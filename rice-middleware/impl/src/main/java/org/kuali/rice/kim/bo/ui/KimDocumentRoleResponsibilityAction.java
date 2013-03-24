@@ -64,6 +64,9 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	protected Integer priorityNumber;
 	@Column(name="FRC_ACTN")
 	protected boolean forceAction;
+	// temporary default value in lieu of optimistic locking
+	@Column(name="VER_NBR")
+	protected Long versionNumber = (long) 0;
 	@Transient
 	protected ResponsibilityBo kimResponsibility;
 	@Transient

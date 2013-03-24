@@ -33,36 +33,38 @@
             </mediaobject>
         </figure></para>
         <para/>
-        <table frame="border">
-            <caption>Address Type Lookup results definition</caption>
-            <col width="50%"/>
-            <col width="50%"/>
+        <table frame="none" tabstyle="striped">
+            <title>Address Type Lookup results definition</title>
+            <tgroup cols="2">
+                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c2" colnum="2" colwidth="6.14*"/>
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                </tr>
+                <row>
+                    <entry>Title</entry>
+                    <entry>Description</entry>
+                </row>
             </thead>
             <tbody>
-                <tr>
-                    <td>Address Type Code </td>
-                    <td>Display-only. The unique code for this type of address.</td>
-                </tr>
-                <tr>
-                    <td>Address Type Name </td>
-                    <td>Display-only. The familiar title of this address type.</td>
-                </tr>
-                <tr>
-                    <td>Display Sort Code</td>
-                    <td>Display-only. An alphabetical character used to determine the order in which address types are displayed in the dropdown list on the Person document.</td>
-                </tr>
-                <tr>
-                    <td>Active Indicator</td>
-                    <td>Display-only. Indicates whether this address type is active (in which case
+                <row>
+                    <entry>Address Type Code </entry>
+                    <entry>Display-only. The unique code for this type of address.</entry>
+                </row>
+                <row>
+                    <entry>Address Type Name </entry>
+                    <entry>Display-only. The familiar title of this address type.</entry>
+                </row>
+                <row>
+                    <entry>Display Sort Code</entry>
+                    <entry>Display-only. An alphabetical character used to determine the order in which address types are displayed in the dropdown list on the Person document.</entry>
+                </row>
+                <row>
+                    <entry>Active Indicator</entry>
+                    <entry>Display-only. Indicates whether this address type is active (in which case
                         the system displays it in the <emphasis role="bold">Address Type</emphasis>
-                        dropdown list on the Person document). </td>
-                </tr>
+                        dropdown list on the Person document). </entry>
+                </row>
             </tbody>
+            </tgroup>
         </table>
     </section>
 </chapter>

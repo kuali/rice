@@ -7260,7 +7260,7 @@ EDL EDoclite Example
                     background process extracts the custom search attributes from the document and
                     adds them to a database table where they can be queried as part of a custom
                     document search. These custom search attributes are defined and associated along
-                    with document types in WorflowData XML files, and are added to Rice via the XML
+                    with document types in WorkflowData XML files, and are added to Rice via the XML
                     ingester. They are defined within (using XPath notation)
                     /data/ruleAttributes/ruleAttribute tags, and are associated with specific
                     document types within /data/documentTypes/documentType/attributes/attribute

@@ -43,43 +43,45 @@
             display-only set of fields on the left and editable fields on the right in which the
             user may enter changes.</para>
         <para>
-            <table frame="border">
-                <caption>Edit Postal Codes tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Postal Codes tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Country Code </td>
-                        <td>The country code for the country associated with the zip (postal) code. </td>
-                    </tr>
-                    <tr>
-                        <td>Postal Code </td>
-                        <td>Identifies a Postal Service code.</td>
-                    </tr>
-                    <tr>
-                        <td>State</td>
-                        <td>Required. The state associated with the zip (postal) code.</td>
-                    </tr>
-                    <tr>
-                        <td>County Code </td>
-                        <td>The unique identifying code for the county associated with the zip (postal) code.</td>
-                    </tr>
-                    <tr>
-                        <td>City Name </td>
-                        <td>Required. The name of the city associated with the zip (postal) code.</td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td>Indicates whether the postal code is active or inactive. Remove the
-                            check mark to deactivate this postal code.</td>
-                    </tr>
+                    <row>
+                        <entry>Country Code </entry>
+                        <entry>The country code for the country associated with the zip (postal) code. </entry>
+                    </row>
+                    <row>
+                        <entry>Postal Code </entry>
+                        <entry>Identifies a Postal Service code.</entry>
+                    </row>
+                    <row>
+                        <entry>State</entry>
+                        <entry>Required. The state associated with the zip (postal) code.</entry>
+                    </row>
+                    <row>
+                        <entry>County Code </entry>
+                        <entry>The unique identifying code for the county associated with the zip (postal) code.</entry>
+                    </row>
+                    <row>
+                        <entry>City Name </entry>
+                        <entry>Required. The name of the city associated with the zip (postal) code.</entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry>Indicates whether the postal code is active or inactive. Remove the
+                            check mark to deactivate this postal code.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

@@ -42,37 +42,39 @@
             display-only set of fields on the left and editable fields on the right in which the
             user may enter changes.</para>
         <para>
-            <table frame="border">
-                <caption>Edit States tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit States tab definition</title>
+                <tgroup cols="2">
+                <colspec colwidth="1.0*"/>
+                <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Country Code</td>
-                        <td>A unique identifying code assigned to the country of which this state is
-                            a part.</td>
-                    </tr>
-                    <tr>
-                        <td>State Abbreviation</td>
-                        <td>The state abbreviation.</td>
-                    </tr>
-                    <tr>
-                        <td>State Name </td>
-                        <td>Required. The full name of the state associated with the state
-                            abbreviation.</td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td>Indicates whether the state code is active or inactive. Remove the check
-                            mark to deactivate the state code.</td>
-                    </tr>
+                    <row>
+                        <entry>Country Code</entry>
+                        <entry>A unique identifying code assigned to the country of which this state is
+                            a part.</entry>
+                    </row>
+                    <row>
+                        <entry>State Abbreviation</entry>
+                        <entry>The state abbreviation.</entry>
+                    </row>
+                    <row>
+                        <entry>State Name </entry>
+                        <entry>Required. The full name of the state associated with the state
+                            abbreviation.</entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry>Indicates whether the state code is active or inactive. Remove the check
+                            mark to deactivate the state code.</entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

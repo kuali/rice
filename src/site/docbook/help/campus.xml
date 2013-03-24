@@ -40,40 +40,42 @@
             display-only set of fields on the left and editable fields on the right in which the
             user may enter changes.</para>
         <para>
-            <table frame="void">
-                <caption>Edit Campus tab definition</caption>
-                <col width="50%"/>
-                <col width="50%"/>
+            <table frame="none" tabstyle="striped">
+                <title>Edit Campus tab definition</title>
+                <tgroup cols="2">
+                    <colspec colwidth="1.0*"/>
+                    <colspec colwidth="1.0*"/>
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>Description</entry>
+                    </row>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Campus Code </td>
-                        <td>Required. The unique identifying code assigned to a campus.</td>
-                    </tr>
-                    <tr>
-                        <td>Campus Name </td>
-                        <td>Required. The familiar name for a specific university campus.</td>
-                    </tr>
-                    <tr>
-                        <td>Campus Short Name</td>
-                        <td>Required. An abbreviated name for a specific campus; used in reports in
-                            which space is limited.</td>
-                    </tr>
-                    <tr>
-                        <td>Campus Type Code</td>
-                        <td><para>Required. Indicates the type of campus. Valid values are:</para>
-                            <para>B - Both</para><para>F - Fiscal</para><para>P - Physical</para></td>
-                    </tr>
-                    <tr>
-                        <td>Active Indicator</td>
-                        <td><para>Check box for showing the Campus as an active one for use.</para></td>
-                    </tr>
+                    <row>
+                        <entry>Campus Code </entry>
+                        <entry>Required. The unique identifying code assigned to a campus.</entry>
+                    </row>
+                    <row>
+                        <entry>Campus Name </entry>
+                        <entry>Required. The familiar name for a specific university campus.</entry>
+                    </row>
+                    <row>
+                        <entry>Campus Short Name</entry>
+                        <entry>Required. An abbreviated name for a specific campus; used in reports in
+                            which space is limited.</entry>
+                    </row>
+                    <row>
+                        <entry>Campus Type Code</entry>
+                        <entry><para>Required. Indicates the type of campus. Valid values are:</para>
+                            <para>B - Both</para><para>F - Fiscal</para><para>P - Physical</para></entry>
+                    </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        <entry><para>Check box for showing the Campus as an active one for use.</para></entry>
+                    </row>
                 </tbody>
+                </tgroup>
             </table>
         </para>
     </section>

@@ -15,8 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -30,11 +28,6 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentWDIT extends WebDriverLegacyITBase {
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
     String docId;
     String componentName;
     String componentCode;
@@ -52,15 +45,15 @@ public class ComponentWDIT extends WebDriverLegacyITBase {
     public void testComponentParameter() throws Exception {
 
         // Create New
-        selectFrame("iframeportlet");
-//        super.waitAndCreateNew();
-        waitAndClickByXpath("//img[@alt='create new']"); 
+        selectFrameIframePortlet();
+        super.waitAndCreateNew();
+//        waitAndClickByXpath("//img[@alt='create new']");
         List<String> params;
         params=super.testCreateNewComponent(docId, componentName,componentCode);
        
         //Lookup
         super.open(ITUtil.getBaseUrlString()+TEST_URL);
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         params=super.testLookUpComponent(params.get(0), params.get(1),params.get(2));
    
         //edit
@@ -68,7 +61,7 @@ public class ComponentWDIT extends WebDriverLegacyITBase {
         
         //Verify if its edited
         super.open(ITUtil.getBaseUrlString()+TEST_URL);
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         params=super.testVerifyEditedComponent(params.get(0), params.get(1),params.get(2));
   
         //copy
@@ -76,9 +69,7 @@ public class ComponentWDIT extends WebDriverLegacyITBase {
         
         //Verify if its copied
         super.open(ITUtil.getBaseUrlString()+TEST_URL);
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         super.testVerifyCopyComponent(params.get(0), params.get(1),params.get(2));
-      
     }
-
 }

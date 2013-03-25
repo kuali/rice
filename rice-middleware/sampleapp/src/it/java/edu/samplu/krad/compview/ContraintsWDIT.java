@@ -18,7 +18,6 @@ package edu.samplu.krad.compview;
 
 import edu.samplu.common.WebDriverLegacyITBase;
 
-import junit.framework.Assert;
 import org.junit.Test;
 
 /**

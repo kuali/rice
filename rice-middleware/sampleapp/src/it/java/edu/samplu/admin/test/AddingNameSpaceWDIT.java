@@ -15,13 +15,10 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * tests adding a namespace to Rice.
@@ -29,17 +26,15 @@ import org.openqa.selenium.By;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AddingNameSpaceWDIT extends WebDriverLegacyITBase {
- public static final String TEST_URL =ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ITUtil.getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
+    public static final String TEST_URL =ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ITUtil.getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
  
     @Override
     public String getTestUrl(){
         return TEST_URL;
     }
+
     @Test
     public void testAddingNamespace() throws Exception {
-        
       super.testAddingNamespace();
-        
     }
-       
 }

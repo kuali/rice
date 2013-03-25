@@ -15,13 +15,9 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
 import org.junit.Test;
-
-import edu.samplu.common.ITUtil;
 
 /**
  * tests the Component section in Rice.
@@ -29,11 +25,6 @@ import edu.samplu.common.ITUtil;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentNavIT extends AdminMenuNavITBase {
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
     String docId;
     String componentName;
     String componentCode;
@@ -53,7 +44,7 @@ public class ComponentNavIT extends AdminMenuNavITBase {
     
         //Lookup
         super.gotoMenuLinkLocator();
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         params=super.testLookUpComponent(params.get(0), params.get(1),params.get(2));
 
         //edit
@@ -69,7 +60,5 @@ public class ComponentNavIT extends AdminMenuNavITBase {
         //Verify if its copied
         super.gotoMenuLinkLocator();
         super.testVerifyCopyComponent(params.get(0), params.get(1), params.get(2));
-
     }
-
 }

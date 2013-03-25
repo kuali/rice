@@ -15,13 +15,7 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * tests adding a namespace to Rice.
@@ -29,11 +23,7 @@ import org.openqa.selenium.By;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AddingNameSpaceNavIT extends AdminMenuNavITBase {
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
+
     @Override
     protected String getLinkLocator() {
         return "Namespace";
@@ -41,10 +31,7 @@ public class AddingNameSpaceNavIT extends AdminMenuNavITBase {
 
     @Test
     public void testAddingNamespace() throws Exception {
-
         gotoMenuLinkLocator();
         super.testAddingNamespace();
-       
     }
-
 }

@@ -55,7 +55,7 @@ DECLARE
          WHERE
             table_name like 'ACC%T' OR
             table_name like 'BK%T' OR
-            table_name like 'TR%T' OR
+            table_name like 'TR%T'
          ORDER BY table_name;
 BEGIN
    FOR r IN tables_cursor LOOP
@@ -72,7 +72,7 @@ DECLARE
          WHERE
             sequence_name like 'ACC%S' OR
             sequence_name like 'BK%S' OR
-            sequence_name like 'TR%S' OR
+            sequence_name like 'TR%S'
          ORDER BY sequence_name;
 BEGIN
    FOR r IN sequences_cursor LOOP

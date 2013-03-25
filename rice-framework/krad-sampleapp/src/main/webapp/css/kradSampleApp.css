@@ -56,7 +56,7 @@
 }
 
 .demo-sampleAppHome-splashWrapper {
-    background-image: url("../../images/krad/back-splash.png");
+    background-image: url("../images/back-splash.png");
     color: #FFFFFF;
 }
 
@@ -107,7 +107,7 @@
 }
 
 .demo-mainGraphic {
-    background-image: url("../../images/krad/splashGraphic1.png");
+    background-image: url("../images/splashGraphic1.png");
     height: 299px;
     margin-left: 465px;
     margin-top: -105px;
@@ -145,31 +145,31 @@
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point2 .uif-instructionalMessage {
-    background-image: url("../../images/krad/sellingPoints-image1.png");
+    background-image: url("../images/sellingPoints-image1.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point1 .uif-instructionalMessage {
-    background-image: url("../../images/krad/sellingPoints-image2.png");
+    background-image: url("../images/sellingPoints-image2.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point4 .uif-instructionalMessage {
-    background-image: url("../../images/krad/sellingPoints-image3.png");
+    background-image: url("../images/sellingPoints-image3.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point3 .uif-instructionalMessage {
-    background-image: url("../../images/krad/sellingPoints-image4.png");
+    background-image: url("../images/sellingPoints-image4.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point6 .uif-instructionalMessage {
-    background-image: url("../../images/krad/sellingPoints-image5.png");
+    background-image: url("../images/sellingPoints-image5.png");
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point5 .uif-instructionalMessage {
-    background-image: url("../../images/krad/sellingPoints-image6.png");
+    background-image: url("../images/sellingPoints-image6.png");
 }
 
 .demo-sampleAppHome-testimonialsWrapper {
-    background-image: url(../../images/krad/sectionShadow.png);
+    background-image: url(../images/sectionShadow.png);
     background-repeat: no-repeat;
     background-position: center top;
     background-color: #F6F6F6;
@@ -226,7 +226,7 @@
 }
 
 .demo-componentLibHome .demo-sampleAppPage h3 {
-    background-image: url("../../images/krad/sprite-navIcons.png");
+    background-image: url("../images/sprite-navIcons.png");
     background-position: left top;
     background-repeat: no-repeat, no-repeat;
     background-color: transparent;
@@ -312,7 +312,7 @@
     padding-top: 2px;
     margin-top: 0;
     background-color: transparent !important;
-    background-image: url("../../images/krad/widgetNavDivider.png");
+    background-image: url("../images/widgetNavDivider.png");
     background-position: 12px 0;
     background-repeat: no-repeat;
     margin-left: -14px;
@@ -323,14 +323,14 @@
 }
 
 #ComponentLibrary-TabGroup_tabList li:last-child{
-    background-image: url("../../images/krad/widgetNavDivider.png"), url("../../images/krad/widgetNavDivider.png");
+    background-image: url("../images/widgetNavDivider.png"), url("../images/widgetNavDivider.png");
     background-position: 12px 0, 12px bottom;
     background-repeat: no-repeat, no-repeat;
 }
 
 #ComponentLibrary-TabGroup_tabList li.ui-state-active {
     background-color: #FFFFFF;
-    background-image: url("../../images/krad/widgetNavBorder.png"), url("../../images/krad/widgetNavBorder.png"), url("../../images/krad/widgetNavCorner.png");
+    background-image: url("../images/widgetNavBorder.png"), url("../images/widgetNavBorder.png"), url("../images/widgetNavCorner.png");
     background-position: 1px top, -2px bottom, left center;
     background-repeat: no-repeat, no-repeat, no-repeat;
     border-style: none;
@@ -422,7 +422,7 @@
     float: left;
     margin-left: 20px;
     width: 220px;
-    background-image: url("../../images/krad/navShadow.png");
+    background-image: url("../images/navShadow.png");
     background-position: right top;
     background-repeat: no-repeat;
     min-height: 500px;
@@ -435,7 +435,7 @@
 
 .demo-componentLibNav .ui-accordion-header {
 
-    background-image: url("../../images/krad/sprite-navIcons.png"), url("../../images/krad/navDivider.png");
+    background-image: url("../images/sprite-navIcons.png"), url("../images/navDivider.png");
     background-position: left top;
     background-repeat: no-repeat, no-repeat;
     background-color: transparent;
@@ -520,14 +520,14 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 }
 
 .demo-componentLibNav-subList > ul {
-    background-image: url("../../images/krad/navDivider.png");
+    background-image: url("../images/navDivider.png");
     background-position: center top;
     background-repeat: no-repeat;
     margin: 0;
 }
 
 .demo-componentLibNav-subList > ul > li {
-    list-style-image: url("../../images/krad/navBullet.png");
+    list-style-image: url("../images/navBullet.png");
     list-style-type: none;
     margin-left: 36px;
     padding-bottom: 2px;
@@ -570,11 +570,11 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 }
 
 .demo-detailsGroup h3 img.uif-disclosure-image[alt="collapse"] {
-    background: url("../../images/krad/collapse-black.png") no-repeat scroll 0 0 transparent;
+    background: url("../images/collapse-black.png") no-repeat scroll 0 0 transparent;
 }
 
 .demo-detailsGroup h3 img.uif-disclosure-image[alt="expand"] {
-    background: url("../../images/krad/expand-black.png") no-repeat scroll 0 0 transparent;
+    background: url("../images/expand-black.png") no-repeat scroll 0 0 transparent;
 }
 
 /**** All tab styles are done with important because difficulty to override from themes ***/
@@ -707,7 +707,7 @@ a.demo-documentationLink {
 .demo-brandLogo {
     width: 170px;
     height: 69px;
-    background-image: url(../../images/krad/logo.png);
+    background-image: url(../images/logo.png);
     position: absolute;
     top: 0px;
 }
@@ -759,7 +759,7 @@ a.demo-documentationLink {
 }
 
 .demo-appFooter .demo-foundationInfo {
-    background-image: url("../../images/krad/logo-kuali.png");
+    background-image: url("../images/logo-kuali.png");
     background-position: 0 14px;
     background-repeat: no-repeat;
     padding-bottom: 22px;
@@ -809,7 +809,7 @@ a.demo-documentationLink {
 }
 
 .demo-thirdTier .demo-contactInfo ul li a {
-    background-image: url("../../images/krad/sprite-stayInTouch.png");
+    background-image: url("../images/sprite-stayInTouch.png");
     background-position: left top;
     background-repeat: no-repeat;
     padding-left: 22px;
@@ -924,20 +924,20 @@ a.demo-documentationLink {
     margin-bottom: 0;
 }
 
-div#KradSampleAppDemo-Row1-Demo1 {
-    background-image: url("../../images/krad/demo-inquiry.png");
+.demo-demoGroup[data-type="inquiry"] {
+    background-image: url("../images/demo-inquiry.png");
 }
 
-div#KradSampleAppDemo-Row1-Demo2 {
-    background-image: url("../../images/krad/demo-new.png");
+.demo-demoGroup[data-type="maintenanceNew"] {
+    background-image: url("../images/demo-new.png");
 }
 
-div#KradSampleAppDemo-Row1-Demo3 {
-    background-image: url("../../images/krad/demo-edit.png");
+.demo-demoGroup[data-type="maintenanceEdit"] {
+    background-image: url("../images/demo-edit.png");
 }
 
-div#KradSampleAppDemo-Row2-Demo1, div#KradSampleAppDemo-Row2-Demo2, div#KradSampleAppDemo-Row2-Demo3 {
-    background-image: url("../../images/krad/demo-lookup.png");
+.demo-demoGroup[data-type="lookup"] {
+    background-image: url("../images/demo-lookup.png");
 }
 
 /* example specific css */

@@ -257,6 +257,8 @@
                 <exclude>src/site/docbook/**</exclude>
                 <exclude>**/src/it/**</exclude>
                 <exclude>web/src/main/webapp/krad/plugins</exclude>
+                <exclude>rice-framework/config/ide/**</exclude>
+                <exclude>rice-middleware/config/ide/**</exclude>
 
                 <!-- File excludes -->
                 <exclude>LICENSE.txt</exclude>

@@ -35,24 +35,5 @@
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=RichMessagesView_KNS&methodToCall=start"/>Rich Messages</a></li>
      <%--<li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/collegeapp?viewId=Training-CollegeApplicationView_KNS&methodToCall=start"/>Training - Student College Application</a></li>--%>
    </ul>
-
-  <strong>Lookup Samples</strong>
-  <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Lookup Sample"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Lookup sample with specified results limit"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Lookup sample with multiple value specified in URL"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Lookup sample with multiple value specified in URL, call search"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=search&viewId=LookupSampleViewResultsLimit&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Lookup sample with multiple value specified in view"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewAlwaysMultipleValuesSelect&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Lookup sample with multiple value limit found on the parent view"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewUseResultsLimitOnParent&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Lookup sample with headings"
-          url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewHeadings&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
- </ul>
-
 </div>
 <channel:portalChannelBottom />

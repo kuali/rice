@@ -60,9 +60,10 @@
         <value>classpath:org/kuali/rice/krad/demo/travel/authorization/datadictionary/TravelerDetail.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/authorization/datadictionary/PrimaryDestination.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/authorization/PrimaryDestinationLookup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/DemoLookupViews.xml</value>
 
         <!-- KRAD sample app - component library -->
-        <value>classpath:org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/components/KradSampleAppDemo.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoInputField.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextAreaControl.xml</value>
@@ -140,7 +141,7 @@
     </property>
     <property name="resourceBundleNames">
       <list>
-        <value>org.kuali.rice.krad.demo.uif.components.resources.KradSampleAppResources</value>
+        <value>org.kuali.rice.krad.demo.uif.components.resources.KradSampleAppDemoResources</value>
         <value>org.kuali.rice.krad.devtools.documentation.PropertiesDescription</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageFieldResources</value>

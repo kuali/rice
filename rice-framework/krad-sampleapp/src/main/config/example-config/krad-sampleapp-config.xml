@@ -1,0 +1,25 @@
+<config>
+
+  <param name="kr.incident.mailing.list"></param>
+
+  <param name="datasource.username">FILL</param>
+  <param name="datasource.password">FILL</param>
+  <param name="datasource.url">jdbc:mysql://localhost:3306/FILL</param>
+  <param name="datasource.ojb.platform">MySQL</param>
+  <param name="datasource.platform">org.kuali.rice.core.framework.persistence.platform.MySQLDatabasePlatform</param>
+  <param name="datasource.driver.name">com.mysql.jdbc.Driver</param>
+
+  <param name="keystore.alias">rice</param>
+  <param name="keystore.file">security/rice.keystore</param>
+  <param name="keystore.password">r1c3pw</param>
+
+  <param name="dev.mode">true</param>
+  <param name="enable.nonproduction.data.unmasking">true</param>
+  <param name="portal.show.sample.app">true</param>
+
+  <param name="mail.relay.server">localhost</param>
+  <param name="mailing.list.batch">mailing.list.batch</param>
+  <param name="encryption.key">7IC64w6ksLU</param>
+
+  <!--param name="rice.kr.additionalSpringFiles">classpath:org/kuali/rice/devtools/krad/datadictionary/ReloadingDataDictionarySpringBeans.xml</param-->
+</config>

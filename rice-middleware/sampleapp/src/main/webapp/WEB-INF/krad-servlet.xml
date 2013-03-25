@@ -33,4 +33,13 @@
 
   <import resource="krad-base-servlet.xml"/>
 
+  <context:component-scan base-package="edu.sampleu.travel.krad"/>
+  <context:component-scan base-package="edu.sampleu.kew.krad"/>
+  <context:component-scan base-package="edu.sampleu.demo.course"/>
+  <context:component-scan base-package="edu.sampleu.demo.registration"/>
+  <context:component-scan base-package="edu.sampleu.demo.kitchensink"/>
+  <context:component-scan base-package="org.kuali.rice.krms"/>
+  <context:component-scan base-package="org.kuali.rice.core.web"/>
+  <context:component-scan base-package="org.kuali.rice.kew.impl.peopleflow"/>
+
 </beans>

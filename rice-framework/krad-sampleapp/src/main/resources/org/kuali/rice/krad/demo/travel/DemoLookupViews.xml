@@ -27,7 +27,7 @@
     </property>
     <property name="viewName" value="LookupSampleView"/>
     <property name="headerText" value="Lookup Sample"/>
-    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>

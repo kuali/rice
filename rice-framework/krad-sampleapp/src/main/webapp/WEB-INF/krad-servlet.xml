@@ -33,4 +33,6 @@
 
   <import resource="krad-base-servlet.xml"/>
 
+  <context:component-scan base-package="org.kuali.rice.krad.demo.uif.controller"/>
+
 </beans>

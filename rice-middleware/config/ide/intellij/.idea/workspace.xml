@@ -1,159 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    Copyright 2005-2013 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="d37b07b2-fb77-46e3-ae35-c435a56398ec" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/krad/dao" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service/impl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/krad/dao/impl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/.classpath" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/.project" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../kew/framework/src/main/java/org/kuali/rice/kew/framework/document/security/AuthorizableAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../kew/framework/src/main/java/org/kuali/rice/kew/framework/document/security/Authorization.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/DocumentActionsPermissionBase.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../kew/framework/src/main/java/org/kuali/rice/kew/framework/document/security/DocumentTypeAuthorizer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceAuthorizerImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceCustomizationTest.groovy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceDelegationTest.groovy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/KimDocumentTypeAuthorizer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/krad/dao/impl/LookupDaoJpaTest.groovy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/krad/dao/impl/LookupDaoOjbTest.groovy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/service/impl/TestDocumentTypeAuthorizer.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl" afterPath="$PROJECT_DIR$/../../../impl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew" afterPath="$PROJECT_DIR$/../../../kew" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim" afterPath="$PROJECT_DIR$/../../../kim" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krms/api/src/main/java/org/kuali/rice/krms/api/repository/language" afterPath="$PROJECT_DIR$/../../../krms/api/src/main/java/org/kuali/rice/krms/api/repository/language" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../krms/api/src/main/java/org/kuali/rice/krms/api/repository/reference" afterPath="$PROJECT_DIR$/../../../krms/api/src/main/java/org/kuali/rice/krms/api/repository/reference" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/.classpath" afterPath="$PROJECT_DIR$/../../../kew/impl/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/.project" afterPath="$PROJECT_DIR$/../../../kew/impl/.project" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionlist/web/ActionListAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionlist/web/ActionListAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionrequest/service/impl/ActionRequestServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionrequest/service/impl/ActionRequestServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionrequest/ActionRequestValue.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actionrequest/ActionRequestValue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/action/ActionType.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/action/ActionType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/AdHocAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/AdHocAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/ApplicationResources.properties" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/ApplicationResources.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/ApplicationResources.properties" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/ApplicationResources.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/BSFRuleExpression.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/BSFRuleExpression.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/BaseSendNotificationController.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/BaseSendNotificationController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/BlanketApproveAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/BlanketApproveAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/engine/node/dao/impl/BranchDAOJpaImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/engine/node/dao/impl/BranchDAOJpaImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/engine/node/dao/impl/BranchDAOOjbImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/engine/node/dao/impl/BranchDAOOjbImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/CancelAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/CancelAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/mail/service/impl/CustomizableActionListEmailServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/mail/service/impl/CustomizableActionListEmailServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kns/web/struts/form/DisplayInactivationBlockersForm.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kns/web/struts/form/DisplayInactivationBlockersForm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/documentoperation/web/DocumentOperationAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/documentoperation/web/DocumentOperationAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/documentoperation/web/DocumentOperationForm.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/documentoperation/web/DocumentOperationForm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/DocumentRouteHeaderDAO.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/DocumentRouteHeaderDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/impl/DocumentRouteHeaderDAOJpaImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/impl/DocumentRouteHeaderDAOJpaImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/impl/DocumentRouteHeaderDAOOjbImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/dao/impl/DocumentRouteHeaderDAOOjbImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/DocumentRouteHeaderValue.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/DocumentRouteHeaderValue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaBoLookupableHelperService.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaBoLookupableHelperService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/DocumentSearchCriteriaProcessorKEWAdapter.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/DocumentSearchCriteriaProcessorKEWAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaTranslatorImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaTranslatorImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/dao/DocumentSearchDAO.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/dao/DocumentSearchDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/dao/impl/DocumentSearchDAOJdbcImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/dao/impl/DocumentSearchDAOJdbcImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/service/DocumentSearchService.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/service/DocumentSearchService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/service/impl/DocumentSearchServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/docsearch/service/impl/DocumentSearchServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/document/DocumentStatus.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/document/DocumentStatus.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/bo/DocumentType.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/bo/DocumentType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/DocumentType.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/DocumentType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/schema/DocumentType.xsd" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/schema/DocumentType.xsd" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/bo/DocumentTypeBoTest.groovy" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kew/doctype/bo/DocumentTypeBoTest.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/DocumentTypeContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/DocumentTypeContract.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/DocumentTypePermissionService.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/DocumentTypePermissionService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/doctype/service/impl/DocumentTypePermissionServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/test/groovy/org/kuali/rice/kew/api/doctype/DocumentTypeTest.groovy" afterPath="$PROJECT_DIR$/../../../kew/api/src/test/groovy/org/kuali/rice/kew/api/doctype/DocumentTypeTest.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/xml/export/DocumentTypeXmlExporter.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/xml/export/DocumentTypeXmlExporter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/xml/DocumentTypeXmlParser.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/xml/DocumentTypeXmlParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/identity/external/EntityExternalIdentifierBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/identity/external/EntityExternalIdentifierBo.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/messaging/exceptionhandling/ExceptionRoutingServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/messaging/exceptionhandling/ExceptionRoutingServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/permission/GenericPermissionBo.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/permission/GenericPermissionBo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/document/rule/GenericPermissionMaintenanceDocumentRule.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/document/rule/GenericPermissionMaintenanceDocumentRule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/group/Group.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/group/Group.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/group/GroupBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/group/GroupBo.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/GroupRuleResponsibility.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/GroupRuleResponsibility.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/IdentityCurrentAndArchivedServiceImpl.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/IdentityCurrentAndArchivedServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/impl/type/IdentityManagementTypeAttributeTransactionalDocument.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/impl/type/IdentityManagementTypeAttributeTransactionalDocument.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-api/src/main/java/org/kuali/rice/kim/api/identity/IdentityService.java" afterPath="$PROJECT_DIR$/../../../kim/kim-api/src/main/java/org/kuali/rice/kim/api/identity/IdentityService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/IdentityServiceImpl.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/IdentityServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kim/service/impl/IdentityServiceImplTest.groovy" afterPath="$PROJECT_DIR$/../../../impl/src/test/groovy/org/kuali/rice/kim/service/impl/IdentityServiceImplTest.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/KewApiServiceLocator.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/KewApiServiceLocator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/export/KewExportDataSet.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/export/KewExportDataSet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/web/KewKualiAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/web/KewKualiAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KewLocalSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KewLocalSpringBeans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/common/attribute/KimAttributeBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/common/attribute/KimAttributeBo.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimEmbeddedSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimEmbeddedSpringBeans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimRemoteSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimRemoteSpringBeans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimThinSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KimThinSpringBeans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/impl/type/KimTypeLookupableHelperServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/impl/type/KimTypeLookupableHelperServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minification.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minification.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/config/OJB-repository-kew.xml" afterPath="$PROJECT_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/config/OJB-repository-kew.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/src/main/java/org/kuali/rice/kew/impl/peopleflow/PeopleFlowMaintainableImpl.java" afterPath="$PROJECT_DIR$/../../../kew/impl/src/main/java/org/kuali/rice/kew/impl/peopleflow/PeopleFlowMaintainableImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/uif/PeopleFlowViews.xml" afterPath="$PROJECT_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/uif/PeopleFlowViews.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/identity/PersonImpl.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/identity/PersonImpl.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/PersonRuleResponsibility.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/PersonRuleResponsibility.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/PersonServiceImpl.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/identity/PersonServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/ProcessDefinitionContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/ProcessDefinitionContract.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/RecallAction.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/RecallAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleBo.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/role/RoleBo.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/role/RoleBo.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleDaoOjb.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleDaoOjb.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleMemberAttributeDataBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleMemberAttributeDataBo.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleMemberBo.groovy" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/groovy/org/kuali/rice/kim/impl/role/RoleMemberBo.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/RoleRuleResponsibility.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/RoleRuleResponsibility.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-api/src/main/java/org/kuali/rice/kim/api/role/RoleService.java" afterPath="$PROJECT_DIR$/../../../kim/kim-api/src/main/java/org/kuali/rice/kim/api/role/RoleService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleServiceBase.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleServiceBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleServiceImpl.java" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/java/org/kuali/rice/kim/impl/role/RoleServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/service/RouteHeaderService.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/service/RouteHeaderService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/service/impl/RouteHeaderServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/routeheader/service/impl/RouteHeaderServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RouteNodeConfigurationParameterContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RouteNodeConfigurationParameterContract.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RouteNodeContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RouteNodeContract.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RoutePathContract.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/doctype/RoutePathContract.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleAttributeTypeValuesFinder.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleAttributeTypeValuesFinder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleBaseValuesInquirableImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleBaseValuesInquirableImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleDelegationInquirableImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/rule/bo/RuleDelegationInquirableImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/SaveActionEvent.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/SaveActionEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/SendEventNotificationMessageController.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/SendEventNotificationMessageController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/SendNotificationMessageController.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/ken/web/spring/SendNotificationMessageController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/mail/service/impl/StyleableEmailContentServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/mail/service/impl/StyleableEmailContentServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/SuperUserActionRequestApproveEvent.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/actions/SuperUserActionRequestApproveEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/service/impl/UiDocumentServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kim/service/impl/UiDocumentServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml" afterPath="$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/action/WorkflowDocumentActionsService.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/action/WorkflowDocumentActionsService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/action/WorkflowDocumentActionsServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/action/WorkflowDocumentActionsServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/document/WorkflowDocumentService.java" afterPath="$PROJECT_DIR$/../../../kew/api/src/main/java/org/kuali/rice/kew/api/document/WorkflowDocumentService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/WorkflowDocumentServiceImpl.java" afterPath="$PROJECT_DIR$/../../../impl/src/main/java/org/kuali/rice/kew/impl/document/WorkflowDocumentServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/_KewEmbeddedOjbSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/_KewEmbeddedOjbSpringBeans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/_KimOjbSpringBeans.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/_KimOjbSpringBeans.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../sampleapp/src/main/webapp/WEB-INF/krad-servlet.xml" />
+      <change type="DELETED" beforePath="C:\java\projects\rice\rice-middleware\config\ide\intellij\.idea\runConfigurations\Minification.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\java\projects\rice\rice-middleware\sampleapp\src\main\resources\edu\sampleu\demo\kitchensink\LookupSampleView.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\java\projects\rice\rice-middleware\sampleapp\src\main\webapp\WEB-INF\tags\rice-portal\channel\krad\kradTravelApplication.tag" afterPath="" />
+      <change type="DELETED" beforePath="C:\java\projects\rice\rice-middleware\sampleapp\src\main\webapp\WEB-INF\tags\rice-portal\channel\krad\kradTravelApplication2.tag" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../sampleapp/src/main/resources/SampleAppModuleBeans.xml" afterPath="$PROJECT_DIR$/../../../sampleapp/src/main/resources/SampleAppModuleBeans.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../sampleapp/src/main/webapp/WEB-INF/tags/rice-portal/kradTab.tag" afterPath="$PROJECT_DIR$/../../../sampleapp/src/main/webapp/WEB-INF/tags/rice-portal/kradTab.tag" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../sampleapp/src/main/webapp/WEB-INF/tags/rice-portal/channel/krad/kradTestLinks.tag" afterPath="$PROJECT_DIR$/../../../sampleapp/src/main/webapp/WEB-INF/tags/rice-portal/channel/krad/kradTestLinks.tag" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/api/pom.xml" afterPath="$PROJECT_DIR$/../../../kew/api/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kew/framework/pom.xml" afterPath="$PROJECT_DIR$/../../../kew/framework/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-api/pom.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-api/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../kim/kim-framework/pom.xml" afterPath="$PROJECT_DIR$/../../../kim/kim-framework/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_7_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_7_.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_8_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__jetty_8_.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__tomcat_6_.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/rice_sampleapp__tomcat_6_.xml" />
@@ -174,169 +35,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
     </list>
-    <list id="3345e3a9-2979-433c-9eb1-76757eeefe86" name="ignore" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__asm_asm_3_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__avalon_framework_avalon_framework_4_1_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_2_2_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_1_3_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_11_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_lowagie_itext_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_codemodel_codemodel_2_4_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_xml_bind_jaxb_impl_2_2_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_thoughtworks_xstream_xstream_1_2_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_chain_commons_chain_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_dbcp_commons_dbcp_1_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_digester_commons_digester_2_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_2_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_httpclient_commons_httpclient_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_pool_commons_pool_1_5_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_transaction_commons_transaction_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_validator_commons_validator_1_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__displaytag_displaytag_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__hsqldb_hsqldb_1_8_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_inject_javax_inject_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_mail_1_4_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_resource_connector_api_1_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_jsp_jstl_jstl_api_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_transaction_jta_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_ws_rs_javax_ws_rs_api_2_0_m10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_ws_rs_jsr311_api_1_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_2_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_jsptags_1_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_16.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__logkit_logkit_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_18.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_3_4_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_platform_3_4_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_5_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_cssparser_cssparser_0_9_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_htmlunit_htmlunit_2_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_htmlunit_htmlunit_core_js_2_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_nekohtml_nekohtml_1_9_15.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__no_geosoft_filemonitor_1_0_kuali.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_1_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_launcher_1_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_exec_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_api_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_bindings_soap_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_bindings_xml_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_core_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_databinding_aegis_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_databinding_jaxb_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_frontend_jaxrs_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_frontend_jaxws_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_frontend_simple_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_transports_http_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_ws_addr_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_ws_policy_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_cxf_cxf_rt_ws_security_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_neethi_neethi_3_0_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_santuario_xmlsec_1_5_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_struts_struts_core_1_3_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_struts_struts_el_1_3_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_struts_struts_extras_1_3_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_struts_struts_taglib_1_3_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ws_security_wss4j_1_6_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ws_xmlschema_xmlschema_core_2_0_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjrt_1_6_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_6_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bouncycastle_bcprov_jdk16_1_46.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_btm_btm_2_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_groovy_groovy_all_1_8_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_core_asl_1_8_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_mapper_asl_1_8_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_woodstox_stax2_api_3_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_woodstox_woodstox_core_asl_4_1_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_directwebremoting_dwr_3_0_RC2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_freemarker_freemarker_2_3_18.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_web_jstl_impl_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_commons_annotations_3_2_0_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_core_3_6_9_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_entitymanager_3_6_9_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_javax_persistence_hibernate_jpa_2_0_api_1_0_1_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jacorb_jacorb_2_2_3_jonas_patch_20071018.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jacorb_jacorb_idl_2_2_3_jonas_patch_20071018.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jasig_cas_client_cas_client_core_3_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_javassist_javassist_3_15_0_GA.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_netty_netty_3_2_7_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jdom_jdom_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20080701.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kuali_commons_commons_beanutils_1_8_3_kuali_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kuali_db_ojb_db_ojb_1_0_4_patch8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kuali_rice_rice_impex_master_2_3_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kuali_rice_rice_it_krad_test_jar_tests_2_3_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kuali_rice_rice_krad_app_framework_2_3_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kuali_rice_rice_krad_service_impl_2_3_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kuali_rice_rice_krad_web_framework_2_3_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kuali_rice_rice_krad_web_war_2_3_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mockito_mockito_core_1_9_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objectweb_howl_howl_1_0_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_1_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opensaml_opensaml_2_5_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opensaml_openws_1_4_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opensaml_xmltooling_1_3_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_carol_carol_3_0_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_carol_carol_interceptors_1_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_carol_irmi_irmi_1_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_jotm_jotm_core_2_1_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_quartz_scheduler_quartz_1_8_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_android_driver_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_api_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_chrome_driver_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_firefox_driver_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_htmlunit_driver_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_ie_driver_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_iphone_driver_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_java_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_remote_driver_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_safari_driver_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_support_2_21_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_6_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_cas_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_core_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_crypto_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_web_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_asm_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_test_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_3_1_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springmodules_spring_modules_ojb_0_8a.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_w3c_css_sac_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_webbitserver_webbit_0_4_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__oro_oro_2_0_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__wsdl4j_wsdl4j_1_6_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xalan_serializer_2_7_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xalan_xalan_2_7_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xapool_xapool_1_5_0_patch3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xapool_xapool_1_5_0_patch4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xerces_xercesImpl_2_9_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xml_resolver_xml_resolver_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xpp3_xpp3_min_1_1_3_4_O.xml" />
-    </list>
+    <list id="3345e3a9-2979-433c-9eb1-76757eeefe86" name="ignore" comment="" />
     <ignored path="rice-framework.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360347564533" ignored="false" />
@@ -506,9 +205,9 @@
     <file path="$PROJECT_DIR$/../../../kim/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360252580464" ignored="false" />
     <file path="$PROJECT_DIR$/../../../krms/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360252588819" ignored="false" />
     <file path="$PROJECT_DIR$/../../../location/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360252596853" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../../../rice/sampleapp/src/main/resources/SampleAppModuleBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360255275943" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../../../rice/web/src/main/webapp/krad/scripts/krad.utility.js" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360255275943" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../../../rice/pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360255286066" ignored="false" />
+    <file path="$PROJECT_DIR$/../../../../sampleapp/src/main/resources/SampleAppModuleBeans.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360255275943" ignored="false" />
+    <file path="$PROJECT_DIR$/../../../../web/src/main/webapp/krad/scripts/krad.utility.js" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360255275943" ignored="false" />
+    <file path="$PROJECT_DIR$/../../../../pom.xml" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360255286066" ignored="false" />
     <file path="/fragment.java" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360259396945" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../rice-framework/krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/ConvertDateTest.groovy" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360259523072" ignored="false" />
     <file path="$PROJECT_DIR$/../../../../rice-framework/krad-development-tools/src/test/groovy/org/kuali/rice/krad/devtools/maintainablexml/ConvertDateTest2.groovy" changelist="d37b07b2-fb77-46e3-ae35-c435a56398ec" time="1360261095213" ignored="false" />
@@ -827,8 +526,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -849,6 +546,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -864,12 +563,13 @@
     <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
-  <component name="RunManager" selected="Tomcat Server.rice sampleapp (tomcat 7)">
+  <component name="RunManager" selected="Tomcat Server.rice sampleapp (tomcat 6)">
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -891,20 +591,6 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="JettyConfiguration" factoryName="Local">
       <deployment />
       <server-settings>
@@ -920,6 +606,20 @@
         </data>
       </server-settings>
       <predefined_log_file id="Jetty" enabled="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -948,17 +648,16 @@
       <predefined_log_file id="Tomcat" enabled="true" />
       <method />
     </configuration>
-    <list size="10">
+    <list size="9">
       <item index="0" class="java.lang.String" itemvalue="Jetty Server.rice serviceregistry (jetty 7)" />
-      <item index="1" class="java.lang.String" itemvalue="Tomcat Server.rice standalone (tomcat 7)" />
-      <item index="2" class="java.lang.String" itemvalue="Tomcat Server.Minification" />
-      <item index="3" class="java.lang.String" itemvalue="Jetty Server.rice sampleapp (jetty 8)" />
-      <item index="4" class="java.lang.String" itemvalue="Jetty Server.rice standalone (jetty 7)" />
-      <item index="5" class="java.lang.String" itemvalue="Tomcat Server.rice sampleapp (tomcat 6)" />
-      <item index="6" class="java.lang.String" itemvalue="Tomcat Server.rice standalone (tomcat 6)" />
-      <item index="7" class="java.lang.String" itemvalue="Tomcat Server.rice sampleapp (tomcat 7)" />
-      <item index="8" class="java.lang.String" itemvalue="Jetty Server.rice sampleapp (jetty 7)" />
-      <item index="9" class="java.lang.String" itemvalue="Jetty Server.rice standalone (jetty 8)" />
+      <item index="1" class="java.lang.String" itemvalue="Jetty Server.rice sampleapp (jetty 8)" />
+      <item index="2" class="java.lang.String" itemvalue="Jetty Server.rice standalone (jetty 7)" />
+      <item index="3" class="java.lang.String" itemvalue="Jetty Server.rice sampleapp (jetty 7)" />
+      <item index="4" class="java.lang.String" itemvalue="Jetty Server.rice standalone (jetty 8)" />
+      <item index="5" class="java.lang.String" itemvalue="Tomcat Server.rice standalone (tomcat 7)" />
+      <item index="6" class="java.lang.String" itemvalue="Tomcat Server.rice sampleapp (tomcat 6)" />
+      <item index="7" class="java.lang.String" itemvalue="Tomcat Server.rice standalone (tomcat 6)" />
+      <item index="8" class="java.lang.String" itemvalue="Tomcat Server.rice sampleapp (tomcat 7)" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -990,272 +689,272 @@
     <option name="myMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\client-contrib" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\client-contrib" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\client-contrib" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\client-contrib" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\config\ide\intellij" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\config\ide\intellij" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\config\ide\intellij" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\config\ide\intellij" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\config\ide\intellij\.idea" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\config\ide\intellij\.idea" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\config\ide\intellij\.idea" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\config\ide\intellij\.idea" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core-service" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core-service" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service\api" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service\api" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core-service\api" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core-service\api" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service\framework" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service\framework" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core-service\framework" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core-service\framework" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service\impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service\impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core-service\impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core-service\impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service\web" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core-service\web" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core-service\web" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core-service\web" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core\api" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core\api" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core\api" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core\api" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core\framework" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core\framework" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core\framework" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core\framework" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core\impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core\impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core\impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core\impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core\web" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\core\web" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\core\web" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\core\web" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\edl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\edl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\edl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\edl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\edl\framework" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\edl\framework" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\edl\framework" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\edl\framework" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\edl\impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\edl\impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\edl\impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\edl\impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\config" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\config" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\config" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\config" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\core" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\core" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\core" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\core" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\edl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\edl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\edl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\edl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\internal-tools" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\internal-tools" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\internal-tools" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\internal-tools" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\kcb" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\kcb" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\kcb" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\kcb" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\ken" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\ken" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\ken" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\ken" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\kew" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\kew" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\kew" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\kew" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\kim" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\kim" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\kim" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\kim" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\kns" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\kns" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\kns" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\kns" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\krms" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\krms" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\krms" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\krms" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\ksb" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\ksb" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\ksb" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\ksb" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\location" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\location" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\location" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\location" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\remote" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\remote" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\remote" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\remote" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\vc" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\it\vc" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\it\vc" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\it\vc" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ken" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ken" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\ken" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\ken" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ken\api" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ken\api" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\ken\api" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\ken\api" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kew" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kew" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kew" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kew" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kew\api" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kew\api" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kew\api" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kew\api" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kew\framework" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kew\framework" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kew\framework" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kew\framework" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kew\impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kew\impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kew\impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kew\impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kim" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kim" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim\kim-api" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim\kim-api" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kim\kim-api" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kim\kim-api" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim\kim-framework" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim\kim-framework" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kim\kim-framework" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kim\kim-framework" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim\kim-impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim\kim-impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kim\kim-impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kim\kim-impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim\kim-ldap" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kim\kim-ldap" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kim\kim-ldap" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kim\kim-ldap" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kns" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\kns" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\kns" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\kns" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\krms" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\krms" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms\api" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms\api" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\krms\api" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\krms\api" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms\framework" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms\framework" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\krms\framework" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\krms\framework" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms\gen" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms\gen" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\krms\gen" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\krms\gen" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms\impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\krms\impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\krms\impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\krms\impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\ksb" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\ksb" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb\api" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb\api" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\ksb\api" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\ksb\api" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb\client-impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb\client-impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\ksb\client-impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\ksb\client-impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb\server-impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb\server-impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\ksb\server-impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\ksb\server-impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb\web" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\ksb\web" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\ksb\web" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\ksb\web" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\location" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\location" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location\api" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location\api" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\location\api" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\location\api" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location\framework" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location\framework" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\location\framework" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\location\framework" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location\impl" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location\impl" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\location\impl" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\location\impl" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location\web" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\location\web" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\location\web" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\location\web" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\sampleapp" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\sampleapp" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\sampleapp" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\sampleapp" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\serviceregistry" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\serviceregistry" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\serviceregistry" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\serviceregistry" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\standalone" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\standalone" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\standalone" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\standalone" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\web" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware\web" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware\web" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware\web" />
         </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="C:\java\projects\rice-2.2-split\rice-middleware" />
-          <option name="myCopyRoot" value="C:\java\projects\rice-2.2-split\rice-middleware" />
+          <option name="myVcsRoot" value="C:\java\projects\rice\rice-middleware" />
+          <option name="myCopyRoot" value="C:\java\projects\rice\rice-middleware" />
         </SvnCopyRootSimple>
       </list>
     </option>

@@ -17,13 +17,10 @@
 
 <td class="content" valign="top">
   <kradChannel:kradTestLinks/>
-  <%--<kradChannel:kradBookStoreApplication/>--%>
-  <kradChannel:kradTravelApplication/>
 </td>
 
 <td class="content" valign="top">
   <kradChannel:kradTestLinks2/>
-  <kradChannel:kradTravelApplication2/>
 </td>
 
 <%--<td class="content" valign="top">--%>

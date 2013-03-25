@@ -1341,7 +1341,7 @@ ul.uif-pageValidationMessage-single {
 }
 
 /***** Syntax Highlighter *********************************************************************/
-.uif-syntaxHighlighter > div {
+div.uif-syntaxHighlighter {
     max-height: 400px;
     overflow: auto;
 }
@@ -1359,9 +1359,6 @@ ul.uif-pageValidationMessage-single {
     line-height: 20px;
     margin: 0 0 10px;
     padding: 9.5px;
-    white-space: pre-wrap;
-    word-break: break-all;
-    word-wrap: break-word;
 }
 
 .uif-syntaxHighlighter pre.prettyprint {

@@ -249,6 +249,12 @@
     </property>
   </bean>
 
+  <!-- ex:Demo-RichMessages-Example10 start-->
+  <bean id="Demo-RichMessagesImage" parent="Uif-Image"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+        p:altText="Image"/>
+  <!-- ex:Demo-RichMessages-Example10 end-->
+
   <!-- escape -->
   <bean id="Demo-RichMessages-Example11" parent="Uif-VerticalBoxSection">
     <property name="items">
@@ -356,6 +362,5 @@
       </list>
     </property>
   </bean>
-
 
 </beans>

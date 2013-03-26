@@ -1341,10 +1341,10 @@ ul.uif-pageValidationMessage-single {
 }
 
 /***** Syntax Highlighter *********************************************************************/
-div.uif-syntaxHighlighter {
-    max-height: 400px;
-    overflow: auto;
-}
+/*div.uif-syntaxHighlighter {*/
+    /*max-height: 400px;*/
+    /*overflow: auto;*/
+/*}*/
 
 .uif-syntaxHighlighter li {
     list-style: decimal outside none;
@@ -1359,6 +1359,8 @@ div.uif-syntaxHighlighter {
     line-height: 20px;
     margin: 0 0 10px;
     padding: 9.5px;
+    overflow: auto;
+    max-height: 600px;
 }
 
 .uif-syntaxHighlighter pre.prettyprint {

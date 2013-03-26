@@ -102,17 +102,20 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
     protected void testIngestion(Failable failable) throws Exception {
         List<File> fileUploadList = buildFileUploadList();
         int cnt = 0;
+
         for(File file : fileUploadList) {
             String path = file.getAbsolutePath().toString();
             driver.findElement(By.name("file[" + cnt + "]")).sendKeys(path);
             cnt++;
         }
+
         waitAndClickByXpath("//*[@id='imageField']");
 
         // confirm all files were uploaded successfully
         for(File file: fileUploadList) {
             assertTextPresent("Ingested xml doc: " + file.getName());
         }
+
         passed();
     }
 
@@ -135,6 +138,7 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
         } catch( Exception e) {
             throw new Exception("Unable to generate files for upload", e);
         }
+
         return fileUploadList;
     }
 }

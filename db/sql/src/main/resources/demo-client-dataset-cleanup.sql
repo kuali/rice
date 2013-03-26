@@ -132,7 +132,8 @@ DECLARE
             table_name like 'KREW#_%T' escape '#' OR
             table_name like 'KRIM#_%T' escape '#' OR
             table_name like 'KRLC#_%T' escape '#' OR
-            table_name like 'KRMS#_%T' escape '#'
+            table_name like 'KRMS#_%T' escape '#' OR
+            table_name = 'KR_KIM_TEST_BO'
          ORDER BY table_name;
 BEGIN
    FOR r IN tables_cursor LOOP
@@ -153,7 +154,7 @@ DECLARE
             sequence_name like 'KREW#_%S' escape '#' OR
             sequence_name like 'KRIM#_%S' escape '#' OR
             sequence_name like 'KRLC#_%S' escape '#' OR
-            sequence_name like 'KRMS#_%S'
+            sequence_name like 'KRMS#_%S' escape '#'
          ORDER BY sequence_name;
 BEGIN
    FOR r IN sequences_cursor LOOP

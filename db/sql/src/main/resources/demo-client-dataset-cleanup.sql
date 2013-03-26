@@ -111,7 +111,7 @@ DECLARE
    CURSOR views_cursor IS
       SELECT view_name
          FROM user_views
-         WHERE view_name like 'KRIM%'
+         WHERE view_name like 'KRIM#_%' escape '#'
          ORDER BY view_name;
 BEGIN
    FOR r IN views_cursor LOOP
@@ -120,18 +120,19 @@ BEGIN
 END;
 /
 
--- delete all non-client tables, leaving the sample app tables alone
+-- delete all non-client tables, leaving the sample app tables alone for now
 DECLARE
    CURSOR tables_cursor IS
       SELECT table_name
          FROM user_tables
          WHERE
-            table_name like 'KRCR%T' OR
-            table_name like 'KREN%T' OR
-            table_name like 'KREW%T' OR
-            table_name like 'KRIM%T' OR
-            table_name like 'KRLC%T' OR
-            table_name like 'KRMS%T'
+            table_name like 'KRSB#_SVC#_%#_T' escape '#' OR
+            table_name like 'KRCR#_%T' escape '#' OR
+            table_name like 'KREN#_%T' escape '#' OR
+            table_name like 'KREW#_%T' escape '#' OR
+            table_name like 'KRIM#_%T' escape '#' OR
+            table_name like 'KRLC#_%T' escape '#' OR
+            table_name like 'KRMS#_%T' escape '#'
          ORDER BY table_name;
 BEGIN
    FOR r IN tables_cursor LOOP
@@ -146,12 +147,13 @@ DECLARE
       SELECT sequence_name
          FROM user_sequences
          WHERE
-            sequence_name like 'KRCR%S' OR
-            sequence_name like 'KREN%S' OR
-            sequence_name like 'KREW%S' OR
-            sequence_name like 'KRIM%S' OR
-            sequence_name like 'KRLC%S' OR
-            sequence_name like 'KRMS%S'
+            sequence_name like 'KRSB#_SVC#_%#_S' escape '#' OR
+            sequence_name like 'KRCR#_%S' escape '#' OR
+            sequence_name like 'KREN#_%S' escape '#' OR
+            sequence_name like 'KREW#_%S' escape '#' OR
+            sequence_name like 'KRIM#_%S' escape '#' OR
+            sequence_name like 'KRLC#_%S' escape '#' OR
+            sequence_name like 'KRMS#_%S'
          ORDER BY sequence_name;
 BEGIN
    FOR r IN sequences_cursor LOOP

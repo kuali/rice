@@ -52,6 +52,7 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
      * @throws TemplateException
      */
     public File ftlWrite(String fileLocation, String resourceLocation, File output, Template template) throws IOException, TemplateException {
+
         return ftlWrite(fileLocation, resourceLocation, output.getName(), output, template);
     }
 
@@ -71,6 +72,7 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
         Properties props = loadProperties(fileLocation, resourceLocation);
         systemPropertiesOverride(props, key);
         File outputFile = writeTemplateToFile(output, template, props);
+
         return outputFile;
     }
 
@@ -86,6 +88,7 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
             props.load(in);
             in.close();
         }
+
         return props;
     }
 
@@ -102,6 +105,7 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
         String output = FreeMarkerTemplateUtils.processTemplateIntoString(template, props);
         LOG.debug("Generated File Output: " + output);
         FileUtils.writeStringToFile(file, output);
+
         return file;
     }
 

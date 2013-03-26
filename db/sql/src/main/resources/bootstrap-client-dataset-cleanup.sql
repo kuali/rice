@@ -53,9 +53,11 @@ DECLARE
       SELECT table_name
          FROM user_tables
          WHERE
-            table_name like 'ACC%T' OR
-            table_name like 'BK%T' OR
-            table_name like 'TR%T'
+            table_name like 'BK#_%' escape '#' OR
+            table_name like 'TRAV#_%' escape '#' OR
+            table_name like 'TRV#_%' escape '#' OR
+            table_name = 'ACCT_DD_ATTR_DOC' OR
+            table_name = 'TST_SEARCH_ATTR_INDX_TST_DOC_T'
          ORDER BY table_name;
 BEGIN
    FOR r IN tables_cursor LOOP
@@ -70,9 +72,10 @@ DECLARE
       SELECT sequence_name
          FROM user_sequences
          WHERE
-            sequence_name like 'ACC%S' OR
-            sequence_name like 'BK%S' OR
-            sequence_name like 'TR%S'
+            sequence_name like 'ACCT#_%S' escape '#' OR
+            sequence_name like 'BK#_%S' escape '#' OR
+            sequence_name like 'TRAV#_%S' escape '#' OR
+            sequence_name like 'TRV#_%S' escape '#'
          ORDER BY sequence_name;
 BEGIN
    FOR r IN sequences_cursor LOOP

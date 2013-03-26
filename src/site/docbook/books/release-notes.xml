@@ -130,6 +130,9 @@
                         <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9106'>KULRICE-9106</link>] - Bug in PeopleFlowInquirableImpl retrieveTypeAttributes method</para>
                     </listitem>
                     <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9146'>KULRICE-9146</link>] - SuperUserAction tab does not load when using custom DocumentTypeAuthorizer implementation in embedded mode</para>
+                    </listitem>
+                    <listitem>
                         <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9162'>KULRICE-9162</link>] - Role document broken when adding responsibilities</para>
                     </listitem>
                     <listitem>
@@ -137,6 +140,9 @@
                     </listitem>
                     <listitem>
                         <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9169'>KULRICE-9169</link>] - Bug in UiDocumentServiceImpl </para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9199'>KULRICE-9199</link>] - Unable to inactivate roles of type unitHierarchy or unit from person maintenance docs</para>
                     </listitem>
                 </itemizedlist>
             </para>
@@ -172,6 +178,9 @@
                     </listitem>
                     <listitem>
                         <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9147'>KULRICE-9147</link>] - Toggling the show/hide active button on collections causes an exception</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9148'>KULRICE-9148</link>] - Disable SessionDocumentService in the KNS</para>
                     </listitem>
                 </itemizedlist>
             </para>

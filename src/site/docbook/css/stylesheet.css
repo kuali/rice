@@ -82,6 +82,9 @@ div.table td {
 .oddrow {
   background:    #EEEEEE;
 }
+tr:nth-child(odd) {
+	background-color:#EEEEEE;
+}
 
 .sidebar {
     float: right;

@@ -56,6 +56,7 @@ DECLARE
             table_name like 'BK#_%' escape '#' OR
             table_name like 'TRAV#_%' escape '#' OR
             table_name like 'TRV#_%' escape '#' OR
+            table_name like 'TRVL#_%' escape '#' OR
             table_name = 'ACCT_DD_ATTR_DOC' OR
             table_name = 'TST_SEARCH_ATTR_INDX_TST_DOC_T'
          ORDER BY table_name;
@@ -75,6 +76,7 @@ DECLARE
             sequence_name like 'ACCT#_%S' escape '#' OR
             sequence_name like 'BK#_%S' escape '#' OR
             sequence_name like 'TRAV#_%S' escape '#' OR
+            sequence_name like 'TRVL#_%SEQ' escape '#' OR
             sequence_name like 'TRV#_%S' escape '#'
          ORDER BY sequence_name;
 BEGIN

@@ -296,7 +296,7 @@ th {
 	border-bottom-color:#CCC;
 }
 tr:nth-child(odd) {
-	background-color:#f7f7f7;
+	background-color:#EEEEEE;
 }
 td {
 	word-wrap:break-word;

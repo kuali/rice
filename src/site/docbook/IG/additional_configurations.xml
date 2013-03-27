@@ -23,6 +23,24 @@
     <para>See <link linkend="appendix_server_configs">Example Server Configurations</link> in the
         appendix for examples of hardware and software configurations of Kuali Rice servers.</para>
     <section>
+        <title>Configure Rice without KRAD (KNS Only)</title>
+        <para>In some cases it may be desirable to only use the KNS without KRAD. For example if you're timelines push a conversion to KRAD out into the future, you may see some benefits with startup performance and with memory usage.
+            You can override the kradApplicationModuleConfiguration bean to not include any of the files in the UIF folder. That is, you only need to include these files:</para>
+        <programlisting>&lt;property name="dataDictionaryPackages"> &lt;list> &lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/Attachment.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml&lt;/value> 
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml&lt;/value> 
+&lt;/list> 
+&lt;/property></programlisting>
+    </section>
+    <section>
         <title>Setting Up a Load-Balanced Clustered Production Environment</title>
         <para>This describes how to set up Rice instances for a load-balanced production environment
             across multiple servers. <orderedlist>
@@ -727,5 +745,37 @@ Using JRE_HOME:		/usr/java/jdk1.6.0_16</programlisting></para>
             set up depends on how you want your Tomcat instance configured and your
             implementation-specific parameter settings.</para>
     </section>
+    </section>
+    <section>
+        <title>The Session Document Service</title>
+        <para>The SessionDocumentService, which was part of the default configuration for Rice before versions 2.1.4 for the 2.1 line 
+            and 2.2.2 for the 2.2 line, provided session failover in certain limited cases, but was disabled as part of <link xlink:href="https://jira.kuali.org/browse/KULRICE-9148">KULRICE-9148</link>. 
+            This service was problematic for performance when dealing with larger documents, and <emphasis role="bold">it is not recommended that it be re-enabled.</emphasis> 
+            It is possible to do so however. </para>
+        <para>To enable it again, a bean definition overriding the knsSessionDocumentService bean needs to be created and configured to load into the correct Spring context. 
+            Create a file such as the following which we'll name KNSOverrideSpringBeans.xml:</para>
+        <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+        &lt;bean id="knsSessionDocumentService" class="org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl">
+                &lt;property name="maxCacheSize" value="${session.document.cache.size}" />
+                &lt;property name="businessObjectService">
+                        &lt;ref bean="businessObjectService" />
+                &lt;/property>
+                &lt;property name="sessionDocumentDao">
+                        &lt;ref bean="sessionDocumentDao" />
+                &lt;/property>
+        &lt;/bean>
+&lt;/beans>
+        </programlisting>
+        <para>This file needs to be added to your web project so that it can be accessed from the classpath. 
+            For this example, it has been added to src/main/resources/edu/sampleu within our web project. 
+            With that in place, the following (adjusting for the actual path) should be added to your rice-config.xml file:</para>
+        <programlisting>&lt;param name="rice.kr.additionalSpringFiles">classpath:edu/sampleu/KNSOverrideSpringBeans.xml&lt;/param></programlisting>
+            <para>Note that if you already have a <code>rice.kr.additionalSpringFiles</code> configuration parameter specified, the value is treated as a comma separated list, so you can add a comma at the end of the present value and append on the configuration for the KNSOverrideSpringBeans.xml file.</para>
+
     </section>
 </chapter>

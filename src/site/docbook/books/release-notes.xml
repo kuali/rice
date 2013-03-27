@@ -182,6 +182,9 @@
                     <listitem>
                         <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9148'>KULRICE-9148</link>] - Disable SessionDocumentService in the KNS</para>
                     </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9151'>KULRICE-9151</link>] - Document in the guide on clustering that session failover should be implemented for full reliability</para>
+                    </listitem>
                 </itemizedlist>
             </para>
         </section>

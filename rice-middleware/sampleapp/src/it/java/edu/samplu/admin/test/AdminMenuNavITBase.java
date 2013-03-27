@@ -42,6 +42,7 @@ public abstract class AdminMenuNavITBase extends MenuNavITBase {
     /**
      * tests that a getLinkLocator maintenance document can be cancelled
      */
+    @Override
     public void testCreateNewCancel() throws Exception {
         gotoCreateNew();
         testCancelConfirmation();

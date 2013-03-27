@@ -24,7 +24,8 @@ import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * tests the Component section in Rice.
- * 
+ *
+ * @deprecated
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentWDIT extends WebDriverLegacyITBase {
@@ -43,33 +44,30 @@ public class ComponentWDIT extends WebDriverLegacyITBase {
     
     @Test
     public void testComponentParameter() throws Exception {
-
         // Create New
-        selectFrameIframePortlet();
-        super.waitAndCreateNew();
-//        waitAndClickByXpath("//img[@alt='create new']");
+        waitAndCreateNew();
         List<String> params;
-        params=super.testCreateNewComponent(docId, componentName,componentCode);
+        params = testCreateNewComponent(docId, "testName" + ITUtil.DTS_TWO, "testCode" + ITUtil.DTS_TWO);
        
         //Lookup
-        super.open(ITUtil.getBaseUrlString()+TEST_URL);
+        open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrameIframePortlet();
-        params=super.testLookUpComponent(params.get(0), params.get(1),params.get(2));
+        params = testLookUpComponent(params.get(0), params.get(1), params.get(2));
    
         //edit
-        params=super.testEditComponent(params.get(0), params.get(1),params.get(2));
+        params = testEditComponent(params.get(0), params.get(1), params.get(2));
         
         //Verify if its edited
-        super.open(ITUtil.getBaseUrlString()+TEST_URL);
+        open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrameIframePortlet();
-        params=super.testVerifyEditedComponent(params.get(0), params.get(1),params.get(2));
+        params = testVerifyEditedComponent(params.get(0), params.get(1), params.get(2));
   
         //copy
-        params=super.testCopyComponent(params.get(0), params.get(1),params.get(2));
+        params = testCopyComponent(params.get(0), params.get(1) + "copy", params.get(2) + "copy");
         
         //Verify if its copied
-        super.open(ITUtil.getBaseUrlString()+TEST_URL);
+        open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrameIframePortlet();
-        super.testVerifyCopyComponent(params.get(0), params.get(1),params.get(2));
+        testVerifyCopyComponent(params.get(0), params.get(1), params.get(2));
     }
 }

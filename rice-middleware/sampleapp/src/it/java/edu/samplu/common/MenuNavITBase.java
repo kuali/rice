@@ -43,7 +43,7 @@ public abstract class MenuNavITBase extends WebDriverLegacyITBase {
         waitForTitleToEqualKualiPortalIndex();
         waitAndClickByLinkText(getLinkLocator(), message);
         waitForTitleToEqualKualiPortalIndex(message);
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         checkForIncidentReport(getLinkLocator(), message);
     }
 

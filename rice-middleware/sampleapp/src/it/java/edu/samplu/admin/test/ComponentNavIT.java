@@ -21,7 +21,7 @@ import org.junit.Test;
 
 /**
  * tests the Component section in Rice.
- * 
+ * @deprecated
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentNavIT extends AdminMenuNavITBase {
@@ -36,29 +36,28 @@ public class ComponentNavIT extends AdminMenuNavITBase {
 
     @Test
     public void testComponentParameter() throws Exception {
-
         //Create New
-        super.gotoCreateNew();
+        gotoCreateNew();
         List<String> params;
-        params=super.testCreateNewComponent(docId, componentName,componentCode);
+        params = testCreateNewComponent(docId, componentName,componentCode);
     
         //Lookup
-        super.gotoMenuLinkLocator();
+        gotoMenuLinkLocator();
         selectFrameIframePortlet();
-        params=super.testLookUpComponent(params.get(0), params.get(1),params.get(2));
+        testLookUpComponent(params.get(0), params.get(1), params.get(2));
 
         //edit
-        params=super.testEditComponent(params.get(0), params.get(1),params.get(2));
+        params = testEditComponent(params.get(0), params.get(1), params.get(2));
         
         //Verify if its edited
-        super.gotoMenuLinkLocator();
-        params=super.testVerifyEditedComponent(params.get(0), params.get(1),params.get(2));
+        gotoMenuLinkLocator();
+        params = testVerifyEditedComponent(params.get(0), params.get(1), params.get(2));
 
         //copy
-        params=super.testCopyComponent(params.get(0), params.get(1),params.get(2));
+        params = testCopyComponent(params.get(0), params.get(1) + "copy", params.get(2) + "copy");
         
         //Verify if its copied
-        super.gotoMenuLinkLocator();
-        super.testVerifyCopyComponent(params.get(0), params.get(1), params.get(2));
+        gotoMenuLinkLocator();
+        testVerifyCopyComponent(params.get(0), params.get(1), params.get(2));
     }
 }

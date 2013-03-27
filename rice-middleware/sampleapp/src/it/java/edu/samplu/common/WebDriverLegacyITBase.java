@@ -148,6 +148,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public static final String XML_INGESTER_LINK_TEXT = "XML Ingester";
 
     /**
+     * //div[@class='left-errmsg-tab']/div/div
+     */
+    public static final String DIV_LEFT_ERRMSG = "//div[@class='left-errmsg-tab']/div/div";
+
+    /**
      * For Bookmark tests this is the url under final test.  For nav tests this is from the url navigation will
      * start from.
      * @return string
@@ -204,8 +209,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                         + "?test=" + this.toString().trim()));
                 user = userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
             }
-            driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + getTestUrl(), getClass()
-                    .getSimpleName(), testName);
+            driver = WebDriverUtil.setUp(getUserName(), getTestUrl(), getClass().getSimpleName(), testName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
         } catch (Exception e) {
             fail("Exception in setUp " + e.getMessage());
@@ -318,23 +322,30 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                 + " have permission?");
         Thread.sleep(2000);
 
-        if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
-            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();         
-            if (errorText != null && errorText.contains("error(s) found on page.")) {
-                errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);                
-                if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
-                    errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
-                            By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
-                }
-                SeleneseTestBase.fail(errorText);
-            }
-        }
-        
+        checkForDocError();
+
         ITUtil.checkForIncidentReport(driver.getPageSource(), "//img[@alt='doc search']", "Blanket Approve failure");
         waitAndClickByXpath("//img[@alt='doc search']");
         SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
         selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath(SEARCH_XPATH);
+    }
+
+    public void checkForDocError() {
+        if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
+            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
+            if (errorText != null && errorText.contains("error(s) found on page.")) {
+                errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
+                if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
+                    errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
+                            By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+                }
+                if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
+                    errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText());
+                }
+                SeleneseTestBase.fail(errorText);
+            }
+        }
     }
 
     protected void checkForIncidentReport() {
@@ -560,6 +571,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndCreateNew() throws InterruptedException {
+        selectFrameIframePortlet();
         try {
             waitAndClickByXpath("//img[@alt='create new']"); // timing out in CI rice-trunk-smoke-test-jdk7/494
         } catch (Exception e) {
@@ -730,10 +742,19 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         jiraAwareWaitAndClick(By.xpath(xpath), message);
     }
 
+    /**
+     * #LOGOUT_XPATH
+     * @throws InterruptedException
+     */
     protected void waitAndClickLogout() throws InterruptedException {
          waitAndClickByXpath(LOGOUT_XPATH);
     }
 
+    /**
+     * #LOGOUT_XPATH
+     * @param failable
+     * @throws InterruptedException
+     */
     protected void waitAndClickLogout(Failable failable) throws InterruptedException {
         waitAndClickByXpath(LOGOUT_XPATH, failable);
     }
@@ -4617,15 +4638,22 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected List<String> testCreateNewComponent(String docId, String componentName, String componentCode) throws Exception
     {
+        // TODO assign in test or a better way.
+        if (componentName == null || "".equals(componentName)) {
+            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
+            componentName = "testName" + ITUtil.DTS_TWO;
+        }
+        if (componentCode == null || "".equals(componentCode)) {
+            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
+            componentCode = "testCode" + ITUtil.DTS_TWO;
+        }
         waitForPageToLoad();
         docId = waitForDocId();
         
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Component");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
-        componentCode = "testing" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.code", componentCode);
-        componentName = "testing" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
         checkByName("document.newMaintainableObject.active");
         waitAndClickByXpath(SAVE_XPATH);
@@ -4643,6 +4671,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         System.out.println("--------------------------------New Component Created-------------------------");        
         List<String> parameterList=new ArrayList<String>();
+        // TODO return just the docId, the Name and Code are passed in
         parameterList.add(docId);
         parameterList.add(componentName);
         parameterList.add(componentCode);
@@ -4653,6 +4682,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected List<String> testLookUpComponent(String docId, String componentName, String componentCode) throws Exception
     {
+        // TODO assign in test or a better way.
+        if (componentName == null || "".equals(componentName)) {
+            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
+            componentName = "testName" + ITUtil.DTS_TWO;
+        }
+        if (componentCode == null || "".equals(componentCode)) {
+            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
+            componentCode = "testCode" + ITUtil.DTS_TWO;
+        }
+        selectFrameIframePortlet();
         //Lookup
         waitAndTypeByName("name", componentName);
         waitAndClickByXpath(SEARCH_XPATH);
@@ -4668,6 +4707,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         switchToWindow("null");
         System.out.println("--------------------------------Lookup And View Successful-------------------------");        
         List<String> parameterList=new ArrayList<String>();
+        // TODO return just the docId, the Name and Code are passed in
         parameterList.add(docId);
         parameterList.add(componentName);
         parameterList.add(componentCode);
@@ -4677,6 +4717,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected List<String> testEditComponent(String docId, String componentName, String componentCode) throws Exception
     {
+        // TODO assign in test or a better way.
+        if (componentName == null || "".equals(componentName)) {
+            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
+            componentName = "testName" + ITUtil.DTS_TWO;
+        }
+        if (componentCode == null || "".equals(componentCode)) {
+            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
+            componentCode = "testCode" + ITUtil.DTS_TWO;
+        }
         //edit
         selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("edit");
@@ -4684,7 +4733,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Component");
         clearTextByName("document.newMaintainableObject.name");
-        componentName = "testing" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
         waitAndClickByXpath(SAVE_XPATH);
         waitAndClickByXpath(SUBMIT_XPATH);
@@ -4701,6 +4749,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         selectTopFrame();
         System.out.println("-----------------------------------Component Edited-------------------------");        
         List<String> parameterList=new ArrayList<String>();
+        // TODO return just the docId, the Name and Code are passed in
         parameterList.add(docId);
         parameterList.add(componentName);
         parameterList.add(componentCode);
@@ -4710,6 +4759,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected List<String> testVerifyEditedComponent(String docId, String componentName, String componentCode) throws Exception
     {
+        // TODO assign in test or a better way.
+        if (componentName == null || "".equals(componentName)) {
+            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
+            componentName = "testName" + ITUtil.DTS_TWO;
+        }
+        if (componentCode == null || "".equals(componentCode)) {
+            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
+            componentCode = "testCode" + ITUtil.DTS_TWO;
+        }
+        selectFrameIframePortlet();
         waitAndTypeByName("name", componentName);
         waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(componentName);
@@ -4723,6 +4782,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");        
         List<String> parameterList=new ArrayList<String>();
+        // TODO return just the docId, the Name and Code are passed in
         parameterList.add(docId);
         parameterList.add(componentName);
         parameterList.add(componentCode);
@@ -4732,6 +4792,15 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected List<String> testCopyComponent(String docId, String componentName, String componentCode) throws Exception
     {
+        // TODO assign in test or a better way.
+        if (componentName == null || "".equals(componentName)) {
+            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
+            componentName = "testName" + ITUtil.DTS_TWO;
+        }
+        if (componentCode == null || "".equals(componentCode)) {
+            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
+            componentCode = "testCode" + ITUtil.DTS_TWO;
+        }
         //copy
         selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByLinkText("copy");
@@ -4739,14 +4808,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Component");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
-        componentCode = "test" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.code", componentCode);
         clearTextByName("document.newMaintainableObject.name");
-        componentName = "testing" + ITUtil.DTS_TWO;
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
         waitAndClickByXpath(SAVE_XPATH);
         waitAndClickByXpath(SUBMIT_XPATH);
         waitForPageToLoad();
+        checkForDocError();
         assertElementPresentByXpath(DOCUMENT_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByXpath("//a[@title='Document Search']");
@@ -4757,7 +4825,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals("FINAL", getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
-        System.out.println("-----------------------------------Component Copied-------------------------");        
+        System.out.println("-----------------------------------Component Copied-------------------------");
+        // TODO return just the docId, the Name and Code are passed in
         List<String> parameterList=new ArrayList<String>();
         parameterList.add(docId);
         parameterList.add(componentName);
@@ -4768,6 +4837,16 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected List<String> testVerifyCopyComponent(String docId, String componentName, String componentCode) throws Exception
     {
+        // TODO assign in test or a better way.
+        if (componentName == null || "".equals(componentName)) {
+            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
+            componentName = "testName" + ITUtil.DTS_TWO;
+        }
+        if (componentCode == null || "".equals(componentCode)) {
+            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
+            componentCode = "testCode" + ITUtil.DTS_TWO;
+        }
+        selectFrameIframePortlet();
         waitAndTypeByName("name", componentName);
         waitAndClickByXpath(SEARCH_XPATH);
         isElementPresentByLinkText(componentName);
@@ -4781,6 +4860,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndClickByXpath("//*[@title='close this window']");
         switchToWindow("null");        
         List<String> parameterList=new ArrayList<String>();
+        // TODO return just the docId, the Name and Code are passed in
         parameterList.add(docId);
         parameterList.add(componentName);
         parameterList.add(componentCode);

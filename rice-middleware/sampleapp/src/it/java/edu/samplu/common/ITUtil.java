@@ -108,7 +108,7 @@ public class ITUtil {
 
     }
 
-    protected static String blanketApprovalCleanUpErrorText(String errorText) {
+    public static String blanketApprovalCleanUpErrorText(String errorText) {
         errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
         return errorText;
     }

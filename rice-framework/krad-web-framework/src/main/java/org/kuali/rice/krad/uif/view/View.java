@@ -102,6 +102,9 @@ public class View extends ContainerBase {
     //view header setting
     private boolean unifiedHeader;
 
+    //additional view group(s)
+    private Group topGroup;
+
     // application
     private Header applicationHeader;
     private Group applicationFooter;
@@ -416,6 +419,10 @@ public class View extends ContainerBase {
     @Override
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = new ArrayList<Component>();
+
+        if (topGroup != null) {
+            components.add(topGroup);
+        }
 
         components.add(applicationHeader);
         components.add(applicationFooter);
@@ -1888,10 +1895,9 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute(name = "stickyHeader")
     public boolean isStickyHeader() {
-        if(this.getHeader() != null && this.getHeader() instanceof ViewHeader){
+        if (this.getHeader() != null && this.getHeader() instanceof ViewHeader) {
             return ((ViewHeader) this.getHeader()).isSticky();
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -1903,7 +1909,7 @@ public class View extends ContainerBase {
      */
     public void setStickyHeader(boolean stickyHeader) {
         this.stickyHeader = stickyHeader;
-        if(this.getHeader() != null && this.getHeader() instanceof ViewHeader){
+        if (this.getHeader() != null && this.getHeader() instanceof ViewHeader) {
             ((ViewHeader) this.getHeader()).setSticky(stickyHeader);
         }
     }
@@ -1944,7 +1950,7 @@ public class View extends ContainerBase {
      */
     public void setStickyFooter(boolean stickyFooter) {
         this.stickyFooter = stickyFooter;
-        if(this.getFooter() != null){
+        if (this.getFooter() != null) {
             this.getFooter().addDataAttribute("stickyFooter", Boolean.toString(stickyFooter));
         }
     }
@@ -1966,5 +1972,24 @@ public class View extends ContainerBase {
      */
     public void setStickyApplicationFooter(boolean stickyApplicationFooter) {
         this.stickyApplicationFooter = stickyApplicationFooter;
+    }
+
+    /**
+     * TopGroup is an optional group of content that appears above the breadcrumbs and view header
+     *
+     * @return the topGroup component
+     */
+    @BeanTagAttribute(name = "topGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Group getTopGroup() {
+        return topGroup;
+    }
+
+    /**
+     * Set the topGroup component which appears the breadcrumbs and view header
+     *
+     * @param topGroup
+     */
+    public void setTopGroup(Group topGroup) {
+        this.topGroup = topGroup;
     }
 }

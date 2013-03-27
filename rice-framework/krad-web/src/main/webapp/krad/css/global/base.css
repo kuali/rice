@@ -206,7 +206,7 @@ ul.uif-readOnlyStringList li {
     top: 0;
 }
 
-#Uif-BreadcrumbWrapper, #Uif-ApplicationHeader-Wrapper, #Uif-ApplicationFooter-Wrapper{
+#Uif-BreadcrumbWrapper, #Uif-ApplicationHeader-Wrapper, #Uif-ApplicationFooter-Wrapper, #Uif-TopGroupWrapper{
     width: 100%;
 }
 

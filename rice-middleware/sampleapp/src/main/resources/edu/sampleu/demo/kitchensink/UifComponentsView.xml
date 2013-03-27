@@ -36,6 +36,15 @@
     </property>
     <property name="stickyHeader" value="true"/>
     <property name="stickyBreadcrumbs" value="true"/>
+    <property name="topGroup">
+      <bean parent="Uif-VerticalBoxGroup" p:style="background-color: lightBlue; width: 100%;">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Top Group Content" p:style="font-size: 24px;"/>
+          </list>
+        </property>
+      </bean>
+    </property>
     <property name="header.areaTitleText" value="[color='red']KRAD[/color] Kitchen Sink (areaText)"/>
     <property name="header.metadataText" value="Metadata Text"/>
     <property name="header.rightGroup">

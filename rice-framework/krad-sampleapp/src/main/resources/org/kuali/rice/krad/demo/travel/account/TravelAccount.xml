@@ -163,14 +163,6 @@
     <property name="controlField">
       <bean parent="Uif-DateControl"/>
     </property>
-    <property name="attributeSecurity">
-      <bean parent="AttributeSecurity">
-        <property name="partialMask" value="true"/>
-        <property name="partialMaskFormatter">
-          <bean parent="MaskFormatterSubString" p:maskLength="2"/>
-        </property>
-      </bean>
-    </property>
   </bean>
 
   <bean id="TravelAccount-extension.accountTypeCode" parent="TravelAccount-extension.accountTypeCode-parentBean"/>

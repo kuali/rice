@@ -33,7 +33,7 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
       </list>
     </property>
     <property name="resultFields">

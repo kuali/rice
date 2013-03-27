@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.uif.form;
+package org.kuali.rice.krad.labs;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.demo.uif.form.UIInactivatableTestObject;
+import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Basic form for the KRAD sample application
+ * Basic form for the lab views
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KradSampleAppForm extends UifFormBase {
+public class KradLabsForm extends UifFormBase {
     private static final long serialVersionUID = -7525378097732916418L;
     private String themeName;
     private String exampleShown;
@@ -103,6 +105,7 @@ public class KradSampleAppForm extends UifFormBase {
     private List<UITestObject> collection5 = new ArrayList<UITestObject>();
 
     private List<UIInactivatableTestObject> inactivatableCollection = new ArrayList<UIInactivatableTestObject>();
+    private List<UIInactivatableTestObject> inactivatableCollection2 = new ArrayList<UIInactivatableTestObject>();
 
     private List<UITestObject> groupedCollection1 = new ArrayList<UITestObject>();
     private List<UITestObject> groupedCollection2 = new ArrayList<UITestObject>();
@@ -111,7 +114,7 @@ public class KradSampleAppForm extends UifFormBase {
 
     private String fakeTotal = "123(server value)";
 
-    public KradSampleAppForm() {
+    public KradLabsForm() {
         super();
 
         messageField1 = "fruits";
@@ -186,6 +189,8 @@ public class KradSampleAppForm extends UifFormBase {
         inactivatableCollection.add(new UIInactivatableTestObject("W", "X", "Y", "Z", false));
         inactivatableCollection.add(new UIInactivatableTestObject("a", "s", "d", "f", true));
         inactivatableCollection.add(new UIInactivatableTestObject("Fall", "2002", "AAA123", "3", false));
+
+        inactivatableCollection2.addAll(inactivatableCollection);
 
         groupedCollection1.add(new UITestObject("A", "100", "200", "300"));
         groupedCollection1.add(new UITestObject("A", "101", "200", "300"));
@@ -691,6 +696,14 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setInactivatableCollection(List<UIInactivatableTestObject> inactivatableCollection) {
         this.inactivatableCollection = inactivatableCollection;
+    }
+
+    public List<UIInactivatableTestObject> getInactivatableCollection2() {
+        return inactivatableCollection2;
+    }
+
+    public void setInactivatableCollection2(List<UIInactivatableTestObject> inactivatableCollection2) {
+        this.inactivatableCollection2 = inactivatableCollection2;
     }
 
     public List<UITestObject> getGroupedCollection1() {

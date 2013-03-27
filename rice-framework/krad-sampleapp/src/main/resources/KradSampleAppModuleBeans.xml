@@ -127,6 +127,8 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoConditionalRefresh.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDataField.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSuggest.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionInactiveFilter.xml</value>
+        <value>classpath:org/kuali/rice/krad/labs</value>
       </list>
     </property>
     <property name="databaseRepositoryFilePaths">
@@ -137,6 +139,7 @@
     <property name="packagePrefixes">
       <list>
         <value>org.kuali.rice.krad.demo</value>
+        <value>org.kuali.rice.krad.labs</value>
       </list>
     </property>
     <property name="resourceBundleNames">
@@ -206,6 +209,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoConditionalRefreshResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDataFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSuggestResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionInactiveFilterResources</value>
       </list>
     </property>
   </bean>

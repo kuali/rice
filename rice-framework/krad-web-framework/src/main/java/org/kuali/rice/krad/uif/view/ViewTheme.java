@@ -45,7 +45,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      * Path to the directory (either relative or absolute) that contains images for the theme
      * 
      * <p>
-     * Configured diretory will populate the {@link org.kuali.rice.krad.uif.UifConstants.ContextVariableNames#THEME_IMAGES}
+     * Configured directory will populate the {@link org.kuali.rice.krad.uif.UifConstants.ContextVariableNames#THEME_IMAGES}
      * context variable which can be referenced with an expression for an image source
      * </p>
      * 

@@ -60,7 +60,6 @@ public class UITestObject implements Serializable {
         remoteFieldValuesMap.put("remoteField2", "Banana");
         remoteFieldValuesMap.put("remoteField3", true);
         remoteFieldValuesMap.put("remoteField4", "Fruit");
-
     }
 
     /**

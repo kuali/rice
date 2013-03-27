@@ -532,7 +532,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSelectLine-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Action Placement"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionActionPlacement-View&amp;methodToCall=start"/>
-
+        <bean parent="Uif-Link" p:linkText="Inactive Filter"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionInactiveFilter-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

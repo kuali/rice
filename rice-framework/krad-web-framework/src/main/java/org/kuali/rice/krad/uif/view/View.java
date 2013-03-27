@@ -235,13 +235,6 @@ public class View extends ContainerBase {
                 throw new RuntimeException("For single paged views the page Group must be set.");
             }
         }
-
-        // make sure all the pages have ids before selecting the current page
-        for (Group group : this.getItems()) {
-            if (StringUtils.isBlank(group.getId())) {
-                group.setId(view.getNextId());
-            }
-        }
     }
 
     /**
@@ -339,7 +332,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Assigns an id to the component if one was not configured
+     * Assigns an id (if not configured) to a component and all its child components
      *
      * @param component - component instance to assign id to
      */
@@ -348,6 +341,45 @@ public class View extends ContainerBase {
             return;
         }
 
+        // handle view specially to insure each page always gets the same generated id
+        if (component instanceof View) {
+            View view = (View) component;
+
+            if (view.isSinglePageView() && view.getPage() != null) {
+                assignComponentId(view.getPage());
+            } else if (view.getItems() != null) {
+                // get each page and set the id
+                for (Component item : view.getItems()) {
+                    if (item instanceof PageGroup) {
+                        assignComponentId(item);
+                    }
+                }
+
+                // now assign ids for all page components
+                for (Component item : view.getItems()) {
+                    if (item instanceof PageGroup) {
+                        assignComponentIds(item);
+                    }
+                }
+            }
+        }
+
+        assignComponentId(component);
+
+        // assign id to nested components
+        List<Component> allNested = new ArrayList<Component>(component.getComponentsForLifecycle());
+        allNested.addAll(component.getComponentPrototypes());
+        for (Component nestedComponent : allNested) {
+            assignComponentIds(nestedComponent);
+        }
+    }
+
+    /**
+     * Assigns an id to the given component
+     *
+     * @param component - component to assign id to
+     */
+    private void assignComponentId(Component component) {
         Integer currentSequenceVal = idSequence;
 
         // assign ID if necessary
@@ -358,26 +390,6 @@ public class View extends ContainerBase {
         // capture current sequence value for component refreshes
         getViewIndex().addSequenceValueToSnapshot(component.getId(), currentSequenceVal);
 
-        //handle view specially to insure each page always gets the same generated id
-        boolean isView = false;
-        if (component instanceof View) {
-            isView = true;
-        }
-
-        if (isView && ((View) component).isSinglePageView() && ((View) component).getPage() != null && StringUtils.isBlank(
-                ((View) component).getPage().getId())) {
-            //set the id on the single page
-            ((View) component).getPage().setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
-        } else if (isView && ((View) component).getItems() != null) {
-            //get each page and set the id
-            for (Component item : ((View) component).getItems()) {
-                if (item instanceof PageGroup && StringUtils.isBlank(item.getId())) {
-                    item.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
-                }
-            }
-        }
-
-
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
             if (layoutManager != null) {
@@ -385,13 +397,6 @@ public class View extends ContainerBase {
                     layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
                 }
             }
-        }
-
-        // assign id to nested components
-        List<Component> allNested = new ArrayList<Component>(component.getComponentsForLifecycle());
-        allNested.addAll(component.getComponentPrototypes());
-        for (Component nestedComponent : allNested) {
-            assignComponentIds(nestedComponent);
         }
     }
 

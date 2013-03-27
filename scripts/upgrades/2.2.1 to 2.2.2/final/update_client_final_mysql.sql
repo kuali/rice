@@ -18,12 +18,12 @@ CREATE TABLE IF NOT EXISTS krad_msg_t
 	txt VARCHAR(4000),
 	PRIMARY KEY (nmspc_cd,cmpnt_cd,msg_key,loc),
 	UNIQUE krad_msg_tc0(obj_id)
-)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
 ;
 
 --
 -- KULRICE-9152: PK for krad_msg_t is too long for MySQL 5.1
 --
 
-ALTER TABLE krad_msg_t MODIFY loc varchar(80) not null
+ALTER TABLE krad_msg_t MODIFY loc varchar(80) CHARACTER SET utf8 COLLATE utf8_bin not null
 ;

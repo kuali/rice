@@ -511,10 +511,6 @@
             <reference foreign="TRIGGER_GROUP" local="TRIGGER_GROUP"/>
         </foreign-key>
     </table>
-    <table name="KR_KIM_TEST_BO">
-        <column name="PK" size="40" type="VARCHAR"/>
-        <column name="PRNCPL_ID" size="40" type="VARCHAR"/>
-    </table>
     <table name="TRAV_DOC_2_ACCOUNTS">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
@@ -671,42 +667,6 @@
     <sequence name="BK_AUTHOR_ID_S" nextval="1"/>
     <sequence name="BK_BOOK_ID_S" nextval="1"/>
     <sequence name="BK_ORDER_ENTRY_S" nextval="1"/>
-    <sequence name="KRMS_ACTN_ATTR_S" nextval="10000"/>
-    <sequence name="KRMS_ACTN_S" nextval="10000"/>
-    <sequence name="KRMS_AGENDA_ATTR_S" nextval="10000"/>
-    <sequence name="KRMS_AGENDA_ITM_S" nextval="10000"/>
-    <sequence name="KRMS_AGENDA_S" nextval="10000"/>
-    <sequence name="KRMS_ATTR_DEFN_S" nextval="10000"/>
-    <sequence name="KRMS_CMPND_PROP_PROPS_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_ATTR_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_ACTN_TYP_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_AGENDA_TYP_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_FUNC_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_RULE_TYP_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_TERM_SPEC_S" nextval="10000"/>
-    <sequence name="KRMS_CTGRY_S" nextval="1"/>
-    <sequence name="KRMS_FUNC_PARM_S" nextval="10000"/>
-    <sequence name="KRMS_FUNC_S" nextval="10000"/>
-    <sequence name="KRMS_NL_TMPL_ATTR_S" nextval="10000"/>
-    <sequence name="KRMS_NL_TMPL_S" nextval="10000"/>
-    <sequence name="KRMS_NL_USAGE_ATTR_S" nextval="10000"/>
-    <sequence name="KRMS_NL_USAGE_S" nextval="10000"/>
-    <sequence name="KRMS_PROP_PARM_S" nextval="10000"/>
-    <sequence name="KRMS_PROP_S" nextval="10000"/>
-    <sequence name="KRMS_REF_OBJ_KRMS_OBJ_S" nextval="10000"/>
-    <sequence name="KRMS_RULE_ATTR_S" nextval="10000"/>
-    <sequence name="KRMS_RULE_S" nextval="10000"/>
-    <sequence name="KRMS_TERM_PARM_S" nextval="10000"/>
-    <sequence name="KRMS_TERM_RSLVR_ATTR_S" nextval="10000"/>
-    <sequence name="KRMS_TERM_RSLVR_INPUT_SPEC_S" nextval="10000"/>
-    <sequence name="KRMS_TERM_RSLVR_PARM_SPEC_S" nextval="10000"/>
-    <sequence name="KRMS_TERM_RSLVR_S" nextval="10000"/>
-    <sequence name="KRMS_TERM_S" nextval="10000"/>
-    <sequence name="KRMS_TERM_SPEC_S" nextval="10000"/>
-    <sequence name="KRMS_TYP_ATTR_S" nextval="10000"/>
-    <sequence name="KRMS_TYP_RELN_S" nextval="10000"/>
-    <sequence name="KRMS_TYP_S" nextval="10000"/>
     <sequence name="KRNS_DOC_TYP_ATTR_S" nextval="1000"/>
     <sequence name="KRNS_LOCK_S" nextval="2000"/>
     <sequence name="KRNS_LOOKUP_RSLT_S" nextval="2000"/>

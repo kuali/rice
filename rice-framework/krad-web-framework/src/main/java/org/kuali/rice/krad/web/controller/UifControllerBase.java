@@ -47,14 +47,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -135,6 +130,15 @@ public abstract class UifControllerBase {
      * @param request - the http request that was made
      */
     protected abstract UifFormBase createInitialForm(HttpServletRequest request);
+
+    /**
+     * Default method mapping for cases where the method to call is not passed, calls the start method
+     */
+    @RequestMapping()
+    public ModelAndView defaultMapping(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+         return start(form, result,  request, response);
+    }
 
     /**
      * Initial method called when requesting a new view instance which checks authorization and forwards

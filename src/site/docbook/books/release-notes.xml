@@ -185,6 +185,9 @@
                     <listitem>
                         <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9151'>KULRICE-9151</link>] - Document in the guide on clustering that session failover should be implemented for full reliability</para>
                     </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9231'>KULRICE-9231</link>] - Add striping to the tables for easier readibility</para>
+                    </listitem>
                 </itemizedlist>
             </para>
         </section>

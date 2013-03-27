@@ -27,7 +27,7 @@
             base widget classes that can be extended to create custom widgets. Custom widgets should
             only be created in instances where the current KRAD functionality cannot be used to
             deliver the required functionality.</para>
-        <section>
+        <section role="NotInToc">
             <title>RECAP</title>
             <itemizedlist>
                 <listitem>
@@ -87,7 +87,7 @@
         <para>In this example the date picker  is extended, and only the showButtonPanel parameter
             is changed. The merge = 'true' property on map is very important if you want to keep the
             parent bean's properties.</para>
-        <section>
+        <section role="NotInToc">
             <title>RECAP</title>
             <itemizedlist>
                 <listitem>
@@ -1588,7 +1588,7 @@ function createSpinner(id, options) {      
 &lt;/bean>    </programlisting>
         </section>
    </section>
-    <section>
+    <section role="NotInToc">
         <title>RECAP</title>
         <itemizedlist>
             <listitem>

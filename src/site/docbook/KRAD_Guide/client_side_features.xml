@@ -19,7 +19,7 @@
   <title>Client Side Features </title>
   <section>
     <title>Progressive Disclosure </title>
-    <section>
+    <section role="NotInToc">
 <!-- TODO: Add content here -->      <title>RECAP</title>
       <itemizedlist>
         <listitem>
@@ -93,7 +93,7 @@
   </section>
   <section>
     <title>Component Refresh </title>
-    <section>
+    <section role="NotInToc">
 <!-- TODO: Add content here -->      <title>RECAP</title>
       <itemizedlist>
         <listitem>
@@ -209,7 +209,7 @@
   </section>
   <section>
     <title>AJAX Actions </title>
-<!-- TODO: Add content here -->    <section>
+    <!-- TODO: Add content here -->    <section role="NotInToc">
       <title>RECAP</title>
       <itemizedlist>
         <listitem>
@@ -348,7 +348,7 @@
   </section>
   <section>
     <title>Configuring Event Handling </title>
-    <section>
+    <section role="NotInToc">
       <title>RECAP</title>
       <itemizedlist>
         <listitem>

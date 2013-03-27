@@ -426,7 +426,7 @@
                 follow, and, ultimately, to a reusable UI control that each developer can use. 
             </para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>RECAP</title>
             <para>
                 <itemizedlist>
@@ -894,7 +894,7 @@
                     </listitem>    
                 </orderedlist></para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>RECAP</title>
             <para> There are four major “take-aways” in this accessibility section: <itemizedlist>
                     <listitem>

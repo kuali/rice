@@ -141,7 +141,7 @@
             </para>
         </section>
     </section>
-    <section>
+    <section role="NotInToc">
         <title>Recap</title>
         <itemizedlist>
             <listitem>
@@ -406,7 +406,7 @@
                     the need to copy the base bean definition, template file, and Java class. </para>
             </tip>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>RECAP</title>
             <itemizedlist>
                 <listitem>
@@ -1188,7 +1188,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
         </orderedlist></para>
         </section>
         
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -1588,7 +1588,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 will retrieve the onBlurScript and associate with the onblur event. A listing of all
                 events and examples will be given in Chapter 11. </para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -1934,7 +1934,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 </mediaobject>
             </figure>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -2054,7 +2054,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 </listitem>
             </itemizedlist>
         </para>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -2172,7 +2172,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <para> Note that a full listing of beans contained in the above files is given in
                 Appendix A. </para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -2395,7 +2395,7 @@ uif-stackedCollectionGroup {
                 property. More information on using Fluid for CSS layouts will be covered in Chapter
                 7. </para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -2564,7 +2564,7 @@ uif-stackedCollectionGroup {
                 after ‘Section3’ since it has an order of 320 which is greater than 300. The final
                 ordering is ‘Section1, Section4, Section2, Section3, Section5’. </para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>

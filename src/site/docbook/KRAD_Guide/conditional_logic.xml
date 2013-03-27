@@ -40,7 +40,7 @@
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
-            <section>
+            <section role="NotInToc">
                 <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -217,7 +217,7 @@
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
-            <section>
+            <section role="NotInToc">
                 <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -253,7 +253,7 @@
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
-            <section>
+            <section role="NotInToc">
                 <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -334,7 +334,7 @@
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.
           -->
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -369,7 +369,7 @@
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.
           -->
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -418,7 +418,7 @@
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.
           -->
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -464,7 +464,7 @@
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
-            <section>
+            <section role="NotInToc">
                 <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -507,7 +507,7 @@
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
-            <section>
+            <section role="NotInToc">
                 <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -563,7 +563,7 @@
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
-            <section>
+            <section role="NotInToc">
                 <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -625,7 +625,7 @@
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
             -->
-            <section>
+            <section role="NotInToc">
                 <title>Recap</title>
                 <itemizedlist>
                     <listitem>

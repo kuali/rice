@@ -28,7 +28,7 @@
       of the files that define the module configurers.</para>
     <para>The contents of the data dictionary are defined by two sets of vocabularies; the
             ‘business object’ and the ‘document’ data.</para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -116,7 +116,7 @@
     &lt;property name=&quot;description&quot; value=&quot;The code uniquely identify a country.&quot;/&gt;
 &lt;/bean&gt;
         </programlisting>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -221,7 +221,7 @@
     &lt;/property&gt;
 &lt;/bean&gt;
         </programlisting>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>

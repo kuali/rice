@@ -66,7 +66,7 @@
                 is how we will request the view with a URL (custom views that extend the general
                 form view, known as view types, may support other ways of retrieving a view).</para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -334,7 +334,7 @@
     &lt;/property&gt;
 &lt;/bean&gt;
         </programlisting>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
 
                 <itemizedlist>
@@ -405,7 +405,7 @@
                 </imageobject>
             </mediaobject>
         </figure>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -457,7 +457,7 @@
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.
             -->
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -489,7 +489,7 @@
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.
             -->
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>
@@ -561,7 +561,7 @@
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.
             -->
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
                 <itemizedlist>
                     <listitem>
@@ -582,7 +582,7 @@
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.
             -->
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <itemizedlist>
                 <listitem>

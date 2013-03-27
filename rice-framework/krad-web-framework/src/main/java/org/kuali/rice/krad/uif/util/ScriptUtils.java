@@ -306,4 +306,28 @@ public class ScriptUtils {
 
         return appendedScript;
     }
+
+    /**
+     * Helper method to build a JS string that will invoke the given function with the given arguments
+     * 
+     * @param functionName name of the JS function to invoke
+     * @param arguments zero or more arguments to pass, each will be converted to the corresponding JS type
+     * @return JS String for invoking the function
+     */
+    public static String buildFunctionCall(String functionName, Object... arguments) {
+        StringBuffer sb = new StringBuffer(functionName).append("(");
+
+        if (arguments != null) {
+            List<String> jsArguments = new ArrayList<String>();
+            for (Object argument : arguments) {
+                jsArguments.add(translateValue(argument));
+            }
+
+            sb.append(StringUtils.join(jsArguments, ","));
+        }
+
+        sb.append(");");
+
+        return sb.toString();
+    }
 }

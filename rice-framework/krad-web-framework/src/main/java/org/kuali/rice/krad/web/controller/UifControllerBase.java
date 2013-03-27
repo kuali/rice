@@ -18,7 +18,6 @@ package org.kuali.rice.krad.web.controller;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -26,10 +25,8 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.web.form.UifFormManager;
@@ -283,44 +280,6 @@ public abstract class UifControllerBase {
         View view = uifForm.getPostedView();
         view.getViewHelperService().processCollectionDeleteLine(view, uifForm, selectedCollectionPath,
                 selectedLineIndex);
-
-        return getUIFModelAndView(uifForm);
-    }
-
-    /**
-     * Invoked to toggle the show inactive indicator on the selected collection group and then
-     * rerun the component lifecycle and rendering based on the updated indicator and form data
-     *
-     * @param request - request object that should contain the request component id (for the collection group)
-     * and the show inactive indicator value
-     */
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=toggleInactiveRecordDisplay")
-    public ModelAndView toggleInactiveRecordDisplay(@ModelAttribute("KualiForm") UifFormBase uifForm,
-            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-        String collectionGroupId = request.getParameter(UifParameters.REQUESTED_COMPONENT_ID);
-        if (StringUtils.isBlank(collectionGroupId)) {
-            throw new RuntimeException(
-                    "Collection group id to update for inactive record display not found in request");
-        }
-
-        String showInactiveStr = request.getParameter(UifParameters.SHOW_INACTIVE_RECORDS);
-        Boolean showInactive = false;
-        if (StringUtils.isNotBlank(showInactiveStr)) {
-            // TODO: should use property editors once we have util class
-            showInactive = (Boolean) (new BooleanFormatter()).convertFromPresentationFormat(showInactiveStr);
-        } else {
-            throw new RuntimeException("Show inactive records flag not found in request");
-        }
-
-        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(
-                uifForm.getPostedView(), collectionGroupId);
-
-        // update inactive flag on group
-        collectionGroup.setShowInactiveLines(showInactive);
-
-        // run lifecycle and update in view
-        uifForm.getPostedView().getViewHelperService().performComponentLifecycle(uifForm.getPostedView(), uifForm,
-                collectionGroup, collectionGroupId);
 
         return getUIFModelAndView(uifForm);
     }

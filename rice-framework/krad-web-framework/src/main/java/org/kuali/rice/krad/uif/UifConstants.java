@@ -293,4 +293,14 @@ public class UifConstants {
         public static final String LESS_THAN = "less_than";
     }
 
+    public static final class JsFunctions {
+        public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
+        public static final String SET_CONFIG_PARM = "setConfigParam";
+    }
+
+    public static final class ConfigProperties {
+        public static final String KRAD_IMAGES_URL = "krad.externalizable.images.url";
+        public static final String KRAD_URL = "krad.url";
+    }
+
 }

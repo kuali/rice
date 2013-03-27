@@ -298,9 +298,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             component.setHidden(false);
         }
 
-        // TODO: need to handle updating client state for component refresh
-        Map<String, Object> clientState = new HashMap<String, Object>();
-        performComponentFinalize(view, component, model, parent, clientState);
+        performComponentFinalize(view, component, model, parent);
 
         // make sure id, binding, and label settings stay the same as initial
         if (component instanceof Group || component instanceof FieldGroup) {
@@ -331,14 +329,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 }
             }
         }
-
-        // get client state for component and build update script for on load
-        String clientStateScript = buildClientSideStateScript(view, clientState, true);
-        String onLoadScript = component.getOnLoadScript();
-        if (StringUtils.isNotBlank(onLoadScript)) {
-            clientStateScript = onLoadScript + clientStateScript;
-        }
-        component.setOnLoadScript(clientStateScript);
 
         // get script for generating growl messages
         String growlScript = buildGrowlScript(view);
@@ -1055,15 +1045,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         String growlScript = buildGrowlScript(view);
         ((ViewModel) model).setGrowlScript(growlScript);
 
-        Map<String, Object> clientState = new HashMap<String, Object>();
-        performComponentFinalize(view, view, model, null, clientState);
+        performComponentFinalize(view, view, model, null);
 
-        String clientStateScript = buildClientSideStateScript(view, clientState, false);
-        String viewPreLoadScript = view.getPreLoadScript();
-        if (StringUtils.isNotBlank(viewPreLoadScript)) {
-            clientStateScript = viewPreLoadScript + clientStateScript;
-        }
-        view.setPreLoadScript(clientStateScript);
+        String clientStateScript = buildClientSideStateScript(view, model);
+        view.setPreLoadScript(ScriptUtils.appendScript(view.getPreLoadScript(), clientStateScript));
 
         // apply default values if they have not been applied yet
         if (!((ViewModel) model).isDefaultsApplied()) {
@@ -1080,59 +1065,28 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * </p>
      *
      * @param view - view instance that is being built
-     * @param clientSideState - map of key/value pairs that should be exposed as client side state
-     * @param updateOnly - boolean that indicates whether we are just updating a component (true), or the full view
+     * @param model - model containing the client side state map
      */
-    protected String buildClientSideStateScript(View view, Map<String, Object> clientSideState, boolean updateOnly) {
-        // merge any additional client side state added to the view during processing
-        // state from view will override in all cases except when both values are maps, in which the maps
-        // be combined for the new value
-        for (Entry<String, Object> additionalState : view.getClientSideState().entrySet()) {
-            if (!clientSideState.containsKey(additionalState.getKey())) {
-                clientSideState.put(additionalState.getKey(), additionalState.getValue());
-            } else {
-                Object state = clientSideState.get(additionalState.getKey());
-                Object mergeState = additionalState.getValue();
-                if ((state instanceof Map) && (mergeState instanceof Map)) {
-                    ((Map) state).putAll((Map) mergeState);
-                } else {
-                    clientSideState.put(additionalState.getKey(), additionalState.getValue());
-                }
-            }
-        }
+    protected String buildClientSideStateScript(View view, Object model) {
+        Map<String, Object> clientSideState = ((ViewModel) model).getClientStateForSyncing();
 
         // script for initializing client side state on load
         String clientStateScript = "";
         if (!clientSideState.isEmpty()) {
-            if (updateOnly) {
-                clientStateScript = "updateViewState({";
-            } else {
-                clientStateScript = "initializeViewState({";
-            }
-
-            for (Entry<String, Object> stateEntry : clientSideState.entrySet()) {
-                clientStateScript += "'" + stateEntry.getKey() + "':";
-                clientStateScript += ScriptUtils.translateValue(stateEntry.getValue());
-                clientStateScript += ",";
-            }
-            clientStateScript = StringUtils.removeEnd(clientStateScript, ",");
-            clientStateScript += "});";
+            clientStateScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.INITIALIZE_VIEW_STATE,
+                    clientSideState);
         }
 
         // add necessary configuration parameters
-        if (!updateOnly) {
-            String kradImageLocation = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                    "krad.externalizable.images.url");
-            clientStateScript += "setConfigParam('"
-                    + UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION
-                    + "','"
-                    + kradImageLocation
-                    + "');";
+        String kradImageLocation = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                UifConstants.ConfigProperties.KRAD_IMAGES_URL);
+        clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
+                UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION, kradImageLocation);
 
-            String kradURL = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString("krad.url");
-            clientStateScript +=
-                    "setConfigParam('" + UifConstants.ClientSideVariables.KRAD_URL + "','" + kradURL + "');";
-        }
+        String kradURL = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                UifConstants.ConfigProperties.KRAD_URL);
+        clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
+                UifConstants.ClientSideVariables.KRAD_URL, kradURL);
 
         return clientStateScript;
     }
@@ -1203,10 +1157,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param component - the component instance that should be updated
      * @param model - top level object containing the data
      * @param parent - Parent component for the component being finalized
-     * @param clientSideState - map to add client state to
      */
-    protected void performComponentFinalize(View view, Component component, Object model, Component parent,
-            Map<String, Object> clientSideState) {
+    protected void performComponentFinalize(View view, Component component, Object model, Component parent) {
         if (component == null) {
             return;
         }
@@ -1227,9 +1179,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // invoke component to update its state
         component.performFinalize(view, model, parent);
 
-        // add client side state for annotated component properties
-        addClientSideStateForComponent(component, clientSideState);
-
         // invoke service override hook
         performCustomFinalize(view, component, model, parent);
 
@@ -1244,52 +1193,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // get components children and recursively update state
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            performComponentFinalize(view, nestedComponent, model, component, clientSideState);
-        }
-    }
-
-    /**
-     * Reflects the class for the given component to find any fields that are annotated with
-     * <code>ClientSideState</code> and adds the corresponding property name/value pair to the client side state
-     * map
-     *
-     * <p>
-     * Note if the component is the <code>View</code, state is added directly to the client side state map, while
-     * for other components a nested Map is created to hold the state, which is then placed into the client side
-     * state map with the component id as the key
-     * </p>
-     *
-     * @param component - component instance to get client state for
-     * @param clientSideState - map to add client side variable name/values to
-     */
-    protected void addClientSideStateForComponent(Component component, Map<String, Object> clientSideState) {
-        Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(component.getClass(),
-                ClientSideState.class);
-
-        if (!annotatedFields.isEmpty()) {
-            Map<String, Object> componentClientState = null;
-            if (component instanceof View) {
-                componentClientState = clientSideState;
-            } else {
-                if (clientSideState.containsKey(component.getId())) {
-                    componentClientState = (Map<String, Object>) clientSideState.get(component.getId());
-                } else {
-                    componentClientState = new HashMap<String, Object>();
-                    clientSideState.put(component.getId(), componentClientState);
-                }
-            }
-
-            for (Entry<String, Annotation> annotatedField : annotatedFields.entrySet()) {
-                ClientSideState clientSideStateAnnot = (ClientSideState) annotatedField.getValue();
-
-                String variableName = clientSideStateAnnot.variableName();
-                if (StringUtils.isBlank(variableName)) {
-                    variableName = annotatedField.getKey();
-                }
-
-                Object value = ObjectPropertyUtils.getPropertyValue(component, annotatedField.getKey());
-                componentClientState.put(variableName, value);
-            }
+            performComponentFinalize(view, nestedComponent, model, component);
         }
     }
 

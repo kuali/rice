@@ -25,6 +25,7 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -119,6 +120,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private QuickFinder collectionLookup;
 
     private boolean renderInactiveToggleButton;
+    @ClientSideState(variableName = "inactive")
     private boolean showInactiveLines;
     private CollectionFilter activeCollectionFilter;
     private List<CollectionFilter> filters;

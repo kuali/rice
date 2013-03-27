@@ -20,6 +20,7 @@
 	<xsl:import href="appendix.xsl"/>
 	<xsl:import href="xref.xsl"/>
 	<xsl:import href="titlepage.xsl"/>
+    <xsl:template match="section[@role = 'NotInToc']" mode="toc" />
     <xsl:attribute-set name="monospace.verbatim.properties">
         <xsl:attribute name="wrap-option">wrap</xsl:attribute>
         <xsl:attribute name="font-size">7pt</xsl:attribute>

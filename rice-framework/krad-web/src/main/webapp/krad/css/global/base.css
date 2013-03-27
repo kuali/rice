@@ -160,22 +160,58 @@ ul.uif-readOnlyStringList li {
     max-width: 36em;
 }
 
+/** sticky content ****************************************************************************/
+
+.uif-sticky{
+    z-index: 5;
+    width: 100%;
+}
+
+.uif-stickyFooter{
+    z-index: 4;
+    width: 100%;
+    margin: 0 !important;
+}
+
+.uif-stickyButtonFooter{
+    background-color: lightGray;
+    border: 1px solid gray;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    padding-top: 10px;
+    padding-left: 10px;
+    text-align: center;
+}
+
 /** Header related styles *********************************************************************/
 
-.uif-header {
-    margin: .5em 0;
-    /* relative to position some icons/links on header line */
-    position: relative;
+.uif-viewHeader-contentWrapper {
+    width: 100%;
+    background-color: white;
+    z-index: 3;
+}
+
+.uif-header-contentWrapper{
+    width: 100%;
 }
 
 .uif-viewHeader {
-    margin-left: 15px;
+    /* relative to position some icons/links on header line */
+    position: relative;
+    padding-left: 15px;
 }
 
 .uif-header-rightGroup {
     position: absolute;
     right: 0;
     top: 0;
+}
+
+#Uif-BreadcrumbWrapper, #Uif-ApplicationHeader-Wrapper, #Uif-ApplicationFooter-Wrapper{
+    width: 100%;
+}
+
+#Uif-ApplicationFooter-Wrapper{
+    position: absolute;
 }
 
 /* all headers used at view, page, and section levels *************************************************/
@@ -188,7 +224,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1.uif-headerText {
-    font: bold 21px Helvetica;
+    font: bold 30px Helvetica;
 }
 
 h2.uif-headerText {
@@ -215,6 +251,26 @@ h5.uif-headerText {
 h6.uif-headerText {
     font: normal 12px Helvetica;
     text-transform: uppercase;
+}
+
+.uif-viewHeader-supportTitle {
+    display: block;
+    font-size: 0.7em;
+    font-weight: normal;
+}
+
+.uif-viewHeader-areaTitle {
+    display: block;
+    font-size: 0.7em;
+    font-weight: normal;
+    color: #888888;
+}
+
+.uif-viewHeader-metadata {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: #888888;
 }
 
 /* DocumentView header custom styling */
@@ -248,6 +304,7 @@ img.uif-disclosure-image {
 
 .uif-page {
     margin-right: 10px;
+    padding-top: 15px;
 }
 
 .uif-group > .uif-instructionalMessage, .uif-group > .uif-disclosureContent > .uif-instructionalMessage,
@@ -265,6 +322,12 @@ img.uif-disclosure-image {
 }
 
 /** Breadcrumbs *****************************************************************************************/
+
+#Uif-BreadcrumbWrapper{
+    background-color: white;
+    width: 100%;
+    z-index: 10 !important;
+}
 
 ol.uif-breadcrumbs {
     display: block;
@@ -311,7 +374,7 @@ ol.uif-breadcrumbs, .uif-breadcrumbs > li {
     border-radius: 6px 6px 6px 6px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     min-width: 180px;
-    padding: 10px;
+    padding: 5px;
     z-index: 1000;
 }
 
@@ -832,6 +895,9 @@ fieldset[data-type="InputSet"] {
 .tab-navigation-block {
     padding: 0 !important;
     padding-left: 20px !important;
+    background-color: white;
+    width: 100%;
+    z-index: 4;
 }
 
 .tab-navigation-block li {
@@ -952,6 +1018,7 @@ fieldset[data-type="InputSet"] {
 .uif-navigation {
     position: absolute;
     width: 210px;
+    padding-top: 15px;
 }
 
 .uif-collapseLink {

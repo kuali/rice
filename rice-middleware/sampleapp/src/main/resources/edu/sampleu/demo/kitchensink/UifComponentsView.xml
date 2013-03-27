@@ -34,6 +34,37 @@
     <property name="parentLocation">
       <bean parent="Uif-RicePortalParentLocation"/>
     </property>
+    <property name="stickyHeader" value="true"/>
+    <property name="stickyBreadcrumbs" value="true"/>
+    <property name="header.areaTitleText" value="[color='red']KRAD[/color] Kitchen Sink (areaText)"/>
+    <property name="header.metadataText" value="Metadata Text"/>
+    <property name="header.rightGroup">
+      <bean parent="Uif-HorizontalBoxGroup" p:style="background-color: lightBlue; padding: 5px;">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="RightGroup Content" />
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.lowerGroup">
+      <bean parent="Uif-VerticalBoxGroup" p:style="background-color: lightGray; padding: 5px;">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="lowerGroup content"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.upperGroup">
+      <bean parent="Uif-HorizontalBoxGroup" p:style="background-color: lightGray; padding: 5px;">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="upperGroup content"/>
+          </list>
+        </property>
+      </bean>
+    </property>
     <property name="breadcrumbItem.siblingBreadcrumbComponent">
       <bean parent="Uif-InputField" p:label="Navigate to" p:propertyName="viewId">
         <property name="control">
@@ -270,6 +301,7 @@
     <property name="footer">
       <bean parent="Uif-FormFooter"/>
     </property>
+    <property name="stickyFooter" value="true"/>
   </bean>
 
   <bean id="UifCompView-KeyValueLocation" parent="Uif-KeyValueLocation">

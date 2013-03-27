@@ -17,9 +17,24 @@
 -->
 <#macro uif_pageGroup group>
 
+<#--    Breadcrumb update-->
     <div id="Uif-BreadcrumbUpdate" style="display:none;">
         <@krad.template component=KualiForm.view.breadcrumbs page=group/>
     </div>
+
+<#--unified view header supportTitle update-->
+    <#if group.header?has_content && KualiForm.view.unifiedHeader>
+        <div id="Uif-SupportTitleUpdate" style="display:none;">
+            <span class="uif-supportTitle-wrapper uif-viewHeader-supportTitle">
+                <#-- rich message support -->
+                <#if group.header.richHeaderMessage?has_content>
+                    <@krad.template component=element.richHeaderMessage/>
+                <#else>
+                ${group.header.headerText}
+                </#if>
+            </span>
+        </div>
+    </#if>
 
     <#include "group.ftl" parse=true/>
     <@uif_group group=group/>

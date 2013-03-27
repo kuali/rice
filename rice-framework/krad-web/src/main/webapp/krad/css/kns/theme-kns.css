@@ -62,7 +62,6 @@ h1.uif-headerText {
 	font-family: oswaldregular, Arial, Helvetica, sans-serif;
 	font-weight:;
 	font-size: 2em;
-	padding-left: 15px;
 	letter-spacing: .04em;
 	font-weight:normal;
 }
@@ -118,11 +117,12 @@ h6.uif-headerText {
 }
 .uif-header.uif-subSectionHeader[data-headerfor="CollectionGroup_AdHocWorkgroup"] .uif-headerText { margin-top:-10px;}
 
+.uif-viewHeader-contentWrapper{
+    background: url(../../images/kns/masthead1.png);
+}
+
 .uif-viewHeader {
-	background: url(../../images/kns/masthead1.png);
-	margin: 0 0 15px;
-	padding-left: 15px;
-	padding: .8em;
+    padding: 1em 0 1em 15px;
 }
 .uif-viewHeader h1.uif-headerText {
 	margin-top: 0px;

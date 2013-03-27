@@ -31,6 +31,7 @@
     <property name="parentLocation">
       <bean parent="Uif-RicePortalParentLocation"/>
     </property>
+    <property name="stickyHeader" value="true"/>
     <property name="headerText" value="Layout View"/>
     <property name="entryPageId" value="UifLayoutView-Page1"/>
     <property name="navigation">

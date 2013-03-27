@@ -283,12 +283,12 @@ public class UifComponentsTestForm extends UifFormBase {
         list3.get(2).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
 
         list4.add(new UITestObject("A", "B", "C", "D"));
-        list4.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
-        list4.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
-        list4.get(0).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
+        list4.get(0).getSubList().add(new UITestObject("1", "B", "C", "D", new UITestObject("1","1","1","1")));
+        list4.get(0).getSubList().add(new UITestObject("2", "2", "3", "4", new UITestObject("1","1","1","1")));
+        list4.get(0).getSubList().add(new UITestObject("3", "X", "Y", "Z", new UITestObject("1","1","1","1")));
         list4.add(new UITestObject("1", "2", "3", "4"));
-        list4.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
-        list4.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
+        list4.get(1).getSubList().add(new UITestObject("4", "b", "C", "D", new UITestObject("$50.00","1","1","1")));
+        /*list4.get(1).getSubList().add(new UITestObject("5", "s", "D", "F", new UITestObject("1","1","1","1")));*/
 
         //triple nesting
         list5.add(new UITestObject("a", "a", "a", "a"));

@@ -20,6 +20,14 @@ var jq = jQuery.noConflict();
 jQuery.blockUI.defaults.css = {};
 jQuery.blockUI.defaults.overlayCSS = {};
 
+//stickyContent globals
+var stickyContent;
+var stickyContentOffset;
+var currentHeaderHeight = 0;
+var currentFooterHeight = 0;
+var stickyFooterContent;
+var applicationFooter;
+
 // validation init
 var pageValidatorReady = false;
 var validateClient = true;
@@ -76,7 +84,7 @@ jQuery(document).ready(function () {
 
     // common ajax setup
     jQuery.ajaxSetup({
-        error:function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             showGrowl(getMessage(kradVariables.MESSAGE_STATUS_ERROR, null, null, textStatus, errorThrown), getMessage(kradVariables.MESSAGE_SERVER_RESPONSE_ERROR), 'errorGrowl');
         }
     });
@@ -104,7 +112,7 @@ jQuery(document).ready(function () {
         if (e.state && e.state.pageId && e.state.pageId != currentPageId) {
             var request = new KradRequest();
             request.methodToCall = "navigate";
-            request.additionalData = {"actionParameters[navigateToPageId]":e.state.pageId};
+            request.additionalData = {"actionParameters[navigateToPageId]": e.state.pageId};
             request.send();
         }
     });
@@ -119,6 +127,32 @@ jQuery(document).ready(function () {
         if (pageId && jQuery("input#pageId").length && pageId != jQuery("input#pageId").val()) {
             handleHashPageId(pageId);
         }
+    });
+
+    //sticky(header) content variables must be initialized here to retain sticky location across page request
+    stickyContent = jQuery("[data-sticky='true']");
+    if (stickyContent.length) {
+        stickyContent.each(function () {
+            jQuery(this).data("offset", jQuery(this).offset())
+        });
+        stickyContentOffset = stickyContent.offset();
+        initStickyContent();
+    }
+
+    //find and initialize stickyFooters
+    stickyFooterContent = jQuery("[data-stickyFooter='true']");
+    applicationFooter = jQuery("#Uif-ApplicationFooter-Wrapper");
+    initStickyFooterContent();
+
+    //bind scroll and resize events to dynamically update sticky content positions
+    jQuery(window).bind("scroll", function () {
+        handleStickyContent();
+        handleStickyFooterContent();
+    });
+
+    jQuery(window).bind("resize", function () {
+        handleStickyContent();
+        handleStickyFooterContent();
     });
 
     //focus on first field
@@ -137,17 +171,50 @@ jQuery(document).ready(function () {
  */
 function initFieldHandlers() {
 
-    // var HANDLE_FIELD_MESSAGES_EVENT = "handleFieldsetMessages";
     var validationTooltipOptions = {
-        position:"top",
-        align:"left",
-        distance:0,
-        manageMouseEvents:false,
-        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
-        alwaysVisible:false,
-        tail:{align:"left"},
-        themeMargins:{total:"13px", difference:"2px"}
+        position: "top",
+        align: "left",
+        distance: 0,
+        manageMouseEvents: false,
+        themePath: "../krad/plugins/tooltip/jquerybubblepopup-theme/",
+        alwaysVisible: false,
+        tail: {align: "left"},
+        themeMargins: {total: "13px", difference: "2px"}
     };
+
+    //add a focus handler for scroll manipulation when there is a sticky header or footer, so content stays in view
+    jQuery("#Uif-PageContentWrapper").on("focus", "a[href], area[href], input:not([disabled]), "
+            + "select:not([disabled]), textarea:not([disabled]), button:not([disabled]), "
+            + "iframe, object, embed, *[tabindex], *[contenteditable]",
+            function () {
+                var element = jQuery(this);
+                var buffer = 10;
+                var elementHeight = element.outerHeight();
+                if(!elementHeight){
+                    elementHeight = 24;
+                }
+
+                if (stickyFooterContent && stickyFooterContent.length) {
+                    var footerOffset = stickyFooterContent.offset().top;
+                    if (element.offset().top + elementHeight > footerOffset) {
+                        var visibleContentSize = jQuery(window).height() - currentHeaderHeight - currentFooterHeight;
+                        jQuery(document).scrollTo(element.offset().top + elementHeight + buffer
+                                - currentHeaderHeight - visibleContentSize );
+                        return true;
+                    }
+                }
+
+                if (stickyContent && stickyContent.length) {
+                    var reversedStickyContent = jQuery(stickyContent.get().reverse());
+                    var headerOffset = reversedStickyContent.offset().top + reversedStickyContent.outerHeight();
+                    if (element.offset().top < headerOffset) {
+                        jQuery(document).scrollTo(element.offset().top - currentHeaderHeight - buffer);
+                        return true;
+                    }
+                }
+
+                return true;
+            });
 
     jQuery(document).on("mouseenter",
             "div[data-role='InputField'] input:not([type='image']),"
@@ -204,7 +271,7 @@ function initFieldHandlers() {
                             validationTooltipOptions.themeName = data.tooltipTheme;
                             validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
                             //set the margin to offset it from the left appropriately
-                            validationTooltipOptions.divStyle = {margin:getTooltipMargin(tooltipElement)};
+                            validationTooltipOptions.divStyle = {margin: getTooltipMargin(tooltipElement)};
                             jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
                             jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
                             jQuery(tooltipElement).ShowBubblePopup();
@@ -452,8 +519,8 @@ function initFieldHandlers() {
 function initBubblePopups() {
     //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
     jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
-            + "select, textarea, .uif-tooltip", {   manageMouseEvents:false,
-        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
+            + "select, textarea, .uif-tooltip", {   manageMouseEvents: false,
+        themePath: "../krad/plugins/tooltip/jquerybubblepopup-theme/"});
 
 }
 
@@ -478,10 +545,21 @@ function setupPage(validate) {
         return;
     }
 
-    jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+    //update the support title
+    var supportTitleUpdate = jQuery("#Uif-SupportTitleUpdate").find("> span").detach();
+    if (supportTitleUpdate.length){
+        jQuery(".uif-supportTitle-wrapper").replaceWith(supportTitleUpdate);
+    }
+
+    jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
     originalPageTitle = document.title;
 
     setupImages();
+
+    //reinitialize sticky footer content because page footer can be sticky
+    stickyFooterContent = jQuery("[data-stickyFooter='true']");
+    initStickyFooterContent();
+    initStickyContent();
 
     //Reset summary state before processing each field - summaries are shown if server messages
     // or on client page validation
@@ -492,8 +570,8 @@ function setupPage(validate) {
 
     //select current page
     var pageId = jQuery("input[name='view.currentPageId']").val();
-    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage:pageId});
-    jQuery("ul.uif-tabMenu").selectTab({selectPage:pageId});
+    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage: pageId});
+    jQuery("ul.uif-tabMenu").selectTab({selectPage: pageId});
 
     //handle page history/url
     if (history.replaceState) {
@@ -501,11 +579,11 @@ function setupPage(validate) {
         var urlPageId = getUrlParameter("pageId");
         if (urlPageId && pageId && urlPageId != pageId) {
             //push state if new page
-            history.pushState({pageId:pageId}, null, getHistoryQueryString("pageId", pageId));
+            history.pushState({pageId: pageId}, null, getHistoryQueryString("pageId", pageId));
         }
         else {
             //otherwise replace state
-            history.replaceState({pageId:pageId}, null, getHistoryQueryString("pageId", pageId));
+            history.replaceState({pageId: pageId}, null, getHistoryQueryString("pageId", pageId));
         }
     }
     else {
@@ -596,12 +674,12 @@ function getConfigParam(paramName) {
 }
 
 jQuery.validator.setDefaults({
-    onsubmit:false,
-    ignore:".ignoreValid",
-    wrapper:"",
-    onfocusout:false,
-    onclick:false,
-    onkeyup:function (element) {
+    onsubmit: false,
+    ignore: ".ignoreValid",
+    wrapper: "",
+    onfocusout: false,
+    onclick: false,
+    onkeyup: function (element) {
         if (validateClient) {
             var id = getAttributeId(jQuery(element).attr('id'));
             var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
@@ -612,11 +690,11 @@ jQuery.validator.setDefaults({
             }
         }
     },
-    highlight:function (element, errorClass, validClass) {
+    highlight: function (element, errorClass, validClass) {
         jQuery(element).addClass(errorClass).removeClass(validClass);
         jQuery(element).attr("aria-invalid", "true");
     },
-    unhighlight:function (element, errorClass, validClass) {
+    unhighlight: function (element, errorClass, validClass) {
         jQuery(element).removeClass(errorClass).addClass(validClass);
         jQuery(element).removeAttr("aria-invalid");
 
@@ -641,9 +719,9 @@ jQuery.validator.setDefaults({
             }
         }
     },
-    errorPlacement:function (error, element) {
+    errorPlacement: function (error, element) {
     },
-    showErrors:function (nameErrorMap, elementObjectList) {
+    showErrors: function (nameErrorMap, elementObjectList) {
         this.defaultShowErrors();
 
         for (var i in elementObjectList) {
@@ -683,7 +761,7 @@ jQuery.validator.setDefaults({
         }
 
     },
-    success:function (label) {
+    success: function (label) {
         var htmlFor = jQuery(label).attr('for');
         var id = "";
         if (htmlFor.indexOf("_control") >= 0) {

@@ -115,6 +115,7 @@
       <bean parent="Uif-BlockUI"
             p:blockingImageSource="@{#ConfigProperties['krad.externalizable.images.url']}loader.gif"/>
     </property>
+    <property name="unifiedHeader" value="true"/>
     <property name="header">
       <bean parent="Uif-ViewHeader"/>
     </property>

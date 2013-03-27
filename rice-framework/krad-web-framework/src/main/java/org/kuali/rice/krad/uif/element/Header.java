@@ -47,7 +47,6 @@ import java.util.List;
         @BeanTag(name = "headerFour-bean", parent = "Uif-HeaderFour"),
         @BeanTag(name = "headerFive-bean", parent = "Uif-HeaderFive"),
         @BeanTag(name = "headerSix-bean", parent = "Uif-HeaderSix"),
-        @BeanTag(name = "viewHeader-bean", parent = "Uif-ViewHeader"),
         @BeanTag(name = "pageHeader-bean", parent = "Uif-PageHeader"),
         @BeanTag(name = "sectionHeader-bean", parent = "Uif-SectionHeader"),
         @BeanTag(name = "subSectionHeader-bean", parent = "Uif-SubSectionHeader"),

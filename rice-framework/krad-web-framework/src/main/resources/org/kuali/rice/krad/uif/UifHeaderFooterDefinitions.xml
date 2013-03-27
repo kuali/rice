@@ -110,7 +110,19 @@
   </bean>
 
   <bean id="Uif-ViewHeader" parent="Uif-ViewHeader-parentBean"/>
-  <bean id="Uif-ViewHeader-parentBean" abstract="true" parent="Uif-HeaderOne">
+  <bean id="Uif-ViewHeader-parentBean" abstract="true" parent="Uif-HeaderOne"
+        class="org.kuali.rice.krad.uif.element.ViewHeader">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/viewHeader.ftl"/>
+    <property name="templateName" value="uif_viewHeader"/>
+    <property name="supportTitleMessage">
+      <bean parent="Uif-Message" p:cssClasses="uif-viewHeader-supportTitle"/>
+    </property>
+    <property name="areaTitleMessage">
+      <bean parent="Uif-Message" p:cssClasses="uif-viewHeader-areaTitle"/>
+    </property>
+    <property name="metadataMessage">
+      <bean parent="Uif-Message" p:cssClasses="uif-viewHeader-metadata"/>
+    </property>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-viewHeader</value>

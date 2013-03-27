@@ -210,15 +210,20 @@
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
     <property name="readOnly" value="true"/>
+    <property name="layoutManager.columnCalculations">
+      <list>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:propertyName="innerObject.field1"/>
+      </list>
+    </property>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
-              p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
               p:required="true">
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="innerObject.field1" p:label="SubField 1"
+                      p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
               p:required="true"/>
       </list>

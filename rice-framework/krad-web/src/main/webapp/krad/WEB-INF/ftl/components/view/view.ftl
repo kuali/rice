@@ -21,7 +21,11 @@
     <@krad.div component=view>
 
         <!-- BREADCRUMBS -->
-        <div id="Uif-BreadcrumbWrapper"></div>
+        <#local breadcrumbWrapData=""/>
+        <#if view.stickyBreadcrumbs>
+            <#local breadcrumbWrapData="data-sticky='true'"/>
+        </#if>
+        <div id="Uif-BreadcrumbWrapper" ${breadcrumbWrapData}></div>
 
         <!-- VIEW HEADER -->
         <@krad.template component=view.header/>
@@ -42,9 +46,7 @@
         </div>
 
         <!-- VIEW FOOTER -->
-        <div id="viewfooter_div">
-            <@krad.template component=view.footer/>
-        </div>
+        <@krad.template component=view.footer/>
 
         <#if (view.dialogs?size > 0)>
             <!-- DIALOG LIST -->

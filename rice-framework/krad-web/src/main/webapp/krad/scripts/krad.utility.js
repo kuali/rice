@@ -97,7 +97,7 @@ function convertToHtml(text, removeAnchors) {
         text = text.replace(/&lt;\/a&gt;/gi, "");
     }
 
-    return jQuery("<span />", { html:text }).text();
+    return jQuery("<span />", { html: text }).text();
 }
 
 /**
@@ -110,7 +110,7 @@ function publishHeight() {
         parentUrl = jQuery.cookie('parentUrl');
         var passedUrl = decodeURIComponent(document.location.hash.replace(/^#/, ''));
         if (passedUrl && passedUrl.substring(0, 4) === "http") {
-            jQuery.cookie('parentUrl', passedUrl, {path:'/'});
+            jQuery.cookie('parentUrl', passedUrl, {path: '/'});
             parentUrl = passedUrl;
         }
     }
@@ -125,7 +125,7 @@ function publishHeight() {
     var height = jQuery("body").outerHeight();
     jQuery("body").attr("style", "overflow-x: auto; padding-right: 20px;");
     if (parentUrl && !isNaN(height) && height > 0) {
-        jQuery.postMessage({ if_height:height}, parentUrl, parent);
+        jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;
     }
 }
@@ -337,7 +337,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         runScriptsForId(id);
 
         //reinit dirty fields
-        jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+        jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 
         //reinitialize BubblePopup
         initBubblePopups();
@@ -585,10 +585,10 @@ function checkDirty(event) {
             if (ul.length > 0) {
                 var pageId = jQuery("[name='view.currentPageId']").val();
                 if (ul.hasClass(kradVariables.TAB_MENU_CLASS)) {
-                    jQuery("#" + ul.attr("id")).selectTab({selectPage:pageId});
+                    jQuery("#" + ul.attr("id")).selectTab({selectPage: pageId});
                 }
                 else {
-                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage:pageId});
+                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage: pageId});
                 }
             }
 
@@ -746,7 +746,7 @@ function jumpToElementByName(name) {
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 1, {offset:{top:headerOffset}});
+            top.jQuery.scrollTo(theElement, 1, {offset: {top: headerOffset}});
         }
     }
 }
@@ -760,7 +760,7 @@ function jumpToElementById(id) {
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 1, {offset:{top:headerOffset}});
+            top.jQuery.scrollTo(theElement, 1, {offset: {top: headerOffset}});
         }
     }
 }
@@ -884,7 +884,7 @@ function openHelpWindow(url) {
  */
 function uppercaseValue(controlId) {
     jQuery("#" + controlId).css('text-transform', 'uppercase');
-    jQuery("#" + controlId).change(function() {
+    jQuery("#" + controlId).change(function () {
         this.value = this.value.toUpperCase();
     });
 }
@@ -1049,7 +1049,7 @@ function showLightboxComponent(componentId, overrideOptions) {
     // set renderedInLightBox indicator and remove it when lightbox is closed
     if (jQuery('#renderedInLightBox').val() != true) {
         jQuery('#renderedInLightBox').val(true);
-        _appendCallbackFunctions(overrideOptions, {afterClose:function () {
+        _appendCallbackFunctions(overrideOptions, {afterClose: function () {
             jQuery('#renderedInLightBox').val(false);
         }});
     }
@@ -1079,7 +1079,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
     if (top == self) {
         // ensure that component of KualiForm gets updated after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
+        _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -1089,7 +1089,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         }});
     } else {
         // reattach component to KualiForm after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
+        _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             parent.jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -1120,7 +1120,7 @@ function showLightboxContent(content, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type:'html', content:content}, overrideOptions);
+    _initAndOpenLightbox({type: 'html', content: content}, overrideOptions);
 }
 
 /**
@@ -1139,7 +1139,7 @@ function showLightboxUrl(url, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type:'iframe', href:url, height:'95%', width:'75%', autoSize:false},
+    _initAndOpenLightbox({type: 'iframe', href: url, height: '95%', width: '75%', autoSize: false},
             overrideOptions);
 }
 
@@ -1155,14 +1155,14 @@ function showLightboxUrl(url, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function _initAndOpenLightbox(contentOptions, overrideOptions) {
-    var options = {fitToView:true,
-        openEffect:'fade',
-        closeEffect:'fade',
-        openSpeed:200,
-        closeSpeed:200,
-        minHeight:10,
-        minWidth:10,
-        helpers:{overlay:{css:{cursor:'arrow'}, closeClick:false}}
+    var options = {fitToView: true,
+        openEffect: 'fade',
+        closeEffect: 'fade',
+        openSpeed: 200,
+        closeSpeed: 200,
+        minHeight: 10,
+        minWidth: 10,
+        helpers: {overlay: {css: {cursor: 'arrow'}, closeClick: false}}
     };
 
     // override fancybox content options
@@ -1186,7 +1186,7 @@ function setupLightboxForm() {
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);
-    kualiLightboxForm.dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+    kualiLightboxForm.dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 }
 
 /**
@@ -1763,14 +1763,14 @@ function invokeServerListener(methodToCall, params) {
     var postUrl = getConfigParam("kradUrl") + "/listener";
 
     jQuery.ajax({
-        url:postUrl,
-        dataType:"json",
-        data:params,
-        async:false,
-        beforeSend:null,
-        complete:null,
-        error:null,
-        success:function (data) {
+        url: postUrl,
+        dataType: "json",
+        data: params,
+        async: false,
+        beforeSend: null,
+        complete: null,
+        error: null,
+        success: function (data) {
             serverResponse = data;
         }
     });
@@ -1977,7 +1977,6 @@ function openDataTablePage(tableId, pageNumber) {
         oTable.fnPageChange(pageNumber);
     } else {
         var numericPage = Number(pageNumber) - 1;
-        console.debug(numericPage);
         oTable.fnPageChange(numericPage);
     }
 }
@@ -2079,7 +2078,7 @@ function handleHashPageId(pageId) {
     if (document.location.hash && pageId) {
         var request = new KradRequest();
         request.methodToCall = "navigate";
-        request.additionalData = {"actionParameters[navigateToPageId]":pageId};
+        request.additionalData = {"actionParameters[navigateToPageId]": pageId};
         request.send();
     }
 }
@@ -2186,4 +2185,193 @@ function stopEvent(e) {
         e.cancelBubble = true;
     }
     return false;
+}
+
+/**
+ * Initialize or reinitialize the sticky header positions based on the current scroll value
+ *
+ * @param currentScroll the current scroll
+ */
+function initStickyContent(currentScroll){
+    //early return if no sticky content
+    if(stickyContent == undefined || stickyContent.length == 0 ){
+        return;
+    }
+
+    if(!currentScroll){
+        currentScroll = jQuery(window).scrollTop();
+    }
+
+    var topOffset = stickyContentOffset.top;
+
+    var totalHeight = 0;
+    var margin = 0;
+    var prevHeight = 0;
+    var automateMargin = false;
+    var innerNonStickyCount = 0;
+
+    //fix each sticky piece of content
+    stickyContent.each(function () {
+        var height = jQuery(this).outerHeight();
+        var thisOffset = jQuery(this).data("offset");
+        jQuery(this).addClass("uif-sticky");
+
+        if(thisOffset.top < 1){
+            automateMargin = true;
+        }
+
+        //scroll content with the scroll
+        if(currentScroll > 0){
+            jQuery(this).attr("style", "position:fixed; left: 0; top: " + (thisOffset.top - currentScroll) + "px;");
+        }
+        else{
+            jQuery(this).attr("style", "position:fixed; left: 0; top: " + thisOffset.top + "px;");
+        }
+
+        //this means there is inner non-sticky content in the header
+        if(thisOffset.top > topOffset){
+            margin = margin + (prevHeight);
+            innerNonStickyCount++;
+            topOffset = thisOffset.top;
+        }
+
+        //set totalHeight of sticky elements, topOffset, and prevHeight
+        totalHeight = totalHeight + height;
+        topOffset = topOffset + height;
+        prevHeight = height;
+    });
+
+    //Only adjust the margin if a sticky area exists in the top most area, and there is inner-non-sticky content
+    // this allows for customization of
+    //non-sticky, sticky, non-sticky, sticky pattern through explicit css setting (non-calculated, complex)
+    if(automateMargin && innerNonStickyCount == 1){
+        //change the margin to account for content in the header that collapses (scrolls away)
+        jQuery("#Uif-Application").css("marginTop", (margin) + "px");
+    }
+
+    var navigation = jQuery("#Uif-Navigation");
+    var navigationHeightAdjust = 0;
+
+    if(navigation.length){
+        if(navigation.is(".tab-navigation-block")){
+            navigationHeightAdjust = navigation.height();
+        }
+        //move the navigation with total height of the header pieces - the scroll
+        navigation.attr("style", "position:fixed; left: 0; top: " + (topOffset - currentScroll) + "px;");
+    }
+
+    //make the ViewContentWrapper margin-top reflect the visible header content pixel height
+    jQuery("#Uif-ViewContentWrapper").css("marginTop", (totalHeight + navigationHeightAdjust - margin) + "px");
+
+    //set header height global
+    currentHeaderHeight = (topOffset - currentScroll);
+}
+
+/**
+ * Handles the calculation and positioning of sticky header elements on the screen when the user scrolls.  This
+ * function should be called on a scroll event.
+ */
+function handleStickyContent() {
+    //early return if no sticky content
+    if(stickyContent == undefined || stickyContent.length == 0 ){
+        return;
+    }
+
+    if (jQuery(window).scrollTop() >= stickyContentOffset.top) {
+
+        var topOffset = 0;
+        var navAdjust = 0;
+
+        //adjust each sticky header piece based on whether their exists content between it or not
+        stickyContent.each(function () {
+            var height = jQuery(this).outerHeight();
+
+            var thisOffset = jQuery(this).data("offset");
+            //content exist between this sticky and last sticky
+            if(thisOffset && thisOffset.top - jQuery(window).scrollTop() > topOffset){
+                var diff = thisOffset.top - jQuery(window).scrollTop();
+                jQuery(this).attr("style", "position:fixed; left: 0; top: " + diff + "px;");
+                navAdjust = diff + height;
+            }
+            //sticky content is adjacent to each other
+            else{
+                jQuery(this).attr("style", "position:fixed; left: 0; top: " + topOffset + "px;");
+                navAdjust = topOffset + height;
+            }
+            topOffset = topOffset + height;
+        });
+
+        //adjust the fixed nav position (if navigation exists)
+        jQuery("#Uif-Navigation").attr("style", "position:fixed; left: 0; top: " +
+                (navAdjust) + "px;");
+        currentHeaderHeight = navAdjust;
+
+    }
+    else if (jQuery(window).scrollTop() < stickyContentOffset.top) {
+        //the content is back to past the first sticky element (topmost)
+        initStickyContent(jQuery(window).scrollTop());
+    }
+}
+
+/**
+ * Initialize all footers that should be sticky with the appropriate classes, fixed position, and calculated offset
+ * to make them always appear at the bottom of the screen
+ */
+function initStickyFooterContent(){
+    //no sticky footers, return
+    if (!stickyFooterContent || stickyFooterContent.length == 0){
+        return;
+    }
+
+    var bottomOffset = 0;
+
+    //calculate bottom offset in reverse order (bottom up)
+    jQuery(stickyFooterContent.get().reverse()).each(function(){
+        var height = jQuery(this).outerHeight();
+        jQuery(this).addClass("uif-stickyFooter");
+
+        //special style for footers that are not the application footer
+        if(!jQuery(this).is(applicationFooter)){
+            jQuery(this).addClass("uif-stickyButtonFooter");
+        }
+
+        jQuery(this).attr("style", "position:fixed; left: 0; bottom: " + bottomOffset + "px;");
+        bottomOffset = bottomOffset + height;
+    });
+
+    //margin bottom is equal to the total height of all footers
+    jQuery("#Uif-ViewContentWrapper").css("marginBottom", bottomOffset + "px");
+    currentFooterHeight = bottomOffset;
+}
+
+/**
+ * Handles the calculation and positioning of sticky footer elements on the screen when the user scrolls.  This
+ * function should be called on a scroll event.
+ */
+function handleStickyFooterContent(){
+
+    //early return when no footer content or no application footer or application footer is sticky itself
+    //(no need for adjustment)
+    if (!stickyFooterContent || stickyFooterContent.length == 0 || !applicationFooter || applicationFooter.length == 0
+            || stickyFooterContent.filter(applicationFooter).length){
+        return;
+    }
+
+    var appFooterOffset = applicationFooter.offset();
+    var windowHeight = jQuery(window).height();
+    var scrollTop = jQuery(window).scrollTop();
+
+    //reposition elements when the scroll exceeds the footer's top (and footer content exists)
+    if (windowHeight + scrollTop >= appFooterOffset.top && applicationFooter.height() > 0){
+        var bottomOffset = (windowHeight + scrollTop) - appFooterOffset.top;
+        jQuery(stickyFooterContent.get().reverse()).each(function(){
+            var height = jQuery(this).outerHeight();
+            jQuery(this).attr("style", "position:fixed; left: 0; bottom: " + bottomOffset + "px;");
+            bottomOffset = bottomOffset + height;
+        });
+        currentFooterHeight = bottomOffset;
+    }
+    else{
+        initStickyFooterContent();
+    }
 }

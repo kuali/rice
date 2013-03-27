@@ -46,6 +46,7 @@ public class PageGroup extends Group {
 
     private BreadcrumbOptions breadcrumbOptions;
     private BreadcrumbItem breadcrumbItem;
+    private boolean stickyFooter;
 
     /**
      * Setup various breadcrumbOptions inherited from view if not explicitly set.
@@ -233,5 +234,27 @@ public class PageGroup extends Group {
      */
     public void setBreadcrumbItem(BreadcrumbItem breadcrumbItem) {
         this.breadcrumbItem = breadcrumbItem;
+    }
+
+    /**
+     * When true, this page's footer will become sticky (fixed) at the bottom of the window.
+     *
+     * @return true if the page footer is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyFooter")
+    public boolean isStickyFooter() {
+        return stickyFooter;
+    }
+
+    /**
+     * Set to true to make this page's footer sticky
+     *
+     * @param stickyFooter
+     */
+    public void setStickyFooter(boolean stickyFooter) {
+        this.stickyFooter = stickyFooter;
+        if(this.getFooter() != null){
+            this.getFooter().addDataAttribute("stickyFooter", Boolean.toString(stickyFooter));
+        }
     }
 }

@@ -36,6 +36,7 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
+import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -98,9 +99,20 @@ public class View extends ContainerBase {
     private String stateObjectBindingPath;
     private StateMapping stateMapping;
 
+    //view header setting
+    private boolean unifiedHeader;
+
     // application
     private Header applicationHeader;
     private Group applicationFooter;
+
+    //sticky flags
+    private boolean stickyTopGroup;
+    private boolean stickyBreadcrumbs;
+    private boolean stickyHeader;
+    private boolean stickyApplicationHeader;
+    private boolean stickyFooter;
+    private boolean stickyApplicationFooter;
 
     // Breadcrumbs
     private Breadcrumbs breadcrumbs;
@@ -1809,5 +1821,150 @@ public class View extends ContainerBase {
      */
     public void setParentLocation(ParentLocation parentLocation) {
         this.parentLocation = parentLocation;
+    }
+
+    /**
+     * When true, this view will use a unified header - the page header will be omitted and its title will be used
+     * in the ViewHeader supportTitle property (dynamically updated on page change)
+     *
+     * @return true if using a unified header
+     */
+    @BeanTagAttribute(name = "unifiedHeader")
+    public boolean isUnifiedHeader() {
+        return unifiedHeader;
+    }
+
+    /**
+     * Set to true, to use unified header functionality
+     *
+     * @param unifiedHeader
+     */
+    public void setUnifiedHeader(boolean unifiedHeader) {
+        this.unifiedHeader = unifiedHeader;
+    }
+
+    /**
+     * If true, the top group will be sticky (fixed to top of window)
+     *
+     * @return true if the top group is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyTopGroup")
+    public boolean isStickyTopGroup() {
+        return stickyTopGroup;
+    }
+
+    /**
+     * Set to true to make the top group sticky (fixed to top of window)
+     *
+     * @param stickyTopGroup
+     */
+    public void setStickyTopGroup(boolean stickyTopGroup) {
+        this.stickyTopGroup = stickyTopGroup;
+    }
+
+    /**
+     * If true, the breadcrumb widget will be sticky (fixed to top of window)
+     *
+     * @return true if breadcrumbs are sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyBreadcrumbs")
+    public boolean isStickyBreadcrumbs() {
+        return stickyBreadcrumbs;
+    }
+
+    /**
+     * Set to true to make the breadcrumbs sticky
+     *
+     * @param stickyBreadcrumbs
+     */
+    public void setStickyBreadcrumbs(boolean stickyBreadcrumbs) {
+        this.stickyBreadcrumbs = stickyBreadcrumbs;
+    }
+
+    /**
+     * If true, the ViewHeader for this view will be sticky (fixed to top of window)
+     *
+     * @return true if the header is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyHeader")
+    public boolean isStickyHeader() {
+        if(this.getHeader() != null && this.getHeader() instanceof ViewHeader){
+            return ((ViewHeader) this.getHeader()).isSticky();
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * Set to true to make the ViewHeader sticky
+     *
+     * @param stickyHeader
+     */
+    public void setStickyHeader(boolean stickyHeader) {
+        this.stickyHeader = stickyHeader;
+        if(this.getHeader() != null && this.getHeader() instanceof ViewHeader){
+            ((ViewHeader) this.getHeader()).setSticky(stickyHeader);
+        }
+    }
+
+    /**
+     * Set to true to make the applicationHeader sticky (fixed to top of window)
+     *
+     * @return true if applicationHeader is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyApplicationHeader")
+    public boolean isStickyApplicationHeader() {
+        return stickyApplicationHeader;
+    }
+
+    /**
+     * Set to true to make the applicationHeader sticky
+     *
+     * @param stickyApplicationHeader
+     */
+    public void setStickyApplicationHeader(boolean stickyApplicationHeader) {
+        this.stickyApplicationHeader = stickyApplicationHeader;
+    }
+
+    /**
+     * If true, the view footer will become sticky (fixed to bottom of window)
+     *
+     * @return ture if the view footer is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyFooter")
+    public boolean isStickyFooter() {
+        return stickyFooter;
+    }
+
+    /**
+     * Set to true to make the view footer sticky
+     *
+     * @param stickyFooter
+     */
+    public void setStickyFooter(boolean stickyFooter) {
+        this.stickyFooter = stickyFooter;
+        if(this.getFooter() != null){
+            this.getFooter().addDataAttribute("stickyFooter", Boolean.toString(stickyFooter));
+        }
+    }
+
+    /**
+     * If true, the applicationFooter will become sticky (fixed to bottom of window)
+     *
+     * @return true if the application footer is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyApplicationFooter")
+    public boolean isStickyApplicationFooter() {
+        return stickyApplicationFooter;
+    }
+
+    /**
+     * Set to true to make the application footer sticky
+     *
+     * @param stickyApplicationFooter
+     */
+    public void setStickyApplicationFooter(boolean stickyApplicationFooter) {
+        this.stickyApplicationFooter = stickyApplicationFooter;
     }
 }

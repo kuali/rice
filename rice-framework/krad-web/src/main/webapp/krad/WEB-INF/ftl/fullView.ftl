@@ -22,8 +22,23 @@
     <div id="Uif-Application" style="display:none;" class="uif-application">
 
         <!-- APPLICATION HEADER -->
-        <@krad.template component=view.applicationHeader/>
-        <@krad.backdoor/>
+        <#if view.applicationHeader?has_content>
+            <#assign appHeaderData=""/>
+            <#if view.stickyApplicationHeader>
+                <#assign appHeaderData="data-sticky='true'"/>
+            </#if>
+
+            <div id="Uif-ApplicationHeader-Wrapper" ${appHeaderData}>
+                <@krad.template component=view.applicationHeader/>
+                <!-- Backdoor info (here to inherit stickyness with the header, if set) -->
+                <@krad.backdoor/>
+            </div>
+        <#else>
+            <!-- Backdoor info -->
+            <@krad.backdoor/>
+        </#if>
+
+
 
         <@krad.form render=view.renderForm postUrl="${view.formPostUrl!KualiForm.formPostUrl}"
         onSubmitScript="${view.onSubmitScript!}">
@@ -56,6 +71,15 @@
     </div>
 
     <!-- APPLICATION FOOTER -->
-    <@krad.template component=view.applicationFooter/>
+    <#if view.applicationFooter?has_content>
+        <#assign appFooterData=""/>
+        <#if view.stickyApplicationFooter>
+            <#assign appFooterData="data-stickyFooter='true'"/>
+        </#if>
+
+        <div id="Uif-ApplicationFooter-Wrapper" ${appFooterData}>
+            <@krad.template component=view.applicationFooter/>
+        </div>
+    </#if>
 
 </@krad.html>

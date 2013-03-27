@@ -164,7 +164,7 @@ public class FieldBase extends ComponentBase implements Field {
                 configurations, we simply change our parent bean:</para>
       <programlisting>&lt;bean parent="Uif-DataField-LabelTop" p:labelText="My Data Field" /&gt;</programlisting>
     </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -506,7 +506,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
             processing - if it was set that content would be used instead!</para>
         </tip></para>
     </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -879,7 +879,7 @@ public class Test2Object {
         but the binding path for the second data field will only be "field1", due to the bindToForm
         property being set to true.</para>
     </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -1131,7 +1131,7 @@ public class TravelAccount {
       nested (or has a bindingInfo.bindByNamePrefix specified), and an entry was not found for the
       full name, the framework will recurse down the path as it does for non-collection
       fields.</para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -1928,7 +1928,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         </figure>
       </section>
     </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -2151,7 +2151,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
                 reason can be given using this property. The user will then be able to hover over the control 
                 to see the disabled reason as a tooltip (Tooltips are an upcoming enhancement as well).</para>
         </note>
-        -->    <section>
+        -->    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -2371,7 +2371,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         inquiryParameters). The framework builds these mappings from the fields that participate in
         the relationship.</para>
     </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -2483,7 +2483,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
     <para>Recall from Chapter 4 these messages can also be configured on the dictionary
             attribute definition. If an attribute definition is found for the field, the
             instructional and constraint messages will be copied (unless overridden).</para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -2900,7 +2900,7 @@ public class QueryUtils {
           further adjustment.</para>
       </note>
     </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -3031,7 +3031,7 @@ public class QueryUtils {
     <para>performUppercase (Input Field Only) – A Boolean that indicates whether the user inputted
       value should be uppercased. If set to true the value will be uppercased client side with the
       onblur event.</para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -3392,7 +3392,7 @@ p:methodToCall="save" p:focusOnIdAfterSubmit="FIRST"/&gt;
         </mediaobject>
       </figure>
     </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -3549,7 +3549,7 @@ p:methodToCall="save" p:focusOnIdAfterSubmit="FIRST"/&gt;
     <programlisting>
 &lt;bean parent="Uif-SpaceField"/&gt;
         </programlisting>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -3765,7 +3765,7 @@ This is a global display on/off switch for all messages.</para>
                 features such as linked from the message to a field, and the use of tooltips to display field 
                 level errors</para>
         </note>
-        -->    <section>
+        -->    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -3897,7 +3897,7 @@ This is a global display on/off switch for all messages.</para>
         layout, add additional markup or whatever else is necessary, and invoke the template tag to
         render the individual fields.</para>
     </tip>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -3945,7 +3945,7 @@ This is a global display on/off switch for all messages.</para>
             provide a size for a border around the frame. As is the case with all components, we
             have the standard properties such as id, title, and styleClasses that can be set as
             well.</para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -4029,7 +4029,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
             nested Header and Message Field component corresponding to each. These nested components
             can be used to adjust the styling applied along with other configuration (such as
             possible the header level). </para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -4105,7 +4105,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
     <para>If we want to put a link in a field, we can use the Link Field component with base bean
       name 'Uif-LinkField'. All of the above properties are available along with the field's label
       property. </para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>
@@ -4171,7 +4171,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
       for the message rendering. The String properties are simply provided for convenience and,
       during the view processing, are copied to messageText property for the corresponding message
       field.</para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <para>
                 <itemizedlist>

@@ -31,7 +31,7 @@
                 </imageobject>
             </mediaobject>
         </figure>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <para>
                 <itemizedlist>
@@ -567,7 +567,7 @@ public class Car {
                 session, and global session scopes. Furthermore, you can create your own
                 scope!</para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>Recap</title>
             <para>
                 <itemizedlist>

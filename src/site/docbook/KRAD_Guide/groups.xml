@@ -76,7 +76,7 @@
         abstract classes. Included in this is a top level bean named 'Uif-ComponentBase'. Therefore
         the bean hierarchy closely resembles the actual class hierarchy. </para>
     </note>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -245,7 +245,7 @@
         these cases, so you need to take care to set the header levels, error configuration, and
         styling for these levels (or develop the base beans to represent them).</para>
     </note>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -407,7 +407,7 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -525,7 +525,7 @@
       <para>The UIF also contains a common footer for document views that contains the various
         workflow actions.</para>
     </tip>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -638,7 +638,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
             template may choose to not do so and instead layout the items itself. There are a couple
             examples of this we will learn about later on in this chapter.</para>
     <para>Moving on, let's learn more about these layout managers!</para>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -1153,7 +1153,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
         </tip>
       </section>
     </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -1364,7 +1364,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
         </imageobject>
       </mediaobject>
     </figure>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -1911,7 +1911,7 @@ public class Test2Object {
       <para>Coming Soon!</para>
 <!-- TODO: Add content here.
           -->    </section>
-    <section>
+    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -2022,7 +2022,7 @@ public class Test2Object {
     <title>Component Prototypes </title>
     <para>Coming Soon!</para>
 <!-- TODO: Add content here.
-          -->    <section>
+          -->    <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
         <listitem>
@@ -2418,7 +2418,7 @@ public class Test2Object {
         <para>Coming Soon!</para>
 <!-- TODO: Add content here.
           -->      </section>
-      <section>
+      <section role="NotInToc">
         <title>Recap</title>
         <itemizedlist>
           <listitem>
@@ -2648,7 +2648,7 @@ public class Test2Object {
       <title>Disclosure </title>
       <para>Coming Soon!</para>
 <!-- TODO: Add content here.
-          -->      <section>
+          -->      <section role="NotInToc">
         <title>Recap</title>
         <itemizedlist>
           <listitem>
@@ -2695,7 +2695,7 @@ public class Test2Object {
     &lt;/property&gt;
 ... </programlisting>
       <para>For section and sub-section only the content is scrolled, not the title or instructional text.</para>
-      <section>
+      <section role="NotInToc">
         <title>Recap</title>
         <itemizedlist>
           <listitem>

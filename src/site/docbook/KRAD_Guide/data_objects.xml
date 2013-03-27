@@ -232,7 +232,7 @@
                     allow new codes to be created quickly (without the need for a table and
                     mapping). </para></tip>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>RECAP</title>
             <itemizedlist>
                 <listitem>
@@ -698,7 +698,7 @@
                     </imageobject>
                 </inlinemediaobject></para>
         </section>
-        <section>
+        <section role="NotInToc">
             <title>RECAP</title>
             <itemizedlist>
                 <listitem>

@@ -471,6 +471,21 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setCssClasses(List<String> styleClasses);
 
     /**
+     * Convenience property for adding css class names to the end of the list of cssClasses that may already exist on
+     * this Component (this is to avoid explicitly having to set list merge in the bean definition)
+     *
+     * @return the additionalCssClasses
+     */
+    List<String> getAdditionalCssClasses();
+
+    /**
+     * Set the additionalCssClasses
+     *
+     * @param styleClasses
+     */
+    void setAdditionalCssClasses(List<String> styleClasses);
+
+    /**
      * Adds a single style to the list of styles on this component
      *
      * @param styleClass

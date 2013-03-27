@@ -103,6 +103,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private String style;
     private List<String> cssClasses;
+    private List<String> additionalCssClasses;
 
     private Tooltip toolTip;
 
@@ -665,6 +666,28 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public void setCssClasses(List<String> cssClasses) {
         this.cssClasses = cssClasses;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getAdditionalCssClasses()
+     */
+    @BeanTagAttribute(name = "additionalCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getAdditionalCssClasses() {
+        return this.additionalCssClasses;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#setAdditionalCssClasses(java.util.List)
+     */
+    public void setAdditionalCssClasses(List<String> additionalCssClasses) {
+        this.additionalCssClasses = additionalCssClasses;
+
+        if(cssClasses != null){
+            cssClasses.addAll(additionalCssClasses);
+        }
+        else{
+            cssClasses = additionalCssClasses;
+        }
     }
 
     /**

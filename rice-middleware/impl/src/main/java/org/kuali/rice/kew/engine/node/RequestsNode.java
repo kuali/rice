@@ -98,7 +98,7 @@ public class RequestsNode extends RequestActivationNode {
             LOG.debug("RouteHeader info inside routing loop\n" + ClassDumper.dumpFields(document));
             LOG.debug("Looking for new actionRequests - routeLevel: " + node.getRouteNodeName());
         }
-        boolean suppressPolicyErrors = isSupressingPolicyErrors(routeContext);
+        boolean suppressPolicyErrors = isSuppressingPolicyErrors(routeContext);
         List<ActionRequestValue> requests = getNewActionRequests(routeContext);
         // determine if we have any approve requests for FinalApprover checks
         if (!suppressPolicyErrors) {
@@ -119,7 +119,7 @@ public class RequestsNode extends RequestActivationNode {
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
         RouteNode node = nodeInstance.getRouteNode();
         // for mandatory routes, requests must be generated
-        if (node.isMandatory() && !isSupressingPolicyErrors(routeContext) && CollectionUtils.isEmpty(requestsGenerated)) {
+        if (node.isMandatory() && !isSuppressingPolicyErrors(routeContext) && CollectionUtils.isEmpty(requestsGenerated)) {
             List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findRootRequestsByDocIdAtRouteNode(document.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
             if (actionRequests.isEmpty()) {
                 LOG.warn("no requests generated for mandatory route - " + node.getRouteNodeName());
@@ -286,7 +286,7 @@ public class RequestsNode extends RequestActivationNode {
 		public boolean isPast = false;
 	}
 
-	public static boolean isSupressingPolicyErrors(RouteContext routeContext) {
+	public static boolean isSuppressingPolicyErrors(RouteContext routeContext) {
 		Boolean suppressPolicyErrors = (Boolean)routeContext.getParameters().get(
 				SUPPRESS_POLICY_ERRORS_KEY );
 		if ( suppressPolicyErrors == null || !suppressPolicyErrors ) {
@@ -296,7 +296,7 @@ public class RequestsNode extends RequestActivationNode {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void setSupressPolicyErrors(RouteContext routeContext) {
+	public static void setSuppressPolicyErrors(RouteContext routeContext) {
 		routeContext.getParameters().put( SUPPRESS_POLICY_ERRORS_KEY, Boolean.TRUE );
 	}
 

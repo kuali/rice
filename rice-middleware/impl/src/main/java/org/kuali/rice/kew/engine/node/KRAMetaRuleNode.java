@@ -93,7 +93,7 @@ public class KRAMetaRuleNode extends IteratedRequestActivationNode {
 			return false;
 		}
 
-		boolean suppressPolicyErrors = isSupressingPolicyErrors(context);
+		boolean suppressPolicyErrors = isSuppressingPolicyErrors(context);
 		boolean pastFinalApprover = isPastFinalApprover(context.getDocument(), nodeInstance);
 
 		// actionRequests.addAll(makeActionRequests(context, rule, routeHeader, null, null));
@@ -208,7 +208,7 @@ public class KRAMetaRuleNode extends IteratedRequestActivationNode {
 			}
 		}
 	}
-	public static boolean isSupressingPolicyErrors(RouteContext routeContext) {
+	public static boolean isSuppressingPolicyErrors(RouteContext routeContext) {
 		Boolean suppressPolicyErrors = (Boolean)routeContext.getParameters().get(SUPPRESS_POLICY_ERRORS_KEY);
 		if (suppressPolicyErrors == null || ! suppressPolicyErrors) {
 			return false;

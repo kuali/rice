@@ -774,7 +774,7 @@
                     <listitem>
                         <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-6963"
                                 >KULRICE-6963</link>] - Table layout manager requires the
-                            numberOfColumns to be set instead of using supressLineWrapping </para>
+                            numberOfColumns to be set instead of using suppressLineWrapping </para>
                     </listitem>
                     <listitem>
                         <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-7068"

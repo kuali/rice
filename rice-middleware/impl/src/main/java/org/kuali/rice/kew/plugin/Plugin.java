@@ -40,7 +40,7 @@ public class Plugin extends BaseWrappingResourceLoader {
     private Config config;
     private List<PluginListener> pluginListeners = new ArrayList<PluginListener>();
 
-    private boolean supressStartupFailure = true;
+    private boolean suppressStartupFailure = true;
     private boolean started = false;
     private boolean startupFailure = false;
 
@@ -77,7 +77,7 @@ public class Plugin extends BaseWrappingResourceLoader {
             startupFailure = true;
             started = true;
             stop();
-            if (!supressStartupFailure) {
+            if (!suppressStartupFailure) {
             	if (t instanceof Error) {
             		throw (Error)t;
             	} else if (t instanceof RuntimeException) {
@@ -150,12 +150,12 @@ public class Plugin extends BaseWrappingResourceLoader {
         }
     }
 
-    public boolean isSupressStartupFailure() {
-		return supressStartupFailure;
+    public boolean isSuppressStartupFailure() {
+		return suppressStartupFailure;
 	}
 
-	public void setSupressStartupFailure(boolean supressStartupFailure) {
-		this.supressStartupFailure = supressStartupFailure;
+	public void setSuppressStartupFailure(boolean suppressStartupFailure) {
+		this.suppressStartupFailure = suppressStartupFailure;
 	}
 
 	/**

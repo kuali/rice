@@ -82,7 +82,7 @@ public class RoleNode extends RequestsNode {
 				LOG.debug( "Looking for new actionRequests - routeLevel: "
 						+ node.getRouteNodeName() );
 			}
-			boolean suppressPolicyErrors = isSupressingPolicyErrors( routeContext );
+			boolean suppressPolicyErrors = isSuppressingPolicyErrors(routeContext);
 			List<ActionRequestValue> requests = getNewActionRequests( routeContext );
 // Debugging code to force an empty action request				
 //				if ( document.getDocumentType().getName().equals( "SACC" ) ) {

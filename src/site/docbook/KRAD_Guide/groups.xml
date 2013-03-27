@@ -2500,14 +2500,14 @@ public class Test2Object {
                   side features is desired, simply set richTable.render to false)</para>
               </listitem>
               <listitem>
-                <para>numberOfColumns and supressLineWrapping – The table layout manager extends the
+                <para>numberOfColumns and suppressLineWrapping – The table layout manager extends the
                   grid layout manager (used for general groups). Therefore all of the properties
                   available for the grid layout are also available for the table layout. This
                   includes setting the number of columns for the table. If the number of columns is
                   less than the number of fields configured in the items property, multiple rows
                   will be created for each collection item as necessary. In most cases we want the
                   number of columns to match the number of configured items. The property
-                  supressLineWrapping can be set to true to force this condition (in which case the
+                  suppressLineWrapping can be set to true to force this condition (in which case the
                   numberOfColumns property does not need to be set)</para>
               </listitem>
             </itemizedlist>

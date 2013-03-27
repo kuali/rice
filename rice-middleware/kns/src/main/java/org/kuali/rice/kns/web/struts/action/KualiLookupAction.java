@@ -103,7 +103,7 @@ public class KualiLookupAction extends KualiAction {
      * @return
      * @throws ClassNotFoundException
      */
-    protected void supressActionsIfNeeded( ActionForm form ) throws ClassNotFoundException {
+    protected void suppressActionsIfNeeded(ActionForm form) throws ClassNotFoundException {
         if ((form instanceof LookupForm) && ( ((LookupForm)form).getBusinessObjectClassName() != null )) {
             Class businessObjectClass = Class.forName( ((LookupForm)form).getBusinessObjectClassName() );
             // check if creating documents is allowed
@@ -126,7 +126,7 @@ public class KualiLookupAction extends KualiAction {
          }
     }
     /**
-     * This method hides actions that are not related to the maintenance (as opposed to supressActionsIfNeeded)
+     * This method hides actions that are not related to the maintenance (as opposed to suppressActionsIfNeeded)
      *
      * @param form
      */
@@ -146,7 +146,7 @@ public class KualiLookupAction extends KualiAction {
         LookupForm lookupForm = (LookupForm) form;
 
         request.setAttribute(KRADConstants.PARAM_MAINTENANCE_VIEW_MODE, KRADConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
-        supressActionsIfNeeded(form);
+        suppressActionsIfNeeded(form);
         suppressNonMaintActionsIfNeeded(form);
         setCriteriaEnabled(form);
 

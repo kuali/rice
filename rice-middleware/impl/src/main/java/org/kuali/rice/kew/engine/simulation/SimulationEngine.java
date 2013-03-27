@@ -118,7 +118,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     		context.setActivationContext(activationContext);
     		context.setEngineState(new EngineState());
     		// suppress policy errors when running a simulation for the purposes of display on the route log
-    		RequestsNode.setSupressPolicyErrors(context);
+    		RequestsNode.setSuppressPolicyErrors(context);
     		DocumentRouteHeaderValue document = createSimulationDocument(documentId, criteria, context);
             document.setInitiatorWorkflowId("simulation");
     		if ( (criteria.isDocumentSimulation()) && ( (document.isProcessed()) || (document.isFinal()) ) ) {

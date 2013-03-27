@@ -211,7 +211,7 @@ public class QuickFinder extends WidgetBase {
         addActionParameterIfNotNull(UifParameters.VIEW_NAME, viewName);
         addActionParameterIfNotNull(UifParameters.READ_ONLY_FIELDS, readOnlySearchFields);
         addActionParameterIfNotNull(UifParameters.HIDE_RETURN_LINK, hideReturnLink);
-        addActionParameterIfNotNull(UifParameters.SUPRESS_ACTIONS, suppressActions);
+        addActionParameterIfNotNull(UifParameters.SUPPRESS_ACTIONS, suppressActions);
         addActionParameterIfNotNull(UifParameters.REFERENCES_TO_REFRESH, referencesToRefresh);
         addActionParameterIfNotNull(UifParameters.AUTO_SEARCH, autoSearch);
         addActionParameterIfNotNull(UifParameters.RENDER_LOOKUP_CRITERIA, renderLookupCriteria);
@@ -570,7 +570,7 @@ public class QuickFinder extends WidgetBase {
      *
      * @return boolean true if actions should be rendered, false if not
      */
-    @BeanTagAttribute(name = "supressActions")
+    @BeanTagAttribute(name = "suppressActions")
     public Boolean getSuppressActions() {
         return suppressActions;
     }

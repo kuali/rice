@@ -31,7 +31,7 @@ public class PluginEnvironment implements Reloadable {
 	private Plugin plugin;
 	private final PluginLoader loader;
 	private final PluginRegistry registry;
-	private boolean supressStartupFailure = true;
+	private boolean suppressStartupFailure = true;
 	
 	/**
 	 * Constructs an unloaded PluginEnvironment from the given PluginLoader and PluginRegistry.
@@ -91,7 +91,7 @@ public class PluginEnvironment implements Reloadable {
 	 */
 	public synchronized void load() throws Exception {
 	    plugin = loader.load();
-		plugin.setSupressStartupFailure(supressStartupFailure);
+		plugin.setSuppressStartupFailure(suppressStartupFailure);
 		// it's important that the plugin is added to the resource loading system prior to startup because
 		// startup may need to grab services
 		registry.addResourceLoader(plugin);
@@ -137,12 +137,12 @@ public class PluginEnvironment implements Reloadable {
 	}
 	
 	/**
-	 * By default, startup failure is supressed.  If it is indicated that startup failure
-	 * supression is not desired, then startup errors will be thrown directly from calls to
+	 * By default, startup failure is suppressed.  If it is indicated that startup failure
+	 * suppression is not desired, then startup errors will be thrown directly from calls to
 	 * load().
 	 */
-	public void setSupressStartupFailure(boolean supressStartupFailure) {
-		this.supressStartupFailure = supressStartupFailure;
+	public void setSuppressStartupFailure(boolean suppressStartupFailure) {
+		this.suppressStartupFailure = suppressStartupFailure;
 	}
 	
 }

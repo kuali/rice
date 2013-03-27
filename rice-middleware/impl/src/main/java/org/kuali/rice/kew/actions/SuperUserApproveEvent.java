@@ -29,7 +29,6 @@ import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RequestsNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -103,7 +102,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 		}
 
 		OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, new HashSet<String>(), actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue(), isRunPostProcessorLogic());
-		RequestsNode.setSupressPolicyErrors(RouteContext.getCurrentRouteContext());
+		RequestsNode.setSuppressPolicyErrors(RouteContext.getCurrentRouteContext());
 		try {
 			completeAnyOutstandingCompleteApproveRequests(actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
 			BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);

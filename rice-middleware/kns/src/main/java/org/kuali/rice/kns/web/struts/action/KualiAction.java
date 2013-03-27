@@ -563,10 +563,10 @@ public abstract class KualiAction extends DispatchAction {
             parameters.put(KRADConstants.LOOKED_UP_COLLECTION_NAME, lookedUpCollectionName);
         }
 
-        // grab whether or not the "supress actions" column should be hidden or not
-        String supressActions = StringUtils.substringBetween(fullParameter, KRADConstants.METHOD_TO_CALL_PARM7_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM7_RIGHT_DEL);
-        if (StringUtils.isNotBlank(supressActions)) {
-            parameters.put(KRADConstants.SUPPRESS_ACTIONS, supressActions);
+        // grab whether or not the "suppress actions" column should be hidden or not
+        String suppressActions = StringUtils.substringBetween(fullParameter, KRADConstants.METHOD_TO_CALL_PARM7_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM7_RIGHT_DEL);
+        if (StringUtils.isNotBlank(suppressActions)) {
+            parameters.put(KRADConstants.SUPPRESS_ACTIONS, suppressActions);
         }
 
         // grab the references that should be refreshed upon returning from the lookup

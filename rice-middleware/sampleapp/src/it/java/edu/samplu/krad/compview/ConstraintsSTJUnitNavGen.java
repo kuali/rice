@@ -23,12 +23,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConstraintsSTJUnitNavGen extends ConstraintsAbstractSmokeTestBase {
-
-    @Override
-    public void fail(String message) {
-        fail(message);
-    }
+public class ConstraintsSTJUnitNavGen extends ConstraintsSTJUnitBase {
 
     @Override
     public String getTestUrl() {

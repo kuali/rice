@@ -128,7 +128,12 @@
         <value>classpath:edu/sampleu/kim/api/identity/external/ExternalIdentifierTypeLookupView.xml</value>
         <value>classpath:edu/sampleu/kim/api/identity/name/NameTypeLookupView.xml</value>
         <value>classpath:edu/sampleu/kim/api/identity/phone/PhoneTypeLookupView.xml</value>
-         <value>classpath:edu/sampleu/kim/api/identity/type/KimTypeLookupView.xml</value>
+        <value>classpath:edu/sampleu/kim/api/identity/type/KimTypeLookupView.xml</value>
+        <value>classpath:edu/sampleu/kim/api/identity/employment/EmploymentStatusInquiryView.xml</value>
+        <value>classpath:edu/sampleu/kim/api/identity/employment/EmploymentStatusLookupView.xml</value>
+        <value>classpath:edu/sampleu/kim/api/identity/employment/EmploymentTypeInquiryView.xml</value>
+        <value>classpath:edu/sampleu/kim/api/identity/employment/EmploymentTypeLookupView.xml</value>
+
         <!-- KEW -->
         <value>classpath:edu/sampleu/kew/uif/RuleAttributeInquiry.xml</value>
         <value>classpath:edu/sampleu/kew/uif/RuleAttributeLookup.xml</value>

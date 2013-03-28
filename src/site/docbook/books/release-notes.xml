@@ -186,6 +186,9 @@
                         <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9151'>KULRICE-9151</link>] - Document in the guide on clustering that session failover should be implemented for full reliability</para>
                     </listitem>
                     <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9210'>KULRICE-9210</link>] - Add note in IG on how to configure Rice without KRAD (KNS only)</para>
+                    </listitem>
+                    <listitem>
                         <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9221'>KULRICE-9221</link>] - Invalid bean name "matchAllTxInterceptor" for KIM Remote mode</para>
                     </listitem>
                     <listitem>

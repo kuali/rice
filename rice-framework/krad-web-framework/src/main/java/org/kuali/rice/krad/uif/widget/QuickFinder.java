@@ -95,7 +95,7 @@ public class QuickFinder extends WidgetBase {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        if (quickfinderAction != null) {
+        if (quickfinderAction != null && (lightBoxLookup != null && lightBoxLookup.isRender())) {
             quickfinderAction.setActionScript("voidAction");
         }
     }

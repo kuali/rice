@@ -356,25 +356,7 @@ public class View extends ContainerBase {
 
         // handle view specially to insure each page always gets the same generated id
         if (component instanceof View) {
-            View view = (View) component;
-
-            if (view.isSinglePageView() && view.getPage() != null) {
-                assignComponentId(view.getPage());
-            } else if (view.getItems() != null) {
-                // get each page and set the id
-                for (Component item : view.getItems()) {
-                    if (item instanceof PageGroup) {
-                        assignComponentId(item);
-                    }
-                }
-
-                // now assign ids for all page components
-                for (Component item : view.getItems()) {
-                    if (item instanceof PageGroup) {
-                        assignComponentIds(item);
-                    }
-                }
-            }
+            assignPageIds((View) component);
         }
 
         assignComponentId(component);
@@ -388,11 +370,50 @@ public class View extends ContainerBase {
     }
 
     /**
+     * Special handling of assigning ids for the view component to assure each page and all its children gets an
+     * id and the page ids are always the same
+     *
+     * <p>
+     * First the pages are assigned ids sequentially so they always get the same ids regardless of what page is
+     * being displayed. Also, since the view doesn't include pages that are not being displayed (or are not the current
+     * page) in its tree (components for lifecycle) we need to loop through them explicity and assign ids
+     * </p>
+     *
+     * @param view view instance containing the pages
+     */
+    protected void assignPageIds(View view) {
+        // single page view
+        if (view.isSinglePageView() && view.getPage() != null) {
+            assignComponentId(view.getPage());
+
+            return;
+        }
+
+        // mult-page view
+        if (view.getItems() != null) {
+            // get each page and set the id, assigning to just the pages first so they will have the
+            // first sequential ids
+            for (Component item : view.getItems()) {
+                if (item instanceof PageGroup) {
+                    assignComponentId(item);
+                }
+            }
+
+            // now assign ids for all page child components
+            for (Component item : view.getItems()) {
+                if (item instanceof PageGroup) {
+                    assignComponentIds(item);
+                }
+            }
+        }
+    }
+
+    /**
      * Assigns an id to the given component
      *
-     * @param component - component to assign id to
+     * @param component component to assign id to
      */
-    private void assignComponentId(Component component) {
+    protected void assignComponentId(Component component) {
         Integer currentSequenceVal = idSequence;
 
         // assign ID if necessary
@@ -405,10 +426,9 @@ public class View extends ContainerBase {
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
-            if (layoutManager != null) {
-                if (StringUtils.isBlank(layoutManager.getId())) {
-                    layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
-                }
+
+            if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
+                layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
             }
         }
     }
@@ -420,12 +440,9 @@ public class View extends ContainerBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = new ArrayList<Component>();
 
-        if (topGroup != null) {
-            components.add(topGroup);
-        }
-
         components.add(applicationHeader);
         components.add(applicationFooter);
+        components.add(topGroup);
         components.add(navigation);
         components.add(breadcrumbs);
         components.add(growls);

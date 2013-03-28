@@ -47,7 +47,7 @@
         <bean parent="Uif-DataField" p:propertyName="code" />
         <bean parent="Uif-DataField" p:propertyName="name" />
         <bean parent="Uif-DataField" p:propertyName="sortCode"/>
-        <bean parent="Uif-DataField" p:propertyName="active" p:propertyEditorClass="edu.sampleu.kim.krad.ActiveIndicatorPropertyEditor"/>
+        <bean parent="Uif-DataField" p:propertyName="active"/>
       </list>
     </property>
   </bean>

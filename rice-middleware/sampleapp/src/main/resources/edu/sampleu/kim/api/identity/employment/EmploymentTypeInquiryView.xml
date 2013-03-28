@@ -35,7 +35,7 @@
               <bean parent="Uif-InputField" p:propertyName="code"/>
               <bean parent="Uif-InputField" p:propertyName="name"/>
               <bean parent="Uif-InputField" p:propertyName="sortCode"/>
-              <bean parent="Uif-InputField" p:propertyName="active" p:propertyEditorClass="edu.sampleu.kim.krad.ActiveIndicatorPropertyEditor"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>

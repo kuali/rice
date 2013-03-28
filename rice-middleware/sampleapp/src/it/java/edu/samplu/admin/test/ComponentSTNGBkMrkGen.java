@@ -41,11 +41,11 @@ public class ComponentSTNGBkMrkGen extends ComponentSTNGBase {
      * @link ComponentAbstractSmokeTestBase#testCreateNewCancelComponent
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default" }, description = "testCreateNewCancelComponentBookmark")
+    @Test(groups = { "all", "fast", "default" }, description = "testComponentCreateNewCancelBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testCreateNewCancelComponentBookmark() throws Exception {
+    public void testComponentCreateNewCancelBookmark() throws Exception {
         setUp();
-        testCreateNewCancelComponentBookmark(this);
+        testComponentCreateNewCancelBookmark(this);
     }
 
     /**

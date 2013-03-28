@@ -153,8 +153,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public static final String DIV_LEFT_ERRMSG = "//div[@class='left-errmsg-tab']/div/div";
 
     /**
-     * For Bookmark tests this is the url under final test.  For nav tests this is from the url navigation will
-     * start from.
+     * Navigation tests should return ITUtil.PORTAL.
+     * Bookmark tests should return BOOKMARK_URL.
+     *
      * @return string
      */
     public abstract String getTestUrl();
@@ -431,8 +432,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     /**
-     * Override in test to define a user other than admin
-     * @return
+     * "admin" by default.  Can be overridden using @link WebDriverLegacyITBase#REMOTE_PUBLIC_USER_PROPERTY
+     * @return string
      */
     public String getUserName() {
         return user;

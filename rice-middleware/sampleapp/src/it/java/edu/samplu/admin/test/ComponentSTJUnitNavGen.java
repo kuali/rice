@@ -40,12 +40,12 @@ public class ComponentSTJUnitNavGen extends ComponentSTJUnitBase {
     }
 
     /**
-     * @link ComponentAbstractSmokeTestBase#testCreateNewCancelComponentNav
+     * @link ComponentAbstractSmokeTestBase#testComponentCreateNewCancelNav
      * @throws Exception
      */
     @Test
-    public void testCreateNewCancelComponentNav() throws Exception {
-        testCreateNewCancelComponentNav(this);
+    public void testComponentCreateNewCancelNav() throws Exception {
+        testComponentCreateNewCancelNav(this);
     }
 
     /**

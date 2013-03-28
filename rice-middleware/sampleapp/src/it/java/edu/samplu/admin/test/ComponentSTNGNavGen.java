@@ -41,14 +41,14 @@ public class ComponentSTNGNavGen extends ComponentSTNGBase {
     }
 
     /**
-     * @link ComponentAbstractSmokeTestBase#testCreateNewCancelComponentNav
+     * @link ComponentAbstractSmokeTestBase#testComponentCreateNewCancelNav
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default" }, description = "testCreateNewCancelComponentNav")
+    @Test(groups = { "all", "fast", "default" }, description = "testComponentCreateNewCancelNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testCreateNewCancelComponentNav() throws Exception {
+    public void testComponentCreateNewCancelNav() throws Exception {
         setUp();
-        testCreateNewCancelComponentNav(this);
+        testComponentCreateNewCancelNav(this);
     }
 
     /**

@@ -38,15 +38,15 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
 
+    protected void bookmark() {
+        open(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+    }
+
     /**
      * Bookmark tests should call bookmark(), navigation tests should call navigation()
      * @throws Exception
      */
     protected abstract void gotoTest() throws Exception;
-
-    protected void bookmark() {
-        open(ITUtil.getBaseUrlString() + BOOKMARK_URL);
-    }
 
     protected void navigtaion() throws InterruptedException {
         waitAndClickAdministration(this);
@@ -58,13 +58,13 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
         checkForIncidentReport("Component");
     }
 
-    protected void testCreateNewCancelComponentBookmark(Failable failable) throws Exception {
+    protected void testComponentCreateNewCancelBookmark(Failable failable) throws Exception {
         waitAndCreateNew();
         testCancelConfirmation();
         passed();
     }
 
-    protected void testCreateNewCancelComponentNav(Failable failable) throws Exception {
+    protected void testComponentCreateNewCancelNav(Failable failable) throws Exception {
         navigtaion(); // setUp only takes us to the portal, need to navigate to the test
         waitAndCreateNew();
         testCancelConfirmation();

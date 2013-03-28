@@ -44,7 +44,7 @@ public class XMLIngesterSTNGBkMrkGen extends XMLIngesterSTNGBase {
      * @link XMLIngesterAbstractSmokeTestBase#testIngestionBookmark
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default" }, description = "testIngestionBookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testIngestionBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testIngestionBookmark() throws Exception {
         setUp();

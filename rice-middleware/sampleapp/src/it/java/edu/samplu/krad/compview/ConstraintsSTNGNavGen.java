@@ -13,23 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.compview;
 
-import org.junit.Test;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConstraintsSTJUnitNavGen extends ConstraintsSTJUnitBase {
+public class ConstraintsSTNGNavGen extends ConstraintsSTNGBase {
 
-    @Test
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testConstraintsNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testConstraintsNav() throws Exception {
+        setUp();
         testConstraintsNav(this);
     }
 
-    @Test
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testConstraintsField9Nav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testConstraintsField9Nav() throws Exception {
+        setUp();
         testConstraintsField9Nav(this);
     }
 }

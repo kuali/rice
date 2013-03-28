@@ -44,7 +44,7 @@ public class ComponentSTNGNavGen extends ComponentSTNGBase {
      * @link ComponentAbstractSmokeTestBase#testComponentCreateNewCancelNav
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default" }, description = "testComponentCreateNewCancelNav")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testComponentCreateNewCancelNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testComponentCreateNewCancelNav() throws Exception {
         setUp();
@@ -55,7 +55,7 @@ public class ComponentSTNGNavGen extends ComponentSTNGBase {
      * @link ComponentAbstractSmokeTestBase#testComponentParameterNav
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default" }, description = "testComponentParameterNav")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testComponentParameterNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testComponentParameterNav() throws Exception {
         setUp();

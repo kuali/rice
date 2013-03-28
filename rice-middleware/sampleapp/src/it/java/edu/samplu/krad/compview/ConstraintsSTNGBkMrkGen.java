@@ -13,28 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.compview;
 
-import org.junit.Test;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConstraintsSTJUnitBkMrkGen extends ConstraintsSTJUnitBase {
+public class ConstraintsSTNGBkMrkGen extends ConstraintsSTNGBase {
 
     @Override
     public String getTestUrl() {
         return BOOKMARK_URL;
     }
 
-    @Test
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testContraintsBookmark")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testConstraintsBookmark() throws Exception {
+        setUp();
         testConstraintsBookmark(this);
     }
 
-    @Test
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testConstraintsField9Bookmark")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testConstraintsField9Bookmark() throws Exception {
+        setUp();
         testConstraintsField9Bookmark(this);
     }
 }

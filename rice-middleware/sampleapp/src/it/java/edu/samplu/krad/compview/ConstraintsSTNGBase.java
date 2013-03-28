@@ -13,28 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.compview;
 
-import org.junit.Test;
+import org.testng.AssertJUnit;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConstraintsSTJUnitBkMrkGen extends ConstraintsSTJUnitBase {
+public abstract class ConstraintsSTNGBase extends ConstraintsAbstractSmokeTestBase{
 
     @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
-    @Test
-    public void testConstraintsBookmark() throws Exception {
-        testConstraintsBookmark(this);
-    }
-
-    @Test
-    public void testConstraintsField9Bookmark() throws Exception {
-        testConstraintsField9Bookmark(this);
+    public void fail(String message){
+        AssertJUnit.fail(message);
     }
 }

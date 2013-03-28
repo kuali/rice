@@ -41,7 +41,7 @@ public class ComponentSTNGBkMrkGen extends ComponentSTNGBase {
      * @link ComponentAbstractSmokeTestBase#testCreateNewCancelComponent
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default" }, description = "testComponentCreateNewCancelBookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testComponentCreateNewCancelBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testComponentCreateNewCancelBookmark() throws Exception {
         setUp();
@@ -52,7 +52,7 @@ public class ComponentSTNGBkMrkGen extends ComponentSTNGBase {
      * @link ComponentAbstractSmokeTestBase#testComponentParameter
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default" }, description = "testComponentParameterBookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testComponentParameterBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testComponentParameterBookmark() throws Exception {
         setUp();

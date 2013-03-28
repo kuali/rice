@@ -33,7 +33,7 @@ public class LoginLogoutSTNGBkMrkGen extends LoginLogoutSTNGBase {
      * @link LoginLogoutSTNGBase#testLogoutBookmark
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default" }, description = "testLogoutBookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testLogoutBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testLogoutBookmark() throws Exception {
         setUp();

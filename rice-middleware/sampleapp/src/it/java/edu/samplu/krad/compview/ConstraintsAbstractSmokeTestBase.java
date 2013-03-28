@@ -18,12 +18,18 @@ package edu.samplu.krad.compview;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyITBase implements Failable{
+
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
+     */
+    public final static String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3";
 
     /**
      * ^[\s\S]*error[\s\S]*$"
@@ -37,6 +43,16 @@ public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyIT
 
     private void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
         SeleneseTestBase.assertTrue(getAttributeByName(field, "class").matches(regex));
+    }
+
+    /**
+     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ConstraintsAbstractSmokeTestBase#BOOKMARK_URL}
+     * {@inheritDoc}
+     * @return
+     */
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
     }
 
     protected void navigation() throws Exception {

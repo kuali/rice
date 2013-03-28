@@ -30,25 +30,13 @@ import edu.samplu.common.WebDriverLegacyITBase;
  */
 public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase implements Failable {
 
+    /**
+     * LoginLogout can use ITUtil.PORTAL for both navigation and bookmark tests so it will not be overridden by subclasses.
+     * @return ITUtil.PORTAL
+     */
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
-    }
-
-    @Override
-    public String getUserName() {
-        return "admin";
-    }
-
-    /**
-     * Navigate to the page under test and call {@link #testLogout}
-     *
-     * @param failable {@link edu.samplu.common.Failable}
-     * @throws Exception
-     */
-    public void testNavLogout(Failable failable) throws Exception {
-        navigate(failable);
-        testLogout(failable);
     }
 
     private void navigate(Failable failable) throws InterruptedException {
@@ -57,12 +45,24 @@ public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyIT
     }
 
     /**
-     * Test Logout on the current page.  Sets the passed flag (used with SauceLabs, reporting, etc.) as appropriate.
+     * Navigate to the page under test click logout.
      *
      * @param failable {@link edu.samplu.common.Failable}
      * @throws Exception
      */
-    public void testLogout(Failable failable) throws Exception {
+    public void testLogoutNav(Failable failable) throws Exception {
+        navigate(failable);
+        waitAndClickLogout(failable);
+        passed();
+    }
+
+    /**
+     * Click Logout on the current page.
+     *
+     * @param failable {@link edu.samplu.common.Failable}
+     * @throws Exception
+     */
+    public void testLogoutBookmark(Failable failable) throws Exception {
         waitAndClickLogout(failable);
         passed();
     }

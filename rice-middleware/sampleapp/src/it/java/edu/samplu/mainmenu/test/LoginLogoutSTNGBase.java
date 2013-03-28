@@ -17,8 +17,6 @@ package edu.samplu.mainmenu.test;
 
 import org.testng.AssertJUnit;
 
-import static org.testng.AssertJUnit.fail;
-
 /**
  * Abstract base class for TestNG LoginLogout Smoke Tests.
  *

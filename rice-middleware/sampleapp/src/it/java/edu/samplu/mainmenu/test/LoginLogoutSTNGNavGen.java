@@ -30,13 +30,13 @@ import org.testng.annotations.Test;
 public class LoginLogoutSTNGNavGen extends LoginLogoutSTNGBase {
 
     /**
-     * @link LoginLogoutSTNGBase#testNavLogout
+     * @link LoginLogoutSTNGBase#testLogoutNav
      * @throws Exception
      */
-    @Test(groups = { "all", "fast", "default", "nav" }, description = "testNavLogout")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testLogoutNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testNavLogout() throws Exception {
+    public void testLogoutNav() throws Exception {
         setUp();
-        super.testNavLogout(this);
+        testLogoutNav(this);
     }
 }

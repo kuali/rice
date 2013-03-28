@@ -17,8 +17,6 @@ package edu.samplu.mainmenu.test;
 
 import org.junit.Assert;
 
-import static org.junit.Assert.fail;
-
 /**
  * Abstract base class for JUnit LoginLogout Smoke Tests.
  *

@@ -20,6 +20,7 @@ import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
+import org.kuali.rice.kns.KNSTestCase;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -37,7 +38,7 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LookupResultsServiceTest extends KRADTestCase {
+public class LookupResultsServiceTest extends KNSTestCase {
 	public final static String MOCK_PARAMETER_NMSPC = "KR-NS";
 	public final static String MOCK_PARAMETER_DETAIL_TYPE_CODE = "All";
 	public final static String MOCK_PARAMETER_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
@@ -45,7 +46,6 @@ public class LookupResultsServiceTest extends KRADTestCase {
 
 	/**
 	 * Tests that lookup ids work
-	 *
 	 */
 	// @Ignore
 	@Test public void testLookupIds() {

@@ -56,6 +56,8 @@
                            http://www.springframework.org/schema/cache
                            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
+  <!-- note KNS tests also use KRADTestHarnessSpringBeans.xml -->
+
   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="properties" value="#{bootstrapConfig.getProperties()}"/>
   </bean>
@@ -63,7 +65,7 @@
   <bean id="bootstrapConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
     <property name="configLocations">
       <list>
-        <value>classpath:META-INF/krad-test-config.xml</value>
+        <value>classpath:META-INF/kns-test-config.xml</value>
       </list>
     </property>
   </bean>
@@ -75,40 +77,6 @@
         <ref bean="bootstrapConfig"/>
       </list>
     </property>
-  </bean>
-
-  <alias name="transactionManager${connection.pool.impl}" alias="jtaUserTransaction"/>
-  <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/>
-
-  <bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
-    <property name="transactionManager" ref="transactionManagerXAPool"/>
-    <property name="driverClassName" value="${datasource.driver.name}"/>
-    <property name="url" value="${datasource.url}"/>
-    <property name="maxSize" value="${datasource.pool.maxSize}"/>
-    <property name="minSize" value="${datasource.pool.minSize}"/>
-    <property name="maxWait" value="${datasource.pool.maxWait}"/>
-    <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
-    <property name="username" value="${datasource.username}"/>
-    <property name="password" value="${datasource.password}"/>
-  </bean>
-
-  <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    <property name="driverClassName" value="${datasource.driver.name}"/>
-    <property name="url" value="${datasource.url}"/>
-    <property name="maxActive" value="${datasource.pool.maxActive}"/>
-    <property name="minIdle" value="${datasource.minIdle}"/>
-    <property name="initialSize" value="${datasource.initialSize}"/>
-    <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
-    <property name="username" value="${datasource.username}"/>
-    <property name="password" value="${datasource.password}"/>
-    <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
-  </bean>
-
-  <bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
-    <property name="dataSource" ref="riceDataSource${connection.pool.impl}"/>
-    <property name="nonTransactionalDataSource" ref="riceNonTransactionalDataSource"/>
-    <property name="transactionManager" ref="transactionManager${connection.pool.impl}"/>
-    <property name="userTransaction" ref="jtaUserTransaction"/>
   </bean>
 
   <bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
@@ -127,20 +95,6 @@
     </property>
   </bean>
 
-  <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
-
-  <bean id="kradConfigurer" class="org.kuali.rice.krad.config.KRADConfigurer"/>
-
-  <bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
-
-  <bean id="locationConfigurer" class="org.kuali.rice.location.impl.config.LocationConfigurer"/>
-
-  <bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
-
-  <bean id="kenConfigurer" class="org.kuali.rice.ken.impl.config.KENConfigurer"/>
-
-  <bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
-
   <bean id="lookupResultsDDBoLookupableHelperService"
         class="org.kuali.rice.kns.lookup.LookupResultsDDBoLookupableHelperServiceImpl"/>
 
@@ -154,7 +108,7 @@
     <constructor-arg value="${serviceServletUrl}"/>
   </bean>
 
-  <bean id="testModule" parent="testModule-parentBean">
+  <bean id="testModuleConfiguration" parent="testModuleConfiguration-parentBean">
     <property name="dataDictionaryPackages">
       <list merge="true">
         <value>org/kuali/rice/kns/datadictionary</value>

@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kns.KNSTestCase;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
 import org.kuali.rice.kns.web.ui.Field;
@@ -65,7 +66,7 @@ import org.kuali.rice.krad.test.KRADTestConstants.TestConstants;
        )
 )
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
-public class KualiLookupableTest extends KRADTestCase {
+public class KualiLookupableTest extends KNSTestCase {
     private KualiLookupableImpl lookupableImpl;
 
     @Override

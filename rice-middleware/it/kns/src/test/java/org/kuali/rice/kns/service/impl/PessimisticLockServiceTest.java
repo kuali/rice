@@ -21,6 +21,7 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.KimConstants.PermissionNames;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.KNSTestCase;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
@@ -58,7 +59,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
-public class PessimisticLockServiceTest extends KRADTestCase {
+public class PessimisticLockServiceTest extends KNSTestCase {
 
     @Override
     public void setUp() throws Exception {

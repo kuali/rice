@@ -70,6 +70,8 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
      */
     protected String metadataLocation;
 
+    protected List<String> additionalMetadataLocations;
+
     /**
      * No-arg constructor
      */
@@ -201,15 +203,34 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
             return;
         }
         LOG.info("Loading OJB Metadata from " + repoMetadata);
+
         DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
         InputStream is = resourceLoader.getResource(repoMetadata).getInputStream();
         is = preprocessRepositoryMetadata(is);
         DescriptorRepository dr = mm.readDescriptorRepository(is);
         mm.mergeDescriptorRepository(dr);
+
         try {
             is.close();
         } catch (Exception e) {
             LOG.warn("Failed to close stream to file " + repoMetadata, e);
+        }
+
+        if (additionalMetadataLocations != null) {
+            for (String metadataLocation : additionalMetadataLocations) {
+                LOG.info("Loading OJB Metadata from " + metadataLocation);
+
+                InputStream is2 = resourceLoader.getResource(metadataLocation).getInputStream();
+                is2 = preprocessRepositoryMetadata(is2);
+                DescriptorRepository dr2 = mm.readDescriptorRepository(is2);
+                mm.mergeDescriptorRepository(dr2);
+
+                try {
+                    is2.close();
+                } catch (Exception e) {
+                    LOG.warn("Failed to close stream to file " + metadataLocation, e);
+                }
+            }
         }
     }
 
@@ -252,4 +273,21 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
 		this.metadataLocation = metadataLocation;
 	}
 
+    /**
+     * List of additional OJB descriptor files to include with the connect
+     *
+     * @return List<String> list of ojb files
+     */
+    public List<String> getAdditionalMetadataLocations() {
+        return additionalMetadataLocations;
+    }
+
+    /**
+     * Setter for additional ojb metadata files
+     *
+     * @param additionalMetadataLocations
+     */
+    public void setAdditionalMetadataLocations(List<String> additionalMetadataLocations) {
+        this.additionalMetadataLocations = additionalMetadataLocations;
+    }
 }

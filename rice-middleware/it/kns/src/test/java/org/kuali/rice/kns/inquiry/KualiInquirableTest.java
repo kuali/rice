@@ -17,6 +17,7 @@ package org.kuali.rice.kns.inquiry;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kns.KNSTestCase;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
@@ -29,7 +30,7 @@ import org.junit.Assert;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KualiInquirableTest extends KRADTestCase {
+public class KualiInquirableTest extends KNSTestCase {
 
     private AccountManager am;
 

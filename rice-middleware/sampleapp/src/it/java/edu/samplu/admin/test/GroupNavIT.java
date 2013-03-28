@@ -15,13 +15,7 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * tests the group section in Rice.

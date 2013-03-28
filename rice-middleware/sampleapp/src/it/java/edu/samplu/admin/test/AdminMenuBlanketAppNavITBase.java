@@ -15,11 +15,7 @@
  */
 package edu.samplu.admin.test;
 
-import org.openqa.selenium.By;
-
 import edu.samplu.common.MenuNavITBase;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * blanket approving a new document, results in a final document
@@ -52,26 +48,4 @@ public abstract class AdminMenuBlanketAppNavITBase extends MenuNavITBase{
 //        assertDocFinal(docId);
 //        passed();
 //    }
-
-    protected void assertBlanketApproveButtonsPresent() {
-        assertElementPresentByName("methodToCall.route");
-        assertElementPresentByName("methodToCall.save");
-        assertElementPresentByName("methodToCall.blanketApprove", "Blanket Approve button not present does " + user + " have permssion?");
-        assertElementPresentByName("methodToCall.close");
-        assertElementPresentByName("methodToCall.cancel");
-    }
-
-    protected void assertDocFinal(String docId) throws InterruptedException {
-        waitFor(By.linkText("spreadsheet"));
-        if(isElementPresent(By.linkText(docId))){
-            assertEquals("FINAL", getDocStatus());
-        }else{
-            assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
-            assertEquals("FINAL", getDocStatus());
-        }
-    }
-
-    private String getDocStatus() {
-        return driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText();
-    }
 }

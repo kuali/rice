@@ -18,6 +18,9 @@
 
 <channel:portalChannelTop channelTitle="KRAD Bookstore App" />
 <div class="body">
+
+  <!-- NOTE: Do not add new KRAD views here but in the KRAD sampleapp. All KRAD functionality will be removed from the Rice
+   sampleapp once the functionality is reproduced -->
   
   <ul class="chan">
      <li><portal:portalLink displayTitle="true" title="Book Order Request " url="${ConfigProperties.application.url}/bookOrder.do?methodToCall=docHandler&command=initiate&docTypeName=BookOrderDocumentType" /></li>

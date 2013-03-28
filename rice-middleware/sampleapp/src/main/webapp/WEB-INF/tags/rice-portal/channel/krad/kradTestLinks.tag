@@ -18,6 +18,9 @@
 <channel:portalChannelTop channelTitle="KRAD Testing - KNS L&F" />
 <div class="body">
 
+    <!-- NOTE: Do not add new KRAD views here but in the KRAD sampleapp. All KRAD functionality will be removed from the Rice
+     sampleapp once the functionality is reproduced -->
+
    <strong>Screen Element Testing</strong>
    <ul class="chan">
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91" />Uif Components (Kitchen Sink)</a></li>

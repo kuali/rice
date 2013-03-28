@@ -30,19 +30,24 @@ import org.testng.annotations.Test;
  */
 public class XMLIngesterSTNGBkMrkGen extends XMLIngesterSTNGBase {
 
-    /**
-     * @link XMLIngesterAbstractSmokeTestBase#testIngestion
-     * @throws Exception
-     */
-    @Test(groups = { "all", "fast", "default" }, description = "testIngestion")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testIngestion() throws Exception {
-        setUp();
-        super.testIngestion(this);
-    }
-
     @Override
     public void fail(String string) {
         AssertJUnit.fail(string);
+    }
+
+    @Override
+    public String getTestUrl() {
+        return getBaseUrlString() + BOOKMARK_URL;
+    }
+
+    /**
+     * @link XMLIngesterAbstractSmokeTestBase#testIngestionBookmark
+     * @throws Exception
+     */
+    @Test(groups = { "all", "fast", "default" }, description = "testIngestionBookmark")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testIngestionBookmark() throws Exception {
+        setUp();
+        testIngestionBookmark(this);
     }
 }

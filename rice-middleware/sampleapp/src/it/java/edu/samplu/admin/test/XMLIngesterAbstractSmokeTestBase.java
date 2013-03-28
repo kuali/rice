@@ -36,6 +36,12 @@ import java.util.Properties;
 
 public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase implements Failable {
 
+    /**
+     * http://env12.rice.kuali.org/portal.do?channelTitle=XML%20Ingester&channelUrl=http://env12.rice.kuali.org/kew/../core/Ingester.do
+     */
+    public final static String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=XML%20Ingester&channelUrl="
+            + ITUtil.getBaseUrlString() + "/kew/../core/Ingester.do";
+
     // File generation
     private String PROPS_LOCATION = System.getProperty("xmlingester.props.location", null);
     private String DEFAULT_PROPS_LOCATION = "XML/xmlingester.properties";
@@ -53,33 +59,24 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
      */
     protected abstract File newTempFile(String name) throws IOException;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        // generated load users and group resources
-        cfg = new Configuration();
-        cfg.setTemplateLoader(new ClassTemplateLoader(getClass().getClassLoader().getClass(), DIR_TMPL));
-    }
-
+    /**
+     * Nav tests start at {@link ITUtil#PORTAL}.  Bookmark Tests should override and return {@link XMLIngesterAbstractSmokeTestBase#BOOKMARK_URL}
+     * {@inheritDoc}
+     * @return
+     */
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
     }
 
+    /**
+     * "admin" xml ingestion requires admin permissions.
+     * {@inheritDoc}
+     * @return
+     */
     @Override
     public String getUserName() {
-        return "admin"; // xml ingestion requires admin permissions
-    }
-
-    /**
-     * Navigate to the page under test and call {@link #testIngestion}
-     *
-     * @param failable {@link edu.samplu.common.Failable}
-     * @throws Exception
-     */
-    public void testNavIngestion(Failable failable) throws Exception {
-        navigate(failable);
-        testIngestion(failable);
+        return "admin";
     }
 
     /**
@@ -92,6 +89,31 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
         waitAndClickXMLIngester(failable);
         selectFrameIframePortlet();
         checkForIncidentReport("XML Ingester", failable, "");
+    }
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        // generated load users and group resources
+        cfg = new Configuration();
+        cfg.setTemplateLoader(new ClassTemplateLoader(getClass().getClassLoader().getClass(), DIR_TMPL));
+    }
+
+    /**
+     * Navigate to the page under test and call {@link #testIngestion}
+     *
+     * @param failable {@link edu.samplu.common.Failable}
+     * @throws Exception
+     */
+    protected void testIngestionNav(Failable failable) throws Exception {
+        navigate(failable);
+        testIngestion(failable);
+        passed();
+    }
+
+    protected void testIngestionBookmark(Failable failable) throws Exception {
+        testIngestion(failable);
+        passed();
     }
 
     /**
@@ -115,8 +137,6 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
         for(File file: fileUploadList) {
             assertTextPresent("Ingested xml doc: " + file.getName());
         }
-
-        passed();
     }
 
     protected List<File> buildFileUploadList() throws Exception {

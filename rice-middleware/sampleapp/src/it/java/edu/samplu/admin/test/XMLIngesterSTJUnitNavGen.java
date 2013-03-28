@@ -29,17 +29,17 @@ import org.junit.Test;
  */
 public class XMLIngesterSTJUnitNavGen extends XMLIngesterSTJUnitBase {
 
+    @Override
+    public void fail(String string) {
+        Assert.fail(string);
+    }
+
     /**
-     * @link XMLIngesterAbstractSmokeTestBase#testNavIngestion
+     * @link XMLIngesterAbstractSmokeTestBase#testIngestionNav
      * @throws Exception
      */
     @Test
     public void testXMLIngesterSuccessfulFileUpload() throws Exception {
-        super.testNavIngestion(this);
-    }
-
-    @Override
-    public void fail(String string) {
-        Assert.fail(string);
+        testIngestionNav(this);
     }
 }

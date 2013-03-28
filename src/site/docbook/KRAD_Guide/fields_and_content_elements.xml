@@ -642,7 +642,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
       <para><emphasis role="bold">UifBooleanEditor</emphasis> – Formats any of the strings
         &quot;/true/yes/y/on/1/&quot; to the Boolean true, and any of the strings
         &quot;/false/no/n/off/0/&quot; to Boolean false. Conversely, the Boolean true is formatted
-        as the string "true" and the Boolean false is formatted as the string "false". </para>
+        as the string "yes" and the Boolean false is formatted as the string "no". </para>
       <para><emphasis role="bold">UifCurrencyEditor</emphasis> – Used for converting between a
         KualiDecimal and a string. The string is formatted using commas and to two decimal
         places.</para>

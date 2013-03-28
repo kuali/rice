@@ -205,6 +205,9 @@
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9152'>KULRICE-9152</link>] - PK for krad_msg_t is too long for MySQL 5.1</para>
                 </listitem>
                 <listitem>
+                    <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9221'>KULRICE-9221</link>] - Invalid bean name "matchAllTxInterceptor" for KIM Remote mode</para>
+                </listitem>
+                <listitem>
                     <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9231'>KULRICE-9231</link>] - Add striping to the tables for easier readibility</para>
                 </listitem>
             </itemizedlist>

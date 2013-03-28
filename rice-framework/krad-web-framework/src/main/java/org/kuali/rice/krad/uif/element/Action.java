@@ -350,6 +350,10 @@ public class Action extends ContentElementBase {
         submitData.put(UifConstants.UrlParams.SHOW_HOME, "false");
 
         // if focus id not set default to focus on action
+        if (focusOnIdAfterSubmit == null){
+            focusOnIdAfterSubmit = UifConstants.Order.SELF.toString();
+        }
+
         if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.SELF.toString())) {
             focusOnIdAfterSubmit = this.getId();
             submitData.put("focusId", focusOnIdAfterSubmit);

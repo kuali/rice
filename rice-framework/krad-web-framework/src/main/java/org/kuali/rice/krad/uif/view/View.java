@@ -264,6 +264,9 @@ public class View extends ContainerBase {
             KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, theme, model,
                     getContext());
         }
+
+        //handle parentLocation breadcrumb chain
+        parentLocation.constructParentLocationBreadcrumbItems(view, model, view.getContext());
     }
 
     /**
@@ -340,8 +343,7 @@ public class View extends ContainerBase {
             breadcrumbItem.getUrl().setViewId(view.getId());
         }
 
-        //handle parentLocation breadcrumb chain
-        parentLocation.constructParentLocationBreadcrumbItems(view, model, view.getContext());
+
     }
 
     /**
@@ -453,6 +455,7 @@ public class View extends ContainerBase {
         components.add(breadcrumbItem);
         components.add(parentLocation.getPageBreadcrumbItem());
         components.add(parentLocation.getViewBreadcrumbItem());
+        components.addAll(parentLocation.getResolvedBreadcrumbItems());
 
         // Note super items should be added after navigation and other view components so
         // conflicting ids between nav and page do not occur on page navigation via ajax

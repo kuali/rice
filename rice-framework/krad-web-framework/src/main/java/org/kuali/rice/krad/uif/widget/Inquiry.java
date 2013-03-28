@@ -107,7 +107,8 @@ public class Inquiry extends WidgetBase {
 
         // Do checks for inquiry when read only
         if (isParentReadOnly()) {
-            if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath())) {
+            if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath())
+                    || ((DataField) parent).getBindingInfo().getBindingPath().equals("null")) {
                 return;
             }
 

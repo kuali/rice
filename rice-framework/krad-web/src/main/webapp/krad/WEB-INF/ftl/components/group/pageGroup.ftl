@@ -18,13 +18,13 @@
 <#macro uif_pageGroup group>
 
 <#--    Breadcrumb update-->
-    <div id="Uif-BreadcrumbUpdate" style="display:none;">
-        <@krad.template component=KualiForm.view.breadcrumbs page=group/>
-    </div>
+<div id="Uif-BreadcrumbUpdate" style="display:none;">
+    <@krad.template component=KualiForm.view.breadcrumbs page=group/>
+</div>
 
 <#--unified view header supportTitle update-->
     <#if group.header?has_content && KualiForm.view.unifiedHeader>
-        <div id="Uif-SupportTitleUpdate" style="display:none;">
+    <div id="Uif-SupportTitleUpdate" style="display:none;">
             <span class="uif-supportTitle-wrapper uif-viewHeader-supportTitle">
                 <#-- rich message support -->
                 <#if group.header.richHeaderMessage?has_content>
@@ -33,13 +33,13 @@
                 ${group.header.headerText}
                 </#if>
             </span>
-        </div>
+    </div>
     </#if>
 
     <#include "group.ftl" parse=true/>
     <@uif_group group=group/>
 
-    <!-- PAGE RELATED VARS -->
+<!-- PAGE RELATED VARS -->
     <#if KualiForm.view.renderForm>
         <@spring.formHiddenInput id="pageId" path="KualiForm.view.currentPageId"/>
         <@spring.formHiddenInput id="historyParameterString" path="KualiForm.formHistory.historyParameterString"/>

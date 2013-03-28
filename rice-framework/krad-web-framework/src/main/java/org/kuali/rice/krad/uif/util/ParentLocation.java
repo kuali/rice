@@ -128,12 +128,21 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
                 viewBreadcrumbItem.setLabel(parentView.getHeaderText());
             }
 
+            //siblingBreadcrumb inheritance automation
+            if (parentView.getBreadcrumbItem() != null
+                    && parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent() != null
+                    && viewBreadcrumbItem.getSiblingBreadcrumbComponent() == null) {
+                view.assignComponentIds(parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent());
+                viewBreadcrumbItem.setSiblingBreadcrumbComponent(
+                        parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent());
+            }
+
             //page breadcrumb label automation, page must be a page of the view breadcrumb
-            if (pageBreadcrumbItem != null && StringUtils.isBlank(pageBreadcrumbItem.getLabel()) && StringUtils
-                    .isNotBlank(pageBreadcrumbItem.getUrl().getPageId()) && StringUtils.isNotBlank(
-                    pageBreadcrumbItem.getUrl().getViewId()) && pageBreadcrumbItem.getUrl().getViewId().equals(
-                    viewId)) {
-                handlePageBreadcrumbLabel(parentView);
+            if (pageBreadcrumbItem != null
+                    && StringUtils.isNotBlank(pageBreadcrumbItem.getUrl().getPageId())
+                    && StringUtils.isNotBlank(pageBreadcrumbItem.getUrl().getViewId())
+                    && pageBreadcrumbItem.getUrl().getViewId().equals(viewId)) {
+                handlePageBreadcrumb(parentView, currentModel);
             }
 
         }
@@ -281,7 +290,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      *
      * @param view the current view
      */
-    private void handlePageBreadcrumbLabel(View view) {
+    private void handlePageBreadcrumb(View view, Object currentModel) {
         PageGroup thePage = null;
         if (view.isSinglePageView() && view.getPage() != null) {
             thePage = view.getPage();
@@ -294,6 +303,11 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
             }
         }
 
+        if (thePage == null) {
+            return;
+        }
+
+        //set label
         if (StringUtils.isBlank(pageBreadcrumbItem.getLabel()) && thePage.getBreadcrumbItem() != null &&
                 StringUtils.isNotBlank(thePage.getBreadcrumbItem().getLabel())) {
             pageBreadcrumbItem.setLabel(thePage.getBreadcrumbItem().getLabel());
@@ -302,6 +316,15 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
             pageBreadcrumbItem.setLabel(thePage.getHeaderText());
         }
 
+        //page siblingBreadcrumb inheritance automation
+        if (thePage.getBreadcrumbItem() != null
+                && thePage.getBreadcrumbItem().getSiblingBreadcrumbComponent() != null
+                && pageBreadcrumbItem.getSiblingBreadcrumbComponent() == null) {
+            view.assignComponentIds(thePage.getBreadcrumbItem().getSiblingBreadcrumbComponent());
+
+            pageBreadcrumbItem.setSiblingBreadcrumbComponent(
+                    thePage.getBreadcrumbItem().getSiblingBreadcrumbComponent());
+        }
     }
 
     /**

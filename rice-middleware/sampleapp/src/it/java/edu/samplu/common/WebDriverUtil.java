@@ -22,7 +22,11 @@ import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -114,6 +118,44 @@ public class WebDriverUtil {
     }
 
     /**
+     *
+     * @param passed
+     * @param sessionId
+     * @param testParam
+     * @param userParam
+     * @throws Exception
+     */
+    public static void tearDown(boolean passed, String sessionId, String testParam, String userParam) throws Exception {
+
+//        if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
+//            SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
+//                    System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+//        }
+
+        if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
+            getHTML(ITUtil.prettyHttp(System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
+                    + testParam + "&user=" + userParam));
+        }
+    }
+
+    /**
+     *
+     * @param testParam
+     * @return
+     */
+    public static String determineUser(String testParam) {
+        String user = null;
+        if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USER_PROPERTY) != null) {
+            return System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USER_PROPERTY);
+        } else if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
+            String userResponse = WebDriverUtil.getHTML(ITUtil.prettyHttp(System.getProperty(
+                    WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + testParam.trim()));
+            return userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
+        }
+        return user;
+    }
+
+    /**
      * @link ITUtil#checkForIncidentReport
      * @param driver
      * @param locator
@@ -172,6 +214,29 @@ public class WebDriverUtil {
         return null;
     }
 
+    public static String getHTML(String urlToRead) {
+        URL url;
+        HttpURLConnection conn;
+        BufferedReader rd;
+        String line;
+        String result = "";
+
+        try {
+            url = new URL(urlToRead);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            while ((line = rd.readLine()) != null) {
+                result += line;
+            }
+            rd.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     protected static void selectFrameSafe(WebDriver driver, String locator) {
         try {
             driver.switchTo().frame(locator);
@@ -179,7 +244,6 @@ public class WebDriverUtil {
             // don't fail
         }
     }
-
 
     /**
      * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the

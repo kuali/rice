@@ -35,10 +35,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -200,16 +196,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      */
     @Before
     public void setUp() throws Exception {
-        // {"test":"1","user":"1"}
         try {
             waitSeconds = Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + ""));
-            if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
-                user = System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
-            } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
-                String userResponse = getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY)
-                        + "?test=" + this.toString().trim()));
-                user = userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
-            }
+            user = WebDriverUtil.determineUser(this.toString());
             driver = WebDriverUtil.setUp(getUserName(), getTestUrl(), getClass().getSimpleName(), testName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
         } catch (Exception e) {
@@ -227,11 +216,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      */
     @After
     public void tearDown() throws Exception {
-        try {		          
-        	if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
-                getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
-                        + this.toString() + "&user=" + user));
-            }
+        try {
+            WebDriverUtil.tearDown(passed, sessionId, this.toString().trim(), user);
         } catch (Exception e) {
             System.out.println("Exception in tearDown " + e.getMessage());
             e.printStackTrace();
@@ -246,29 +232,6 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                         .println("WebDriver is null, if using saucelabs, has sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
             }
         }
-    }
-
-    protected String getHTML(String urlToRead) {
-        URL url;
-        HttpURLConnection conn;
-        BufferedReader rd;
-        String line;
-        String result = "";
-        
-        try {
-            url = new URL(urlToRead);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            while ((line = rd.readLine()) != null) {
-                result += line;
-            }
-            rd.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return result;
     }
 
     protected void passed() {

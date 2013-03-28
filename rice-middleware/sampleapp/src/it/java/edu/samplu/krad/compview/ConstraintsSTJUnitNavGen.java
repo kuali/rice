@@ -17,14 +17,18 @@
 package edu.samplu.krad.compview;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContraintsNavIT extends WebDriverLegacyITBase {
+public class ConstraintsSTJUnitNavGen extends ConstraintsAbstractSmokeTestBase {
+
+    @Override
+    public void fail(String message) {
+        fail(message);
+    }
 
     @Override
     public String getTestUrl() {
@@ -32,11 +36,12 @@ public class ContraintsNavIT extends WebDriverLegacyITBase {
     }
 
     @Test
-    public void testContraintsIT() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]");
-        switchToWindow("Kuali :: Uif Components");
-        waitAndClickByLinkText("Validation");
-        super.testContraintsIT();
+    public void testConstraintsNav() throws Exception {
+        testConstraintsNav(this);
+    }
+
+    @Test
+    public void testConstraintsField9Nav() throws Exception {
+        testConstraintsField9Nav(this);
     }
 }

@@ -16,14 +16,17 @@
 
 package edu.samplu.krad.compview;
 
-import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContraintsWDIT extends WebDriverLegacyITBase {
+public class ConstraintsSTJUnitBkMrkGen extends ConstraintsAbstractSmokeTestBase {
+
+    @Override
+    public void fail(String message) {
+        fail(message);
+    }
 
     @Override
     public String getTestUrl() {
@@ -31,7 +34,12 @@ public class ContraintsWDIT extends WebDriverLegacyITBase {
     }
 
     @Test
-    public void testContraintsIT() throws Exception {
-        super.testContraintsIT();
+    public void testContraintsBookmark() throws Exception {
+        testConstraintsBookmark(this);
+    }
+
+    @Test
+    public void testConstraintsField9Bookmark() throws Exception {
+        testConstraintsField9Bookmark(this);
     }
 }

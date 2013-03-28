@@ -24,8 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    ContraintsNavIT.class,
-    ContraintsWDIT.class,
+    ConstraintsSTJUnitBkMrkGen.class,
+    ConstraintsSTJUnitNavGen.class,
     DeleteSubCollectionLineNavIT.class,
     DeleteSubCollectionLineWDIT.class,
     ParentLineNavIT.class,

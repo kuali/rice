@@ -255,33 +255,34 @@
             -->
             <section role="NotInToc">
                 <title>Recap</title>
+                <note><para>All UIF functions need to be prepended with #. For example, #isAssignableFrom.</para></note>
                 <itemizedlist>
                     <listitem>
                         <para>The UIF provides a number of functions that can be called from within
                             an expression:</para>
                         <itemizedlist>
                                 <listitem>
-                                <para>boolean isAssignableFrom(Class&lt;?&gt; assignableClass,
+                                <para>boolean #isAssignableFrom(Class&lt;?&gt; assignableClass,
                                     Class&lt;?&gt; objectClass) – Used to check whether a class
                                     (such as a class configured for a property) is assignable to
                                     another class</para>
                             </listitem>
                                 <listitem>
-                                <para>boolean empty(Object value) – Used to check whether a given
+                                <para>boolean #empty(Object value) – Used to check whether a given
                                     value is empty (null or empty string) (eg
                                     '@{!empty(field1)}')</para>
                             </listitem>
                                 <listitem>
-                                <para>String getName(Class&lt;?&gt; clazz) – Returns the name for a
+                                <para>String #getName(Class&lt;?&gt; clazz) – Returns the name for a
                                     class</para>
                             </listitem>
                                 <listitem>
-                                <para>String getParm(String namespaceCode, String componentCode,
+                                <para>String #getParm(String namespaceCode, String componentCode,
                                     String parameterName) – Retrieves the value for a system
                                     parameter as a String</para>
                             </listitem>
                                 <listitem>
-                                <para>Boolean getParmInd(String namespaceCode, String componentCode,
+                                <para>Boolean #getParmInd(String namespaceCode, String componentCode,
                                     String parameterName) – Retrieves the value for a system
                                     parameter as a Boolean</para>
                             </listitem>
@@ -291,14 +292,14 @@
                                     permission</para>
                             </listitem>
                                 <listitem>
-                                <para>boolean hasPermDtls(String namespaceCode, String
+                                <para>boolean #hasPermDtls(String namespaceCode, String
                                     permissionName, Map&lt;String, String&gt;
                                     permissionDetails,Map&lt;String, String&gt; roleQualifiers) –
                                     Checks whether the current user has the given KIM permission
                                     matching the details and role qualifiers</para>
                             </listitem>
                                 <listitem>
-                                <para>boolean hasPermTmpl(String namespaceCode, String templateName,
+                                <para>boolean #hasPermTmpl(String namespaceCode, String templateName,
                                     Map&lt;String, String&gt; permissionDetails,Map&lt;String,
                                     String&gt; roleQualifiers) – Checks whether the current user has
                                     a KIM permission for the template name that matches the details

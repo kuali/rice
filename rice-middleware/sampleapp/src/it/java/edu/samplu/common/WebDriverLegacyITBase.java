@@ -198,7 +198,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public void setUp() throws Exception {
         try {
             waitSeconds = Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + ""));
-            user = WebDriverUtil.determineUser(this.toString());
+            String givenUser = WebDriverUtil.determineUser(this.toString());
+            if (givenUser != null) {
+                user = givenUser;
+            }
             driver = WebDriverUtil.setUp(getUserName(), getTestUrl(), getClass().getSimpleName(), testName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
         } catch (Exception e) {

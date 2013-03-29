@@ -58,7 +58,7 @@
     <section>
         <title>KEN Configuration Parameters</title>
         <para>
-            <table frame="none" pgwide="1">
+            <table frame="none" pgwide="1" tabstyle="striped">
                 <title>KEN Core Parameters</title>
                 <tgroup cols="3">
                     <colspec colname="c1" colnum="1" colwidth="1.4*"/>
@@ -188,7 +188,7 @@
             and removed from the data store from within the UI. The Channel Definitions are stored
             in the database table KREN_CHNL_T. The columns are listed as follows:</para>
         <para>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>KREN_CHNL_T</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -256,7 +256,7 @@
                 </listitem>
             </itemizedlist></para>
         <para>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>KREN_PRODCR_T</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -457,7 +457,7 @@
         <section>
             <title>Common Notification Attributes</title>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Common Notification Attributes</title>
                     <tgroup cols="5">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -763,7 +763,7 @@
                 using SQL.</para>
             <para>The table has these columns:</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>KREN_PRIO_T</title>
                     <tgroup cols="5">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>

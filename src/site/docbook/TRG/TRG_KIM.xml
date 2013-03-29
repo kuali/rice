@@ -207,7 +207,7 @@
       <section>
         <title>Configuration Parameters</title>
 
-        <table frame="none">
+        <table frame="none" tabstyle="striped">
           <title>KIM Configuration Parameters</title>
 
           <tgroup cols="3">

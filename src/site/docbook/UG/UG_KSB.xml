@@ -233,7 +233,7 @@
                 </figure>
             </para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Message Filter Screen: Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -323,7 +323,7 @@
         </section>
         <section>
             <title>Documents Currently in Route Queue</title>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Documents Currently in Route Queue: Attributes</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -430,7 +430,7 @@
                 message. Most of the initial information is the same as that displayed in the
                 Documents currently in route queue table. Additional information on the View screen:<itemizedlist>
                     <listitem>
-                        <para><emphasis role="bold">Message</emphasis><table frame="none">
+                        <para><emphasis role="bold">Message</emphasis><table frame="none" tabstyle="striped">
                                 <title>Message: Attributes</title>
                                 <tgroup cols="2">
                                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -455,7 +455,7 @@
                             </table></para>
                     </listitem>
                     <listitem>
-                        <para><emphasis role="bold">Payload</emphasis><table frame="none">
+                        <para><emphasis role="bold">Payload</emphasis><table frame="none" tabstyle="striped">
                                 <title>Payload: Attributes</title>
                                 <tgroup cols="2">
                                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -570,7 +570,7 @@
                         <para><emphasis role="bold">Edit</emphasis></para>
                         <para>When you click <emphasis role="bold">Edit</emphasis> in the <emphasis
                                 role="bold">Actions</emphasis> menu, KSB displays the editable
-                            fields for that message. Fields on the Edit screen:<table frame="none">
+                            fields for that message. Fields on the Edit screen:<table frame="none" tabstyle="striped">
                                 <title>Edit Screen: Attributes</title>
                                 <tgroup cols="2">
                                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -627,7 +627,7 @@
                                     </tbody>
                                 </tgroup>
                             </table></para>
-                            <para>Functional links on the Edit page:<table frame="none">
+                            <para>Functional links on the Edit page:<table frame="none" tabstyle="striped">
                                 <title>Edit Screen: Links</title>
                                 <tgroup cols="2">
                                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -707,7 +707,7 @@
             </mediaobject>
         </figure>
         <para>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Thread Pool: Attributes</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -851,7 +851,7 @@
             except Actions. The table contains this information on each job that is
             scheduled:</para>
         <para>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Exception Routing Queue: Attributes</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -929,7 +929,7 @@
             </mediaobject>
         </figure>
         <para>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Existing Keystore Entries: Attributes</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>

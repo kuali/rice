@@ -560,7 +560,7 @@
         <section>
             <title>Lookup Wildcards</title>
             <para>Rice allows you to use wildcards in the Lookup process. The available wildcards
-                and their functions:<table frame="none">
+                and their functions:<table frame="none" tabstyle="striped">
                     <title>Lookup Wildcards</title>
                     <tgroup cols="5">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -645,7 +645,7 @@
                     </tgroup>
                 </table></para>
             <para>Examples of how some of the wildcards operate:</para>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Account Number (String) Example of Wildcard Use</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -721,7 +721,7 @@
                     </tbody>
                 </tgroup>
             </table>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Proposal Number (String) Example of Wildcard Use</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -746,7 +746,7 @@
                     </tbody>
                 </tgroup>
             </table>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Create Date (Date) Example of Wildcard Use</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -807,7 +807,7 @@
                         </imageobject>
                         </mediaobject>
                     </figure>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Ad Hoc Recipients: Person Requests attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -846,7 +846,7 @@
                     </figure>
                 
                 <para>Follow the same guidelines as the Person Requests Section of the Ad Hoc
-                    Recipients Tab, using a group instead of a person.<table frame="none">
+                    Recipients Tab, using a group instead of a person.<table frame="none" tabstyle="striped">
                         <title>Ad Hoc Recipients: Group Requests attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -878,7 +878,7 @@
                             </imageobject>
                         </mediaobject>
                     </figure>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Document Overview Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -927,7 +927,7 @@
                             </imageobject>
                         </mediaobject>
                     </figure>    
-                        <table frame="none">
+                        <table frame="none" tabstyle="striped">
                         <title>Notes and Attachments Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -989,7 +989,7 @@
                         </imageobject>
                         </mediaobject>
                     </figure>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Route Log Tab: ID Section Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>

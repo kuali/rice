@@ -203,7 +203,7 @@
                     of the screen.</para>
                 <para/>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Parameter Maintenance Document: attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -251,7 +251,7 @@
                     </mediaobject>
                 </figure>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Document Overview Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -295,7 +295,7 @@
                     </mediaobject>
                 </figure>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Edite Parameter Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -420,7 +420,7 @@
             <para>To limit the number of items returned you simply provide criteria which is then
                 used to limit the search.</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Parameter Component Lookup: Resultes set Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -469,7 +469,7 @@
                     Component</emphasis> on the <emphasis role="bold">Parameter Lookup</emphasis>
                 list.</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Parameter Componenet Inquiry: Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -704,7 +704,7 @@
                     </mediaobject>
                 </figure>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Edit Parameter Type Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -754,7 +754,7 @@
                 </mediaobject>
             </figure>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Pessimistic Lock Lookup: Search Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>

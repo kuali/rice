@@ -1117,7 +1117,7 @@
             <para>Each action request has one row on your Action List. There are five types of
                 Action Requests:</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Types of Action Requests</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1705,7 +1705,7 @@
                 <para>On the eDocLite lookup page, users can search for an eDocLite document based
                     on several criteria:</para>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>eDocLite Lookup Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1869,7 +1869,7 @@
                 </itemizedlist></para>
             <section>
                 <title>Document Header</title>
-                <para>The Document Header contains the following fields: <table frame="none">
+                <para>The Document Header contains the following fields: <table frame="none" tabstyle="striped">
                         <title>Document Header Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1908,7 +1908,7 @@
                 <para>This portion of the document is where the user identifies the routing and
                     complete business function. </para>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Document Body Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1948,7 +1948,7 @@
                     route log of eDocLite as comments. Notes are the comments associated with this
                     specific eDocLite form and appear with the form and not in the route log. </para>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Routing Action and Annotation, and Note Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -2068,7 +2068,7 @@
                 configuration parameters. Look in the KEW technical documentation for information on
                 how to override the default values.</para></note>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>User Preferences Attributes</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.2*"/>
@@ -2143,7 +2143,7 @@
             <para>These are the columns that will be displayed on the user’s action list
                 page.</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>User Preferences: Fields Displayed Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -2468,7 +2468,7 @@
                     click the submit button to save your changes to this Rule.</para>
                 <para>The fields are the same in both versions of the screen:</para>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Routing Rules Delegation Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -2549,7 +2549,7 @@
                     appropriately.</para>
                 <para>The fields are the same in both versions of the screen:</para>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Routing Rule Delegation: Delegate Rule Tab Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -2672,7 +2672,7 @@
                         >add</emphasis> button when you have entered information in the three
                     required fields. </para></note>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Routing Rules Delegation: Persons Tab Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -2743,7 +2743,7 @@
                     change existing information for a Group. </para>
                 <note><para>When you create a new group, you must click the <emphasis role="bold">add</emphasis> button
                         after you enter information in the required fields.</para></note>
-                <para><table frame="none">
+                <para><table frame="none" tabstyle="striped">
                     <title>Routing Rules Deleation: Groups Tab Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -2894,7 +2894,7 @@
                 described in the <emphasis role="bold">Rule Maintenance</emphasis> section that
                 follows.</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Routing Rule Creation Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -3085,7 +3085,7 @@
                     </mediaobject>
                 </figure>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Rule Maintenance Document Type Document: Rule Tab Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -3168,7 +3168,7 @@
                     </mediaobject>
                 </figure>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Rule Maintenance Document Type Document: Person Tab
                             Attributes</title>
                         <tgroup cols="2">
@@ -3238,7 +3238,7 @@
                 <para>The top portion of this tab is used to add a new Group while the lower portion
                     is used to change existing values. </para>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Rule Maintenance Document Type Document: Groups Tab
                             Attributes</title>
                         <tgroup cols="2">
@@ -3319,7 +3319,7 @@
                     <emphasis role="bold">Rule Template Inquiry</emphasis> screen for that
                 particular Rule Template.</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Rule Template Lookup Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="0.5*"/>

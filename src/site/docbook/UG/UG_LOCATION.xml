@@ -276,7 +276,7 @@
           New</emphasis> process, only the editable fields are
           displayed.</para>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Campus Maintenance Document: Edit Campus
               Attributes</title>
 
@@ -546,7 +546,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Campus Maintenance Document: Edit Campus Type
               Attributes</title>
 
@@ -773,7 +773,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Postal Code Maintenance Document: Create Postal Codes
               Attributes</title>
 
@@ -999,7 +999,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>County Maintenance Document: Create County
               Attributes</title>
 
@@ -1237,7 +1237,7 @@
           display-only set of fields on the left and editable fields on the
           right, in which you may enter changes.</para>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>States Maintenance Document: Edit States
               Attributes</title>
 
@@ -1409,7 +1409,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Country Maintenance Document: Edit Country
               Attributes</title>
 

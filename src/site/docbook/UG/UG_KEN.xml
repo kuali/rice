@@ -155,7 +155,7 @@
                         updated. </para>
                 </listitem>
             </itemizedlist></para>
-        <para>By default, three priorities are defined in KEN:<table frame="none">
+        <para>By default, three priorities are defined in KEN:<table frame="none" tabstyle="striped">
                 <title>Notification: Priority Attributes</title>
                 <tgroup cols="4">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>

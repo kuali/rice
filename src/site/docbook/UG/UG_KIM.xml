@@ -388,7 +388,7 @@
         <section>
           <title>Overview Section</title>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Overview Attributes</title>
               <tgroup cols="2">
                 <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -460,7 +460,7 @@
           Affiliations for this Principal ID. Depending on the Affiliation
           type you select, you may need to complete additional fields.</para>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Overview Attributes,
               Affiliations</title>
 
@@ -538,7 +538,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Overview Attributes, Affiliations
               Continued</title>
               <tgroup cols="2">
@@ -668,7 +668,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Contact Tab, Names Section
               Attributes</title>
 
@@ -782,7 +782,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Contact Tab, Address Section
               Attributes</title>
 
@@ -873,7 +873,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Contact Tab, Phone Numbers
               Attributes</title>
 
@@ -963,7 +963,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Contact Tab, Email Address
               Attributes</title>
 
@@ -1038,7 +1038,7 @@
           </mediaobject>
         </figure>
 
-        <para><table frame="none">
+        <para><table frame="none" tabstyle="striped">
             <title>Person Document: Privacy Preferences Tab Attributes</title>
             <tgroup cols="2">
               <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -1110,7 +1110,7 @@
         <section>
           <title>Groups Section</title>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Memeberships Tab, Groups
               Attributes</title>
 
@@ -1180,7 +1180,7 @@
         <section>
           <title>Roles Section</title>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Person Document: Memeberships Tab, Roles
               Attributes</title>
 
@@ -1347,7 +1347,7 @@
       <section>
         <title>Assignees Tab</title>
 
-        <para><table frame="none">
+        <para><table frame="none" tabstyle="striped">
             <title>Group Inquiry: Assignees Attributes</title>
             <tgroup cols="2">
               <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -1425,7 +1425,7 @@
           </mediaobject>
         </figure>
 
-        <para><table frame="none">
+        <para><table frame="none" tabstyle="striped">
             <title>KIM Type Lookup Search Attributes</title>
             <tgroup cols="2">
               <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -1523,7 +1523,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Group Maintenance Document: Group Overview
               Attributes</title>
 
@@ -1602,7 +1602,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Group Maintenance Document: Assignees Tab
               Attributes</title>
 
@@ -1830,7 +1830,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Role Maintenance Doucment: Overview Attributes</title>
 
               <tgroup cols="2">
@@ -1938,7 +1938,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Role Maintenance Document: Permissions Attributes</title>
 
               <tgroup cols="2">
@@ -1995,7 +1995,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Role Maintenance Document: Permissions Tabb, Add
               Attributes</title>
 
@@ -2086,7 +2086,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Role Maintenance Document: Responsibility
               Attributes</title>
 
@@ -2143,7 +2143,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Role Maintenance Document: Responsibility, Add
               Attributes</title>
 
@@ -2279,7 +2279,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Role Maintenance Document: Responsibility Tab, Action
               Section Attributes</title>
 
@@ -2381,7 +2381,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Role Maintenance Document: Assignees Tab
               Attributes</title>
 
@@ -2498,7 +2498,7 @@
             </mediaobject>
           </figure>
 
-          <para><table frame="none">
+          <para><table frame="none" tabstyle="striped">
               <title>Role Maintenance Document: Delegations Tab
               Attributes</title>
 
@@ -2636,7 +2636,7 @@
       <para>You may enter information in one or more of the search fields to
       find the correct Type for your new group:</para>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>KIM Type Lookup Attributes</title>
 
           <tgroup cols="2">
@@ -2724,7 +2724,7 @@
       <para>All fields are defined above in <emphasis role="italic">KIM Type
       Lookup</emphasis> except these:</para>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>KIM Type Inquiry Attributes</title>
 
           <tgroup cols="2">
@@ -2806,7 +2806,7 @@
       one or more of the fields on the Lookup page and then click the Search
       button.</para>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>Responsibility Lookup Attributes</title>
 
           <tgroup cols="2">
@@ -2921,7 +2921,7 @@
         </mediaobject>
       </figure>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>Responsibility Lookup: Resutls Attributes</title>
 
           <tgroup cols="2">
@@ -3073,7 +3073,7 @@
       <emphasis role="bold">search</emphasis> button to display permissions
       that match your information.</para>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>Permission Lookup Attributes</title>
 
           <tgroup cols="2">
@@ -3216,7 +3216,7 @@
       <para>The information in the search results table is display-only and is
       defined above. New field:</para>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>Permission Lookup: Results Attributes</title>
 
           <tgroup cols="2">
@@ -3299,7 +3299,7 @@
       <para>Rice is delivered with a number of permission templates. Below is
       a listing of each along with a brief description of their use.</para>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>Delivered Permission Templates</title>
 
           <tgroup cols="5">

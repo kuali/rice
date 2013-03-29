@@ -1005,7 +1005,7 @@
             <section>
                 <title>Available KRAD Templates</title>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Available KRAD Templates</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>

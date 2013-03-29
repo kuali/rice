@@ -229,7 +229,7 @@
                     <para>Here is a summary of the non-common data elements in this proposition
                         table:
                     </para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Non-common data elements in the proposition table</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -411,7 +411,7 @@
                         parameter table:</para>
                 
                  
-                        <table frame="none">
+                        <table frame="none" tabstyle="striped">
                             <title>Non-common data elements in the proposition parameter table</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>

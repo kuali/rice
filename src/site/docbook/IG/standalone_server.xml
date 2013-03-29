@@ -116,7 +116,7 @@
             <title>Locations for Database Software</title>
             <para>Below are locations from which Oracle and MySQL could be downloaded at the time of
                 release of Rice ${project.version}.</para>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Locations for Database Software</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -820,7 +820,7 @@ tail -n 500 -f catalina.out</programlisting>
                     <para>Make sure the <emphasis role="bold">application.url</emphasis> and
                         database user name and password are set correctly.</para>
                 </warning>  
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Core </title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -939,7 +939,7 @@ tail -n 500 -f catalina.out</programlisting>
                              <emphasis role="bold">Example:</emphasis> KFS is used with bundled Rice server.
                          No additional configuration is needed.
                  </para></note>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>Database</title>
                 <tgroup cols="3">
                     <colspec colname="c1" colnum="1" colwidth="1.2*"/>
@@ -1041,7 +1041,7 @@ tail -n 500 -f catalina.out</programlisting>
                         </tbody>
                     </tgroup>
                 </table>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>KSB</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1079,7 +1079,7 @@ tail -n 500 -f catalina.out</programlisting>
                         </tbody>
                     </tgroup>
                 </table> 
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>KEN</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1102,7 +1102,7 @@ tail -n 500 -f catalina.out</programlisting>
                         </tbody>
                     </tgroup>
                 </table> 
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>KEW</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>

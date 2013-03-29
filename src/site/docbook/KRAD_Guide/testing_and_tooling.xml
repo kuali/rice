@@ -1379,7 +1379,7 @@
       </section>
       <section>
         <title>Rice Tools</title>
-        <table>
+        <table tabstyle="striped">
           <title>Rice Tooling: RDS</title>
           <tgroup cols="2">
             <thead>

@@ -680,7 +680,7 @@ public class Car {
         </para><para>Note for our chosen database we must also download the corresponding database
             driver. This is a jar file we will need to make available to our web container for
             connecting to the database.</para><para>These supported databases can be downloaded with
-            the following URLs:</para><table frame="all">
+                the following URLs:</para><table frame="all" tabstyle="striped">
             <title>Supported Databases URLs</title>
             <tgroup cols="2">
                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -946,7 +946,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
             <para>target – This folder holds the build output such as generated classes and
                 wars.</para>
             <para>Along with the directories several files are created. These are as follows:<table
-                    frame="all">
+                frame="all" tabstyle="striped">
                     <title>Created Files</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1035,7 +1035,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 the properties available in {project}-config.xml (located in the /kuali/main/dev
                 folder in user home).</para>
             <para>Although there are many configuration properties available for customization, the
-                following are required for getting started:<table frame="all">
+                following are required for getting started:<table frame="all" tabstyle="striped">
                     <title>Required Configuration Properties</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>

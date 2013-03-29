@@ -132,7 +132,7 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all" pgwide="1">
+                    <table frame="all" pgwide="1" tabstyle="striped">
                         <title>Breadcrumb Properties</title>
                         <?dbfo table-width="100%" ?>
                         <tgroup cols="3">
@@ -199,7 +199,7 @@
             <section>
                 <title>Plugin (Template) Options</title>
                 <para>
-                    <table frame="all" pgwide="1">
+                    <table frame="all" pgwide="1" tabstyle="striped">
                         <title>DatePicker Options</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -273,7 +273,7 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all" pgwide="1">
+                    <table frame="all" pgwide="1" tabstyle="striped">
                         <title>DirectInquiry Properties</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -316,7 +316,7 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" tabstyle="striped">
                         <title>Disclosure Properties</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -397,7 +397,7 @@
           <section>
             <title>Properties</title>
             <para>
-              <table frame="all">
+                <table frame="all" tabstyle="striped">
                 <title>Help Properties</title>
                 <tgroup cols="3">
                   <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -446,7 +446,7 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all" pgwide="1">
+                    <table frame="all" pgwide="1" tabstyle="striped">
                         <title>Inquiry Properties</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -491,7 +491,7 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" tabstyle="striped">
                         <title>Lightbox Properties</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -523,7 +523,7 @@
             <section>
                 <title>Plugin (Template) Options</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" tabstyle="striped">
                         <title>Lightbox Options</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -600,7 +600,7 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all" pgwide="1">
+                    <table frame="all" pgwide="1" tabstyle="striped">
                         <title>QuickFinder Properties</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -644,7 +644,7 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" tabstyle="striped">
                         <title>RichTable Properties</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -676,7 +676,7 @@
             <section>
                 <title>Plugin (Template) Options</title>
                 <para>
-                    <table frame="all" pgwide="1">
+                    <table frame="all" pgwide="1" tabstyle="striped">
                         <title>Rich Table Options</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -728,7 +728,7 @@
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" tabstyle="striped">
                         <title>Suggest Properties</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -756,7 +756,7 @@
             <section>
                 <title>Plugin (Template) Options</title>
                 <para>
-                    <table frame="all">
+                    <table frame="all" tabstyle="striped">
                         <title>Suggest Options</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1169,7 +1169,7 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
             <section>
                 <title>Properties</title>
                 <para>
-                    <table frame="all" pgwide="1">
+                    <table frame="all" pgwide="1" tabstyle="striped">
                         <title>Tooltip Properties</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.4*"/>
@@ -1209,7 +1209,7 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
             <section>
                 <title>Plugin (Template) Options</title>
                 <para>
-                    <table frame="all" pgwide="1">
+                    <table frame="all" pgwide="1" tabstyle="striped">
                         <title>Tooltip Options</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1*"/>

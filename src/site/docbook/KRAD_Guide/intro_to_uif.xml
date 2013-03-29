@@ -1055,7 +1055,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 Depending on the type of component, other parameters may be sent as well. The
                 standard macro contracts are as follows:</para>
             
-            <table frame="all">
+            <table frame="all" tabstyle="striped">
                 <title>Macro Parameter Contracts</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>

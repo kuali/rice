@@ -566,7 +566,7 @@
       configuration. Here is a comprehensive set of configuration parameters
       that you can use to configure the Kuali Service Bus:</para>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>KSB Configuration Parameters</title>
 
           <tgroup cols="3">
@@ -1297,7 +1297,7 @@ String result = echoService.echo(echoValue);</programlisting>
       <para>Below is a description of each property on the ServiceDefinition
       (JavaServiceDefinition and SOAPServiceDefinition):</para>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>Properties of the ServiceDefinition</title>
 
           <tgroup cols="4">
@@ -1963,7 +1963,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
 
         <para>All service definitions support these properties:</para>
 
-        <para><table frame="none">
+        <para><table frame="none" tabstyle="striped">
             <title>ServiceDefinition Properties</title>
 
             <tgroup cols="3">
@@ -2091,7 +2091,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
     <section>
       <title>SOAPServiceDefinition</title>
 
-      <table frame="none">
+      <table frame="none" tabstyle="striped">
         <title>SOAPServiceDefinition</title>
 
         <tgroup cols="3">
@@ -2129,7 +2129,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
     <section>
       <title>JavaServiceDefinition</title>
 
-      <table frame="none">
+      <table frame="none" tabstyle="striped">
         <title>JavaServiceDefinition</title>
 
         <tgroup cols="3">
@@ -2764,7 +2764,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
     <section>
       <title>Core Parameters</title>
 
-      <para><table frame="none">
+      <para><table frame="none" tabstyle="striped">
           <title>Core Parameters</title>
 
           <tgroup cols="3">

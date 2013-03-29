@@ -347,7 +347,7 @@
                 object layers. </para>
             <programlisting>&lt;field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" /&gt;     </programlisting>
             <para> Some common jdbc types and their corresponding Java type are as follows: <table
-                    frame="all">
+                frame="all" tabstyle="striped">
                     <title>JDBC Types to Java Type</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -455,7 +455,7 @@
         <section>
             <title>RICE CUSTOM DATATYPES </title>
             <para> Rice provides the following custom data types and OJB converters: <table
-                    frame="all">
+                frame="all" tabstyle="striped">
                     <title>Custom Data Types and OJB Converters</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>

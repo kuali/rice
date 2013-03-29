@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
+import org.springframework.beans.NullValueInNestedPathException;
 import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.PropertyValue;
 import org.springframework.util.StringUtils;
@@ -200,7 +201,15 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     @Override
     public Object getPropertyValue(String propertyName) throws BeansException {
         registerEditorFromView(propertyName);
-        return super.getPropertyValue(propertyName);
+
+        Object value = null;
+        try {
+            value = super.getPropertyValue(propertyName);
+        } catch (NullValueInNestedPathException e) {
+           // swallow null values in path and return null as the value
+        }
+
+        return value;
     }
 
     @Override

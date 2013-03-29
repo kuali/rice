@@ -44,11 +44,14 @@ import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.BeanWrapper;
+import sun.util.LocaleServiceProviderPool;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService {
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            DataObjectMetaDataServiceImpl.class);
 
     private DataDictionaryService dataDictionaryService;
     private KualiModuleService kualiModuleService;
@@ -178,7 +181,12 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
             String localPrefix = StringUtils.substringBefore(attributeName, ".");
             String localAttributeName = StringUtils.substringAfter(attributeName, ".");
             if (dataObject == null) {
-                dataObject = ObjectUtils.createNewObjectFromClass(dataObjectClass);
+                try {
+                    dataObject = ObjectUtils.createNewObjectFromClass(dataObjectClass);
+                } catch (RuntimeException e) {
+                    // found interface or abstract class, just swallow exception and return a null relationship
+                    return null;
+                }
             }
 
             Object nestedObject = ObjectPropertyUtils.getPropertyValue(dataObject, localPrefix);

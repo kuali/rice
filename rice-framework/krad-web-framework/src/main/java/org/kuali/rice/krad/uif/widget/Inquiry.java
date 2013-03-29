@@ -113,9 +113,15 @@ public class Inquiry extends WidgetBase {
             }
 
             // check if field value is null, if so no inquiry
-            Object propertyValue = ObjectPropertyUtils.getPropertyValue(model,
-                    ((DataField) parent).getBindingInfo().getBindingPath());
-            if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
+            try {
+                Object propertyValue = ObjectPropertyUtils.getPropertyValue(model,
+                        ((DataField) parent).getBindingInfo().getBindingPath());
+
+                if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
+                    return;
+                }
+            } catch (Exception e) {
+                // if we can't get the value just swallow the exception and don't set an inquiry
                 return;
             }
         }

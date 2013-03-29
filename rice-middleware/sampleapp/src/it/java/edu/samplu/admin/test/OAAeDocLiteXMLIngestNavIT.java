@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -24,25 +22,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
- * TODO vchauhan don't forget to fill this in.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class OAAeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
+public class OAAeDocLiteXMLIngestNavIT extends AdminTmplMthdSTNavBase {
     // values set by default for repeatable testing; left as configurable for load tests
     private List<File> fileUploadList;
 
@@ -108,7 +94,6 @@ public class OAAeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
      * Uploads each sublist from main fileUploadList if size greater than 10. 
      * 
      */
-
     public void testXMLIngesterSuccessfulFileUpload() throws Exception {
         gotoMenuLinkLocator();
         if (fileUploadList != null && !fileUploadList.isEmpty()) {
@@ -122,14 +107,8 @@ public class OAAeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
                 fileIngester(fileUploadList);
             }
         }
-
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
     @Override
     protected String getLinkLocator() {
 
@@ -169,5 +148,4 @@ public class OAAeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
         }
         return subLists;
     }
-
 }

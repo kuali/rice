@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -31,14 +28,16 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ParameterTypeWDIT extends WebDriverLegacyITBase {
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
+
     String docId;
     String parameterType;
     String parameterCode;
+
+    /**
+     * ITUtil.PORTAL + "?channelTitle=Parameter%20Type&channelUrl=" + ITUtil.getBaseUrlString() +
+     "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation=" +
+     ITUtil.PORTAL_URL + "&hideReturnLink=true"
+     */
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Parameter%20Type&channelUrl=" + ITUtil.getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
@@ -47,6 +46,7 @@ public class ParameterTypeWDIT extends WebDriverLegacyITBase {
     public String getTestUrl() {
         return TEST_URL;
     }
+
     @Test
     public void testParameterType() throws Exception {
         
@@ -76,8 +76,5 @@ public class ParameterTypeWDIT extends WebDriverLegacyITBase {
         super.open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrame("iframeportlet");
         super.testVerifyCopyParameterType(params.get(0), params.get(1),params.get(2));
-
     }
-
-    
 }

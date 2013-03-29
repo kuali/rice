@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,10 @@ package edu.samplu.krad.travelview;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteNoteNavIT extends KradMenuNavITBase {
+public class MaintenanceAddDeleteNoteNavIT extends KradTmplMthdSTNavBase {
 
     @Override
     protected String getLinkLocator() {

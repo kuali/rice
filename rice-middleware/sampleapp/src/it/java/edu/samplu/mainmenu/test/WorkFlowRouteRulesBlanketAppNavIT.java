@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,36 +15,24 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
-import org.openqa.selenium.By;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * tests that user 'admin', on blanket approving a new Routing Rule maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesBlanketAppNavIT extends MainMenuLookupNavITBase {
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
+public class WorkFlowRouteRulesBlanketAppNavIT extends MainTmplMthdSTNavBase {
+
     @Override
     protected String getLinkLocator() {
-        // TODO dmoteria - THIS METHOD NEEDS JAVADOCS
         return "Routing Rules";
     }
+
     @Test
     public void testWorkFlowRouteRulesBlanketApp() throws Exception {    
        gotoMenuLinkLocator();
        super.testWorkFlowRouteRulesBlanketApp();
     }
-   
 }
 

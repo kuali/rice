@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,37 +15,22 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.MenuNavITBase;
+import edu.samplu.common.NavTemplateMethodSTBase;
 
 /**
  * blanket approving a new document, results in a final document
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AdminMenuBlanketAppNavITBase extends MenuNavITBase{
-
-    /**
-     * blanket approve document, returning docId as a String
-     * @return docId
-     */
-//    public abstract String blanketApprove() throws Exception;
+public abstract class AdminTmplMthdBlanketAppSTNavBase extends NavTemplateMethodSTBase {
 
     @Override
     protected String getMenuLinkLocator() {
-        return AdminMenuNavITBase.ADMIN_LOCATOR;
+        return AdminTmplMthdSTNavBase.ADMIN_LOCATOR;
     }
 
     @Override
     protected String getCreateNewLinkLocator() {
-        return AdminMenuNavITBase.CREATE_NEW_LOCATOR;
+        return AdminTmplMthdSTNavBase.CREATE_NEW_LOCATOR;
     }
-
-//    @Test
-//    public void testBlanketApprove() throws Exception {
-//        gotoCreateNew();
-//        String docId = blanketApprove();
-//        blanketApproveTest();
-//        assertDocFinal(docId);
-//        passed();
-//    }
 }

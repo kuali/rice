@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,14 @@
 
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
 import org.junit.Test;
 
-import edu.samplu.common.ITUtil;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PermissionNavIT extends AdminMenuNavITBase {
+public class PermissionNavIT extends AdminTmplMthdSTNavBase {
 
     String docId;
     String permissionName;
@@ -57,7 +53,5 @@ public class PermissionNavIT extends AdminMenuNavITBase {
         selectTopFrame();
         super.gotoMenuLinkLocator();
         params = testVerifyPermission(params.get(0), params.get(1));
-
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2005- 2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,26 +15,12 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.*;
-
-import java.util.Calendar;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.Select;
-import com.thoughtworks.selenium.Selenium;
-import edu.samplu.common.ITUtil;
 
 /**
- * TODO vchauhan don't forget to fill this in.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PeopleFlowCreateNewNavIT extends MainMenuLookupNavITBase {
+public class PeopleFlowCreateNewNavIT extends MainTmplMthdSTNavBase {
 
     @Test
     public void testPeopleFlow() throws Exception {
@@ -44,30 +30,8 @@ public class PeopleFlowCreateNewNavIT extends MainMenuLookupNavITBase {
         super.testPeopleFlow();
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MainMenuLookupITBase#lookupAssertions()
-     */
-    //    @Override
-    public void lookupAssertions() {
-        // nothing
-
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuITBase#getLinkLocator()
-     */
     @Override
     protected String getLinkLocator() {
         return "People Flow";
     }
-
-    @Ignore
-    // No Need to     
-    @Test
-    @Override
-    public void testLookUp() throws Exception {}
 }

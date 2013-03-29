@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,16 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
-import org.openqa.selenium.By;
-
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateSampleEDocLiteNavIT extends MainMenuLookupNavITBase {
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
+public class CreateSampleEDocLiteNavIT extends MainTmplMthdSTNavBase {
+
     @Override
     protected String getLinkLocator() {
-        // TODO dmoteria - THIS METHOD NEEDS JAVADOCS
         return "eDoc Lite";
     }
     
@@ -45,5 +33,4 @@ public class CreateSampleEDocLiteNavIT extends MainMenuLookupNavITBase {
        gotoMenuLinkLocator();
        super.testCreateSampleEDocLite();        
     }
-    
 }

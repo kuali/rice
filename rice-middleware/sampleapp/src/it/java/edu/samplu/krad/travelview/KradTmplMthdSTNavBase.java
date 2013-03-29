@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -13,29 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.mainmenu.test;
+package edu.samplu.krad.travelview;
 
-import org.junit.Test;
+import edu.samplu.common.NavTemplateMethodSTBase;
 
 /**
- * tests that user 'admin' can display the Term lookup screen, search,
- * initiate an Term maintenance document via an edit action on the search results and
- * finally cancel the maintenance document
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpNavIT extends MainTmplMthdSTNavBase {
-
-    public void testLookUp() {} // no-op to avoid https://jira.kuali.org/browse/KULRICE-9047 messing up the server state
+public abstract class KradTmplMthdSTNavBase extends NavTemplateMethodSTBase {
 
     @Override
-    public String getLinkLocator() {
-        return "Term Lookup";
+    protected String getCreateNewLinkLocator() {
+        return "Create New";
     }
 
-    @Test
-    public void lookupAssertions() throws Exception{
-        gotoMenuLinkLocator();
-        super.testTermLookUp();
+    @Override
+    protected String getMenuLinkLocator() {
+        return "KRAD";
     }
 }

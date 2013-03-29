@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,15 @@
  */
 package edu.samplu.mainmenu.test;
 
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.Calendar;
 
 /**
  * tests whether the "Create New Agenda" is working ok 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateNewAgendaNavIT extends MainMenuLookupNavITBase {
+public class CreateNewAgendaNavIT extends MainTmplMthdSTNavBase {
+
     @Override
     protected String getLinkLocator() {
         return "Create New Agenda";
@@ -36,5 +34,4 @@ public class CreateNewAgendaNavIT extends MainMenuLookupNavITBase {
         gotoMenuLinkLocator();
         super.testCreateNewAgenda();
     }
-     
 }

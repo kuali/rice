@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -24,25 +22,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
- * TODO vchauhan don't forget to fill this in.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IUeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
+public class IUeDocLiteXMLIngestNavIT extends AdminTmplMthdSTNavBase {
     // values set by default for repeatable testing; left as configurable for load tests
     private List<File> fileUploadList;
 
@@ -66,7 +52,6 @@ public class IUeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
         } else {
             throw new Exception("----Resources not found----");
         }
-
     }
 
     @Test
@@ -86,13 +71,11 @@ public class IUeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
         driver.switchTo().frame("iframeportlet");
         waitAndClick(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]"));
         Thread.sleep(2000);
-
        
         driver.switchTo().defaultContent();
 
         waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
         passed();
-
     }
 
     /**
@@ -100,7 +83,6 @@ public class IUeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
      * Uploads each sublist from main fileUploadList if size greater than 10. 
      * 
      */
-
     public void testXMLIngesterSuccessfulFileUpload() throws Exception {
         gotoMenuLinkLocator();
         if (fileUploadList != null && !fileUploadList.isEmpty()) {
@@ -112,19 +94,17 @@ public class IUeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
                     for (File file : fileSet) {
                         assertTextPresent("Ingested xml doc: " + file.getName());
                     }
-
                 }
             } else {
                 fileIngester(fileUploadList);
             }
         }
-
     }
 
     /**
      * This overridden method ...
      * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
+     * @see edu.samplu.common.NavTemplateMethodSTBase#getLinkLocator()
      */
     @Override
     protected String getLinkLocator() {
@@ -146,7 +126,7 @@ public class IUeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
         waitAndClickByXpath("//*[@id='imageField']");
         Thread.sleep(1000);
         // confirm all files were uploaded successfully
-            }
+    }
 
     /**
      * Divides fileUploadList from resources into sublists to match the maximum number of file
@@ -161,5 +141,4 @@ public class IUeDocLiteXMLIngestNavIT extends AdminMenuNavITBase {
         }
         return subLists;
     }
-
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,14 @@ package edu.samplu.admin.test;
 
 import org.junit.Test;
 
-import edu.samplu.common.ITUtil;
-
-import static org.junit.Assert.assertEquals;
-
 /**
  * tests that user admin's blanket approve of the Parameter maintenance document results in a final
  * document The component is chosen from a lookup screen
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+public class ConfigParameterBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavBase {
 
-public class ConfigParameterBlanketAppNavIT extends AdminMenuBlanketAppNavITBase {
     @Override
     protected String getLinkLocator() {
         return "Parameter";

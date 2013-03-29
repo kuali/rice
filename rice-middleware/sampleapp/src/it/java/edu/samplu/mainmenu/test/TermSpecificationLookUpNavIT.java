@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package edu.samplu.mainmenu.test;
 
 import org.junit.Test;
 
-
 /**
  * tests that user 'admin' can display the Term Specification lookup screen, search, initiate an
  * Term Specification maintenance document via an edit action on the search results and finally
@@ -25,7 +24,8 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermSpecificationLookUpNavIT extends MainMenuLookupNavITBase {
+public class TermSpecificationLookUpNavIT extends MainTmplMthdSTNavBase {
+
     @Override
     public String getLinkLocator() {
         return "Term Specification Lookup";

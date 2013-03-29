@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,33 +15,25 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * tests the Parameter section in Rice.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ParameterNavIT extends AdminMenuNavITBase {
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
+public class ParameterNavIT extends AdminTmplMthdSTNavBase {
+
     String docId;
     String parameterName;
+
     @Override
     protected String getLinkLocator() {
         return "Parameter";
     }
+
     @Test
     public void testParameter() throws Exception {
         
@@ -68,7 +60,5 @@ public class ParameterNavIT extends AdminMenuNavITBase {
         //Verify if its copied
         super.gotoMenuLinkLocator();
         super.testVerifyCopyParameter(params.get(0), params.get(1));
-
     }
-    
 }

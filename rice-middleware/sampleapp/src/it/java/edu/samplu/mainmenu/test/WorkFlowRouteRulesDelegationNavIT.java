@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,32 +15,20 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * tests creating and cancelling new and edit Routing Rule Delegation maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesDelegationNavIT extends MainMenuLookupNavITBase {
-   
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
+public class WorkFlowRouteRulesDelegationNavIT extends MainTmplMthdSTNavBase {
+
     @Override
     protected String getLinkLocator() {
-        // TODO dmoteria - THIS METHOD NEEDS JAVADOCS
         return "Routing Rules Delegation";
     }
 
-//    @Test // There are no results from the search so no edit link to click on
     /**
      * tests that a Routing Rule Delegation maintenance document is created for an edit operation originating from a lookup screen
      */
@@ -54,6 +42,4 @@ public class WorkFlowRouteRulesDelegationNavIT extends MainMenuLookupNavITBase {
         gotoMenuLinkLocator();
         super.testCreateNewRRDTravelRequestDestRouting();
     }
-
-   
 }

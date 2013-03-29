@@ -15,27 +15,20 @@
  */
 package edu.samplu.mainmenu.test;
 
-import org.junit.Test;
+import edu.samplu.common.NavTemplateMethodSTBase;
 
 /**
- * tests that user 'admin' can display the Term lookup screen, search,
- * initiate an Term maintenance document via an edit action on the search results and
- * finally cancel the maintenance document
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpNavIT extends MainTmplMthdSTNavBase {
-
-    public void testLookUp() {} // no-op to avoid https://jira.kuali.org/browse/KULRICE-9047 messing up the server state
+public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodSTBase {
 
     @Override
-    public String getLinkLocator() {
-        return "Term Lookup";
+    protected String getCreateNewLinkLocator() {
+        return "Create New";
     }
 
-    @Test
-    public void lookupAssertions() throws Exception{
-        gotoMenuLinkLocator();
-        super.testTermLookUp();
+    @Override
+    protected String getMenuLinkLocator() {
+        return "Main Menu";
     }
 }

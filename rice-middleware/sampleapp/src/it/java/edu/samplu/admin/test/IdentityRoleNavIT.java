@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,26 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * tests creating and cancelling new and edit Role maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityRoleNavIT extends AdminMenuNavITBase{
+public class IdentityRoleNavIT extends AdminTmplMthdSTNavBase {
+
     @Override
     public String getLinkLocator() {
         return "Role";
     }
+
     @Test
     @Override
     public void testEditCancel() throws Exception {
         super.testEditCancel();
     }
+
     @Test
     @Override
     public void testCreateNewCancel() throws Exception {

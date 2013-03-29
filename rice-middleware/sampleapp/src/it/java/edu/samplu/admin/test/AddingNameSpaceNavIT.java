@@ -22,7 +22,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddingNameSpaceNavIT extends AdminMenuNavITBase {
+public class AddingNameSpaceNavIT extends AdminTmplMthdSTNavBase {
 
     @Override
     protected String getLinkLocator() {

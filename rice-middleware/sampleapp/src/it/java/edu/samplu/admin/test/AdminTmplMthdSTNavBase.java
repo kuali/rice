@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.MenuNavITBase;
+import edu.samplu.common.NavTemplateMethodSTBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AdminMenuNavITBase extends MenuNavITBase {
+public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
 
     public static final String CREATE_NEW_LOCATOR = "//img[contains(@alt,'create new')]";
 //    public static final String CREATE_NEW_LOCATOR = "//a[contains(@href,'command=initiate')]"; // not with IE8

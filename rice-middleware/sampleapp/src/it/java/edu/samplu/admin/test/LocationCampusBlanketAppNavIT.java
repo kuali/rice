@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,12 @@ package edu.samplu.admin.test;
 
 import org.junit.Test;
 
-
 /**
  * tests that user 'admin', on blanket approving a new Campus maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCampusBlanketAppNavIT extends AdminMenuBlanketAppNavITBase {
+public class LocationCampusBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavBase {
     
     @Override
     protected String getLinkLocator() {

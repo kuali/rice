@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,14 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.ITUtil;
-import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * tests that user 'admin', on blanket approving a new Country maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryBlanketAppNavIT extends AdminMenuBlanketAppNavITBase {
+public class LocationCountryBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavBase {
 
     @Override
     public String getLinkLocator() {

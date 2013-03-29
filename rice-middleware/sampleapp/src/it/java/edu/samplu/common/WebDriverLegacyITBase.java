@@ -16,7 +16,7 @@
 package edu.samplu.common;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.admin.test.AdminMenuNavITBase;
+import edu.samplu.admin.test.AdminTmplMthdSTNavBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -1204,7 +1204,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Group "+ ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
-        selectByXpath("//select[@id='document.groupNamespace']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        selectByXpath("//select[@id='document.groupNamespace']", AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS_TWO);
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickByXpath(SEARCH_XPATH);
@@ -1222,8 +1222,8 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
-        selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']",AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        selectByXpath("//select[@name='document.newMaintainableObject.templateId']",AdminMenuNavITBase.LABEL_KUALI_DEFAULT);
+        selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']", AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);
+        selectByXpath("//select[@name='document.newMaintainableObject.templateId']", AdminTmplMthdSTNavBase.LABEL_KUALI_DEFAULT);
         waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']", "ValidationTestPermission" + ITUtil.DTS_TWO);
         blanketApproveTest();
         assertDocFinal(docId);
@@ -1260,7 +1260,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Responsibility " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
-        selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + ITUtil.DTS_TWO);
@@ -1278,7 +1278,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         String docId = waitForDocId();
         waitAndTypeByXpath(DOCUMENT_DESCRIPTION_XPATH, "Validation Test Role " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
-        selectByXpath("//select[@id='document.roleNamespace']", AdminMenuNavITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        selectByXpath("//select[@id='document.roleNamespace']", AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + ITUtil.DTS_TWO,"No Role Name input to type in.");
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");

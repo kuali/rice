@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,16 @@
 package edu.samplu.mainmenu.test;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
-
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
 
 /**
  * tests whether the Category Look UP is working ok 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CategoryLookUpNavIT extends MainMenuLookupNavITBase{
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.MenuNavITBase#getLinkLocator()
-     */
+public class CategoryLookUpNavIT extends MainTmplMthdSTNavBase {
+
     @Override
     protected String getLinkLocator() {
-        // TODO dmoteria - THIS METHOD NEEDS JAVADOCS
         return "Category Lookup";
     }
     
@@ -44,6 +34,4 @@ public class CategoryLookUpNavIT extends MainMenuLookupNavITBase{
        gotoMenuLinkLocator();
        super.testCategoryLookUp();
     }
-
-  
 }

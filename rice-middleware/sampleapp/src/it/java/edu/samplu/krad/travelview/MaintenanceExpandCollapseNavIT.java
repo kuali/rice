@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceExpandCollapseNavIT extends KradMenuNavITBase {
+public class MaintenanceExpandCollapseNavIT extends KradTmplMthdSTNavBase {
 
     @Override
     protected String getLinkLocator() {

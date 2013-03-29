@@ -23,6 +23,9 @@
   <kradChannel:kradTestLinks2/>
 </td>
 
+<td class="content" valign="top">
+  <kradChannel:kradTestLinks3/>
+</td>
 <%--<td class="content" valign="top">--%>
   <%--<kradChannel:knsConvert/>--%>
 <%--</td>--%>

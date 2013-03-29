@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.krad.lookup;
 
-import org.kuali.rice.krad.uif.element.Link;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.web.form.LookupForm;
 
@@ -95,29 +94,29 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      *
      * <p>
      * Based on the line contained in the field context, the URL for returning the role is constructed and
-     * set as the href for the link field. If a return link cannot be constructed the field should be set
+     * set as the action for the action link. If a return link cannot be constructed the action link should be set
      * to not render
      * </p>
      *
-     * @param returnLinkField - link field that will be used to render the return URL
+     * @param returnLink - action link that will be used to render the return URL
      * @param model - lookup form containing the data
      */
-    public void getReturnUrlForResults(LinkField returnLinkField, Object model);
+    public void getReturnUrlForResults(Action returnLink, Object model);
 
     /**
      * Invoked to build a maintenance URL for a result row
      *
      * <p>
      * Based on the line contained in the field context and the given maintenance method that should be called a
-     * URL is constructed and set as the href on the link field. If a maintenance link cannot be constructed the
-     * field should be set to not render
+     * URL is constructed and set as the action on the action link. If a maintenance link cannot be constructed the
+     * action link should be set to not render
      * </p>
      *
-     * @param actionLink - link that will be used to return the maintenance URL
+     * @param actionLink - action link that will be used to return the maintenance URL
      * @param model - lookup form containing the data
      * @param maintenanceMethodToCall - name of the method that should be invoked in the maintenance controller
      */
-    public void getMaintenanceActionLink(Link actionLink, Object model, String maintenanceMethodToCall);
+    public void getMaintenanceActionLink(Action actionLink, Object model, String maintenanceMethodToCall);
 
     /**
      * Set the value for the input field control to contain the field conversion values for the line

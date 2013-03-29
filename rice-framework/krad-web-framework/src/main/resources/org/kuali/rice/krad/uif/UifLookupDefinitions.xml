@@ -28,6 +28,7 @@
         <value>uif-lookupView</value>
       </list>
     </property>
+    <property name="unifiedHeader" value="false"/>
     <property name="viewTypeName" value="LOOKUP"/>
     <property name="viewHelperServiceClass" value="org.kuali.rice.krad.lookup.LookupableImpl"/>
     <property name="presentationControllerClass"
@@ -49,20 +50,6 @@
     <property name="resultsGroup">
       <bean parent="Uif-LookupResultsCollectionSection"/>
     </property>
-    <property name="resultsActionsFieldGroup">
-      <bean parent="Uif-FieldGroupBase">
-        <property name="label" value="Actions"/>
-        <property name="group">
-          <bean parent="Uif-LookupView-ResultActions"/>
-        </property>
-      </bean>
-    </property>
-    <property name="resultsReturnField">
-      <bean parent="Uif-LinkField">
-        <property name="label" value="Return Value"/>
-        <property name="finalizeMethodToCall" value="getReturnUrlForResults"/>
-      </bean>
-    </property>
     <property name="rangeFieldGroupPrototype">
       <bean parent="Uif-HorizontalFieldGroup"/>
     </property>
@@ -72,40 +59,6 @@
     <property name="cssClasses">
       <list merge="true">
         <value>uif-lookupView-resultActions</value>
-      </list>
-    </property>
-    <property name="items">
-      <list>
-        <bean parent="Uif-Link" p:order="10">
-          <property name="linkText" value="edit"/>
-          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
-          <property name="finalizeMethodAdditionalArguments">
-            <list>
-              <value>maintenanceEdit</value>
-            </list>
-          </property>
-          <property name="render" value="@{#ViewHelper.allowsMaintenanceEditAction(#line)}"/>
-        </bean>
-        <bean parent="Uif-Link" p:order="20">
-          <property name="linkText" value="copy"/>
-          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
-          <property name="finalizeMethodAdditionalArguments">
-            <list>
-              <value>maintenanceCopy</value>
-            </list>
-          </property>
-          <property name="render" value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction()}"/>
-        </bean>
-        <bean parent="Uif-Link" p:order="30">
-          <property name="linkText" value="delete"/>
-          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
-          <property name="finalizeMethodAdditionalArguments">
-            <list>
-              <value>maintenanceDelete</value>
-            </list>
-          </property>
-          <property name="render" value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line)}"/>
-        </bean>
       </list>
     </property>
   </bean>
@@ -138,13 +91,55 @@
     <property name="showInactiveLines" value="true"/>
     <property name="propertyName" value="lookupResults"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
-    <property name="renderLineActions" value="false"/>
+    <property name="renderLineActions" value="@{(!#view.suppressActions and view.showMaintenanceLinks) or
+           (!#empty(returnFormKey) and !#empty(returnLocation) and !view.hideReturnLinks)}"/>
+    <property name="layoutManager.actionColumnPlacement" value="LEFT"/>
     <property name="layoutManager.selectFieldPrototype.finalizeMethodToCall" value="setMultiValueLookupSelect"/>
     <property name="renderAddLine" value="false"/>
-    <property name="readOnly" value="true"/>
+    <property name="readOnly" value="false"/>
+    <property name="collectionLookup.render" value="false" />
     <property name="includeLineSelectionField" value="@{#view.multipleValuesSelect}"/>
     <property name="header.lowerGroup">
       <bean parent="Uif-VerticalBoxGroup"/>
+    </property>
+    <property name="lineActions">
+      <list>
+        <bean parent="Uif-ActionLink" p:order="10">
+          <property name="actionLabel" value="edit"/>
+          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+          <property name="finalizeMethodAdditionalArguments">
+            <list>
+              <value>maintenanceEdit</value>
+            </list>
+          </property>
+          <property name="render" value="@{#ViewHelper.allowsMaintenanceEditAction(#line) and view.showMaintenanceLinks}"/>
+        </bean>
+        <bean parent="Uif-ActionLink" p:order="20">
+          <property name="actionLabel" value="copy"/>
+          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+          <property name="finalizeMethodAdditionalArguments">
+            <list>
+              <value>maintenanceCopy</value>
+            </list>
+          </property>
+          <property name="render" value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction() and view.showMaintenanceLinks}"/>
+        </bean>
+        <bean parent="Uif-ActionLink" p:order="30">
+          <property name="actionLabel" value="delete"/>
+          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+          <property name="finalizeMethodAdditionalArguments">
+            <list>
+              <value>maintenanceDelete</value>
+            </list>
+          </property>
+          <property name="render" value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line) and view.showMaintenanceLinks}"/>
+        </bean>
+        <bean parent="Uif-ActionLink">
+          <property name="actionLabel" value="Return Value"/>
+          <property name="finalizeMethodToCall" value="getReturnUrlForResults"/>
+          <property name="render" value="@{!#empty(returnFormKey) and !#empty(returnLocation) and !view.hideReturnLinks}"/>
+        </bean>
+      </list>
     </property>
     <property name="footer">
       <bean parent="Uif-LookupResultsFooter"
@@ -171,9 +166,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-CreateNewLink" parent="Uif-Link"
-        p:linkText="Create New"
-        p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
+  <bean id="Uif-CreateNewLink" parent="Uif-ActionLink" p:actionLabel="Create New"
+         p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-createNewLink</value>

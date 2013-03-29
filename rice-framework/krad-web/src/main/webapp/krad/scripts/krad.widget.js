@@ -366,15 +366,15 @@ function isCalledWithinLightbox() {
 /*
  * Reload page with lookup result URL
  */
-function returnLookupResultReload(aElement) {
+function returnLookupResultReload(href, target) {
     if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
         // portal and content on same domain
-        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', aElement.attr('href'));
+        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', href);
     } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
         // portal and content on different domain
-        parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', aElement.attr('href'))
+        parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', href)
     } else {
-        window.open(aElement.attr('href'), aElement.attr('target'));
+        window.open(href, target);
     }
 }
 

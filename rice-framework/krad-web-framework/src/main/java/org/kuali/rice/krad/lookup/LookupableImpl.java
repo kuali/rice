@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -40,9 +39,8 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
-import org.kuali.rice.krad.uif.element.Link;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -59,7 +57,6 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.LookupForm;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -629,22 +626,22 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * @see org.kuali.rice.krad.lookup.Lookupable#getReturnUrlForResults
      */
-    public void getReturnUrlForResults(LinkField returnLinkField, Object model) {
+    public void getReturnUrlForResults(Action returnLink, Object model) {
         LookupForm lookupForm = (LookupForm) model;
-        LookupView lookupView = (LookupView) returnLinkField.getContext().get(UifConstants.ContextVariableNames.VIEW);
+        LookupView lookupView = (LookupView) returnLink.getContext().get(UifConstants.ContextVariableNames.VIEW);
 
-        Object dataObject = returnLinkField.getContext().get(UifConstants.ContextVariableNames.LINE);
+        Object dataObject = returnLink.getContext().get(UifConstants.ContextVariableNames.LINE);
 
         // don't render return link if the object is null or if the row is not returnable
         if ((dataObject == null) || (!isResultReturnable(dataObject))) {
-            returnLinkField.setRender(false);
+            returnLink.setRender(false);
             return;
         }
 
         // build return link href
         String href = getReturnUrl(lookupView, lookupForm, dataObject);
         if (StringUtils.isBlank(href)) {
-            returnLinkField.setRender(false);
+            returnLink.setRender(false);
             return;
         }
 
@@ -675,24 +672,21 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             href = href + "&" + historyParams;
         }
 
-        //set the return link
-        returnLinkField.setHref(href);
-
         // build return link label and title
         String linkLabel = getConfigurationService().getPropertyValueAsString(
                 KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
-        returnLinkField.setLinkText(linkLabel);
+        returnLink.setActionLabel(linkLabel);
 
         List<String> returnKeys = getReturnKeys(lookupView, lookupForm, dataObject);
         Map<String, String> returnKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, dataObject);
 
         String title = LookupInquiryUtils.getLinkTitleText(linkLabel, getDataObjectClass(), returnKeyValues);
-        returnLinkField.setTitle(title);
+        returnLink.setTitle(title);
 
         // Add the return target if it is set
         String returnTarget = lookupView.getReturnTarget();
         if (returnTarget != null) {
-            returnLinkField.setTarget(returnTarget);
+            returnLink.setActionScript("window.open('" + href + "', '" + returnTarget + "');");
 
             //  Add the close script if lookup is in a light box
             if (!returnTarget.equals("_self")) {
@@ -703,24 +697,23 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                     StringBuilder script = new StringBuilder("e.preventDefault();");
                     for (String returnField : lookupForm.getFieldConversions().values()) {
                         if (props.containsKey(returnField)) {
-                            Object fieldName = returnField.replace("'", "\\'");
                             Object value = props.get(returnField);
                             script = script.append(
                                     "returnLookupResultByScript(\"" + returnField + "\", '" + value + "');");
                         }
                     }
-                    returnLinkField.getLink().setOnClickScript(script.append("closeLightbox();").toString());
+                    returnLink.setActionScript(script.append("closeLightbox();").toString());
                 } else {
                     // Close the light box if return target is not _self or _parent
-                    returnLinkField.getLink().setOnClickScript(
+                    returnLink.setActionScript(
                             "e.preventDefault();closeLightbox();showLoading();" +
-                            "returnLookupResultReload(jQuery(this));");
+                            "returnLookupResultReload('" + href + "', '" + returnTarget +"');");
                 }
             }
         } else {
             // If no return target is set return in same frame
             // This is to insure that non light box lookups return correctly
-            returnLinkField.setTarget("_self");
+            returnLink.setActionScript("window.open('" + href + "', '_self');");
         }
     }
 
@@ -814,7 +807,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * @see org.kuali.rice.krad.lookup.Lookupable#getMaintenanceActionLink
      */
-    public void getMaintenanceActionLink(Link actionLink, Object model, String maintenanceMethodToCall) {
+    public void getMaintenanceActionLink(Action actionLink, Object model, String maintenanceMethodToCall) {
         LookupForm lookupForm = (LookupForm) model;
         LookupView lookupView = (LookupView) actionLink.getContext().get(UifConstants.ContextVariableNames.VIEW);
         Object dataObject = actionLink.getContext().get(UifConstants.ContextVariableNames.LINE);
@@ -828,10 +821,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return;
         }
         // TODO: need to handle returning anchor
-        actionLink.setHref(href);
+        actionLink.setActionScript("window.open('" + href + "', '_self');");
 
         // build action title
-        String prependTitleText = actionLink.getLinkText() + " " +
+        String prependTitleText = actionLink.getActionLabel() + " " +
                 getDataDictionaryService().getDataDictionary().getDataObjectEntry(getDataObjectClass().getName())
                         .getObjectLabel() + " " +
                 getConfigurationService().getPropertyValueAsString(
@@ -840,8 +833,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         Map<String, String> primaryKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(pkNames, dataObject);
         String title = LookupInquiryUtils.getLinkTitleText(prependTitleText, getDataObjectClass(), primaryKeyValues);
         actionLink.setTitle(title);
-        // TODO : do not hardcode the _self string
-        actionLink.setTarget("_self");
         lookupForm.setAtLeastOneRowHasActions(true);
     }
 

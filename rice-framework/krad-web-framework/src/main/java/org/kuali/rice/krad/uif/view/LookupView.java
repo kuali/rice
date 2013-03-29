@@ -66,9 +66,6 @@ public class LookupView extends FormView {
     private Group criteriaGroup;
     private CollectionGroup resultsGroup;
 
-    private FieldGroup resultsActionsFieldGroup;
-    private Field resultsReturnField;
-
     private List<Component> criteriaFields;
     private List<Component> resultFields;
     private List<String> defaultSortAttributeNames;
@@ -170,16 +167,6 @@ public class LookupView extends FormView {
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         LookupForm lookupForm = (LookupForm) model;
-
-        // TODO: need to check lookupForm.isAtLeastOneRowHasActions() somewhere
-        if (!isSuppressActions() && isShowMaintenanceLinks()) {
-            ((List<Component>) getResultsGroup().getItems()).add(0, getResultsActionsFieldGroup());
-        }
-
-        if (StringUtils.isNotBlank(lookupForm.getReturnFormKey()) &&
-                StringUtils.isNotBlank(lookupForm.getReturnLocation()) && !isHideReturnLinks()) {
-            ((List<Component>) getResultsGroup().getItems()).add(0, getResultsReturnField());
-        }
 
         if (!renderSearchButtons) {
             criteriaGroup.getFooter().setRender(false);
@@ -297,8 +284,6 @@ public class LookupView extends FormView {
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
 
-        components.add(resultsActionsFieldGroup);
-        components.add(resultsReturnField);
         components.add(rangeFieldGroupPrototype);
 
         return components;
@@ -424,36 +409,6 @@ public class LookupView extends FormView {
      */
     public void setMultipleValuesSelect(boolean multipleValuesSelect) {
         this.multipleValuesSelect = multipleValuesSelect;
-    }
-
-    /**
-     * @return the resultsActionsField
-     */
-    @BeanTagAttribute(name="resultActionsFieldGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public FieldGroup getResultsActionsFieldGroup() {
-        return this.resultsActionsFieldGroup;
-    }
-
-    /**
-     * @param resultsActionsFieldGroup the resultsActionsField to set
-     */
-    public void setResultsActionsFieldGroup(FieldGroup resultsActionsFieldGroup) {
-        this.resultsActionsFieldGroup = resultsActionsFieldGroup;
-    }
-
-    /**
-     * @return the resultsReturnField
-     */
-    @BeanTagAttribute(name="resultReturnField",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Field getResultsReturnField() {
-        return this.resultsReturnField;
-    }
-
-    /**
-     * @param resultsReturnField the resultsReturnField to set
-     */
-    public void setResultsReturnField(Field resultsReturnField) {
-        this.resultsReturnField = resultsReturnField;
     }
 
     @BeanTagAttribute(name="criteriaGroup",type = BeanTagAttribute.AttributeType.SINGLEBEAN)

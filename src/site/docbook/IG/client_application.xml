@@ -98,7 +98,7 @@
             <para>These supported databases can be downloaded with the following URLs.</para>
 
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Locations for Database Software</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1129,7 +1129,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
 
         <para>Along with the directories several files are created. These are as follows:</para>
 
-        <table frame="none">
+        <table frame="none" tabstyle="striped">
             <title>Generated Files</title>
             <tgroup cols="3">
                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -1211,7 +1211,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
         <para>Although there are many configuration properties available for customization, the
         following are required for getting started:</para>
 
-        <table frame="none">
+        <table frame="none" tabstyle="striped">
             <title>Configuration Parameters</title>
             <tgroup cols="3">
                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>

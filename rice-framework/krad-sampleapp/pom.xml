@@ -79,6 +79,17 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
+          <webResources>
+            <resource>
+              <filtering>true</filtering>
+              <!-- this is relative to the pom.xml directory -->
+              <directory>src/main/webapp/</directory>
+              <includes>
+                <include>**/web.xml</include>
+              </includes>
+            </resource>
+          </webResources>
+
           <overlays>
             <overlay>
               <groupId>${project.groupId}</groupId>

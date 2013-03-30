@@ -116,8 +116,8 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDataTable.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoBoxLayoutManager.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoGridLayoutManager.xml</value>
-        <!--<value>classpath:org/kuali/rice/krad/demo/uif/library/DemoListLayoutManager.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoStackedLayoutManager.xml</value>-->
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoListLayoutManager.xml</value>
+        <!--<value>classpath:org/kuali/rice/krad/demo/uif/library/DemoStackedLayoutManager.xml</value>-->
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMessage.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDisclosure.xml</value>
@@ -201,8 +201,8 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDataTableResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoBoxLayoutManagerResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoGridLayoutManagerResources</value>
-        <!--<value>org.kuali.rice.krad.demo.uif.library.resources.DemoListLayoutManagerResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoStackedLayoutManagerResources</value>-->
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoListLayoutManagerResources</value>
+        <!--<value>org.kuali.rice.krad.demo.uif.library.resources.DemoStackedLayoutManagerResources</value>-->
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMessageResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDisclosureResources</value>

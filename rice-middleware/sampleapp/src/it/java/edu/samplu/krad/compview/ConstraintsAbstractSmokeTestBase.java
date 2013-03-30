@@ -24,26 +24,12 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyITBase implements Failable{
+public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
      */
     public final static String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3";
-
-    /**
-     * ^[\s\S]*error[\s\S]*$"
-     */
-    public static final String REGEX_ERROR = "^[\\s\\S]*error[\\s\\S]*$";
-
-    /**
-     * ^[\s\S]*valid[\s\S]*$
-     */
-    public static final String REGEX_VALID = "^[\\s\\S]*valid[\\s\\S]*$";
-
-    private void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
-        SeleneseTestBase.assertTrue(getAttributeByName(field, "class").matches(regex));
-    }
 
     /**
      * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ConstraintsAbstractSmokeTestBase#BOOKMARK_URL}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,7 @@
 
 package edu.samplu.common;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.fail;
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
+import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -34,6 +27,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import static com.thoughtworks.selenium.SeleneseTestBase.fail;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Base class for Selenium Webdriver integration tests
@@ -75,7 +75,12 @@ public abstract class WebDriverITBase {
     @Before
     public void setUp() throws Exception {
         driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl());
-        ITUtil.login(driver, getUserName());
+        WebDriverUtil.login(driver, getUserName(), new Failable() {
+            @Override
+            public void fail(String message) {
+                SeleneseTestBase.fail(message);
+            }
+        });
     }
 
     /**
@@ -430,16 +435,16 @@ public abstract class WebDriverITBase {
         waitFor(By.name(name));
     }
     
-    protected void checkForIncidentReport() {
-        checkForIncidentReport("", "");
+    protected void checkForIncidentReport(Failable failable) {
+        checkForIncidentReport("", failable, "");
     }
 
-    protected void checkForIncidentReport(String locator) {
-        checkForIncidentReport(locator, "");
+    protected void checkForIncidentReport(String locator, Failable failable) {
+        checkForIncidentReport(locator, failable, "");
     }
     
-    protected void checkForIncidentReport(String locator, String message) {
-        WebDriverUtil.checkForIncidentReport(driver, locator, message);
+    protected void checkForIncidentReport(String locator, Failable failable, String message) {
+        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
     }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,16 @@ import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -100,7 +104,7 @@ public class WebDriverUtil {
     public static WebDriver setUp(String username, String url, String className, TestName testName) throws Exception {
         WebDriver driver = null;
         if (System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
-            driver = ITUtil.getWebDriver();
+            driver = getWebDriver();
 //        } else {
 //            SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
 //            saucelabs.setUp(className, testName);
@@ -135,7 +139,7 @@ public class WebDriverUtil {
 //        }
 
         if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
-            getHTML(ITUtil.prettyHttp(System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
+            ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
                     + testParam + "&user=" + userParam));
         }
     }
@@ -150,30 +154,11 @@ public class WebDriverUtil {
         if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USER_PROPERTY) != null) {
             return System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USER_PROPERTY);
         } else if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
-            String userResponse = WebDriverUtil.getHTML(ITUtil.prettyHttp(System.getProperty(
+            String userResponse = ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(
                     WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + testParam.trim()));
             return userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
         }
         return user;
-    }
-
-    /**
-     * @link ITUtil#checkForIncidentReport
-     * @param driver
-     * @param locator
-     */
-    public static void checkForIncidentReport(WebDriver driver, String locator) {
-        checkForIncidentReport(driver, locator, "");
-    }
-
-    /***
-     * @link ITUtil#checkForIncidentReport
-     * @param driver
-     * @param locator
-     * @param message
-     */
-    public static void checkForIncidentReport(WebDriver driver, String locator, String message) {
-        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, message);
     }
 
     /***
@@ -216,27 +201,56 @@ public class WebDriverUtil {
         return null;
     }
 
-    public static String getHTML(String urlToRead) {
-        URL url;
-        HttpURLConnection conn;
-        BufferedReader rd;
-        String line;
-        String result = "";
-
-        try {
-            url = new URL(urlToRead);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            while ((line = rd.readLine()) != null) {
-                result += line;
+    /**
+     * remote.public.driver set to chrome or firefox (null assumes firefox)
+     * if remote.public.hub is set a RemoteWebDriver is created (Selenium Grid)
+     * @return WebDriver or null if unable to create
+     */
+    public static WebDriver getWebDriver() {
+        String driverParam = System.getProperty(ITUtil.HUB_DRIVER_PROPERTY);
+        String hubParam = System.getProperty(ITUtil.HUB_PROPERTY);
+        if (hubParam == null) {
+            if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
+                FirefoxProfile profile = new FirefoxProfile();
+                profile.setEnableNativeEvents(false);
+                return new FirefoxDriver(profile);
+            } else if ("chrome".equalsIgnoreCase(driverParam)) {
+                return new ChromeDriver();
+            } else if ("safari".equals(driverParam)) {
+                System.out.println("SafariDriver probably won't work, if it does please contact Erik M.");
+                return new SafariDriver();
             }
-            rd.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            try {
+                if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
+                    return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.firefox());
+                } else if ("chrome".equalsIgnoreCase(driverParam)) {
+                    return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.chrome());
+                }
+            } catch (MalformedURLException mue) {
+                System.out.println(ITUtil.getHubUrlString() + " " + mue.getMessage());
+                mue.printStackTrace();
+            }
         }
+        return null;
+    }
 
-        return result;
+    /**
+     * If the JVM arg remote.autologin is set, auto login as admin will not be done.
+     * @param driver
+     * @param userName
+     * @param failable
+     * @throws InterruptedException
+     */
+    public static void login(WebDriver driver, String userName, Failable failable) throws InterruptedException {
+        if (System.getProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY) == null) {
+            driver.findElement(By.name("__login_user")).clear();
+            driver.findElement(By.name("__login_user")).sendKeys(userName);
+            driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+            Thread.sleep(1000);
+            String contents = driver.getPageSource();
+            ITUtil.failOnInvalidUserName(userName, contents, failable);
+        }
     }
 
     protected static void selectFrameSafe(WebDriver driver, String locator) {
@@ -260,7 +274,7 @@ public class WebDriverUtil {
     public static void waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
         Thread.sleep(1000);
-        driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visiable or enabled.
+        driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 }

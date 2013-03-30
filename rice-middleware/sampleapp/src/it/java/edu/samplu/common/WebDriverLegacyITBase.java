@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
@@ -61,7 +60,7 @@ import static org.junit.Assert.assertNotSame;
  * </p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
+public abstract class WebDriverLegacyITBase implements Failable { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
 
     /**
      * Default "long" wait period is 30 seconds.  See REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY to configure
@@ -208,7 +207,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             fail("Exception in setUp " + e.getMessage());
             e.printStackTrace();
         }
-        ITUtil.login(driver, user);
+        WebDriverUtil.login(driver, user, this);
     }
 
     /**
@@ -284,14 +283,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void blanketApproveTest() throws InterruptedException {
-        ITUtil.checkForIncidentReport(driver.getPageSource(), "methodToCall.blanketApprove", "");
+        ITUtil.checkForIncidentReport(driver.getPageSource(), "methodToCall.blanketApprove", this, "");
         waitAndClickByName("methodToCall.blanketApprove", "No blanket approve button does the user " + getUserName()
                 + " have permission?");
         Thread.sleep(2000);
 
         checkForDocError();
 
-        ITUtil.checkForIncidentReport(driver.getPageSource(), "//img[@alt='doc search']", "Blanket Approve failure");
+        ITUtil.checkForIncidentReport(driver.getPageSource(), "//img[@alt='doc search']", this, "Blanket Approve failure");
         waitAndClickByXpath("//img[@alt='doc search']");
         SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
         selectFrame(IFRAMEPORTLET_NAME);
@@ -324,11 +323,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void checkForIncidentReport(String locator, String message) {
-        WebDriverUtil.checkForIncidentReport(driver, locator, message);
+        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, this, message);
     }
 
     protected void checkForIncidentReport(String locator, Failable failable, String message) {
-        WebDriverUtil.checkForIncidentReport(driver, locator, failable, message);
+        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
     }
 
     protected void clearText(By by) throws InterruptedException {
@@ -622,7 +621,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     private void jiraAwareFail(By by, String message, Throwable t) {
-        ITUtil.failOnMatchedJira(by.toString());
+        ITUtil.failOnMatchedJira(by.toString(), this);
         // if there isn't a matched jira to fail on, then fail
         fail(t.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
     }
@@ -762,7 +761,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             jiraAwareWaitFor(by, "");
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
-            ITUtil.failOnMatchedJira(by.toString());
+            ITUtil.failOnMatchedJira(by.toString(), this);
             fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
                     + " current url " + driver.getCurrentUrl()
                     + "\n" + ITUtil.deLinespace(driver.getPageSource()));
@@ -1005,6 +1004,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void uncheckByXpath(String locator) throws InterruptedException {
         uncheck(By.xpath(locator));
+    }
+
+    @Override
+    public void fail(String message) {
+        SeleneseTestBase.fail(message);
     }
 
     protected void fireEvent(String name, String event) {

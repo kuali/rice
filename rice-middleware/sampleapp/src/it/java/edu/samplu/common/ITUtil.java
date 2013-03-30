@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,13 @@
  */
 package edu.samplu.common;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-import com.thoughtworks.selenium.Selenium;
 import org.apache.commons.lang.RandomStringUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchFrameException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariDriver;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
@@ -38,14 +29,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.fail;
-
 /**
  * TODO:
  * <ol>
  *   <li>Keep JUnit or TestNG dependencies out of in this class.</li>
- *   <li>For methods with the only Selenium method used being fail, create a new Failable parameterized version. See failOnMatchedJira</li>
- *   <li>Move Selenium dependent methods (and any constants they reference) to WebDriverLegacyITBase (i.e. most methods in this class)</li>
  *   <li>Once and Only Once WAIT_DEFAULT_SECONDS and WebDriverLegacyITBase.DEFAULT_WAIT_SEC</li>
  *   <li>Rename to SmokeTestUtil or such</li>
  *   <li>Extract jiraMatches data to property file</li>
@@ -113,481 +100,6 @@ public class ITUtil {
         return errorText;
     }
 
-    /**
-     * Generic blanket approve behavior
-     * @param selenium
-     * @throws InterruptedException
-     */
-    public static void blanketApprove(Selenium selenium) throws InterruptedException {
-        ITUtil.waitAndCheckForIncidentReport(selenium, "methodToCall.blanketApprove");
-        ITUtil.waitAndClick(selenium, "methodToCall.blanketApprove");
-        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-        Thread.sleep(2000);
-
-        if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
-            String errorText = selenium.getText(DIV_ERROR_LOCATOR);
-            if (errorText != null && errorText.contains("error(s) found on page.")) {
-                errorText = blanketApprovalCleanUpErrorText(errorText);
-                if (selenium.isElementPresent(DIV_EXCOL_LOCATOR)) { // not present if errors are at the bottom of the page (see left-errmsg below)
-                    errorText = blanketApprovalCleanUpErrorText(selenium.getText(DIV_EXCOL_LOCATOR));// + "\n" + selenium.getHtmlSource()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
-                }
-                if (selenium.isElementPresent("//div[@class='left-errmsg-tab']/div/div")) {
-                    errorText = errorText + blanketApprovalCleanUpErrorText(selenium.getText("//div[@class='left-errmsg-tab']/div/div"));
-                }
-
-                //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
-                //                    errorText = errorText + " " + selenium.getText("//div[@class='left-errmsg']/div/div[1]");
-                //                }
-                SeleneseTestBase.fail(errorText);
-            }
-        }
-        ITUtil.waitAndCheckForIncidentReport(selenium, "//img[@alt='doc search']");
-        waitAndClick(selenium, "//img[@alt='doc search']");
-        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-        SeleneseTestBase.assertEquals("Kuali Portal Index", selenium.getTitle());
-        try {
-            selenium.selectFrame("iframeportlet");
-        } catch (NoSuchFrameException nsfe) {
-            // do nothing don't fail on missing frames
-        }
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-    }
-
-    /**
-     * "//li[@class='uif-errorMessageItem']"
-     * @param selenium
-     * @param message
-     */
-    public static void checkErrorMessageItem(Selenium selenium, String message) {
-        final String error_locator = "//li[@class='uif-errorMessageItem']";
-        if (selenium.isElementPresent(error_locator)) {
-            String errorText = selenium.getText(error_locator);
-            if (errorText != null && errorText.contains("errors")) {
-                SeleneseTestBase.fail(errorText + message);
-            }
-        }
-    }
-
-
-    /**
-     * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.
-     * Trailing slashes are trimmed.  If the remote.public.url does not start with http:// it will be added.
-     * @return http://localhost:8080/kr-dev by default else the value of remote.public.url
-     */
-    public static String getBaseUrlString() {
-        String baseUrl = System.getProperty(REMOTE_PUBLIC_URL_PROPERTY);
-        if (baseUrl == null) {
-            baseUrl = DEFAULT_BASE_URL;
-        }
-        baseUrl = prettyHttp(baseUrl);
-        return baseUrl;
-    }
-
-    /**
-     * Append http:// if not present.  Remove trailing /
-     * @param baseUrl
-     * @return
-     */
-    public static String prettyHttp(String baseUrl) {
-        if (baseUrl.endsWith("/")) {
-            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-        }
-        if (!baseUrl.startsWith("http")) {
-            baseUrl = "http://" + baseUrl;
-        }
-        return baseUrl;
-    }
-
-    /**
-     * In order to run as a smoke test under selenium grid the ability to set the hubUrl via the JVM arg remote.public.hub is required.
-     * Trailing slashes are trimmed.  If the remote.public.hub does not start with http:// it will be added.
-     * @return http://localhost:4444/wd/hub by default else the value of remote.public.hub
-     */
-    public static String getHubUrlString() {
-        String hubUrl = System.getProperty(HUB_PROPERTY);
-        if (hubUrl == null) {
-            hubUrl = HUB_URL_PROPERTY;
-        }
-        hubUrl = prettyHttp(hubUrl);
-        if (!hubUrl.endsWith("/wd/hub")) {
-            hubUrl = hubUrl + "/wd/hub";
-        }
-        return hubUrl;
-    }
-
-    /**
-     * remote.public.driver set to chrome or firefox (null assumes firefox)
-     * if remote.public.hub is set a RemoteWebDriver is created (Selenium Grid)
-     * @return WebDriver or null if unable to create
-     */
-    public static WebDriver getWebDriver() {
-        String driverParam = System.getProperty(HUB_DRIVER_PROPERTY);
-        String hubParam = System.getProperty(HUB_PROPERTY);
-        if (hubParam == null) {
-            if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
-                FirefoxProfile profile = new FirefoxProfile();
-                profile.setEnableNativeEvents(false);
-                return new FirefoxDriver(profile);
-            } else if ("chrome".equalsIgnoreCase(driverParam)) {
-                return new ChromeDriver();
-            } else if ("safari".equals(driverParam)) {
-                System.out.println("SafariDriver probably won't work, if it does please contact Erik M.");
-                return new SafariDriver();
-            }
-        } else {
-            try {
-                if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
-                    return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.firefox());
-                } else if ("chrome".equalsIgnoreCase(driverParam)) {
-                    return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.chrome());
-                }
-            } catch (MalformedURLException mue) {
-                System.out.println(ITUtil.getHubUrlString() + " " + mue.getMessage());
-                mue.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * If the JVM arg remote.autologin is set, auto login as admin will not be done.
-     * @param selenium to login with
-     */
-    public static void loginSe(Selenium selenium) {
-        loginSe(selenium, "admin");
-    }
-
-    /**
-     * If the JVM arg remote.autologin is set, auto login as admin will not be done.
-     * @param driver
-     * @param userName
-     * @throws InterruptedException
-     */
-    public static void login(WebDriver driver, String userName) throws InterruptedException {
-        if (System.getProperty(REMOTE_AUTOLOGIN_PROPERTY) == null) {
-            driver.findElement(By.name("__login_user")).clear();
-            driver.findElement(By.name("__login_user")).sendKeys(userName);
-            driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
-            Thread.sleep(1000);
-            String contents = driver.getPageSource();
-            checkForInvalidUserName(userName, contents);
-        }
-    }
-
-    private static void checkForInvalidUserName(String userName, String contents) {
-        if (contents.indexOf("Invalid username") > -1) {
-            SeleneseTestBase.fail("Invalid username " + userName);
-        }
-    }
-
-    /**
-     * If the JVM arg remote.autologin is set, auto login as admin will not be done.
-     * @param selenium to login with
-     */
-    public static void loginSe(Selenium selenium, String user) {
-        if (System.getProperty(REMOTE_AUTOLOGIN_PROPERTY) == null) {
-            try {
-                selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-            } catch (Exception e) {
-                SeleneseTestBase.fail("Login page not loaded app started?");
-            }
-            if (!"Login".equals(selenium.getTitle())) {
-                fail("Title is not Login as expected, but " + selenium.getTitle());
-            }
-            selenium.type("__login_user", user);
-            selenium.click("//input[@type='submit']"); //using css selector fails
-            selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-            String contents = selenium.getHtmlSource();
-            checkForInvalidUserName(user, contents);
-        }
-    }
-
-    /**
-     * Write the given stack trace into a String
-     * @param throwable whose stack trace to return
-     * @return String of the given throwable's stack trace.
-     */
-    public static String stackTrace(Throwable throwable) {
-        StringWriter wrt=new StringWriter();
-        PrintWriter pw=new PrintWriter(wrt);
-        throwable.printStackTrace(pw);
-        pw.flush();
-        return wrt.toString();
-    }
-
-    /**
-     * Setting the JVM arg remote.driver.dontTearDown to y or t leaves the browser window open when the test has completed.  Valuable when debugging, updating, or creating new tests.
-     * When implementing your own tearDown method rather than an inherited one, it is a common courtesy to include this check and not stop and shutdown the browser window to make it easy debug or update your test.
-     * {@code }
-     * @return true if the dontTearDownProperty is not set.
-     */
-    public static boolean dontTearDownPropertyNotSet() {
-        return System.getProperty(DONT_TEAR_DOWN_PROPERTY) == null ||
-                "f".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase()) ||
-                "n".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase());
-    }
-
-    /**
-     * Wait 60 seconds for the elementLocator to be present or fail.  Click if present
-     * @param selenium
-     * @param elementLocator
-     * @throws InterruptedException
-     */
-    public static void waitAndClick(Selenium selenium, String elementLocator) throws InterruptedException {
-        waitAndClick(selenium, elementLocator, WAIT_DEFAULT_SECONDS);
-    }
-
-    /**
-     * Wait 60 seconds for the elementLocator to be present or fail.  Click if present
-     * @param selenium
-     * @param elementLocator
-     * @param message
-     * @throws InterruptedException
-     */
-    public static void waitAndClick(Selenium selenium, String elementLocator, String message) throws InterruptedException {
-        waitAndClick(selenium, elementLocator, WAIT_DEFAULT_SECONDS, message);
-    }
-
-    /**
-     * Wait the given seconds for the elementLocator to be present or fail
-     * @param selenium
-     * @param elementLocator
-     * @param seconds
-     * @throws InterruptedException
-     */
-    public static void waitAndClick(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
-        waitAndClick(selenium, elementLocator, seconds, "");
-    }
-
-    /**
-     * Wait the given seconds for the elementLocator to be present or fail
-     * @param selenium
-     * @param elementLocator
-     * @param seconds
-     * @param message
-     * @throws InterruptedException
-     */
-    public static void waitAndClick(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
-        waitForElement(selenium, elementLocator, seconds, message);
-        selenium.click(elementLocator);
-        Thread.sleep(1000);
-        ITUtil.waitAndCheckForIncidentReport(selenium, elementLocator, message);
-    }
-
-    /**
-     * Wait the 60 seconds for the elementLocator to be present or fail, when present type the text.
-     * @param selenium
-     * @param elementLocator
-     * @param text
-     * @throws InterruptedException
-     */
-    public static void waitAndType(Selenium selenium, String elementLocator, String text) throws InterruptedException {
-        waitAndType(selenium, elementLocator, text, "");
-    }
-
-    /**
-     * Wait the 60 seconds for the elementLocator to be present or fail, when present type the text.  Include failure message on fail.
-     * @param selenium
-     * @param elementLocator
-     * @param text
-     * @param message
-     * @throws InterruptedException
-     */
-    public static void waitAndType(Selenium selenium, String elementLocator, String text, String message) throws InterruptedException {
-        waitAndType(selenium, elementLocator, WAIT_DEFAULT_SECONDS, text, message);
-    }
-
-    /**
-     * Wait the given seconds for the elementLocator to be present or fail, when present type the text.
-     * @param selenium
-     * @param elementLocator
-     * @param seconds
-     * @param text
-     * @param message
-     * @throws InterruptedException
-     */
-    public static void waitAndType(Selenium selenium, String elementLocator, int seconds, String text, String message) throws InterruptedException {
-        waitForElement(selenium, elementLocator, seconds, message);
-        selenium.type(elementLocator, text);
-        Thread.sleep(1000);
-    }
-
-    /**
-     * Wait 60 seconds for the elementLocator to be present or fail
-     * @param selenium
-     * @param elementLocator
-     * @throws InterruptedException
-     */
-    public static void waitForElement(Selenium selenium, String elementLocator) throws InterruptedException {
-        waitForElement(selenium, elementLocator, WAIT_DEFAULT_SECONDS);
-    }
-
-    /**
-     * Wait 60 seconds for the elementLocator to be present or fail
-     * @param selenium
-     * @param elementLocator
-     * @param message
-     * @throws InterruptedException
-     */
-    public static void waitForElement(Selenium selenium, String elementLocator, String message) throws InterruptedException {
-        waitForElement(selenium, elementLocator, WAIT_DEFAULT_SECONDS, message);
-    }
-
-    /**
-     * Wait the given seconds for the elementLocator to be present or fail
-     * @param selenium
-     * @param elementLocator
-     * @param seconds
-     * @throws InterruptedException
-     */
-    public static void waitForElement(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
-        waitForElement(selenium, elementLocator, WAIT_DEFAULT_SECONDS, "");
-    }
-
-    /**
-     * Wait the given seconds for the elementLocator to be present or fail
-     * @param selenium
-     * @param elementLocator
-     * @param seconds
-     * @param message
-     * @throws InterruptedException
-     */
-    public static void waitForElement(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
-        boolean failed = false;
-        for (int second = 0;; second++) {
-            if (second >= seconds) failed = true;
-            try { if (failed || selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        ITUtil.waitAndCheckForIncidentReport(selenium, elementLocator); // after timeout to be sure page is loaded
-        if (failed) fail("timeout of " + seconds + " seconds waiting for " + elementLocator + " " + message);
-    }
-
-    /**
-     * Wait the given seconds for the elementLocator to be present or fail
-     * @param selenium
-     * @param elementLocator
-     * @throws InterruptedException
-     */
-    public static void waitForElementVisible(Selenium selenium, String elementLocator) throws InterruptedException {
-        waitForElementVisible(selenium, elementLocator, WAIT_DEFAULT_SECONDS, "");
-    }
-
-    /**
-     * Wait 60 seconds for the elementLocator to be present or fail including the given message
-     * @param selenium
-     * @param elementLocator
-     * @param message
-     * @throws InterruptedException
-     */
-    public static void waitForElementVisible(Selenium selenium, String elementLocator, String message) throws InterruptedException {
-        waitForElementVisible(selenium, elementLocator, WAIT_DEFAULT_SECONDS, message);
-    }
-
-    /**
-     * Wait the given seconds for the elementLocator to be present or fail
-     * @param selenium
-     * @param elementLocator
-     * @param seconds
-     * @throws InterruptedException
-     */
-    public static void waitForElementVisible(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
-        for (int second = 0;; second++) {
-            if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator + " " + message);
-            try { if (selenium.isVisible(elementLocator)) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-    }
-
-    /**
-     * Wait for 60 seconds for the selenium.getTitle to match the given title then fail.
-     * @param selenium
-     * @param title
-     * @throws InterruptedException
-     */
-    public static void waitForTitleToEqual(Selenium selenium, String title) throws InterruptedException {
-        waitForTitleToEqual(selenium, title, "");
-    }
-
-    /**
-     * Wait for 60 seconds for the selenium.getTitle to match the given title then fail including the given message.
-     * @param selenium
-     * @param title
-     * @param message
-     * @throws InterruptedException
-     */
-    public static void waitForTitleToEqual(Selenium selenium, String title, String message) throws InterruptedException {
-        Thread.sleep(2000);
-//        for (int second = 0;; second++) {
-//            if (second >= WAIT_DEFAULT_SECONDS) fail(("timeout of " + WAIT_DEFAULT_SECONDS + " seconds waiting for title to equal " + title + " " + message).trim());
-//            try { if (title.equals(selenium.getTitle())) break; } catch (Exception e) {}
-//            Thread.sleep(1000);
-//        }
-    }
-
-    /**
-     * Check the selenium contents for an Incident Report failure with Incident Report Details
-     * @param selenium
-     * @param linkLocator
-     */
-    public static void waitAndCheckForIncidentReport(Selenium selenium, String linkLocator) {
-        waitAndCheckForIncidentReport(selenium, linkLocator, "");
-    }
-
-    /**
-     * Fails if a Incident Report is detected, extracting and reporting the View Id, Document Id, and StackTrace
-     * @param selenium
-     * @param linkLocator used only in the failure message
-     */
-    public static void waitAndCheckForIncidentReport(Selenium selenium, String linkLocator, Failable failable, String message) {
-        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-        String contents = selenium.getHtmlSource();
-        checkForIncidentReport(contents, linkLocator, failable, message);
-    }
-
-    /**
-     * Fails if a Incident Report is detected, extracting and reporting the View Id, Document Id, and StackTrace
-     * @param selenium
-     * @param linkLocator used only in the failure message
-     */
-    public static void waitAndCheckForIncidentReport(Selenium selenium, String linkLocator, String message) {
-        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-        String contents = selenium.getHtmlSource();
-        checkForIncidentReport(contents, linkLocator, message);
-    }
-
-    protected static void checkForIncidentReport(String contents, String linkLocator, String message) {
-        if (contents == null) { //guard clause
-            return;
-        }
-
-        if (incidentReported(contents)) {
-            try {
-                processIncidentReport(contents, linkLocator, message);
-            } catch (IndexOutOfBoundsException e) {
-                SeleneseTestBase.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage()
-                        + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: "
-                        + deLinespace(contents));
-            }
-        }
-
-        if (contents.contains("HTTP Status 404")) {
-            SeleneseTestBase.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
-        }
-
-        if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
-            try {
-                processFreemarkerException(contents, linkLocator, message);
-            } catch (IndexOutOfBoundsException e) {
-                SeleneseTestBase.fail("\nFreemarker exception detected " + message + " but there was an exception during processing: "
-                        + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e)
-                        + "\nContents that triggered exception: " + deLinespace(contents));
-            }
-
-        }
-    }
-
     protected static void checkForIncidentReport(String contents, String linkLocator, Failable failable, String message) {
         if (contents == null) { //guard clause
             return;
@@ -630,69 +142,23 @@ public class ITUtil {
         }
     }
 
-    private static boolean incidentReported(String contents) {
-        return contents != null &&
-                contents.contains("Incident Report") &&
-                !contents.contains("portal.do?channelTitle=Incident%20Report") && // Incident Report link on sampleapp KRAD tab
-                !contents.contains("portal.do?channelTitle=Incident Report") &&   // Incident Report link on sampleapp KRAD tab IE8
-                !contents.contains("uitest?viewId=Travel-testView2") &&
-                !contents.contains("SeleniumException"); // selenium timeouts have Incident Report in them
-    }
-
-    private static void processFreemarkerException(String contents, String linkLocator, String message) {
-        failOnMatchedJira(contents);
-        String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
-        SeleneseTestBase.fail("\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: "  + stackTrace.trim());
-    }
-
-    private static void processFreemarkerException(String contents, String linkLocator, Failable failable, String message) {
-        failOnMatchedJira(contents, failable);
-        String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
-        failable.fail(
-                "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + stackTrace
-                        .trim());
-    }
-
-    private static void processIncidentReport(String contents, String linkLocator, String message) {
-        failOnMatchedJira(contents);
-
-        if (contents.indexOf("Incident Feedback") > -1) {
-            failWithReportInfo(contents, linkLocator, message);
+    public static String deLinespace(String contents) {
+        while (contents.contains("\n\n")) {
+            contents = contents.replaceAll("\n\n", "\n");
         }
-
-        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
-            failWithReportInfoForKim(contents, linkLocator, message);
-        }
-
-        SeleneseTestBase.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(
-                contents));
+        return contents;
     }
 
-    protected static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
-        failOnMatchedJira(contents, failable);
-
-        if (contents.indexOf("Incident Feedback") > -1) {
-            failWithReportInfo(contents, linkLocator, failable, message);
-        }
-
-        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
-            failWithReportInfoForKim(contents, linkLocator, failable, message);
-        }
-
-        failable.fail("\nIncident report detected "
-                + message
-                + "\n Unable to parse out details for the contents that triggered exception: "
-                + deLinespace(contents));
-    }
-
-    private static void failWithReportInfo(String contents, String linkLocator, String message) {
-        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
-        SeleneseTestBase.fail(incidentReportInformation);
-    }
-
-    private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
-        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
-        failable.fail(incidentReportInformation);
+    /**
+     * Setting the JVM arg remote.driver.dontTearDown to y or t leaves the browser window open when the test has completed.  Valuable when debugging, updating, or creating new tests.
+     * When implementing your own tearDown method rather than an inherited one, it is a common courtesy to include this check and not stop and shutdown the browser window to make it easy debug or update your test.
+     * {@code }
+     * @return true if the dontTearDownProperty is not set.
+     */
+    public static boolean dontTearDownPropertyNotSet() {
+        return System.getProperty(DONT_TEAR_DOWN_PROPERTY) == null ||
+                "f".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase()) ||
+                "n".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase());
     }
 
     private static String extractIncidentReportInfo(String contents, String linkLocator, String message) {
@@ -724,16 +190,6 @@ public class ITUtil {
                 + stackTrace.trim();
     }
 
-    private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
-        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
-        SeleneseTestBase.fail(kimIncidentReport);
-    }
-
-    private static void failWithReportInfoForKim(String contents, String linkLocator, Failable failable, String message) {
-        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
-        failable.fail(kimIncidentReport);
-    }
-
     private static String extractIncidentReportKim(String contents, String linkLocator, String message) {
         String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
         String docIdPre = "type=\"hidden\" value=\"";
@@ -753,6 +209,12 @@ public class ITUtil {
                 + stackTrace.trim();
     }
 
+    public static void failOnInvalidUserName(String userName, String contents, Failable failable) {
+        if (contents.indexOf("Invalid username") > -1) {
+            failable.fail("Invalid username " + userName);
+        }
+    }
+/*
     public static void failOnMatchedJira(String contents) {
         Iterator<String> iter = jiraMatches.keySet().iterator();
         String key = null;
@@ -764,7 +226,7 @@ public class ITUtil {
             }
         }
     }
-
+*/
     public static void failOnMatchedJira(String contents, Failable failable) {
         Iterator<String> iter = jiraMatches.keySet().iterator();
         String key = null;
@@ -777,10 +239,158 @@ public class ITUtil {
         }
     }
 
-    public static String deLinespace(String contents) {
-        while (contents.contains("\n\n")) {
-            contents = contents.replaceAll("\n\n", "\n");
-        }
-        return contents;
+    private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
+        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+        failable.fail(incidentReportInformation);
     }
+
+/*
+    private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
+        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
+        SeleneseTestBase.fail(kimIncidentReport);
+    }
+*/
+    private static void failWithReportInfoForKim(String contents, String linkLocator, Failable failable, String message) {
+        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
+        failable.fail(kimIncidentReport);
+    }
+
+    /**
+     * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.
+     * Trailing slashes are trimmed.  If the remote.public.url does not start with http:// it will be added.
+     * @return http://localhost:8080/kr-dev by default else the value of remote.public.url
+     */
+    public static String getBaseUrlString() {
+        String baseUrl = System.getProperty(REMOTE_PUBLIC_URL_PROPERTY);
+        if (baseUrl == null) {
+            baseUrl = DEFAULT_BASE_URL;
+        }
+        baseUrl = prettyHttp(baseUrl);
+        return baseUrl;
+    }
+
+    public static String getHTML(String urlToRead) {
+        URL url;
+        HttpURLConnection conn;
+        BufferedReader rd;
+        String line;
+        String result = "";
+
+        try {
+            url = new URL(urlToRead);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            while ((line = rd.readLine()) != null) {
+                result += line;
+            }
+            rd.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * In order to run as a smoke test under selenium grid the ability to set the hubUrl via the JVM arg remote.public.hub is required.
+     * Trailing slashes are trimmed.  If the remote.public.hub does not start with http:// it will be added.
+     * @return http://localhost:4444/wd/hub by default else the value of remote.public.hub
+     */
+    public static String getHubUrlString() {
+        String hubUrl = System.getProperty(HUB_PROPERTY);
+        if (hubUrl == null) {
+            hubUrl = HUB_URL_PROPERTY;
+        }
+        hubUrl = prettyHttp(hubUrl);
+        if (!hubUrl.endsWith("/wd/hub")) {
+            hubUrl = hubUrl + "/wd/hub";
+        }
+        return hubUrl;
+    }
+
+    private static boolean incidentReported(String contents) {
+        return contents != null &&
+                contents.contains("Incident Report") &&
+                !contents.contains("portal.do?channelTitle=Incident%20Report") && // Incident Report link on sampleapp KRAD tab
+                !contents.contains("portal.do?channelTitle=Incident Report") &&   // Incident Report link on sampleapp KRAD tab IE8
+                !contents.contains("uitest?viewId=Travel-testView2") &&
+                !contents.contains("SeleniumException"); // selenium timeouts have Incident Report in them
+    }
+
+    /**
+     * Append http:// if not present.  Remove trailing /
+     * @param baseUrl
+     * @return
+     */
+    public static String prettyHttp(String baseUrl) {
+        if (baseUrl.endsWith("/")) {
+            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+        }
+        if (!baseUrl.startsWith("http")) {
+            baseUrl = "http://" + baseUrl;
+        }
+        return baseUrl;
+    }
+
+    private static void processFreemarkerException(String contents, String linkLocator, Failable failable, String message) {
+        failOnMatchedJira(contents, failable);
+        String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
+        failable.fail(
+                "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + stackTrace
+                        .trim());
+    }
+
+/*
+    private static void processIncidentReport(String contents, String linkLocator, String message) {
+        failOnMatchedJira(contents);
+
+        if (contents.indexOf("Incident Feedback") > -1) {
+            failWithReportInfo(contents, linkLocator, message);
+        }
+
+        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
+            failWithReportInfoForKim(contents, linkLocator, message);
+        }
+
+        SeleneseTestBase.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(
+                contents));
+    }
+
+    private static void failWithReportInfo(String contents, String linkLocator, String message) {
+        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+        SeleneseTestBase.fail(incidentReportInformation);
+    }
+*/
+
+    protected static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
+        failOnMatchedJira(contents, failable);
+
+        if (contents.indexOf("Incident Feedback") > -1) {
+            failWithReportInfo(contents, linkLocator, failable, message);
+        }
+
+        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
+            failWithReportInfoForKim(contents, linkLocator, failable, message);
+        }
+
+        failable.fail("\nIncident report detected "
+                + message
+                + "\n Unable to parse out details for the contents that triggered exception: "
+                + deLinespace(contents));
+    }
+
+    /**
+     * Write the given stack trace into a String
+     * @param throwable whose stack trace to return
+     * @return String of the given throwable's stack trace.
+     */
+    public static String stackTrace(Throwable throwable) {
+        StringWriter wrt = new StringWriter();
+        PrintWriter pw = new PrintWriter(wrt);
+        throwable.printStackTrace(pw);
+        pw.flush();
+        return wrt.toString();
+    }
+
 }

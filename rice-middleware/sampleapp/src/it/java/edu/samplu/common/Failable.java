@@ -24,7 +24,7 @@ public interface Failable {
 
     /**
      * Fail in a framework appropriate way.
-     * @param string message to display for the failure.
+     * @param message to display for the failure.
      */
-    void fail(String string);
+    void fail(String message);
 }

@@ -34,7 +34,7 @@ import java.util.Properties;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase implements Failable {
+public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase {
 
     /**
      * http://env12.rice.kuali.org/portal.do?channelTitle=XML%20Ingester&channelUrl=http://env12.rice.kuali.org/kew/../core/Ingester.do

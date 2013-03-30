@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package edu.samplu;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.WebDriverUtil;
 import org.junit.Test;
 
 import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
@@ -42,7 +43,7 @@ public class InvalidUserNameWDIT extends WebDriverLegacyITBase {
     @Test
     public void testInvalidUserName() throws InterruptedException {
         try {
-            ITUtil.login(driver, ITUtil.DTS_TWO);
+            WebDriverUtil.login(driver, ITUtil.DTS_TWO, this);
         } catch (Exception e) {
             assertEquals(ITUtil.DTS_TWO, "Invalid username " + ITUtil.DTS_TWO, e.getMessage());
             passed();

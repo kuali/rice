@@ -28,7 +28,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @see LoginLogoutSTJUnitBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase implements Failable {
+public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
      * LoginLogout can use ITUtil.PORTAL for both navigation and bookmark tests so it will not be overridden by subclasses.

@@ -42,25 +42,91 @@ import java.util.Map;
 
 public class ITUtil {
 
+    /**
+     * http://localhost:8080/kr-dev
+     */
     public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
-    public final static String PORTAL = "/portal.do";
-    public final static String PORTAL_URL =  ITUtil.getBaseUrlString() + ITUtil.PORTAL;
-    public final static String PORTAL_URL_ENCODED = URLEncoder.encode(PORTAL_URL);
-    public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
-    public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
-    public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
-    public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
-    public static final int WAIT_DEFAULT_SECONDS = 60;
-    public static final String DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT = "30000";
-    static Map<String, String> jiraMatches;
-    public static final String REMOTE_PUBLIC_URL_PROPERTY = "remote.public.url";
-    public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
-    public static final String HUB_PROPERTY = "remote.public.hub";
-    public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
-    public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
-    public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
-    public static final String JIRA_BROWSE_URL = "https://jira.kuali.org/browse/";
 
+    /**
+     * /portal.do
+     */
+    public static final  String PORTAL = "/portal.do";
+
+    /**
+     * ITUtil.getBaseUrlString() + ITUtil.PORTAL
+     */
+    public static final String PORTAL_URL =  ITUtil.getBaseUrlString() + ITUtil.PORTAL;
+
+    /**
+     * URLEncoder.encode(PORTAL_URL)
+     */
+    public static final String PORTAL_URL_ENCODED = URLEncoder.encode(PORTAL_URL);
+
+    /**
+     * Calendar.getInstance().getTimeInMillis() + ""
+     */
+    public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
+
+    /**
+     * Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase()
+     */
+    public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
+
+    /**
+     * //div[@class='error']"
+     */
+    public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
+
+    /**
+     * //div[@class='msg-excol']
+     */
+    public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
+
+    /**
+     * 60
+     */
+    public static final int WAIT_DEFAULT_SECONDS = 60;
+
+    /**
+     * "30000"
+     */
+    public static final String DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT = "30000";
+
+    /**
+     * remote.public.url
+     */
+    public static final String REMOTE_PUBLIC_URL_PROPERTY = "remote.public.url";
+
+    /**
+     * remote.autologin
+     */
+    public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
+
+    /**
+     * remote.public.hub
+     */
+    public static final String HUB_PROPERTY = "remote.public.hub";
+
+    /**
+     * remote.public.driver
+     */
+    public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
+
+    /**
+     * http://localhost:4444/wd/hub
+     */
+    public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
+
+    /**
+     * remote.driver.dontTearDown
+     */
+    public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
+
+    /**
+     * https://jira.kuali.org/browse/
+     */
+    public static final String JIRA_BROWSE_URL = "https://jira.kuali.org/browse/";
+    static Map<String, String> jiraMatches;
     static {
         jiraMatches = new HashMap<String, String>();
         jiraMatches.put("Error setting property values; nested exception is org.springframework.beans.NotWritablePropertyException: Invalid property 'refreshWhenChanged' of bean class [org.kuali.rice.krad.uif.element.Action]: Bean property 'refreshWhenChanged' is not writable or has an invalid setter method. Does the parameter type of the setter match the return type of the getter?",

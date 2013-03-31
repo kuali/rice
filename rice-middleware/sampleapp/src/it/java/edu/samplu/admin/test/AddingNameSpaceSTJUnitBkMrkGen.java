@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
 
 /**
@@ -25,16 +22,30 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddingNameSpaceWDIT extends WebDriverLegacyITBase {
-    public static final String TEST_URL =ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ITUtil.getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
- 
+public class AddingNameSpaceSTJUnitBkMrkGen extends AddingNameSpacesAbstractSmokeTestBase {
+
+    /**
+     * Noop navigation not used by Bookmark tests.
+     * {@inheritDoc}
+     * @return
+     */
+    @Override
+    protected String getLinkLocator() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @link AddingNameSpacesAbstractSmokeTestBase#BOOKMARK_URL
+     * @return
+     */
     @Override
     public String getTestUrl(){
-        return TEST_URL;
+        return BOOKMARK_URL;
     }
 
     @Test
-    public void testAddingNamespace() throws Exception {
-      super.testAddingNamespace();
+    public void testAddingNamespaceBookmark() throws Exception {
+      testAddingNamespaceBookmark(this);
     }
 }

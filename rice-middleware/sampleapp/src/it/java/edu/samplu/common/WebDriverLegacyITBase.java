@@ -201,9 +201,25 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String RETURN_VALUE_LINK_TEXT = "return value";
 
     /**
+     * //div[contains(div,'Document was successfully saved.')]
+     */
+    public static final String SAVE_SUCCESSFUL_XPATH = "//div[contains(div,'Document was successfully saved.')]";
+
+    /**
      * //input[@name='methodToCall.save' and @alt='save']
      */
     public static final String SAVE_XPATH="//input[@name='methodToCall.save' and @alt='save']";
+
+    /**
+     * KIM Screens
+     * //*[@name='methodToCall.save' and @alt='save']
+     */
+    public static final String SAVE_XPATH_2 = "//*[@name='methodToCall.save' and @alt='save']";
+
+    /**
+     * //input[@title='search' and @name='methodToCall.search']
+     */
+    public static final String SAVE_XPATH_3 = "//input[@title='search' and @name='methodToCall.search']";
 
     /**
      * //input[@name='methodToCall.search' and @value='search']
@@ -229,6 +245,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * XML Ingester
      */
     public static final String XML_INGESTER_LINK_TEXT = "XML Ingester";
+    public static final String DOC_STATUS_SAVED = "SAVED";
 
     protected WebDriver driver;
     protected String user = "admin";
@@ -954,6 +971,86 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    // TODO delete after AddingNameSpaceAbstractSmokeTestBase migration
+    protected void testAddingNamespace() throws Exception {
+        testAddingNamespace(this);
+    }
+
+    // TODO move method to AddingNameSpaceAbstractSmokeTestBase after locators are extracted
+    protected void testAddingNamespace(Failable failable) throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        waitForPageToLoad();
+        assertElementPresentByXpath(SAVE_XPATH_2, "save button does not exist on the page");
+
+        //Enter details for Namespace.
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Adding PEANUTS");
+        waitAndTypeByXpath("//*[@id='document.documentHeader.explanation']", "I want to add PEANUTS to test KIM");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "PEANUTS");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "The Peanuts Gang");
+        checkByXpath("//input[@id='document.newMaintainableObject.active']");
+        waitAndClickByXpath(SAVE_XPATH_2);
+        waitForPageToLoad();
+        checkForIncidentReport();
+        assertDocumentStatusSaved();
+
+        //checks it is saved and initiator is admin.
+        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, driver.findElement(By.xpath(
+                "//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath(
+                "//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
+    }
+
+    protected void assertDocumentStatusSaved() {
+        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH,
+                "Document is not saved successfully");
+    }
+
+    protected void testAddingBrownGroup() throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        waitForPageToLoad();
+        String docId = waitForDocId();
+
+        //Enter details for BrownGroup.
+        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Brown Group");
+        waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
+        selectOptionByName("document.groupNamespace", "KR-IDM");
+        waitForPageToLoad();
+        String groupName = "BrownGroup " + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.groupName", groupName);
+        checkByName("document.active");
+        waitAndClickByXpath(SAVE_XPATH_2);
+        waitForPageToLoad();
+        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH,"Document is not saved successfully");
+        checkForIncidentReport();
+
+        //checks it is saved and initiator is admin.
+        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
+        waitForPageToLoad();
+        waitAndClickSearch();
+        waitForPageToLoad();
+        waitAndClickReturnValue();
+        waitForPageToLoad();
+        waitAndClickByName("methodToCall.addMember.anchorAssignees");
+        waitForPageToLoad();
+        waitAndClickSave();
+        waitAndClickSubmit();
+        waitForPageToLoad();
+        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickByLinkText("Administration");
+        waitForPageToLoad();
+        waitAndClickByLinkText("Group");
+        waitForPageToLoad();
+        selectFrameIframePortlet();
+        waitAndTypeByName("name", groupName);
+        waitAndClickSearch();
+        isElementPresentByLinkText(groupName);
+    }
+
     protected void testAgendaEditRuleRefreshIT() throws Exception {
         selectFrameIframePortlet();
         waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  jiraAwareWaitAndClick("id=32");
@@ -1014,15 +1111,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void testCancelConfirmation() throws InterruptedException {
-        waitAndCancelConfirmation();
-        passed();
-    }
-
-    protected void testCreateNewSearchReturnValueCancelConfirmation() throws InterruptedException, Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        waitAndClickSearch2();
-        waitAndClickReturnValue();
         waitAndCancelConfirmation();
         passed();
     }
@@ -1124,74 +1212,145 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         testCancelConfirmation();
     }
 
-    protected void testAddingNamespace() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
+    protected List<String> testCreateNewParameter(String docId, String parameterName) throws Exception {
         waitForPageToLoad();
-        assertElementPresentByXpath("//*[@name='methodToCall.save' and @alt='save']", "save button does not exist on the page");
-
-        //Enter details for Namespace.
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Adding PEANUTS");
-        waitAndTypeByXpath("//*[@id='document.documentHeader.explanation']", "I want to add PEANUTS to test KIM");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "PEANUTS");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "The Peanuts Gang");
-        checkByXpath("//input[@id='document.newMaintainableObject.active']");
-        waitAndClickByXpath("//*[@name='methodToCall.save' and @alt='save']");
-        waitForPageToLoad();
-        checkForIncidentReport();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]",
-                "Document is not saved successfully");
-
-        //checks it is saved and initiator is admin.
-        SeleneseTestBase.assertEquals("SAVED", driver.findElement(By.xpath(
-                "//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath(
-                "//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
-    }
-
-    protected void testAddingBrownGroup() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        waitForPageToLoad();
-        String docId = waitForDocId();
-
-        //Enter details for BrownGroup.
-        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Brown Group");
-        waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
-        selectOptionByName("document.groupNamespace", "KR-IDM");
-        waitForPageToLoad();
-        String groupName = "BrownGroup " + ITUtil.DTS_TWO;
-        waitAndTypeByName("document.groupName", groupName);
-        checkByName("document.active");
-        waitAndClickByXpath("//*[@name='methodToCall.save' and @alt='save']");
-        waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]","Document is not saved successfully");
-        checkForIncidentReport();
-
-        //checks it is saved and initiator is admin.
-        SeleneseTestBase.assertEquals("SAVED", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
-        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        waitForPageToLoad();
-        waitAndClickSearch();
-        waitForPageToLoad();
-        waitAndClickReturnValue();
-        waitForPageToLoad();
-        waitAndClickByName("methodToCall.addMember.anchorAssignees");
-        waitForPageToLoad();
+        docId = waitForDocId();
+        //Enter details for Parameter.
+        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
+        waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
+        waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
+        parameterName = "TestIndicator" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterName);
+        waitAndTypeByName("document.newMaintainableObject.value", "Y");
+        waitAndTypeByName("document.newMaintainableObject.description", "for testing");
+        selectOptionByName("document.newMaintainableObject.parameterTypeCode", "HELP");
+        waitAndClickByXpath("//input[@name='document.newMaintainableObject.evaluationOperatorCode' and @value='A']");
         waitAndClickSave();
         waitAndClickSubmit();
         waitForPageToLoad();
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
-        waitAndClickByLinkText("Administration");
-        waitForPageToLoad();
-        waitAndClickByLinkText("Group");
+        waitAndClickDocSearchTitle();
         waitForPageToLoad();
         selectFrameIframePortlet();
-        waitAndTypeByName("name", groupName);
         waitAndClickSearch();
-        isElementPresentByLinkText(groupName);
+        Thread.sleep(2000);
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("--------------------------------New Parameter Created-------------------------");
+        List<String> params = new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterName);
+
+        return params;
+    }
+
+    protected List<String> testCreateNewParameterType(String docId, String parameterType, String parameterCode)throws Exception {
+        waitForPageToLoad();
+        docId = waitForDocId();
+
+        //Enter details for Parameter.
+        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter Type");
+        parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
+        waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
+        parameterType = "testing " + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
+        waitAndClickSave();
+        waitAndClickSubmit();
+        waitForPageToLoad();
+        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickDocSearchTitle();
+        waitForPageToLoad();
+        selectFrameIframePortlet();
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("--------------------------------New Parameter Type Created-------------------------");
+        List<String> params = new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+
+        return params;
+    }
+
+    protected void testCreateNewSearchReturnValueCancelConfirmation() throws InterruptedException, Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        waitAndClickSearch2();
+        waitAndClickReturnValue();
+        waitAndCancelConfirmation();
+        passed();
+    }
+
+    protected List<String> testCopyParameter(String docId, String parameterName) throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickCopy();
+        waitForPageToLoad();
+        docId = waitForDocId();
+        waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
+        waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
+        waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
+        parameterName = "TestIndicator" + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterName);
+        waitAndClickSave();
+        waitAndClickSubmit();
+        waitForPageToLoad();
+        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickDocSearchTitle();
+        waitForPageToLoad();
+        selectFrameIframePortlet();
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("-----------------------------------Parameter Edited-------------------------");
+        List<String> params = new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterName);
+
+        return params;
+    }
+
+    protected List<String> testCopyParameterType(String docId, String parameterType, String parameterCode) throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickCopy();
+        waitForPageToLoad();
+        docId = waitForDocId();
+        waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
+        parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
+        waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
+        clearTextByName("document.newMaintainableObject.name");
+        parameterType = "testing " + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
+        waitAndClickSave();
+        waitAndClickSubmit();
+        waitForPageToLoad();
+        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        selectTopFrame();
+        waitAndClickDocSearchTitle();
+        waitForPageToLoad();
+        selectFrameIframePortlet();
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selectTopFrame();
+        System.out.println("-----------------------------------Parameter Type Edited-------------------------");
+        List<String> params = new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+
+        return params;
     }
 
     protected void testDirtyFieldsCheck() throws Exception {
@@ -1232,45 +1391,40 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickByXpath("//input[@title='Search Parent Name']");
         waitForPageToLoad();
-        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        waitAndClickByXpath(SAVE_XPATH_3);
         waitAndClickByXpath("//table[@id='row']/tbody/tr[contains(td[3],'RiceDocument')]/td[1]/a");
         waitForPageToLoad();
-        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        waitAndClickByXpath(SAVE_XPATH_3);
         SeleneseTestBase.assertEquals("RiceDocument", getTextByXpath("//table[@id='row']/tbody/tr/td[4]/a"));
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("name", "Kuali*D");
-        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        waitAndClickByXpath(SAVE_XPATH_3);
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[3], 'KualiDocument')]");
         String docIdOld = getTextByXpath("//table[@id='row']/tbody/tr[contains(td[3], 'KualiDocument')]/td[2]/a");
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("label", "KualiDocument");
-        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        waitAndClickByXpath(SAVE_XPATH_3);
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[5], 'KualiDocument')]");
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("documentTypeId", docIdOld);
-        waitAndClickByXpath("//input[@title='search' and @name='methodToCall.search']");
+        waitAndClickByXpath(SAVE_XPATH_3);
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[2], '" + docIdOld + "')]");
     }
 
-    protected List<String> testCreateNewParameter(String docId, String parameterName) throws Exception
-    {
+
+    protected List<String> testEditParameterType(String docId, String parameterType, String parameterCode) throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickEdit();
         waitForPageToLoad();
         docId = waitForDocId();
-        //Enter details for Parameter.
-        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter");
-        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
-        waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
-        waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
-        parameterName = "TestIndicator" + ITUtil.DTS_TWO;
-        waitAndTypeByName("document.newMaintainableObject.name", parameterName);
-        waitAndTypeByName("document.newMaintainableObject.value", "Y");
-        waitAndTypeByName("document.newMaintainableObject.description", "for testing");
-        selectOptionByName("document.newMaintainableObject.parameterTypeCode", "HELP");
-        waitAndClickByXpath("//input[@name='document.newMaintainableObject.evaluationOperatorCode' and @value='A']");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
+        clearTextByName("document.newMaintainableObject.name");
+        parameterType = "testing " + ITUtil.DTS_TWO;
+        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
         waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1280,32 +1434,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
-        System.out.println("--------------------------------New Parameter Created-------------------------");
+        System.out.println("-----------------------------------Parameter Type Edited-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
-        params.add(parameterName);
+        params.add(parameterType);
+        params.add(parameterCode);
 
         return params;
-    }
-
-    protected void testEditRouteRulesDelegation() throws Exception {
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
-        selectFrameIframePortlet();
-        waitAndClickSearch();
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        waitAndClickEdit();
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        SeleneseTestBase.assertTrue(isElementPresentByName(CANCEL_NAME));
-        waitAndClickCancel();
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        waitAndClickByName("methodToCall.processAnswer.button0");
-        waitForPageToLoad();
-        passed();
     }
 
     protected List<String> testEditParameter(String docId, String parameterName) throws Exception
@@ -1335,6 +1470,26 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         params.add(docId);
         params.add(parameterName);
         return params;
+    }
+
+    protected void testEditRouteRulesDelegation() throws Exception {
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
+        selectFrameIframePortlet();
+        waitAndClickSearch();
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        waitAndClickEdit();
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        SeleneseTestBase.assertTrue(isElementPresentByName(CANCEL_NAME));
+        waitAndClickCancel();
+        waitForPageToLoad();
+        Thread.sleep(3000);
+        waitAndClickByName("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
+        passed();
     }
 
     protected void testFiscalOfficerInfoMaintenanceNew() throws Exception {
@@ -1595,7 +1750,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertDocFinal(docId);
     }
 
-    private void testLookUp() throws Exception {
+    protected void testLookUp() throws Exception {
         waitForPageToLoad();
         selectFrameIframePortlet();
 
@@ -1608,6 +1763,27 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertTextPresent("pprove");
         assertTextPresent("lose");
         assertTextPresent("ancel");
+    }
+
+    protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode) throws Exception {
+        waitAndTypeByName("name", parameterType);
+        waitAndClickSearch();
+        isElementPresentByLinkText(parameterType);
+        waitAndClickByLinkText(parameterType);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+        SeleneseTestBase.assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        waitAndClickCloseWindow();
+        switchToWindow("null");
+        List<String> params = new ArrayList<String>();
+        params.add(docId);
+        params.add(parameterType);
+        params.add(parameterCode);
+
+        return params;
     }
 
     protected List<String> testLookUpParameter(String docId, String parameterName) throws Exception {
@@ -1695,8 +1871,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         passed();
     }
 
-    protected List<String> testVerifyEditedParameter(String docId, String parameterName) throws Exception
-    {
+
+    protected List<String> testVerifyCopyParameter(String docId, String parameterName) throws Exception {
         waitAndTypeByName("name", parameterName);
         waitAndClickSearch();
         isElementPresentByLinkText(parameterName);
@@ -1716,41 +1892,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return params;
     }
 
-    protected List<String> testCopyParameter(String docId, String parameterName) throws Exception
-    {
-        selectFrameIframePortlet();
-        waitAndClickCopy();
-        waitForPageToLoad();
-        docId = waitForDocId();
-        waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
-        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
-        waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
-        waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
-        parameterName = "TestIndicator" + ITUtil.DTS_TWO;
-        waitAndTypeByName("document.newMaintainableObject.name", parameterName);
-        waitAndClickSave();
-        waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
-        selectTopFrame();
-        waitAndClickDocSearchTitle();
-        waitForPageToLoad();
-        selectFrameIframePortlet();
-        waitAndClickSearch();
-        Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
-        selectTopFrame();
-        System.out.println("-----------------------------------Parameter Edited-------------------------");
-        List<String> params = new ArrayList<String>();
-        params.add(docId);
-        params.add(parameterName);
-        
-        return params;
-    }
-
-    protected List<String> testVerifyCopyParameter(String docId, String parameterName) throws Exception
-    {
+    protected List<String> testVerifyEditedParameter(String docId, String parameterName) throws Exception {
         waitAndTypeByName("name", parameterName);
         waitAndClickSearch();
         isElementPresentByLinkText(parameterName);
@@ -1766,94 +1908,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
-        
-        return params;
-    }
 
-    protected List<String> testCreateNewParameterType(String docId, String parameterType, String parameterCode)throws Exception
-    {
-        waitForPageToLoad();
-        docId = waitForDocId();
-        
-        //Enter details for Parameter.
-        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter Type");
-        parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
-        waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
-        parameterType = "testing " + ITUtil.DTS_TWO;
-        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
-        waitAndClickSave();
-        waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
-        selectTopFrame();
-        waitAndClickDocSearchTitle();
-        waitForPageToLoad();
-        selectFrameIframePortlet();
-        waitAndClickSearch();
-        Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
-        selectTopFrame();
-        System.out.println("--------------------------------New Parameter Type Created-------------------------");
-        List<String> params = new ArrayList<String>();
-        params.add(docId);
-        params.add(parameterType);
-        params.add(parameterCode);
-        
-        return params;
-    }
-
-    protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode) throws Exception
-    {
-        waitAndTypeByName("name", parameterType);
-        waitAndClickSearch();
-        isElementPresentByLinkText(parameterType);
-        waitAndClickByLinkText(parameterType);
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");
-        Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
-        waitAndClickCloseWindow();
-        switchToWindow("null");
-        List<String> params = new ArrayList<String>();
-        params.add(docId);
-        params.add(parameterType);
-        params.add(parameterCode);
-        
-        return params;
-    }
-
-    protected List<String> testEditParameterType(String docId, String parameterType, String parameterCode) throws Exception
-    {
-        selectFrameIframePortlet();
-        waitAndClickEdit();
-        waitForPageToLoad();
-        docId = waitForDocId();
-        waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
-        clearTextByName("document.newMaintainableObject.name");
-        parameterType = "testing " + ITUtil.DTS_TWO;
-        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
-        waitAndClickSave();
-        waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
-        selectTopFrame();
-        waitAndClickDocSearchTitle();
-        waitForPageToLoad();
-        selectFrameIframePortlet();
-        waitAndClickSearch();
-        Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
-        selectTopFrame();
-        System.out.println("-----------------------------------Parameter Type Edited-------------------------");
-        List<String> params = new ArrayList<String>();
-        params.add(docId);
-        params.add(parameterType);
-        params.add(parameterCode);
-        
         return params;
     }
 
@@ -1872,40 +1927,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickCloseWindow();
         switchToWindow("null");
-        List<String> params = new ArrayList<String>();
-        params.add(docId);
-        params.add(parameterType);
-        params.add(parameterCode);
-        
-        return params;
-    }
-
-    protected List<String> testCopyParameterType(String docId, String parameterType, String parameterCode) throws Exception
-    {
-        selectFrameIframePortlet();
-        waitAndClickCopy();
-        waitForPageToLoad();
-        docId = waitForDocId();
-        waitAndTypeByName("document.documentHeader.documentDescription", "Copying Test Parameter");
-        parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
-        waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
-        clearTextByName("document.newMaintainableObject.name");
-        parameterType = "testing " + ITUtil.DTS_TWO;
-        waitAndTypeByName("document.newMaintainableObject.name", parameterType);
-        waitAndClickSave();
-        waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
-        selectTopFrame();
-        waitAndClickDocSearchTitle();
-        waitForPageToLoad();
-        selectFrameIframePortlet();
-        waitAndClickSearch();
-        Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
-        selectTopFrame();
-        System.out.println("-----------------------------------Parameter Type Edited-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
@@ -1959,8 +1980,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         checkByName("document.newMaintainableObject.active");
         waitAndClickSave();
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]");
-        SeleneseTestBase.assertEquals("SAVED", getTextByXpath(DOC_STATUS_XPATH));
+        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
+        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
         waitAndClickSubmit();
         waitForPageToLoad();
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
@@ -2032,8 +2053,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByName("document.principalName", personName);
         waitAndClickSave();
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(div,'Document was successfully saved.')]");
-        SeleneseTestBase.assertEquals("SAVED", getTextByXpath(DOC_STATUS_XPATH));
+        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
+        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
         waitAndClickSubmit();
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
@@ -3880,40 +3901,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return parameterList;
     }
     
-    protected List<String> testVerifyEditedComponent(String docId, String componentName, String componentCode) throws Exception
-    {
-        // TODO assign in test or a better way.
-        if (componentName == null || "".equals(componentName)) {
-            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
-            componentName = "testName" + ITUtil.DTS_TWO;
-        }
-        if (componentCode == null || "".equals(componentCode)) {
-            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
-            componentCode = "testCode" + ITUtil.DTS_TWO;
-        }
-
-        selectFrameIframePortlet();
-        waitAndTypeByName("name", componentName);
-        waitAndClickSearch();
-        isElementPresentByLinkText(componentName);
-        waitAndClickByLinkText(componentName);
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");
-        Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
-        waitAndClickCloseWindow();
-        switchToWindow("null");        
-        List<String> parameterList=new ArrayList<String>();
-        // TODO return just the docId, the Name and Code are passed in
-        parameterList.add(docId);
-        parameterList.add(componentName);
-        parameterList.add(componentCode);
-        
-        return parameterList;
-    }
-    
     protected List<String> testCopyComponent(String docId, String componentName, String componentCode) throws Exception
     {
         // TODO assign in test or a better way.
@@ -3994,22 +3981,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return parameterList;
     }
     
-    /**
-     * Test the tooltip and external help on the view
-     */
-    protected void testViewHelp() throws Exception {
-        // test tooltip help
-        fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        SeleneseTestBase.assertEquals("View help", getText("td.jquerybubblepopup-innerHtml"));
-
-        // test external help
-        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
-        Thread.sleep(5000);
-        switchToWindow("Kuali Foundation");
-        Thread.sleep(5000);
-        switchToWindow("Kuali :: Configuration Test View");
-    }
-
     /**
      * Test the tooltip and external help on the page
      */
@@ -4197,23 +4168,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         fireMouseOverEventByXpath("//label[@id='missing-tooltip-help_label']");
         SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
         SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-    }
-
-    /**
-     * Test the tooltip and external help on the view
-     */
-
-    protected void testViewHelp2() throws Exception {
-        // test tooltip help
-        if (isElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']")) {
-            SeleneseTestBase.assertFalse(driver.findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
-        }
-        
-        // test tooltip help
-        fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        Thread.sleep(2000);        
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'View help')]"));
-        assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Configuration Test View\"]"), "HelpWindow", "http://www.kuali.org/");
     }
 
     /**
@@ -4525,6 +4479,38 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         passed();
     }
 
+    /**
+     * Test the tooltip and external help on the view
+     */
+    protected void testViewHelp() throws Exception {
+        // test tooltip help
+        fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
+        SeleneseTestBase.assertEquals("View help", getText("td.jquerybubblepopup-innerHtml"));
+
+        // test external help
+        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
+        Thread.sleep(5000);
+        switchToWindow("Kuali Foundation");
+        Thread.sleep(5000);
+        switchToWindow("Kuali :: Configuration Test View");
+    }
+
+    /**
+     * Test the tooltip and external help on the view
+     */
+    protected void testViewHelp2() throws Exception {
+        // test tooltip help
+        if (isElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']")) {
+            SeleneseTestBase.assertFalse(driver.findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
+        }
+
+        // test tooltip help
+        fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
+        Thread.sleep(2000);
+        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'View help')]"));
+        assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Configuration Test View\"]"), "HelpWindow", "http://www.kuali.org/");
+    }
+
     protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
         selectFrameIframePortlet();
         waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.DTS_TWO);
@@ -4594,6 +4580,39 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals("Must not be more than 10 characters", getText(
                 "div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
         passed();
+    }
+
+    protected List<String> testVerifyEditedComponent(String docId, String componentName, String componentCode) throws Exception {
+        // TODO assign in test or a better way.
+        if (componentName == null || "".equals(componentName)) {
+            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
+            componentName = "testName" + ITUtil.DTS_TWO;
+        }
+        if (componentCode == null || "".equals(componentCode)) {
+            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
+            componentCode = "testCode" + ITUtil.DTS_TWO;
+        }
+
+        selectFrameIframePortlet();
+        waitAndTypeByName("name", componentName);
+        waitAndClickSearch();
+        isElementPresentByLinkText(componentName);
+        waitAndClickByLinkText(componentName);
+        waitForPageToLoad();
+        Thread.sleep(2000);
+        switchToWindow("Kuali :: Inquiry");
+        Thread.sleep(2000);
+        SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        waitAndClickCloseWindow();
+        switchToWindow("null");
+        List<String> parameterList=new ArrayList<String>();
+        // TODO return just the docId, the Name and Code are passed in
+        parameterList.add(docId);
+        parameterList.add(componentName);
+        parameterList.add(componentCode);
+
+        return parameterList;
     }
 
     protected void testVerifyDisclosures() throws Exception {

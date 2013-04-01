@@ -28,7 +28,6 @@
 
 .demo-sampleAppPage {
     margin-right: 0;
-    padding-top: 0;
 }
 
 .ui-accordion-header-icon {
@@ -48,6 +47,7 @@
 .demo-sampleAppHomeView .demo-sampleAppPage {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
+    padding-top: 0;
 }
 
 .demo-sampleAppHomeView h2, .demo-sampleAppHomeView h3 {

@@ -158,7 +158,7 @@
         <title>Common Features and Functions</title>
         <section>
             <title>Standard Buttons on Lookup Screens</title>
-            <table>
+            <table tabstyle="striped">
                 <title>Standard Rice Buttons</title>
                 <tgroup cols="3">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>

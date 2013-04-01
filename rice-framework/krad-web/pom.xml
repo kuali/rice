@@ -79,7 +79,7 @@
                 <jsSourceFile>plugins/rice/datatables/jquery.dataTables.rowGrouping.js</jsSourceFile>
                 <jsSourceFile>plugins/jstree/jquery.jstree.js</jsSourceFile>
                 <jsSourceFile>plugins/validate/additional_validations.js</jsSourceFile>
-                <jsSourceFile>plugins/jqform/jquery.form.js</jsSourceFile>
+                <jsSourceFile>plugins/jqform/jquery.form-3.31.0.js</jsSourceFile>
                 <jsSourceFile>plugins/fancybox/jquery.fancybox.pack.js</jsSourceFile>
                 <jsSourceFile>plugins/easydrag/jquery.easydrag.js</jsSourceFile>
                 <jsSourceFile>plugins/json/jquery.json-2.2.js</jsSourceFile>

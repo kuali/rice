@@ -293,7 +293,7 @@
             <para>The KNS supports numerous configuration parameters that can be set in the Rice
                 configuration file. Below is a list of these with descriptions and defaults.</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>KNS Configuration Parameters</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.2*"/>
@@ -475,6 +475,37 @@
                     </tgroup>
                 </table>
             </para>
+        </section>
+        <section>
+            <title>The Session Document Service</title>
+            <para>The SessionDocumentService, which was part of the default configuration for Rice before versions 2.1.4 for the 2.1 line 
+                and 2.2.2 for the 2.2 line, provided session failover in certain limited cases, but was disabled as part of <link xlink:href="https://jira.kuali.org/browse/KULRICE-9148">KULRICE-9148</link>. 
+                This service was problematic for performance when dealing with larger documents, and <emphasis role="bold">it is not recommended that it be re-enabled.</emphasis> 
+                It is possible to do so however. </para>
+            <para>To enable it again, a bean definition overriding the knsSessionDocumentService bean needs to be created and configured to load into the correct Spring context. 
+                Create a file such as the following which we'll name KNSOverrideSpringBeans.xml:</para>
+            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        &lt;bean id="knsSessionDocumentService" class="org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl">
+                &lt;property name="maxCacheSize" value="${session.document.cache.size}" />
+                &lt;property name="businessObjectService">
+                        &lt;ref bean="businessObjectService" />
+                &lt;/property>
+                &lt;property name="sessionDocumentDao">
+                        &lt;ref bean="sessionDocumentDao" />
+                &lt;/property>
+        &lt;/bean>
+&lt;/beans>
+        </programlisting>
+            <para>This file needs to be added to your web project so that it can be accessed from the classpath. 
+                For this example, it has been added to src/main/resources/edu/sampleu within our web project. 
+                With that in place, the following (adjusting for the actual path) should be added to your rice-config.xml file:</para>
+            <programlisting>&lt;param name="rice.kr.additionalSpringFiles">classpath:edu/sampleu/KNSOverrideSpringBeans.xml&lt;/param></programlisting>
+            <para>Note that if you already have a <code>rice.kr.additionalSpringFiles</code> configuration parameter specified, the value is treated as a comma separated list, so you can add a comma at the end of the present value and append on the configuration for the KNSOverrideSpringBeans.xml file.</para>
+            
         </section>
     </section>
     <section>
@@ -1681,7 +1712,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 </orderedlist></para>
             <section><title>Comparison of Maintenance and Transactional Documents</title>
                 <para>
-                    <table frame="none">
+                    <table frame="none" tabstyle="striped">
                         <title>Comparison of Maintenance and Transactional Documents</title>
                         <tgroup cols="3">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -2578,7 +2609,7 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
                 of standard validation, while leaving customization points so client applications
                 can add more validation business logic. They are:</para>
             <para>
-                <table frame="none" pgwide="1" orient="land">
+                <table frame="none" pgwide="1" orient="land" tabstyle="striped">
                     <title>KNS Events</title>
                     <tgroup cols="4">
                         <colspec colname="c1" colnum="1" colwidth="1.1*"/>
@@ -3248,7 +3279,7 @@ Example:
             application developer has to build JSP manually. The KNS provides a number of helper
             functions to do permission checks.</para>
         <para>
-            <table frame="none">
+            <table frame="none" tabstyle="striped">
                 <title>KNS Helper Functions for Permission Checks</title>
                 <tgroup cols="3">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -3396,7 +3427,7 @@ Example:
                 applications are far more likely to override one of those helper methods than
                 override <emphasis role="bold">getDocumentActions</emphasis> from scratch.</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Document Presentation Controller Methods</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
@@ -3536,7 +3567,7 @@ Example:
             <para>DocumentAuthorizer also contains a number of methods which are not subject to
                 document presentation controller input. These are:</para>
             <para>
-                <table frame="none">
+                <table frame="none" tabstyle="striped">
                     <title>Document Authorizer Methods</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>

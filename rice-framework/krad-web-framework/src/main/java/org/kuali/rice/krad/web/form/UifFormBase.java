@@ -101,6 +101,7 @@ public class UifFormBase implements ViewModel {
 
     protected List<Object> addedCollectionItems;
 
+    @SessionTransient
     protected MultipartFile attachmentFile;
 
     // navigation

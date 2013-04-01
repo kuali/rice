@@ -267,6 +267,14 @@ KradRequest.prototype = {
             writeHiddenToForm("clientViewState", jsonViewState);
         }
 
+        // check for file inputs and set encoding, this is handled for us with the ajax submits (using jqform)
+        var fileInputs = jQuery('input[type=file]:enabled[value!=""]', '#kualiForm');
+
+        var hasFileInputs = fileInputs.length > 0;
+        if (hasFileInputs) {
+            jQuery('#kualiForm').attr('enctype', 'multipart/form-data');
+        }
+
         // submit
         jQuery('#kualiForm').submit();
     },
@@ -308,9 +316,26 @@ KradRequest.prototype = {
                 else if (!request.disableBlocking) {
                     hideLoading(request.elementToBlock);
                 }
-            }
+            },
+            statusCode: {403: function () {
+                if (nonEmpty(request.elementToBlock) && request.elementToBlock.hasClass("uif-placeholder")) {
+                    request.elementToBlock.hide();
+                }
+                else if (!request.disableBlocking) {
+                    hideLoading(request.elementToBlock);
+                }
+
+                request.handleAjaxSessionTimeout();
+            }}
         };
 
         jQuery.extend(options, elementBlockingOptions);
+    },
+
+    handleAjaxSessionTimeout : function() {
+        timedOutRequest = this;
+
+        var listenerUrl = getConfigParam("kradUrl") + "/listener?viewId=Uif-AjaxTimeoutView";
+        showLightboxUrl(listenerUrl);
     }
 }

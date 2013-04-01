@@ -24,7 +24,7 @@
     </#if>
 
     <#if render>
-      <form id="kualiForm" action="${postUrl}" method="post" enctype="multipart/form-data" onsubmit="${onSubmitScript}">
+      <form id="kualiForm" action="${postUrl}" method="post" onsubmit="${onSubmitScript}">
           <a id="topOfForm"></a>
 
           <#nested/>

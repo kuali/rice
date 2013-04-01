@@ -32,6 +32,8 @@
                       <list>
                         <bean parent="Uif-Link" p:linkText="Client Side State Test View" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ClientSideState"/>
+                        <bean parent="Uif-Link" p:linkText="File Upload View" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/fileUploads?viewId=Lab-FileUploads"/>
                       </list>
                   </property>
               </bean>

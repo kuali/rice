@@ -48,7 +48,7 @@
   </bean>
 
   <bean id="Lab-ClientSideState-Page1" parent="Uif-Page" p:headerText="Page 1"
-        p:instructionalText="[color=red]View for testing maintaining of client side state[/color]">
+        p:instructionalText="View for testing maintaining of client side state">
     <property name="items">
       <list>
         <bean parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Section 1 Disclosure">

@@ -33,7 +33,7 @@ public class Disclosure extends WidgetBase {
 
     private int animationSpeed;
 
-    @ClientSideState
+    @ClientSideState(variableName = "open")
     private boolean defaultOpen;
 
     private boolean renderImage;

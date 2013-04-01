@@ -131,8 +131,8 @@
     </bean>
 
     <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
-          p:methodToCall="toggleInactiveRecordDisplay" p:actionLabel="show inactive"
-          p:additionalSubmitData="showInactiveRecords:true,reqComponentId:@{#component.context['collectionGroup'].id}">
+          p:methodToCall="refresh" p:actionLabel="show inactive" p:refreshId="@{#collectionGroup.id}"
+          p:preSubmitCall="setComponentState('@{#collectionGroup.id}','inactive', true);return true;">
       <property name="cssClasses">
         <list merge="true">
           <value>uif-showInactiveCollectionItemsButton</value>
@@ -141,8 +141,8 @@
     </bean>
 
     <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
-          p:methodToCall="toggleInactiveRecordDisplay" p:actionLabel="hide inactive"
-          p:additionalSubmitData="showInactiveRecords:false,reqComponentId:@{#component.context['collectionGroup'].id}">
+          p:methodToCall="refresh" p:actionLabel="hide inactive" p:refreshId="@{#collectionGroup.id}"
+          p:preSubmitCall="setComponentState('@{#collectionGroup.id}','inactive', false);return true;">
       <property name="cssClasses">
         <list merge="true">
           <value>uif-hideInactiveCollectionItemsButton</value>

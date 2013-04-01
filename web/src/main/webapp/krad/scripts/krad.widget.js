@@ -549,13 +549,13 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
                         disclosureContent.data("open", false);
                         disclosureContent.slideUp(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
-                        setComponentState(widgetId, 'defaultOpen', false);
+                        setComponentState(widgetId, 'open', false);
                     }, function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
                         disclosureContent.data("open", true);
                         disclosureContent.slideDown(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_col").replaceWith(expandImage);
-                        setComponentState(widgetId, 'defaultOpen', true);
+                        setComponentState(widgetId, 'open', true);
                     }
             );
         }
@@ -567,14 +567,14 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
                         disclosureContent.data("open", true);
                         disclosureContent.slideDown(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_col").replaceWith(expandImage);
-                        setComponentState(widgetId, 'defaultOpen', true);
+                        setComponentState(widgetId, 'open', true);
 
                     }, function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
                         disclosureContent.data("open", false);
                         disclosureContent.slideUp(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
-                        setComponentState(widgetId, 'defaultOpen', false);
+                        setComponentState(widgetId, 'open', false);
                     }
             );
         }

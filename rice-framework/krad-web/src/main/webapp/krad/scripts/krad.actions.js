@@ -91,6 +91,19 @@ function submitForm(methodToCall, additionalData, validate, ajaxSubmit, successC
 }
 
 /**
+ * Invoked after an Ajax call has timed out and the user has re-authenticated, we simply
+ * make the original request again after closing the login dialog
+ */
+function resubmitRequest() {
+    jQuery.fancybox.close();
+
+    if (timedOutRequest) {
+        timedOutRequest.send();
+        timedOutRequest = null;
+    }
+}
+
+/**
  * Runs client side validation on the entire form and returns the result (an alert is also given
  * if errors are encountered)
  */

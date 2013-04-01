@@ -51,6 +51,8 @@ var ajaxReturnHandlers = {};
 
 var gCurrentBubblePopupId;
 
+var timedOutRequest;
+
 //delay function
 var delay = (function () {
     var timer = 0;

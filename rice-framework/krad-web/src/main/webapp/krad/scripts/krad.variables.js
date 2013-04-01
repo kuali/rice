@@ -60,6 +60,7 @@ JavascriptKradVariables.prototype = {
      INFO_MESSAGE_ITEM_CLASS : "uif-infoMessageItem-field",
      INPUT_FIELD_CLASS : "uif-inputField",
      INPUT_FIELD_SELECTOR : "[data-role:'InputField']",
+     KRAD_URL : "kradUrl",
      KUALI_FORM : "kualiForm",
      MESSAGE_COUNT_CLASS : "uif-messageCount",
      MESSAGE_KEY_DIRTY_FIELDS : "message.dirtyFields",

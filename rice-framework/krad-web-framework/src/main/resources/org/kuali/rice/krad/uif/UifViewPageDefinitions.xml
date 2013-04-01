@@ -164,8 +164,22 @@
         </property>
       </bean>
     </property>
+    <property name="singlePageView" value="true"/>
     <property name="persistFormToSession" value="false"/>
     <property name="breadcrumbs.render" value="false"/>
+  </bean>
+
+  <bean id="Uif-AjaxTimeoutView" parent="Uif-AjaxTimeoutView-parentBean"/>
+  <bean id="Uif-AjaxTimeoutView-parentBean" abstract="true" parent="Uif-FormView">
+    <property name="page">
+      <bean parent="Uif-Page"/>
+    </property>
+    <property name="onLoadScript" value="parent.resubmitRequest();"/>
+    <property name="singlePageView" value="true"/>
+    <property name="persistFormToSession" value="false"/>
+    <property name="breadcrumbs.render" value="false"/>
+    <property name="applicationHeader.render" value="false"/>
+    <property name="applicationFooter.render" value="false"/>
   </bean>
 
   <bean id="Uif-Page" parent="Uif-Page-parentBean"/>

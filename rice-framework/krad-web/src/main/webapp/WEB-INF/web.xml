@@ -34,6 +34,11 @@
   ${monitoring.filter}
 
   <filter>
+  	<filter-name>ajaxSessionTimeoutFilter</filter-name>
+  	<filter-class>org.kuali.rice.krad.web.filter.AjaxSessionTimeoutFilter</filter-class>
+  </filter>
+
+  <filter>
     <filter-name>HideWebInfFilter</filter-name>
     <filter-class>org.kuali.rice.krad.web.filter.HideWebInfFilter</filter-class>
   </filter>
@@ -71,6 +76,11 @@
   </filter-mapping>
 
   <filter-mapping>
+    <filter-name>ajaxSessionTimeoutFilter</filter-name>
+    <servlet-name>krad</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
     <filter-name>BootstrapFilter</filter-name>
     <servlet-name>krad</servlet-name>
   </filter-mapping>
@@ -88,6 +98,11 @@
   <filter-mapping>
     <filter-name>encodingFilter</filter-name>
     <servlet-name>krad</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>ajaxSessionTimeoutFilter</filter-name>
+    <servlet-name>kradguest</servlet-name>
   </filter-mapping>
 
   <filter-mapping>

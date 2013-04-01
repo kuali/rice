@@ -107,16 +107,13 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 
         boolean shouldNotValidate = newMember.isRole();
 	    if ( kimTypeService != null && ObjectUtils.isNotNull( document.getKimType() ) && StringUtils.isNotBlank(document.getKimType().getServiceName()) ) {
-	        ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
-            Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(document.getKimType().getServiceName()));
-            if ( endpoint != null ) {
-                boolean versionOk = true;
-                String endpointVersion = endpoint.getServiceConfiguration().getServiceVersion();
-                if ( StringUtils.isNotBlank(endpointVersion) ) {
-                    versionOk = VersionHelper.compareVersion(endpointVersion, CoreConstants.Versions.VERSION_2_1_2) != -1;
-                }
+            VersionedService<RoleTypeService> versionedRoleTypeService = getVersionedRoleTypeService(document.getKimType());
+            if (versionedRoleTypeService != null) {
+                boolean versionOk = VersionHelper.compareVersion(versionedRoleTypeService.getVersion(), CoreConstants.Versions.VERSION_2_1_2)!=-1? true:false;
                 if(versionOk) {
-                    shouldNotValidate = ((RoleTypeService)kimTypeService).shouldValidateQualifiersForMemberType( MemberType.fromCode(newMember.getMemberTypeCode()));
+                    shouldNotValidate = versionedRoleTypeService.getService().shouldValidateQualifiersForMemberType( MemberType.fromCode(newMember.getMemberTypeCode()));
+                } else {
+                    shouldNotValidate = false;
                 }
             }
         }
@@ -152,5 +149,52 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 		}
 		return rulePassed;
 	}
+
+    private static class VersionedService<T> {
+
+        String version;
+        T service;
+
+        VersionedService(String version, T service) {
+            this.version = version;
+            this.service = service;
+        }
+
+        T getService() {
+            return this.service;
+        }
+
+        String getVersion() {
+            return this.version;
+        }
+
+    }
+
+    protected VersionedService<RoleTypeService> getVersionedRoleTypeService(KimType typeInfo) {
+        String serviceName = typeInfo.getServiceName();
+        if (serviceName != null) {
+            String version = "2.0.0"; // default version since the base services have been available since then
+            RoleTypeService roleTypeService = null;
+            try {
+
+                ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+                Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(serviceName));
+                if (endpoint != null) {
+                    version = endpoint.getServiceConfiguration().getServiceVersion();
+                }
+                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
+                if (service != null && service instanceof RoleTypeService) {
+                    roleTypeService = (RoleTypeService) service;
+                } else {
+                    roleTypeService = (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+                }
+            } catch (Exception ex) {
+                roleTypeService = (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+            }
+            return new VersionedService<RoleTypeService>(version, roleTypeService);
+        }
+        return null;
+    }
+
 
 }

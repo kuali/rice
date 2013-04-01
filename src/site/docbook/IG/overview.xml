@@ -53,7 +53,7 @@
     <section>
         <title>Software Distributions</title>
         <para>The Kuali Rice software is available through three different distributions:<table
-                frame="none">
+                frame="none" tabstyle="striped">
                 <title>Rice Software Distribution Types</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>

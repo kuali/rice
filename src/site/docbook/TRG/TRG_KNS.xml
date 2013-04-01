@@ -476,7 +476,7 @@
                 </table>
             </para>
         </section>
-        <section>
+        <section xml:id="SessionDocumentService">
             <title>The Session Document Service</title>
             <para>The SessionDocumentService, which was part of the default configuration for Rice before versions 2.1.4 for the 2.1 line 
                 and 2.2.2 for the 2.2 line, provided session failover in certain limited cases, but was disabled as part of <link xlink:href="https://jira.kuali.org/browse/KULRICE-9148">KULRICE-9148</link>. 

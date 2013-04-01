@@ -28,7 +28,7 @@
 		           classpathref="maven-ant-tasks.classpath" />
 		<property file="${user.home}/kuali-build.properties" />
 		<artifact:pom id="maven.project" file="pom.xml" />
-		<artifact:pom id="rice-web" file="web/pom.xml" />
+		<artifact:pom id="rice-web" file="rice-middleware/web/pom.xml" />
 		<property name="rice.environment" value="dev"/>
 		<property name="rice.app.code" value="kr"/>
 		<echo>The Kuali Rice version is ${maven.project.version}</echo>

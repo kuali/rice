@@ -62,6 +62,22 @@ delete from krew_doc_typ_t where doc_typ_nm='TravelRequest'
 /
 delete from krew_doc_typ_t where doc_typ_nm like 'Recipe%'
 /
+delete from krew_doc_typ_t where doc_typ_nm='OfficeOfAffirmativeAction'
+/
+delete from krew_doc_typ_t where doc_typ_nm='DFAC_OAA.WorkgroupTypeDoctype'
+/
+delete from krew_doc_typ_t where doc_typ_nm='OfferRequest'
+/
+delete from krew_doc_typ_t where doc_typ_nm='SearchStatus'
+/
+delete from krew_doc_typ_t where doc_typ_nm='VacancyNotice'
+/
+delete from krew_doc_typ_t where doc_typ_nm='WaiverRequest'
+/
+delete from krew_doc_typ_t where doc_typ_nm='LoadTest'
+/
+delete from krew_doc_typ_t where doc_typ_nm='InterviewRequest'
+/
 delete from krew_doc_typ_attr_t where DOC_TYP_ID not in (select doc_typ_id from KREW_DOC_TYP_T)
 /
 delete from krew_doc_typ_plcy_reln_t where DOC_TYP_ID not in (select doc_typ_id from KREW_DOC_TYP_T)
@@ -76,6 +92,7 @@ delete from krew_rte_node_cfg_parm_t where rte_node_id not in (select rte_node_i
 /
 delete from krew_rte_brch_proto_t where RTE_BRCH_PROTO_ID not in (select rte_brch_proto_id from krew_rte_node_t)
 /
+
 
 -- Rule Attributes
 
@@ -103,6 +120,38 @@ delete from krew_rule_attr_t where nm='XMLSearchableAttributeStdCurrency'
 /
 delete from krew_rule_attr_t where nm='XMLSearchableAttributeStdDateTime'
 /
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='DFAC.CampusAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='DFAC.CampusSearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='DFAC.SchoolAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='DFAC.SchoolSearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='DFAC.ViceChancellorforAcademicAffairsandDeanOfFacultiesAdHocNetworkIdRoleAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='DFAC.AffirmativeActionOfficerAdHocNetworkIdRoleAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='EDLDepartmentSearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='InitiatorAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='EDLOAASearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='EDLSchoolAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='DFAC_OAASearchStatusInformalOfferSearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='EDLSchoolSearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='EDLExpectedStartDateSearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='EDLSalaryGradeSearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='EDLTotalApplicantsSearchAttribute'
+/
+DELETE FROM KREW_RULE_ATTR_T WHERE NM ='EDLTotalAMFsReceievedSearchAttribute'
+/
 
 -- Rule Templates
 
@@ -124,6 +173,20 @@ delete from krew_rule_tmpl_t where nm='WorkflowDocument2Template'
 /
 delete from krew_rule_tmpl_t where nm='WorkflowDocument3Template'
 /
+delete from krew_rule_tmpl_t where nm='DFAC.AffirmativeActionOfficer.AdHoc'
+/
+delete from krew_rule_tmpl_t where nm='DFAC.ViceChancellorforAcademicAffairsandDeanOfFaculties.AdHoc'
+/
+delete from krew_rule_tmpl_t where nm='InitiatorRoleAcknowledgement'
+/
+delete from krew_rule_tmpl_t where nm='AffirmativeActionOfficer'
+/
+delete from krew_rule_tmpl_t where nm='OfficeOfAffirmativeAction-SchoolAcknowledgementRouting'
+/
+delete from krew_rule_tmpl_t where nm='ViceChancellorforAcademicAffairsandDeanOfFaculties'
+/
+delete from krew_rule_tmpl_t where nm='OfficeOfAffirmativeAction-SchoolRouting'
+/
 
 -- Rules
 
@@ -131,6 +194,8 @@ delete from krew_rule_t where rule_tmpl_id is not null and rule_tmpl_id not in (
 /
 delete from krew_rule_t where doc_typ_nm is not null and doc_typ_nm not in (select doc_typ_nm from krew_doc_typ_t)
 /
+delete from KREW_RULE_TMPL_ATTR_T where rule_tmpl_id is not null and rule_tmpl_id not in (select rule_tmpl_id from krew_rule_tmpl_t)
+
 
 -- EDL
 
@@ -139,6 +204,16 @@ delete from krew_edl_assctn_t
 delete from krew_edl_def_t
 /
 delete from krcr_style_t where nm='eDoc.Example1.Style'
+/
+delete from krcr_style_t where nm='InterviewRequestStyle'
+/
+delete from krcr_style_t where nm='OfferRequestStyle'
+/
+delete from krcr_style_t where nm='SearchStatusStyle'
+/
+delete from krcr_style_t where nm='VacancyNoticeStyle'
+/
+delete from krcr_style_t where nm='WaiverRequest_xsl'
 /
 
 -- User Options

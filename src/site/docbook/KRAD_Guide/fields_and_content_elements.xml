@@ -1509,7 +1509,7 @@ public class TravelAccount {
           states as options. In our model, the property expects the state code (two letter
           abbreviation). However, to help the user we want to display the full name for each state.
           Our options would then look like the following:</para>
-        <table frame="all">
+        <table frame="all" tabstyle="striped">
           <title>State Options Example</title>
           <tgroup cols="2">
             <colspec colname="c1" colnum="1" colwidth="1.0*"/>

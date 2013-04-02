@@ -129,7 +129,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/fancybox</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.css</exclude>
                     <exclude>**/*.js</exclude>
@@ -149,7 +148,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/jgrowl</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.css</exclude>
                     <exclude>**/*.js</exclude>
@@ -169,7 +167,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/jqueryUI/images</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.css</exclude>
                     <exclude>**/*.js</exclude>
@@ -189,7 +186,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/jstree</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.css</exclude>
                     <exclude>**/*.js</exclude>
@@ -209,7 +205,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/jstree</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.js</exclude>
                   </excludes>
@@ -228,7 +223,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/rice/datatables</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.css</exclude>
                     <exclude>**/*.js</exclude>
@@ -249,7 +243,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/rice/datatables/images</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.css</exclude>
                     <exclude>**/*.js</exclude>
@@ -269,7 +262,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/rice/spinner/images</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.css</exclude>
                     <exclude>**/*.js</exclude>
@@ -289,7 +281,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/tooltip</directory>
-                  <filtering>true</filtering>
                   <excludes>
                     <exclude>**/*.css</exclude>
                     <exclude>**/*.js</exclude>

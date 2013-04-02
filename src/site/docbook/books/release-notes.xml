@@ -27,8 +27,7 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para> Rice ${project.version} is a bug fix release consisting of one correction for a
-                version compatibility issue with Rice 2.2.2.</para>
+            <para> Rice ${project.version} is a bug fix release to correct a version compatibility issue with Rice 2.2.2.</para>
         </section>
         <section>
             <title>Download</title>
@@ -63,6 +62,10 @@
             <listitem>
                 <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9253"
                     >KULRICE-9253</link>] - Backwards compabitility broken for RoleTypeService</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9253"
+                    >KULRICE-9230</link>] - KNS should not use the KRAD SessionDocumentService</para>
             </listitem>
         </itemizedlist>           
         

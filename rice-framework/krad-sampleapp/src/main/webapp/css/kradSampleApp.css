@@ -951,6 +951,10 @@ div#Demo-RichMessages-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 360px;
 }
 
+div#Demo-Suggest-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
+    min-height: 300px;
+}
+
 div#Demo-TableLayoutDetails-View input[type="text"], div#Demo-TableLayoutTotaling-View input[type="text"],
 div#Demo-TableLayoutGrouping-View input[type="text"]{
     width: 10em;

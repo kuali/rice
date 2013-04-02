@@ -22,7 +22,7 @@
 
   <!-- StickyHeader demo -->
   <bean id="Demo-UnifiedHeader-View" parent="ComponentLibraryView">
-    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoStickyHeader.xml"/>
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoUnifiedHeader.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.view.View"/>
     <property name="docBookAnchor" value="d7339e4811"/>

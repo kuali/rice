@@ -417,6 +417,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RadioControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Select"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SelectControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Option List"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-OptionList-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Spinner"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SpinnerControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Text"
@@ -593,11 +595,11 @@
         <bean parent="Uif-Link" p:linkText="Rich Messages"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RichMessages-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Unified View Header"
-                      p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeader-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeader-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Sticky Header Options"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeader-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Sticky Footer Options"
-          p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooter-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooter-View&amp;methodToCall=start"/>
         <!--        <bean parent="Uif-Link" p:linkText="Incident Page"
         p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncidentPage-View&amp;methodToCall=start"/>-->
       </list>

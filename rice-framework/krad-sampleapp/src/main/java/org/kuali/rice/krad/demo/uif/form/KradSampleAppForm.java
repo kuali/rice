@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -115,6 +116,9 @@ public class KradSampleAppForm extends UifFormBase {
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
 
     private String fakeTotal = "123(server value)";
+
+    //preset fields
+    private List<String> optionListSelection = Arrays.asList("2", "4");
 
     public KradSampleAppForm() {
         super();
@@ -901,5 +905,13 @@ public class KradSampleAppForm extends UifFormBase {
      */
     public void setTree2(Tree<UITestObject, String> tree2) {
         this.tree2 = tree2;
+    }
+
+    public List<String> getOptionListSelection() {
+        return optionListSelection;
+    }
+
+    public void setOptionListSelection(List<String> optionListSelection) {
+        this.optionListSelection = optionListSelection;
     }
 }

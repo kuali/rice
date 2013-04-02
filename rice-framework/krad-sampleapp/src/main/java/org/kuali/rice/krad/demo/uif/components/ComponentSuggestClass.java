@@ -66,6 +66,29 @@ public class ComponentSuggestClass {
         }
     }
 
+    public static class TestViewObject extends TestLabelValue{
+
+        private String id;
+
+        public TestViewObject(String value, String id){
+            super(value, value);
+            this.id = id;
+        }
+
+        public TestViewObject(String value, String label, String id) {
+            super(value, label);
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+    }
+
     public static List<String> getLanguages(String term) {
         List<String> matchingLanguages = new ArrayList<String>();
 
@@ -109,6 +132,18 @@ public class ComponentSuggestClass {
         options.add(new TestSuggestObject("1", "jhbon", "Bohan, Jack"));
         options.add(new TestSuggestObject("2", "jmcross", "Cross, Jeff"));
         options.add(new TestSuggestObject("3", "jomot", "Mot, Joe"));
+
+        return options;
+    }
+
+    public static List<TestViewObject> getViewOptions() {
+        List<TestViewObject> options = new ArrayList<TestViewObject>();
+
+        options.add(new TestViewObject("Input Field", "Demo-InputField-View"));
+        options.add(new TestViewObject("Suggest", "Demo-Suggest-View"));
+        options.add(new TestViewObject("Select Control", "Demo-SelectControl-View"));
+        options.add(new TestViewObject("TextControl","Demo-TextControl-View"));
+        options.add(new TestViewObject("Sticky Header","Demo-StickyHeader-View"));
 
         return options;
     }

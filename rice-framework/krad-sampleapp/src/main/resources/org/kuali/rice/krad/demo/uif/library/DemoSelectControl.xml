@@ -31,6 +31,7 @@
         <ref bean="Demo-SelectControl-Example1"/>
         <ref bean="Demo-SelectControl-Example2"/>
         <ref bean="Demo-SelectControl-Example3"/>
+        <ref bean="Demo-SelectControl-Example4"/>
       </list>
     </property>
   </bean>
@@ -68,6 +69,7 @@
       </list>
     </property>
   </bean>
+  <!-- ex:Demo-SelectControl-Example2 start-->
   <util:list id="test-options">
     <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Select 1"/>
     <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Select 2"/>
@@ -75,8 +77,9 @@
     <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select 4"/>
     <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select 5"/>
   </util:list>
+  <!-- ex:Demo-SelectControl-Example2 end-->
 
-  <!-- SedlectControl with keyvalue set-->
+  <!-- SelectControl with keyvalue set-->
   <bean id="Demo-SelectControl-Example3" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
@@ -91,6 +94,37 @@
           </property>
         </bean>
         <!-- ex:Demo-SelectControl-Example3 end-->
+
+      </list>
+    </property>
+  </bean>
+
+  <!-- Nav select -->
+  <bean id="Demo-SelectControl-Example4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+
+          <!-- ex:Demo-SelectControl-Example4 start-->
+        <bean parent="Uif-InputField" p:label='Dropdown Navigation' p:instructionalText="Navigate on dropdown selection"
+              p:width="auto">
+          <property name="control">
+            <bean parent="Uif-DropdownControl">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyValueLocation" p:key="1" p:value="" p:location.href=""/>
+                  <bean parent="Uif-KeyValueLocation" p:key="2" p:value="Kuali.org"
+                        p:location.href="http://www.kuali.org"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="3" p:value="Jira"
+                        p:location.href="https://jira.kuali.org"/>
+                  <bean parent="Uif-KeyValueLocation" p:key="4" p:value="InputField Demo"
+                        p:location.viewId="Demo-InputField-View"
+                        p:location.controllerMapping="/kradsampleapp"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-SelectControl-Example4 end-->
 
       </list>
     </property>

@@ -446,12 +446,17 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      *      java.lang.Object)
      */
     @Override
-    protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        super.processAfterAddLine(view, collectionGroup, model, addLine);
+    protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
+            boolean isValidLine) {
+        super.processAfterAddLine(view, collectionGroup, model, addLine, isValidLine);
 
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients
         if (model instanceof MaintenanceDocumentForm
-                && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction()) && !(addLine instanceof Note) && !(addLine instanceof AdHocRoutePerson) && !(addLine instanceof AdHocRouteWorkgroup)) {
+                && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(
+                ((MaintenanceDocumentForm) model).getMaintenanceAction())
+                && !(addLine instanceof Note)
+                && !(addLine instanceof AdHocRoutePerson)
+                && !(addLine instanceof AdHocRouteWorkgroup)) {
             MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
@@ -459,20 +464,18 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             //KULRICE-7970 support multiple level objects
             String bindingPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix();
             String propertyPath = collectionGroup.getPropertyName();
-            if(bindingPrefix!=""&&bindingPrefix!= null)     {
+            if (bindingPrefix != "" && bindingPrefix != null) {
                 propertyPath = bindingPrefix + "." + propertyPath;
             }
 
-            Collection<Object> oldCollection = ObjectPropertyUtils
-                    .getPropertyValue(document.getOldMaintainableObject().getDataObject(),
-                            propertyPath);
-
+            Collection<Object> oldCollection = ObjectPropertyUtils.getPropertyValue(
+                    document.getOldMaintainableObject().getDataObject(), propertyPath);
 
             try {
                 Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();
                 //Add a blank line to the top of the collection
-                if(oldCollection instanceof List){
-                   ((List) oldCollection).add(0,blankLine);
+                if (oldCollection instanceof List) {
+                    ((List) oldCollection).add(0, blankLine);
                 } else {
                     oldCollection.add(blankLine);
                 }

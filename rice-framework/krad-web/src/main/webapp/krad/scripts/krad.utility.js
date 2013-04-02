@@ -2230,7 +2230,7 @@ function initStickyContent(currentScroll){
 
         //this means there is inner non-sticky content in the header
         if(thisOffset.top > topOffset){
-            margin = margin + (prevHeight);
+            margin = margin + totalHeight;
             innerNonStickyCount++;
             topOffset = thisOffset.top;
         }
@@ -2338,10 +2338,14 @@ function initStickyFooterContent(){
         jQuery(this).attr("style", "position:fixed; left: 0; bottom: " + bottomOffset + "px;");
         bottomOffset = bottomOffset + height;
     });
-
-    //margin bottom is equal to the total height of all footers
-    jQuery("#Uif-ViewContentWrapper").css("marginBottom", bottomOffset + "px");
     currentFooterHeight = bottomOffset;
+
+    var contentWindowDiff = jQuery(window).height()-jQuery("#Uif-Application").height();
+    if (bottomOffset > contentWindowDiff){
+        jQuery("#Uif-Application").css("marginBottom", bottomOffset + "px");
+    }else{
+        jQuery("#Uif-Application").css("marginBottom", contentWindowDiff + "px");
+    }
 }
 
 /**
@@ -2361,17 +2365,20 @@ function handleStickyFooterContent(){
     var windowHeight = jQuery(window).height();
     var scrollTop = jQuery(window).scrollTop();
 
-    //reposition elements when the scroll exceeds the footer's top (and footer content exists)
-    if (windowHeight + scrollTop >= appFooterOffset.top && applicationFooter.height() > 0){
+   //reposition elements when the scroll exceeds the footer's top (and footer content exists)
+    if (windowHeight + scrollTop >= appFooterOffset.top && scrollTop != 0 && applicationFooter.height() > 0){
         var bottomOffset = (windowHeight + scrollTop) - appFooterOffset.top;
+
         jQuery(stickyFooterContent.get().reverse()).each(function(){
             var height = jQuery(this).outerHeight();
             jQuery(this).attr("style", "position:fixed; left: 0; bottom: " + bottomOffset + "px;");
             bottomOffset = bottomOffset + height;
         });
         currentFooterHeight = bottomOffset;
+
     }
     else{
         initStickyFooterContent();
     }
+
 }

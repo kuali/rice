@@ -561,6 +561,7 @@ function setupPage(validate) {
     //reinitialize sticky footer content because page footer can be sticky
     stickyFooterContent = jQuery("[data-stickyFooter='true']");
     initStickyFooterContent();
+    handleStickyFooterContent();
     initStickyContent();
 
     //Reset summary state before processing each field - summaries are shown if server messages

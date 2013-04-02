@@ -131,6 +131,9 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDataField.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSuggest.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionInactiveFilter.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoStickyHeader.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoStickyFooter.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoUnifiedHeader.xml</value>
         <value>classpath:org/kuali/rice/krad/labs</value>
       </list>
     </property>
@@ -216,6 +219,9 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDataFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSuggestResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionInactiveFilterResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoStickyHeaderResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoStickyFooterResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoUnifiedHeaderResources</value>
       </list>
     </property>
   </bean>

@@ -592,6 +592,12 @@
       <list>
         <bean parent="Uif-Link" p:linkText="Rich Messages"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RichMessages-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Unified View Header"
+                      p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeader-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Sticky Header Options"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeader-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Sticky Footer Options"
+          p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooter-View&amp;methodToCall=start"/>
         <!--        <bean parent="Uif-Link" p:linkText="Incident Page"
         p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncidentPage-View&amp;methodToCall=start"/>-->
       </list>

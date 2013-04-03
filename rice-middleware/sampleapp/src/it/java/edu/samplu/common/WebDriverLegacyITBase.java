@@ -2200,195 +2200,62 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertFocusTypeBlurValid("field52", "555-111-1111");
 
         // TODO finish updating to assertFocusTypeBlurError assertFocusTypeBlurValid https://jira.kuali.org/browse/KULRICE-9255
-        fireEvent("field53", "focus");
-        waitAndTypeByName("field53", "1ClassName.java");
-        fireEvent("field53", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field53", "class").matches(REGEX_ERROR));
+        assertFocusTypeBlurError("field53", "1ClassName.java");
+        assertFocusTypeBlurValid("field53", "ClassName.java");
 
-        fireEvent("field53", "focus");
-        waitAndTypeByName("field53", "ClassName.java");
-        fireEvent("field53", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field53", "class").matches(REGEX_VALID));
+        assertFocusTypeBlurError("field54", "aaaaa");
+        assertFocusTypeBlurValid("field54", "aaaaa@kuali.org");
 
-        fireEvent("field54", "focus");
-        waitAndTypeByName("field54", "aaaaa");
-        fireEvent("field54", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field54", "class").matches(REGEX_ERROR));
+        assertFocusTypeBlurError("field84", "aaaaa");
+        assertFocusTypeBlurValid("field84", "http://www.kuali.org");
+        
+        assertFocusTypeBlurError("field55", "023512");
+        assertFocusTypeBlurValid("field55", "022812");
 
-        fireEvent("field54", "focus");
-        waitAndTypeByName("field54", "aaaaa@kuali.org");
-        fireEvent("field54", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field54", "class").matches(REGEX_VALID));
+        assertFocusTypeBlurError("field75", "02/35/12");
+        assertFocusTypeBlurValid("field75", "02/28/12");
+        
+        assertFocusTypeBlurError("field82", "13:22");
+        assertFocusTypeBlurValid("field82", "02:33");
 
-        fireEvent("field84", "focus");
-        waitAndTypeByName("field84", "aaaaa");
-        fireEvent("field84", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field84", "class").matches(REGEX_ERROR));
+        assertFocusTypeBlurError("field83", "25:22");
+        assertFocusTypeBlurValid("field83", "14:33");
+        
+        assertFocusTypeBlurError("field57", "0");
+        assertFocusTypeBlurValid("field57", "2020");
+        
+        assertFocusTypeBlurError("field58", "13");
+        assertFocusTypeBlurValid("field58", "12");
+        
+        assertFocusTypeBlurError("field61", "5555-444");
+        assertFocusTypeBlurValid("field61", "55555-4444");
+        
+        assertFocusTypeBlurError("field62", "aa5bb6_a");
+        assertFocusTypeBlurValid("field62", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890");
+        
+        assertFocusTypeBlurError("field63", "fff555$");
+        assertFocusTypeBlurValid("field63", "aa22 _/");
+        
+        assertFocusTypeBlurError("field64", "AABB55");
+        assertFocusTypeBlurValid("field64", "ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z");
+        
+        assertFocusTypeBlurError("field76", "AA~BB%");
+        assertFocusTypeBlurValid("field76", "abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?");
+        
+        assertFocusTypeBlurError("field65", "sdfs$#$# dsffs");
+        assertFocusTypeBlurValid("field65", "sdfs$#$#sffs");
+        
+        assertFocusTypeBlurError("field66", "abcABCD");
+        assertFocusTypeBlurValid("field66", "ABCabc");
 
-        fireEvent("field84", "focus");
-        waitAndTypeByName("field84", "http://www.kuali.org");
-        fireEvent("field84", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field84", "class").matches(REGEX_VALID));
+        assertFocusTypeBlurError("field67", "(111)B-(222)A");
+        assertFocusTypeBlurValid("field67", "(12345)-(67890)");
+        
+        assertFocusTypeBlurError("field68", "A.66");
+        assertFocusTypeBlurValid("field68", "a.4");
 
-        fireEvent("field55", "focus");
-        waitAndTypeByName("field55", "023512");
-        fireEvent("field55", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field55", "class").matches(REGEX_ERROR));
-
-        fireEvent("field55", "focus");
-        waitAndTypeByName("field55", "022812");
-        fireEvent("field55", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field55", "class").matches(REGEX_VALID));
-
-        fireEvent("field75", "focus");
-        waitAndTypeByName("field75", "02/35/12");
-        fireEvent("field75", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field75", "class").matches(REGEX_ERROR));
-
-        fireEvent("field75", "focus");
-        waitAndTypeByName("field75", "02/28/12");
-        fireEvent("field75", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field75", "class").matches(REGEX_VALID));
-
-        fireEvent("field82", "focus");
-        waitAndTypeByName("field82", "13:22");
-        fireEvent("field82", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field82", "class").matches(REGEX_ERROR));
-
-        fireEvent("field82", "focus");
-        waitAndTypeByName("field82", "02:33");
-        fireEvent("field82", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field82", "class").matches(REGEX_VALID));
-
-        fireEvent("field83", "focus");
-        waitAndTypeByName("field83", "25:22");
-        fireEvent("field83", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field83", "class").matches(REGEX_ERROR));
-
-        fireEvent("field83", "focus");
-        waitAndTypeByName("field83", "14:33");
-        fireEvent("field83", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field83", "class").matches(REGEX_VALID));
-
-        fireEvent("field57", "focus");
-        waitAndTypeByName("field57", "0");
-        fireEvent("field57", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field57", "class").matches(REGEX_ERROR));
-
-        fireEvent("field57", "focus");
-        waitAndTypeByName("field57", "2020");
-        fireEvent("field57", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field57", "class").matches(REGEX_VALID));
-
-        fireEvent("field58", "focus");
-        waitAndTypeByName("field58", "13");
-        fireEvent("field58", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field58", "class").matches(REGEX_ERROR));
-
-        fireEvent("field58", "focus");
-        waitAndTypeByName("field58", "12");
-        fireEvent("field58", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field58", "class").matches(REGEX_VALID));
-
-        fireEvent("field61", "focus");
-        waitAndTypeByName("field61", "5555-444");
-        fireEvent("field61", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field61", "class").matches(REGEX_ERROR));
-
-        fireEvent("field61", "focus");
-        waitAndTypeByName("field61", "55555-4444");
-        fireEvent("field61", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field61", "class").matches(REGEX_VALID));
-
-        fireEvent("field62", "focus");
-        waitAndTypeByName("field62", "aa5bb6_a");
-        fireEvent("field62", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field62", "class").matches(REGEX_ERROR));
-
-        fireEvent("field62", "focus");
-        waitAndTypeByName("field62", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890");
-        fireEvent("field62", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field62", "class").matches(REGEX_VALID));
-
-        fireEvent("field63", "focus");
-        waitAndTypeByName("field63", "fff555$");
-        fireEvent("field63", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field63", "class").matches(REGEX_ERROR));
-
-        fireEvent("field63", "focus");
-        waitAndTypeByName("field63", "aa22 _/");
-        fireEvent("field63", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field63", "class").matches(REGEX_VALID));
-
-        fireEvent("field64", "focus");
-        waitAndTypeByName("field64", "AABB55");
-        fireEvent("field64", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field64", "class").matches(REGEX_ERROR));
-
-        fireEvent("field64", "focus");
-        waitAndTypeByName("field64", "ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z");
-        fireEvent("field64", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field64", "class").matches(REGEX_VALID));
-
-        fireEvent("field76", "focus");
-        waitAndTypeByName("field76", "AA~BB%");
-        fireEvent("field76", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field76", "class").matches(REGEX_ERROR));
-
-        fireEvent("field76", "focus");
-        waitAndTypeByName("field76", "abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?");
-        fireEvent("field76", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field76", "class").matches(REGEX_VALID));
-
-        fireEvent("field65", "focus");
-        waitAndTypeByName("field65", "sdfs$#$# dsffs");
-        fireEvent("field65", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field65", "class").matches(REGEX_ERROR));
-
-        fireEvent("field65", "focus");
-        waitAndTypeByName("field65", "sdfs$#$#sffs");
-        fireEvent("field65", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field65", "class").matches(REGEX_VALID));
-
-        fireEvent("field66", "focus");
-        waitAndTypeByName("field66", "abcABCD");
-        fireEvent("field66", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field66", "class").matches(REGEX_ERROR));
-
-        fireEvent("field66", "focus");
-        waitAndTypeByName("field66", "ABCabc");
-        fireEvent("field66", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field66", "class").matches(REGEX_VALID));
-
-        fireEvent("field67", "focus");
-        waitAndTypeByName("field67", "(111)B-(222)A");
-        fireEvent("field67", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field67", "class").matches(REGEX_ERROR));
-
-        fireEvent("field67", "focus");
-        waitAndTypeByName("field67", "(12345)-(67890)");
-        fireEvent("field67", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field67", "class").matches(REGEX_VALID));
-
-        fireEvent("field68", "focus");
-        waitAndTypeByName("field68", "A.66");
-        fireEvent("field68", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field68", "class").matches(REGEX_ERROR));
-
-        fireEvent("field68", "focus");
-        waitAndTypeByName("field68", "a.4");
-        fireEvent("field68", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field68", "class").matches(REGEX_VALID));
-
-        fireEvent("field56", "focus");
-        waitAndTypeByName("field56", "2020-06-02");
-        fireEvent("field56", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field56", "class").matches(REGEX_ERROR));
-
-        fireEvent("field56", "focus");
-        waitAndTypeByName("field56", "2020-06-02 03:30:30.22");
-        fireEvent("field56", "blur");
-        SeleneseTestBase.assertTrue(getAttributeByName("field56", "class").matches(REGEX_VALID));
+        assertFocusTypeBlurError("field56", "2020-06-02");
+        assertFocusTypeBlurValid("field56", "2020-06-02 03:30:30.22");
         passed();
     }
 

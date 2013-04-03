@@ -137,6 +137,10 @@ public class DataDictionary {
         for (String namespaceCode : moduleLoadOrder) {
             List<String> moduleDictionaryLocations = moduleDictionaryFiles.get(namespaceCode);
 
+            if (moduleDictionaryLocations == null) {
+               continue;
+            }
+
             XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(beans);
 
             String configFileLocationsArray[] = new String[moduleDictionaryLocations.size()];

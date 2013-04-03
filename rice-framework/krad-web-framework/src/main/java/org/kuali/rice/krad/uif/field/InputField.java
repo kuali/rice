@@ -261,6 +261,14 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             return;
         }
 
+        if (uppercaseValue) {
+            Object currentPropertyValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
+            if (currentPropertyValue instanceof String) {
+                String uppercasedValue = ((String) currentPropertyValue).toUpperCase();
+                ObjectPropertyUtils.setPropertyValue(model, getBindingInfo().getBindingPath(), uppercasedValue);
+            }
+        }
+
         // adjust paths on PrerequisiteConstraint property names
         adjustPrerequisiteConstraintBinding(dependencyConstraints);
 

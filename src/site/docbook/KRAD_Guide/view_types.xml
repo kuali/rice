@@ -690,22 +690,18 @@
       <title>
         <emphasis role="bold">Documents and Document Types</emphasis>
       </title>
-      <para>Any application content which can be routed among users is considered a
-        "document".  KEW associates each document with a header and with content.  Content
-        is encrypted information about the document in an XML format.  The exact vocabulary
-        and contents of that XML is entirely up to the application, though KRAD provides
-        some ways generate that XML automatically.  A document's header gives the document a
-        unique identification number (the "document number" or "document header ID") and
-        associates the document with a document type.  Every document has to be associated
-        with a document type and that document type provides routing information and KEW
-        configuration for all documents of that type.
-      </para>
-      <para>KEW exports document types through the Document Type lookup as XML and can read in
-        XML configuration for document types in the same vocabulary through the legendary
-        "ingester".  All of this means that most developers find it easiest to understand a
-        document through its XML representation.  Here's an example from KFS: the Vendor
-        maintenance document.
-      </para>
+      <para>Any application content which can be routed among users is considered a "document".  KEW
+        associates each document with a header and with content.  Content is encrypted information
+        about the document in an XML format.  The exact vocabulary and contents of that XML is
+        entirely up to the application, though KRAD provides some ways to generate that XML
+        automatically.  A document's header gives the document a unique identification number (the
+        "document number" or "document header ID") and associates the document with a document
+        type.  Every document has to be associated with a document type, and that document type
+        provides routing information and KEW configuration for all documents of that type. </para>
+      <para>KEW exports document types through the Document Type lookup as XML, and can read in XML
+        configuration for document types in the same vocabulary through the legendary "ingester".
+         All of this means that most developers find it easiest to understand a document through its
+        XML representation.  Here's an example from KFS: the Vendor maintenance document. </para>
       <programlisting>
         &lt;?xml version="1.0" encoding="UTF-8"?&gt;
         &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -759,34 +755,30 @@
         major parts: information about the document type at the top; the route paths next;
         and finally, the route nodes.
       </para>
-      <para>The document information is fairly straight forward.  Every document type has a
-        name.  (KFS makes all of its document names four characters long.  Other foundation
-        projects eschewed that practice.)  Every document can have a description and if the
-        document is a transactional document, then the document should have a label
-        associated with it - the page will blow up otherwise.  A help definition can be
-        associated with the whole of the document, which is useful if the help content for
-        the application is at document-level granularity; KRAD will provide finer grained
-        help options than that but a overall discussion of the document may still be
-        helpful.  Naturally, a new document type would be set to &lt;active&gt; and it's
-        good practice to use routingVersion of 2; routingVersion of 1 is far legacy
-        concept.
-      </para>
-      <para>A special note about a document type's parent.  PVEN's parent document type is
-        "VEND", KFS's Vendor Module Complex Maintenance Document.  Having a parent means
-        that the document type inherits all of what the parent document type defines -
-        unless the document type defines the value itself.  For instance, if PVEN had not
-        defined the routePaths and routeNodes sections, then it would have inherited that
-        routing trail and notes from the VEND document type.  There's a number of other
-        document type elements - some of which will be covered later - which PVEN is
-        inheriting from either VEND or one of its parent document types.  Applications which
-        attempt to use KIM based routing are highly recommended to place all of their
-        documents into a single document hierarchy, one with a single root, parentless
-        document type.  This is - as will be covered in more detail in the section on
-        responsibilities - responsibilities follow document type hierarchies and having a
-        single hierarchy means that nodes reused among several different documents can have
-        KIM responsibilities created at a higher level at the hierarchy and shared among all
-        descendants.
-      </para>
+      <para>The document information is fairly straight forward.  Every document type has a name. 
+        (KFS makes all of its document names four characters long.  Other foundation projects
+        eschewed that practice.)  Every document can have a description and if the document is a
+        transactional document, then the document should have a label associated with it - the page
+        will blow up otherwise.  A help definition can be associated with the whole of the document,
+        which is useful if the help content for the application is at document-level granularity;
+        KRAD will provide finer grained help options than that but an overall discussion of the
+        document may still be helpful.  Naturally, a new document type would be set to
+        &lt;active&gt; and it's good practice to use routingVersion of 2; routingVersion of 1 is far
+        legacy concept. </para>
+      <para>A special note about a document type's parent.  PVEN's parent document type is "VEND",
+        KFS's Vendor Module Complex Maintenance Document.  Having a parent means that the document
+        type inherits all of what the parent document type defines - unless the document type
+        defines the value itself.  For instance, if PVEN had not defined the routePaths and
+        routeNodes sections, then it would have inherited that routing trail and notes from the VEND
+        document type.  There's a number of other document type elements - some of which will be
+        covered later - which PVEN is inheriting from either VEND or one of its parent document
+        types.  Applications which attempt to use KIM based routing are highly recommended to place
+        all of their documents into a single document hierarchy: one with a single root, parentless
+        document type.  That is (as will be covered in more detail in the section on
+        responsibilities) responsibilities follow document type hierarchies, and having a single
+        hierarchy means that nodes reused among several different documents can have KIM
+        responsibilities created at a higher level at the hierarchy and shared among all
+        descendants. </para>
       <para>When thinking about route paths and route nodes, it might be useful to think of a
         board game.  Most board games have a path that player's pieces must go through in a
         specific order.  Route paths work precisely like that: they describe the paths (it's
@@ -801,8 +793,7 @@
         functionality.
       </para>
       <para>routePaths defines several different kinds of nodes.  In the PVEN example, we see
-        several different types: start; split, branch, and join; role; and simple.
-      </para>
+        several different types: start, split, branch, join, role, and simple. </para>
       <para>Every document needs to start at a "start" node.  The document is not routed to
         anyone at this point; it's simply beginning its journey of - if all goes well -
         approval.  Having a common name for all start nodes in each document type in a given
@@ -944,25 +935,22 @@
         attribute.  Trust the author on this one - the use of this attribute is far beyond
         the scope of this primer.
       </para>
-      <para>A responsibility also has a unique system generated id and a unique namespace and
-        name combination, as well as an option (but often useful) description.
-      </para>
-      <para>On KIM's Role Identity Management document, responsibilities can be associated
-        with roles.    There's an extra twist to assigning a responsibility to a role: the
-        actions described for the role must be describe as well.  This includes the approve
-        versus acknowledge versus FYI choice and a couple others.  There's a choice of
-        whether the first in the role to act on the document will act for the entire role,
-        or whether every member of the role must make that action on the document.  There's
-        a priority choice which can be left blank but which will be respected - lower
-        numbers will get higher priorities and roles with those lower priorities will get a
-        chance to act on the document before it enters the lower priority role members'
-        action lists.  Finally, there's the choice of whether to force the action or not. 
-        If a user has already approved a document, and that user is a member of the role
-        where the document is now routing, does the user need to look at the document and
-        approve again?  If force required is checked, then yes: someone in the role needs to
-        approve again.  If force required is not checked, then the user's previous approval
-        will count as approval for the current responsibility.
-      </para>
+      <para>A responsibility also has a unique system generated id and a unique namespace and name
+        combination, as well as an optional (but often useful) description. </para>
+      <para>On KIM's Role Identity Management document, responsibilities can be associated with
+        roles.    There's an extra twist to assigning a responsibility to a role: the actions
+        described for the role must be described as well.  This includes the approve versus
+        acknowledge versus FYI choice and a couple others.  There's a choice of whether the first in
+        the role to act on the document will act for the entire role, or whether every member of the
+        role must make that action on the document.  There's a priority choice which can be left
+        blank but which will be respected - lower numbers will get higher priorities and roles with
+        those lower priorities will get a chance to act on the document before it enters the lower
+        priority role members' action lists.  Finally, there's the choice of whether to force the
+        action or not.  If a user has already approved a document, and that user is a member of the
+        role where the document is now routing, does the user need to look at the document and
+        approve again?  If force required is checked, then yes: someone in the role needs to approve
+        again.  If force required is not checked, then the user's previous approval will count as
+        approval for the current responsibility. </para>
       <para>Responsibilities are pretty simple to set up then - but there's one lingering
         question.  The power of roles is that members within a role can be differentiated
         between each other.  How do responsibilities differentiate between members of the
@@ -1115,7 +1103,7 @@
         &lt;qualifier name="chart"&gt;
         &lt;xPathExpression&gt;./chart&lt;/xPathExpression&gt;
         &lt;/qualifier&gt;
-                        &lt;qualifier name="org"&gt;
+        &lt;qualifier name="org"&gt;
         &lt;xPathExpression&gt;./org&lt;/xPathExpression&gt;
         &lt;/qualifier&gt;
         &lt;/resolverConfig&gt;

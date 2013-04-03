@@ -1312,7 +1312,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
-        System.out.println("-----------------------------------Parameter Edited-------------------------");
+        System.out.println("-----------------------------------Parameter Copied-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
@@ -1344,7 +1344,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectTopFrame();
-        System.out.println("-----------------------------------Parameter Type Edited-------------------------");
+        System.out.println("-----------------------------------Parameter Type Copied-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
@@ -1765,15 +1765,19 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertTextPresent("ancel");
     }
 
-    protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode) throws Exception {
-        waitAndTypeByName("name", parameterType);
+    protected void performParameterInquiry(String parameterField) throws Exception {
+        waitAndTypeByName("name", parameterField);
         waitAndClickSearch();
-        isElementPresentByLinkText(parameterType);
-        waitAndClickByLinkText(parameterType);
+        isElementPresentByLinkText(parameterField);
+        waitAndClickByLinkText(parameterField);
         waitForPageToLoad();
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
+    }
+
+    protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode) throws Exception {
+        performParameterInquiry(parameterType);
         SeleneseTestBase.assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
         SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickCloseWindow();
@@ -1787,14 +1791,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected List<String> testLookUpParameter(String docId, String parameterName) throws Exception {
-        waitAndTypeByName("name", parameterName);
-        waitAndClickSearch();
-        isElementPresentByLinkText(parameterName);
-        waitAndClickByLinkText(parameterName);
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");
-        Thread.sleep(2000);
+        performParameterInquiry(parameterName);
         SeleneseTestBase.assertEquals(parameterName, getTextByXpath(
                 "//div[@class='tab-container']/table//span[@id='name.div']").trim());
         SeleneseTestBase.assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']")
@@ -1871,36 +1868,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         passed();
     }
 
-
-    protected List<String> testVerifyCopyParameter(String docId, String parameterName) throws Exception {
-        waitAndTypeByName("name", parameterName);
-        waitAndClickSearch();
-        isElementPresentByLinkText(parameterName);
-        waitAndClickByLinkText(parameterName);
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");
-        Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        SeleneseTestBase.assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
-        waitAndClickCloseWindow();
-        switchToWindow("null");
-        List<String> params = new ArrayList<String>();
-        params.add(docId);
-        params.add(parameterName);
-        
-        return params;
-    }
-
-    protected List<String> testVerifyEditedParameter(String docId, String parameterName) throws Exception {
-        waitAndTypeByName("name", parameterName);
-        waitAndClickSearch();
-        isElementPresentByLinkText(parameterName);
-        waitAndClickByLinkText(parameterName);
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");
-        Thread.sleep(2000);
+    protected List<String> testVerifyModifiedParameter(String docId, String parameterName) throws Exception {
+        performParameterInquiry(parameterName);
         SeleneseTestBase.assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
         SeleneseTestBase.assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
         waitAndClickCloseWindow();
@@ -1909,42 +1878,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         params.add(docId);
         params.add(parameterName);
 
-        return params;
-    }
-
-    protected List<String> testVerifyEditedParameterType(String docId, String parameterType, String parameterCode) throws Exception
-    {
-        waitAndTypeByName("name", parameterType);
-        waitAndClickSearch();
-        isElementPresentByLinkText(parameterType);
-        waitAndClickByLinkText(parameterType);
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");
-        Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(parameterCode, getTextByXpath(
-                "//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
-        waitAndClickCloseWindow();
-        switchToWindow("null");
-        List<String> params = new ArrayList<String>();
-        params.add(docId);
-        params.add(parameterType);
-        params.add(parameterCode);
-        
         return params;
     }
 
     protected List<String> testVerifyCopyParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
-        waitAndTypeByName("name", parameterType);
-        waitAndClickSearch();
-        isElementPresentByLinkText(parameterType);
-        waitAndClickByLinkText(parameterType);
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        switchToWindow("Kuali :: Inquiry");
-        Thread.sleep(2000);
+        performParameterInquiry(parameterType);
         SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickCloseWindow();
         switchToWindow("null");
@@ -2419,14 +2358,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Thread.sleep(3000);
 
         //Check if row has been added really or not
-        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
-        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
-        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
-        SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field4", "value"));
-        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field1", "value"));
-        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field2", "value"));
-        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field3", "value"));
-        SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field4", "value"));
+        testIfRowHasBeenAdded();
 
         //Check for the added if delete is present or not
         SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
@@ -2444,6 +2376,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Thread.sleep(3000);
         
         //Check if row has been added really or not
+        testIfRowHasBeenAdded();
+
+        //Check for the added if delete is present or not
+        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        //        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
+        passed();
+    }
+
+    protected void testIfRowHasBeenAdded() throws Exception {
+        //Check if row has been added really or not
         SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field1", "value"));
         SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field2", "value"));
         SeleneseTestBase.assertEquals("", getAttributeByName("newCollectionLines['list1'].field3", "value"));
@@ -2452,11 +2394,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field2", "value"));
         SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field3", "value"));
         SeleneseTestBase.assertEquals("1", getAttributeByName("list1[0].field4", "value"));
-
-        //Check for the added if delete is present or not
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
-        //        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
-        passed();
     }
 
     //Code for KRAD Test Package.
@@ -3463,18 +3400,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void testTermLookUp() throws Exception {
-        waitForPageToLoad();
-        selectFrameIframePortlet();
-        
-        // Mixed capitalization
-        waitAndClick(By.xpath(SEARCH_XPATH_3));
-        waitAndClickByLinkText(EDIT_LINK_TEXT, "edit button not present does user " + user + " have permission?");
-        checkForIncidentReport("submit");
-        assertTextPresent("ubmit");
-        assertTextPresent("ave");
-        assertTextPresent("pprove");
-        assertTextPresent("lose");
-        assertTextPresent("ancel");
+        testLookUp();
         assertTextPresent("Term Parameters");
         waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
         passed();

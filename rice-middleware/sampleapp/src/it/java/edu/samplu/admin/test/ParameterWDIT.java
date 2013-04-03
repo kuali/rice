@@ -61,7 +61,7 @@ public class ParameterWDIT extends WebDriverLegacyITBase {
         //Verify if its edited
         super.open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrame("iframeportlet");
-        params=super.testVerifyEditedParameter(params.get(0), params.get(1));
+        params=super.testVerifyModifiedParameter(params.get(0), params.get(1));
   
         //copy
         params=super.testCopyParameter(params.get(0), params.get(1));
@@ -69,7 +69,7 @@ public class ParameterWDIT extends WebDriverLegacyITBase {
         //Verify if its copied
         super.open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrame("iframeportlet");
-        super.testVerifyCopyParameter(params.get(0), params.get(1));
+        super.testVerifyModifiedParameter(params.get(0), params.get(1));
     }
 
     

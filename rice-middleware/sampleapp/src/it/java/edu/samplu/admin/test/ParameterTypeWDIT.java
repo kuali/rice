@@ -67,7 +67,7 @@ public class ParameterTypeWDIT extends WebDriverLegacyITBase {
         //Verify if its edited
         super.open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrame("iframeportlet");
-        params=super.testVerifyEditedParameterType(params.get(0), params.get(1),params.get(2));
+        params=super.testLookUpParameterType(params.get(0), params.get(1),params.get(2));
 
         //copy
         params=super.testCopyParameterType(params.get(0), params.get(1),params.get(2));

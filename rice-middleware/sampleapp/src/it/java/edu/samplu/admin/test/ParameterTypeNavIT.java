@@ -52,7 +52,7 @@ public class ParameterTypeNavIT extends AdminTmplMthdSTNavBase {
         
         //Verify if its edited
         super.gotoMenuLinkLocator();
-        params=super.testVerifyEditedParameterType(params.get(0), params.get(1),params.get(2));
+        params=super.testLookUpParameterType(params.get(0), params.get(1),params.get(2));
 
         //copy
         params=super.testCopyParameterType(params.get(0), params.get(1),params.get(2));

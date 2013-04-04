@@ -1404,14 +1404,14 @@ public void setActiveAsOfDate(Date activeAsOfDate);
 </programlisting>
                 <para>This type of definition (defining the attribute definition once and reusing
                     the bean as a parent bean) can be used inside common files as well. Rice has an
-                    AttributeReferenceDummy.xml business object data dictionary file as well as a
-                    java object AttributeReferenceDummy.java file. This file’s sole purpose is to
+                    AttributeReference.xml business object data dictionary file as well as a
+                    java object AttributeReference.java file. This file’s sole purpose is to
                     place commonly defined attributes such as <emphasis role="bold"
                         >versionNumber</emphasis> (which is common across all business objects) in a
                     central location so that other business object attribute definitions can use
                     them as parent beans. Here is how the Campus business object uses the version
                     number attribute:</para>
-                <programlisting>&lt;bean id="Campus-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber"></programlisting>
+                <programlisting>&lt;bean id="Campus-versionNumber-parentBean" abstract="true" parent="AttributeReference-versionNumber"></programlisting>
                 <para>All business object data dictionary files need to have the version number
                     field bean defined. This will verify that the UI will have the version number as
                     a hidden field.</para>
@@ -2825,7 +2825,7 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
                     >org.kuali.rice.kns.service.KualiConfigurationService</emphasis>. It has a
                 method, <emphasis role="bold">getPropertyString</emphasis>, which, when handed the
                 key to the message, returns the message text.</para>
-            <programlisting>final String message = KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceKeyConstants.ERROR_DATE_TIME);</programlisting>
+            <programlisting>final String message = CoreApiServiceLocator.getKualiConfigurationService().getPropertyString(RiceKeyConstants.ERROR_DATE_TIME);</programlisting>
             <para>This will return the String “{0} is not a valid date/time.” Note that in this
                 case, the String will not be interpolated; <emphasis role="bold"
                     >java.text.MessageFormat</emphasis> should be used to switch the {0} with an

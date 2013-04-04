@@ -812,8 +812,7 @@
 &lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml&lt;/value>
 &lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml&lt;/value>
 &lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/Attachment.xml&lt;/value>
-&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml&lt;/value>
-&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/datadictionary/AttributeReference.xml&lt;/value>
 &lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml&lt;/value>
 &lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml&lt;/value>
 &lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml&lt;/value>

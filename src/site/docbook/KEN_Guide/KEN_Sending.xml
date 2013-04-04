@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    
+    Copyright 2005-2013 The Kuali Foundation
+    
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.opensource.org/licenses/ecl2.php
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    
+-->
+<chapter xml:id="ken_sending" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
+    <title>KEN: Sending a Notification</title>
+    <para>The Kuali Enterprise Notification system (KEN) provides for a way to programmatically
+        send a notification. An application may construct a notification using the KEN web
+        service API.</para>
+    <section>
+        <title>Send a Notification Using the Web Service API</title>
+        <para>To send a notification using the web service API, the notification must be
+            constructed as an XML document that validates against a schema for a specific
+            Content Type. For more detail, see the Notifications documentation. </para>
+        <para>To validate your notification XML, you must construct the XSD schema filename. To
+            construct this file name, append the Content Type value to <emphasis role="italic"
+                >ContentType</emphasis>. </para>
+        <para>For example, if you create a new Content Type for a library book overdue
+            notification, then the <emphasis role="italic">contentType</emphasis> element value
+            should be <emphasis role="italic">OverdueNotice</emphasis> and the schema file you
+            created for validation of the notification XML should be <emphasis role="bold"
+                >ContentTypeOverdueNotice.xsd</emphasis>. This XML schema should be declared as
+            a namespace in the <emphasis role="bold">content</emphasis> element of the
+            notification XML. Out of the box, KEN comes with <emphasis role="italic"
+                >Simple</emphasis> and <emphasis role="italic">Event</emphasis> Content
+            Types.</para>
+    </section>
+    <section>
+        <title>Web Service URL</title>
+        <para>By default, the Notification Web Service API may be accessed at: <link
+            xlink:href="http://yourlocalip:8080/notification/services/Notification"
+            >http://yourlocalip:8080/notification/services/Notification</link></para>
+        <para>A WSDL may be obtained using the following URL: <link
+            xlink:href="http://yourlocalip:8080/notification/services/Notification?wsdl"
+            >http://yourlocalip:8080/notification/services/Notification?wsdl</link></para>
+        <note><para>In the URLs above, replace yourlocalip with the hostname where KEN is deployed.</para></note>
+    </section>
+    <section>
+        <title>Exposed Web Services</title>
+        <para>Initially, KEN exposes a web service method to send a notification. The <emphasis
+            role="italic">sendNotification</emphasis> method is a simple String In/String
+            Out method. It accepts one parameter (<emphasis role="italic"
+                >notificationMessageAsXml</emphasis>) and returns a notificationResponse as a
+            String. For the format of the response, see the <emphasis role="italic">Notification
+                Response</emphasis> document in the TRG for KEN.</para>
+        <section>
+            <title>Calling the <emphasis role="italic">sendNotification</emphasis> Service from
+                JAVA</title>
+            <para>First, create a String that includes the XML content for the notification, as
+                described in the Notification Message document of the TRG for KEN. In the
+                following example code, the XML representation of the notification is read as a
+                file from the file system in the main method, and the code calls the <emphasis
+                    role="italic">MySendNotification</emphasis> method to invoke the
+                Notification web service. </para>
+            <para>A SOAP style web services binding stub is available in the <emphasis
+                role="bold">notification.jar</emphasis> file, as described above in the
+                <emphasis role="bold">Dependencies</emphasis> section. </para>
+            <para>You may use this code as a template for sending a notification using the web
+                service:</para>
+            <programlisting>package edu.cornell.library.notification;
+
+
+import org.apache.commons.io.IOUtils;
+import org.kuali.notification.client.ws.stubs.NotificationWebServiceSoapBindingStub;
+
+
+import java.io.IOException;
+
+import java.io.InputStream;
+import java.net.URL;
+
+
+public class MyNotificationWebServiceClient   {
+  private final  static String WEB_SERVICE_URL = "http://localhost:8080/notification/services/Notification";
+
+  public static void MySendNotification(String notificationMessageAsXml) throws Exception {
+    URL url = new URL(WEB_SERVICE_URL);
+    NotificationWebServiceSoapBindingStub stub = new NotificationWebServiceSoapBindingStub(url, null);
+    String responseAsXml = stub.sendNotification(notificationMessageAsXml);
+    // do something useful with the response
+    System.out.println(responseAsXml);
+  }
+
+  public static void main(String[] args) {
+    InputStream notificationXML = MyNotificationWebServiceClient.class.getResourceAsStream("webservice_notification.xml");
+    String notificationMessageAsXml = "";
+    try {
+      notificationMessageAsXml = IOUtils.toString(notificationXML);
+    } catch (IOException ioe) {
+      throw new RuntimeException("Error loading webservice_notification.xml");
+    }
+
+    try {
+      MySendNotification(notificationMessageAsXml);
+    } catch (Exception ioe) {
+      throw new RuntimeException("Error running webservice");
+    }
+  }
+
+}
+</programlisting>
+        </section>
+    </section>
+</chapter>

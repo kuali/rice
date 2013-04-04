@@ -638,7 +638,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return;
         }
 
-        // build return link href
+        // build return link href (href may contain single quotes)
         String href = getReturnUrl(lookupView, lookupForm, dataObject);
         if (StringUtils.isBlank(href)) {
             returnLink.setRender(false);
@@ -686,7 +686,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // Add the return target if it is set
         String returnTarget = lookupView.getReturnTarget();
         if (returnTarget != null) {
-            returnLink.setActionScript("window.open('" + href + "', '" + returnTarget + "');");
+            returnLink.setActionScript("window.open(\"" + href + "\", '" + returnTarget + "');");
 
             //  Add the close script if lookup is in a light box
             if (!returnTarget.equals("_self")) {
@@ -707,13 +707,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                     // Close the light box if return target is not _self or _parent
                     returnLink.setActionScript(
                             "e.preventDefault();closeLightbox();showLoading();" +
-                            "returnLookupResultReload('" + href + "', '" + returnTarget +"');");
+                            "returnLookupResultReload(\"" + href + "\", '" + returnTarget +"');");
                 }
             }
         } else {
             // If no return target is set return in same frame
             // This is to insure that non light box lookups return correctly
-            returnLink.setActionScript("window.open('" + href + "', '_self');");
+            returnLink.setActionScript("window.open(\"" + href + "\", '_self');");
         }
     }
 

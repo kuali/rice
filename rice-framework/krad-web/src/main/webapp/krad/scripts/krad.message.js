@@ -140,7 +140,7 @@ function hideLoading(elementToBlock) {
  * @param fieldId - id for the field the icon should be added to
  */
 function showChangeIcon(fieldId) {
-    var fieldMarkerSpan = jQuery("#" + fieldId + "_attribute_markers");
+    var fieldMarkerSpan = jQuery("#" + fieldId + "_markers");
     var fieldIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (fieldMarkerSpan.length > 0 && fieldIcon.length == 0) {
@@ -172,7 +172,7 @@ function showChangeIconOnDisclosure(headerFieldId) {
  * @param fieldId - id for the header field the icon should be added to
  */
 function showChangeIconOnGroupHeader(fieldId, idSuffix) {
-    var targetElement = jQuery("#" + fieldId + idSuffix).find("[class~=uif-headerText]");
+    var targetElement = jQuery("#" + fieldId + idSuffix).find("[class~=uif-headerText-span]");
     var headerIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (targetElement.length > 0 && headerIcon.length == 0) {

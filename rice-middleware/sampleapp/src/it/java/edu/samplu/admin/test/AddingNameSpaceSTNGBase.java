@@ -15,17 +15,16 @@
  */
 package edu.samplu.admin.test;
 
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddingNameSpaceSTNGNavGen extends AddingNameSpaceSTNGBase {
 
-    @Test(groups = { "all", "fast", "default", "nav" }, description = "testAddingNamespaceNav")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testAddingNamespaceNav() throws Exception {
-        testAddingNamespaceNav(this);
+public class AddingNameSpaceSTNGBase extends AddingNameSpacesAbstractSmokeTestBase {
+
+    @Override
+    public void fail(String string) {
+        AssertJUnit.fail(string);
     }
 }

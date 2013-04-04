@@ -47,7 +47,6 @@ public class ComponentSTNGNavGen extends ComponentSTNGBase {
     @Test(groups = { "all", "fast", "default", "nav" }, description = "testComponentCreateNewCancelNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testComponentCreateNewCancelNav() throws Exception {
-        setUp();
         testComponentCreateNewCancelNav(this);
     }
 
@@ -58,7 +57,6 @@ public class ComponentSTNGNavGen extends ComponentSTNGBase {
     @Test(groups = { "all", "fast", "default", "nav" }, description = "testComponentParameterNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testComponentParameterNav() throws Exception {
-        setUp();
         testComponentParameterNav(this);
     }
 }

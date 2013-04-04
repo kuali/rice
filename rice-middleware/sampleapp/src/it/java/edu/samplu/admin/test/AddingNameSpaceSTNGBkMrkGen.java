@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddingNameSpaceSTNGBkMrkGen extends AddingNameSpacesAbstractSmokeTestBase {
+public class AddingNameSpaceSTNGBkMrkGen extends AddingNameSpaceSTNGBase {
 
     /**
      * Noop navigation not used by Bookmark tests.
@@ -46,7 +46,6 @@ public class AddingNameSpaceSTNGBkMrkGen extends AddingNameSpacesAbstractSmokeTe
     @Test(groups = { "all", "fast", "default", "nav" }, description = "testAddingNamespaceBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testAddingNamespaceBookmark() throws Exception {
-        setUp();
         testAddingNamespaceBookmark(this);
     }
 }

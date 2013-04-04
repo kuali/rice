@@ -34,6 +34,8 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -287,6 +289,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws Exception
      */
     @Before
+    @BeforeMethod
     public void setUp() throws Exception {
         try {
             waitSeconds = Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + ""));
@@ -311,6 +314,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws Exception
      */
     @After
+    @AfterMethod
     public void tearDown() throws Exception {
         try {
             WebDriverUtil.tearDown(passed, sessionId, this.toString().trim(), user);

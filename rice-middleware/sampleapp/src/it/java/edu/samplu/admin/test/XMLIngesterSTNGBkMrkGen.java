@@ -15,7 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -31,11 +30,6 @@ import org.testng.annotations.Test;
 public class XMLIngesterSTNGBkMrkGen extends XMLIngesterSTNGBase {
 
     @Override
-    public void fail(String string) {
-        AssertJUnit.fail(string);
-    }
-
-    @Override
     public String getTestUrl() {
         return getBaseUrlString() + BOOKMARK_URL;
     }
@@ -47,7 +41,6 @@ public class XMLIngesterSTNGBkMrkGen extends XMLIngesterSTNGBase {
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testIngestionBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testIngestionBookmark() throws Exception {
-        setUp();
         testIngestionBookmark(this);
     }
 }

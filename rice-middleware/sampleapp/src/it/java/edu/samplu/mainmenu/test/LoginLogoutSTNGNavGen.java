@@ -36,7 +36,6 @@ public class LoginLogoutSTNGNavGen extends LoginLogoutSTNGBase {
     @Test(groups = { "all", "fast", "default", "nav" }, description = "testLogoutNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testLogoutNav() throws Exception {
-        setUp();
         testLogoutNav(this);
     }
 }

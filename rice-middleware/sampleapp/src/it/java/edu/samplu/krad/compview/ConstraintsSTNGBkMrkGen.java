@@ -31,14 +31,12 @@ public class ConstraintsSTNGBkMrkGen extends ConstraintsSTNGBase {
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testContraintsBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testConstraintsBookmark() throws Exception {
-        setUp();
         testConstraintsBookmark(this);
     }
 
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testConstraintsField9Bookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testConstraintsField9Bookmark() throws Exception {
-        setUp();
         testConstraintsField9Bookmark(this);
     }
 }

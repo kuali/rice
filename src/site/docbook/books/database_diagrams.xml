@@ -21,9 +21,10 @@
     <info>
         <title>Kuali Rice ${project.version} Database Diagrams</title>
     </info>
+    <para>
     <emphasis role="bold">
-        <para>Database Diagrams</para>
-    </emphasis>
+        Database Diagrams
+    </emphasis></para>
     <tip>
         <para>When using Internet Explorer, we recommend viewing the PDF files since the size of the
             diagrams may be illegible in IE.</para>

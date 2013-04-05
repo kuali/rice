@@ -29,8 +29,8 @@ public class UifBooleanEditor extends PropertyEditorSupport implements Serializa
 	private static final String TRUE_VALUES = "/true/yes/y/on/1/";
 	private static final String FALSE_VALUES = "/false/no/n/off/0/";
 
-	private static final String TRUE_VALUE = "yes";
-	private static final String FALSE_VALUE = "no";
+	private static final String TRUE_VALUE = "true";
+	private static final String FALSE_VALUE = "false";
 
     /**
      * Gets the property value as a string suitable for presentation

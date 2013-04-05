@@ -49,6 +49,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +112,18 @@ public abstract class UifControllerBase {
         if (requestForm != null) {
             UifControllerHelper.removeUnusedBreadcrumbs(uifFormManager, requestForm.getFormKey(), request.getParameter(
                     UifConstants.UrlParams.LAST_FORM_KEY));
+        }
+
+        if (requestForm != null) {
+            Map<String, String> requestParams = new HashMap<String,String>();
+            Enumeration<String> names = request.getParameterNames();
+            while (names != null && names.hasMoreElements()){
+                String name = names.nextElement();
+                requestParams.put(name, request.getParameter(name));
+            }
+            requestParams.remove("__login_user");
+            //requestParams.remove();
+            requestForm.setRequestParameters(requestParams);
         }
 
         // sets the request form in the request for later retrieval

@@ -29,6 +29,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -114,6 +115,29 @@ public class PageGroup extends Group {
         //if label still blank, dont render
         if (StringUtils.isBlank(breadcrumbItem.getLabel())) {
             breadcrumbItem.setRender(false);
+        }
+
+        //special breadcrumb request param handling
+        if (breadcrumbItem.getUrl().getControllerMapping() == null
+                && breadcrumbItem.getUrl().getViewId() == null
+                && model instanceof UifFormBase
+                && breadcrumbItem.getUrl().getRequestParameters() == null
+                && ((UifFormBase) model).getRequestParameters() != null) {
+            //add the current request parameters if controllerMapping, viewId, and requestParams are null
+            //(this means that no explicit breadcrumbItem customization was set)
+            Map<String, String> requestParameters = ((UifFormBase) model).getRequestParameters();
+
+            //remove ajax properties because breadcrumb should always be a full view request
+            requestParameters.remove("ajaxReturnType");
+            requestParameters.remove("ajaxRequest");
+
+            breadcrumbItem.getUrl().setRequestParameters(requestParameters);
+        }
+
+        //form key handling
+        if (breadcrumbItem.getUrl().getFormKey() == null && model instanceof UifFormBase
+                && ((UifFormBase) model).getFormKey() != null){
+            breadcrumbItem.getUrl().setFormKey(((UifFormBase) model).getFormKey());
         }
 
         //automatically set breadcrumbItem UifUrl properties if not set

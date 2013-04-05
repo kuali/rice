@@ -21,17 +21,16 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
-import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -76,6 +75,9 @@ public class UifFormBase implements ViewModel {
 
     protected String formPostUrl;
     protected String controllerMapping;
+
+    @SessionTransient
+    private Map<String, String> requestParameters;
 
     protected String state;
     protected boolean defaultsApplied;
@@ -268,6 +270,34 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setFormPostUrl(String formPostUrl) {
         this.formPostUrl = formPostUrl;
+    }
+
+    /**
+     * Name of the controllerMapping for this form (includes slash)
+     *
+     * @return the controllerMapping string
+     */
+    public String getControllerMapping() {
+        return controllerMapping;
+    }
+
+    /**
+     * The requestParameters represent all the parameters in the query string that were initially passed to this View
+     * by the initial request
+     *
+     * @return the requestParameters
+     */
+    public Map<String, String> getRequestParameters() {
+        return requestParameters;
+    }
+
+    /**
+     * Set the requestParameters
+     *
+     * @param requestParameters
+     */
+    public void setRequestParameters(Map<String, String> requestParameters) {
+        this.requestParameters = requestParameters;
     }
 
     public String getReturnLocation() {
@@ -739,7 +769,7 @@ public class UifFormBase implements ViewModel {
         return ajaxRequest;
     }
 
-     /**
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxRequest(boolean)
      */
     @Override
@@ -747,7 +777,7 @@ public class UifFormBase implements ViewModel {
         this.ajaxRequest = ajaxRequest;
     }
 
-     /**
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getAjaxReturnType()
      */
     @Override
@@ -870,6 +900,7 @@ public class UifFormBase implements ViewModel {
      * <p>
      * The DialogManager tracks modal dialog interactions with the user
      * </p>
+     *
      * @return
      */
     public DialogManager getDialogManager() {
@@ -936,12 +967,4 @@ public class UifFormBase implements ViewModel {
         return addedCollectionItems.contains(item);
     }
 
-    /**
-     * Name of the controllerMapping for this form (includes slash)
-     *
-     * @return the controllerMapping string
-     */
-    public String getControllerMapping() {
-        return controllerMapping;
-    }
 }

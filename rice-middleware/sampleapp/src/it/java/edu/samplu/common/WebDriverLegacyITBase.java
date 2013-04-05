@@ -52,7 +52,7 @@ import static org.junit.Assert.assertNotSame;
  * refactoring to be done:
  * <ol>
  *   <li><a href="https://jira.kuali.org/browse/KULRICE-9206">KULRICE-9206</a> Replace literal strings used more than 3 times with Constants, Javadoc constant with constant value.
- *   <li>Extract duplicate waitAndClick...(CONSTANT) to waitAndClickConstant, Javadoc a {@link #CONSTANT}.
+ *   <li>Extract duplicate waitAndClick...(CONSTANT) to waitAndClickConstant, Javadoc a <pre>{@link #CONSTANT}</pre>.
  *   <li>Replace large chunks of duplication</li>
  *   <li><a href="https://jira.kuali.org/browse/KULRICE-9205">KULRICE-9205</a> Invert dependencies on fields and extract methods to WebDriverUtil so inheritance doesn't have to be used for
  * reuse.  See WebDriverUtil.waitFor </li>
@@ -69,6 +69,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public static final String ADMINISTRATION_LINK_TEXT = "Administration";
 
+    /**
+     * "//input[@aria-invalid]"
+     */
+    public static final String ARIA_INVALID_XPATH = "//input[@aria-invalid]";
 
     /**
      * methodToCall.blanketApprove
@@ -139,6 +143,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * FINAL
      */
     public static final String DOC_STATUS_FINAL = "FINAL";
+
+    /**
+     * SAVED
+     */
+    public static final String DOC_STATUS_SAVED = "SAVED";
 
     /**
      * //table[@class='headerinfo']//tr[1]/td[2]
@@ -247,7 +256,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * XML Ingester
      */
     public static final String XML_INGESTER_LINK_TEXT = "XML Ingester";
-    public static final String DOC_STATUS_SAVED = "SAVED";
 
     protected WebDriver driver;
     protected String user = "admin";
@@ -297,6 +305,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             if (givenUser != null) {
                 user = givenUser;
             }
+
             driver = WebDriverUtil.setUp(getUserName(), getTestUrl(), getClass().getSimpleName(), testName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
         } catch (Exception e) {
@@ -4590,30 +4599,40 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         uncheck(By.xpath(locator));
     }
 
-    protected void validateErrorImage(boolean validateVisible) throws Exception {
+    protected boolean validateErrorImage(boolean validateVisible) throws Exception {
         Thread.sleep(500);
+        boolean valid = false;
 
         for (int second = 0;; second++) {
-            if (second >= 5)
-                SeleneseTestBase.fail("timeout");
-            try {
-                if (validateVisible) {
-                    if (isElementPresentByXpath("//input[@aria-invalid]"))
-                        ;
-                    break;
-                } else {
-                    if (!isElementPresentByXpath("//input[@aria-invalid]"))
-                        break;
-                }
-            } catch (Exception e) {}
-            Thread.sleep(1000);
+            if ((valid = validateErrorImage(validateVisible, second, ARIA_INVALID_XPATH)) == true) {
+                break;
+            }
         }
 
         if (validateVisible) {
-            SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@aria-invalid]"));
+            SeleneseTestBase.assertTrue(isElementPresentByXpath(ARIA_INVALID_XPATH));
         } else {
-            SeleneseTestBase.assertTrue(!isElementPresentByXpath("//input[@aria-invalid]"));
+            SeleneseTestBase.assertTrue(!isElementPresentByXpath(ARIA_INVALID_XPATH));
         }
+
+        return valid;
+    }
+
+    private boolean validateErrorImage(boolean validateVisible, int second, String xpath) throws InterruptedException {
+        if (second >= 5)
+            SeleneseTestBase.fail("timeout");
+        try {
+            if (validateVisible) {
+                if (isElementPresentByXpath(xpath))
+                    ;
+                return true;
+            } else {
+                if (!isElementPresentByXpath(xpath))
+                    return true;
+            }
+        } catch (Exception e) {}
+        Thread.sleep(1000);
+        return false;
     }
 
     protected void verifyRichMessagesValidationBasicFunctionality() throws Exception

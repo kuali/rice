@@ -79,7 +79,7 @@ public class InquiryView extends FormView {
      * the inquiry action
      * </p>
      *
-     * @return Class<?> inquiry object class
+     * @return Class<?> inquiry object class.
      */
     @BeanTagAttribute(name="dataObjectClassName")
     public Class<?> getDataObjectClassName() {

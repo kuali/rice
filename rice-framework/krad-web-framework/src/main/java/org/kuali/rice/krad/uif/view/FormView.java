@@ -53,7 +53,7 @@ public class FormView extends View {
      * the navigation. Defaults to true
      *
      * @return true if the form element should be rendered, false if it should
-     *         not be
+     *         not be.
      */
     @BeanTagAttribute(name = "renderForm")
     public boolean isRenderForm() {
@@ -75,7 +75,7 @@ public class FormView extends View {
      * dictionary validations and report errors. Defaults to true
      *
      * @return boolean true if model data should be validated, false if it
-     *         should not be
+     *         should not be.
      */
     @BeanTagAttribute(name = "validateServerSide")
     public boolean isValidateServerSide() {
@@ -95,7 +95,7 @@ public class FormView extends View {
      * Indicates whether to perform on-the-fly validation on the client using js
      * during user data entry. Defaults to true
      *
-     * @return the validateClientSide
+     * @return the validateClientSide.
      */
     @BeanTagAttribute(name = "validateClientSide")
     public boolean isValidateClientSide() {
@@ -120,7 +120,7 @@ public class FormView extends View {
      * URL.
      * </p>
      *
-     * @return String post URL
+     * @return String post URL.
      */
     @BeanTagAttribute(name = "formPostUrl")
     public String getFormPostUrl() {

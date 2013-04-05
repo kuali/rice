@@ -280,7 +280,7 @@ public class History implements Serializable {
      * currently in History and includes the current view's HistoryEntry.  This parameter should be appended on any
      * appropriate links which perform view swapping.
      *
-     * @return String containing history entries
+     * @return String containing history entries.
      */
     public String getHistoryParameterString() {
         String history = "";
@@ -319,8 +319,8 @@ public class History implements Serializable {
      *
      * TODO: Possibly move so it can be used for the actual view title, not just history
      *
-     * @param form - form instance containing the view and view data
-     * @return String title string to use
+     * @param form form instance containing the view and view data.
+     * @return String title string to use.
      */
     protected String buildViewTitle(UifFormBase form) {
         View view = form.getView();
@@ -405,7 +405,7 @@ public class History implements Serializable {
      * Gets the predetermined homeward path for this view's history.
      * This is set by the same property in the view's Breadcrumbs configuration.
      *
-     * @return the homewardPath
+     * @return the homewardPath.
      */
     @BeanTagAttribute(name="homewardPath",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<HistoryEntry> getHomewardPath() {
@@ -425,7 +425,7 @@ public class History implements Serializable {
      * url variable.  For HistoryEntries that include history information to be passed to the
      * view they are retrieving, getGeneratedBreadcrumbs is used.
      *
-     * @return the history
+     * @return the history.
      */
     @BeanTagAttribute(name="historyEntries",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<HistoryEntry> getHistoryEntries() {
@@ -445,7 +445,7 @@ public class History implements Serializable {
      * url variable.  For the HistoryEntry that includes history information to be passed
      * on the url it is retrieving, getGeneratedCurrentBreadcrumb is used.
      *
-     * @return the current
+     * @return the current.
      */
     @BeanTagAttribute(name="current",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public HistoryEntry getCurrent() {
@@ -478,7 +478,7 @@ public class History implements Serializable {
      * Note:  For most cases this should only be on during the first view load.
      * This setting is set automatically in most cases.
      *
-     * @param appendHomewardPath the appendHomewardPath to set
+     * @param appendHomewardPath the appendHomewardPath to set.
      */
     public void setAppendHomewardPath(boolean appendHomewardPath) {
         this.appendHomewardPath = appendHomewardPath;
@@ -497,14 +497,14 @@ public class History implements Serializable {
      * passed history is relevant to the user (ie inquiry/lookup chains).  This setting is set automatically in
      * most cases.
      *
-     * @param appendPassedHistory the appendPassedHistory to set
+     * @param appendPassedHistory the appendPassedHistory to set.
      */
     public void setAppendPassedHistory(boolean appendPassedHistory) {
         this.appendPassedHistory = appendPassedHistory;
     }
 
     /**
-     * @return the appendPassedHistory
+     * @return the appendPassedHistory.
      */
     @BeanTagAttribute(name="appendPassedHistory")
     public boolean isAppendPassedHistory() {

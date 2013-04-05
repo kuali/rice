@@ -74,7 +74,7 @@ public class MessageView extends FormView {
     /**
      * Test for the message to display
      *
-     * @return String message text
+     * @return String message text.
      */
     public String getMessageText() {
         return messageText;
@@ -92,7 +92,7 @@ public class MessageView extends FormView {
     /**
      * Message component that will be used to display the message (used for styling and so on)
      *
-     * @return Message component instance
+     * @return Message component instance.
      */
     public Message getMessage() {
         return message;

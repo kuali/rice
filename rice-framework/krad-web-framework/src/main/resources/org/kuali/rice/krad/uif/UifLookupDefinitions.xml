@@ -28,7 +28,6 @@
         <value>uif-lookupView</value>
       </list>
     </property>
-    <property name="unifiedHeader" value="false"/>
     <property name="viewTypeName" value="LOOKUP"/>
     <property name="viewHelperServiceClass" value="org.kuali.rice.krad.lookup.LookupableImpl"/>
     <property name="presentationControllerClass"

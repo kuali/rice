@@ -52,7 +52,8 @@ public class ViewHeader extends Header {
                 view.isUnifiedHeader()) {
             Header pageHeader = view.getCurrentPage().getHeader();
 
-            pageHeader.setRender(false);
+            //hide page header text
+            pageHeader.addStyleClass("uif-hideHeaderText");
 
             Message pageHeaderMessage = pageHeader.getRichHeaderMessage();
 

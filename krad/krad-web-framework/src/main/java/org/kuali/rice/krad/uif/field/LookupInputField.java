@@ -47,12 +47,31 @@ public class LookupInputField extends InputField {
 
     private boolean disableWildcardsAndOperators;
     private boolean addControlSelectAllOption;
+    private boolean triggerOnChange;
+    private boolean ranged;
+
+    private RadioGroupControl radioGroupControl;
 
     public LookupInputField() {
         super();
 
         disableWildcardsAndOperators = false;
         addControlSelectAllOption = false;
+    }
+
+    /**
+     * Replace checkbox control with radio group control
+     *
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object,
+     * org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        if (getControl() != null && getControl() instanceof CheckboxControl) {
+            setControl(getRadioGroupControl());
+        }
     }
 
     /**
@@ -79,6 +98,20 @@ public class LookupInputField extends InputField {
                 multiValueControl.setOptions(fieldOptions);
             }
         }
+    }
+
+    /**
+     * Add radioGroupControl if the control is a checkbox control
+     *
+     * @see org.kuali.rice.krad.uif.component.Component#getPropertyReplacers()
+     */
+    @Override
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = super.getComponentPrototypes();
+        if (getControl() != null && getControl() instanceof CheckboxControl) {
+            components.add(radioGroupControl);
+        }
+        return components;
     }
 
     /**
@@ -205,5 +238,41 @@ public class LookupInputField extends InputField {
      */
     public void setAddControlSelectAllOption(boolean addControlSelectAllOption) {
         this.addControlSelectAllOption = addControlSelectAllOption;
+    }
+
+    /**
+     * The radio group control prototype that will replace the checkbox control
+     *
+     * @return RadioGroupControl
+     */
+    public RadioGroupControl getRadioGroupControl() {
+        return radioGroupControl;
+    }
+
+    /**
+     * Setter for the radio group control
+     *
+     * @param radioGroupControl
+     */
+    public void setRadioGroupControl(RadioGroupControl radioGroupControl) {
+        this.radioGroupControl = radioGroupControl;
+    }
+
+    /**
+     * Indicates that a field must be rendered as a from and to value
+     *
+     * @return
+     */
+    public boolean isRanged() {
+        return ranged;
+    }
+
+    /**
+     * Setter for ranged flag to indicate this is a range field
+     *
+     * @param ranged
+     */
+    public void setRanged(boolean ranged) {
+        this.ranged = ranged;
     }
 }

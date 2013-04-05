@@ -145,6 +145,17 @@
       </list>
     </property>
     <property name="bindingInfo.bindToMap" value="true"/>
+    <property name="radioGroupControl">
+      <bean parent="Uif-HorizontalRadioControl" >
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="true" p:value="Yes"/>
+            <bean parent="Uif-KeyLabelPair" p:key="false" p:value="No"/>
+            <bean parent="Uif-KeyLabelPair" p:key="" p:value="Both"/>
+          </list>
+        </property>
+      </bean>
+    </property>
   </bean>
 
   <bean id="Uif-ActionField" parent="Uif-ActionField-parentBean"/>

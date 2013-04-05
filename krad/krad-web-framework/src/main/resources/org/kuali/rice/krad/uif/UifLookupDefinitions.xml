@@ -49,6 +49,9 @@
     <property name="resultsGroup">
       <bean parent="Uif-LookupResultsCollectionSection"/>
     </property>
+    <property name="rangeFieldGroupPrototype">
+      <bean parent="Uif-HorizontalFieldGroup"/>
+    </property>
     <property name="resultsActionsFieldGroup">
       <bean parent="Uif-FieldGroupBase">
         <property name="label" value="Actions"/>

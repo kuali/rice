@@ -48,7 +48,9 @@ public class NeustarJSTemplate extends FreemarkerSTBase {
     private static final String TMPL_CONTENT = "CreateNewTmpl.ftl";
 
 
-    public void setUpConfig() throws Exception {
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
         // generated load users and group resources
         cfg = new Configuration();
         cfg.setTemplateLoader(new ClassTemplateLoader(getClass().getClassLoader().getClass(), DIR_TMPL));
@@ -80,8 +82,6 @@ public class NeustarJSTemplate extends FreemarkerSTBase {
 
     @Test
     public void testNeustarTemplating() throws Exception {
-        //Configuration Setup
-        setUpConfig();
         // update properties with timestamp value if includeDTSinPrefix is true
         Properties props = loadProperties(PROPS_LOCATION, DEFAULT_PROPS_LOCATION);
         systemPropertiesOverride(props, "NeustarJS");

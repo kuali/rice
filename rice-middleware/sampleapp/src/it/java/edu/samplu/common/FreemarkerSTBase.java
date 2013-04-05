@@ -30,9 +30,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 /**
- * Freemarker loads properties from user defined properties file, if not available uses resource file.  Overrides properties
- * using a given key to identify them from JVM args. (i.e. -Dkey.name to override the name property in the key file.)
- *
+ * @see FreemarkerUtil
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
@@ -43,39 +41,26 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
 
     /**
      * Calls ftlWrite that also accepts a key, using the output getName as the key.
-     * @param fileLocation
-     * @param resourceLocation
+     * {@link FreemarkerUtil#ftlWrite(java.io.File, freemarker.template.Template, java.io.InputStream)}
      * @param output
      * @param template
      * @return
      * @throws IOException
      * @throws TemplateException
      */
-    public File ftlWrite(String fileLocation, String resourceLocation, File output, Template template) throws IOException, TemplateException {
+    public File ftlWrite(File output, Template template, InputStream inputStream) throws IOException, TemplateException {
 
-        return ftlWrite(fileLocation, resourceLocation, output.getName(), output, template);
+        return FreemarkerUtil.ftlWrite(output.getName(), output, template, inputStream);
     }
 
     /**
-     * Loads properties from user defined properties file, if not available uses resource file
-     *
-     * writes processed template  to file
-     * @param fileLocation
+     * TODO can we cut this down to one param?
+     * {@link FreemarkerUtil#loadProperties(java.io.InputStream)}
+     * @param fileLocation null means use resourceLocation
      * @param resourceLocation
-     * @param key
-     * @param output
-     * @param template
+     * @return
      * @throws IOException
-     * @throws TemplateException
      */
-    public File ftlWrite(String fileLocation, String resourceLocation, String key, File output, Template template) throws IOException, TemplateException {
-        Properties props = loadProperties(fileLocation, resourceLocation);
-        systemPropertiesOverride(props, key);
-        File outputFile = writeTemplateToFile(output, template, props);
-
-        return outputFile;
-    }
-
     protected Properties loadProperties(String fileLocation, String resourceLocation) throws IOException {
         Properties props = new Properties();
         InputStream in = null;
@@ -85,7 +70,7 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
             in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
         }
         if(in != null) {
-            props.load(in);
+            FreemarkerUtil.loadProperties(in);
             in.close();
         }
 
@@ -93,37 +78,24 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
     }
 
     /**
-     *
-     * @param file
-     * @param template
+     * {@link FreemarkerUtil#systemPropertiesOverride(java.util.Properties, String)}
      * @param props
-     * @return
-     * @throws IOException
-     * @throws freemarker.template.TemplateException
+     * @param key
      */
-    protected File writeTemplateToFile(File file, Template template, Properties props) throws IOException, TemplateException {
-        String output = FreeMarkerTemplateUtils.processTemplateIntoString(template, props);
-        LOG.debug("Generated File Output: " + output);
-        FileUtils.writeStringToFile(file, output);
-
-        return file;
+    protected void systemPropertiesOverride(Properties props, String key) {
+        FreemarkerUtil.systemPropertiesOverride(props, key);
     }
 
     /**
-     * -Dkey.propertyname= to override the property value for propertyname.
-     * @param props
-     */
-    public void systemPropertiesOverride(Properties props, String key) {
-        Enumeration<?> names = props.propertyNames();
-        Object nameObject;
-        String name;
-        while (names.hasMoreElements()) {
-            nameObject = names.nextElement();
-            if (nameObject instanceof String) {
-                name = (String)nameObject;
-                LOG.debug("Overriding " + name + "=" + props.get(name) + " with " + props.getProperty(name) + " from JVM arg, " + key + "." + name);
-                props.setProperty(name, System.getProperty(key + "." + name, props.getProperty(name)));
-            }
-        }
+    * {@link FreemarkerUtil#writeTemplateToFile(java.io.File, freemarker.template.Template, java.util.Properties)}
+    * @param file
+    * @param template
+    * @param props
+    * @return
+    * @throws IOException
+    * @throws TemplateException
+    */
+    protected static File writeTemplateToFile(File file, Template template, Properties props) throws IOException, TemplateException {
+        return FreemarkerUtil.writeTemplateToFile(file, template, props);
     }
 }

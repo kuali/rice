@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.Failable;
 import edu.samplu.common.FreemarkerSTBase;
+import edu.samplu.common.FreemarkerUtil;
 import edu.samplu.common.ITUtil;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;

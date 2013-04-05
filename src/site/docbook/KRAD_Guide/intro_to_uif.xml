@@ -1357,7 +1357,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 and so on. Other id suffixes used in the framework will be discussed in the various
                 component sections. </para>
             <tip><para><emphasis role="bold">Factory Id:</emphasis> Another property we find on ComponentBase is
-                        <emphasis role="bold">factoryId</emphasis>. This is used to hold the
+                        <emphasis role="keyword">factoryId</emphasis>. This is used to hold the
                     original id for components that are copies of prototypes (dynamically) created.
                     The property is necessary when we need to get a new instance of component using
                     the ComponentFactory. Because the component was dynamically created, the
@@ -1368,19 +1368,19 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 title property. This property gives extra information for the component that will be
                 available in the user interface. This is an example of a property that many
                 components have, but is used differently between components. For example, one of the
-                component types we will learn about in the next section is a <emphasis role="bold"
+                component types we will learn about in the next section is a <emphasis role="keyword"
                     >Container</emphasis>. Components generally begin with a header (using the HTML
                 header tag) and use the title property for the header text. Other types of
-                components include <emphasis role="bold">Fields</emphasis> and <emphasis role="bold"
+                components include <emphasis role="keyword">Fields</emphasis> and <emphasis role="keyword"
                     >Controls</emphasis>. The component types use the title property as the title
                 attribute on the corresponding element they produce:
                 <programlisting>&lt;element title="component title property value"/&gt;  </programlisting></para>
             <para>The title attribute value is most often shown as a tooltip when the user hovers
                 over the element. </para>
-            <para><emphasis role="bold">Title Property:</emphasis> The reason we say title property
+            <para><emphasis role="keyword">Title Property:</emphasis> The reason we say title property
                 can be specified for ‘most’ components is that there are some that do not use this.
                 Since the overwhelming majority do, it was added to ComponentBase for convenience. </para>
-            <para><emphasis role="bold">Render</emphasis> – The render property is a Boolean that
+            <para><emphasis role="keyword">Render</emphasis> – The render property is a Boolean that
                 indicates whether the HTML markup should be generated for the component. When this
                 is set to false, the configured template will not be invoked during the rendering
                 process. By using conditional expressions to set the render property, we can make
@@ -1392,7 +1392,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
     p:propertyName="field2" p:render="false"/>  </programlisting></para>
             <para>The default value for render is true, so if the render property is not specified
                 the component will be rendered. </para>
-            <para><emphasis role="bold">Hidden</emphasis> – The hidden property is similar to the
+            <para><emphasis role="keyword">Hidden</emphasis> – The hidden property is similar to the
                 render property in that it configures whether or not the component is displayed.
                 However, when a component is hidden (and render is set to true), the corresponding
                 template will be invoked to generate markup. The content is then surrounded with a
@@ -1401,7 +1401,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 script. This provides a mechanism for toggling the display of a component on the
                 client. Later on, we will learn about jQuery, which among many other things, allows
                 us to flip the visibility of an element by invoking the show or hide function. </para>
-            <para><emphasis role="bold">ReadOnly</emphasis> – It is common to use the UIF for
+            <para><emphasis role="keyword">ReadOnly</emphasis> – It is common to use the UIF for
                 building forms that will collect data and perform a process on behalf of the user.
                 There are a variety of components, such as controls and widgets, that allow the user
                 to input data. These components have a state of editable (user input is allowed) or
@@ -1412,7 +1412,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 as read only varies. For example, read-only controls simply display the control
                 value as HTML text. An action field, on the other hand (button, link, image), will
                 not render when set to read only. </para>
-            <para><emphasis role="bold">More Info:</emphasis> Components such as controls and action
+            <para><emphasis role="keyword">More Info:</emphasis> Components such as controls and action
                 fields also support the disabled property. When these components are disabled they
                 are in a read only state (no user input is allowed), however they are presented
                 differently. Although the disabled appearance can be modified, generally the
@@ -1438,7 +1438,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 displays information about a data object instance. The InquiryView base bean has the
                 readOnly property set to true. Therefore all components added to a view of this type
                 will be read only without having to specify the property. </para>
-            <para><emphasis role="bold">Required</emphasis> – When a component allows user input,
+            <para><emphasis role="keyword">Required</emphasis> – When a component allows user input,
                 the required property indicates whether the user must provide a value (or complete
                 the input/action). This is most typically used with input fields that have a
                 control, but can also be used with a container (group) to indicate a section must be
@@ -1449,7 +1449,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 default an asterisk ‘*’). Second, the framework will perform validation client side
                 and/or server side that checks a value was given. If the value is empty, an error
                 message is created and presented to the user. </para>
-            <para><emphasis role="bold">Style and Style Classes</emphasis> – KRAD provides a lot of
+            <para><emphasis role="keyword">Style and Style Classes</emphasis> – KRAD provides a lot of
                 flexibility to make your web applications look great! All UIF components have a
                 configured style class that performs the visual treatment. These style classes are
                 provided within the CSS files that come with KRAD. However, if needed, using the
@@ -1460,17 +1460,17 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 property is a list type with each list item specifying a style class. The configured
                 style classes are concatenated into a string using a space delimiter, then output as
                 the class attribute value for the corresponding element. </para>
-            <para><emphasis role="bold">Progressive and Refresh</emphasis> – Component base contains
+            <para><emphasis role="keyword">Progressive and Refresh</emphasis> – Component base contains
                 several properties that relate to configuring progressive disclosure or component
                 refresh functionality. This is covered in detail in Chapter 11. </para>
-            <para><emphasis role="bold">Order</emphasis> – KRAD adds some abilities to the Spring
+            <para><emphasis role="keyword">Order</emphasis> – KRAD adds some abilities to the Spring
                 configuration system, including more control over collection merging. In a base bean
                 definition that contains a collection, each component in the collection can have an
                 order specified. When inheriting the collection property in child beans, components
                 can be specified with the same order to replace items in the parent list or given an
                 order that inserts the component between two items of the parent collection. This
                 feature in covered in more detail at the end of this chapter. </para>
-            <tip><para><emphasis role="bold">Read Only</emphasis>: As stated above, the feature of read only
+            <tip><para><emphasis role="keyword">Read Only</emphasis>: As stated above, the feature of read only
                     inheritance is done by setting an expression on the readOnly property which is
                     inherited. This configuration is as follows:
                     <programlisting>&lt;property name="readOnly" value="@{#parent.readOnly}"/&gt;     </programlisting></para>
@@ -1481,7 +1481,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                     components read only. Then we can add readOnly=”false” to the few components
                     that should be editable. </para>
             </tip>
-            <para><emphasis role="bold">Skip In Tab Order</emphasis> – By default, tabbing will
+            <para><emphasis role="keyword">Skip In Tab Order</emphasis> – By default, tabbing will
                 follow the natural order of the elements and include each element that can accept
                 focus. When needed, the element corresponding to the KRAD component can be taken out
                 of the tab order (will not be tabbed to) by setting the skipInTabOrder Boolean to
@@ -1492,7 +1492,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 times). </para>
             <para>More finely grained control over the tabbing order can be configured as well using
                 the tabIndex property of Control. </para>
-            <para><emphasis role="bold">Finalize Method To Call</emphasis> – Although you can do a
+            <para><emphasis role="keyword">Finalize Method To Call</emphasis> – Although you can do a
                 great number of things using XML, you also have the option of assembling components
                 with code. One way to invoke code is with the finalizeMethodToCall. This is the name
                 of a method on the ViewHelperServiceImpl that should be called during the finalize
@@ -1500,26 +1500,26 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 instance and the model (view data). Two additional properties,
                 finalizeMethodAdditionalArguments and finalizeMethodInvoker, exist for greater
                 flexibility on invoking a method. Code support is covered in detail in Chapter 10. </para>
-            <para><emphasis role="bold">Self-Render and Render Output</emphasis> – As described in
+            <para><emphasis role="keyword">Self-Render and Render Output</emphasis> – As described in
                 the section on templates and Apache Tiles, most components are rendered by a
                 FreeMarker file that combines parameters from the components with static content to
                 produce HTML markup. Components may render without a template by generating the
                 markup through code. This is done by setting the selfRender flag to true. When this
                 flag is turned on, instead of invoking a template, the method getRenderOutput will
                 be invoked on the component instance to return the markup that should be output. </para>
-            <tip><para><emphasis role="bold">Self-Rendered Content</emphasis>: The markup returned by a self-rendered
+            <tip><para><emphasis role="keyword">Self-Rendered Content</emphasis>: The markup returned by a self-rendered
                     component may not include dynamic markup (FreeMarker content). The string is
                     written directly to the response without going through FreeMarker processing,
                     therefore only HTML markup must be returned. </para></tip>
-            <para><emphasis role="bold">Component Security</emphasis> – KRAD allows for fine-grained
+            <para><emphasis role="keyword">Component Security</emphasis> – KRAD allows for fine-grained
                 security to be defined, which integrates with the KIM (Kuali Identity Management)
                 module. Security restrictions are indicated by setting a flag on an <emphasis
-                    role="bold">org.kuali.rice.krad.uif.component.ComponentSecurity</emphasis>
+                    role="keyword">org.kuali.rice.krad.uif.component.ComponentSecurity</emphasis>
                 instance. When a flag is set, the framework will check a KIM permission (setup for
                 that restriction type) and, if not granted to the user, the restriction will be
                 activated. Particular security flags will be discussed while looking at each
                 component. </para>
-            <para><emphasis role="bold">Component Modifiers</emphasis> – Component modifiers are
+            <para><emphasis role="keyword">Component Modifiers</emphasis> – Component modifiers are
                 classes that can be configured on a component to modify its properties through code.
                 A component may have one or more component modifiers that get applied in the order
                 they are configured. Modifiers can be useful in many cases. For example, the
@@ -1529,28 +1529,28 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 bean was created with the component modifier configured. All maintenance groups then
                 extend this bean and inherit the comparison feature. </para>
             <para>Component modifiers can also have a condition that determines whether it should
-                run (the <emphasis role="bold">runCondition</emphasis>). In the example of the
+                run (the <emphasis role="keyword">runCondition</emphasis>). In the example of the
                 maintenance modifier, we only want to show the comparison when doing an edit
                 operation (not for a new or copy). Therefore, the run condition is setup to check
                 that the maintenance action is edit. The framework will evaluate this condition and
                 only invoke the modifier if the condition succeeds. </para>
             <para>There are many other things that can be done with component modifiers which will
                 be covered in Chapter 10. </para>
-            <para><emphasis role="bold">Template Options</emphasis> – Besides the properties a
+            <para><emphasis role="keyword">Template Options</emphasis> – Besides the properties a
                 component class has, some component templates support options that can be configured
-                using the <emphasis role="bold">templateOptions</emphasis> map. These can be thought
+                using the <emphasis role="keyword">templateOptions</emphasis> map. These can be thought
                 of as ‘pass-through’ parameters since the component class is not aware of them. </para>
             <para>Template options are used primarily with Widgets that invoke a jQuery plugin. All
                 jQuery plugins have a standard options map (or object since this is JavaScript) that
                 configures the plugin options. This options map is created from the template
                 options. </para>
-            <tip><para><emphasis role="bold">Template Options</emphasis>: The generic template options map allows
+            <tip><para><emphasis role="keyword">Template Options</emphasis>: The generic template options map allows
                     parameters to be added by the template without modifying the class. This can be
                     useful when creating custom templates with options not originally supported by
                     the component. In addition, this allows us to change our plugin implementations
                     more easily. The options for the new plugin can be configured through the XML
                     without having to change the class.</para></tip>
-            <para><emphasis role="bold">Property Replacers</emphasis> – Another tool provided by the
+            <para><emphasis role="keyword">Property Replacers</emphasis> – Another tool provided by the
                 UIF for component configuration are property replacers. A property replacer allows
                 us to exchange the value for a bean (component) property based on a condition. For
                 example, we can change the control for a field from a text control to a checkbox
@@ -1561,7 +1561,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 more property replacers can be configured for the same property. Each property
                 replacer whose condition passes will be applied, so the order in which they are
                 configured can matter. Property replacers will be covered in Chapter 10. </para>
-            <para><emphasis role="bold">Context</emphasis> – One very powerful feature of the UIF is
+            <para><emphasis role="keyword">Context</emphasis> – One very powerful feature of the UIF is
                 the ability to use EL (Expression Language) statements in XML. The expressions are
                 evaluated using the Spring EL framework. Spring EL allows us to define variables
                 that can be referenced within the expressions. The UIF provides these variables from
@@ -1821,9 +1821,9 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <para>The div element is similar to span in that it wraps elements. However, div
                 elements are generally used to divide larger sections of the page and can include
                 content elements, along with the span element. The UIF generates the div element
-                using the <emphasis role="bold">Group</emphasis> component. </para>
+                using the <emphasis role="keyword">Group</emphasis> component. </para>
             <para>The group component is an implementation of a more general type of UIF component
-                named <emphasis role="bold">Container</emphasis>. The main job of container
+                named <emphasis role="keyword">Container</emphasis>. The main job of container
                 components is to hold a configured list of components and render them using a
                 layout. A container is divided into three parts: the header, the body, and the
                 footer. Generally, these appear in the user interface as show by the figure below: </para>
@@ -1995,45 +1995,45 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             configuration, the constant can be referenced using an expression and the ‘UifConstants’
             variable. For example @{#UifConstants.Placement.LEFT} refers to the LEFT enum value in
             the UifConstants class. </para>
-        <para><emphasis role="bold">Position</emphasis> – The Position enum has values BOTTOM, LEFT,
+        <para><emphasis role="keyword">Position</emphasis> – The Position enum has values BOTTOM, LEFT,
             RIGHT, and TOP. This is used to configure where an element should be placed in relation
             to another. One use of this is for the field label. We can choose to put the label to
             the left of the contained field element, on top, to the right, or on the bottom. </para>
-        <para><emphasis role="bold">Orientation</emphasis> – The Orientation enum has values
+        <para><emphasis role="keyword">Orientation</emphasis> – The Orientation enum has values
             HORIZONTAL and VERTICAL. This is used primarily by the Box layout manager to configure
             whether the elements should be aligned in a horizontal or vertical row. </para>
-        <para><emphasis role="bold">View Type</emphasis> – The View Type enum gives the available
+        <para><emphasis role="keyword">View Type</emphasis> – The View Type enum gives the available
             types of view. A View Type (discussed in 13) is a subclass of the View or FormView
             components that provides specialized behavior. The out of the box view types are
             DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, and INCIDENT. </para>
-        <para><emphasis role="bold">Control Type</emphasis> – The Control Type enum gives the
+        <para><emphasis role="keyword">Control Type</emphasis> – The Control Type enum gives the
             available controls and is used primarily when creating components through code. </para>
-        <para><emphasis role="bold">Workflow Action</emphasis> – The Workflow Action enum gives
+        <para><emphasis role="keyword">Workflow Action</emphasis> – The Workflow Action enum gives
             available workflow document actions and is used primarily within the Document
             controllers. Values are SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI,
             and ACKNOWLEDGE. </para>
-        <para><emphasis role="bold">Method To Call Names</emphasis> – This is an inner constants
+        <para><emphasis role="keyword">Method To Call Names</emphasis> – This is an inner constants
             class that specifies the name of methodToCall parameter values (which map to controller
             names). </para>
-        <para><emphasis role="bold">Action Events</emphasis> – This is an inner constants class that
+        <para><emphasis role="keyword">Action Events</emphasis> – This is an inner constants class that
             specifies action event names. Action events are a way of grouping types of actions that
             can then be used for logic or authorization. An example action event is “addLine”. </para>
-        <para><emphasis role="bold">Id Suffixes</emphasis> – This is an inner constants class that
+        <para><emphasis role="keyword">Id Suffixes</emphasis> – This is an inner constants class that
             declares id suffixes that are used throughout the framework. </para>
-        <para><emphasis role="bold">View Phases</emphasis> – This is an inner constants class that
+        <para><emphasis role="keyword">View Phases</emphasis> – This is an inner constants class that
             names the three view phases: INITIALIZE, APPLY_MODEL, and FINALIZE. </para>
-        <para><emphasis role="bold">View Status</emphasis> – This is an inner constants class that
+        <para><emphasis role="keyword">View Status</emphasis> – This is an inner constants class that
             names the three view states: C (CREATED), I (INITIALIZED), and F (FINAL). </para>
-        <para><emphasis role="bold">Context Variables Names</emphasis> – This is an inner constants
+        <para><emphasis role="keyword">Context Variables Names</emphasis> – This is an inner constants
             class that holds the names for variables that can be used in expressions. These
             variables are listed in Appendix E. </para>
-        <para><emphasis role="bold">Refresh Caller Types</emphasis> – This is an inner constants
+        <para><emphasis role="keyword">Refresh Caller Types</emphasis> – This is an inner constants
             class that holds names of refresh callers. These can be used in return methods to
             determine what type of view called the refresh. Values are LOOKUP, MULTI_VALUE_LOOKUP,
             and QUESTION. </para>
-        <para><emphasis role="bold">EL Placeholder Prefix and Suffix</emphasis> – These constants
+        <para><emphasis role="keyword">EL Placeholder Prefix and Suffix</emphasis> – These constants
             specify the placeholders that indicate an expression in the XML. </para>
-        <para><emphasis role="bold">Binding Prefixes</emphasis> – These constants specify prefixes
+        <para><emphasis role="keyword">Binding Prefixes</emphasis> – These constants specify prefixes
             that can be used within expressions for binding paths. Options are covered in Chapter
             10. </para>
         <para><emphasis role="bold">Other Constant Files</emphasis> - In addition to UifConstants,
@@ -2186,7 +2186,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
         <title>Styling and themes </title>
         <para>KRAD doesn’t stop with just rendering the HTML markup, but also provides CSS to make
             your web applications look great! With the 2.0 release, you can choose to use one of two
-            look-and–feels (known as <emphasis role="bold">Themes</emphasis>). Each theme has been
+            look-and–feels (known as <emphasis role="keyword">Themes</emphasis>). Each theme has been
             created with default styling for all the delivered components. However, if you wish to
             change styling or create new components, all the hooks are provided for doing so. This
             section will explore the themes and how custom styling can be added. </para>
@@ -2221,7 +2221,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 scheme). </para>
             <para>The second theme is based on the Kuali Student open look with modifications for
                 KRAD. By default, this is the theme configured in the base view definition. Both
-                themes are defined in <emphasis role="bold">UifViewPageDefinitions.xml</emphasis>. </para>
+                themes are defined in <emphasis role="keyword">UifViewPageDefinitions.xml</emphasis>. </para>
             <tip><para><emphasis role="bold">Planned Feature: Dense Theme</emphasis> - For the 2.2 release, a new
                     theme will be developed for KRAD that will be the replacement for the KNS
                     (legacy) theme. </para></tip>

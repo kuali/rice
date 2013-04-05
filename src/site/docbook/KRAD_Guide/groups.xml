@@ -2127,7 +2127,7 @@ public class Test2Object {
           below that row. The intended uses of this functionality is for the user to be able to
           discover additional information about that collection item without having to leave the
           page, or hide content that can become large, such as descriptions. </para>
-        <para>To use a row details group with a Uif-TableCollectionSection (or variation of) you setup the following properties on its <emphasis role="bold">layoutManager</emphasis> (It is <emphasis role="bold">REQUIRED</emphasis> that the layoutManager is using richTable functionality - in other words, it is using the dataTables jQuery plugin to render):
+        <para>To use a row details group with a Uif-TableCollectionSection (or variation of) you setup the following properties on its <emphasis role="keyword">layoutManager</emphasis> (It is <emphasis role="bold">REQUIRED</emphasis> that the layoutManager is using richTable functionality - in other words, it is using the dataTables jQuery plugin to render):
 </para>
         <para><emphasis role="keyword">rowDetailsGroup</emphasis> – this can be ANY group or section
           content you would like to use for the content of details. The input and data fields used

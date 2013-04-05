@@ -37,7 +37,7 @@
         </listitem>
         <listitem>
           <para>In KRAD we can configure a component to be progressive disclosed by
-                        setting the <emphasis role="bold">progressiveRender</emphasis> property
+                        setting the <emphasis role="keyword">progressiveRender</emphasis> property
                     </para>
         </listitem>
         <listitem>
@@ -119,7 +119,7 @@
           <para> All KRAD components support the component refresh process </para>
         </listitem>
         <listitem>
-          <para> To enable component refresh, we set the component property <emphasis role="bold">conditionalRefresh</emphasis>
+          <para> To enable component refresh, we set the component property <emphasis role="keyword">conditionalRefresh</emphasis>
                     </para>
         </listitem>
         <listitem>
@@ -149,7 +149,7 @@
                         changes </para>
         </listitem>
         <listitem>
-          <para>For this cases, KRAD provides an easier configuration with the <emphasis role="bold"
+          <para>For this cases, KRAD provides an easier configuration with the <emphasis role="keyword"
               >refreshWhenChangedPropertyNames</emphasis> property </para>
         </listitem>
         <listitem>
@@ -166,12 +166,12 @@
     <para> When a user interacts with a related control, the expression will be evaluated and if true, the corresponding control will be disabled.
 </para>
     <para><emphasis role="bold">Important note: inputs which are disabled do not send their values to the server when a form is submitted. </emphasis></para>
-    <para>Disabled works with any <emphasis role="bold">Control</emphasis> (technically any control which extends ControlBase).  It also works with any <emphasis role="bold">Action or ActionLink</emphasis>.  The following properties are available for disable functionality:</para>
+    <para>Disabled works with any <emphasis role="keyword">Control</emphasis> (technically any control which extends ControlBase).  It also works with any <emphasis role="bold">Action or ActionLink</emphasis>.  The following properties are available for disable functionality:</para>
     <itemizedlist>
-      <listitem><para><emphasis role="bold">disabled </emphasis>(Boolean expression) – can be any valid springEl boolean expression (or just true or false) – no custom SpringEL functions allowed</para></listitem>
-      <listitem><para><emphasis role="bold">evaluateDisabledOnKeyUp </emphasis>(Boolean) – if true, rather than evaluating the disable condition on the onChange event, the condition will be evaluated on each keystroke allowing immediate feedback to the user. This can only be used on textual inputs.</para></listitem>
-      <listitem><para><emphasis role="bold">disabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will disable THIS control. Useful for disallowing input when something else changes.</para></listitem>
-      <listitem><para><emphasis role="bold">enabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will enable THIS control. Useful for when the control starts out with disable=”true” and any user interaction with another control causes this one to be enabled.</para></listitem>
+      <listitem><para><emphasis role="keyword">disabled </emphasis>(Boolean expression) – can be any valid springEl boolean expression (or just true or false) – no custom SpringEL functions allowed</para></listitem>
+      <listitem><para><emphasis role="keyword">evaluateDisabledOnKeyUp </emphasis>(Boolean) – if true, rather than evaluating the disable condition on the onChange event, the condition will be evaluated on each keystroke allowing immediate feedback to the user. This can only be used on textual inputs.</para></listitem>
+      <listitem><para><emphasis role="keyword">disabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will disable THIS control. Useful for disallowing input when something else changes.</para></listitem>
+      <listitem><para><emphasis role="keyword">enabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will enable THIS control. Useful for when the control starts out with disable=”true” and any user interaction with another control causes this one to be enabled.</para></listitem>
     </itemizedlist>
     <para>In this example, field2’s TextControl input will be disabled when field118’s value is “disable”.  This is achieved through this property - p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;.  When field118’s value is not “disable” the control will be enabled.  The action button specified here follows the same rules.</para>
     <programlisting>&lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field118&quot; p:label=&quot;Choose&quot; p:width=&quot;auto&quot;
@@ -196,8 +196,8 @@
 ...
 &lt;bean parent=&quot;Uif-PrimaryActionButton&quot; p:actionLabel=&quot;Action Button&quot; <emphasis role="bold">p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;</emphasis>/&gt;
 </programlisting>
-    <para>Example of both the <emphasis role="bold">enabledWhenChangedPropertyNames </emphasis>and
-        <emphasis role="bold">evaluateDisabledOnKeyUp</emphasis> in action; when field52 has
+    <para>Example of both the <emphasis role="keyword">enabledWhenChangedPropertyNames </emphasis>and
+      <emphasis role="keyword">evaluateDisabledOnKeyUp</emphasis> in action; when field52 has
       anything typed in, then enable this control for field54 immediately.</para>
     <programlisting> &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field54&quot;&gt;
                 &lt;property name=&quot;control&quot;&gt;
@@ -292,7 +292,7 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>Each of the three functions can accept a second <emphasis role="bold"
+    <para>Each of the three functions can accept a second <emphasis role="keyword"
         >overrideOptions</emphasis> parameter which allows for additional lightbox styling. This
       parameter is optional and should only be used if it is unavoidable, since it is specific to
       the underlying implementation, which could change. If possible use the "uif-lightbox" CSS

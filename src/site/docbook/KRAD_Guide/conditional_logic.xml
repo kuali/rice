@@ -345,13 +345,13 @@
                 <listitem>
                     <para>Component modifiers are created by implementing the interface
                         org.kuali.rice.krad.uif.modifier.ComponentModifier which requires
-                        implementing the method <emphasis role="bold"
+                        implementing the method <emphasis role="keyword"
                         >performModification</emphasis>(View view, Object model, Component
                         component)</para>
                 </listitem>
                 <listitem>
                     <para>One or more component modifiers may be associated with a component with
-                        the <emphasis role="bold">componentModifiers</emphasis> List property</para>
+                        the <emphasis role="keyword">componentModifiers</emphasis> List property</para>
                 </listitem>
                 <listitem>
                     <para>Component modifiers can be conditionally applied by setting the
@@ -497,7 +497,7 @@
                     </listitem>
                     <listitem>
                         <para>We then hook up our view helper service with a view using the
-                                <emphasis role="bold">viewHelperServiceClass</emphasis>
+                            <emphasis role="keyword">viewHelperServiceClass</emphasis>
                             property</para>
                     </listitem>
                 </itemizedlist>
@@ -528,7 +528,7 @@
                             </itemizedlist>
                     </listitem>
                     <listitem>
-                        <para>Next we set the <emphasis role="bold">finalizeMethodToCall</emphasis>
+                        <para>Next we set the <emphasis role="keyword">finalizeMethodToCall</emphasis>
                             property (available on all components) to the name of the created
                             method</para>
                     </listitem>
@@ -542,12 +542,12 @@
                     </listitem>
                     <listitem>
                         <para>To invoke a class besides the view helper, we must configure the
-                                <emphasis role="bold">finalizeMethodInvoker</emphasis>
+                            <emphasis role="keyword">finalizeMethodInvoker</emphasis>
                             property</para>
                     </listitem>
                     <listitem>
                         <para>Our finalize method can take additional arguments if needed. We pass
-                            these arguments using the <emphasis role="bold"
+                            these arguments using the <emphasis role="keyword"
                                 >finalizeMethodAdditionalArguments</emphasis> property</para>
                     </listitem>
                 </itemizedlist>

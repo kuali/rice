@@ -295,26 +295,26 @@
     <para>All constraints are enforced client-side during validation, unless noted below. </para>
     <section>
       <title>Simple Constraint Properties</title>
-      <para><emphasis role="bold">Required</emphasis></para>
+      <para><emphasis role="keyword">Required</emphasis></para>
       <para>Property: required</para>
       <para>Values: true if required otherwise false</para>
       <para>When a field is required, the field must have some input value for it to be considered
         valid</para>
       <programlisting>
 &lt;bean parent=&quot;Uif-InputField&quot; p:required=&quot;true&quot; p:propertyName=&quot;field1&quot;&gt;...&lt;/bean&gt;</programlisting>
-      <para><emphasis role="bold">MinLength</emphasis></para>
+      <para><emphasis role="keyword">MinLength</emphasis></para>
       <para>Property: minLength</para>
       <para>Values: integer, 0 or greater</para>
       <para>When a minLength is set, the input value’s character length cannot be less than
                 minLength.</para>
-      <para><emphasis role="bold">MaxLength</emphasis></para>
+      <para><emphasis role="keyword">MaxLength</emphasis></para>
       <para>Property: maxLength</para>
       <para>Values: integer - 0 or greater</para>
       <para>When a maxLength is set, the input value’s character length cannot be greater than
         maxLength. MaxLength should be set to a greater value than minLength (if set).</para>
       <programlisting>
 &lt;bean parent=&quot;Uif-InputField&quot; p:minLength=&quot;1&quot; p:maxLength=&quot;8&quot;&#160;p:propertyName=&quot;field1&quot;&gt;...&lt;/bean&gt;</programlisting>
-      <para><emphasis role="bold">ExclusiveMin</emphasis></para>
+      <para><emphasis role="keyword">ExclusiveMin</emphasis></para>
       <para>Property: exclusiveMin</para>
       <para>Values: String representing a number or date value</para>
       <para>When exclusiveMin is set to a number, and the input’s value is a number, that number
@@ -324,7 +324,7 @@
         DatePicker widget will limit date selection based on this value (though the widget will
         limit min inclusively - not exclusively - so values should still be checked
         server-side).</para>
-      <para><emphasis role="bold">InclusiveMax</emphasis></para>
+      <para><emphasis role="keyword">InclusiveMax</emphasis></para>
       <para>Property: inclusiveMax</para>
       <para>Values: String representing a number or date value</para>
       <para>When inclusiveMax is set to a number and the input’s value is a number, that number must
@@ -335,7 +335,7 @@
         value.</para>
       <programlisting>
 &lt;bean parent=&quot;Uif-InputField&quot; p:exclusiveMin=&quot;0&quot; p:inclusiveMax=&quot;500&quot;&#160;p:propertyName=&quot;field1&gt;...&lt;/bean&gt;</programlisting>
-      <para><emphasis role="bold">dataType</emphasis></para>
+      <para><emphasis role="keyword">dataType</emphasis></para>
       <para>Property: dataType</para>
       <para>Values: STRING, MARKUP, DATE, TRUNCATED_DATE, BOOLEAN, INTEGER, FLOAT, DOUBLE,
                 LONG, DATETIME</para>
@@ -344,7 +344,7 @@
           client-side</emphasis> and can only be enforced during server-side validation.</para>
       <programlisting>
 &lt;bean parent=&quot;Uif-InputField&quot; p:dataType=&quot;INTEGER&quot; p:propertyName=&quot;field1&quot;&gt;...&lt;/bean&gt;</programlisting>
-      <para><emphasis role="bold"> minOccurs/maxOccurs </emphasis></para>
+      <para><emphasis role="keyword"> minOccurs/maxOccurs </emphasis></para>
       <para>This constraint is not yet fully supported. The name and location may change in the
         future. Future intended use is to constrain total collection items in a collection.</para>
       <section>
@@ -409,51 +409,51 @@
 &lt;/bean&gt;
                 </programlisting>
       <para>The predefined beans for ValidCharacterConstraint are:</para>
-      <para><emphasis role="bold">AlphaNumericPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">AlphaNumericPatternConstraint</emphasis></para>
       <para>Only alphabetic and numeric characters allowed.</para>
-      <para><emphasis role="bold">AlphaPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">AlphaPatternConstraint</emphasis></para>
       <para>Only alphabetic characters allowed.</para>
-      <para><emphasis role="bold">AnyCharacterPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">AnyCharacterPatternConstraint</emphasis></para>
       <para>Only keyboard characters are allowed. Specifically, these are ASCII characters x21
         through x7E in hexadecimal. Whitespace is not allowed by default, unless enabled through the
         allowWhitespace flag.</para>
-      <para><emphasis role="bold">CharsetPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">CharsetPatternConstraint</emphasis></para>
       <para>Allows any characters set through its validCharacters property.</para>
-      <para><emphasis role="bold">NumericPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">NumericPatternConstraint</emphasis></para>
       <para>Only numeric characters allowed.</para>
-      <para><emphasis role="bold">AlphaNumericWithBasicPunc</emphasis></para>
+      <para><emphasis role="keyword">AlphaNumericWithBasicPunc</emphasis></para>
       <para>Only alphabetic and numeric characters with whitespace, question marks, exclamation
         points, periods, parentheses, double quotes, apostrophes, forward slashes, dashes, colons,
         and semi-colons allowed. This is an additional configuration of
         AlphaNumericPatternConstraint with some “allow” flags turned on.</para>
-      <para><emphasis role="bold">AlphaWithBasicPunc</emphasis></para>
+      <para><emphasis role="keyword">AlphaWithBasicPunc</emphasis></para>
       <para>Only alphabetic characters with whitespace, question marks, exclamation points, periods,
         parentheses, double quotes, apostrophes, forward slashes, dashes, colons, and semi-colons
         allowed. This is an additional configuration of AlphaPatternConstraint with some “allow”
         flags turned on.</para>
-      <para><emphasis role="bold">NumericWithOperators</emphasis></para>
+      <para><emphasis role="keyword">NumericWithOperators</emphasis></para>
       <para>Only numeric characters with whitespace, asterisks, pluses, periods, parentheses,
         forward slashes, dashes, and equals signs, dashes allowed. This is an additional
         configuration of NumericPatternConstraint with some “allow” flags turned on.</para>
-      <para><emphasis role="bold">FixedPointPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">FixedPointPatternConstraint</emphasis></para>
       <para>Only allows a numeric value where the precision property represents the maximum number
         of numbers allowed, and scale represents the maximum numbers after the decimal point. For
         example, a FixedPointPatternConstraint with precision 5 and scale 2 would allow: 2, 555,
         555.11; but would not allow: 111.222, 1.222, 5555 (this is actually the value 5555.00, so it
         is not allowed).</para>
-      <para><emphasis role="bold">IntegerPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">IntegerPatternConstraint</emphasis></para>
       <para>Allows any valid integer (but does not restrict length or range). There are optional
         flags for allowing negative integers, only negative integers, or not allowing zero as
         input.</para>
-      <para><emphasis role="bold">DatePatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">DatePatternConstraint</emphasis></para>
       <para>Allows any date to be input that is a valid date in the system. Any format defined in
         the configuration parameter “STRING_TO_DATE_FORMATS” is allowed.</para>
-      <para><emphasis role="bold">BasicDatePatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">BasicDatePatternConstraint</emphasis></para>
       <para>Allows a subset of the default date formats defined by DatePatternConstraint. These
         formats represent the most common input for date values: MM/dd/yy, MM/dd/yyyy, MM-dd-yy, and
         MM-dd-yyyy. It is recommended that this constraint be used on fields which use the
         DatePicker widget.</para>
-      <para><emphasis role="bold">ConfigurationBasedRegexPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">ConfigurationBasedRegexPatternConstraint</emphasis></para>
       <para>The following constraints are configurations of the
         ConfigurationBasedRegexPatternConstraint which have a patternConstraintKey that is used to
         retrieve a regex pattern by key in ApplicationResources.properties (or any other imported
@@ -467,42 +467,42 @@
                         bean by setting your own messageKey and patternConstraintKey to something that
                         you have defined in a properties file. </para>
       </tip>
-      <para><emphasis role="bold">FloatingPointPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">FloatingPointPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.floatingPoint</para>
       <para>Allows any valid floating point value (does not limit length or range). In other words,
         any number which may include a decimal point.</para>
-      <para><emphasis role="bold">PhoneNumberPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">PhoneNumberPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.phoneNumber</para>
       <para>Allows any valid US phone number in this format: ###-###-####.</para>
-      <para><emphasis role="bold">TimePatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">TimePatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.time12</para>
       <para>Allows any valid time in 12 hour format, seconds and leading 0s are optional.</para>
-      <para><emphasis role="bold">Time24HPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">Time24HPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.time24</para>
       <para>Allows any valid time in 24 hour format, seconds and leading 0s are optional.</para>
-      <para><emphasis role="bold">UrlPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">UrlPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.url</para>
       <para>Allows any valid url; the prefixes http://, https://, or ftp:// are
                     required.</para>
-      <para><emphasis role="bold">NoWhitespacePatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">NoWhitespacePatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.noWhitespace</para>
       <para>Any characters except for whitespace are allowed.</para>
-      <para><emphasis role="bold">JavaClassPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">JavaClassPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.javaClass</para>
       <para>Only values that would be valid java class names are allowed.</para>
-      <para><emphasis role="bold">EmailAddressPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">EmailAddressPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.emailAddress</para>
       <para>Only valid email addresses are allowed.</para>
-      <para><emphasis role="bold">TimestampPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">TimestampPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.timestamp</para>
       <para>Only valid timestamp values are allowed.</para>
-      <para><emphasis role="bold">YearPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">YearPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.year</para>
       <para>Any year from the 1600s to the 2100s is allowed.</para>
-      <para><emphasis role="bold">MonthPatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">MonthPatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.month</para>
       <para>Any valid month, by number, is allowed.</para>
-      <para><emphasis role="bold">ZipcodePatternConstraint</emphasis></para>
+      <para><emphasis role="keyword">ZipcodePatternConstraint</emphasis></para>
       <para>patternConstraintKey: validationPatternRegex.zipcode</para>
       <para>Any valid US zip code, with or without its 4 number postfix, is
                     allowed.</para>
@@ -684,11 +684,11 @@
           property with a StateMapping object. The object MUST include a list of states and these
           states MUST be in order that the states are changed.</emphasis>
       </para>
-      <para> In addition to the states themselves, you can define a map for specifying what the state’s name will be in the text of validation messages.  The map <emphasis role="bold">stateNameMessageKeyMap</emphasis> takes the state as a key and a messageKey as a value for its entries.  The messageKey is used to retrieve the human readable version of the message from the ConfigurationService.
+      <para> In addition to the states themselves, you can define a map for specifying what the state’s name will be in the text of validation messages.  The map <emphasis role="keyword">stateNameMessageKeyMap</emphasis> takes the state as a key and a messageKey as a value for its entries.  The messageKey is used to retrieve the human readable version of the message from the ConfigurationService.
 </para>
-      <para>The <emphasis role="bold">statePropertyName</emphasis> property of StateMapping allows you to specify the name/path to the property on the form which represents the state.  By default this is set to “state” (meaning on the root form UifFormBase, stateMapping will use the “state” property to determine the state of the object).  This can be changed to anything and is used with the new property of View called stateObjectBindingPath (the path to the “state” property will be determined as stateObjectBindingPath + statePropertyName).
+      <para>The <emphasis role="keyword">statePropertyName</emphasis> property of StateMapping allows you to specify the name/path to the property on the form which represents the state.  By default this is set to “state” (meaning on the root form UifFormBase, stateMapping will use the “state” property to determine the state of the object).  This can be changed to anything and is used with the new property of View called stateObjectBindingPath (the path to the “state” property will be determined as stateObjectBindingPath + statePropertyName).
 </para>
-      <para>The <emphasis role="bold">customClientSideValidationStates</emphasis> property is used strictly to define what state the client-side validation (see corresponding section) should use to validate during user interaction.  By default, client-side validation will always validate against the “n+1” state.  What that means is that client-side validation will always validate against the NEXT state (if one exists, otherwise the current state) of the object because that is what the user is trying to get to. </para>
+      <para>The <emphasis role="keyword">customClientSideValidationStates</emphasis> property is used strictly to define what state the client-side validation (see corresponding section) should use to validate during user interaction.  By default, client-side validation will always validate against the “n+1” state.  What that means is that client-side validation will always validate against the NEXT state (if one exists, otherwise the current state) of the object because that is what the user is trying to get to. </para>
       <para>To change this behavior the customClientSideValidationStates map can be used to define what client-side validation will be used at each state.  Its entries take the state of the object as the key and the state you want the client-side validation to validate against at that state as the value.  States which don’t have a custom client-side validation state default to the “n+1” case, as normal.</para>
       <para>Example of stateMapping with some of these properties set (note that state names themselves are for example purposes only):</para>
       <para><programlisting>   &lt;property name=&quot;stateMapping&quot;&gt;
@@ -722,10 +722,10 @@
       <para>StateMapping also has some helper methods that can be called:</para>
       <itemizedlist>
         <listitem>
-          <para><emphasis role="bold">getCurrentState</emphasis> retrieves what is the current state of the object this stateMapping is for</para>
+          <para><emphasis role="keyword">getCurrentState</emphasis> retrieves what is the current state of the object this stateMapping is for</para>
         </listitem>
         <listitem>
-          <para><emphasis role="bold">getNextState</emphasis> which gets the next expected state (this does not take into account customClientSideValidationStates).
+          <para><emphasis role="keyword">getNextState</emphasis> which gets the next expected state (this does not take into account customClientSideValidationStates).
 </para>
         </listitem>
       </itemizedlist>
@@ -743,7 +743,7 @@ BaseConstraints now have a property called states.  This represents the list of 
       <para>Of course, you can just list single states by name in the list as well. </para>
       <para>These patterns can be mixed in the list itself.  Example:  p:states=“state1, state3&gt;state4, state6+”
 </para>
-      <para>In addition, other than determining if the constraint applies at a specific state or not, Constraints can also change fundamentally over time.  An example of this may be that what is allowed to be input in a field becomes stricter over state transitions.  To accomplish this, constraints (BaseConstraint.java) now have a property called <emphasis role="bold">constraintStateOverrides</emphasis> which contains a list of replacements for the constraint they are configured on.  Constraints in this list must be compatible with the constraint they are replacing; for example, ValidCharacterConstraints should only be replaced with other ValidCharacterConstraints (and its child classes), etc.  Overrides that do not match or are not valid siblings/children classes of the constraint they are overriding will throw an exception.</para>
+      <para>In addition, other than determining if the constraint applies at a specific state or not, Constraints can also change fundamentally over time.  An example of this may be that what is allowed to be input in a field becomes stricter over state transitions.  To accomplish this, constraints (BaseConstraint.java) now have a property called <emphasis role="keyword">constraintStateOverrides</emphasis> which contains a list of replacements for the constraint they are configured on.  Constraints in this list must be compatible with the constraint they are replacing; for example, ValidCharacterConstraints should only be replaced with other ValidCharacterConstraints (and its child classes), etc.  Overrides that do not match or are not valid siblings/children classes of the constraint they are overriding will throw an exception.</para>
       <para><emphasis role="bold">Constraints in this list MUST have the states at which they apply defined; the replacement will override the constraint they are configured on at the states they specify. Overrides which do not have states specified will throw an exception. </emphasis></para>
       <para>Rules for constraintStateOverrides:
 </para>
@@ -763,17 +763,17 @@ BaseConstraints now have a property called states.  This represents the list of 
         For ViewValidationService (should be used for KRAD views):
       </emphasis></para>
       <itemizedlist>
-        <listitem><para><emphasis role="bold">validateView(View view)</emphasis> - This is the main validation method that should be used when validating Views. This method validates against the current state if state based validation is setup.</para></listitem>
-        <listitem><para><emphasis role="bold">validateView(View view, ViewModel model, String forcedValidationState)</emphasis> - Validate the view against the specific validationState instead of the default (current state). If forcedValidationState is null, validates against the current state, if state-based validation is setup.</para></listitem>
-        <listitem><para><emphasis role="bold">validateViewAgainstNextState(View view, ViewModel model) </emphasis>- Validate the view against the next state based on the order of the states in the view’s StateMapping. This will validate against current state + 1. If there is no next state, this will validate against the current state.</para></listitem>
-        <listitem><para><emphasis role="bold">validateViewSimulation(View view, ViewModel model)</emphasis> - Simulate view validation - this will run all validations against all states from the current state to the last state in the list of states in the view&apos;s stateMapping. Validation errors received for the current state will be added as errors to the MessageMap. Validation errors for future states will be warnings.</para></listitem>
+        <listitem><para><emphasis role="keyword">validateView(View view)</emphasis> - This is the main validation method that should be used when validating Views. This method validates against the current state if state based validation is setup.</para></listitem>
+        <listitem><para><emphasis role="keyword">validateView(View view, ViewModel model, String forcedValidationState)</emphasis> - Validate the view against the specific validationState instead of the default (current state). If forcedValidationState is null, validates against the current state, if state-based validation is setup.</para></listitem>
+        <listitem><para><emphasis role="keyword">validateViewAgainstNextState(View view, ViewModel model) </emphasis>- Validate the view against the next state based on the order of the states in the view’s StateMapping. This will validate against current state + 1. If there is no next state, this will validate against the current state.</para></listitem>
+        <listitem><para><emphasis role="keyword">validateViewSimulation(View view, ViewModel model)</emphasis> - Simulate view validation - this will run all validations against all states from the current state to the last state in the list of states in the view&apos;s stateMapping. Validation errors received for the current state will be added as errors to the MessageMap. Validation errors for future states will be warnings.</para></listitem>
       </itemizedlist>
       <para><emphasis role="bold">For DictionaryValidationService </emphasis>(recommended only when you don’t have a view.  Also note that state-based validation only works for DataDictionaryEntry backed objects with StateMappings setup):
 </para>
       <itemizedlist>
-        <listitem><para><emphasis role="bold">validate(Object object)</emphasis> – Validates against the current state (if state-based validation is set up).</para></listitem>
-        <listitem><para><emphasis role="bold">validateAgainstState(Object object, String validationState) </emphasis>– validates against the state specified by validationState.</para></listitem>
-        <listitem><para><emphasis role="bold">validateAgainstNextState(Object object)</emphasis> – validates against the next state as defined by the state mapping.</para></listitem>
+        <listitem><para><emphasis role="keyword">validate(Object object)</emphasis> – Validates against the current state (if state-based validation is set up).</para></listitem>
+        <listitem><para><emphasis role="keyword">validateAgainstState(Object object, String validationState) </emphasis>– validates against the state specified by validationState.</para></listitem>
+        <listitem><para><emphasis role="keyword">validateAgainstNextState(Object object)</emphasis> – validates against the next state as defined by the state mapping.</para></listitem>
       </itemizedlist>
       <para>What is done in response to validation errors is also completely up to the implementation of the controller logic (it is recommended you halt action and return back the same view passed in, this will automatically display the discovered validation errors for the user).
 </para>
@@ -802,9 +802,9 @@ return getUIFModelAndView(form);</programlisting>
         <title>State-based Validation helper beans</title>
             <para>There are a few beans available for use to help with a couple aspects of state based validation:</para>
       <itemizedlist>
-        <listitem><para><emphasis role="bold">StateMapping</emphasis> - base StateMapping bean to parent from, defaults statePropertyName to &quot;state&quot;</para></listitem>
-        <listitem><para><emphasis role="bold">WorkflowStateMapping</emphasis> - suggested workflow StateMapping bean properties, for use with documents. Important: use only if you know your state-based validation is tied directly to workflow status.</para></listitem>
-        <listitem><para><emphasis role="bold">Uif-StateBased-RequiredInstructionsMessage</emphasis> - message that indicates that &quot;**&quot; means required for the next state. May be enhanced in the future to tell the user what the actual next state is.</para></listitem>
+        <listitem><para><emphasis role="keyword">StateMapping</emphasis> - base StateMapping bean to parent from, defaults statePropertyName to &quot;state&quot;</para></listitem>
+        <listitem><para><emphasis role="keyword">WorkflowStateMapping</emphasis> - suggested workflow StateMapping bean properties, for use with documents. Important: use only if you know your state-based validation is tied directly to workflow status.</para></listitem>
+        <listitem><para><emphasis role="keyword">Uif-StateBased-RequiredInstructionsMessage</emphasis> - message that indicates that &quot;**&quot; means required for the next state. May be enhanced in the future to tell the user what the actual next state is.</para></listitem>
       </itemizedlist>
       </section>  
     </section>

@@ -64,7 +64,7 @@ public class ViewHeader extends Header {
             } else if (StringUtils.isNotBlank(pageHeader.getHeaderText()) && StringUtils.isBlank(
                     supportTitleMessage.getMessageText())) {
                 //use set page header text
-                supportTitleMessage.setMessageText(pageHeader.getHeaderText());
+                supportTitleMessage.setMessageText(pageHeader.getHeaderText().trim());
             }
         }
     }

@@ -29,7 +29,7 @@
                 <#-- rich message support -->
                 <#if group.header.richHeaderMessage?has_content>
                     <@krad.template component=group.richHeaderMessage/>
-                <#elseif group.header.headerText?has_content>
+                <#elseif group.header.headerText?has_content && group.header.headerText != '&nbsp;'>
                 ${group.header.headerText}
                 </#if>
             </span>

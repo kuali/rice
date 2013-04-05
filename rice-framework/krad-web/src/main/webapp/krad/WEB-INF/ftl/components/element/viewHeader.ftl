@@ -65,7 +65,8 @@
             </#if>
 
             <span class="uif-supportTitle-wrapper">
-                <#if element.supportTitleMessage?has_content && element.supportTitleMessage.messageText?has_content>
+                <#if element.supportTitleMessage?has_content && element.supportTitleMessage.messageText?has_content
+                 && element.supportTitleMessage.messageText != '&nbsp;'>
                     <@krad.template component=element.supportTitleMessage/>
                 </#if>
             </span>

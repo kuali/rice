@@ -85,6 +85,7 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
     protected void testComponentParameter() throws Exception {
         //Create New
         waitAndCreateNew();
+        // TODO just docId should be returned as long as we use ITUTIL.DTS_TWO for the name and code.
         List<String> params;
         params = testCreateNewComponent(docId, "testName" + ITUtil.DTS_TWO, "testCode" + ITUtil.DTS_TWO);
 

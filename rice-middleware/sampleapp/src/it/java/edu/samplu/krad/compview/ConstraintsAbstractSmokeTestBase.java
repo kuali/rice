@@ -29,7 +29,7 @@ public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyIT
     /**
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
      */
-    public final static String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3";
 
     /**
      * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ConstraintsAbstractSmokeTestBase#BOOKMARK_URL}
@@ -86,6 +86,7 @@ public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyIT
     protected void testConstraints() throws Exception {
         checkForIncidentReport("testConstraints");
 
+        // TODO break out into smaller methods, especially if a test flaps.
         fireEvent("field10", "focus");
         waitAndTypeByName("field10", "2");
         fireEvent("field10", "blur");

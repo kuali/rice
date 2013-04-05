@@ -42,7 +42,6 @@ public class ComponentSTJUnitBkMrkGen extends ComponentSTJUnitBase {
      */
     @Test
     public void testCreateNewCancelComponentBookmark() throws Exception {
-        setUp();
         testComponentCreateNewCancelBookmark(this);
     }
 
@@ -52,7 +51,6 @@ public class ComponentSTJUnitBkMrkGen extends ComponentSTJUnitBase {
      */
     @Test
     public void testComponentParameterBookmark() throws Exception {
-        setUp();
         testComponentParameterBookmark(this);
     }
 }

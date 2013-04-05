@@ -334,6 +334,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    /**
+     * Set the test state to passed, this method is required to be called at the conclusion of a test for the saucelabs state of a test to be updated.
+     */
     protected void passed() {
         passed = true;
     }

@@ -40,12 +40,12 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
     /**
      * http://env12.rice.kuali.org/portal.do?channelTitle=XML%20Ingester&channelUrl=http://env12.rice.kuali.org/kew/../core/Ingester.do
      */
-    public final static String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=XML%20Ingester&channelUrl="
+    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=XML%20Ingester&channelUrl="
             + ITUtil.getBaseUrlString() + "/kew/../core/Ingester.do";
 
     // File generation
     private String PROPS_LOCATION = System.getProperty("xmlingester.props.location", null);
-    private String DEFAULT_PROPS_LOCATION = "XML/xmlingester.properties";
+    private static final String DEFAULT_PROPS_LOCATION = "XML/xmlingester.properties";
 
     // Templates for File Generation
     private static final String DIR_TMPL = "/XML/";

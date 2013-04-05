@@ -16,10 +16,23 @@
     limitations under the License.
 
 -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:import href="appendix.xsl"/>
 	<xsl:import href="xref.xsl"/>
 	<xsl:import href="titlepage.xsl"/>
+    <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl"/>
+    <xsl:template match="*[@role = 'keyword']" mode="class.value">
+        <xsl:value-of select="'keyword'"/>
+    </xsl:template>
+    <xsl:template match="emphasis[@role = 'keyword']">
+        <fo:inline> 
+            <xsl:call-template name="dbfo-attribute"/>
+            <xsl:attribute name="background-color">#EEEEEE</xsl:attribute>
+            <xsl:attribute name="font-family">monospace</xsl:attribute>
+            <xsl:attribute name="font-weight">bold</xsl:attribute>
+            <xsl:apply-templates/>
+        </fo:inline>
+    </xsl:template>
     <xsl:template match="section[@role = 'NotInToc']" mode="toc" />
     <xsl:attribute-set name="monospace.verbatim.properties">
         <xsl:attribute name="wrap-option">wrap</xsl:attribute>

@@ -534,5 +534,8 @@ body {
 
 body { background: \0/IE8+9;}
 
-
+.keyword { 
+    background: #EEEEEE;
+    font-family:Monaco, Menlo, Consolas, "Courier New", monospace;
+    font-weight:bold;}
 

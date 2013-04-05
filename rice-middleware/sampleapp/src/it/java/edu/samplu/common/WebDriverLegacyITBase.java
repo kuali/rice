@@ -52,7 +52,7 @@ import static org.junit.Assert.assertNotSame;
  * refactoring to be done:
  * <ol>
  *   <li><a href="https://jira.kuali.org/browse/KULRICE-9206">KULRICE-9206</a> Replace literal strings used more than 3 times with Constants, Javadoc constant with constant value.
- *   <li>Extract duplicate waitAndClick...(CONSTANT) to waitAndClickConstant, Javadoc a @link #CONSTANT.
+ *   <li>Extract duplicate waitAndClick...(CONSTANT) to waitAndClickConstant, Javadoc a {@link #CONSTANT}.
  *   <li>Replace large chunks of duplication</li>
  *   <li><a href="https://jira.kuali.org/browse/KULRICE-9205">KULRICE-9205</a> Invert dependencies on fields and extract methods to WebDriverUtil so inheritance doesn't have to be used for
  * reuse.  See WebDriverUtil.waitFor </li>
@@ -263,7 +263,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     /**
      * If WebDriverUtil.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
-     * @link WebDriverUtil#chromeDriverCreateCheck()
+     * {@link edu.samplu.common.WebDriverUtil#chromeDriverCreateCheck()}
      * @throws Exception
      */
     @BeforeClass
@@ -284,8 +284,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * Setup the WebDriver properties, test, and login
      *
-     * @link WebDriverUtil@determineUser
-     * @link WebDriverUtil#setUp(String, String, String, org.junit.rules.TestName)
+     * {@link WebDriverUtil#determineUser(String)}
+     * {@link WebDriverUtil#setUp(String, String, String, org.junit.rules.TestName)}
      * @throws Exception
      */
     @Before
@@ -308,9 +308,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     /**
      * Tear down test as configured.
-     * @link WebDriverUtil#tearDown
-     * @link WebDriverLegacyITBase#REMOTE_PUBLIC_USERPOOL_PROPERTY
-     * @link ITUtil#dontTearDownPropertyNotSet()
+     * {@link WebDriverUtil#tearDown(boolean, String, String, String)}
+     * {@link WebDriverLegacyITBase#REMOTE_PUBLIC_USERPOOL_PROPERTY}
+     * {@link edu.samplu.common.ITUtil#dontTearDownPropertyNotSet()}
      * @throws Exception
      */
     @After
@@ -646,7 +646,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
 
     /**
-     * @link WebDriver#getWindowHandles()
+     * {@link org.openqa.selenium.WebDriver#getWindowHandles()}
      * @return
      */
     public String[] getAllWindowTitles() {
@@ -746,7 +746,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * "admin" by default.  Can be overridden using @link WebDriverLegacyITBase#REMOTE_PUBLIC_USER_PROPERTY
+     * "admin" by default.  Can be overridden using {@link WebDriverLegacyITBase#REMOTE_PUBLIC_USER_PROPERTY}
      * @return string
      */
     public String getUserName() {
@@ -793,7 +793,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link Actions#moveToElement
+     * {@link Actions#moveToElement(org.openqa.selenium.WebElement)}
      * @param name
      */
     public void fireMouseOverEventByName(String name) {
@@ -801,7 +801,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link Actions#moveToElement
+     * {@link Actions#moveToElement(org.openqa.selenium.WebElement)}
      * @param locator
      */
     public void fireMouseOverEventByXpath(String locator) {
@@ -809,7 +809,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link Actions#moveToElement
+     * {@link Actions#moveToElement(org.openqa.selenium.WebElement)}
      * @param by
      */
     public void fireMouseOverEvent(By by) {
@@ -4727,7 +4727,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #ADMINISTRATION_LINK_TEXT
+     * {@link #ADMINISTRATION_LINK_TEXT}
      * @param failable
      * @throws InterruptedException
      */
@@ -4789,7 +4789,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #CANCEL_NAME
+     * {@link #CANCEL_NAME}
      * @throws InterruptedException
      */
     protected void waitAndClickCancel() throws InterruptedException {
@@ -4797,7 +4797,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #CLOSE_WINDOW_XPATH_TITLE
+     * {@link #CLOSE_WINDOW_XPATH_TITLE}
      * @throws InterruptedException
      */
     protected void waitAndClickCloseWindow() throws InterruptedException {
@@ -4805,7 +4805,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #COPY_LINK_TEXT
+     * {@link #COPY_LINK_TEXT}
      * @throws InterruptedException
      */
     protected void waitAndClickCopy() throws InterruptedException {
@@ -4813,7 +4813,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #DOC_SEARCH_XPATH
+     * {}@link #DOC_SEARCH_XPATH}
      * @throws InterruptedException
      */
     protected void waitAndClickDocSearch() throws InterruptedException {
@@ -4821,7 +4821,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #DOC_SEARCH_XPATH_TITLE
+     * {@link #DOC_SEARCH_XPATH_TITLE}
      * @throws InterruptedException
      */
     protected void waitAndClickDocSearchTitle() throws InterruptedException {
@@ -4829,7 +4829,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #LOGOUT_XPATH
+     * {@link #LOGOUT_XPATH}
      * @throws InterruptedException
      */
     protected void waitAndClickLogout() throws InterruptedException {
@@ -4837,7 +4837,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #LOGOUT_XPATH
+     * {@link #LOGOUT_XPATH}
      * @param failable
      * @throws InterruptedException
      */
@@ -4846,7 +4846,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #MAIN_MENU_LINK_TEXT
+     * {}@link #MAIN_MENU_LINK_TEXT}
      * @param failable
      * @throws InterruptedException
      */
@@ -4855,7 +4855,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #SAVE_XPATH
+     * {@link #SAVE_XPATH}
      * @throws InterruptedException
      */
     protected void waitAndClickSave() throws InterruptedException {
@@ -4863,7 +4863,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #SEARCH_XPATH
+     * {@link #SEARCH_XPATH}
      * @throws InterruptedException
      */
     private void waitAndClickSearch() throws InterruptedException {
@@ -4871,7 +4871,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * @link #SUBMIT_XPATH
+     * {@link #SUBMIT_XPATH}
      * @throws InterruptedException
      */
     protected void waitAndClickSubmit() throws InterruptedException {
@@ -4880,7 +4880,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
 
     /**
-     * @link #XML_INGESTER_LINK_TEXT
+     * {@link #XML_INGESTER_LINK_TEXT}
      * @param failable
      * @throws InterruptedException
      */

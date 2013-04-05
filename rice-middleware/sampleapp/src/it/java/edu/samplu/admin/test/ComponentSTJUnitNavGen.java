@@ -40,7 +40,7 @@ public class ComponentSTJUnitNavGen extends ComponentSTJUnitBase {
     }
 
     /**
-     * @link ComponentAbstractSmokeTestBase#testComponentCreateNewCancelNav
+     * {@link ComponentAbstractSmokeTestBase#testComponentCreateNewCancelNav(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test
@@ -49,7 +49,7 @@ public class ComponentSTJUnitNavGen extends ComponentSTJUnitBase {
     }
 
     /**
-     * @link ComponentAbstractSmokeTestBase#testComponentParameterNav
+     * {@link ComponentAbstractSmokeTestBase#testComponentParameterNav(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test

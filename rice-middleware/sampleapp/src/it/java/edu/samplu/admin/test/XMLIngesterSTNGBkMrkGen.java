@@ -35,7 +35,7 @@ public class XMLIngesterSTNGBkMrkGen extends XMLIngesterSTNGBase {
     }
 
     /**
-     * @link XMLIngesterAbstractSmokeTestBase#testIngestionBookmark
+     * {@link XMLIngesterAbstractSmokeTestBase#testIngestionBookmark(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testIngestionBookmark")

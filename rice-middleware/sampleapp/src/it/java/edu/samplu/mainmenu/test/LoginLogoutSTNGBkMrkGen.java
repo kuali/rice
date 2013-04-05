@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 public class LoginLogoutSTNGBkMrkGen extends LoginLogoutSTNGBase {
 
     /**
-     * @link LoginLogoutSTNGBase#testLogoutBookmark
+     * {@link LoginLogoutSTNGBase#testLogoutBookmark(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testLogoutBookmark")

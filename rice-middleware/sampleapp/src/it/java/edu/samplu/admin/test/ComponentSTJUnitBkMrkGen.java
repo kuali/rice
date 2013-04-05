@@ -37,7 +37,7 @@ public class ComponentSTJUnitBkMrkGen extends ComponentSTJUnitBase {
     }
 
     /**
-     * @link ComponentAbstractSmokeTestBase#testCreateNewCancelComponent
+     * {@link edu.samplu.admin.test.ComponentAbstractSmokeTestBase#testComponentCreateNewCancelBookmark(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test
@@ -46,7 +46,7 @@ public class ComponentSTJUnitBkMrkGen extends ComponentSTJUnitBase {
     }
 
     /**
-     * @link ComponentAbstractSmokeTestBase#testComponentParameter
+     * {@link ComponentAbstractSmokeTestBase#testComponentParameterBookmark(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test

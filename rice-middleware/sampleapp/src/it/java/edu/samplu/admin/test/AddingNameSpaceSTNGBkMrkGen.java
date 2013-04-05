@@ -35,7 +35,7 @@ public class AddingNameSpaceSTNGBkMrkGen extends AddingNameSpaceSTNGBase {
 
     /**
      * {@inheritDoc}
-     * @link AddingNameSpacesAbstractSmokeTestBase#BOOKMARK_URL
+     * {@link AddingNameSpacesAbstractSmokeTestBase#BOOKMARK_URL}
      * @return
      */
     @Override

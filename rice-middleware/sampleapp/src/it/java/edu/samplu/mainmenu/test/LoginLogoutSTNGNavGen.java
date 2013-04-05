@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 public class LoginLogoutSTNGNavGen extends LoginLogoutSTNGBase {
 
     /**
-     * @link LoginLogoutSTNGBase#testLogoutNav
+     * {@link LoginLogoutSTNGBase#testLogoutNav(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test(groups = { "all", "fast", "default", "nav" }, description = "testLogoutNav")

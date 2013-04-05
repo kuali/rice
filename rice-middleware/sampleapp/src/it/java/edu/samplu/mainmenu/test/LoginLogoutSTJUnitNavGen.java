@@ -29,7 +29,7 @@ import org.junit.Test;
 public class LoginLogoutSTJUnitNavGen extends LoginLogoutSTJUnitBase {
 
     /**
-     * @link LoginLogoutSTJUnitBase#testLogoutNav
+     * {@link LoginLogoutSTJUnitBase#testLogoutNav(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test

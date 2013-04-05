@@ -368,7 +368,7 @@
                         styling</para>
                 </listitem>
                     <listitem>
-                    <para>The <emphasis role="bold">navigateToPageId</emphasis> property is set to
+                        <para>The <emphasis role="keyword">navigateToPageId</emphasis> property is set to
                         specify the page that should be navigated to when the link is selected. By
                         default, the server side method navigate is called, which will handle the
                         navigation (we can call another method using the standard methodToCall
@@ -381,7 +381,7 @@
                 </listitem>
                     <listitem>
                     <para>The navigation group is associated with the view by the property <emphasis
-                            role="bold">navigation</emphasis></para>
+                        role="keyword">navigation</emphasis></para>
                 </listitem>
                 </itemizedlist>
         </section>
@@ -596,7 +596,7 @@
                     <para>To enable authorization, first a KIM permission must be created with the
                         correct template type and permissions, then the corresponding component must
                         be marked using the ComponentSecurity object (property is named <emphasis
-                            role="bold">componentSecurity</emphasis>)</para>
+                            role="keyword">componentSecurity</emphasis>)</para>
                 </listitem>
                 <listitem>
                     <para>The following permissions can be added:</para>

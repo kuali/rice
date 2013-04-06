@@ -92,7 +92,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      * <code>Map</code> for nested components
      * </p>
      *
-     * @return List<Component> nested components
+     * @return List<Component> nested components.
      */
     public List<Component> getNestedComponents() {
         ArrayList<Component> nestedComponents = new ArrayList<Component>();
@@ -125,7 +125,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      * be nested, and include Map or List references.
      * </p>
      *
-     * @return String property name to set
+     * @return String property name to set.
      */
     @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
@@ -157,7 +157,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      * Note the value does not need to contain the expression placeholder @{}
      * </p>
      *
-     * @return String expression that should be evaluated
+     * @return String expression that should be evaluated.
      * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService
      * @see org.kuali.rice.krad.uif.UifConstants.ContextVariableNames
      */
@@ -184,7 +184,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      * property editors will be used for setting the property value
      * </p>
      *
-     * @return Object instance to set
+     * @return Object instance to set.
      */
     @BeanTagAttribute(name = "replacement", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Object getReplacement() {
@@ -204,7 +204,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      * Validates different requirements of component compiling a series of reports detailing information on errors
      * found in the component.  Used by the RiceDictionaryValidator.
      *
-     * @param tracer Record of component's location
+     * @param tracer Record of component's location.
      */
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean("PropertyReplacer", getPropertyName());

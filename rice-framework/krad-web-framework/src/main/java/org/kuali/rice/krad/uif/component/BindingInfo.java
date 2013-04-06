@@ -69,11 +69,8 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * setup for the view
      * </p>
      *
-     * @param view
-     *            - the view instance the component belongs to
-     * @param propertyName
-     *            - name of the property (relative to the parent object) the
-     *            component binds to
+     * @param view the view instance the component belongs to.
+     * @param propertyName name of the property (relative to the parent object) the component binds to.
      */
     public void setDefaults(View view, String propertyName) {
         if (StringUtils.isBlank(bindingName)) {
@@ -97,7 +94,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * binding path "account.name"
      * </p>
      *
-     * @return String binding path
+     * @return String binding path.
      */
     @BeanTagAttribute(name="bindingPath")
     public String getBindingPath() {
@@ -136,7 +133,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * that contains the <code>BindingInfo</code>. The binding prefix is formed
      * like the binding path but without including the object path
      *
-     * @return String binding prefix for nested components
+     * @return String binding prefix for nested components.
      */
     public String getBindingPrefixForNested() {
         String bindingPrefix = "";
@@ -172,8 +169,8 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * binding object path
      * </p>
      *
-     * @param propertyPath - path for property to return full binding path for
-     * @return String full binding path
+     * @param propertyPath path for property to return full binding path for.
+     * @return String full binding path.
      */
     public String getPropertyAdjustedBindingPath(String propertyPath) {
         if (propertyPath.startsWith(UifConstants.NO_BIND_ADJUST_PREFIX)) {
@@ -214,7 +211,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
     /**
      * Helper method for adding a path to the binding prefix
      *
-     * @param bindPrefix - path to add
+     * @param bindPrefix path to add.
      */
     public void addToBindByNamePrefix(String bindPrefix) {
         if (StringUtils.isNotBlank(bindByNamePrefix) && StringUtils.isNotBlank(bindPrefix)) {
@@ -242,7 +239,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * is configured by bindingObjectPath.
      *
      * @return boolean true if component binds directly to form, false if it
-     *         binds to a nested object
+     *         binds to a nested object.
      */
     @BeanTagAttribute(name="bindToForm")
     public boolean isBindToForm() {
@@ -267,7 +264,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * If blank this will be set from the name field of the component
      * </p>
      *
-     * @return String name of the bind property
+     * @return String name of the bind property.
      */
     @BeanTagAttribute(name="bindingName")
     public String getBindingName() {
@@ -287,7 +284,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * Prefix that will be used to form the binding path from the component
      * name. Typically used for nested collection properties
      *
-     * @return String binding prefix
+     * @return String binding prefix.
      */
     @BeanTagAttribute(name="bindByNamePrefix")
     public String getBindByNamePrefix() {
@@ -312,7 +309,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * binding path
      * </p>
      *
-     * @return String path to collection
+     * @return String path to collection.
      */
     public String getCollectionPath() {
         return this.collectionPath;
@@ -344,7 +341,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * where is assumed the property is directly available from the form).
      * </p>
      *
-     * @return String path to object from form
+     * @return String path to object from form.
      */
     @BeanTagAttribute(name="bindingObjectPath")
     public String getBindingObjectPath() {
@@ -365,7 +362,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * to is a Map. If true the binding path will be adjusted to use the map key
      * syntax
      *
-     * @return boolean true if the property binds to a map, false if it does not
+     * @return boolean true if the property binds to a map, false if it does not.
      */
     @BeanTagAttribute(name="bindToMap")
     public boolean isBindToMap() {

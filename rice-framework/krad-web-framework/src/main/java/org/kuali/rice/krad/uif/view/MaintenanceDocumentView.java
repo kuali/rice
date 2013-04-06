@@ -87,7 +87,7 @@ public class MaintenanceDocumentView extends DocumentView {
     /**
      * Overrides to retrieve the a {@link MaintenanceDocumentEntry} based on the configured data object class
      *
-     * @return MaintenanceDocumentEntry document entry (exception thrown if not found).
+     * @return MaintenanceDocumentEntry document entry (exception thrown if not found)
      */
     @Override
     protected MaintenanceDocumentEntry getDocumentEntryForView() {
@@ -118,7 +118,7 @@ public class MaintenanceDocumentView extends DocumentView {
      * out the maintenance action
      * </p>
      *
-     * @return Class<?> maintenance object class.
+     * @return maintenance object class
      */
     @BeanTagAttribute(name="dataObjectClassName")
     public Class<?> getDataObjectClassName() {
@@ -138,7 +138,7 @@ public class MaintenanceDocumentView extends DocumentView {
      * Gives the binding path to the old object (record being edited) to display
      * for comparison
      *
-     * @return String old object binding path.
+     * @return old object binding path
      */
     @BeanTagAttribute(name="oldObjectBindingPath")
     public String getOldObjectBindingPath() {
@@ -158,7 +158,7 @@ public class MaintenanceDocumentView extends DocumentView {
      * Indicates what maintenance action (new, edit, copy) was
      * requested
      *
-     * @return String maintenance action.
+     * @return maintenance action
      */
     @BeanTagAttribute(name="maintenanceAction")
     public String getMaintenanceAction() {

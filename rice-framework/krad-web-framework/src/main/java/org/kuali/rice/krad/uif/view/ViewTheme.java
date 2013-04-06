@@ -49,7 +49,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      * context variable which can be referenced with an expression for an image source
      * </p>
      * 
-     * @return String theme image directory.
+     * @return theme image directory
      */
     public String getImageDirectory() {
         return imageDirectory;

@@ -102,7 +102,7 @@ public class DocumentView extends FormView {
     /**
      * Retrieves the associated {@link DocumentEntry} for the document view
      *
-     * @return DocumentEntry entry (exception thrown if one is not found).
+     * @return DocumentEntry entry (exception thrown if one is not found)
      */
     protected DocumentEntry getDocumentEntryForView() {
         DocumentEntry documentEntry = KRADServiceLocatorWeb.getDocumentDictionaryService().getDocumentEntryByClass(
@@ -138,7 +138,7 @@ public class DocumentView extends FormView {
     /**
      * Gets boolean that indicates if the document view allows note attachments
      *
-     * @return boolean true if the document view allows note attachments.
+     * @return true if the document view allows note attachments
      */
     @BeanTagAttribute(name="allowsNoteAttachments")
 	public boolean isAllowsNoteAttachments() {
@@ -157,7 +157,7 @@ public class DocumentView extends FormView {
     /**
      * Gets boolean that indicates if the document view allows note FYI
      *
-     * @return boolean true if the document view allows note FYI.
+     * @return true if the document view allows note FYI
      */
     @BeanTagAttribute(name="allowsNoteFYI")
 	public boolean isAllowsNoteFYI() {
@@ -176,7 +176,7 @@ public class DocumentView extends FormView {
     /**
      * Gets boolean that indicates if the document view displays the topic field in notes
      *
-     * @return boolean true if the document view displays the topic field in notes.
+     * @return true if the document view displays the topic field in notes
      */
     @BeanTagAttribute(name="displayTopicFieldInNotes")
 	public boolean isDisplayTopicFieldInNotes() {
@@ -195,7 +195,7 @@ public class DocumentView extends FormView {
     /**
      * Gets attachment types values finder classs
      *
-     * @return Class<? extends KeyValuesFinder> attachment types values finder class.
+     * @return attachment types values finder class
      */
     @BeanTagAttribute(name="attachmentTypesValuesFinderClass",type = BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Class<? extends KeyValuesFinder> getAttachmentTypesValuesFinderClass() {

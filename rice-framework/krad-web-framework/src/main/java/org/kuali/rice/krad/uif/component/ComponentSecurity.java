@@ -62,7 +62,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
     /**
      * Indicates whether the component has edit authorization and KIM should be consulted
      *
-     * @return boolean true if the component has edit authorization, false if not.
+     * @return true if the component has edit authorization, false if not
      */
     @BeanTagAttribute(name="editAuthz")
     public boolean isEditAuthz() {
@@ -81,7 +81,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
     /**
      * Indicates whether the component has view authorization and KIM should be consulted
      *
-     * @return boolean true if the component has view authorization, false if not.
+     * @return true if the component has view authorization, false if not
      */
     @BeanTagAttribute(name="viewAuthz")
     public boolean isViewAuthz() {
@@ -105,7 +105,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      * namespace derived by the system
      * </p>
      *
-     * @return String namespace code.
+     * @return namespace code
      */
     @BeanTagAttribute(name="namespaceAttribute")
     public String getNamespaceAttribute() {
@@ -129,7 +129,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      * component code derived by the system
      * </p>
      *
-     * @return String component code.
+     * @return component code
      */
     @BeanTagAttribute(name="componentAttribute")
     public String getComponentAttribute() {
@@ -153,7 +153,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      * send a different id for the permission check
      * </p>
      *
-     * @return String id.
+     * @return id
      */
     @BeanTagAttribute(name="idAttribute")
     public String getIdAttribute() {

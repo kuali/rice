@@ -402,9 +402,9 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * Used to derive namespace and component details. Subclasses can override to return the object to be used
      * </p>
      *
-     * @param view view instance the permission checks are being done for.
-     * @param model model object containing the data and from which the data object should be pulled.
-     * @return Object data object instance to use.
+     * @param view view instance the permission checks are being done for
+     * @param model model object containing the data and from which the data object should be pulled
+     * @return data object instance to use
      */
     protected Object getDataObjectContext(View view, ViewModel model) {
         Object dataObject = model;
@@ -423,10 +423,10 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * Builds the permission details map for a field which includes the component namespace, component name, and
      * field id, in addition to property name for data binding fields
      *
-     * @param view view instance the field belongs to.
-     * @param dataObject default object from the data model (used for subclasses to build details).
-     * @param field field instance the details are being built for.
-     * @return Map<String, String> permission details for the field.
+     * @param view view instance the field belongs to
+     * @param dataObject default object from the data model (used for subclasses to build details)
+     * @param field field instance the details are being built for
+     * @return permission details for the field
      */
     protected Map<String, String> getFieldPermissionDetails(View view, Object dataObject, Field field) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
@@ -447,10 +447,10 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * Builds the permission details map for a group which includes the component namespace, component name, and
      * group id, in addition to property name for collection groups
      *
-     * @param view view instance the group belongs to.
-     * @param dataObject default object from the data model (used for subclasses to build details).
-     * @param group group instance the details are being built for.
-     * @return Map<String, String> permission details for the group.
+     * @param view view instance the group belongs to
+     * @param dataObject default object from the data model (used for subclasses to build details)
+     * @param group group instance the details are being built for
+     * @return permission details for the group
      */
     protected Map<String, String> getGroupPermissionDetails(View view, Object dataObject, Group group) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
@@ -471,10 +471,10 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * Builds the permission details map for a widget which includes the namespace, view id, and
      * widget id
      *
-     * @param view view instance the widget belongs to.
-     * @param dataObject default object from the data model (used for subclasses to build details).
-     * @param widget group instance the details are being built for.
-     * @return Map<String, String> permission details for group.
+     * @param view view instance the widget belongs to
+     * @param dataObject default object from the data model (used for subclasses to build details)
+     * @param widget group instance the details are being built for
+     * @return permission details for group
      */
     protected Map<String, String> getWidgetPermissionDetails(View view, Object dataObject, Widget widget) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
@@ -490,10 +490,10 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * Builds the permission details map for an action which includes the namespace, view id, and
      * action id and event
      *
-     * @param view view instance the widget belongs to.
-     * @param dataObject default object from the data model (used for subclasses to build details).
-     * @param action action instance the details are being built for.
-     * @return Map<String, String> permission details for action.
+     * @param view view instance the widget belongs to
+     * @param dataObject default object from the data model (used for subclasses to build details)
+     * @param action action instance the details are being built for
+     * @return permission details for action
      */
     protected Map<String, String> getActionPermissionDetails(View view, Object dataObject, Action action) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
@@ -515,17 +515,17 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * role qualifiers.
      * </p>
      *
-     * @param view view instance the component belongs to.
-     * @param component component instance the permission check is being done for.
-     * @param model object containing the views data.
-     * @param permissionTemplateName template name for the permission to check.
-     * @param user user to perform the authorization for.
-     * @param additionalPermissionDetails additional key/value pairs to pass with the permission details.
-     * @param additionalRoleQualifications additional key/value paris to pass with the role qualifiers.
+     * @param view view instance the component belongs to
+     * @param component component instance the permission check is being done for
+     * @param model object containing the views data
+     * @param permissionTemplateName template name for the permission to check
+     * @param user user to perform the authorization for
+     * @param additionalPermissionDetails additional key/value pairs to pass with the permission details
+     * @param additionalRoleQualifications additional key/value paris to pass with the role qualifiers
      * @param checkPermissionExistence boolean indicating whether the existence of the permission should be checked
-     * before performing the authorization.
-     * @return boolean indicating whether the user has authorization, this will be the case if the user has been
-     * granted the permission or checkPermissionExistence is true and the permission does not exist.
+     * before performing the authorization
+     * @return whether or not the user has authorization; this will be the case if the user has been
+     * granted the permission or checkPermissionExistence is true and the permission does not exist
      */
     protected boolean isAuthorizedByTemplate(View view, Component component, ViewModel model,
             String permissionTemplateName, Person user, Map<String, String> additionalPermissionDetails,
@@ -601,7 +601,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     /**
      * Indicates whether the environment is non production and unmasking is not enabled by system parameter
      *
-     * @return boolean true if unmasking is turned off, false if unmasking is allowed.
+     * @return true if unmasking is turned off, false if unmasking is allowed
      */
     private boolean isNonProductionEnvAndUnmaskingTurnedOff() {
         return !getConfigurationService().getPropertyValueAsString(KRADConstants.PROD_ENVIRONMENT_CODE_KEY).

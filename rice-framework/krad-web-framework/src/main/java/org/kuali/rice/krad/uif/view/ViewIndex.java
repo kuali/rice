@@ -104,7 +104,7 @@ public class ViewIndex implements Serializable {
      * be used for form binding
      * </p>
      *
-     * @param component - component instance to index
+     * @param component component instance to index
      */
     public void indexComponent(Component component) {
         if (component == null) {
@@ -207,8 +207,8 @@ public class ViewIndex implements Serializable {
     /**
      * Retrieves a <code>Component</code> from the view index by Id
      *
-     * @param id id for the component to retrieve.
-     * @return Component instance found in index, or null if no such component exists.
+     * @param id id for the component to retrieve
+     * @return Component instance found in index, or null if no such component exists
      */
     public Component getComponentById(String id) {
         return index.get(id);
@@ -217,8 +217,8 @@ public class ViewIndex implements Serializable {
     /**
      * Retrieves a <code>DataField</code> instance from the index
      *
-     * @param propertyPath full path of the data field (from the form).
-     * @return DataField instance for the path or Null if not found.
+     * @param propertyPath full path of the data field (from the form)
+     * @return DataField instance for the path or Null if not found
      */
     public DataField getDataFieldByPath(String propertyPath) {
         return dataFieldIndex.get(propertyPath);
@@ -228,8 +228,8 @@ public class ViewIndex implements Serializable {
      * Retrieves a <code>DataField</code> instance that has the given property name
      * specified (note this is not the full binding path and first match is returned)
      *
-     * @param propertyName property name for field to retrieve.
-     * @return DataField instance found or null if not found.
+     * @param propertyName property name for field to retrieve
+     * @return DataField instance found or null if not found
      */
     public DataField getDataFieldByPropertyName(String propertyName) {
         DataField dataField = null;
@@ -249,7 +249,7 @@ public class ViewIndex implements Serializable {
      * key points to an attribute binding path, and the Map value is the
      * <code>DataField</code> instance
      *
-     * @return Map<String, DataField> data fields index map
+     * @return data fields index map
      */
     public Map<String, DataField> getDataFieldIndex() {
         return this.dataFieldIndex;
@@ -260,7 +260,7 @@ public class ViewIndex implements Serializable {
      * gives the binding path to the collection, and the Map value givens the
      * <code>CollectionGroup</code> instance
      *
-     * @return Map<String, CollectionGroup> collection index map
+     * @return collection index map
      */
     public Map<String, CollectionGroup> getCollectionsIndex() {
         return this.collectionsIndex;
@@ -269,9 +269,9 @@ public class ViewIndex implements Serializable {
     /**
      * Retrieves a <code>CollectionGroup</code> instance from the index
      *
-     * @param collectionPath full path of the collection (from the form).
+     * @param collectionPath full path of the collection (from the form)
      * @return CollectionGroup instance for the collection path or Null if not
-     *         found.
+     *         found
      */
     public CollectionGroup getCollectionGroupByPath(String collectionPath) {
         return collectionsIndex.get(collectionPath);
@@ -291,9 +291,7 @@ public class ViewIndex implements Serializable {
      * Map entries are added during the perform initialize phase from {@link org.kuali.rice.krad.uif.service.ViewHelperService}
      * </p>
      *
-     * @return Map<String, Component> map with key giving the factory id for the component and the value the
-     *         component
-     *         instance
+     * @return map with key giving the factory id for the component and the value the component instance
      */
     public Map<String, Component> getInitialComponentStates() {
         return initialComponentStates;
@@ -307,7 +305,7 @@ public class ViewIndex implements Serializable {
      * and we can get the state from Spring). Once added the factory id will be set to the component id
      * </p>
      *
-     * @param component component instance to add.
+     * @param component component instance to add
      */
     public void addInitialComponentStateIfNeeded(Component component) {
         if (StringUtils.isBlank(component.getBaseId())) {
@@ -335,7 +333,7 @@ public class ViewIndex implements Serializable {
      * instead
      * </p>
      *
-     * @return Map<String, PropertyEditor> map of property path (full) to PropertyEditor
+     * @return map of property path (full) to PropertyEditor
      */
     public Map<String, PropertyEditor> getFieldPropertyEditors() {
         return fieldPropertyEditors;
@@ -351,7 +349,7 @@ public class ViewIndex implements Serializable {
      * instead
      * </p>
      *
-     * @return Map<String, PropertyEditor> map of property path (full) to PropertyEditor
+     * @return map of property path (full) to PropertyEditor
      */
     public Map<String, PropertyEditor> getSecureFieldPropertyEditors() {
         return secureFieldPropertyEditors;
@@ -369,8 +367,8 @@ public class ViewIndex implements Serializable {
     /**
      * Adds a sequence value to the id snapshot map for the given component id
      *
-     * @param componentId - id for the component the id sequence value is associated it
-     * @param sequenceVal - current sequence value to insert into the snapshot
+     * @param componentId id for the component the id sequence value is associated it
+     * @param sequenceVal current sequence value to insert into the snapshot
      */
     public void addSequenceValueToSnapshot(String componentId, int sequenceVal) {
         idSequenceSnapshot.put(componentId, sequenceVal);

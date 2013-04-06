@@ -208,8 +208,8 @@ public class LookupView extends FormView {
     /**
      * Finds an Action with the search methodToCall from a list of Actions
      *
-     * @param componentList list of components.
-     * @return the Action component with methodToCall of search.
+     * @param componentList list of components
+     * @return the Action component with methodToCall of search
      */
     private Action findSearchButton(List<? extends Component> componentList) {
         List<? extends Action> actionList = ComponentUtils.getComponentsOfType(componentList, Action.class);
@@ -326,7 +326,7 @@ public class LookupView extends FormView {
      * lookup action
      * </p>
      *
-     * @return Class<?> lookup data object class.
+     * @return lookup data object class
      */
     @BeanTagAttribute(name="dataObjectClassName")
     public Class<?> getDataObjectClassName() {
@@ -351,14 +351,14 @@ public class LookupView extends FormView {
     }
 
     /**
-     * @param hideReturnLinks the hideReturnLinks to set.
+     * @param hideReturnLinks the hideReturnLinks to set
      */
     public void setHideReturnLinks(boolean hideReturnLinks) {
         this.hideReturnLinks = hideReturnLinks;
     }
 
     /**
-     * @return the suppressActions.
+     * @return the suppressActions
      */
     @BeanTagAttribute(name="isSuppressActions")
     public boolean isSuppressActions() {
@@ -366,14 +366,14 @@ public class LookupView extends FormView {
     }
 
     /**
-     * @param suppressActions the suppressActions to set.
+     * @param suppressActions the suppressActions to set
      */
     public void setSuppressActions(boolean suppressActions) {
         this.suppressActions = suppressActions;
     }
 
     /**
-     * @return the showMaintenanceLinks.
+     * @return the showMaintenanceLinks
      */
     @BeanTagAttribute(name="showMaintenanceLinks")
     public boolean isShowMaintenanceLinks() {
@@ -381,7 +381,7 @@ public class LookupView extends FormView {
     }
 
     /**
-     * @param showMaintenanceLinks the showMaintenanceLinks to set.
+     * @param showMaintenanceLinks the showMaintenanceLinks to set
      */
     public void setShowMaintenanceLinks(boolean showMaintenanceLinks) {
         this.showMaintenanceLinks = showMaintenanceLinks;
@@ -395,7 +395,7 @@ public class LookupView extends FormView {
      * to select one or more rows for returning
      * </p>
      *
-     * @return boolean true if multiple values should be enabled, false otherwise.
+     * @return true if multiple values should be enabled, false otherwise
      */
     @BeanTagAttribute(name="multipleValueSelect")
     public boolean isMultipleValuesSelect() {
@@ -469,7 +469,7 @@ public class LookupView extends FormView {
      * Retrieves the maximum number of records that will be listed
      * as a result of the lookup search
      *
-     * @return Integer result set limit.
+     * @return Integer result set limit
      */
     @BeanTagAttribute(name="resultSetLimit")
     public Integer getResultSetLimit() {
@@ -479,7 +479,7 @@ public class LookupView extends FormView {
     /**
      * Setter for the result list limit
      *
-     * @param resultSetLimit Integer specifying limit.
+     * @param resultSetLimit Integer specifying limit
      */
     public void setResultSetLimit(Integer resultSetLimit) {
         this.resultSetLimit = resultSetLimit;
@@ -489,7 +489,7 @@ public class LookupView extends FormView {
      * Indicates whether a result set limit has been specified for the
      * view
      *
-     * @return true if this instance has a result set limit.
+     * @return true if this instance has a result set limit
      */
     public boolean hasResultSetLimit() {
         return (resultSetLimit != null);
@@ -499,7 +499,7 @@ public class LookupView extends FormView {
      * Retrieves the maximum number of records that will be listed
      * as a result of the multiple values select lookup search
      *
-     * @return Integer multiple values select result set limit.
+     * @return multiple values select result set limit
      */
     @BeanTagAttribute(name="multipleValuesSelectResultSetLimit")
     public Integer getMultipleValuesSelectResultSetLimit() {
@@ -509,7 +509,7 @@ public class LookupView extends FormView {
     /**
      * Setter for the multiple values select result set limit
      *
-     * @param multipleValuesSelectResultSetLimit Integer specifying limit.
+     * @param multipleValuesSelectResultSetLimit Integer specifying limit
      */
     public void setMultipleValuesSelectResultSetLimit(Integer multipleValuesSelectResultSetLimit) {
         this.multipleValuesSelectResultSetLimit = multipleValuesSelectResultSetLimit;
@@ -519,21 +519,21 @@ public class LookupView extends FormView {
      * Indicates whether a multiple values select result
      * set limit has been specified for the view
      *
-     * @return true if this instance has a multiple values select result set limit.
+     * @return true if this instance has a multiple values select result set limit
      */
     public boolean hasMultipleValuesSelectResultSetLimit() {
         return (multipleValuesSelectResultSetLimit != null);
     }
 
     /**
-     * @param returnTarget the returnTarget to set.
+     * @param returnTarget the returnTarget to set
      */
     public void setReturnTarget(String returnTarget) {
         this.returnTarget = returnTarget;
     }
 
     /**
-     * @return the returnTarget.
+     * @return the returnTarget
      */
     @BeanTagAttribute(name="returnTarget")
     public String getReturnTarget() {
@@ -541,7 +541,7 @@ public class LookupView extends FormView {
     }
 
     /**
-     * @return the returnByScript.
+     * @return the returnByScript
      */
     @BeanTagAttribute(name="returnByScript")
     public boolean isReturnByScript() {
@@ -552,7 +552,7 @@ public class LookupView extends FormView {
      * Setter for the flag to indicate that lookups will return the value
      * by script and not a post
      *
-     * @param returnByScript the returnByScript flag.
+     * @param returnByScript the returnByScript flag
      */
     public void setReturnByScript(boolean returnByScript) {
         this.returnByScript = returnByScript;
@@ -567,7 +567,7 @@ public class LookupView extends FormView {
      * default maintenance mapping will be used
      * </p>
      *
-     * @return String mapping string.
+     * @return mapping string
      */
     @BeanTagAttribute(name="maintenanceUrlMapping")
     public String getMaintenanceUrlMapping() {

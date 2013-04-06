@@ -57,7 +57,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     /**
      * Returns a representation of the history entry as a request parameter string
      *
-     * @return String containing the entries values.
+     * @return String containing the entries values
      */
     public String toParam() {
         viewId = (StringUtils.isNotBlank(viewId)) ? viewId : "null";
@@ -80,7 +80,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     /**
      * The viewId of the view
      *
-     * @return the viewId.
+     * @return the viewId
      */
     @BeanTagAttribute(name="viewId")
     public String getViewId() {
@@ -88,7 +88,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     }
 
     /**
-     * @param viewId the viewId to set.
+     * @param viewId the viewId to set
      */
     public void setViewId(String viewId) {
         this.viewId = viewId;
@@ -97,7 +97,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     /**
      * The pageId of the page on the view
      *
-     * @return the pageId.
+     * @return the pageId
      */
     @BeanTagAttribute(name="pageId")
     public String getPageId() {
@@ -105,7 +105,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     }
 
     /**
-     * @param pageId the pageId to set.
+     * @param pageId the pageId to set
      */
     public void setPageId(String pageId) {
         this.pageId = pageId;
@@ -114,7 +114,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     /**
      * The title of the view
      *
-     * @return the title.
+     * @return the title
      */
     @BeanTagAttribute(name="title")
     public String getTitle() {
@@ -122,7 +122,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     }
 
     /**
-     * @param title the title to set.
+     * @param title the title to set
      */
     public void setTitle(String title) {
         this.title = title;
@@ -131,7 +131,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     /**
      * The url of this HistoryEntry
      *
-     * @return the url.
+     * @return the url
      */
     @BeanTagAttribute(name="url")
     public String getUrl() {
@@ -139,14 +139,14 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     }
 
     /**
-     * @param url the url to set.
+     * @param url the url to set
      */
     public void setUrl(String url) {
         this.url = url;
     }
 
     /**
-     * @return the formKey.
+     * @return the formKey
      */
     @BeanTagAttribute(name="formKey")
     public String getFormKey() {
@@ -156,7 +156,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     /**
      * The formKey of the form in the view
      *
-     * @param formKey the formKey to set.
+     * @param formKey the formKey to set
      */
     public void setFormKey(String formKey) {
         this.formKey = formKey;

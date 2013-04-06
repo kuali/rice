@@ -42,7 +42,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
      * e.g. "example.MyExampleClass.myExampleMethod".
      * Convenient alternative to specifying targetClass and targetMethod.
      *
-     * @return String static method to invoke.
+     * @return static method to invoke
      */
     @BeanTagAttribute(name="staticMethod")
     public String getStaticMethod() {
@@ -53,7 +53,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
      * Override to catch a set staticMethod since super does
      * not contain a getter
      *
-     * @param staticMethod static method to invoke.
+     * @param staticMethod static method to invoke
      */
     @Override
     public void setStaticMethod(String staticMethod) {
@@ -65,7 +65,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
      * Declared argument types for the method to be invoked, if not set the types will
      * be retrieved based on the target class and target name
      *
-     * @return Class[] method argument types.
+     * @return method argument types
      */
     @BeanTagAttribute(name="argumentTypes",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public Class[] getArgumentTypes() {
@@ -89,7 +89,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
      * Finds the method on the target class that matches the target name and
      * returns the declared parameter types
      *
-     * @return Class[] method parameter types.
+     * @return method parameter types
      */
     protected Class[] getMethodArgumentTypes() {
         if (StringUtils.isNotBlank(staticMethod)) {

@@ -371,7 +371,7 @@ public class View extends ContainerBase {
     /**
      * Assigns an id (if not configured) to a component and all its child components
      *
-     * @param component component instance to assign id to.
+     * @param component component instance to assign id to
      */
     public void assignComponentIds(Component component) {
         if (component == null) {
@@ -403,7 +403,7 @@ public class View extends ContainerBase {
      * page) in its tree (components for lifecycle) we need to loop through them explicity and assign ids
      * </p>
      *
-     * @param view view instance containing the pages.
+     * @param view view instance containing the pages
      */
     protected void assignPageIds(View view) {
         // single page view
@@ -435,7 +435,7 @@ public class View extends ContainerBase {
     /**
      * Assigns an id to the given component
      *
-     * @param component component to assign id to.
+     * @param component component to assign id to
      */
     protected void assignComponentId(Component component) {
         Integer currentSequenceVal = idSequence;
@@ -519,7 +519,7 @@ public class View extends ContainerBase {
      * Iterates through the contained page items and returns the Page that
      * matches the set current page id
      *
-     * @return Page instance.
+     * @return Page instance
      */
     public PageGroup getCurrentPage() {
         for (Group pageGroup : this.getItems()) {
@@ -550,7 +550,7 @@ public class View extends ContainerBase {
      * retrieval
      * </p>
      *
-     * @return String namespace code.
+     * @return namespace code
      */
     @BeanTagAttribute(name = "namespaceCode")
     public String getNamespaceCode() {
@@ -578,7 +578,7 @@ public class View extends ContainerBase {
      * set to 'default', and likewise the name for the second 'advanced'.
      * </p>
      *
-     * @return String name of view
+     * @return name of view
      */
     @BeanTagAttribute(name = "viewName")
     public String getViewName() {
@@ -603,7 +603,7 @@ public class View extends ContainerBase {
      * and so on can be rendered.
      * </p>
      *
-     * @return HeaderField application header.
+     * @return application header
      */
     @BeanTagAttribute(name = "applicationHeader", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Header getApplicationHeader() {
@@ -628,7 +628,7 @@ public class View extends ContainerBase {
      * and so on can be rendered.
      * </p>
      *
-     * @return Group application footer.
+     * @return application footer
      */
     @BeanTagAttribute(name = "applicationFooter", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getApplicationFooter() {
@@ -647,7 +647,7 @@ public class View extends ContainerBase {
     /**
      * Current sequence value for id assignment
      *
-     * @return int id sequence.
+     * @return id sequence
      */
     public int getIdSequence() {
         return idSequence;
@@ -665,7 +665,7 @@ public class View extends ContainerBase {
     /**
      * Returns the next unique id available for components within the view instance
      *
-     * @return String next id available.
+     * @return next id available
      */
     public String getNextId() {
         idSequence += 1;
@@ -677,7 +677,7 @@ public class View extends ContainerBase {
      * will be rendered when the <code>View</code> is first rendered or when the
      * current page is not set
      *
-     * @return String id of the page to render by default.
+     * @return id of the page to render by default
      */
     @BeanTagAttribute(name = "entryPageId")
     public String getEntryPageId() {
@@ -701,7 +701,7 @@ public class View extends ContainerBase {
      * If current page id is not set, it is set to the configured entry page or first item in list id
      * </p>
      *
-     * @return String id of the page that should be displayed.
+     * @return id of the page that should be displayed
      */
     public String getCurrentPageId() {
         // default current page if not set
@@ -756,7 +756,7 @@ public class View extends ContainerBase {
      * used to present and accept data in the user interface. All form classes
      * should extend UifFormBase
      *
-     * @return Class<?> class for the view's form.
+     * @return class for the view's form
      * @see org.kuali.rice.krad.web.form.UifFormBase
      */
     @BeanTagAttribute(name = "formClass")
@@ -780,7 +780,7 @@ public class View extends ContainerBase {
      * the component does not set its own binding object path it will inherit
      * the default
      *
-     * @return String binding path to the object from the form.
+     * @return binding path to the object from the form
      */
     @BeanTagAttribute(name = "defaultObjectPath")
     public String getDefaultBindingObjectPath() {
@@ -818,7 +818,7 @@ public class View extends ContainerBase {
      * TravelAccountingLine class will be used.
      * </p>
      *
-     * @return Map<String, Class> of class implementations keyed by path.
+     * @return Map<String, Class> of class implementations keyed by path
      */
     @BeanTagAttribute(name = "objectPathConcreteClassMapping", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, Class<?>> getObjectPathToConcreteClassMapping() {
@@ -845,7 +845,7 @@ public class View extends ContainerBase {
      * 'http://my.edu/web/myScript.js'
      * </p>
      *
-     * @return List<String> script file locations.
+     * @return script file locations
      */
     @BeanTagAttribute(name = "additionalScriptFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalScriptFiles() {
@@ -873,7 +873,7 @@ public class View extends ContainerBase {
      * 'http://my.edu/web/stacked-view.css'
      * </p>
      *
-     * @return List<String> CSS file locations.
+     * @return CSS file locations
      */
     @BeanTagAttribute(name = "additionalCssFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalCssFiles() {
@@ -900,7 +900,7 @@ public class View extends ContainerBase {
      * pre-loaded
      * </p>
      *
-     * @return int number of view instances to pre-load.
+     * @return number of view instances to pre-load
      */
     @BeanTagAttribute(name = "preloadPoolSize")
     public int getPreloadPoolSize() {
@@ -932,7 +932,7 @@ public class View extends ContainerBase {
      * a macro for each component that the template defines)
      * </p>
      *
-     * @return List<String> list of template names that should be included for rendering the view.
+     * @return list of template names that should be included for rendering the view
      */
     public List<String> getViewTemplates() {
         return viewTemplates;
@@ -958,7 +958,7 @@ public class View extends ContainerBase {
      * retrieval of views.
      * </p>
      *
-     * @return String view type name for the view.
+     * @return view type name for the view
      */
     @BeanTagAttribute(name = "viewTypeName", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ViewType getViewTypeName() {
@@ -978,7 +978,7 @@ public class View extends ContainerBase {
      * Class name of the <code>ViewHelperService</code> that handles the various
      * phases of the Views lifecycle
      *
-     * @return Class for the spring bean.
+     * @return Class for the spring bean
      * @see org.kuali.rice.krad.uif.service.ViewHelperService
      */
     @BeanTagAttribute(name = "viewHelperServiceClass")
@@ -1002,7 +1002,7 @@ public class View extends ContainerBase {
     /**
      * Creates the <code>ViewHelperService</code> associated with the View
      *
-     * @return ViewHelperService instance.
+     * @return ViewHelperService instance
      */
     @BeanTagAttribute(name = "viewHelperService", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ViewHelperService getViewHelperService() {
@@ -1031,7 +1031,7 @@ public class View extends ContainerBase {
     /**
      * Holds field indexes of the <code>View</code> instance for retrieval
      *
-     * @return ViewIndex instance.
+     * @return ViewIndex instance
      */
     @BeanTagAttribute(name = "viewIndex", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ViewIndex getViewIndex() {
@@ -1097,7 +1097,7 @@ public class View extends ContainerBase {
      * framework enables clear points on certain actions to remove the form when it is no longer needed
      * </p>
      *
-     * @return boolean true if the form should be stored in the user session, false if only request based.
+     * @return true if the form should be stored in the user session, false if only request based
      */
     @BeanTagAttribute(name = "persistFormToSession")
     public boolean isPersistFormToSession() {
@@ -1196,7 +1196,7 @@ public class View extends ContainerBase {
      * other UI logic
      * </p>
      *
-     * @return BooleanMap action flags.
+     * @return action flags
      */
     @BeanTagAttribute(name = "actionFlags", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BooleanMap getActionFlags() {
@@ -1220,7 +1220,7 @@ public class View extends ContainerBase {
      * other UI logic
      * </p>
      *
-     * @return BooleanMap edit modes.
+     * @return edit modes
      */
     @BeanTagAttribute(name = "editModes", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BooleanMap getEditModes() {
@@ -1249,7 +1249,7 @@ public class View extends ContainerBase {
      * and any object contained in the view's context
      * </p>
      *
-     * @return Map<String, String> variable expressions.
+     * @return variable expressions
      */
     @BeanTagAttribute(name = "expressionVariables", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getExpressionVariables() {
@@ -1273,8 +1273,8 @@ public class View extends ContainerBase {
      * given by the page property ({@link #getPage()}. This is for convenience
      * of configuration and also can drive other configuration like styling.
      *
-     * @return boolean true if the view only contains one page group, false if
-     *         it contains multple pages.
+     * @return true if the view only contains one page group, false if
+     *         it contains multple pages
      */
     @BeanTagAttribute(name = "singlePageView")
     public boolean isSinglePageView() {
@@ -1294,8 +1294,8 @@ public class View extends ContainerBase {
      * Indicates whether the default sections specified in the page items list
      * should be included for this view.  This only applies to single paged views.
      *
-     * @return boolean true if the view should contain the default sections
-     *         specified in the page.
+     * @return true if the view should contain the default sections
+     *         specified in the page
      */
     public boolean isMergeWithPageItems() {
         return mergeWithPageItems;
@@ -1316,7 +1316,7 @@ public class View extends ContainerBase {
      * is taken from the group's items list ({@link #getItems()}, and set onto
      * the give page group. This is for convenience of configuration.
      *
-     * @return Group page group for single page views.
+     * @return page group for single page views
      */
     @BeanTagAttribute(name = "page", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PageGroup getPage() {
@@ -1355,7 +1355,7 @@ public class View extends ContainerBase {
     /**
      * Provide a list of dialog groups associated with this view
      *
-     * @return List of dialog Groups.
+     * @return List of dialog Groups
      */
     @BeanTagAttribute(name = "dialogs", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Group> getDialogs() {
@@ -1365,7 +1365,7 @@ public class View extends ContainerBase {
     /**
      * Sets the list of dialog groups for this view
      *
-     * @param dialogs List of dialog groups.
+     * @param dialogs List of dialog groups
      */
     public void setDialogs(List<? extends Group> dialogs) {
         this.dialogs = dialogs;
@@ -1375,7 +1375,7 @@ public class View extends ContainerBase {
      * Provides configuration for displaying a link to the view from an
      * application menu
      *
-     * @return Link view link field.
+     * @return view link field
      */
     @BeanTagAttribute(name = "viewMenuLink", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Link getViewMenuLink() {
@@ -1395,7 +1395,7 @@ public class View extends ContainerBase {
      * Provides a grouping string for the view to group its menu link (within a
      * portal for instance)
      *
-     * @return String menu grouping.
+     * @return menu grouping
      */
     @BeanTagAttribute(name = "viewMenuGroupName")
     public String getViewMenuGroupName() {
@@ -1422,7 +1422,7 @@ public class View extends ContainerBase {
      * the view is ready for render the status changes to FINAL
      * </p>
      *
-     * @return String view status.
+     * @return view status
      * @see org.kuali.rice.krad.uif.UifConstants.ViewStatus
      */
     public String getViewStatus() {
@@ -1441,7 +1441,7 @@ public class View extends ContainerBase {
     /**
      * Indicates whether the view has been initialized
      *
-     * @return boolean true if the view has been initialized, false if not.
+     * @return true if the view has been initialized, false if not
      */
     public boolean isInitialized() {
         return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED) || StringUtils.equals(viewStatus,
@@ -1452,7 +1452,7 @@ public class View extends ContainerBase {
      * Indicates whether the view has been updated from the model and final
      * updates made
      *
-     * @return boolean true if the view has been updated, false if not.
+     * @return true if the view has been updated, false if not
      */
     public boolean isFinal() {
         return StringUtils.equals(viewStatus, ViewStatus.FINAL);
@@ -1461,7 +1461,7 @@ public class View extends ContainerBase {
     /**
      * Breadcrumb widget used for displaying homeward path and history
      *
-     * @return the breadcrumbs.
+     * @return the breadcrumbs
      */
     @BeanTagAttribute(name = "breadcrumbs", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Breadcrumbs getBreadcrumbs() {
@@ -1469,7 +1469,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @param breadcrumbs the breadcrumbs to set.
+     * @param breadcrumbs the breadcrumbs to set
      */
     public void setBreadcrumbs(Breadcrumbs breadcrumbs) {
         this.breadcrumbs = breadcrumbs;
@@ -1479,7 +1479,7 @@ public class View extends ContainerBase {
      * Growls widget which sets up global settings for the growls used in this
      * view and its pages
      *
-     * @return the growls.
+     * @return the growls
      */
     @BeanTagAttribute(name = "growls", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Growls getGrowls() {
@@ -1487,7 +1487,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @param growls the growls to set.
+     * @param growls the growls to set
      */
     public void setGrowls(Growls growls) {
         this.growls = growls;
@@ -1504,7 +1504,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @return BlockUI returns the refresh block object.
+     * @return returns the refresh block object
      */
     @BeanTagAttribute(name = "refreshBlockUI", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BlockUI getRefreshBlockUI() {
@@ -1522,7 +1522,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @return BlockUI returns the navigation block object.
+     * @return returns the navigation block object
      */
     @BeanTagAttribute(name = "navigationBlockUI", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BlockUI getNavigationBlockUI() {
@@ -1542,7 +1542,7 @@ public class View extends ContainerBase {
      * display relevant information to the user. Note: the growl scripts are
      * built out in the PageGroup class.</p>
      *
-     * @return the growlMessagingEnabled.
+     * @return the growlMessagingEnabled
      */
     @BeanTagAttribute(name = "growlMessagingEnabled")
     public boolean isGrowlMessagingEnabled() {
@@ -1552,7 +1552,7 @@ public class View extends ContainerBase {
     /**
      * enable or disable showing of messages using growls
      *
-     * @param growlMessagingEnabled the growlMessagingEnabled to set.
+     * @param growlMessagingEnabled the growlMessagingEnabled to set
      */
     public void setGrowlMessagingEnabled(boolean growlMessagingEnabled) {
         this.growlMessagingEnabled = growlMessagingEnabled;
@@ -1568,7 +1568,7 @@ public class View extends ContainerBase {
      * the action or stay on the form. For lookup and inquiry, it's not needed to validate.
      * </p>
      *
-     * @return true if dirty validation is set.
+     * @return true if dirty validation is set
      */
     @BeanTagAttribute(name = "applyDirtyCheck")
     public boolean isApplyDirtyCheck() {
@@ -1594,7 +1594,7 @@ public class View extends ContainerBase {
     /**
      * Returns whether the current view supports displaying <code>KualiCode</code>'s name as additional display value
      *
-     * @return true if the current view supports.
+     * @return true if the current view supports
      */
     @BeanTagAttribute(name = "translateCodesOnReadOnlyDisplay")
     public boolean isTranslateCodesOnReadOnlyDisplay() {
@@ -1609,7 +1609,7 @@ public class View extends ContainerBase {
      * If enabled, the readOnlyFields request parameter can be sent to indicate fields that should be set read only
      * </p>
      *
-     * @return boolean true if read only request overrides are allowed, false if not.
+     * @return true if read only request overrides are allowed, false if not
      */
     @BeanTagAttribute(name = "supportsRequestOverrideOfReadOnlyFields")
     public boolean isSupportsRequestOverrideOfReadOnlyFields() {
@@ -1632,7 +1632,7 @@ public class View extends ContainerBase {
      * Many used to set server variables client side
      * </p>
      *
-     * @return String pre load script.
+     * @return pre load script
      */
     @BeanTagAttribute(name = "preLoadScript")
     public String getPreLoadScript() {
@@ -1671,7 +1671,7 @@ public class View extends ContainerBase {
      * The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
      * determine what field in the model state information is stored in for this view.  Used during View validation.
      *
-     * @return stateObjectBindingPath path to the object storing state information.
+     * @return stateObjectBindingPath path to the object storing state information
      */
     @BeanTagAttribute(name = "stateObjectBindingPath")
     public String getStateObjectBindingPath() {
@@ -1697,9 +1697,8 @@ public class View extends ContainerBase {
      * not included, the view's model is considered stateless and all constraints will apply regardless of their
      * state information or replacements (ie, they will function as they did in version 2.1).</p>
      *
-     * @return StateMapping information needed for state based validation, if null no state based validation
-     *         functionality
-     *         will exist and configured constraints will apply regardless of state
+     * @return information needed for state based validation, if null no state based validation
+     *         functionality will exist and configured constraints will apply regardless of state
      * @since 2.2
      */
     @BeanTagAttribute(name = "stateMapping", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1813,7 +1812,7 @@ public class View extends ContainerBase {
      * and breadcrumbOverrides are inherited by
      * child pages unless they override them themselves.</p>
      *
-     * @return the BreadcrumbOptions for this view.
+     * @return the BreadcrumbOptions for this view
      */
     @BeanTagAttribute(name = "breadcrumbOptions", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BreadcrumbOptions getBreadcrumbOptions() {
@@ -1833,7 +1832,7 @@ public class View extends ContainerBase {
      * The View's breadcrumbItem defines settings for the breadcrumb which appears in the breadcrumb list for this
      * view.
      *
-     * @return the breadcrumbItem.
+     * @return the breadcrumbItem
      */
     @BeanTagAttribute(name = "breadcrumbItem", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BreadcrumbItem getBreadcrumbItem() {
@@ -1861,7 +1860,7 @@ public class View extends ContainerBase {
      * will be thrown.
      * </p>
      *
-     * @return the parentLocation.
+     * @return the parentLocation
      */
     @BeanTagAttribute(name = "parentLocation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ParentLocation getParentLocation() {
@@ -1881,7 +1880,7 @@ public class View extends ContainerBase {
      * When true, this view will use a unified header - the page header will be omitted and its title will be used
      * in the ViewHeader supportTitle property (dynamically updated on page change)
      *
-     * @return true if using a unified header.
+     * @return true if using a unified header
      */
     @BeanTagAttribute(name = "unifiedHeader")
     public boolean isUnifiedHeader() {
@@ -1900,7 +1899,7 @@ public class View extends ContainerBase {
     /**
      * If true, the top group will be sticky (fixed to top of window)
      *
-     * @return true if the top group is sticky, false otherwise.
+     * @return true if the top group is sticky, false otherwise
      */
     @BeanTagAttribute(name = "stickyTopGroup")
     public boolean isStickyTopGroup() {
@@ -1919,7 +1918,7 @@ public class View extends ContainerBase {
     /**
      * If true, the breadcrumb widget will be sticky (fixed to top of window)
      *
-     * @return true if breadcrumbs are sticky, false otherwise.
+     * @return true if breadcrumbs are sticky, false otherwise
      */
     @BeanTagAttribute(name = "stickyBreadcrumbs")
     public boolean isStickyBreadcrumbs() {
@@ -1938,7 +1937,7 @@ public class View extends ContainerBase {
     /**
      * If true, the ViewHeader for this view will be sticky (fixed to top of window)
      *
-     * @return true if the header is sticky, false otherwise.
+     * @return true if the header is sticky, false otherwise
      */
     @BeanTagAttribute(name = "stickyHeader")
     public boolean isStickyHeader() {
@@ -1964,7 +1963,7 @@ public class View extends ContainerBase {
     /**
      * Set to true to make the applicationHeader sticky (fixed to top of window)
      *
-     * @return true if applicationHeader is sticky, false otherwise.
+     * @return true if applicationHeader is sticky, false otherwise
      */
     @BeanTagAttribute(name = "stickyApplicationHeader")
     public boolean isStickyApplicationHeader() {
@@ -1983,7 +1982,7 @@ public class View extends ContainerBase {
     /**
      * If true, the view footer will become sticky (fixed to bottom of window)
      *
-     * @return ture if the view footer is sticky, false otherwise.
+     * @return ture if the view footer is sticky, false otherwise
      */
     @BeanTagAttribute(name = "stickyFooter")
     public boolean isStickyFooter() {
@@ -2005,7 +2004,7 @@ public class View extends ContainerBase {
     /**
      * If true, the applicationFooter will become sticky (fixed to bottom of window)
      *
-     * @return true if the application footer is sticky, false otherwise.
+     * @return true if the application footer is sticky, false otherwise
      */
     @BeanTagAttribute(name = "stickyApplicationFooter")
     public boolean isStickyApplicationFooter() {
@@ -2024,7 +2023,7 @@ public class View extends ContainerBase {
     /**
      * TopGroup is an optional group of content that appears above the breadcrumbs and view header
      *
-     * @return the topGroup component.
+     * @return the topGroup component
      */
     @BeanTagAttribute(name = "topGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getTopGroup() {

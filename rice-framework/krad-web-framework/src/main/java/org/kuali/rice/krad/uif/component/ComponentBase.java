@@ -555,7 +555,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Builds the HTML class attribute string by combining the cellStyleClasses list
      * with a space delimiter
      *
-     * @return String class attribute string.
+     * @return class attribute string
      */
     public String getCellStyleClassesAsString() {
         if (cellCssClasses != null) {
@@ -694,7 +694,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Builds the HTML class attribute string by combining the styleClasses list
      * with a space delimiter
      *
-     * @return String class attribute string.
+     * @return class attribute string
      */
     public String getStyleClassesAsString() {
         if (cssClasses != null) {
@@ -1318,7 +1318,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * with this property instead.</b>
      * </p>
      *
-     * @return String progressiveRender expression.
+     * @return progressiveRender expression
      */
     @BeanTagAttribute(name = "progressiveRender")
     public String getProgressiveRender() {
@@ -1349,7 +1349,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * component should be refreshed every time it is shown, use the
      * progressiveRenderAndRefresh option with this property instead.</b></p>
      *
-     * @return the conditionalRefresh.
+     * @return the conditionalRefresh
      */
     @BeanTagAttribute(name = "conditionalRefresh")
     public String getConditionalRefresh() {
@@ -1359,7 +1359,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * Set the conditional refresh condition
      *
-     * @param conditionalRefresh the conditionalRefresh to set.
+     * @param conditionalRefresh the conditionalRefresh to set
      */
     public void setConditionalRefresh(String conditionalRefresh) {
         this.conditionalRefresh = conditionalRefresh;
@@ -1369,7 +1369,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Control names used to control progressive disclosure, set internally
      * cannot be set.
      *
-     * @return the progressiveDisclosureControlNames.
+     * @return the progressiveDisclosureControlNames
      */
     public List<String> getProgressiveDisclosureControlNames() {
         return this.progressiveDisclosureControlNames;
@@ -1379,7 +1379,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * The condition to show this component progressively converted to a js
      * expression, set internally cannot be set.
      *
-     * @return the progressiveDisclosureConditionJs.
+     * @return the progressiveDisclosureConditionJs
      */
     public String getProgressiveDisclosureConditionJs() {
         return this.progressiveDisclosureConditionJs;
@@ -1389,7 +1389,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * The condition to refresh this component converted to a js expression, set
      * internally cannot be set.
      *
-     * @return the conditionalRefreshConditionJs.
+     * @return the conditionalRefreshConditionJs
      */
     public String getConditionalRefreshConditionJs() {
         return this.conditionalRefreshConditionJs;
@@ -1399,7 +1399,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Control names used to control conditional refresh, set internally cannot
      * be set.
      *
-     * @return the conditionalRefreshControlNames.
+     * @return the conditionalRefreshControlNames
      */
     public List<String> getConditionalRefreshControlNames() {
         return this.conditionalRefreshControlNames;
@@ -1414,7 +1414,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * so components with progressive render capabilities will always be already
      * within the client html and toggled to be hidden or visible.</b></p>
      *
-     * @return the progressiveRenderViaAJAX.
+     * @return the progressiveRenderViaAJAX
      */
     @BeanTagAttribute(name = "progressiveRenderViaAJAX")
     public boolean isProgressiveRenderViaAJAX() {
@@ -1438,7 +1438,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * false, so components with progressive render capabilities will always be
      * already within the client html and toggled to be hidden or visible.</b></p>
      *
-     * @return the progressiveRenderAndRefresh.
+     * @return the progressiveRenderAndRefresh
      */
     @BeanTagAttribute(name = "progressiveRenderAndRefresh")
     public boolean isProgressiveRenderAndRefresh() {
@@ -1566,7 +1566,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Controller method to invoke must accept the form, binding result, request, and response arguments
      * </p>
      *
-     * @return String valid controller method name.
+     * @return valid controller method name
      */
     @BeanTagAttribute(name = "methodToCallOnRefresh")
     public String getMethodToCallOnRefresh() {
@@ -1593,7 +1593,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Flag indicating that this component and its nested components must be
      * skipped when keyboard tabbing.
      *
-     * @return the skipInTabOrder flag.
+     * @return the skipInTabOrder flag
      */
     @BeanTagAttribute(name = "skipInTabOrder")
     public boolean isSkipInTabOrder() {
@@ -1608,7 +1608,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * component using standard data-.
      * Either way they can be access through .data() call in jQuery</p>
      *
-     * @return map of dataAttributes.
+     * @return map of dataAttributes
      */
     @BeanTagAttribute(name = "dataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getDataAttributes() {
@@ -1618,7 +1618,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
      *
-     * @param dataAttributes the data attributes to set for this component.
+     * @param dataAttributes the data attributes to set for this component
      */
     public void setDataAttributes(Map<String, String> dataAttributes) {
         this.dataAttributes = dataAttributes;
@@ -1627,8 +1627,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * Add a data attribute to the dataAttributes map - to be written to the html/jQuery data.
      *
-     * @param key key of the data attribute.
-     * @param value value of the data attribute.
+     * @param key key of the data attribute
+     * @param value value of the data attribute
      */
     public void addDataAttribute(String key, String value) {
         dataAttributes.put(key, value);
@@ -1638,8 +1638,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Add a data attribute to the dataAttributes map if the given value is non null
      * or the empty string
      *
-     * @param key key for the data attribute entry.
-     * @param value value for the data attribute.
+     * @param key key for the data attribute entry
+     * @param value value for the data attribute
      */
     public void addDataAttributeIfNonEmpty(String key, String value) {
         if (StringUtils.isNotBlank(value)) {
@@ -1651,7 +1651,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Returns js that will add data to this component by the element which matches its id.
      * This will return script for only the complex data elements (containing {});
      *
-     * @return jQuery data script for adding complex data attributes.
+     * @return jQuery data script for adding complex data attributes
      */
     public String getComplexDataAttributesJs() {
         String js = "";
@@ -1672,7 +1672,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Returns a string that can be put into a the tag of a component to add data attributes inline.
      * This does not include the complex attributes which contain {}
      *
-     * @return html string for data attributes for the simple attributes.
+     * @return html string for data attributes for the simple attributes
      */
     public String getSimpleDataAttributes() {
         String attributes = "";

@@ -144,8 +144,8 @@ public class Action extends ContentElementBase {
     /**
      * Sets the disabledExpression, if any, evaluates it and sets the disabled property
      *
-     * @param view - view instance to which the component belongs
-     * @param model - Top level object containing the data (could be the form or a
+     * @param view view instance to which the component belongs
+     * @param model top level object containing the data (could be the form or a
      * @param parent
      */
     public void performApplyModel(View view, Object model, Component parent) {
@@ -260,7 +260,7 @@ public class Action extends ContentElementBase {
      * When the action is updating a component sets up the refresh script for the component (found by the
      * given refresh id or refresh property name)
      *
-     * @param view - view instance the action belongs to
+     * @param view view instance the action belongs to
      */
     protected void setupRefreshAction(View view) {
         // if refresh property or id is given, make return type update component
@@ -314,9 +314,9 @@ public class Action extends ContentElementBase {
      * value) are also written out as attributes on the action element.
      * </p>
      *
-     * @param view - view instance the action belongs to
-     * @param model - model object containing the view data
-     * @param parent - component the holds the action
+     * @param view view instance the action belongs to
+     * @param model model object containing the view data
+     * @param parent component the holds the action
      */
     protected void buildActionData(View view, Object model, Component parent) {
         // map properties to data attributes
@@ -400,7 +400,7 @@ public class Action extends ContentElementBase {
      * that should be invoked when the action is selected
      * </p>
      *
-     * @return String name of method to call
+     * @return name of method to call
      */
     @BeanTagAttribute(name = "methodToCall")
     public String getMethodToCall() {
@@ -425,7 +425,7 @@ public class Action extends ContentElementBase {
      * while for an action link it would be the links displayed text
      * </p>
      *
-     * @return String label for action
+     * @return label for action
      */
     @BeanTagAttribute(name = "actionLabel")
     public String getActionLabel() {
@@ -451,7 +451,7 @@ public class Action extends ContentElementBase {
      * action link text
      * </p>
      *
-     * @return Image action image
+     * @return action image
      */
     @BeanTagAttribute(name = "actionImage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Image getActionImage() {
@@ -478,7 +478,7 @@ public class Action extends ContentElementBase {
      * navigation between pages
      * </p>
      *
-     * @return String id of page that should be rendered when the action item is
+     * @return id of page that should be rendered when the action item is
      *         selected
      */
     @BeanTagAttribute(name = "navigateToPageId")
@@ -505,7 +505,7 @@ public class Action extends ContentElementBase {
      * the action requested.
      * </p>
      *
-     * @return String action event name
+     * @return action event name
      * @see org.kuali.rice.krad.uif.UifConstants.ActionEvents
      */
     @BeanTagAttribute(name = "actionEvent")
@@ -539,7 +539,7 @@ public class Action extends ContentElementBase {
      * populate different form (model) properties
      * </p>
      *
-     * @return Map<String, String> additional key/value pairs to submit
+     * @return additional key/value pairs to submit
      */
     @BeanTagAttribute(name = "additionalSubmitData", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalSubmitData() {
@@ -569,7 +569,7 @@ public class Action extends ContentElementBase {
      * line the action applies to)
      * </p>
      *
-     * @return Map<String, String> action parameters
+     * @return action parameters
      */
     @BeanTagAttribute(name = "actionParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getActionParameters() {
@@ -588,8 +588,8 @@ public class Action extends ContentElementBase {
     /**
      * Convenience method to add a parameter to the action parameters Map
      *
-     * @param parameterName - name of parameter to add
-     * @param parameterValue - value of parameter to add
+     * @param parameterName name of parameter to add
+     * @param parameterValue value of parameter to add
      */
     public void addActionParameter(String parameterName, String parameterValue) {
         if (actionParameters == null) {
@@ -618,7 +618,7 @@ public class Action extends ContentElementBase {
     /**
      * Override to assert a {@link ActionSecurity} instance is set
      *
-     * @param componentSecurity - instance of ActionSecurity
+     * @param componentSecurity instance of ActionSecurity
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
@@ -774,7 +774,7 @@ public class Action extends ContentElementBase {
     /**
      * Indicates whether the action (input or button) is disabled (doesn't allow interaction)
      *
-     * @return boolean true if the action field is disabled, false if not
+     * @return true if the action field is disabled, false if not
      */
     @BeanTagAttribute(name = "disabled")
     public boolean isDisabled() {
@@ -794,7 +794,7 @@ public class Action extends ContentElementBase {
      * If the action field is disabled, gives a reason for why which will be displayed as a tooltip
      * on the action field (button)
      *
-     * @return String disabled reason text
+     * @return disabled reason text
      * @see #isDisabled()
      */
     @BeanTagAttribute(name = "disabledReason")
@@ -847,7 +847,7 @@ public class Action extends ContentElementBase {
      * The preSubmit call will be invoked both for ajax and non-ajax submits
      * </p>
      *
-     * @return String script text that will be invoked before form submission
+     * @return script text that will be invoked before form submission
      */
     @BeanTagAttribute(name = "preSubmitCall")
     public String getPreSubmitCall() {
@@ -891,7 +891,7 @@ public class Action extends ContentElementBase {
      * examples include updating a component, the page, or doing a redirect.
      * </p>
      *
-     * @return String return type
+     * @return return type
      * @see org.kuali.rice.krad.uif.UifConstants.AjaxReturnTypes
      */
     @BeanTagAttribute(name = "ajaxReturnType")
@@ -911,7 +911,7 @@ public class Action extends ContentElementBase {
     /**
      * Indicates if the action response should be displayed in a lightbox
      *
-     * @return boolean true if response should be rendered in a lightbox, false if not
+     * @return true if response should be rendered in a lightbox, false if not
      */
     @BeanTagAttribute(name = "displayResponseInLightBox")
     public boolean isDisplayResponseInLightBox() {
@@ -950,7 +950,7 @@ public class Action extends ContentElementBase {
      * The successCallback may only be specified when {@link #isAjaxSubmit()} is true
      * </p>
      *
-     * @return String containing script to be executed when the action is successful
+     * @return script to be executed when the action is successful
      */
     @BeanTagAttribute(name = "successCallback")
     public String getSuccessCallback() {
@@ -984,7 +984,7 @@ public class Action extends ContentElementBase {
      * The errorCallback may only be specified when {@link #isAjaxSubmit()} is true
      * </p>
      *
-     * @return String containing script to be executed when the action is successful
+     * @return script to be executed when the action is successful
      */
     @BeanTagAttribute(name = "errorCallback")
     public String getErrorCallback() {
@@ -1008,7 +1008,7 @@ public class Action extends ContentElementBase {
      * be refreshed after the action completes. If both are blank, the page will be refreshed
      * </p>
      *
-     * @return String valid component id
+     * @return valid component id
      */
     @BeanTagAttribute(name = "refreshId")
     public String getRefreshId() {
@@ -1037,7 +1037,7 @@ public class Action extends ContentElementBase {
      * Property name will be adjusted to use the default binding path unless it contains the form prefix
      * </p>
      *
-     * @return String valid property name with an associated DataField
+     * @return valid property name with an associated DataField
      * @see org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX
      */
     @BeanTagAttribute(name = "refreshPropertyName")
@@ -1086,7 +1086,7 @@ public class Action extends ContentElementBase {
      * will never get unblocked (because the page does not get notification a file was downloaded)
      * </p>
      *
-     * @return boolean true if blocking should be disabled, false if not
+     * @return true if blocking should be disabled, false if not
      */
     @BeanTagAttribute(name = "disableBlocking")
     public boolean isDisableBlocking() {

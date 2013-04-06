@@ -84,7 +84,7 @@ public class FieldValidationMessages extends ValidationMessages {
     /**
      * Set the useTooltip flag
      *
-     * @param useTooltip - if true show tooltip, otherwise show messages below field control
+     * @param useTooltip if true, show tooltip, otherwise show messages below field control
      */
     public void setUseTooltip(boolean useTooltip) {
         this.useTooltip = useTooltip;

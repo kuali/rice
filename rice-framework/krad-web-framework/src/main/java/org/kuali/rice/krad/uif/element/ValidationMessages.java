@@ -87,10 +87,10 @@ public class ValidationMessages extends ContentElementBase {
     /**
      * Generates the messages based on the content in the messageMap
      *
-     * @param reset - true to reset the errors, warnings, and info lists
-     * @param view - the current View
-     * @param model - the current model
-     * @param parent - the parent of this ValidationMessages
+     * @param reset true to reset the errors, warnings, and info lists
+     * @param view the current View
+     * @param model the current model
+     * @param parent the parent of this ValidationMessages
      */
     public void generateMessages(boolean reset, View view, Object model, Component parent) {
         if (reset) {

@@ -157,7 +157,7 @@ public class Message extends ContentElementBase {
      * If the [] characters are needed in message text, they need to be declared with an escape character: \\[ \\]
      * </p>
      *
-     * @return String message text
+     * @return message text
      */
     @BeanTagAttribute(name = "messageText")
     public String getMessageText() {

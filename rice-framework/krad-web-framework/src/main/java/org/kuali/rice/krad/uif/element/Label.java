@@ -124,7 +124,7 @@ public class Label extends ContentElementBase {
      * initialize phase
      * </p>
      *
-     * @return String component id
+     * @return component id
      */
     @BeanTagAttribute(name="labelForComponentId")
     public String getLabelForComponentId() {
@@ -143,7 +143,7 @@ public class Label extends ContentElementBase {
     /**
      * Text that will display as the label
      *
-     * @return String label text
+     * @return label text
      */
     @BeanTagAttribute(name="labelText")
     public String getLabelText() {
@@ -164,8 +164,7 @@ public class Label extends ContentElementBase {
      * generally used when the label appears to the left of the field's control
      * or value
      *
-     * @return boolean true if a colon should be rendered, false if it should
-     *         not be
+     * @return true if a colon should be rendered, false if it should not be
      */
     @BeanTagAttribute(name="renderColon")
     public boolean isRenderColon() {
@@ -211,7 +210,7 @@ public class Label extends ContentElementBase {
      * Indicates where the required message field should be placed in relation
      * to the label field, valid options are 'LEFT' and 'RIGHT'
      *
-     * @return Position the requiredMessage placement
+     * @return the requiredMessage placement
      */
     @BeanTagAttribute(name="requiredMessagePlacement",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Position getRequiredMessagePlacement() {
@@ -232,7 +231,7 @@ public class Label extends ContentElementBase {
      * <b>DO NOT set this
      * property directly unless you need full control over the message structure.</b>
      *
-     * @return Message with rich message structure, null if no rich message structure
+     * @return rich message structure, null if no rich message structure
      */
     @BeanTagAttribute(name="richLabelMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getRichLabelMessage() {

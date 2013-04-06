@@ -160,7 +160,7 @@ public class Header extends ContentElementBase {
     /**
      * Text that should be displayed on the header
      *
-     * @return String header text
+     * @return header text
      */
     @BeanTagAttribute(name = "headerText")
     public String getHeaderText() {
@@ -179,7 +179,7 @@ public class Header extends ContentElementBase {
     /**
      * HTML header level (h1 ... h6) that should be applied to the header text
      *
-     * @return String header level
+     * @return header level
      */
     @BeanTagAttribute(name = "headerLevel")
     public String getHeaderLevel() {
@@ -205,7 +205,7 @@ public class Header extends ContentElementBase {
      * include a nested <code>Group</code>)
      * </p>
      *
-     * @return List<String> list of style classes
+     * @return list of style classes
      * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
     @BeanTagAttribute(name = "headerTagCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
@@ -226,7 +226,7 @@ public class Header extends ContentElementBase {
      * Builds the HTML class attribute string by combining the headerStyleClasses list
      * with a space delimiter
      *
-     * @return String class attribute string
+     * @return class attribute string
      */
     public String getHeaderStyleClassesAsString() {
         if (headerTagCssClasses != null) {
@@ -246,7 +246,7 @@ public class Header extends ContentElementBase {
      * <code>Group</code>)
      * </p>
      *
-     * @return String header style
+     * @return header style
      * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
     @BeanTagAttribute(name = "headerTagStyle")
@@ -414,7 +414,7 @@ public class Header extends ContentElementBase {
      * <b>DO NOT set this
      * property directly unless you need full control over the message structure.</b>
      *
-     * @return Message with rich message structure, null if no rich message structure
+     * @return rich message structure, null if no rich message structure
      */
     @BeanTagAttribute(name = "richHeaderMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getRichHeaderMessage() {

@@ -145,7 +145,7 @@ public class Link extends ContentElementBase {
      * If set the target attribute is ignored and the URL is opened in a lightbox instead
      * </p>
      *
-     * @return boolean true to open link in a lightbox, false if not (follow standard target attribute)
+     * @return true to open link in a lightbox, false if not (follow standard target attribute)
      */
     public boolean isOpenInLightbox() {
         return openInLightbox;

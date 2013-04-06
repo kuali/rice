@@ -43,7 +43,7 @@ public class Iframe extends ContentElementBase {
     /**
      * The IFrame's source
      *
-     * @return String source
+     * @return source
      */
     @BeanTagAttribute(name="source")
 	public String getSource() {
@@ -62,7 +62,7 @@ public class Iframe extends ContentElementBase {
     /**
      * The IFrame's height
      *
-     * @return String height
+     * @return height
      */
     @BeanTagAttribute(name="height")
 	public String getHeight() {
@@ -81,7 +81,7 @@ public class Iframe extends ContentElementBase {
     /**
      * The IFrame's frame border
      *
-     * @return String frameborder
+     * @return frameborder
      */
     @BeanTagAttribute(name="frameborder")
 	public String getFrameborder() {

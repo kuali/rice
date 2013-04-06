@@ -41,7 +41,7 @@ public class ActionSecurity extends FieldSecurity {
     /**
      * Indicates whether the action field has take action authorization and KIM should be consulted
      *
-     * @return boolean true if the action field has perform action authorization, false if not
+     * @return true if the action field has perform action authorization, false if not
      */
     @BeanTagAttribute(name="performActionAuthz")
     public boolean isPerformActionAuthz() {
@@ -60,7 +60,7 @@ public class ActionSecurity extends FieldSecurity {
     /**
      * Indicates whether the line action field has take action authorization and KIM should be consulted
      *
-     * @return boolean true if the line action field has perform action authorization, false if not
+     * @return true if the line action field has perform action authorization, false if not
      */
     @BeanTagAttribute(name="performLineActionAuthz")
     public boolean isPerformLineActionAuthz() {

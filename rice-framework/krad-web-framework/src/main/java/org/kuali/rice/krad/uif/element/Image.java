@@ -127,7 +127,7 @@ public class Image extends ContentElementBase {
     /**
      * returns the URL of this image
      *
-     * @return String containing the URL of this image.
+     * @return the URL of this image.
      */
     @BeanTagAttribute(name="source")
     public String getSource() {
@@ -137,7 +137,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the URL of this image
      *
-     * @param source - String representing the URL of this image
+     * @param source the URL of this image
      */
     public void setSource(String source) {
         this.source = source;
@@ -159,7 +159,7 @@ public class Image extends ContentElementBase {
      * </ul>
      * </p>
      *
-     * @return a String representing alternative information about this image
+     * @return alternative information about this image
      */
     @BeanTagAttribute(name="altText")
     public String getAltText() {
@@ -169,7 +169,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the alternate text property for this image
      *
-     * @param altText - a String containing the alternative information about the image
+     * @param altText the alternative information about the image
      */
     public void setAltText(String altText) {
         this.altText = altText;
@@ -186,7 +186,7 @@ public class Image extends ContentElementBase {
      * be that the page layout will change while the images load.
      * </p>
      *
-     * @return String containing of the height style attribute of this image
+     * @return the height style attribute of this image
      */
     @BeanTagAttribute(name="height")
     public String getHeight() {
@@ -196,7 +196,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the height style attribute of the image.
      *
-     * @param height - String containing the height of the image
+     * @param height the height of the image
      */
     public void setHeight(String height) {
         this.height = height;
@@ -213,7 +213,7 @@ public class Image extends ContentElementBase {
      * be that the page layout will change while the images load.
      * <p>
      *
-     * @return String containing the width of this image
+     * @return the width of this image
      */
     @BeanTagAttribute(name="width")
     public String getWidth() {
@@ -223,7 +223,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the width style attribute of the image
      *
-     * @param width - a String containing the width of this image
+     * @param width the width of this image
      */
     public void setWidth(String width) {
         this.width = width;
@@ -236,7 +236,7 @@ public class Image extends ContentElementBase {
      * The caption text is a headline for the picture. It may be displayed either above or below the picture.
      * </p>
      *
-     * @return String containing the caption
+     * @return the caption
      */
     @BeanTagAttribute(name="captionHeaderText")
     public String getCaptionHeaderText() {
@@ -246,7 +246,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the text displayed as of the caption for the picture
      *
-     * @param captionHeaderText - String containing the caption text.
+     * @param captionHeaderText the caption text
      */
     public void setCaptionHeaderText(String captionHeaderText) {
         this.captionHeaderText = captionHeaderText;
@@ -265,7 +265,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the Header used to display the caption for this image
      *
-     * @param captionHeader - Header component which wraps the caption text.
+     * @param captionHeader header component which wraps the caption text
      */
     public void setCaptionHeader(Header captionHeader) {
         this.captionHeader = captionHeader;
@@ -279,7 +279,7 @@ public class Image extends ContentElementBase {
      * the who, what, where, when of this image.
      * </p>
      *
-     * @return String containing the cutline text.
+     * @return the cutline text.
      */
     @BeanTagAttribute(name="cutlineText")
     public String getCutlineText() {
@@ -289,7 +289,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the cutline text that describes this image
      *
-     * @param cutlineText - String describing this image
+     * @param cutlineText the cutline text that describes this image
      */
     public void setCutlineText(String cutlineText) {
         this.cutlineText = cutlineText;
@@ -302,7 +302,7 @@ public class Image extends ContentElementBase {
      * Wrapping the cutline text with a Message component allows styling of the cutline text.
      * </p>
      *
-     * @return Message component wrapping the cutline.
+     * @return Message component wrapping the cutline
      */
     @BeanTagAttribute(name="cutlineMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getCutlineMessage() {
@@ -312,7 +312,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the Message component used to display the cutline for this image
      *
-     * @param cutlineMessage - Message
+     * @param cutlineMessage Message
      */
     public void setCutlineMessage(Message cutlineMessage) {
         this.cutlineMessage = cutlineMessage;
@@ -331,7 +331,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets whether the image caption is to be displayed above or below the image
      *
-     * @param captionHeaderPlacementAboveImage - true displays above image, false displays below image
+     * @param captionHeaderPlacementAboveImage true displays above image, false displays below image
      */
     public void setCaptionHeaderPlacementAboveImage(boolean captionHeaderPlacementAboveImage) {
         this.captionHeaderPlacementAboveImage = captionHeaderPlacementAboveImage;

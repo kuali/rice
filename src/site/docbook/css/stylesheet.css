@@ -538,4 +538,6 @@ body { background: \0/IE8+9;}
     background: #EEEEEE;
     font-family:Monaco, Menlo, Consolas, "Courier New", monospace;
     font-weight:bold;}
-
+.italic {
+    font-style:italic;
+}

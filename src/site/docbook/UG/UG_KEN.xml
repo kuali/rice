@@ -102,7 +102,7 @@
             <figure><title>Notification Channel: Channel Subscriptions</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/channel_subscriptions.png" scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KEN_Guide/channel_subscriptions.png" scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </mediaobject></figure>
             <para>This displays the list of channels that allow the user to manage their
@@ -110,7 +110,7 @@
             <figure><title>Chanel Subscriptions: Manage</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/channel_subscriptions2.png"/>
+                        <imagedata fileref="../images/KEN_Guide/channel_subscriptions2.png"/>
                     </imageobject>
                 </mediaobject></figure>
             <para>Click the <emphasis role="bold">Subscribe</emphasis> button for a channel to

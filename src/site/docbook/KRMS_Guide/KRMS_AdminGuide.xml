@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    
+    Copyright 2005-2013 The Kuali Foundation
+    
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.opensource.org/licenses/ecl2.php
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    
+-->
+<chapter xml:id="KRMS_AdminGuide" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+        <title>KRMS Administration Guide</title>
+        <para>(work in progress - content tdb.  The below preface is patterned after the KEW TRG -
+            what will admins need to administer for KRMS?  I've put in some placeholder
+            content-topics for a TOC skeleton.)</para>
+        <para>This guide provides information on administering a Kuali Rules Management System
+            (KRMS) installation. Out of the box, KRMS comes with a default setup that works well in
+            development and test environments. However, when moving to a production environment,
+            this setup requires adjustments. This document discusses basic administration as well as
+            instructions for working with some of KRMS’ administration tools.</para>
+        <section>
+            <title>Initial Set up tasks</title>
+            <para>In this section we cover the types of tasks you'll need to do as a one-time setup
+                at your institute in order for you and others to be able to define KRMS agendas for
+                use by applications.</para>
+            <section>
+                <title>What do I have to install so that people can use KRMS?</title>
+                <para/>
+            </section>
+            <section>
+                <title>What do I have to create or customize so that people can work with business
+                    contexts, agendas, and rules?</title>
+                <para>Below are the constructs you will need to point to or create for your
+                    institute:</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Use existing Namespaces or set up Namespaces for KRMS </para>
+                    </listitem>
+                    <listitem>
+                        <para>Use an existing Agenda Type service or set up an Agenda Type service
+                            for KRMS </para>
+                    </listitem>
+                    <listitem>
+                        <para>Use existing Types or set up Types for KRMS </para>
+                    </listitem>
+                    <listitem>
+                        <para>Use existing Contexts or configure new Contexts for KRMS </para>
+                    </listitem>
+                    <listitem>
+                        <para>Specify Terms</para>
+                    </listitem>
+                    <listitem>
+                        <para>Create Term Resolvers</para>
+                    </listitem>
+                    <listitem>
+                        <para>Create Parameterized Terms</para>
+                    </listitem>
+                </itemizedlist>
+                <para>Below are the instructions for doing these tasks.</para>
+                <section>
+                    <title>Point to or Set up Namespaces</title>
+                    <para>You can use existing Namespaces or set up Namespaces specifically for KRMS
+                        (include information on how to do both of these).</para>
+                </section>
+                <section>
+                    <title>Point to or Set up an Agenda Type service for KRMS</title>
+                    <para>You can use an existing Agenda Type service or set up an Agenda Type
+                        service specifically for KRMS (include information on how to do both of
+                        these).</para>
+                    <para>For example, below is a code snippet for setting up the Agenda Type
+                        service:</para>
+                    <para>
+                        <programlisting>&lt;bean id="campusAgendaTypeService"
+      class="edu.sampleu.krms.impl.CampusAgendaTypeService">
+    &lt;property name="configurationService" ref="configurationService"/>
+&lt;/bean>                                                   </programlisting>
+                    </para>
+                </section>
+                <section>
+                    <title>Point to or Set up the Types for KRMS</title>
+                    <para>You can use existing Types or set up Types for KRMS (include information
+                        on how to do both of these).</para>
+                    <para>Below is example SQL Server code to insert the Type into the Agenda Type
+                        service -- be sure to replace the content of the 2nd parenthetical
+                        expressions in each of the following examples with your defined
+                        values:</para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>First,  add the Type(s) itself: </para>
+                                <para>insert into krms_typ_t (typ_id, nm, nmspc_cd, srvc_nm, actv,
+                                    ver_nbr) values (<emphasis role="italic">'T6', 'Campus Agenda',
+                                        'KRMS_TEST', 'campusAgendaTypeService', 'Y',
+                                    1</emphasis>);</para>
+                            </listitem>
+                            <listitem>
+                                <para>Next, add the campus attribute(s) to the Campus Agenda Type: </para>
+                                <para>insert into krms_attr_defn_t (ATTR_DEFN_ID, NM, NMSPC_CD, LBL,
+                                    CMPNT_NM, DESC_TXT) values (<emphasis role="italic">'Q9901',
+                                        'Campus', 'KRMS_TEST', 'campus label', null, 'the campus
+                                        which this agenda is valid for'</emphasis>); </para>
+                                <para>insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID,
+                                    ATTR_DEFN_ID) values (<emphasis role="italic">'T6A', 1, 'T6',
+                                        'Q9901'</emphasis>);</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </section>
+                <section>
+                    <title>Point to or Set up Contexts for KRMS</title>
+                    <para>You can use existing Contexts or configure new Contexts for KRMS. There is
+                        graphical user interface support for configuring a new Context, through a
+                        maintenance page. For example, in the Rice demo / sample application, on the
+                        Main menu page, under KRMS Rules, select the Context Lookup. </para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png"  scalefit="1" width="100%" contentdepth="100%" />
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>You can search for existing Contexts or create a new one. To create a new
+                        one, select "Create New" at the top right on the context lookup page:</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-Context-lookup-page.png"  scalefit="1" width="100%" contentdepth="100%" />
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>The resulting Context Maintenance screen enables you to define a new
+                        Context. The Context ID must be unique:</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-Context-maintenance-page.png"  scalefit="1" width="100%" contentdepth="100%" />
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>After creating your Context(s), you must 1) set "CampusAgendaType" as
+                        valid*,  2) set "Route to PeopleFlow" action as valid* for them, and 3) make
+                        the Type(s) you created valid for your Context(s).  See the following
+                        examples, and replace the content of each of the 2nd parenthetical
+                        expressions with your defined values:</para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>insert into krms_cntxt_vld_agenda_t (cntxt_vld_agenda_id,
+                                    cntxt_id, agenda_typ_id, ver_nbr) values (<emphasis role="italic">'agendaid', 'contextid', 'agendatypeid',
+                                        version#</emphasis>);</para>
+                            </listitem>
+                            <listitem>
+                                <para>insert into krms_cntxt_vld_actn_t (cntxt_vld_actn_id,
+                                    cntxt_id, actn_typ_id, ver_nbr) values (<emphasis role="italic">'agendaid', 'contextid', 'agendatypeid',
+                                        version#</emphasis>);</para>
+                            </listitem>
+                            <listitem>
+                                <para>insert into krms_cntxt_vld_agenda_t (cntxt_vld_agenda_id,
+                                    cntxt_id, agenda_typ_id, ver_nbr) values (<emphasis role="italic">''agendaid', 'contextid', 'agendatypeid',
+                                        version#</emphasis>);    </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </section>
+                <section>
+                    <title>Specify the Terms for KRMS</title>
+                    <para>You can point to existing terms or specify new terms for KRMS (include
+                        information on how to do both of these).</para>
+                    <para>To specify newTerms, you will probably want to first create term
+                        categories.   See the following examples, and replace the content of each of
+                        the 2nd parenthetical expressions with your defined values:</para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>Example - Generic Workflow Properties</para>
+                            </listitem>
+                            <listitem>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para>insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd, ver_nbr)
+                                            values (<emphasis role="italic">'CAT02', 'Workflow Document
+                                                Properties', 'KR-SAP', '1'</emphasis>);</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </listitem>    
+                            <listitem>
+                                <para>Example - Travel Account Properties</para>
+                            </listitem>
+                            <listitem>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para>insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd, ver_nbr)
+                                            values (<emphasis role="italic">'CAT03', 'Travel Account
+                                                Properties', 'KR-SAP', '1'</emphasis>);</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </listitem>    
+                        </itemizedlist>
+                    </para>
+                    <para>And next, you can use existing Terms or configure new Terms for KRMS.
+                        There is graphical user interface support for configuring a new Term,
+                        through a maintenance page. For example, in the Rice demo / sample
+                        application, on the Main menu page, under KRMS Rules, select the Term
+                        Specification Lookup and, after completing that, select the Term Lookup. </para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png"  scalefit="1" width="100%" contentdepth="100%" />
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>You can search for existing Term Specifications and Terms or create new
+                        ones. To create a new one, select "Create New" at the top right on the term
+                        specification lookup page or copy and then  modify an existing one.  See
+                        example Term Specification Lookup screen below:</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-term-specification-lookup-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>If you copy an existing term specification, be sure to give it a new and
+                        unique name before you change and save or submit it.  Below is a view of the
+                        term specification screen showing the types of attributes you can associate
+                        with it.</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>After creating your term specifications (your categories of terms), you
+                        can use the Term Lookup screen to add or create new terms.  See the example
+                        Term Lookup screen below:</para>
+                    <para>
+                        <figure>
+                            <title>Term Lookup screen example</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-term-lookup-screen2.png"  scalefit="1" width="100%" contentdepth="100%" />
+                            </imageobject>
+                    </mediaobject>
+                    </figure>
+                    </para>
+                    <para>If you copy an existing term, be sure to change the name to a new and
+                        unique term before you save or submit it.  Below is a view of the term
+                        specification screen showing the types of attributes you can associate with
+                        it.</para>
+                    <para>
+                    <figure>
+                        <title>Term specification screen example</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                    </para>
+                </section>
+                <!-- Commenting out until content is added
+                <section>
+                    <title>Create Term Resolvers</title>
+                    <para>(Need to document this)</para>
+                    
+                </section>
+                <section>
+                    <title>Create Parameterized Terms</title>
+                    <para>(Need to document this)</para>
+                </section>
+                -->
+            </section>
+            <!-- Commenting out, there is inaccurate info that needs to be corrected in here
+            <section>
+                <title>Do I have to define permissions or approval processes so that people can
+                    create and maintain KRMS agendas and rules?</title>
+                <para>The answer is yes.  To set up Permissions for creating and maintaining
+                    agendas, you can use the maintenance screens for identities and for
+                    role/group/permission/responsibility-type that are available on the
+                    Administration tab in the Kuali Rice portal:</para>
+                <para><itemizedlist xml:id="internal-source-marker_0.6076412396925063">
+                        <listitem>
+                            <para>First, in the Kuali Rice portal, go to the Administration tab, and
+                                in the Identity category, select "Permission".  Create a new
+                                permission:  give it a unique name and select the namespace you'd
+                                like to associate it with.  For example, give it the name 'Maintain
+                                KRMS Agenda' and select the appropriate namespace.</para>
+                            <para><inlinemediaobject>
+                                    <imageobject>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -Identity-permission-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                    </imageobject>
+                                </inlinemediaobject></para>
+                        </listitem>
+                        <listitem>
+                            <para>Next, add that permission to a role that your agenda-maintaining
+                                user has.  You can do that through the Kuali Rice portal, by going
+                                to the Administration tab, and in the Identity category, select
+                                "Role".  You can search for the role you just created (in the
+                                example above,  'Maintain KRMS Agenda', and select to edit
+                                it.</para>
+                            <para>Add the individuals you would like to this role, so that they will
+                                have the permissions needed to create and maintain agendas and
+                                rules.</para>
+                            <para><inlinemediaobject>
+                                    <imageobject>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -role-maintenance-edit-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                    </imageobject>
+                                </inlinemediaobject></para>
+                        </listitem>
+                    </itemizedlist>Alternatively, you could set up these permissions via code - see
+                    SQL server code examples below: </para>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>insert into krim_role_perm_id_s values (null);</para>
+                        </listitem>
+                        <listitem>
+                            <para>insert into krim_role_perm_t (role_perm_id, role_id, perm_id,
+                                actv_ind, ver_nbr, obj_id) values ((select max(id) from
+                                krim_role_perm_id_s), &lt;YOUR_ROLE_ID>, &lt;YOUR_PERMISSION_ID>,
+                                'Y', 1, uuid());</para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+            </section> -->
+            <!--
+            <section>
+                <title>(Other? Anything we have to do to setup integration/interaction with KEW?
+                    KIM? KEN? KOM? PeopleFlow? with other service bus?)</title>
+                <para/>
+            </section>
+            -->
+        </section>
+        <!--
+        <section>
+            <title>Ongoing Maintenance tasks</title>
+            <para>(add information here)</para>
+        </section>
+        <section>
+            <title>Troubleshooting and diagnostics</title>
+            <para>(add information here)</para>
+        </section>
+        <section>
+            <title>Optimizing performance</title>
+            <para>Content TBD.  For example, would logging alternatives affect performance?  Are
+                there selectable levels of KRMS execution logging?  Etc., etc..</para>
+        </section>
+        -->
+</chapter>

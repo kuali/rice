@@ -137,6 +137,6 @@
     </para>
     <note><para>As of Rice 1.0.1, The parameter <emphasis role="bold">kcb.smtp.host</emphasis> is no longer
         used. The smtp server settings that are required for sending email notifications
-        with KEN are documented in the Kuali Enterprise Workflow (KEW) Technical Reference
-        Guide under <emphasis role="bold">Email Configuration.</emphasis></para></note>
+        with KEN are documented in the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/TRG.html#TRG_KEW">Kuali Enterprise Workflow (KEW) Technical Reference
+        Guide</link> under <emphasis role="bold">Email Configuration.</emphasis></para></note>
 </chapter>

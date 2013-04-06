@@ -29,7 +29,7 @@
                 <title>KEN Message Flow</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEN_message_flow.png"/>
+                        <imagedata fileref="../images/KEN_Guide/KEN_message_flow.png"/>
                     </imageobject>
                 </mediaobject></figure>
             <para>From a developer’s perspective the diagram below helps to represent the inner
@@ -39,14 +39,14 @@
                 <title>KEN Message Storage</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEN_message_storage.png"/>
+                        <imagedata fileref="../images/KEN_Guide/KEN_message_storage.png"/>
                     </imageobject>
                 </mediaobject></figure>
             <para>The following sections of documentation aim at describing the inner workings of
                 KEN as well as how those pieces interact with Rice, specifically KEW. KEN itself is
                 an interface that sits on top of KEW’s API. This allows for registration and
                 publishing of notifications, which then flow through KEW to result in a KEW action
-                request. See KEW Overview for more information. In addition to the action list, KEW
+                request. See <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/UG.html#UG_KEW">KEW Overview</link> for more information. In addition to the action list, KEW
                 can be optionally configured to forward these requests to the Kuali Communications
                 Broker or KCB for short. This module is logically related to KEN and handles
                 dispatching messages based on the user preferences. Once messages are dispatched, a

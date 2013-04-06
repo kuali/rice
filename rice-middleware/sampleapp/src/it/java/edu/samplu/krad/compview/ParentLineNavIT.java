@@ -36,6 +36,7 @@ import static org.junit.Assert.fail;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ParentLineNavIT extends WebDriverLegacyITBase {
+
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
@@ -46,9 +47,10 @@ public class ParentLineNavIT extends WebDriverLegacyITBase {
      * tests that the size of a sub collection is correctly displayed using the parentLine el variable
      */
     public void testSubCollectionSize() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]");
-        switchToWindow("Kuali :: Uif Components");
+        waitAndClickKRAD();
+        waitAndClickByXpath(KITCHEN_SINK_XPATH);
+        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
         super.testSubCollectionSize();
+        passed();
     }
 }

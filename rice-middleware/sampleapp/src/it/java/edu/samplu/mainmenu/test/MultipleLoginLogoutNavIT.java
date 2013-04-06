@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package edu.samplu.mainmenu.test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.openqa.selenium.internal.seleniumemulation.IsElementPresent;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
@@ -34,7 +33,7 @@ public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
     }
     @Test
     public void testMultipleLoginLogout() throws Exception {
-        waitAndClickByLinkText("Main Menu");
+        waitAndClickMainMenu(this);
         waitForPageToLoad();
         assertEquals("Logged in User: admin",getTextByXpath("//div[@id='login-info']/strong[1]"));
         assertEquals(Boolean.FALSE, isElementPresentByXpath("//div[@id='login-info']/strong[2]"));
@@ -43,9 +42,9 @@ public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
         waitForPageToLoad();
         assertElementPresentByXpath("//div[@id='login-info']/strong[2]");
         assertEquals("  Impersonating User: employee",getTextByXpath("//div[@id='login-info']/strong[2]"));
-        waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
+        waitAndClickLogout();
         assertEquals(Boolean.FALSE, isElementPresentByXpath("//div[@id='login-info']/strong[2]"));
-        waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
+        waitAndClickLogout();
         passed();
     }
 }

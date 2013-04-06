@@ -1,6 +1,5 @@
-
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +18,7 @@ package edu.samplu.krad.validationmessagesview;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-import junit.framework.Assert;
+
 import org.junit.Test;
 
 /**
@@ -34,9 +33,10 @@ public class ServerErrorsNavIT extends WebDriverLegacyITBase {
 
     @Test
     public void testServerErrorsIT() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Validation Framework Demo')])[2]");
-        switchToWindow("Kuali :: View Title");
+        waitAndClickKRAD();
+        waitAndClickByXpath(VALIDATION_FRAMEWORK_DEMO_XPATH);
+        switchToWindow(KUALI_VIEW_WINDOW_TITLE);
         super.testServerErrorsIT();
+        passed();
     }
 }

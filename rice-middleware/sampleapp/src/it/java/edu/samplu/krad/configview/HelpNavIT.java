@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,6 @@ import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
-import org.openqa.selenium.JavascriptExecutor;
-
-import static org.junit.Assert.*;
 
 /**
  * Test the help widget
@@ -53,6 +50,7 @@ public class HelpNavIT extends WebDriverLegacyITBase {
     public void testViewHelp() throws Exception {
         navigateToHelp();
         super.testViewHelp();
+        passed();
     }
 
     /**
@@ -62,6 +60,7 @@ public class HelpNavIT extends WebDriverLegacyITBase {
     public void testPageHelp() throws Exception {
         navigateToHelp();
         super.testPageHelp();
+        passed();
     }
 
     /**
@@ -71,6 +70,7 @@ public class HelpNavIT extends WebDriverLegacyITBase {
     public void testTooltipHelp() throws Exception {
         navigateToHelp();
         super.testTooltipHelp();
+        passed();
     }
 
     /**
@@ -80,6 +80,7 @@ public class HelpNavIT extends WebDriverLegacyITBase {
     public void testDisplayOnlyTooltipHelp() throws Exception {
         navigateToHelp();
         super.testDisplayOnlyTooltipHelp();
+        passed();
     }
 
     /**
@@ -89,15 +90,16 @@ public class HelpNavIT extends WebDriverLegacyITBase {
     public void testMissingTooltipHelp() throws Exception {
         navigateToHelp();
         super.testMissingTooltipHelp();
+        passed();
     }
 
     private void navigateToHelp() throws Exception
     {
-        waitAndClickByLinkText("KRAD");
+        waitAndClickKRAD();
         waitAndClickByXpath("(//a[contains(text(),'Configuration Test View')])[3]");
         switchToWindow("Kuali :: Configuration Test View");
         waitAndClickByLinkText("Help");
         Thread.sleep(5000);
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
     }
 }

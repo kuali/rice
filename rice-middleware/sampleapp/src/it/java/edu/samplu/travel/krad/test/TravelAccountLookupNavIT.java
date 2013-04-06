@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,7 @@
  */
 package edu.samplu.travel.krad.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
@@ -38,9 +33,9 @@ public class TravelAccountLookupNavIT extends WebDriverLegacyITBase {
     
     @Test
     public void testTravelAccountLookup() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByLinkText("Travel Account Lookup");
+        waitAndClickKRAD();
+        waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);
         super.testTravelAccountLookup();
-       
+        passed();
     }
 }

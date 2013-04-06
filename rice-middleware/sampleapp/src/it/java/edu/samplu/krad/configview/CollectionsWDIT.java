@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,7 @@
 package edu.samplu.krad.configview;
 
 import edu.samplu.common.WebDriverLegacyITBase;
-import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * Selenium test that tests collections
@@ -27,8 +25,7 @@ import org.openqa.selenium.By;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CollectionsWDIT extends WebDriverLegacyITBase {
-	
-	
+
     @Override
     public String getTestUrl() {
         return "/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections&methodToCall=start";
@@ -48,6 +45,7 @@ public class CollectionsWDIT extends WebDriverLegacyITBase {
     @Test
     public void testAddBlankLine() throws Exception {
         super.testAddBlankLine();
+        passed();
     }
 
   
@@ -56,25 +54,26 @@ public class CollectionsWDIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testActionColumnPlacement() throws Exception {
-
-      super.testActionColumnPlacement();
+        super.testActionColumnPlacement();
+        passed();
     }
     
     
     @Test
 	public void testAddViaLightbox() throws Exception {
 		super.testAddViaLightbox();
+        passed();
 	}
 	
 	@Test
 	public void testColumnSequence() throws Exception {
 		super.testColumnSequence();
+        passed();
 	}
 
 	@Test
 	public void testSequencerow() throws Exception {
 		super.testSequencerow();
+        passed();
 	}
-
-    
 }

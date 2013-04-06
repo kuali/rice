@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,28 +21,23 @@ import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
-import edu.samplu.common.WebDriverITBase;
-
 /**
  * test that dirty fields check happens for all pages in a view
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DirtyFieldsCheckNavIT extends WebDriverLegacyITBase {
-	@Override
+
+    @Override
 	public String getTestUrl() {
-		// open Other Examples page in kitchen sink view
 		return ITUtil.PORTAL;
 	}
 
 	@Test
 	public void testDirtyFieldsCheck() throws Exception {
-	    waitAndClickByLinkText("KRAD");
-        waitAndClickByLinkText("Uif Components (Kitchen Sink)");
-        switchToWindow("Kuali :: Uif Components");
+	    waitAndClickKRAD();
+        waitAndClickByLinkText(UIF_COMPONENTS_KITCHEN_SINK_LINK_TEXT);
+        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
 		super.testDirtyFieldsCheck();
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package edu.samplu.admin.test;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -34,19 +33,14 @@ public class AgendaEditRuleRefreshNavIT extends WebDriverLegacyITBase {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.WebDriverLegacyITBase#getTestUrl()
-     */
-
-    @Test
-    /**
      * test that repeated ajax refreshes work
      */
+    @Test
     public void testAgendaEditRuleRefreshIT() throws Exception {
-        waitAndClickByLinkText("Agenda Lookup");
+        waitAndClickByLinkText(AGENDA_LOOKUP_LINK_TEXT);
         waitForPageToLoad();
         super.testAgendaEditRuleRefreshIT();
+        passed();
     }
 
 }

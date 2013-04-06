@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@ import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * tests that user 'admin', can initiate, save and submit a FiscalOfficerInfo maintenance document
  * resulting in a final document
@@ -37,8 +35,9 @@ public class FiscalOfficerInfoMaintenanceNewNavIT extends WebDriverLegacyITBase 
 
     @Test
     public void testUntitled() throws Exception {
-        waitAndClickByLinkText("KRAD");
+        waitAndClickKRAD();
         waitAndClickByXpath("//a[@title='FiscalOfficerInfo Maintenance (New)']");
         super.testFiscalOfficerInfoMaintenanceNew();
+        passed();
     }
 }

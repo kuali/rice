@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,6 @@ import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
-import org.openqa.selenium.internal.seleniumemulation.GetValue;
-
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.fail;
 
 /**
  * tests that a line in a sub collection can be deleted
@@ -41,9 +37,10 @@ public class DeleteSubCollectionLineNavIT extends WebDriverLegacyITBase {
      * tests that a line in a sub collection can be deleted
      */
     public void deleteSubCollectionLine() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]");
-        switchToWindow("Kuali :: Uif Components");
+        waitAndClickKRAD();
+        waitAndClickByXpath(KITCHEN_SINK_XPATH);
+        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
         super.deleteSubCollectionLine();
+        passed();
     }
 }

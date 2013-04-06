@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,9 @@
 
 package edu.samplu.travel.krad.test;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
-import org.junit.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * test that configuration test view items work as expected
@@ -30,12 +26,15 @@ import static junit.framework.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigurationTestViewWDIT extends WebDriverLegacyITBase {
+
     @Override
     public String getTestUrl() {
         return "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView_KNS&methodToCall=start";
     }
+
     /** bean id prefix in used in view */
     private String idPrefix = "ConfigurationTestView-ProgressiveRender-";
+
     /** bean id suffix for add line controls */
     String addLineIdSuffix = "InputField_add_control";
     
@@ -46,6 +45,7 @@ public class ConfigurationTestViewWDIT extends WebDriverLegacyITBase {
     @Test
 	public void testConfigurationTestView() throws Exception {
         super.testConfigurationTestView(idPrefix);
+        passed();
 	}
 
     /**
@@ -55,6 +55,7 @@ public class ConfigurationTestViewWDIT extends WebDriverLegacyITBase {
     @Test    
     public void testAddLineWithSpecificTime() throws Exception{
         super.testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
+        passed();
     }
 
     /**
@@ -64,6 +65,7 @@ public class ConfigurationTestViewWDIT extends WebDriverLegacyITBase {
     @Test
     public void testAddLineWithAllDay() throws Exception {
         super.testAddLineWithAllDay(idPrefix, addLineIdSuffix);
+        passed();
     }
 
     /**
@@ -73,5 +75,6 @@ public class ConfigurationTestViewWDIT extends WebDriverLegacyITBase {
     @Test  
     public void testAddLineAllDay() throws Exception{
         super.testAddLineAllDay(idPrefix, addLineIdSuffix);
+        passed();
     }
 }

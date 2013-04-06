@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,6 @@ import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 /**
  * tests that the parent line variable is available in a sub collection
  *
@@ -42,6 +38,7 @@ public class ParentLineWDIT extends WebDriverLegacyITBase {
      * tests that the size of a sub collection is correctly displayed using the parentLine el variable
      */
     public void testSubCollectionSize() throws Exception {
-    super.testSubCollectionSize();
+        super.testSubCollectionSize();
+        passed();
     }
 }

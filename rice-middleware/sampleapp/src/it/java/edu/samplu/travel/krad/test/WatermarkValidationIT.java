@@ -17,6 +17,7 @@ package edu.samplu.travel.krad.test;
 
 import static junit.framework.Assert.assertEquals;
 
+import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -42,7 +43,7 @@ public class WatermarkValidationIT extends WebDriverITBase {
 	public void testWatermarking() throws Exception {
 		waitAndClickByLinkText("KRAD");
 		Thread.sleep(5000);
-		waitAndClickByLinkText("Uif Components (Kitchen Sink)");
+		waitAndClickByLinkText(WebDriverLegacyITBase.UIF_COMPONENTS_KITCHEN_SINK_LINK_TEXT);
 		Thread.sleep(5000);
 		Thread.sleep(2000);
 		//Switch to new window.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,10 @@
 
 package edu.samplu.travel.krad.test;
 
-import java.util.List;
-
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.selenesedriver.FindElements;
-
-import static junit.framework.Assert.*;
 
 /**
  * test that configuration test view items work as expected
@@ -35,12 +27,15 @@ import static junit.framework.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigurationTestViewNavIT extends WebDriverLegacyITBase {
+
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
     }
+
     /** bean id prefix in used in view */
     private String idPrefix = "ConfigurationTestView-ProgressiveRender-";
+
     /** bean id suffix for add line controls */
     String addLineIdSuffix = "InputField_add_control";
 
@@ -48,7 +43,7 @@ public class ConfigurationTestViewNavIT extends WebDriverLegacyITBase {
      * open the configuration test view page
      */
     protected void openConfigurationTestView() throws InterruptedException {
-        waitAndClickByLinkText("KRAD");
+        waitAndClickKRAD();
         waitAndClickByXpath("(//a[text()='Configuration Test View'])[2]");
         switchToWindow("Kuali :: Configuration Test View");
         waitForTitleToEqualKualiPortalIndex();
@@ -62,6 +57,7 @@ public class ConfigurationTestViewNavIT extends WebDriverLegacyITBase {
 	public void testConfigurationTestView() throws Exception {
         openConfigurationTestView();
         super.testConfigurationTestView(idPrefix);
+        passed();
 	}
 
     /**
@@ -72,6 +68,7 @@ public class ConfigurationTestViewNavIT extends WebDriverLegacyITBase {
     public void testAddLineWithSpecificTime() throws Exception{
         openConfigurationTestView();
         super.testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
+        passed();
     }
 
     /**
@@ -82,6 +79,7 @@ public class ConfigurationTestViewNavIT extends WebDriverLegacyITBase {
     public void testAddLineWithAllDay() throws Exception {
         openConfigurationTestView();
         super.testAddLineWithAllDay(idPrefix, addLineIdSuffix);
+        passed();
     }
 
     /**
@@ -92,5 +90,6 @@ public class ConfigurationTestViewNavIT extends WebDriverLegacyITBase {
     public void testAddLineAllDay() throws Exception{
         openConfigurationTestView();
         super.testAddLineAllDay(idPrefix, addLineIdSuffix);
+        passed();
     }
 }

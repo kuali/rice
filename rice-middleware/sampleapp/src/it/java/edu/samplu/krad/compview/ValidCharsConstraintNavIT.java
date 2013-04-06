@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package edu.samplu.krad.compview;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
-import junit.framework.Assert;
 import org.junit.Test;
 
 /**
@@ -33,10 +32,11 @@ public class ValidCharsConstraintNavIT extends WebDriverLegacyITBase {
 
 	@Test
 	public void testValidCharsConstraintIT() throws Exception {
-	    waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]");
-        switchToWindow("Kuali :: Uif Components");
+	    waitAndClickKRAD();
+        waitAndClickByXpath(KITCHEN_SINK_XPATH);
+        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
         waitAndClickByLinkText("Validation - Regex");
 	    super.testValidCharsConstraintIT();
+        passed();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@ package edu.samplu.krad.configview;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-import org.junit.Assert;
+
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * Selenium test that tests collections
@@ -28,6 +27,17 @@ import org.openqa.selenium.By;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CollectionsNavIT extends WebDriverLegacyITBase {
+
+    /**
+     * (//a[contains(text(),'Collections Configuration Test View')])[2]
+     */
+    public static final String TEXT_COLLECTIONS_CONFIGURATION_TEST_VIEW_XPATH =
+            "(//a[contains(text(),'Collections Configuration Test View')])[2]";
+
+    /**
+     * Kuali :: Collection Test View
+     */
+    public static final String KUALI_COLLECTION_WINDOW_TITLE = "Kuali :: Collection Test View";
 
     @Override
     public String getTestUrl() {
@@ -39,10 +49,15 @@ public class CollectionsNavIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testDefaultTestsTableLayout() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Collections Configuration Test View')])[2]");
-        switchToWindow("Kuali :: Collection Test View");
+        navigate();
         super.testDefaultTestsTableLayout();
+        passed();
+    }
+
+    private void navigate() throws InterruptedException {
+        waitAndClickKRAD();
+        waitAndClickByXpath(TEXT_COLLECTIONS_CONFIGURATION_TEST_VIEW_XPATH);
+        switchToWindow(KUALI_COLLECTION_WINDOW_TITLE);
     }
 
     /**
@@ -50,10 +65,9 @@ public class CollectionsNavIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testAddBlankLine() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Collections Configuration Test View')])[2]");
-        switchToWindow("Kuali :: Collection Test View");
+        navigate();
         super.testAddBlankLine();
+        passed();
     }
 
     /**
@@ -61,34 +75,30 @@ public class CollectionsNavIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testActionColumnPlacement() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Collections Configuration Test View')])[2]");
-        switchToWindow("Kuali :: Collection Test View");
+        navigate();
         super.testActionColumnPlacement();
+        passed();
     }
 
     @Test
     public void testAddViaLightbox() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Collections Configuration Test View')])[2]");
-        switchToWindow("Kuali :: Collection Test View");
+        navigate();
         super.testAddViaLightbox();
+        passed();
     }
 
     @Test
     public void testColumnSequence() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Collections Configuration Test View')])[2]");
-        switchToWindow("Kuali :: Collection Test View");
+        navigate();
         super.testColumnSequence();
+        passed();
     }
 
     @Test
     public void testSequencerow() throws Exception {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Collections Configuration Test View')])[2]");
-        switchToWindow("Kuali :: Collection Test View");
+        navigate();
         super.testSequencerow();
+        passed();
     }
 
 }

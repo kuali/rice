@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,13 @@ package edu.samplu.krad.validationmessagesview;
 
 import edu.samplu.common.WebDriverLegacyITBase;
 
-import junit.framework.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ClientErrorsWDIT extends WebDriverLegacyITBase {
+
     @Override
     public String getTestUrl() {
         return "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start";
@@ -34,5 +33,6 @@ public class ClientErrorsWDIT extends WebDriverLegacyITBase {
     @Test
     public void testClientErrors() throws Exception {
         super.testClientErrors();
+        passed();
     }
 }

@@ -74,7 +74,7 @@ public class IUeDocLiteXMLIngestNavIT extends AdminTmplMthdSTNavBase {
        
         driver.switchTo().defaultContent();
 
-        waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
+        waitAndClickLogout();
         passed();
     }
 

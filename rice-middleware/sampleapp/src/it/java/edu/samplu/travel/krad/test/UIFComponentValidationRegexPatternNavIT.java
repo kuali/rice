@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package edu.samplu.travel.krad.test;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-import org.junit.Assert;
+
 import org.junit.Test;
 
 /**
@@ -41,9 +41,10 @@ public class UIFComponentValidationRegexPatternNavIT extends WebDriverLegacyITBa
          *  Test failing this condition is commented in the below code section for Timestamp Validation. Once resolved can be uncommented  
          *  
          */
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]");
-        switchToWindow("Kuali :: Uif Components");
-//        super.testValidCharacterConstraint();
+        waitAndClickKRAD();
+        waitAndClickByXpath(KITCHEN_SINK_XPATH);
+        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+        super.testValidCharacterConstraint();
+        passed();
     }
 }

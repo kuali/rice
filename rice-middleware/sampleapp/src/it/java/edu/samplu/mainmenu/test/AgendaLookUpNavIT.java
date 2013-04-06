@@ -28,12 +28,13 @@ public class AgendaLookUpNavIT extends MainTmplMthdSTNavBase {
 
     @Override
     public String getLinkLocator() {
-        return "Agenda Lookup";
+        return AGENDA_LOOKUP_LINK_TEXT;
     }
     
     @Test
     public void agendaLookupAssertions() throws Exception{
         gotoMenuLinkLocator();
         super.agendaLookupAssertions();
+        passed();
     }
 }

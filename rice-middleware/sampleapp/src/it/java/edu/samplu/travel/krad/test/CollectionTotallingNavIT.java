@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package edu.samplu.travel.krad.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -29,11 +27,6 @@ import edu.samplu.common.WebDriverLegacyITBase;
  */
 public class CollectionTotallingNavIT extends WebDriverLegacyITBase {
     
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.UpgradedSeleniumITBase#getTestUrl()
-     */
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
@@ -41,11 +34,10 @@ public class CollectionTotallingNavIT extends WebDriverLegacyITBase {
 
     @Test
     public void testCollectionTotalling() throws Exception {
-        
-        waitAndClickByLinkText("KRAD");
+        waitAndClickKRAD();
         waitAndClickByXpath("//a[text()='Collection Totaling']");
         switchToWindow("Kuali :: Collection Totaling");
         super.testCollectionTotalling();
-    }  
-
+        passed();
+    }
 }

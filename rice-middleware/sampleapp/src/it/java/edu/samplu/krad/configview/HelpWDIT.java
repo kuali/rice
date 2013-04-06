@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,9 @@
  */
 package edu.samplu.krad.configview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
-import org.openqa.selenium.JavascriptExecutor;
-
-import static org.junit.Assert.*;
 
 /**
  * Test the help widget
@@ -51,8 +47,9 @@ public class HelpWDIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testViewHelp() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         super.testViewHelp();
+        passed();
     }
 
     /**
@@ -60,8 +57,9 @@ public class HelpWDIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testPageHelp() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         super.testPageHelp();
+        passed();
     }
 
     /**
@@ -69,8 +67,9 @@ public class HelpWDIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testTooltipHelp() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         super.testTooltipHelp();
+        passed();
     }
 
     /**
@@ -78,8 +77,9 @@ public class HelpWDIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testDisplayOnlyTooltipHelp() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         super.testDisplayOnlyTooltipHelp();
+        passed();
     }
 
     /**
@@ -87,8 +87,8 @@ public class HelpWDIT extends WebDriverLegacyITBase {
      */
     @Test
     public void testMissingTooltipHelp() throws Exception {
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         super.testMissingTooltipHelp();
+        passed();
     }
-      
 }

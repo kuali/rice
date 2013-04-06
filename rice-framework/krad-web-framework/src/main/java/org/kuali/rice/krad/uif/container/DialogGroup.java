@@ -182,9 +182,9 @@ public class DialogGroup extends Group {
      * </ul>
      * </p>
      *
-     * @param view - view instance that should be finalized for rendering
-     * @param model - top level object containing the data
-     * @param parent - parent component
+     * @param view view instance that should be finalized for rendering
+     * @param model top level object containing the data
+     * @param parent parent component
      */
     @Override
     public void performFinalize(View view, Object model, Component parent) {
@@ -214,7 +214,7 @@ public class DialogGroup extends Group {
     /**
      * Sets the text String to display as the main message in this dialog
      *
-     * @param promptText - the String to be displayed as the main message
+     * @param promptText the String to be displayed as the main message
      */
     public void setPromptText(String promptText) {
         this.promptText = promptText;
@@ -223,7 +223,7 @@ public class DialogGroup extends Group {
     /**
      * Retrieves the Message element for this dialog
      *
-     * @return Message - the text element containing the message string
+     * @return Message the text element containing the message string
      */
     @BeanTagAttribute(name = "prompt", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MessageField getPrompt() {
@@ -233,7 +233,7 @@ public class DialogGroup extends Group {
     /**
      * Sets the prompt Message for this dialog
      *
-     * @param prompt - The Message element for this dialog
+     * @param prompt The Message element for this dialog
      */
     public void setPrompt(MessageField prompt) {
         this.prompt = prompt;
@@ -257,7 +257,7 @@ public class DialogGroup extends Group {
     /**
      * Sets the InputField for gathering user text input
      *
-     * @param explanation - InputField
+     * @param explanation InputField
      */
     public void setExplanation(InputField explanation) {
         this.explanation = explanation;
@@ -270,7 +270,7 @@ public class DialogGroup extends Group {
      * False by default.
      * </p>
      *
-     * @return boolean - true if this user input is to be rendered, false if not.
+     * @return true if this user input is to be rendered, false if not
      */
     @BeanTagAttribute(name = "displayExplanation")
     public boolean isDisplayExplanation() {
@@ -280,7 +280,7 @@ public class DialogGroup extends Group {
     /**
      * Sets whether to display the Explanation InputField on this dialog
      *
-     * @param displayExplanation - true if explanation control is to be displayed, false if not
+     * @param displayExplanation true if explanation control is to be displayed, false if not
      */
     public void setDisplayExplanation(boolean displayExplanation) {
         this.displayExplanation = displayExplanation;
@@ -293,7 +293,7 @@ public class DialogGroup extends Group {
      * A List of KeyValue pairs for each of the choices provided on this dialog.
      * </p>
      *
-     * @return the List of response actions to provide the user.
+     * @return the List of response actions to provide the user
      */
     @BeanTagAttribute(name = "availableResponses", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<KeyValue> getAvailableResponses() {
@@ -303,7 +303,7 @@ public class DialogGroup extends Group {
     /**
      * Sets the list of user responses to provide on this dialog
      *
-     * @param availableResponses - a List of KeyValue pairs representing the user response choices
+     * @param availableResponses a List of KeyValue pairs representing the user response choices
      */
     public void setAvailableResponses(List<KeyValue> availableResponses) {
         this.availableResponses = availableResponses;
@@ -328,7 +328,7 @@ public class DialogGroup extends Group {
     /**
      * Sets the type of InputField used to display the user choices in this dialog
      *
-     * @param responseInputField - A component used to display the response choices
+     * @param responseInputField a component used to display the response choices
      */
     public void setResponseInputField(InputField responseInputField) {
         this.responseInputField = responseInputField;
@@ -342,7 +342,7 @@ public class DialogGroup extends Group {
      * Others, prefer just the opposite. This allows the order to easily be switched.
      * </p>
      *
-     * @return - true if choices left to right
+     * @return true if choices left to right
      *         false if choices right to left
      */
     @BeanTagAttribute(name = "reverseButtonOrder")
@@ -357,7 +357,7 @@ public class DialogGroup extends Group {
      * By default, the choices are displayed left to right
      * </p>
      *
-     * @param reverseButtonOrder - true if buttons displayed left to right, false if right to left
+     * @param reverseButtonOrder true if buttons displayed left to right, false if right to left
      */
     public void setReverseButtonOrder(boolean reverseButtonOrder) {
         this.reverseButtonOrder = reverseButtonOrder;
@@ -385,7 +385,7 @@ public class DialogGroup extends Group {
     /**
      * Sets whether the content for the dialog will be filled via ajax call or hidden group
      *
-     * @param useAjaxCallForContent - boolean set to true if ajax call is used to get content,
+     * @param useAjaxCallForContent boolean set to true if ajax call is used to get content,
      * false if hidden group is used for content.
      */
     public void setUseAjaxCallForContent(boolean useAjaxCallForContent) {

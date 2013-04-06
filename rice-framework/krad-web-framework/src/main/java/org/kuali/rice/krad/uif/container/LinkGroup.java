@@ -56,7 +56,7 @@ public class LinkGroup extends Group {
      *
      * e.g. '['
      *
-     * @return String group begin delimiter
+     * @return group begin delimiter
      */
     @BeanTagAttribute(name = "groupBeginDelimiter")
     public String getGroupBeginDelimiter() {
@@ -82,7 +82,7 @@ public class LinkGroup extends Group {
      *
      * e.g. ']'
      *
-     * @return String group end delimiter
+     * @return group end delimiter
      */
     @BeanTagAttribute(name = "groupEndDelimiter")
     public String getGroupEndDelimiter() {
@@ -103,7 +103,7 @@ public class LinkGroup extends Group {
      *
      * e.g. '|'
      *
-     * @return String link separator
+     * @return link separator
      */
     @BeanTagAttribute(name = "linkSeparator")
     public String getLinkSeparator() {
@@ -123,7 +123,7 @@ public class LinkGroup extends Group {
      * String that will be outputted when the list backing the
      * link group is empty
      *
-     * @return String empty group string
+     * @return empty group string
      */
     @BeanTagAttribute(name = "emptyLinkGroupString")
     public String getEmptyLinkGroupString() {

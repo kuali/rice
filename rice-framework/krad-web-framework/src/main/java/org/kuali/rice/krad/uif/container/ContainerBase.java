@@ -372,7 +372,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     /**
      * Convenience setter for configuration to set the header text
      *
-     * @param headerText  the text that should be displayed on the header.
+     * @param headerText the text that should be displayed on the header.
      */
     public void setHeaderText (String headerText) {
         if (header != null) {
@@ -402,7 +402,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * Text explaining how complete the group inputs, including things like what values should be selected
      * in certain cases, what fields should be completed and so on (instructions)
      *
-     * @return String instructional message
+     * @return instructional message
      */
     @BeanTagAttribute(name="instructionalText")
 	public String getInstructionalText() {
@@ -426,7 +426,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * the styleClasses property will be of most interest
      * </p>
      *
-     * @return Message instructional message field
+     * @return instructional message field
      */
     @BeanTagAttribute(name="instructionalMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Message getInstructionalMessage() {

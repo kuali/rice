@@ -82,9 +82,9 @@ public class CollectionGroupBuilder implements Serializable {
      * fields to indicate what collection and line they apply to.
      * </p>
      *
-     * @param view - View instance the collection belongs to
-     * @param model - Top level object containing the data
-     * @param collectionGroup - CollectionGroup component for the collection
+     * @param view View instance the collection belongs to
+     * @param model Top level object containing the data
+     * @param collectionGroup CollectionGroup component for the collection
      */
     public void build(View view, Object model, CollectionGroup collectionGroup) {
         // create add line
@@ -156,10 +156,10 @@ public class CollectionGroupBuilder implements Serializable {
      * displayed
      * </p>
      *
-     * @param view - view instance that contains the collection
-     * @param model - object containing the views data
-     * @param collectionGroup - collection group component instance that will display the collection
-     * @param collection - collection instance that will be filtered
+     * @param view view instance that contains the collection
+     * @param model object containing the views data
+     * @param collectionGroup collection group component instance that will display the collection
+     * @param collection collection instance that will be filtered
      */
     protected List<Integer> performCollectionFiltering(View view, Object model, CollectionGroup collectionGroup,
             Collection<?> collection) {
@@ -190,9 +190,9 @@ public class CollectionGroupBuilder implements Serializable {
      * Builds the fields for holding the collection add line and if necessary
      * makes call to setup the new line instance
      *
-     * @param view - view instance the collection belongs to
-     * @param collectionGroup - collection group the layout manager applies to
-     * @param model - Object containing the view data, should extend UifFormBase
+     * @param view view instance the collection belongs to
+     * @param collectionGroup collection group the layout manager applies to
+     * @param model Object containing the view data, should extend UifFormBase
      * if using framework managed new lines
      */
     protected void buildAddLine(View view, Object model, CollectionGroup collectionGroup) {
@@ -221,15 +221,15 @@ public class CollectionGroupBuilder implements Serializable {
      * {@code CollectionLayoutManager} to assemble the line as necessary
      * for the layout
      *
-     * @param view - view instance the collection belongs to
-     * @param model - top level object containing the data
-     * @param collectionGroup - collection group component for the collection
-     * @param bindingPath - binding path for the line fields (if DataBinding)
-     * @param actions - List of actions to set in the lines action column
-     * @param bindToForm - whether the bindToForm property on the items bindingInfo
+     * @param view view instance the collection belongs to
+     * @param model top level object containing the data
+     * @param collectionGroup collection group component for the collection
+     * @param bindingPath binding path for the line fields (if DataBinding)
+     * @param actions List of actions to set in the lines action column
+     * @param bindToForm whether the bindToForm property on the items bindingInfo
      * should be set to true (needed for add line)
-     * @param currentLine - object instance for the current line, or null if add line
-     * @param lineIndex - index of the line in the collection, or -1 if we are
+     * @param currentLine object instance for the current line, or null if add line
+     * @param lineIndex index of the line in the collection, or -1 if we are
      * building the add line
      */
     @SuppressWarnings("unchecked")
@@ -409,10 +409,10 @@ public class CollectionGroupBuilder implements Serializable {
      * the holder is invoked to retrieved the remotable fields and translate to attribute fields. The translated list
      * is then inserted into the returned list at the position of the holder
      *
-     * @param view - view instance containing the container
-     * @param model - object instance containing the view data
-     * @param group - collection group instance to check for any remotable fields holder
-     * @param items - list of items to process
+     * @param view view instance containing the container
+     * @param model object instance containing the view data
+     * @param group collection group instance to check for any remotable fields holder
+     * @param items list of items to process
      */
     protected List<Field> processAnyRemoteFieldsHolder(View view, Object model, CollectionGroup group,
             List<? extends Component> items) {
@@ -441,13 +441,13 @@ public class CollectionGroupBuilder implements Serializable {
      * condition evaluation so the the fields are not used while building the
      * collection lines
      *
-     * @param view - view instance the collection group belongs to
-     * @param model - object containing the view data
-     * @param collectionGroup - collection group for the line fields
-     * @param lineFields - list of fields configured for the line
-     * @param currentLine - object containing the line data
-     * @param lineIndex - index of the line in the collection
-     * @return List<Field> list of field instances that should be rendered
+     * @param view view instance the collection group belongs to
+     * @param model object containing the view data
+     * @param collectionGroup collection group for the line fields
+     * @param lineFields list of fields configured for the line
+     * @param currentLine object containing the line data
+     * @param lineIndex index of the line in the collection
+     * @return list of field instances that should be rendered
      */
     protected List<Field> removeNonRenderLineFields(View view, Object model, CollectionGroup collectionGroup,
             List<Field> lineFields, Object currentLine, int lineIndex) {
@@ -483,12 +483,12 @@ public class CollectionGroupBuilder implements Serializable {
      * Invokes the view's configured authorizer and presentation controller to determine if the user has permission
      * to view the line (if a permission has been established)
      *
-     * @param view - view instance the collection belongs to and from which the authorizer/presentation controller will
+     * @param view view instance the collection belongs to and from which the authorizer/presentation controller will
      * be pulled
-     * @param model - object containing the view's data
-     * @param collectionGroup - collection group containing the line
-     * @param line - object containing the lines data
-     * @return boolean true if the user can view the line, false if not
+     * @param model object containing the view's data
+     * @param collectionGroup collection group containing the line
+     * @param line object containing the lines data
+     * @return true if the user can view the line, false if not
      */
     protected boolean checkViewLineAuthorizationAndPresentationLogic(View view, ViewModel model,
             CollectionGroup collectionGroup, Object line) {
@@ -512,12 +512,12 @@ public class CollectionGroupBuilder implements Serializable {
      * Invokes the view's configured authorizer and presentation controller to determine if the user has permission
      * to edit the line (if a permission has been established)
      *
-     * @param view - view instance the collection belongs to and from which the authorizer/presentation controller will
+     * @param view view instance the collection belongs to and from which the authorizer/presentation controller will
      * be pulled
-     * @param model - object containing the view's data
-     * @param collectionGroup - collection group containing the line
-     * @param line - object containing the lines data
-     * @return boolean true if the user can edit the line, false if not
+     * @param model object containing the view's data
+     * @param collectionGroup collection group containing the line
+     * @param line object containing the lines data
+     * @return true if the user can edit the line, false if not
      */
     protected boolean checkEditLineAuthorizationAndPresentationLogic(View view, ViewModel model,
             CollectionGroup collectionGroup, Object line) {
@@ -542,15 +542,15 @@ public class CollectionGroupBuilder implements Serializable {
      * and presentation controller. If the field is viewable, then sets the edit field authorization. Finally iterates
      * through the line actions invoking the authorizer and presentation controller to authorizer the action
      *
-     * @param view - view instance the collection belongs to and from which the authorizer/presentation controller will
+     * @param view view instance the collection belongs to and from which the authorizer/presentation controller will
      * be pulled
-     * @param model - object containing the view's data
-     * @param collectionGroup - collection group containing the line
-     * @param line - object containing the lines data
-     * @param readOnlyLine - flag indicating whether the line has been marked as read only (which will force the fields
+     * @param model object containing the view's data
+     * @param collectionGroup collection group containing the line
+     * @param line object containing the lines data
+     * @param readOnlyLine flag indicating whether the line has been marked as read only (which will force the fields
      * to be read only)
-     * @param lineFields - list of fields instances for the line
-     * @param actions - list of action field instances for the line
+     * @param lineFields list of fields instances for the line
+     * @param actions list of action field instances for the line
      */
     protected void applyLineFieldAuthorizationAndPresentationLogic(View view, ViewModel model,
             CollectionGroup collectionGroup, Object line, boolean readOnlyLine, List<Field> lineFields,
@@ -640,11 +640,11 @@ public class CollectionGroupBuilder implements Serializable {
      * Checks whether the given sub-collection should be rendered, any
      * conditional render string is evaluated
      *
-     * @param view - view instance the sub collection belongs to
-     * @param model - object containing the view data
-     * @param collectionGroup - collection group the sub collection belongs to
-     * @param subCollectionGroup - sub collection group to check render status for
-     * @return boolean true if sub collection should be rendered, false if it
+     * @param view view instance the sub collection belongs to
+     * @param model object containing the view data
+     * @param collectionGroup collection group the sub collection belongs to
+     * @param subCollectionGroup sub collection group to check render status for
+     * @return true if sub collection should be rendered, false if it
      *         should not be rendered
      */
     protected boolean checkSubCollectionRender(View view, Object model, CollectionGroup collectionGroup,
@@ -676,12 +676,12 @@ public class CollectionGroupBuilder implements Serializable {
      * action was performed on can be determined when that action is selected
      * </p>
      *
-     * @param lineActions - the actions to copy
-     * @param view - view instance the collection belongs to
-     * @param model - top level object containing the data
-     * @param collectionGroup - collection group component for the collection
-     * @param collectionLine - object instance for the current line
-     * @param lineIndex - index of the line the actions should apply to
+     * @param lineActions the actions to copy
+     * @param view view instance the collection belongs to
+     * @param model top level object containing the data
+     * @param collectionGroup collection group component for the collection
+     * @param collectionLine object instance for the current line
+     * @param lineIndex index of the line the actions should apply to
      */
     protected List<Action> initializeLineActions(List<Action> lineActions, View view, Object model,
             CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
@@ -744,9 +744,9 @@ public class CollectionGroupBuilder implements Serializable {
      * the action was performed on can be determined
      * </p>
      *
-     * @param view - view instance the collection belongs to
-     * @param model - top level object containing the data
-     * @param collectionGroup - collection group component for the collection
+     * @param view view instance the collection belongs to
+     * @param model top level object containing the data
+     * @param collectionGroup collection group component for the collection
      */
     protected List<Action> getAddLineActions(View view, Object model, CollectionGroup collectionGroup) {
         String lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
@@ -799,9 +799,9 @@ public class CollectionGroupBuilder implements Serializable {
      * Helper method to build the context for a field (needed because the apply model phase for line fields has
      * not been applied yet and their full context not set)
      *
-     * @param view - view instance the field belongs to
-     * @param collectionGroup - collection group instance the field belongs to
-     * @param field - field instance to build context for
+     * @param view view instance the field belongs to
+     * @param collectionGroup collection group instance the field belongs to
+     * @param field field instance to build context for
      * @return Map<String, Object> context for field
      */
     protected Map<String, Object> getContextForField(View view, CollectionGroup collectionGroup, Field field) {

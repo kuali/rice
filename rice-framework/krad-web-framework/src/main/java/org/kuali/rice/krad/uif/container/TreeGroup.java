@@ -103,8 +103,8 @@ public class TreeGroup extends Group implements DataBinding {
      * to be read by the renderer
      * </p>
      *
-     * @param view - view instance the tree group belongs to
-     * @param model - object containing the view data from which the tree data will be retrieved
+     * @param view view instance the tree group belongs to
+     * @param model object containing the view data from which the tree data will be retrieved
      */
     protected void buildTreeGroups(View view, Object model) {
         // get Tree data property
@@ -236,8 +236,8 @@ public class TreeGroup extends Group implements DataBinding {
      * Retrieves the <code>Component</code> instances from the node for building the nested
      * components list
      *
-     * @param node - node to pull components from
-     * @param components - list to add components to
+     * @param node node to pull components from
+     * @param components list to add components to
      */
     protected void addNodeComponents(Node<Group, Message> node, List<Component> components) {
         if (node != null) {

@@ -63,7 +63,7 @@ public class NavigationGroup extends Group {
      * Type of navigation that should be rendered. For example a menu or tab
      * navigation. Used by the rendering script to choose an appropriate plug-in
      *
-     * @return String navigation type
+     * @return navigation type
      * @see org.kuali.rice.krad.uif.UifConstants.NavigationType
      */
     @BeanTagAttribute(name = "navigationType")

@@ -48,7 +48,7 @@ public class CollectionGroupSecurity extends ComponentSecurity {
     /**
      * Indicates whether the collection group line has edit authorization and KIM should be consulted
      *
-     * @return boolean true if the line has edit authorization, false if not
+     * @return true if the line has edit authorization, false if not
      */
     @BeanTagAttribute(name="editLineAuthz")
     public boolean isEditLineAuthz() {
@@ -67,7 +67,7 @@ public class CollectionGroupSecurity extends ComponentSecurity {
     /**
      * Indicates whether the collection group line has view authorization and KIM should be consulted
      *
-     * @return boolean true if the line has view authorization, false if not
+     * @return true if the line has view authorization, false if not
      */
     @BeanTagAttribute(name="viewLineAuthz")
     public boolean isViewLineAuthz() {

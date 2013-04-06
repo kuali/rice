@@ -92,7 +92,7 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter {
      * Gives the binding path to the old data object for comparison, used to
      * get the active status of the old object
      *
-     * @return String binding path
+     * @return binding path
      */
     @BeanTagAttribute(name="oldBindingObjectPath")
     public String getOldBindingObjectPath() {

@@ -323,8 +323,8 @@ public class CollectionGroup extends Group implements DataBinding {
      * model must be a subclass of <code>UifFormBase</code> in order to find the
      * Map.
      *
-     * @param model - Model instance that contains the new collection lines Map
-     * @param clearExistingLine - boolean that indicates whether the line should be set to a
+     * @param model Model instance that contains the new collection lines Map
+     * @param clearExistingLine boolean that indicates whether the line should be set to a
      * new instance if it already exists
      */
     public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
@@ -384,7 +384,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Object class the collection maintains. Used to get dictionary information
      * in addition to creating new instances for the collection when necessary
      *
-     * @return Class<?> collection object class
+     * @return collection object class
      */
     @BeanTagAttribute(name = "collectionObjectClass")
     public Class<?> getCollectionObjectClass() {
@@ -442,7 +442,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Action fields that should be rendered for each collection line. Example
      * line action is the delete action
      *
-     * @return List<Action> line action fields
+     * @return line action fields
      */
     @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Action> getLineActions() {
@@ -461,7 +461,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Indicates whether the action column for the collection should be rendered
      *
-     * @return boolean true if the actions should be rendered, false if not
+     * @return true if the actions should be rendered, false if not
      * @see #getLineActions()
      */
     @BeanTagAttribute(name = "renderLineActions")
@@ -481,7 +481,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Indicates whether an add line should be rendered for the collection
      *
-     * @return boolean true if add line should be rendered, false if it should
+     * @return true if add line should be rendered, false if it should
      *         not be
      */
     @BeanTagAttribute(name = "renderAddLine")
@@ -510,7 +510,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * header for the line.
      * </p>
      *
-     * @return String add line label
+     * @return add line label
      */
     public String getAddLabel() {
         if (getAddLineLabel() != null) {
@@ -534,7 +534,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * <code>Label</code> instance for the add line label
      *
-     * @return Label add line label field
+     * @return add line label field.
      * @see #getAddLabel
      */
     @BeanTagAttribute(name = "addLineLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -558,7 +558,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Can be left blank in which case the framework will manage the add line
      * instance in a generic map.
      *
-     * @return String add line property name
+     * @return add line property name
      */
     @BeanTagAttribute(name = "addLinePropertyName")
     public String getAddLinePropertyName() {
@@ -603,7 +603,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * collection add line (if enabled). If not set, the default group's items
      * list will be used
      *
-     * @return List<? extends Component> add line field list
+     * @return add line field list
      * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     @BeanTagAttribute(name = "addLineItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -625,7 +625,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * the add action (button) but can be configured to contain additional
      * actions
      *
-     * @return List<Action> add line action fields
+     * @return add line action fields
      */
     @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Action> getAddLineActions() {
@@ -650,7 +650,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * to return (multi-value lookup)
      * </p>
      *
-     * @return boolean true if select field should be rendered, false if not
+     * @return true if select field should be rendered, false if not
      */
     @BeanTagAttribute(name = "includeLineSelectionField")
     public boolean isIncludeLineSelectionField() {
@@ -682,7 +682,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * <code>UifFormBase</code>
      * </p>
      *
-     * @return String property name for select field
+     * @return property name for select field
      */
     @BeanTagAttribute(name = "lineSelectPropertyName")
     public String getLineSelectPropertyName() {
@@ -707,7 +707,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * conversions need to be set as usual and will be applied for each line returned
      * </p>
      *
-     * @return QuickFinder instance configured for the collection lookup
+     * @return instance configured for the collection lookup
      */
     @BeanTagAttribute(name = "collectionLookup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public QuickFinder getCollectionLookup() {
@@ -733,7 +733,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * whose active status returns false
      * </p>
      *
-     * @return boolean true to show inactive records, false to not render inactive records
+     * @return true to show inactive records, false to not render inactive records
      */
     @BeanTagAttribute(name = "showInactiveLines")
     public boolean isShowInactiveLines() {
@@ -764,7 +764,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Setter for the collection filter to use for filter inactive records from the
      * collection
      *
-     * @param activeCollectionFilter - CollectionFilter instance
+     * @param activeCollectionFilter CollectionFilter instance
      */
     public void setActiveCollectionFilter(CollectionFilter activeCollectionFilter) {
         this.activeCollectionFilter = activeCollectionFilter;
@@ -794,7 +794,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * List of <code>CollectionGroup</code> instances that are sub-collections
      * of the collection represented by this collection group
      *
-     * @return List<CollectionGroup> sub collections
+     * @return sub collections
      */
     @BeanTagAttribute(name = "subCollections", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionGroup> getSubCollections() {
@@ -817,7 +817,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Built by the framework as the collection lines are being generated
      * </p>
      *
-     * @return String id suffix for sub-collection
+     * @return id suffix for sub-collection
      */
     public String getSubCollectionSuffix() {
         return subCollectionSuffix;
@@ -845,7 +845,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Override to assert a {@link CollectionGroupSecurity} instance is set
      *
-     * @param componentSecurity - instance of CollectionGroupSecurity
+     * @param componentSecurity instance of CollectionGroupSecurity
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
@@ -922,7 +922,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Indicates whether new items should be styled with the #newItemsCssClass
      *
-     * @return boolean true if new items must be highlighted
+     * @return true if new items must be highlighted
      */
     @BeanTagAttribute(name = "highlightNewItems")
     public boolean isHighlightNewItems() {
@@ -941,7 +941,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * The css style class that will be added on new items
      *
-     * @return String - the new items css style class
+     * @return the new items css style class
      */
     @BeanTagAttribute(name = "newItemsCssClass")
     public String getNewItemsCssClass() {
@@ -960,7 +960,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * The css style class that will be added on the add item group or row
      *
-     * @return String - the add item group or row css style class
+     * @return the add item group or row css style class
      */
     @BeanTagAttribute(name = "addItemCssClass")
     public String getAddItemCssClass() {
@@ -979,7 +979,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Indicates whether the add item group or row should be styled with the #addItemCssClass
      *
-     * @return boolean true if add item group or row must be highlighted
+     * @return true if add item group or row must be highlighted
      */
     @BeanTagAttribute(name = "highlightAddItem")
     public boolean isHighlightAddItem() {
@@ -1047,7 +1047,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * to the end of the collection.
      * </p>
      *
-     * @return String - the add blank line action placement
+     * @return the add blank line action placement
      */
     @BeanTagAttribute(name = "addLinePlacement")
     public String getAddLinePlacement() {
@@ -1057,7 +1057,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Setter for the add line placement
      *
-     * @param addLinePlacement - add line placement string
+     * @param addLinePlacement add line placement string
      */
     public void setAddLinePlacement(String addLinePlacement) {
         this.addLinePlacement = addLinePlacement;

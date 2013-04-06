@@ -89,7 +89,7 @@ public class AccordionGroup extends Group {
     /**
      * Set the accordionWidget
      *
-     * @param accordionWidget the accordionWidget to set
+     * @param the accordionWidget to set
      */
     public void setAccordionWidget(Accordion accordionWidget) {
         this.accordionWidget = accordionWidget;

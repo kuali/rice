@@ -81,7 +81,7 @@ public class ELCollectionFilter implements CollectionFilter {
      * should evaluate to a boolean
      * </p>
      *
-     * @return String valid el expression that evaluates to a boolean.
+     * @return valid el expression that evaluates to a boolean
      */
     @BeanTagAttribute(name="expression")
     public String getExpression() {

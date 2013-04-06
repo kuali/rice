@@ -270,9 +270,10 @@
                 <exclude>it/**</exclude>
                 <exclude>src/site/docbook/**</exclude>
                 <exclude>**/src/it/**</exclude>
-                <exclude>web/src/main/webapp/krad/plugins</exclude>
+                <exclude>rice-framework/krad-web/src/main/webapp/krad/plugins/**</exclude>
                 <exclude>rice-framework/config/ide/**</exclude>
                 <exclude>rice-middleware/config/ide/**</exclude>
+                <exclude>rice-middleware/web/src/main/webapp/kr/scripts/jscalendar-1.0/**</exclude>
 
                 <!-- File excludes -->
                 <exclude>LICENSE.txt</exclude>
@@ -301,6 +302,7 @@
                 <exclude>**/jquery*.js</exclude>
                 <exclude>**/*.developer</exclude>
                 <exclude>**/authorized_keys</exclude>
+                <exclude>**/*.txt</exclude>
               </excludes>
             </configuration>
           </plugin>

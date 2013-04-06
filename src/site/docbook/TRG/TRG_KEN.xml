@@ -31,7 +31,7 @@
                 <title>KEN Message Flow</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEN_message_flow.png"/>
+                        <imagedata fileref="../images/KEN_Guide/KEN_message_flow.png"/>
                     </imageobject>
                 </mediaobject></figure>
             <para>From a developer’s perspective the diagram below helps to represent the inner
@@ -41,7 +41,7 @@
                 <title>KEN Message Storage</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEN_message_storage.png"/>
+                        <imagedata fileref="../images/KEN_Guide/KEN_message_storage.png"/>
                     </imageobject>
                 </mediaobject></figure>
             <para>The following sections of documentation aim at describing the inner workings of

@@ -51,7 +51,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      * defaults to none.
      * </p>
      *
-     * @return String delimiter string
+     * @return delimiter string
      */
     @BeanTagAttribute(name = "delimiter")
     public String getDelimiter() {
@@ -90,7 +90,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      * Builds the HTML class attribute string by combining the fieldsetClasses list
      * with a space delimiter
      *
-     * @return String class attribute string
+     * @return class attribute string
      */
     public String getFieldsetClassesAsString() {
         if (fieldsetClasses != null) {

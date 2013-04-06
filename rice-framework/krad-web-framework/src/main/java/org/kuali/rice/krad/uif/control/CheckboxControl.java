@@ -88,7 +88,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      * instance possibly in the checkbox group) the value can be set which will override the default.
      * </p>
      *
-     * @return String value for checkbox
+     * @return value for checkbox
      */
     @BeanTagAttribute(name="value")
     public String getValue() {
@@ -107,7 +107,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     /**
      * Returns the label text for this checkbox
      *
-     * @return String representing the checkbox label text
+     * @return the checkbox label text
      */
     @BeanTagAttribute(name="checkboxLabel")
     public String getCheckboxLabel() {
@@ -117,7 +117,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     /**
      * Sets the label text for this checkbox
      *
-     * @param checkboxLabel - String containing the label text
+     * @param checkboxLabel the label text
      */
     public void setCheckboxLabel(String checkboxLabel) {
         this.checkboxLabel = checkboxLabel;

@@ -79,7 +79,7 @@ public class GroupControl extends TextControl {
     /**
      * The name of the property on the parent object that holds the group namespace
      *
-     * @return String namespaceCodePropertyName
+     * @return namespaceCodePropertyName
      */
     @BeanTagAttribute(name="namespaceCodePropertyName")
     public String getNamespaceCodePropertyName() {
@@ -98,7 +98,7 @@ public class GroupControl extends TextControl {
     /**
      * The name of the property on the parent object that holds the group id
      *
-     * @return String groupIdPropertyName
+     * @return groupIdPropertyName
      */
     @BeanTagAttribute(name="groupIdPropertyName")
     public String getGroupIdPropertyName() {

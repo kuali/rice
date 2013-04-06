@@ -64,8 +64,8 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     /**
      * Sets the disabledExpression, if any, evaluates it and sets the disabled property
      *
-     * @param view - view instance to which the component belongs
-     * @param model - Top level object containing the data (could be the form or a
+     * @param view view instance to which the component belongs
+     * @param model top level object containing the data (could be the form or a
      * @param parent
      */
     public void performApplyModel(View view, Object model, Component parent) {
@@ -86,9 +86,9 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      * Parses the disabled expressions, if any, to equivalent javascript and evaluates the disable/enable when
      * changed property names.
      *
-     * @param view - view instance that should be finalized for rendering
-     * @param model - top level object containing the data
-     * @param parent - parent component
+     * @param view view instance that should be finalized for rendering
+     * @param model top level object containing the data
+     * @param parent parent component
      */
     public void performFinalize(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);

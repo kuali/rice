@@ -42,7 +42,7 @@ public class SelectControl extends MultiValueControlBase implements SizedControl
      * Vertical size of the control. This determines how many options can be
      * seen without using the control scoll bar. Defaults to 1
      *
-     * @return int size
+     * @return size
      */
     @BeanTagAttribute(name="size")
     public int getSize() {
@@ -62,7 +62,7 @@ public class SelectControl extends MultiValueControlBase implements SizedControl
      * If multiple is set to true, the underlying property must be of Array type
      * </p>
      *
-     * @return boolean true if multiple values can be selected, false if only
+     * @return true if multiple values can be selected, false if only
      *         one value can be selected
      */
     @BeanTagAttribute(name="multiple")

@@ -131,7 +131,7 @@ public class UserControl extends TextControl {
     /**
      * The name of the property on the parent object that holds the principal id
      *
-     * @return String principalIdPropertyName
+     * @return principalIdPropertyName
      */
     @BeanTagAttribute(name="principalIdPropertyName")
     public String getPrincipalIdPropertyName() {
@@ -150,7 +150,7 @@ public class UserControl extends TextControl {
     /**
      * The name of the property on the parent object that holds the person name
      *
-     * @return String personNamePropertyName
+     * @return personNamePropertyName
      */
     @BeanTagAttribute(name="personNamePropertyName")
     public String getPersonNamePropertyName() {
@@ -169,7 +169,7 @@ public class UserControl extends TextControl {
     /**
      * The name of the property on the parent object that holds the person object
      *
-     * @return String personObjectPropertyName
+     * @return personObjectPropertyName
      */
     @BeanTagAttribute(name="personObjectPropertyName")
     public String getPersonObjectPropertyName() {

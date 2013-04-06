@@ -111,7 +111,7 @@ public class TextControl extends ControlBase implements SizedControl {
      *
      * <p>If not set on control, max length of field will be used</p>
      *
-     * @return int max number of characters
+     * @return max number of characters
      */
     @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
@@ -132,7 +132,7 @@ public class TextControl extends ControlBase implements SizedControl {
      *
      * <p>If not set on control, min length of field will be used</p>
      *
-     * @return int max number of characters
+     * @return max number of characters
      */
     @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {

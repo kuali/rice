@@ -77,7 +77,7 @@ public class TextAreaControl extends ControlBase {
     /**
      * Number of rows the control should span (horizontal length)
      *
-     * @return int number of rows
+     * @return number of rows
      */
     @BeanTagAttribute(name = "rows")
     public int getRows() {
@@ -96,7 +96,7 @@ public class TextAreaControl extends ControlBase {
     /**
      * Number of columns the control should span (vertical length)
      *
-     * @return int number of columns
+     * @return number of columns
      */
     @BeanTagAttribute(name = "cols")
     public int getCols() {
@@ -117,7 +117,7 @@ public class TextAreaControl extends ControlBase {
      *
      * <p>If not set on control, max length of field will be used</p>
      *
-     * @return int max number of characters
+     * @return max number of characters
      */
     @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
@@ -138,7 +138,7 @@ public class TextAreaControl extends ControlBase {
      *
      * <p>If not set on control, min length of field will be used</p>
      *
-     * @return int max number of characters
+     * @return max number of characters
      */
     @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {

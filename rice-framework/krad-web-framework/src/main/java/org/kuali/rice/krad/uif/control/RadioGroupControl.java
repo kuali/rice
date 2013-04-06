@@ -46,7 +46,7 @@ public class RadioGroupControl extends MultiValueControlBase {
      * Delimiter string to be rendered between the radio group options, defaults
      * to none
      *
-     * @return String delimiter string
+     * @return delimiter string
      */
     @BeanTagAttribute(name = "delimiter")
     public String getDelimiter() {
@@ -85,7 +85,7 @@ public class RadioGroupControl extends MultiValueControlBase {
      * Builds the HTML class attribute string by combining the fieldsetClasses list
      * with a space delimiter
      *
-     * @return String class attribute string
+     * @return class attribute string
      */
     public String getFieldsetClassesAsString() {
         if (fieldsetClasses != null) {

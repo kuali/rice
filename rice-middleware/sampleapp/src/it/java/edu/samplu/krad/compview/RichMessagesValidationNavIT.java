@@ -24,8 +24,8 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RichMessagesValidationNavIT extends WebDriverLegacyITBase {
-	
-	@Override
+
+    @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
     }
@@ -34,11 +34,11 @@ public class RichMessagesValidationNavIT extends WebDriverLegacyITBase {
 	public void testRichMessagesValidationIT() throws Exception {
 	    waitAndClickKRAD();
         waitAndClickByXpath("(//a[contains(text(),'Rich Messages')])[2]");
-        switchToWindow("Kuali :: Rich Messages");
+        switchToWindow(RICH_MESSAGES_WINDOW_TITLE);
 	    
-		checkForIncidentReport("Kuali :: Rich Messages");
+		checkForIncidentReport(RICH_MESSAGES_WINDOW_TITLE);
         Thread.sleep(9000);
-//        selectWindow("Kuali :: Rich Messages");
+//        selectWindow(RICH_MESSAGES_WINDOW_TITLE);
 		
 		//Verify Basic Functionality Section
 		super.verifyRichMessagesValidationBasicFunctionality();

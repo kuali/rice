@@ -45,7 +45,7 @@ public class ConfigurationTestViewNavIT extends WebDriverLegacyITBase {
     protected void openConfigurationTestView() throws InterruptedException {
         waitAndClickKRAD();
         waitAndClickByXpath("(//a[text()='Configuration Test View'])[2]");
-        switchToWindow("Kuali :: Configuration Test View");
+        switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
         waitForTitleToEqualKualiPortalIndex();
     }
     

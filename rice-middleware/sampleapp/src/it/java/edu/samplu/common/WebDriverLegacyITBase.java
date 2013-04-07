@@ -87,8 +87,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     /**
      * methodToCall.cancel
+     * different cancel than CANCEL2_XPATH
      */
     public static final String CANCEL_NAME = "methodToCall.cancel";
+
+    /**
+     * //a[contains(text(), 'Cancel')]
+     * Different cancel than CANCEL_NAME
+     */
+    public static final String CANCEL2_XPATH = "//a[contains(text(), 'Cancel')]";
 
     /**
      * //*[@title='close this window']
@@ -99,6 +106,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * Collections
      */
     public static final String COLLECTIONS_LINK_TEXT = "Collections";
+
+    /**
+     * "Kuali :: Configuration Test View"
+     */
+    public static final String CONFIGURATION_VIEW_WINDOW_TITLE = "Kuali :: Configuration Test View";
+
+    /**
+     * (//a[contains(text(),'Configuration Test View')])[3]
+     */
+    public static final String CONFIGURATION_VIEW_XPATH = "(//a[contains(text(),'Configuration Test View')])[3]";
 
     /**
      * copy
@@ -234,6 +251,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * return value
      */
     public static final String RETURN_VALUE_LINK_TEXT = "return value";
+
+    /**
+     * Kuali :: Rich Messages
+     */
+    public static final String RICH_MESSAGES_WINDOW_TITLE = "Kuali :: Rich Messages";
 
     /**
      * //div[contains(div,'Document was successfully saved.')]
@@ -408,7 +430,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void agendaLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Rules");
-        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        waitAndClick(By.xpath(CANCEL2_XPATH));
     }
 
     /**
@@ -664,7 +686,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void contextLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Notes and Attachments");
-        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        waitAndClick(By.xpath(CANCEL2_XPATH));
         passed();
     }
 
@@ -1926,14 +1948,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void testTermLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Term Parameters");
-        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        waitAndClick(By.xpath(CANCEL2_XPATH));
         passed();
     }
 
     protected void testTermSpecificationLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Context");
-        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        waitAndClick(By.xpath(CANCEL2_XPATH));
         passed();
     }
 
@@ -3457,7 +3479,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void testTermLookUp() throws Exception {
         testLookUp();
         assertTextPresent("Term Parameters");
-        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        waitAndClick(By.xpath(CANCEL2_XPATH));
         passed();
     }
 
@@ -3842,7 +3864,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);      
-        switchToWindow("Kuali :: Configuration Test View");
+        switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
     }
 
     /**
@@ -4338,7 +4360,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);
-        switchToWindow("Kuali :: Configuration Test View");
+        switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
     }
 
     /**
@@ -4761,7 +4783,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath("//div[contains(., 'Testing link tag')]/a");
         Thread.sleep(9000);
         switchToWindow("Open Source Software | www.kuali.org");
-        switchToWindow("Kuali :: Rich Messages");
+        switchToWindow(RICH_MESSAGES_WINDOW_TITLE);
 
         //Testing methodToCall Action
         waitAndClickByXpath("//div[contains(., 'Testing methodToCall action')]/a");

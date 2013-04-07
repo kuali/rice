@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,9 @@
 package edu.samplu.krad.configview;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverITBase;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
-
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test the help widget
@@ -58,6 +50,7 @@ public class HelpNavIT2 extends WebDriverLegacyITBase {
     public void testViewHelp2() throws Exception {
         navigateToHelp();
         super.testViewHelp2();
+        passed();
     }
 
     /**
@@ -67,6 +60,7 @@ public class HelpNavIT2 extends WebDriverLegacyITBase {
     public void testExternalHelp2() throws Exception {
         navigateToHelp();
         super.testExternalHelp2();
+        passed();
     }
 
     /**
@@ -76,6 +70,7 @@ public class HelpNavIT2 extends WebDriverLegacyITBase {
     public void testDisplayOnlyExternalHelp2() throws Exception {
         navigateToHelp();
         super.testDisplayOnlyExternalHelp2();
+        passed();
     }
 
     /**
@@ -85,15 +80,16 @@ public class HelpNavIT2 extends WebDriverLegacyITBase {
     public void testMissingExternalHelp2() throws Exception {
         navigateToHelp();
         super.testMissingExternalHelp2();
+        passed();
     }
 
     private void navigateToHelp() throws Exception
     {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Configuration Test View')])[3]");
-        switchToWindow("Kuali :: Configuration Test View");
+        waitAndClickKRAD();
+        waitAndClickByXpath(CONFIGURATION_VIEW_XPATH);
+        switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
         waitAndClickByLinkText("Help");
         Thread.sleep(5000);
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
     }
 }

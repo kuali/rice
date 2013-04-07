@@ -96,8 +96,8 @@ public class HelpNavIT extends WebDriverLegacyITBase {
     private void navigateToHelp() throws Exception
     {
         waitAndClickKRAD();
-        waitAndClickByXpath("(//a[contains(text(),'Configuration Test View')])[3]");
-        switchToWindow("Kuali :: Configuration Test View");
+        waitAndClickByXpath(CONFIGURATION_VIEW_XPATH);
+        switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
         waitAndClickByLinkText("Help");
         Thread.sleep(5000);
         selectFrameIframePortlet();

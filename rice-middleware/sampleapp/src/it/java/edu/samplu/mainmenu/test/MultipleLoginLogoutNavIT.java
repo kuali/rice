@@ -23,6 +23,12 @@ import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
+
+    /**
+     * "//div[@id='login-info']/strong[2]"
+     */
+    public static final String LOGIN_INFO_STRONG_2_XPATH = "//div[@id='login-info']/strong[2]";
+
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
@@ -36,14 +42,14 @@ public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
         waitAndClickMainMenu(this);
         waitForPageToLoad();
         assertEquals("Logged in User: admin",getTextByXpath("//div[@id='login-info']/strong[1]"));
-        assertEquals(Boolean.FALSE, isElementPresentByXpath("//div[@id='login-info']/strong[2]"));
+        assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndTypeByName("backdoorId", "employee");
         waitAndClickByXpath("//input[@value='Login']");
         waitForPageToLoad();
-        assertElementPresentByXpath("//div[@id='login-info']/strong[2]");
-        assertEquals("  Impersonating User: employee",getTextByXpath("//div[@id='login-info']/strong[2]"));
+        assertElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH);
+        assertEquals("  Impersonating User: employee",getTextByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndClickLogout();
-        assertEquals(Boolean.FALSE, isElementPresentByXpath("//div[@id='login-info']/strong[2]"));
+        assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndClickLogout();
         passed();
     }

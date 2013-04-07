@@ -540,7 +540,13 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
         definition.setLongLabel(baseDefinition.getLabel());
         definition.setShortLabel(baseDefinition.getShortLabel());
         definition.setMaxLength(baseDefinition.getMaxLength());
-        definition.setRequired(baseDefinition.isRequired());
+
+        if (baseDefinition.isRequired() != null) {
+            definition.setRequired(baseDefinition.isRequired());
+        } else {
+            definition.setRequired(false);
+        }
+
         definition.setForceUpperCase(baseDefinition.getForceUppercase());
         definition.setControl(DataDictionaryTypeServiceHelper.toRemotableAbstractControlBuilder(
                 baseDefinition));

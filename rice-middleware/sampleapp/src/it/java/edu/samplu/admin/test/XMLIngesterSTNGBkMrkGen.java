@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 /**
  * TestNG implementation of XMLIngesterSTNGBase that goes directly to the page under test by a bookmarkable url,
  * avoiding navigation.  In the future the idea is to generate this class using the test methods
- * from XMLIngesterAbstractSmokeTestBase and following the simple pattern of <pre>super.testTestMethod(this);</pre>
+ * from XMLIngesterAbstractSmokeTestBase and following the simple pattern of <pre>testMethodBookmark(this);</pre>
  *
  * <pre>mvn -f rice-middleware/sampleapp/pom.xml -Pstests failsafe:integration-test -Dremote.public.url=env7.rice.kuali.org -Dit.test=XMLIngesterSTNGBkMrkGen -DXMLIngester.groupId=2008 -DXMLIngester.userIncludeDTSinPrefix=false -DXMLIngester.userCntBegin=0 -DXMLIngester.userCnt=600  -DXMLIngester.userPrefix=loadtester -Dremote.driver.dontTearDown=y</pre>
  *

@@ -15,24 +15,18 @@
  */
 package edu.samplu.admin.test;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * JUnit implementation of XMLIngesterSTJUnitBase that navigates through the UI to the page under test.  In the future
  * the idea is to generate this class using the test methods from XMLIngesterAbstractSmokeTestBase and following the simple pattern of
- * <pre>super.testNavTestMethod(this);</pre>
+ * <pre>super.testMethodNav(this);</pre>
  *
  * <pre>mvn -f rice-middleware/sampleapp/pom.xml -Pstests failsafe:integration-test -Dremote.public.url=env7.rice.kuali.org -Dit.test=XMLIngesterSTJUnitNavGen -DXMLIngester.groupId=2008 -DXMLIngester.userIncludeDTSinPrefix=false -DXMLIngester.userCntBegin=0 -DXMLIngester.userCnt=600  -DXMLIngester.userPrefix=loadtester -Dremote.driver.dontTearDown=y</pre>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XMLIngesterSTJUnitNavGen extends XMLIngesterSTJUnitBase {
-
-    @Override
-    public void fail(String string) {
-        Assert.fail(string);
-    }
 
     /**
      * @link XMLIngesterAbstractSmokeTestBase#testIngestionNav

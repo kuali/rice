@@ -4682,14 +4682,17 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             SeleneseTestBase.fail(TIMEOUT_MESSAGE);
         try {
             if (validateVisible) {
-                if (isElementPresentByXpath(xpath))
-                    ;
-                return true;
-            } else {
-                if (!isElementPresentByXpath(xpath))
+                if (isElementPresentByXpath(xpath)) {
                     return true;
+                }
+            } else {
+                if (!isElementPresentByXpath(xpath)) {
+                    return true;
+                }
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            // false will be returned.
+        }
         Thread.sleep(1000);
         return false;
     }

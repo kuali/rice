@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 package edu.samplu.admin.test;
-
-import java.util.List;
 
 import org.junit.Test;
 
@@ -44,30 +42,28 @@ public class ComponentWDIT extends WebDriverLegacyITBase {
     
     @Test
     public void testComponentParameter() throws Exception {
-        // Create New
         waitAndCreateNew();
-        List<String> params;
-        params = testCreateNewComponent(docId, "testName" + ITUtil.DTS_TWO, "testCode" + ITUtil.DTS_TWO);
+        componentName = "TestName" + ITUtil.DTS_TWO;
+        componentCode = "TestCode" + ITUtil.DTS_TWO;
+        docId = testCreateNewComponent(componentName, componentCode);
        
         //Lookup
         open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrameIframePortlet();
-        params = testLookUpComponent(params.get(0), params.get(1), params.get(2));
-   
-        //edit
-        params = testEditComponent(params.get(0), params.get(1), params.get(2));
+        testLookUpComponent(docId, componentName,componentCode);
+
+        testEditComponent(docId, componentName, componentCode);
         
         //Verify if its edited
         open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrameIframePortlet();
-        params = testVerifyEditedComponent(params.get(0), params.get(1), params.get(2));
+        testVerifyEditedComponent(docId, componentName, componentCode);
   
-        //copy
-        params = testCopyComponent(params.get(0), params.get(1) + "copy", params.get(2) + "copy");
+        testCopyComponent(docId, componentName + "copy", componentCode + "copy");
         
         //Verify if its copied
         open(ITUtil.getBaseUrlString()+TEST_URL);
         selectFrameIframePortlet();
-        testVerifyCopyComponent(params.get(0), params.get(1), params.get(2));
+        testVerifyCopyComponent(docId, componentName + "copy", componentCode + "copy");
     }
 }

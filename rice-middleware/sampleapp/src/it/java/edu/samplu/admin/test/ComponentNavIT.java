@@ -15,8 +15,7 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
+import edu.samplu.common.ITUtil;
 import org.junit.Test;
 
 /**
@@ -36,28 +35,26 @@ public class ComponentNavIT extends AdminTmplMthdSTNavBase {
 
     @Test
     public void testComponentParameter() throws Exception {
-        //Create New
         gotoCreateNew();
-        List<String> params;
-        params = testCreateNewComponent(docId, componentName,componentCode);
-    
+        componentName = "TestName" + ITUtil.DTS_TWO;
+        componentCode = "TestCode" + ITUtil.DTS_TWO;
+
+        docId = testCreateNewComponent(componentName, componentCode);
+
         //Lookup
         gotoMenuLinkLocator();
         selectFrameIframePortlet();
-        testLookUpComponent(params.get(0), params.get(1), params.get(2));
+        testLookUpComponent(docId, componentName, componentCode);
 
-        //edit
-        params = testEditComponent(params.get(0), params.get(1), params.get(2));
+        testEditComponent(docId, componentName, componentCode);
         
         //Verify if its edited
         gotoMenuLinkLocator();
-        params = testVerifyEditedComponent(params.get(0), params.get(1), params.get(2));
+        testVerifyEditedComponent(docId, componentName, componentCode);
 
-        //copy
-        params = testCopyComponent(params.get(0), params.get(1) + "copy", params.get(2) + "copy");
+        testCopyComponent(docId, componentName + "copy", componentCode + "copy");
         
-        //Verify if its copied
         gotoMenuLinkLocator();
-        testVerifyCopyComponent(params.get(0), params.get(1), params.get(2));
+        testVerifyCopyComponent(docId, componentName + "copy", componentCode + "copy");
     }
 }

@@ -19,8 +19,6 @@ import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
-import java.util.List;
-
 /**
  * Tests the Component section in Rice.
  *
@@ -85,26 +83,26 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
     protected void testComponentParameter() throws Exception {
         //Create New
         waitAndCreateNew();
-        // TODO just docId should be returned as long as we use ITUTIL.DTS_TWO for the name and code.
-        List<String> params;
-        params = testCreateNewComponent(docId, "testName" + ITUtil.DTS_TWO, "testCode" + ITUtil.DTS_TWO);
+        String componentName = "TestName" + ITUtil.DTS_TWO;
+        String componentCode = "TestCode" + ITUtil.DTS_TWO;
+        docId = testCreateNewComponent(componentName, componentCode);
 
         //Lookup
         gotoTest();
-        params = testLookUpComponent(params.get(0), params.get(1), params.get(2));
+        testLookUpComponent(docId, componentName, componentCode);
 
         //edit
-        params = testEditComponent(params.get(0), params.get(1), params.get(2));
+        testEditComponent(docId, componentName, componentCode);
 
         //Verify if its edited
         gotoTest();
-        params = testVerifyEditedComponent(params.get(0), params.get(1), params.get(2));
+        testVerifyEditedComponent(docId, componentName, componentCode);
 
         //copy
-        params = testCopyComponent(params.get(0), params.get(1) + "copy", params.get(2) + "copy");
+        testCopyComponent(docId, componentName + "copy", componentCode + "copy");
 
         //Verify if its copied
         gotoTest();
-        testVerifyCopyComponent(params.get(0), params.get(1), params.get(2));
+        testVerifyCopyComponent(docId, componentName + "copy", componentCode + "copy");
     }
 }

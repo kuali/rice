@@ -138,14 +138,19 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String DIV_LEFT_ERRMSG = "//div[@class='left-errmsg-tab']/div/div";
 
     /**
-     * //table[@id='row']/tbody/tr[1]/td[1]/a
-     */
-    public static final String DOC_ID_TABLE_LINK_XPATH="//table[@id='row']/tbody/tr[1]/td[1]/a";
-
-    /**
      * //div[@id='headerarea']/div/table/tbody/tr[1]/td[1]
      */
     public static final String DOC_ID_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
+
+    /**
+     * //table[@id='row']/tbody/tr[1]/td[1
+     */
+    public static final String DOC_ID_XPATH_2 = "//table[@id='row']/tbody/tr[1]/td[1]";
+
+    /**
+     * //table[@id='row']/tbody/tr[1]/td[1]/a
+     */
+    public static final String DOC_ID_XPATH_3 ="//table[@id='row']/tbody/tr[1]/td[1]/a";
 
     /**
      * //input[@id='document.documentHeader.documentDescription']
@@ -183,6 +188,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String DOC_STATUS_XPATH = "//table[@class='headerinfo']//tr[1]/td[2]";
 
     /**
+     * //table[@id='row']/tbody/tr[1]/td[4]
+     */
+    public static final String DOC_STATUS_XPATH_2 = "//table[@id='row']/tbody/tr[1]/td[4]";
+
+    /**
      * //div[contains(div,'Document was successfully submitted.')]
      */
     public static final String DOC_SUBMIT_SUCCESS_MSG_XPATH ="//div[contains(div,'Document was successfully submitted.')]";
@@ -201,6 +211,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * (//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]
      */
     public static final String KITCHEN_SINK_XPATH = "(//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]";
+
+    /**
+     * KRAD
+     */
+    public static final String KRAD_XPATH = "KRAD";
 
     /**
      * Kuali :: Uif Components
@@ -328,11 +343,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * XML Ingester
      */
     public static final String XML_INGESTER_LINK_TEXT = "XML Ingester";
-
-    /**
-     * KRAD
-     */
-    public static final String KRAD_XPATH = "KRAD";
 
     protected WebDriver driver;
     protected String user = "admin";
@@ -477,7 +487,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         if (isElementPresent(By.linkText(docId))) {
             SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getDocStatus());
         } else {
-            SeleneseTestBase.assertEquals(docId,driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
+            SeleneseTestBase.assertEquals(docId,driver.findElement(By.xpath(DOC_ID_XPATH_2)));
             SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getDocStatus());
         }
     }
@@ -776,7 +786,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected String getDocStatus() {
-        return driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText();
+        return driver.findElement(By.xpath(DOC_STATUS_XPATH_2)).getText();
     }
 
     protected String[] getSelectOptions(By by) throws InterruptedException {
@@ -1294,7 +1304,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")).getText());
+        SeleneseTestBase.assertEquals(docId, driver.findElement(By.xpath(DOC_ID_XPATH_2)).getText());
     }
 
     protected void testCreateNewCancel() throws Exception {
@@ -1327,8 +1337,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         System.out.println("--------------------------------New Parameter Created-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1358,8 +1368,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         System.out.println("--------------------------------New Parameter Type Created-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1400,8 +1410,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Copied-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1432,8 +1442,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Type Copied-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1522,8 +1532,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Type Edited-------------------------");
         List<String> params = new ArrayList<String>();
@@ -1553,8 +1563,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         System.out.println("-----------------------------------Parameter Edited-------------------------");
         List<String> params = new ArrayList<String>();
@@ -3579,10 +3589,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertTrue(isElementPresent(By.linkText(docId)));
         
         if (isElementPresent(By.linkText(docId))) {
-            assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"), "https://jira.kuali.org/browse/KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
+            assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2), "https://jira.kuali.org/browse/KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
         } else {
-            SeleneseTestBase.assertEquals(docId, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[1]"));
-            SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+            SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_2));
+            SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         }
     }
 
@@ -3648,20 +3658,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         passed();
     }
     
-    protected List<String> testCreateNewComponent(String docId, String componentName, String componentCode) throws Exception
-    {
-        // TODO assign in test or a better way.
-        if (componentName == null || "".equals(componentName)) {
-            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
-            componentName = "testName" + ITUtil.DTS_TWO;
-        }
-        if (componentCode == null || "".equals(componentCode)) {
-            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
-            componentCode = "testCode" + ITUtil.DTS_TWO;
-        }
-
+    protected String testCreateNewComponent(String componentName, String componentCode) throws Exception {
         waitForPageToLoad();
-        docId = waitForDocId();
+        String docId = waitForDocId();
         
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Component");
@@ -3679,32 +3678,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("--------------------------------New Component Created-------------------------");        
-        List<String> parameterList=new ArrayList<String>();
-        // TODO return just the docId, the Name and Code are passed in
-        parameterList.add(docId);
-        parameterList.add(componentName);
-        parameterList.add(componentCode);
-        
-        return parameterList;
+        return docId;
     }
     
     
-    protected List<String> testLookUpComponent(String docId, String componentName, String componentCode) throws Exception
-    {
-        // TODO assign in test or a better way.
-        if (componentName == null || "".equals(componentName)) {
-            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
-            componentName = "testName" + ITUtil.DTS_TWO;
-        }
-        if (componentCode == null || "".equals(componentCode)) {
-            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
-            componentCode = "testCode" + ITUtil.DTS_TWO;
-        }
-
+    protected void testLookUpComponent(String docId, String componentName, String componentCode) throws Exception {
         selectFrameIframePortlet();
         //Lookup
         waitAndTypeByName("name", componentName);
@@ -3719,28 +3700,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickCloseWindow();
         switchToWindow("null");
-        System.out.println("--------------------------------Lookup And View Successful-------------------------");        
-        List<String> parameterList=new ArrayList<String>();
-        // TODO return just the docId, the Name and Code are passed in
-        parameterList.add(docId);
-        parameterList.add(componentName);
-        parameterList.add(componentCode);
-        
-        return parameterList;
     }
     
-    protected List<String> testEditComponent(String docId, String componentName, String componentCode) throws Exception
-    {
-        // TODO assign in test or a better way.
-        if (componentName == null || "".equals(componentName)) {
-            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
-            componentName = "testName" + ITUtil.DTS_TWO;
-        }
-        if (componentCode == null || "".equals(componentCode)) {
-            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
-            componentCode = "testCode" + ITUtil.DTS_TWO;
-        }
-        //edit
+    protected void testEditComponent(String docId, String componentName, String componentCode) throws Exception {
         selectFrameIframePortlet();
         waitAndClickEdit();
         waitForPageToLoad();
@@ -3758,32 +3720,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("-----------------------------------Component Edited-------------------------");        
-        List<String> parameterList=new ArrayList<String>();
-        // TODO return just the docId, the Name and Code are passed in
-        parameterList.add(docId);
-        parameterList.add(componentName);
-        parameterList.add(componentCode);
-        
-        return parameterList;
     }
     
-    protected List<String> testCopyComponent(String docId, String componentName, String componentCode) throws Exception
-    {
-        // TODO assign in test or a better way.
-        if (componentName == null || "".equals(componentName)) {
-            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
-            componentName = "testName" + ITUtil.DTS_TWO;
-        }
-        if (componentCode == null || "".equals(componentCode)) {
-            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
-            componentCode = "testCode" + ITUtil.DTS_TWO;
-        }
-
-        //copy
+    protected void testCopyComponent(String docId, String componentName, String componentCode) throws Exception {
         selectFrameIframePortlet();
         waitAndClickCopy();
         waitForPageToLoad();
@@ -3804,31 +3746,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_TABLE_LINK_XPATH));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath("//table[@id='row']/tbody/tr[1]/td[4]"));
+        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("-----------------------------------Component Copied-------------------------");
-        // TODO return just the docId, the Name and Code are passed in
-        List<String> parameterList=new ArrayList<String>();
-        parameterList.add(docId);
-        parameterList.add(componentName);
-        parameterList.add(componentCode);
-        
-        return parameterList;
     }
 
-    protected List<String> testVerifyCopyComponent(String docId, String componentName, String componentCode) throws Exception
-    {
-        // TODO assign in test or a better way.
-        if (componentName == null || "".equals(componentName)) {
-            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
-            componentName = "testName" + ITUtil.DTS_TWO;
-        }
-        if (componentCode == null || "".equals(componentCode)) {
-            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
-            componentCode = "testCode" + ITUtil.DTS_TWO;
-        }
-
+    protected void testVerifyCopyComponent(String docId, String componentName, String componentCode) throws Exception {
         selectFrameIframePortlet();
         waitAndTypeByName("name", componentName);
         waitAndClickSearch();
@@ -3841,14 +3764,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
         SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickCloseWindow();
-        switchToWindow("null");        
-        List<String> parameterList=new ArrayList<String>();
-        // TODO return just the docId, the Name and Code are passed in
-        parameterList.add(docId);
-        parameterList.add(componentName);
-        parameterList.add(componentCode);
-        
-        return parameterList;
+        switchToWindow("null");
     }
     
     /**
@@ -4450,17 +4366,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         passed();
     }
 
-    protected List<String> testVerifyEditedComponent(String docId, String componentName, String componentCode) throws Exception {
-        // TODO assign in test or a better way.
-        if (componentName == null || "".equals(componentName)) {
-            System.out.println("TODO assign \"testName\" + ITUtil.DTS_TWO in this test!" );
-            componentName = "testName" + ITUtil.DTS_TWO;
-        }
-        if (componentCode == null || "".equals(componentCode)) {
-            System.out.println("TODO assign \"testCode\" + ITUtil.DTS_TWO in this test!" );
-            componentCode = "testCode" + ITUtil.DTS_TWO;
-        }
-
+    protected void testVerifyEditedComponent(String docId, String componentName, String componentCode) throws Exception {
         selectFrameIframePortlet();
         waitAndTypeByName("name", componentName);
         waitAndClickSearch();
@@ -4475,12 +4381,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickCloseWindow();
         switchToWindow("null");
         List<String> parameterList=new ArrayList<String>();
-        // TODO return just the docId, the Name and Code are passed in
-        parameterList.add(docId);
-        parameterList.add(componentName);
-        parameterList.add(componentCode);
-
-        return parameterList;
     }
 
     protected void testVerifyDisclosures() throws Exception {
@@ -4682,17 +4582,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             SeleneseTestBase.fail(TIMEOUT_MESSAGE);
         try {
             if (validateVisible) {
-                if (isElementPresentByXpath(xpath)) {
-                    return true;
-                }
+                if (isElementPresentByXpath(xpath))
+                    ;
+                return true;
             } else {
-                if (!isElementPresentByXpath(xpath)) {
+                if (!isElementPresentByXpath(xpath))
                     return true;
-                }
             }
-        } catch (Exception e) {
-            // false will be returned.
-        }
+        } catch (Exception e) {}
         Thread.sleep(1000);
         return false;
     }

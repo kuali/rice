@@ -2631,30 +2631,30 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertEquals("line was not added", rowCount + 1, (getCssCount(cssCountRows)));
     }
 
-    protected void testTravelAccountTypeLookup() throws Exception {
-        selectFrameIframePortlet();
-
-        //Blank Search
-        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
-        Thread.sleep(4000);
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'IAT')]");
-
-        //search with each field
-        waitAndTypeByName("lookupCriteria[accountTypeCode]", "CAT");
-        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
-        Thread.sleep(2000);
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
-        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[2]");
-        Thread.sleep(2000);
-        waitAndTypeByName("lookupCriteria[name]", "Expense Account Type");
-        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
-        Thread.sleep(4000);
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
-
-        //Currently No links available for Travel Account Type Inquiry so cant verify heading and values.
-    }
+//    protected void testTravelAccountTypeLookup() throws Exception {
+//        selectFrameIframePortlet();
+//
+//        //Blank Search
+//        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+//        Thread.sleep(4000);
+//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
+//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
+//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'IAT')]");
+//
+//        //search with each field
+//        waitAndTypeByName("lookupCriteria[accountTypeCode]", "CAT");
+//        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+//        Thread.sleep(2000);
+//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
+//        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[2]");
+//        Thread.sleep(2000);
+//        waitAndTypeByName("lookupCriteria[name]", "Expense Account Type");
+//        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+//        Thread.sleep(4000);
+//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
+//
+//        //Currently No links available for Travel Account Type Inquiry so cant verify heading and values.
+//    }
 
     protected void testValidCharacterConstraint() throws Exception {
         waitAndClickByXpath("//a[contains(text(),'Validation - Regex')]");

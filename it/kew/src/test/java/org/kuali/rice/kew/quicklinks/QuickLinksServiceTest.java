@@ -23,6 +23,9 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -96,18 +99,20 @@ public class QuickLinksServiceTest extends KEWTestCase {
 
     @Test
     public void testGetRecentSearches() {
+		DateFormat df = new SimpleDateFormat("'Created='MM/dd/yyyy'..;'");
         List<KeyValue> recentSearches = service.getRecentSearches(principalId);
+
         assertNotNull("No collection returned", recentSearches);
         assertTrue("No test data", recentSearches.size() > 0);
         assertEquals("Wrong number of Recent Searches", 5, recentSearches.size());
 
         KeyValue kv = recentSearches.get(0);
         assertEquals("Wrong key", "DocSearch.LastSearch.Holding4", kv.getKey());
-        assertEquals("Wrong value", "Created=12/22/2008..;", kv.getValue().trim());
+        assertEquals("Wrong value", df.format(new Date( 1229925600000L)), kv.getValue().trim());
 
         kv = recentSearches.get(4);
         assertEquals("Wrong key", "DocSearch.LastSearch.Holding0", kv.getKey());
-        assertEquals("Wrong value", "Created=11/04/2008..;", kv.getValue().trim());
+        assertEquals("Wrong value", df.format(new Date( 1225778400000L)), kv.getValue().trim());
 
         recentSearches = service.getRecentSearches(badPrincipalId);
         assertNotNull("No collection returned", recentSearches);

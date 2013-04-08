@@ -223,6 +223,9 @@ table {
 .table thead th {
 	vertical-align:bottom;
 }
+tr:nth-child(odd) {
+	background-color:#EEEEEE;
+}
 .sidebar {
     float: right;
     margin: 10px 0 10px 30px;

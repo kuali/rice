@@ -462,12 +462,16 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getPostedView(), form);
         }
 
+        List<String> readOnlyFieldsList = form.getReadOnlyFieldsList();
+
         Map<String, String> clearedSearchCriteria = new HashMap<String, String>();
         for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
             String searchPropertyName = searchKeyValue.getKey();
 
             InputField inputField = criteriaFieldMap.get(searchPropertyName);
-            if (inputField != null) {
+            if (readOnlyFieldsList != null && readOnlyFieldsList.contains(searchPropertyName)) {
+                clearedSearchCriteria.put(searchPropertyName, searchKeyValue.getValue());
+            } else if (inputField != null) {
                 // TODO: check secure fields
                 //                                if (field.isSecure()) {
                 //                    field.setSecure(false);

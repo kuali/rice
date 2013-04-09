@@ -9,7 +9,7 @@ import org.junit.Test;
  * Time: 10:49 AM
  * To change this template use File | Settings | File Templates.
  */
-public class UIFComponentValidationRegexPatternSTJUnitBkMrkIT extends UIFComponentValidationRegexPatternSTJUnitBase {
+public class UIFComponentValidationRegexPatternSTJUnitBkMrkGen extends UIFComponentValidationRegexPatternSTJUnitBase {
 
     @Override
     public String getTestUrl() {

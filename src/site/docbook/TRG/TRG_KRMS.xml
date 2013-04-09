@@ -172,7 +172,7 @@
             <para>The following diagram outlines the hierarchy of entities in KRMS (note that some
                 entities are omitted) <inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS_conceptual_hierarchy.png"  scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KRMS_Guide/KRMS_conceptual_hierarchy.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
             <para>You'll also note that many of the entities in the above diagram are KRMS Types.
@@ -569,21 +569,21 @@
                         Main menu page, under KRMS Rules, select the Context Lookup. </para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KRMS_Guide/KRMS-rules-section-in-portal.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>You can search for existing Contexts or create a new one. To create a new
                         one, select "Create New" at the top right on the context lookup page:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-Context-lookup-page.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KRMS_Guide/KRMS-Context-lookup-page.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>The resulting Context Maintenance screen enables you to define a new
                         Context. The Context ID must be unique:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-Context-maintenance-page.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KRMS_Guide/KRMS-Context-maintenance-page.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>After creating your Context(s), you must 1) set "CampusAgendaType" as
@@ -653,7 +653,7 @@
                         Specification Lookup and, after completing that, select the Term Lookup. </para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KRMS_Guide/KRMS-rules-section-in-portal.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>You can search for existing Term Specifications and Terms or create new
@@ -662,7 +662,7 @@
                         example Term Specification Lookup screen below:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-specification-lookup-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KRMS_Guide/KRMS-term-specification-lookup-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>If you copy an existing term specification, be sure to give it a new and
@@ -671,7 +671,7 @@
                         with it.</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KRMS_Guide/KRMS-term-specification-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>After creating your term specifications (your categories of terms), you
@@ -682,7 +682,7 @@
                             <title>Term Lookup screen example</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-lookup-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KRMS_Guide/KRMS-term-lookup-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                     </mediaobject>
                     </figure>
@@ -696,7 +696,7 @@
                         <title>Term specification screen example</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KRMS_Guide/KRMS-term-specification-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -731,7 +731,7 @@
                                 KRMS Agenda' and select the appropriate namespace.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/KRMS-exmpl- - -Identity-permission-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                        <imagedata fileref="../images/KRMS_Guide/KRMS-exmpl- - -Identity-permission-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -747,7 +747,7 @@
                                 rules.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/KRMS-exmpl- - -role-maintenance-edit-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                        <imagedata fileref="../images/KRMS_Guide/KRMS-exmpl- - -role-maintenance-edit-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -932,7 +932,7 @@
             <para>The UML diagram below shows the KRMS data model:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms-ruleModel-20b.png"  scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KRMS_Guide/KRMS-ruleModel-20b.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
         </section>
@@ -942,7 +942,7 @@
                 architecture:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms-architecture.png"  scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KRMS_Guide/KRMS-architecture.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
         </section>
@@ -956,7 +956,7 @@
                 used?)</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS_Execution_Log_Class_Diagram.png"  scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KRMS_Guide/KRMS_Execution_Log_Class_Diagram.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
         </section>

@@ -40,6 +40,104 @@
             Types.</para>
     </section>
     <section>
+    <title>Send a Notification Using the UI</title>
+    <para>To send a notification via the user interface (UI), start at the Administration tab. 
+        </para>
+        <para>
+        <figure><title>Notification Window</title>
+        <mediaobject>
+            <imageobject>
+               <imagedata fileref="../images/KEN_Guide/notification_window.png" scalefit="1" width="100%" contentdepth="100%" />
+            </imageobject>
+        </mediaobject>
+        </figure>
+        In the Notification section there are 3 options:
+        <itemizedlist>
+            <listitem><para>Send Simple Notification</para></listitem>
+            <listitem><para>Send Event Notification</para></listitem>
+            <listitem><para>Manage Content Types</para></listitem>
+        </itemizedlist></para>
+        <para>Each of these options will be examined in the following sub sections.</para>
+        <section>
+            <title>Send Simple Notification</title>
+            <para>
+                <figure><title>Send Simple Notification</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KEN_Guide/send_simple.png" scalefit="1" width="100%" contentdepth="100%" />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                Upon hitting submit, any errors or a message "Notification(s) sent" will appear just above the dialog box.</para>
+            <para>To see the notification message that was sent, in this example, to the user "admin", after logging into the system as admin, click on the action list button. 
+                Since the list is sorted in ascending date created order, you will find the message at the bottom of the list.
+                <figure><title></title><mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/action_list1.png" scalefit="1" width="100%" contentdepth="100%"></imagedata></imageobject></mediaobject></figure>
+            </para>
+        </section>
+        <section>
+            <title>Send Event Notification</title>
+            <para>
+                <figure><title>Send Event Notification</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KEN_Guide/event_notification.png" scalefit="1" width="100%" contentdepth="100%" />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                Upon hitting <emphasis role="keyword">submit</emphasis>, any errors or a message "Notification(s) sent" will appear just above the dialog box.</para>
+            <para>To see the notification message that was sent, in this example, to the user "admin", after logging into the system as admin, click on the action list button. 
+                Since the list is sorted in ascending date created order, you will find the message at the bottom of the list.
+            </para><note><para>The action requested in this case is <emphasis role="bold">acknowledge</emphasis> instead of FYI. </para></note>
+                <figure><title></title><mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/action_list2.png" scalefit="1" width="100%" contentdepth="100%"></imagedata></imageobject></mediaobject></figure>
+            <para>
+                Clicking on <emphasis role="keyword">Show</emphasis> will display additional information about the event as in the figure below.
+                <figure><title>Show Event Detail</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KEN_Guide/event_detail.png" scalefit="1" width="100%" contentdepth="100%" />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                Clicking the <emphasis role="keyword">acknowledge</emphasis> button removes the event item from the action list, and places it in the Outbox for the user. 
+                Clicking the <emphasis role="keyword">Outbox</emphasis> link will display the item there, as shown below. From here, the user can select the <emphasis role="keyword">Delete Item</emphasis> checkbox and click the <emphasis role="keyword">delete selected items</emphasis> button to remove it.
+                <figure><title></title><mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/outbox.png" scalefit="1" width="100%" contentdepth="100%"></imagedata></imageobject></mediaobject></figure>
+            </para>
+        </section>
+        <section>
+            <title>Manage Content Types</title>
+            <para>
+                Clicking on the Manage Content Types link brings up the following screen.
+                <figure><title>Content Type Manager</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KEN_Guide/content_menu.png" scalefit="1" width="100%" contentdepth="100%" />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </para>
+            <para>Clicking on the <emphasis role="keyword">Update</emphasis> next to the <emphasis role="keyword">Simple</emphasis> entry 
+                brings up the following screen where XSD and XSL content may be updated.
+                <figure><title></title><mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/content_simple.png" scalefit="1" width="100%" contentdepth="100%"></imagedata></imageobject></mediaobject></figure>
+            </para>
+            <para>Clicking on the <emphasis role="keyword">Update</emphasis> next to the <emphasis role="keyword">Event</emphasis> entry 
+                brings up the following screen where XSD and XSL content may be updated.
+                <figure><title></title><mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/content_event.png" scalefit="1" width="100%" contentdepth="100%"></imagedata></imageobject></mediaobject></figure>
+            </para>
+            <para>Clicking on the <emphasis role="keyword">Add New Content Type</emphasis> above the
+                table brings up the following screen where the new content type, its description,
+                namespace, and its associated XSD and XSL content may be added. <figure>
+                    <title/>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KEN_Guide/content_type_new.png"
+                                scalefit="1" width="100%" contentdepth="100%"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </para>
+        </section>
+    </section>
+    <section>
         <title>Web Service URL</title>
         <para>By default, the Notification Web Service API may be accessed at: <link
             xlink:href="http://yourlocalip:8080/notification/services/Notification"

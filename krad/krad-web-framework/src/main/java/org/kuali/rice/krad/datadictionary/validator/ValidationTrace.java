@@ -183,7 +183,6 @@ public class ValidationTrace {
                 beanMap.put(file, document);
             } catch (Exception e) {
                 LOG.error("Not Found: " + beanFiles[i]);
-                //System.exit(1);
             }
         }
         LOG.debug("Finished Loading Parser Files");

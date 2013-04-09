@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,9 @@ public class TravelAccountTypeLookupSTNGBkMrkGen extends TravelAccountTypeLookup
         return BOOKMARK_URL;
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testContraintsBookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testTravelAccountTypeLookupBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testTravelAccountTypeLookupBookmark() throws Exception {
-        setUp();
         testTravelAccountTypeLookupBookmark(this);
     }
 }

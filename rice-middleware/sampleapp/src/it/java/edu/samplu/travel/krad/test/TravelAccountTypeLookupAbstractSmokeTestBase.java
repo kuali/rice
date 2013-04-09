@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.travel.krad.test;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
@@ -27,9 +25,18 @@ import edu.samplu.common.WebDriverLegacyITBase;
 public abstract class TravelAccountTypeLookupAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
+     * /portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl=" +ITUtil.getBaseUrlString()+ /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
      */
-    public final static String BOOKMARK_URL = "/portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl=" +ITUtil.getBaseUrlString()+ "/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccountType";
+    public static final String BOOKMARK_URL = "/portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl=" +ITUtil.getBaseUrlString()+ "/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccountType";
+
+    /**
+     * //*[contains(button,"earch")]/button
+     */
+    public static final String SEARCH_BUTTON_XPATH ="//*[contains(button,\"earch\")]/button";
+
+    protected String getDataTableTrTd1ContainsXpath(String contains) {
+        return "//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'" + contains + "')]";
+    }
 
     /**
      * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAbstractSmokeTestBase#BOOKMARK_URL}
@@ -61,23 +68,23 @@ public abstract class TravelAccountTypeLookupAbstractSmokeTestBase extends WebDr
         selectFrameIframePortlet();
 
         //Blank Search
-        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+        waitAndClickByXpath(SEARCH_BUTTON_XPATH + "[1]");
         Thread.sleep(4000);
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'IAT')]");
+        assertElementPresentByXpath(getDataTableTrTd1ContainsXpath("CAT"));
+        assertElementPresentByXpath(getDataTableTrTd1ContainsXpath("EAT"));
+        assertElementPresentByXpath(getDataTableTrTd1ContainsXpath("IAT"));
 
         //search with each field
         waitAndTypeByName("lookupCriteria[accountTypeCode]", "CAT");
-        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+        waitAndClickByXpath(SEARCH_BUTTON_XPATH + "[1]");
         Thread.sleep(2000);
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
-        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[2]");
+        assertElementPresentByXpath(getDataTableTrTd1ContainsXpath("CAT"));
+        waitAndClickByXpath(SEARCH_BUTTON_XPATH + "[2]");
         Thread.sleep(2000);
         waitAndTypeByName("lookupCriteria[name]", "Expense Account Type");
-        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+        waitAndClickByXpath(SEARCH_BUTTON_XPATH + "[1]");
         Thread.sleep(4000);
-        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
+        assertElementPresentByXpath(getDataTableTrTd1ContainsXpath("EAT"));
 
         //Currently No links available for Travel Account Type Inquiry so cant verify heading and values.
     }

@@ -18,10 +18,10 @@ package edu.samplu.travel.krad.test;
 import org.testng.AssertJUnit;
 
 /**
- * Abstract base class for TestNG  UifComponentValidationRegexPattern Smoke Tests.
+ * Base class for TestNG  UifComponentValidationRegexPattern Smoke Tests.
  *
- * @see edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternNavIT
- * @see UIFComponentValidationRegexPatternSTJUnitBkMrkIT
+ * @see edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternSTNGNavIT
+ * @see edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternSTNGBkMrkIT
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UifComponentValidationRegexPatternSTNGBase extends UIFComponentValidationRegexPatternAbstractSmokeTestBase {

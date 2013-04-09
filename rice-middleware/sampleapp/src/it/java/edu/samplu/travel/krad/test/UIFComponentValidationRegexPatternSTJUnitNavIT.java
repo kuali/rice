@@ -20,26 +20,12 @@ import org.junit.Test;
 
 /**
  * tests that regex validation works as expected on input fields where it is configured
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UIFComponentValidationRegexPatternWDIT extends WebDriverLegacyITBase {
-    
-    @Override
-    public String getTestUrl() {
-        return "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
-    }
-
+public class UIFComponentValidationRegexPatternSTJUnitNavIT extends UIFComponentValidationRegexPatternSTJUnitBase {
     @Test
-    public void testValidCharacterConstraint() throws Exception {
-
-        /*
-         *  Timestamp pattern validation message says it allows years from 1900 - 2099 
-         *  In fact it also allows 2999 as the upper limit. This needs to be sorted out.
-         *  Test failing this condition is commented in the below code section for Timestamp Validation. Once resolved can be uncommented  
-         *  
-         */
-        super.testValidCharacterConstraint();
-        passed();
+    public void testValidCharacterConstraintNav() throws Exception {
+        testValidCharacterConstraintNav(this);
     }
 }

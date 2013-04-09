@@ -52,7 +52,7 @@ import static org.junit.Assert.assertNotSame;
  * refactoring to be done:
  * <ol>
  *   <li><a href="https://jira.kuali.org/browse/KULRICE-9206">KULRICE-9206</a> Replace literal strings used more than 3 times with Constants, Javadoc constant with constant value.
- *   <li>Extract duplicate waitAndClick...(CONSTANT) to waitAndClickConstant, Javadoc a <pre>{@link #CONSTANT}</pre>.
+ *   <li>Extract duplicate waitAndClick...(CONSTANT) to waitAndClickConstant, Javadoc a <pre>{@link &#35;CONSTANT}</pre>.
  *   <li>Replace large chunks of duplication</li>
  *   <li><a href="https://jira.kuali.org/browse/KULRICE-9205">KULRICE-9205</a> Invert dependencies on fields and extract methods to WebDriverUtil so inheritance doesn't have to be used for
  * reuse.  See WebDriverUtil.waitFor </li>
@@ -424,8 +424,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                     driver.quit();
                 }
             } else {
-                System.out
-                        .println("WebDriver is null, if using saucelabs, has sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
+                System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
+                " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
             }
         }
     }

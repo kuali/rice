@@ -44,7 +44,7 @@
             <para>The following diagram outlines the hierarchy of entities in KRMS (note that some
                 entities are omitted) <inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS_conceptual_hierarchy.png"  scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KRMS_Guide/KRMS_conceptual_hierarchy.png"  scalefit="1" width="100%" contentdepth="100%" />
                     </imageobject>
                 </inlinemediaobject></para>
             <para>You'll also note that many of the entities in the above diagram are KRMS Types.

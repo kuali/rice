@@ -28,17 +28,17 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
-import org.kuali.rice.krad.uif.view.MessageView;
-import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
+import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -114,16 +114,16 @@ public abstract class UifControllerBase {
                     UifConstants.UrlParams.LAST_FORM_KEY));
         }
 
-        if (requestForm != null) {
-            Map<String, String> requestParams = new HashMap<String,String>();
+        if (requestForm != null && requestForm.getInitialRequestParameters() == null) {
+            Map<String, String> requestParams = new HashMap<String, String>();
             Enumeration<String> names = request.getParameterNames();
-            while (names != null && names.hasMoreElements()){
+            while (names != null && names.hasMoreElements()) {
                 String name = names.nextElement();
                 requestParams.put(name, request.getParameter(name));
             }
             requestParams.remove("__login_user");
             //requestParams.remove();
-            requestForm.setRequestParameters(requestParams);
+            requestForm.setInitialRequestParameters(requestParams);
         }
 
         // sets the request form in the request for later retrieval
@@ -147,7 +147,7 @@ public abstract class UifControllerBase {
     @RequestMapping()
     public ModelAndView defaultMapping(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-         return start(form, result,  request, response);
+        return start(form, result, request, response);
     }
 
     /**
@@ -668,13 +668,13 @@ public abstract class UifControllerBase {
         DialogManager dm = form.getDialogManager();
         if (!dm.hasDialogBeenAnswered(dialogId)) {
             showDialog(dialogId, form, request, response);
-            
+
             // throw an exception until showDialog is able to complete request.
             // until then, programmers should check hasDialogBeenAnswered
             throw new RiceRuntimeException("Dialog has not yet been answered by client. "
                     + "Check that hasDialogBeenAnswered(id) returns true.");
         }
-        
+
         return dm.wasDialogAnswerAffirmative(dialogId);
     }
 
@@ -698,13 +698,13 @@ public abstract class UifControllerBase {
         DialogManager dm = form.getDialogManager();
         if (!dm.hasDialogBeenAnswered(dialogId)) {
             showDialog(dialogId, form, request, response);
-            
+
             // throw an exception until showDialog is able to complete request.
             // until then, programmers should check hasDialogBeenAnswered
             throw new RiceRuntimeException("Dialog has not yet been answered by client. "
                     + "Check that hasDialogBeenAnswered(id) returns true.");
         }
-        
+
         return dm.getDialogAnswer(dialogId);
     }
 
@@ -759,11 +759,11 @@ public abstract class UifControllerBase {
     public ModelAndView returnFromLightbox(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         String newMethodToCall = "";
-        
+
         // Save user responses from dialog
         DialogManager dm = form.getDialogManager();
         String dialogId = dm.getCurrentDialogId();
-        if (dialogId == null){
+        if (dialogId == null) {
             // may have been invoked by client.
             // TODO:  handle this case (scheduled for 2.2-m3)
             // for now, log WARNING and default to start, can we add a growl?
@@ -780,7 +780,7 @@ public abstract class UifControllerBase {
         props.put(UifParameters.METHOD_TO_CALL, newMethodToCall);
         props.put(UifParameters.VIEW_ID, form.getViewId());
         props.put(UifParameters.FORM_KEY, form.getFormKey());
-        props.put(UifParameters.AJAX_REQUEST,"false");
+        props.put(UifParameters.AJAX_REQUEST, "false");
 
         return performRedirect(form, form.getFormPostUrl(), props);
     }
@@ -802,10 +802,11 @@ public abstract class UifControllerBase {
         //set the ajaxReturnType on the form this will override the return type requested by the client
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.REDIRECT.getKey());
 
-        if(urlParameters != null){
+        if (urlParameters != null) {
             // On post redirects we need to make sure we are sending the history forward:
-            if(form.getFormHistory() != null)  {
-                urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
+            if (form.getFormHistory() != null) {
+                urlParameters.setProperty(UifConstants.UrlParams.HISTORY,
+                        form.getFormHistory().getHistoryParameterString());
             }
             // If this is an Light Box call only return the redirectURL view with the URL
             // set this is to avoid automatic redirect when using light boxes
@@ -822,11 +823,11 @@ public abstract class UifControllerBase {
         String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 
         //If this is an ajax redirect get the model and view from the form
-        if(form.isAjaxRequest()) {
+        if (form.isAjaxRequest()) {
             ModelAndView modelAndView = getUIFModelAndView(form, form.getPageId());
             modelAndView.addObject("redirectUrl", redirectUrl);
-            return modelAndView ;
-        }  else {
+            return modelAndView;
+        } else {
             ModelAndView modelAndView = new ModelAndView(UifConstants.REDIRECT_PREFIX + redirectUrl);
             return modelAndView;
         }

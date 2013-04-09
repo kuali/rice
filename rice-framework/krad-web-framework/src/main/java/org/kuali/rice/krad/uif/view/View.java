@@ -339,10 +339,10 @@ public class View extends ContainerBase {
                 && breadcrumbItem.getUrl().getViewId() == null
                 && model instanceof UifFormBase
                 && breadcrumbItem.getUrl().getRequestParameters() == null
-                && ((UifFormBase) model).getRequestParameters() != null) {
+                && ((UifFormBase) model).getInitialRequestParameters() != null) {
             //add the current request parameters if controllerMapping, viewId, and requestParams are null
             //(this means that no explicit breadcrumbItem customization was set)
-            Map<String, String> requestParameters = ((UifFormBase) model).getRequestParameters();
+            Map<String, String> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
 
             //remove ajax properties because breadcrumb should always be a full view request
             requestParameters.remove("ajaxReturnType");

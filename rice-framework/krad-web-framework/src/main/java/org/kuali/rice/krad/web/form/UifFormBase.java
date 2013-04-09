@@ -76,8 +76,7 @@ public class UifFormBase implements ViewModel {
     protected String formPostUrl;
     protected String controllerMapping;
 
-    @SessionTransient
-    private Map<String, String> requestParameters;
+    private Map<String, String> initialRequestParameters;
 
     protected String state;
     protected boolean defaultsApplied;
@@ -282,22 +281,22 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * The requestParameters represent all the parameters in the query string that were initially passed to this View
+     * The initialRequestParameters represent all the parameters in the query string that were initially passed to this View
      * by the initial request
      *
-     * @return the requestParameters
+     * @return the initialRequestParameters
      */
-    public Map<String, String> getRequestParameters() {
-        return requestParameters;
+    public Map<String, String> getInitialRequestParameters() {
+        return initialRequestParameters;
     }
 
     /**
-     * Set the requestParameters
+     * Set the initialRequestParameters
      *
-     * @param requestParameters
+     * @param initialRequestParameters
      */
-    public void setRequestParameters(Map<String, String> requestParameters) {
-        this.requestParameters = requestParameters;
+    public void setInitialRequestParameters(Map<String, String> initialRequestParameters) {
+        this.initialRequestParameters = initialRequestParameters;
     }
 
     public String getReturnLocation() {

@@ -206,7 +206,7 @@
                     <title>KRMS Agenda Editor</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRMS-Agenda.png" scalefit="1"
+                            <imagedata fileref="../images/KRMS_Guide/KRMS-Agenda.png" scalefit="1"
                                 contentwidth="640"/>
                         </imageobject>
                     </mediaobject>
@@ -229,7 +229,7 @@
                     <title>KRMS Agenda Editor with additional attributes displayed</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRMS-AgendaEditorWithAttributes.png"
+                            <imagedata fileref="../images/KRMS_Guide/KRMS-AgendaEditorWithAttributes.png"
                                 scalefit="1" contentwidth="640"/>
                         </imageobject>
                     </mediaobject>
@@ -244,7 +244,7 @@
                     <title>KRMS Rules Editor</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRMS-Rule1.png" scalefit="1"
+                            <imagedata fileref="../images/KRMS_Guide/KRMS-Rule1.png" scalefit="1"
                                 contentwidth="640"/>
                         </imageobject>
                     </mediaobject>
@@ -259,7 +259,7 @@
                     <title>KRMS proposition and PeopleFlow Action</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRMS-Rule2.png" scalefit="1"
+                            <imagedata fileref="../images/KRMS_Guide/KRMS-Rule2.png" scalefit="1"
                                 contentwidth="640"/>
                         </imageobject>
                     </mediaobject>

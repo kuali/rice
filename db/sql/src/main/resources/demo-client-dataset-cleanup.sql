@@ -91,3 +91,89 @@ delete from krns_sesn_doc_t
 /
 delete from krns_doc_hdr_t
 /
+
+-- Disable constraints for the mass drops to follow
+DECLARE
+   CURSOR constraint_cursor IS
+      SELECT table_name, constraint_name
+         FROM user_constraints
+         WHERE constraint_type = 'R'
+           AND status = 'ENABLED';
+BEGIN
+   FOR r IN constraint_cursor LOOP
+      execute immediate 'ALTER TABLE '||r.table_name||' DISABLE CONSTRAINT '||r.constraint_name;
+   END LOOP;
+END;
+/
+
+-- delete all non-client views, which at the moment is all views
+DECLARE
+   CURSOR views_cursor IS
+      SELECT view_name
+         FROM user_views
+         WHERE view_name like 'KRIM#_%' escape '#'
+         ORDER BY view_name;
+BEGIN
+   FOR r IN views_cursor LOOP
+      execute immediate 'DROP VIEW '||r.view_name;
+   END LOOP;
+END;
+/
+
+-- delete all non-client tables, leaving the sample app tables alone for now
+DECLARE
+   CURSOR tables_cursor IS
+      SELECT table_name
+         FROM user_tables
+         WHERE
+            table_name like 'KRSB#_SVC#_%#_T' escape '#' OR
+            table_name like 'KRCR#_%T' escape '#' OR
+            table_name like 'KREN#_%T' escape '#' OR
+            table_name like 'KREW#_%T' escape '#' OR
+            table_name like 'KRIM#_%T' escape '#' OR
+            table_name like 'KRLC#_%T' escape '#' OR
+            table_name like 'KRMS#_%T' escape '#' OR
+            table_name = 'KR_KIM_TEST_BO'
+         ORDER BY table_name;
+BEGIN
+   FOR r IN tables_cursor LOOP
+      execute immediate 'DROP TABLE '||r.table_name||' CASCADE CONSTRAINTS';
+   END LOOP;
+END;
+/
+
+-- delete all non-client sequences, leaving the sample app sequences alone
+DECLARE
+   CURSOR sequences_cursor IS
+      SELECT sequence_name
+         FROM user_sequences
+         WHERE
+            sequence_name like 'KRSB#_SVC#_%#_S' escape '#' OR
+            sequence_name like 'KRCR#_%S' escape '#' OR
+            sequence_name like 'KREN#_%S' escape '#' OR
+            sequence_name like 'KREW#_%S' escape '#' OR
+            sequence_name like 'KRIM#_%S' escape '#' OR
+            sequence_name like 'KRLC#_%S' escape '#' OR
+            sequence_name like 'KRMS#_%S' escape '#'
+         ORDER BY sequence_name;
+BEGIN
+   FOR r IN sequences_cursor LOOP
+      execute immediate 'DROP SEQUENCE '||r.sequence_name;
+   END LOOP;
+END;
+/
+
+-- Re-enable constraints
+DECLARE
+   CURSOR constraint_cursor IS
+      SELECT table_name, constraint_name
+         FROM user_constraints
+         WHERE constraint_type = 'R'
+           AND status <> 'ENABLED';
+BEGIN
+   FOR r IN constraint_cursor LOOP
+      execute immediate 'ALTER TABLE '||r.table_name||' ENABLE CONSTRAINT '||r.constraint_name;
+   END LOOP;
+END;
+/
+

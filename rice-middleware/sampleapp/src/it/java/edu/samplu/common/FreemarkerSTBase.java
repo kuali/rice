@@ -18,15 +18,12 @@ package edu.samplu.common;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.Properties;
 
 /**
@@ -62,7 +59,7 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
      * @throws IOException
      */
     protected Properties loadProperties(String fileLocation, String resourceLocation) throws IOException {
-        Properties props = new Properties();
+        Properties props = null;
         InputStream in = null;
         if(fileLocation != null) {
             in = new FileInputStream(fileLocation);
@@ -70,7 +67,7 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
             in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
         }
         if(in != null) {
-            FreemarkerUtil.loadProperties(in);
+            props = FreemarkerUtil.loadProperties(in);
             in.close();
         }
 

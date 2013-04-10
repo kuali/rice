@@ -749,14 +749,6 @@ Using JRE_HOME:		/usr/java/jdk1.6.0_16</programlisting></para>
             and 2.2.2 for the 2.2 line, provided session failover in certain limited cases, but was disabled as part of <link xlink:href="https://jira.kuali.org/browse/KULRICE-9148">KULRICE-9148</link>. 
             This service was problematic for performance when dealing with larger documents, and <emphasis role="bold">it is not recommended that it be re-enabled.</emphasis> 
             It is possible to do so however. </para>
-        <para>For details on enabling this service, please see the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/TRG.html#SessionDocumentService">Session Document Service</link> section from the Technical Review Guide</para>
-    </section>
-    <section>
-        <title>The Session Document Service</title>
-        <para>The SessionDocumentService, which was part of the default configuration for Rice before versions 2.1.4 for the 2.1 line 
-            and 2.2.2 for the 2.2 line, provided session failover in certain limited cases, but was disabled as part of <link xlink:href="https://jira.kuali.org/browse/KULRICE-9148">KULRICE-9148</link>. 
-            This service was problematic for performance when dealing with larger documents, and <emphasis role="bold">it is not recommended that it be re-enabled.</emphasis> 
-            It is possible to do so however. </para>
         <para>To enable it again, a bean definition overriding the knsSessionDocumentService bean needs to be created and configured to load into the correct Spring context. 
             Create a file such as the following which we'll name KNSOverrideSpringBeans.xml:</para>
         <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -782,5 +774,6 @@ Using JRE_HOME:		/usr/java/jdk1.6.0_16</programlisting></para>
         <programlisting>&lt;param name="rice.kr.additionalSpringFiles">classpath:edu/sampleu/KNSOverrideSpringBeans.xml&lt;/param></programlisting>
             <para>Note that if you already have a <code>rice.kr.additionalSpringFiles</code> configuration parameter specified, the value is treated as a comma separated list, so you can add a comma at the end of the present value and append on the configuration for the KNSOverrideSpringBeans.xml file.</para>
 
+    </section>
     </section>
 </chapter>

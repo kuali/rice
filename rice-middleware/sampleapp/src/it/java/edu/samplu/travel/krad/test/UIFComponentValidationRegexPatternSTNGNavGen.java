@@ -23,7 +23,7 @@ import org.testng.annotations.Test;
  */
 public class UIFComponentValidationRegexPatternSTNGNavGen extends UIFComponentValidationRegexPatternSTNGBase {
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testValidCharacterConstraintNav")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testValidCharacterConstraintNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testValidCharacterConstraintNav() throws Exception {
         testValidCharacterConstraintNav(this);

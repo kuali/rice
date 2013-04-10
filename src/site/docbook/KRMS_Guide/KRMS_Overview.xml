@@ -162,6 +162,14 @@
     </section>
     <section>
         <title>When to use KRMS?</title>
-        <para>A big question is, when should you use KRMS rules verses logic directly coded in an application or document?</para>
+        <para>A big question is, when should you use KRMS rules verses logic directly coded in an application or document? This question can be answered by careful consideration of questions like these:
+        <itemizedlist>
+            <listitem><para>How often the rule is likely to change</para></listitem>
+            <listitem><para>How tightly coupled the rule is to the organization's unchanging policies</para></listitem>
+            <listitem><para>The complexity of the rule</para></listitem>
+            <listitem><para>The flexibility of the rule</para></listitem>
+            <listitem><para>How the rule relates to other rules</para></listitem>
+        </itemizedlist>
+        </para>
     </section>
 </chapter>

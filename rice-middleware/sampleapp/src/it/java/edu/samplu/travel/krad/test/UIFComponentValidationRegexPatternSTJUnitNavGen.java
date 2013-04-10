@@ -23,6 +23,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UIFComponentValidationRegexPatternSTJUnitNavGen extends UIFComponentValidationRegexPatternSTJUnitBase {
+
     @Test
     public void testValidCharacterConstraintNav() throws Exception {
         testValidCharacterConstraintNav(this);

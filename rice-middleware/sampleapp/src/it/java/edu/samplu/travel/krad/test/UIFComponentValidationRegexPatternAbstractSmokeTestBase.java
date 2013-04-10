@@ -26,6 +26,9 @@ import edu.samplu.common.WebDriverLegacyITBase;
  */
 public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase extends WebDriverLegacyITBase  {
 
+    /**
+     * "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91"
+     */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
 
 
@@ -45,9 +48,9 @@ public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase ex
 
 
     protected void navigation() throws InterruptedException {
-        waitAndClickByLinkText("KRAD");
-        waitAndClickByXpath("(//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]");
-        switchToWindow("Kuali :: Uif Components");
+        waitAndClickKRAD();
+        waitAndClickByXpath(KITCHEN_SINK_XPATH);
+        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
     }
 
     protected void testValidCharacterConstraintNav(Failable failable) throws Exception {

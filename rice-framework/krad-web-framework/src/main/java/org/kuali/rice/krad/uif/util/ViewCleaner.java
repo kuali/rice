@@ -47,7 +47,7 @@ public class ViewCleaner {
      * Cleans a view instance removing all pages except the current page and then invoking the view
      * index to perform cleaning on contained components
      *
-     * @param view - view instance to clean
+     * @param view view instance to clean
      */
     public static void cleanView(View view) {
         view.setApplicationHeader(null);
@@ -73,7 +73,7 @@ public class ViewCleaner {
      * Cleans a collection group instance removing the items and collection prototypes (note add line fields
      * are keep around to support the add line action)
      *
-     * @param collectionGroup - collection group instance to clean
+     * @param collectionGroup collection group instance to clean
      */
     public static void cleanCollectionGroup(CollectionGroup collectionGroup) {
         collectionGroup.setAddLineLabel(null);
@@ -89,7 +89,7 @@ public class ViewCleaner {
     /**
      * General purpose method to clean any container, removes all nested components except the items list
      *
-     * @param container - container instance to clean
+     * @param container container instance to clean
      */
     public static void cleanContainer(Container container) {
         container.setHeader(null);
@@ -105,7 +105,7 @@ public class ViewCleaner {
     /**
      * Cleans an input field instance removing the control and inherited component properties
      *
-     * @param inputField - input field instance to clean
+     * @param inputField input field instance to clean
      */
     public static void cleanInputField(InputField inputField) {
         inputField.setControl(null);

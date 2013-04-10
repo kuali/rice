@@ -41,8 +41,8 @@ public class ScriptUtils {
      * boolean types. Complex types are treated as a String value using toString
      * </p>
      *
-     * @param value - Object instance to translate
-     * @return String JS value
+     * @param value Object instance to translate
+     * @return JS value
      */
     public static String translateValue(Object value) {
         String jsValue = "";
@@ -134,7 +134,7 @@ public class ScriptUtils {
     /**
      * Builds a JSON string form the given map
      *
-     * @param map - map to translate
+     * @param map map to translate
      * @return String in JSON format
      */
     public static String toJSON(Map<String, String> map) {
@@ -158,8 +158,8 @@ public class ScriptUtils {
     /**
      * Escapes double quotes present in the given string
      *
-     * @param jsonString - string to escape
-     * @return String escaped string
+     * @param jsonString string to escape
+     * @return escaped string
      */
     public static String escapeJSONString(String jsonString) {
         if (jsonString != null) {
@@ -173,8 +173,8 @@ public class ScriptUtils {
      * Convert a string to a javascript value - especially for use for options used to initialize widgets such as the
      * tree and rich table
      *
-     * @param value - the string to be converted
-     * @return - the converted value
+     * @param value the string to be converted
+     * @return the converted value
      */
     public static String convertToJsValue(String value) {
         boolean isNumber = false;
@@ -232,7 +232,7 @@ public class ScriptUtils {
     /**
      * Converts a list of string to a valid js string array
      *
-     * @param list - list of Strings to be converted
+     * @param list list of Strings to be converted
      * @return String representing the js array
      */
     public static String convertStringListToJsArray(List<String> list) {
@@ -255,8 +255,8 @@ public class ScriptUtils {
      * <p>The apostrophe character is included as <code>StringEscapeUtils#escapeHtml(String)</code>
      * does not consider it a legal entity. </p>
      *
-     * @param string - the string to be escaped
-     * @return - the escaped string - useful for embedding in server side generated JS scripts
+     * @param string the string to be escaped
+     * @return the escaped string - useful for embedding in server side generated JS scripts
      */
     public static String escapeHtml(String string) {
         if (string == null) {
@@ -269,8 +269,8 @@ public class ScriptUtils {
     /**
      * escape an array of strings
      *
-     * @param strings - an array of strings to escape
-     * @return - the array, with the strings escaped
+     * @param strings an array of strings to escape
+     * @return the array, with the strings escaped
      */
     public static List<String> escapeHtml(List<String> strings) {
         if (strings == null) {
@@ -290,8 +290,8 @@ public class ScriptUtils {
      * Will append the second script parameter to the first if the first is not empty, also checks to see if the
      * first script needs an end semi-colon added
      *
-     * @param script - script that will be added to (null is allowed and converted to empty string)
-     * @param appendScript - script to append
+     * @param script script that will be added to (null is allowed and converted to empty string)
+     * @param appendScript script to append
      * @return String result of appending the two script parameters
      */
     public static String appendScript(String script, String appendScript) {

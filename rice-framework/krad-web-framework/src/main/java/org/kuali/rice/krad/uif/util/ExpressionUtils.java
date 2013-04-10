@@ -47,8 +47,8 @@ public class ExpressionUtils {
      * is on.
      * </p>
      *
-     * @param expressionConfigurable - expressionConfigurable instance to process expressions for
-     * @param buildRefreshGraphs - indicates whether the expression graphs for component refresh should be built
+     * @param expressionConfigurable expressionConfigurable instance to process expressions for
+     * @param buildRefreshGraphs indicates whether the expression graphs for component refresh should be built
      */
     public static void populatePropertyExpressionsFromGraph(UifDictionaryBean expressionConfigurable, boolean buildRefreshGraphs) {
         if (expressionConfigurable == null || expressionConfigurable.getExpressionGraph() == null) {

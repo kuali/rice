@@ -55,8 +55,8 @@ public class ViewModelUtils {
      * of the path remaining. If no matching entry is found, standard reflection is used to get the type
      * </p>
      *
-     * @param view - view instance providing the context (abstract map)
-     * @param propertyPath - full path to property to retrieve type for (relative to the form class)
+     * @param view view instance providing the context (abstract map)
+     * @param propertyPath full path to property to retrieve type for (relative to the form class)
      * @return Class<?> type of property in model, or Null if type could not be determined
      * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
      */
@@ -108,7 +108,7 @@ public class ViewModelUtils {
      * Gets the parent object path of the data field
      *
      * @param field
-     * @return String parent object path
+     * @return parent object path
      */
     public static String getParentObjectPath(DataField field) {
         String parentObjectPath = "";
@@ -142,8 +142,8 @@ public class ViewModelUtils {
      * standard reflection is used to get the type
      * </p>
      *
-     * @param view - view instance providing the context (abstract map)
-     * @param field - field to retrieve type for
+     * @param view view instance providing the context (abstract map)
+     * @param field field to retrieve type for
      * @return Class<?> type of property in model, or Null if type could not be determined
      * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
      */
@@ -165,10 +165,10 @@ public class ViewModelUtils {
      * standard reflection is used to get the type
      * </p>
      *
-     * @param view - view instance providing the context (abstract map)
-     * @param model - object model
-     * @param field - field to retrieve type for
-     * @return Class<?> the class of the object instance if not null or the type of property in model, or Null if type could not be determined
+     * @param view view instance providing the context (abstract map)
+     * @param model object model
+     * @param field field to retrieve type for
+     * @return the class of the object instance if not null or the type of property in model, or Null if type could not be determined
      * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
      */
     public static Class<?> getParentObjectClassForMetadata(View view, Object model, DataField field) {
@@ -189,10 +189,10 @@ public class ViewModelUtils {
      * standard reflection is used to get the type
      * </p>
      *
-     * @param view - view instance providing the context (abstract map)
-     * @param model - object model
-     * @param propertyPath - full path to property to retrieve type for (relative to the form class)
-     * @return Class<?> the class of the object instance if not null or the type of property in model, or Null if type could not be determined
+     * @param view view instance providing the context (abstract map)
+     * @param model object model
+     * @param propertyPath full path to property to retrieve type for (relative to the form class)
+     * @return the class of the object instance if not null or the type of property in model, or Null if type could not be determined
      * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
      */
     public static Class<?> getObjectClassForMetadata(View view, Object model, String propertyPath) {
@@ -209,10 +209,10 @@ public class ViewModelUtils {
     /**
      * Retrieves the parent object if it exists or attempts to create a new instance
      *
-     * @param view - view instance providing the context (abstract map)
-     * @param model - object model
-     * @param field - field to retrieve type for
-     * @return Class<?> the class of the object instance if not null or the type of property in model, or Null if type could not be determined
+     * @param view view instance providing the context (abstract map)
+     * @param model object model
+     * @param field field to retrieve type for
+     * @return the class of the object instance if not null or the type of property in model, or Null if type could not be determined
      * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
      */
     public static Object getParentObjectForMetadata(View view, Object model, DataField field) {
@@ -246,8 +246,8 @@ public class ViewModelUtils {
     /**
      * Helper method for getting the string value of a property from a {@link PropertyValues}
      *
-     * @param propertyValues - property values instance to pull from
-     * @param propertyName - name of property whose value should be retrieved
+     * @param propertyValues property values instance to pull from
+     * @param propertyName name of property whose value should be retrieved
      * @return String value for property or null if property was not found
      */
     public static String getStringValFromPVs(PropertyValues propertyValues, String propertyName) {

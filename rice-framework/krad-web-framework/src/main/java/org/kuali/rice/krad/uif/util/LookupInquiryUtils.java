@@ -94,14 +94,11 @@ public class LookupInquiryUtils {
 	 * Helper method for building the title text for an element and a map of
 	 * key/value pairs
 	 *
-	 * @param prependText
-	 *            - text to prepend to the title
-	 * @param element
-	 *            - element class the title is being generated for, used to as
+	 * @param prependText text to prepend to the title
+	 * @param element element class the title is being generated for, used to as
 	 *            the parent for getting the key labels
-	 * @param keyValueMap
-	 *            - map of key value pairs to add to the title text
-	 * @return String title text
+	 * @param keyValueMap map of key value pairs to add to the title text
+	 * @return title text
 	 */
 	public static String getLinkTitleText(String prependText, Class<?> element, Map<String, String> keyValueMap) {
 		StringBuffer titleText = new StringBuffer(prependText);

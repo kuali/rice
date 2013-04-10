@@ -187,9 +187,9 @@ public class CloneUtils {
     /**
      * Retrieves all field names for the given class that have the given annotation
      *
-     * @param clazz - class to find field annotations for
-     * @param annotationClass - class for annotation to find
-     * @return Map<String, Annotation> map containing the field name that has the annotation as a key and the
+     * @param clazz class to find field annotations for
+     * @param annotationClass class for annotation to find
+     * @return map containing the field name that has the annotation as a key and the
      *         annotation instance as a value
      */
     public static Map<String, Annotation> getFieldsWithAnnotation(Class<?> clazz,
@@ -210,10 +210,10 @@ public class CloneUtils {
     /**
      * Determines whether the property of the given class has the given annotation specified
      *
-     * @param clazz - class containing the property to check
-     * @param propertyName - name of the property to check
-     * @param annotationClass - class for the annotation to look for
-     * @return boolean true if the field associated with the property name has the given annotation, false if not
+     * @param clazz class containing the property to check
+     * @param propertyName name of the property to check
+     * @param annotationClass class for the annotation to look for
+     * @return true if the field associated with the property name has the given annotation, false if not
      */
     public static boolean fieldHasAnnotation(Class<?> clazz, String propertyName,
             Class<? extends Annotation> annotationClass) {

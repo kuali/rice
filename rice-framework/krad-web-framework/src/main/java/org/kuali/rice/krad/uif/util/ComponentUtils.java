@@ -235,7 +235,7 @@ public class ComponentUtils {
      *
      * @param components list of components to search through
      * @param componentId id for the component to find
-     * @return Component component found in the list or null
+     * @return component found in the list or null
      */
     public static Component findComponentInList(List<Component> components, String componentId) {
         Component foundComponent = null;
@@ -253,8 +253,8 @@ public class ComponentUtils {
     /**
      * Finds the child component of the given parent component that has the required id
      *
-     * @param parent - parent component for component to find
-     * @param nestedId - id of the component to find
+     * @param parent parent component for component to find
+     * @param nestedId id of the component to find
      * @return Component instance for child (if found) or null
      */
     public static Component findNestedComponentById(Component parent, String nestedId) {
@@ -340,8 +340,8 @@ public class ComponentUtils {
     /**
      * add a suffix to the id
      *
-     * @param component - the component instance whose id will be changed
-     * @param idSuffix - the suffix to be appended
+     * @param component the component instance whose id will be changed
+     * @param idSuffix the suffix to be appended
      */
     public static void updateIdWithSuffix(Component component, String idSuffix) {
         if (component != null && !StringUtils.isEmpty(idSuffix)) {
@@ -383,9 +383,9 @@ public class ComponentUtils {
     /**
      * places a key, value pair in each context map of a list of components
      *
-     * @param components - the list components
-     * @param contextName - a value to be used as a key to retrieve the object
-     * @param contextValue - the value to be placed in the context
+     * @param components the list components
+     * @param contextName a value to be used as a key to retrieve the object
+     * @param contextValue the value to be placed in the context
      */
     public static void pushObjectToContext(List<? extends Component> components, String contextName, Object contextValue) {
         for (Component component : components) {
@@ -399,9 +399,9 @@ public class ComponentUtils {
      * <p>The component's nested components that are available via {@code Component#getComponentsForLifecycle}
      * are also updated recursively</p>
      *
-     * @param component - the component whose context is to be updated
-     * @param contextName - a value to be used as a key to retrieve the object
-     * @param contextValue - the value to be placed in the context
+     * @param component the component whose context is to be updated
+     * @param contextName a value to be used as a key to retrieve the object
+     * @param contextValue the value to be placed in the context
      */
     public static void pushObjectToContext(Component component, String contextName, Object contextValue) {
         if (component == null) {
@@ -436,9 +436,9 @@ public class ComponentUtils {
      * <p>calls {@link #updateContextForLine(org.kuali.rice.krad.uif.component.Component, Object, int, String)}
      * for each component</p>
      *
-     * @param components - the components whose components to update
-     * @param collectionLine - an instance of the data object for the line
-     * @param lineIndex - the line index
+     * @param components the components whose components to update
+     * @param collectionLine an instance of the data object for the line
+     * @param lineIndex the line index
      * @param lineSuffix id suffix for components in the line to make them unique
      */
     public static void updateContextsForLine(List<? extends Component> components, Object collectionLine,
@@ -454,9 +454,9 @@ public class ComponentUtils {
      * <p>The values of {@code UifConstants.ContextVariableNames.LINE} and {@code UifConstants.ContextVariableNames.INDEX}
      * are set to {@code collectionLine} and {@code lineIndex} respectively.</p>
      *
-     * @param component - the component whose context is to be updated
-     * @param collectionLine - an instance of the data object for the line
-     * @param lineIndex - the line index
+     * @param component the component whose context is to be updated
+     * @param collectionLine an instance of the data object for the line
+     * @param lineIndex the line index
      * @param lineSuffix id suffix for components in the line to make them unique
      */
     public static void updateContextForLine(Component component, Object collectionLine, int lineIndex,
@@ -564,7 +564,7 @@ public class ComponentUtils {
      * @param propertyName name of the property to determine if there is an expression for
      * @param collectionMatch if set to true will find an expressions for properties that start with the given
      * property name (for matching expressions on collections like prop[index] or prop['key'])
-     * @return boolean true if the component has an expression for the property name, false if not
+     * @return true if the component has an expression for the property name, false if not
      */
     public static boolean containsPropertyExpression(Component component, String propertyName,
             boolean collectionMatch) {

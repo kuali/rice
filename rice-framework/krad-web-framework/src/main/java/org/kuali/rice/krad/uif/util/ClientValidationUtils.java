@@ -100,13 +100,13 @@ public class ClientValidationUtils {
     /**
      * Returns formatted message text for the given message namespace, component, and key
      *
-     * @param namespace - namespace code the message is associated with, if null the default namespace
+     * @param namespace namespace code the message is associated with, if null the default namespace
      * will be used
-     * @param componentCode - component code the message is associated with, if null default component
+     * @param componentCode component code the message is associated with, if null default component
      * code is used
-     * @param messageKey - key for the message to retrieve
-     * @param params - list of parameters for the message text
-     * @return String formatted message text
+     * @param messageKey key for the message to retrieve
+     * @param params list of parameters for the message text
+     * @return formatted message text
      */
     public static String generateMessageText(String namespace, String componentCode, String messageKey,
             List<String> params) {
@@ -141,7 +141,7 @@ public class ClientValidationUtils {
      * Generates the js object used to override all default messages for validator jquery plugin with
      * custom messages retrieved from the message service
      *
-     * @return String script for message override
+     * @return script for message override
      */
     public static String generateValidatorMessagesOption() {
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();

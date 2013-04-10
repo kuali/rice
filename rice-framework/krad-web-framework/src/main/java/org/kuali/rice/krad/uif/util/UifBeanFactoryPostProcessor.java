@@ -69,7 +69,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     /**
      * Iterates through all beans in the factory and invokes processing
      *
-     * @param beanFactory - bean factory instance to process
+     * @param beanFactory bean factory instance to process
      * @throws org.springframework.beans.BeansException
      */
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -97,10 +97,10 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * The expression graph is then set as a property on the top bean definition
      * </p>
      *
-     * @param beanName - name of the bean to process
-     * @param beanDefinition - bean definition to process
-     * @param beanFactory - factory holding all the bean definitions
-     * @param processedBeanNames - set of bean names that have already been processed
+     * @param beanName name of the bean to process
+     * @param beanDefinition bean definition to process
+     * @param beanFactory factory holding all the bean definitions
+     * @param processedBeanNames set of bean names that have already been processed
      */
     protected void processBeanDefinition(String beanName, BeanDefinition beanDefinition,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
@@ -133,11 +133,11 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * If the bean class is type UifDictionaryBean, iterate through configured property values
      * and check for expressions
      *
-     * @param beanName - name of the bean in the factory (only set for top level beans, not nested)
-     * @param beanDefinition - bean definition to process for expressions
+     * @param beanName name of the bean in the factory (only set for top level beans, not nested)
+     * @param beanDefinition bean definition to process for expressions
      * @param nestedPropertyName
      * @param expressionGraph
-     * @param beanFactory - bean factory being processed
+     * @param beanFactory bean factory being processed
      * @param processedBeanNames
      */
     protected void processNestedBeanDefinition(String beanName, BeanDefinition beanDefinition,
@@ -225,9 +225,9 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * be configured on the bean definition, but by a parent, each parent bean definition is recursively checked for
      * a class until one is found
      *
-     * @param beanDefinition - bean definition to get class for
-     * @param beanFactory - bean factory that contains the bean definition
-     * @return Class<?> class configured for the bean definition, or null
+     * @param beanDefinition bean definition to get class for
+     * @param beanFactory bean factory that contains the bean definition
+     * @return class configured for the bean definition, or null
      */
     protected Class<?> getBeanClass(BeanDefinition beanDefinition, ConfigurableListableBeanFactory beanFactory) {
         if (StringUtils.isNotBlank(beanDefinition.getBeanClassName())) {
@@ -251,10 +251,10 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * Retrieves the expression graph map set on the bean with given name. If the bean has not been processed
      * by the bean factory post processor, that is done before retrieving the map
      *
-     * @param parentBeanName - name of the parent bean to retrieve map for (if empty a new map will be returned)
-     * @param beanFactory - bean factory to retrieve bean definition from
-     * @param processedBeanNames - set of bean names that have been processed so far
-     * @return Map<String, String> expression graph map from parent or new instance
+     * @param parentBeanName name of the parent bean to retrieve map for (if empty a new map will be returned)
+     * @param beanFactory bean factory to retrieve bean definition from
+     * @param processedBeanNames set of bean names that have been processed so far
+     * @return expression graph map from parent or new instance
      */
     protected Map<String, String> getExpressionGraphFromParent(String parentBeanName,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
@@ -284,8 +284,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * Checks whether the given property value is of String type, and if so whether it contains the expression
      * placholder(s)
      *
-     * @param propertyValue - value to check for expressions
-     * @return boolean true if the property value contains expression(s), false if it does not
+     * @param propertyValue value to check for expressions
+     * @return true if the property value contains expression(s), false if it does not
      */
     protected boolean hasExpression(Object propertyValue) {
         if (propertyValue != null) {
@@ -307,16 +307,16 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * Processes the given property name/value pair for complex objects, such as bean definitions or collections,
      * which if found will be processed for contained property expression values
      *
-     * @param nestedPropertyName - nested path of the property whose value is being processed
-     * @param propertyName - name of the property in the bean definition being processed
-     * @param propertyValue - value to check
-     * @param beanDefinition - bean definition the property belongs to
-     * @param parentExpressionGraph - map that holds property expressions for the parent bean definition, used for
+     * @param nestedPropertyName nested path of the property whose value is being processed
+     * @param propertyName name of the property in the bean definition being processed
+     * @param propertyValue value to check
+     * @param beanDefinition bean definition the property belongs to
+     * @param parentExpressionGraph map that holds property expressions for the parent bean definition, used for
      * merging
-     * @param expressionGraph - map that holds property expressions for the bean definition being processed
-     * @param beanFactory - bean factory that contains the bean definition being processed
-     * @param processedBeanNames - set of bean names that have been processed so far
-     * @return Object new value to set for property
+     * @param expressionGraph map that holds property expressions for the bean definition being processed
+     * @param beanFactory bean factory that contains the bean definition being processed
+     * @param processedBeanNames set of bean names that have been processed so far
+     * @return new value to set for property
      */
     protected Object processPropertyValue(String nestedPropertyName, String propertyName, Object propertyValue,
             BeanDefinition beanDefinition, Map<String, String> parentExpressionGraph,
@@ -385,8 +385,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     /**
      * Removes entries from the given expressions map whose key starts with the given prefix
      *
-     * @param propertyNamePrefix - prefix to search for and remove
-     * @param expressionGraph - map of property expressions to filter
+     * @param propertyNamePrefix prefix to search for and remove
+     * @param expressionGraph map of property expressions to filter
      */
     protected void removeExpressionsByPrefix(String propertyNamePrefix, Map<String, String> expressionGraph) {
         Map<String, String> adjustedExpressionGraph = new HashMap<String, String>();
@@ -403,8 +403,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     /**
      * Determines whether the given value is of String type and if so returns the string value
      *
-     * @param value - object value to check
-     * @return String string value for object or null if object is not a string type
+     * @param value object value to check
+     * @return string value for object or null if object is not a string type
      */
     protected String getStringValue(Object value) {
         if (value instanceof TypedStringValue) {

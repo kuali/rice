@@ -157,7 +157,7 @@ public class ComponentFactory {
      * Gets a fresh copy of the component by the id passed in which used to look up the component in
      * the view index, then retrieve a new instance with initial state configured using the factory id
      *
-     * @param id - id for the component in the view index
+     * @param id id for the component in the view index
      * @return Component new instance
      */
     public static Component getNewInstanceForRefresh(View view, String id) {
@@ -190,7 +190,7 @@ public class ComponentFactory {
     /**
      * Returns a new <code>Component</code> instance for the given bean id from the spring factory
      *
-     * @param beanId - id of the bean definition
+     * @param beanId id of the bean definition
      * @return new component instance or null if no such component definition was found
      */
     public static Component getNewComponentInstance(String beanId) {
@@ -375,8 +375,8 @@ public class ComponentFactory {
      * Retrieves a new data field instance from Spring (initialized by the bean definition
      * with the given id) and sets the property name and label to the given parameters
      *
-     * @param propertyName - name of the property the data field should bind to
-     * @param label - label for the field
+     * @param propertyName name of the property the data field should bind to
+     * @param label label for the field
      * @return DataField
      */
     public static DataField getDataField(String propertyName, String label) {
@@ -402,8 +402,8 @@ public class ComponentFactory {
      * Retrieves a new input field instance from Spring (initialized by the bean definition
      * with the given id) and sets the property name and label to the given parameters
      *
-     * @param propertyName - name of the property the input field should bind to
-     * @param label - label for the field
+     * @param propertyName name of the property the input field should bind to
+     * @param label label for the field
      * @return InputField
      */
     public static InputField getInputField(String propertyName, String label) {
@@ -419,9 +419,9 @@ public class ComponentFactory {
      * Retrieves a new input field instance from Spring (initialized by the bean definition
      * with the given id) and sets the property name, control, and label to the given parameters
      *
-     * @param propertyName - name of the property the input field should bind to
-     * @param label - label for the field
-     * @param controlType - enum that identifies the type of control to create for the input field
+     * @param propertyName name of the property the input field should bind to
+     * @param label label for the field
+     * @param controlType enum that identifies the type of control to create for the input field
      * @return InputField
      */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType) {
@@ -438,10 +438,10 @@ public class ComponentFactory {
      * Retrieves a new input field instance from Spring (initialized by the bean definition
      * with the given id) and sets the property name, control, defaultValue, and label to the given parameters
      *
-     * @param propertyName - name of the property the input field should bind to
-     * @param label - label for the field
-     * @param controlType - enum that identifies the type of control to create for the input field
-     * @param defaultValue - default value for the property backing the input field
+     * @param propertyName name of the property the input field should bind to
+     * @param label label for the field
+     * @param controlType enum that identifies the type of control to create for the input field
+     * @param defaultValue default value for the property backing the input field
      * @return InputField
      */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
@@ -460,10 +460,10 @@ public class ComponentFactory {
      * Retrieves a new input field instance from Spring (initialized by the bean definition
      * with the given id) and sets the property name, control, options finder, and label to the given parameters
      *
-     * @param propertyName - name of the property the input field should bind to
-     * @param label - label for the field
-     * @param controlType - enum that identifies the type of control to create for the input field
-     * @param optionsFinderClass - class that will provide options for the control (assume control type is multi-value)
+     * @param propertyName name of the property the input field should bind to
+     * @param label label for the field
+     * @param controlType enum that identifies the type of control to create for the input field
+     * @param optionsFinderClass class that will provide options for the control (assume control type is multi-value)
      * @return InputField
      */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
@@ -482,10 +482,10 @@ public class ComponentFactory {
      * Retrieves a new input field instance from Spring (initialized by the bean definition
      * with the given id) and sets the property name, control, options, and label to the given parameters
      *
-     * @param propertyName - name of the property the input field should bind to
-     * @param label - label for the field
-     * @param controlType - enum that identifies the type of control to create for the input field
-     * @param options - list of key value objects to set as the controls options
+     * @param propertyName name of the property the input field should bind to
+     * @param label label for the field
+     * @param controlType enum that identifies the type of control to create for the input field
+     * @param options list of key value objects to set as the controls options
      * @return InputField
      */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
@@ -510,12 +510,12 @@ public class ComponentFactory {
      * with the given id) and sets the property name, control, size, min and max length,
      * and label to the given parameters
      *
-     * @param propertyName - name of the property the input field should bind to
-     * @param label - label for the field
-     * @param controlType - enum that identifies the type of control to create for the input field
-     * @param size - size for the control
-     * @param maxLength - max length for the field's value (also used for the control)
-     * @param minLength - min length for the field's value (also used for the control)
+     * @param propertyName name of the property the input field should bind to
+     * @param label label for the field
+     * @param controlType enum that identifies the type of control to create for the input field
+     * @param size size for the control
+     * @param maxLength max length for the field's value (also used for the control)
+     * @param minLength min length for the field's value (also used for the control)
      * @return InputField
      */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
@@ -673,7 +673,7 @@ public class ComponentFactory {
      * instance and sets the
      * corresponding properties from the remotable instance
      *
-     * @param remotableFields - list of remotable fields to translate
+     * @param remotableFields list of remotable fields to translate
      * @return List<AttributeField> list of attribute fields built from the remotable field properties
      */
     public static List<InputField> translateRemotableFields(List<RemotableAttributeField> remotableFields) {
@@ -689,7 +689,7 @@ public class ComponentFactory {
     /**
      * For each option in the given list, create a new {@link org.kuali.rice.core.api.util.KeyValue} instance
      *
-     * @param optionsMap - list of options
+     * @param optionsMap list of options
      * @return List<KeyValue> list of key values built from the list of options
      */
     protected static List<KeyValue> buildKeyValuePairs(Map<String, String> optionsMap) {
@@ -707,7 +707,7 @@ public class ComponentFactory {
      * Gets the control
      *
      * @param controlType
-     * @return Control the control based on the control type
+     * @return the control based on the control type
      */
     protected static Control getControl(UifConstants.ControlType controlType) {
         Control control = null;
@@ -759,7 +759,7 @@ public class ComponentFactory {
     /**
      * Gets the action
      *
-     * @return Action action
+     * @return action
      */
     public static Action getAction() {
         return (Action) getNewComponentInstance(ACTION);
@@ -768,7 +768,7 @@ public class ComponentFactory {
     /**
      * Gets the action link
      *
-     * @return Action action link
+     * @return action link
      */
     public static Action getActionLink() {
         return (Action) getNewComponentInstance(ACTION_LINK);
@@ -777,7 +777,7 @@ public class ComponentFactory {
     /**
      * Gets the link field
      *
-     * @return LinkField link field
+     * @return link field
      */
     public static LinkField getLinkField() {
         return (LinkField) getNewComponentInstance(LINK_FIELD);
@@ -786,7 +786,7 @@ public class ComponentFactory {
     /**
      * Gets the iframe
      *
-     * @return Iframe iframe
+     * @return iframe
      */
     public static Iframe getIframe() {
         return (Iframe) getNewComponentInstance(IFRAME);
@@ -795,7 +795,7 @@ public class ComponentFactory {
     /**
      * Gets the image field
      *
-     * @return ImageField image field
+     * @return image field
      */
     public static ImageField getImageField() {
         return (ImageField) getNewComponentInstance(IMAGE_FIELD);
@@ -804,7 +804,7 @@ public class ComponentFactory {
     /**
      * Gets the image component
      *
-     * @return ImageField image field
+     * @return image field
      */
     public static Image getImage() {
         return (Image) getNewComponentInstance(IMAGE);
@@ -813,7 +813,7 @@ public class ComponentFactory {
     /**
      * Gets the space field
      *
-     * @return SpaceField space field
+     * @return space field
      */
     public static SpaceField getSpaceField() {
         return (SpaceField) getNewComponentInstance(SPACE_FIELD);
@@ -822,7 +822,7 @@ public class ComponentFactory {
     /**
      * Gets the generic field
      *
-     * @return GenericField generic field
+     * @return generic field
      */
     public static GenericField getGenericField() {
         return (GenericField) getNewComponentInstance(GENERIC_FIELD);
@@ -831,7 +831,7 @@ public class ComponentFactory {
     /**
      * Gets the label
      *
-     * @return Label label
+     * @return label
      */
     public static Label getLabel() {
         return (Label) getNewComponentInstance(LABEL);
@@ -840,7 +840,7 @@ public class ComponentFactory {
     /**
      * Gets the message
      *
-     * @return Message message
+     * @return message
      */
     public static Message getMessage() {
         return (Message) getNewComponentInstance(MESSAGE);
@@ -849,7 +849,7 @@ public class ComponentFactory {
     /**
      * Gets the message field
      *
-     * @return MessageField message field
+     * @return message field
      */
     public static MessageField getMessageField() {
         return (MessageField) getNewComponentInstance(MESSAGE_FIELD);
@@ -858,7 +858,7 @@ public class ComponentFactory {
     /**
      * Gets the collection grouping field
      *
-     * @return MessageField message field
+     * @return message field
      */
     public static MessageField getColGroupingField() {
         return (MessageField) getNewComponentInstance(COLLECTION_GROUPING_FIELD);
@@ -867,7 +867,7 @@ public class ComponentFactory {
     /**
      * Gets the field group
      *
-     * @return FieldGroup field group
+     * @return field group
      */
     public static FieldGroup getFieldGroup() {
         return (FieldGroup) getNewComponentInstance(FIELD_GROUP);
@@ -876,7 +876,7 @@ public class ComponentFactory {
     /**
      * Gets the horizontal field group
      *
-     * @return FieldGroup horizontal field group
+     * @return horizontal field group
      */
     public static FieldGroup getHorizontalFieldGroup() {
         return (FieldGroup) getNewComponentInstance(HORIZONTAL_FIELD_GROUP);
@@ -885,7 +885,7 @@ public class ComponentFactory {
     /**
      * Gets the group
      *
-     * @return Group group
+     * @return group
      */
     public static Group getGroup() {
         return (Group) getNewComponentInstance(GROUP);
@@ -894,7 +894,7 @@ public class ComponentFactory {
     /**
      * Gets the vertical box group
      *
-     * @return Group group
+     * @return group
      */
     public static Group getVerticalBoxGroup() {
         return (Group) getNewComponentInstance(VERTICAL_BOX_GROUP);
@@ -903,7 +903,7 @@ public class ComponentFactory {
     /**
      * Gets the horizontal box group
      *
-     * @return Group group
+     * @return group
      */
     public static Group getHorizontalBoxGroup() {
         return (Group) getNewComponentInstance(HORIZONTAL_BOX_GROUP);
@@ -912,7 +912,7 @@ public class ComponentFactory {
     /**
      * Gets the vertical box section
      *
-     * @return Group group
+     * @return group
      */
     public static Group getVerticalBoxSection() {
         return (Group) getNewComponentInstance(VERTICAL_BOX_SECTION);
@@ -921,7 +921,7 @@ public class ComponentFactory {
     /**
      * Gets the horizontal box section
      *
-     * @return Group group
+     * @return group
      */
     public static Group getHorizontalBoxSection() {
         return (Group) getNewComponentInstance(HORIZONTAL_BOX_SECTION);
@@ -930,7 +930,7 @@ public class ComponentFactory {
     /**
      * Gets the page group
      *
-     * @return PageGroup page group
+     * @return page group
      */
     public static PageGroup getPageGroup() {
         return (PageGroup) getNewComponentInstance(PAGE_GROUP);
@@ -939,7 +939,7 @@ public class ComponentFactory {
     /**
      * Gets the group grid layout
      *
-     * @return Group group grid layout
+     * @return group grid layout
      */
     public static Group getGroupGridLayout() {
         return (Group) getNewComponentInstance(GROUP_GRID_LAYOUT);
@@ -948,7 +948,7 @@ public class ComponentFactory {
     /**
      * Gets the group body only
      *
-     * @return Group group body only
+     * @return group body only
      */
     public static Group getGroupBodyOnly() {
         return (Group) getNewComponentInstance(GROUP_BODY_ONLY);
@@ -957,7 +957,7 @@ public class ComponentFactory {
     /**
      * Gets the group grid body only
      *
-     * @return Group group grid body only
+     * @return group grid body only
      */
     public static Group getGroupGridBodyOnly() {
         return (Group) getNewComponentInstance(GROUP_GRID_BODY_ONLY);
@@ -966,7 +966,7 @@ public class ComponentFactory {
     /**
      * Gets the tab group
      *
-     * @return TabGroup tab group
+     * @return tab group
      */
     public static TabGroup getTabGroup() {
         return (TabGroup) getNewComponentInstance(TAB_GROUP);
@@ -975,7 +975,7 @@ public class ComponentFactory {
     /**
      * Gets the navigation group
      *
-     * @return NavigationGroup navigation group
+     * @return navigation group
      */
     public static NavigationGroup getNavigationGroup() {
         return (NavigationGroup) getNewComponentInstance(NAVIGATION_GROUP);
@@ -984,7 +984,7 @@ public class ComponentFactory {
     /**
      * Gets the tree group
      *
-     * @return TreeGroup tree group
+     * @return tree group
      */
     public static TreeGroup getTreeGroup() {
         return (TreeGroup) getNewComponentInstance(TREE_GROUP);
@@ -993,7 +993,7 @@ public class ComponentFactory {
     /**
      * Gets the link group
      *
-     * @return LinkGroup link group
+     * @return link group
      */
     public static LinkGroup getLinkGroup() {
         return (LinkGroup) getNewComponentInstance(LINK_GROUP);
@@ -1002,7 +1002,7 @@ public class ComponentFactory {
     /**
      * Gets the collection group
      *
-     * @return CollectionGroup collection group
+     * @return collection group
      */
     public static CollectionGroup getCollectionGroup() {
         return (CollectionGroup) getNewComponentInstance(COLLECTION_GROUP);
@@ -1011,7 +1011,7 @@ public class ComponentFactory {
     /**
      * Gets the collection group table layout
      *
-     * @return CollectionGroup collection group table layout
+     * @return collection group table layout
      */
     public static CollectionGroup getCollectionGroupTableLayout() {
         return (CollectionGroup) getNewComponentInstance(COLLECTION_GROUP_TABLE_LAYOUT);
@@ -1020,7 +1020,7 @@ public class ComponentFactory {
     /**
      * Gets the list group
      *
-     * @return CollectionGroup list group
+     * @return list group
      */
     public static CollectionGroup getListGroup() {
         return (CollectionGroup) getNewComponentInstance(LIST_GROUP);
@@ -1029,7 +1029,7 @@ public class ComponentFactory {
     /**
      * Gets the header
      *
-     * @return Header header
+     * @return header
      */
     public static Header getHeader() {
         return (Header) getNewComponentInstance(HEADER);
@@ -1038,7 +1038,7 @@ public class ComponentFactory {
     /**
      * Gets the footer
      *
-     * @return Group footer
+     * @return footer
      */
     public static Group getFooter() {
         return (Group) getNewComponentInstance(FOOTER);
@@ -1047,7 +1047,7 @@ public class ComponentFactory {
     /**
      * Gets the footer save/close/cancel
      *
-     * @return Group footer save/close/cancel
+     * @return footer save/close/cancel
      */
     public static Group getFooterSaveCloseCancel() {
         return (Group) getNewComponentInstance(FOOTER_SAVECLOSECANCEL);

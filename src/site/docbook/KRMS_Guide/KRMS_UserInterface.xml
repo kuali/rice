@@ -24,17 +24,16 @@
             in an Agenda determines the sequencing: which rule gets evaluated first, second and
             so on. The Agenda also enables you to include conditional branching logic between
             Rules. </para>
-        <para>In turn, Agendas are are created in Contexts, which may represent any categories
-            that are relevant within your institution. For example, they could correspond to
-            document types or business processes or any other categories. In some university
-            environments, the following might be relevant contexts: Awards, Proposals, IRB
-            reviews, Course co-requisites, Course pre-requisites, Student plan evaluations, and
-            so on. </para>
-        <para>Each Context contains its own agendas, and each Agenda contains its own rules.
-            Rules aren't shared across agendas (though you can copy/paste, they become unique
-            Rule instances), and Agendas aren't shared across Contexts. There is no Context
-            hierarchy, that is, Agendas and Rules can't be inherited across contexts within any
-            sort of hierarchy. </para>
+        <para>In turn, Agendas are created in Contexts, which may represent any categories that are
+            relevant within your institution. For example, they could correspond to document types
+            or business processes or any other categories. In some university environments, the
+            following might be relevant contexts: Awards, Proposals, IRB reviews, Course
+            co-requisites, Course pre-requisites, Student plan evaluations, and so on. </para>
+        <para>Each Context contains its own agendas, and each Agenda contains its own rules. Rules
+            aren't shared across agendas (though you can copy/paste them, in which case they become
+            unique Rule instances), and Agendas aren't shared across Contexts. There is no Context
+            hierarchy; that is, Agendas and Rules can't be inherited across contexts within any sort
+            of hierarchy. </para>
         <para>See below for a view of the Agenda Editor in KRMS.</para>
         <para>
             <figure>
@@ -49,9 +48,9 @@
         </para>
         <para>Rules in the Agenda can be selected by clicking on them. The order and conditional
             logic within the agenda can be manipulated by selecting rules and clicking the
-            buttons on the toolbar above the Rules. Clicking on the "Add Rule" button on the
+            buttons on the toolbar above the Rules. Clicking on the <emphasis type="keyword">Add Rule</emphasis> button on the
             Agenda Editor screen will take you to the Rule Editor with a new blank Rule, and
-            selecting a Rule and clicking on the "Edit Rule" button will open that existing Rule
+            selecting a Rule and clicking on the <emphasis type="keyword">Edit Rule</emphasis> button will open that existing Rule
             in the Rule Editor.</para>
         <!-- Commenting out, we haven't introduced agenda types and attributes yet.
             <para>And see below for an example of how attributes can be progressively rendered in
@@ -100,8 +99,8 @@
                 </mediaobject>
             </figure>
         </para>
-        <para>You can add Simple Propositions via "add", or Compound Propositions via "add
-            parent".  Simple Propositions are configured with a Term and a user-supplied value
+        <para>You can add Simple Propositions via <emphasis type="keyword">add</emphasis>, or Compound Propositions via <emphasis type="keyword">add
+            parent</emphasis>.  Simple Propositions are configured with a Term and a user-supplied value
             to compare it with.</para>
     </section>
 </chapter>

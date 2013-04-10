@@ -68,8 +68,8 @@
                         </imageobject>
                     </mediaobject>
                 </figure>
-                Upon hitting submit, any errors or a message "Notification(s) sent" will appear just above the dialog box.</para>
-            <para>To see the notification message that was sent, in this example, to the user "admin", after logging into the system as admin, click on the action list button. 
+                Upon hitting <emphasis role="keyword">submit</emphasis>, any errors or a message "Notification(s) sent" will appear just above the dialog box.</para>
+            <para>To see the notification message that was sent, in this example, to the user "admin", after logging into the system as admin, click on the <emphasis role="keyword">action list</emphasis> button. 
                 Since the list is sorted in ascending date created order, you will find the message at the bottom of the list.
                 <figure><title></title><mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/action_list1.png" scalefit="1" width="100%" contentdepth="100%"></imagedata></imageobject></mediaobject></figure>
             </para>
@@ -85,7 +85,7 @@
                     </mediaobject>
                 </figure>
                 Upon hitting <emphasis role="keyword">submit</emphasis>, any errors or a message "Notification(s) sent" will appear just above the dialog box.</para>
-            <para>To see the notification message that was sent, in this example, to the user "admin", after logging into the system as admin, click on the action list button. 
+            <para>To see the notification message that was sent, in this example, to the user "admin", after logging into the system as admin, click on the <emphasis role="keyword">action list</emphasis> button. 
                 Since the list is sorted in ascending date created order, you will find the message at the bottom of the list.
             </para><note><para>The action requested in this case is <emphasis role="bold">acknowledge</emphasis> instead of FYI. </para></note>
                 <figure><title></title><mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/action_list2.png" scalefit="1" width="100%" contentdepth="100%"></imagedata></imageobject></mediaobject></figure>
@@ -99,6 +99,7 @@
                     </mediaobject>
                 </figure>
                 Clicking the <emphasis role="keyword">acknowledge</emphasis> button removes the event item from the action list, and places it in the Outbox for the user. 
+                Alternatively, clicking the <emphasis role="keyword">take actions</emphasis> button will take all the outstanding appropriate action for each item in the Action List. 
                 Clicking the <emphasis role="keyword">Outbox</emphasis> link will display the item there, as shown below. From here, the user can select the <emphasis role="keyword">Delete Item</emphasis> checkbox and click the <emphasis role="keyword">delete selected items</emphasis> button to remove it.
                 <figure><title></title><mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/outbox.png" scalefit="1" width="100%" contentdepth="100%"></imagedata></imageobject></mediaobject></figure>
             </para>

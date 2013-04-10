@@ -15,37 +15,16 @@
  */
 package edu.samplu.admin.test;
 
-import org.junit.Test;
+import org.junit.Assert;
 
 /**
- * tests adding a namespace to Rice.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddingNameSpaceSTJUnitBkMrkGen extends AddingNameSpaceSTJUnitBase {
 
-    /**
-     * Noop navigation not used by Bookmark tests.
-     * {@inheritDoc}
-     * @return
-     */
+public class AddingNameSpaceSTJUnitBase extends AddingNameSpacesAbstractSmokeTestBase {
+
     @Override
-    protected String getLinkLocator() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @link AddingNameSpacesAbstractSmokeTestBase#BOOKMARK_URL
-     * @return
-     */
-    @Override
-    public String getTestUrl(){
-        return BOOKMARK_URL;
-    }
-
-    @Test
-    public void testAddingNamespaceBookmark() throws Exception {
-      testAddingNamespaceBookmark(this);
+    public void fail(String string) {
+        Assert.fail(string);
     }
 }

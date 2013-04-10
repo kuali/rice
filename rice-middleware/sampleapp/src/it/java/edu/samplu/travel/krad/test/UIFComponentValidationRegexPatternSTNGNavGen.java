@@ -26,7 +26,6 @@ public class UIFComponentValidationRegexPatternSTNGNavGen extends UIFComponentVa
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testValidCharacterConstraintNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testValidCharacterConstraintNav() throws Exception {
-        setUp();
         testValidCharacterConstraintNav(this);
     }
 }

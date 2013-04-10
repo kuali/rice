@@ -33,7 +33,6 @@ public class UIFComponentValidationRegexPatternSTNGBkMrkGen extends UIFComponent
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testValidCharacterConstraintBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testValidCharacterConstraintBookmark() throws Exception {
-        setUp();
         testValidCharacterConstraintBookmark(this);
     }
 }

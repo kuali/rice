@@ -330,12 +330,12 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     /**
      * Prepares the method configured on the attribute query then performs the method invocation
      *
-     * @param view - view instance the field is contained within
-     * @param attributeQuery - attribute query instance to execute
-     * @param queryParameters - map of query parameters that provide values for the method arguments
-     * @param isSuggestQuery - indicates whether the query is for forming suggest options
-     * @param queryTerm - if being called for a suggest, the term for the query field
-     * @return Object type depends on method being invoked, could be AttributeQueryResult in which
+     * @param view view instance the field is contained within
+     * @param attributeQuery attribute query instance to execute
+     * @param queryParameters map of query parameters that provide values for the method arguments
+     * @param isSuggestQuery indicates whether the query is for forming suggest options
+     * @param queryTerm if being called for a suggest, the term for the query field
+     * @return type depends on method being invoked, could be AttributeQueryResult in which
      *         case the method has prepared the return result, or an Object that needs to be parsed for the result
      */
     protected Object executeAttributeQueryMethod(View view, AttributeQuery attributeQuery,
@@ -403,10 +403,10 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * Prepares a query using the configured data object, parameters, and criteria, then executes
      * the query and returns the result Collection
      *
-     * @param attributeQuery - attribute query instance to perform query for
-     * @param queryParameters - map of parameters that will be used in the query criteria
-     * @param additionalCriteria - map of additional name/value pairs to add to the critiera
-     * @return Collection<?> results of query
+     * @param attributeQuery attribute query instance to perform query for
+     * @param queryParameters map of parameters that will be used in the query criteria
+     * @param additionalCriteria map of additional name/value pairs to add to the critiera
+     * @return results of query
      */
     protected Collection<?> executeAttributeQueryCriteria(AttributeQuery attributeQuery,
             Map<String, String> queryParameters, Map<String, String> additionalCriteria) {
@@ -452,7 +452,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     /**
      * Gets the lookup service
      *
-     * @return LookupService lookup service
+     * @return lookup service
      */
     protected LookupService getLookupService() {
         if (lookupService == null) {
@@ -474,7 +474,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     /**
      * Gets the configuration service
      *
-     * @return ConfigurationService configuration service
+     * @return configuration service
      */
     protected ConfigurationService getConfigurationService() {
         if (configurationService == null) {

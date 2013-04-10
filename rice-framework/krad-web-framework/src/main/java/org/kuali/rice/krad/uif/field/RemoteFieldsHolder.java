@@ -95,10 +95,10 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      * Invokes the configured fetching method to retrieve a list of remotable fields, then invoked the
      * {@code ComponentFactory} to translate the fields, and finally sets up the binding for the attribute fields
      *
-     * @param view - view instance the container belongs to, sent to the fetching method
-     * @param model - object containing the view data, sent to the fetching method
-     * @param parent - container instance that holder is configured for, sent to the fetching method
-     * @return List<AttributeField> list of attribute fields that should be placed into container, if no remotable
+     * @param view view instance the container belongs to, sent to the fetching method
+     * @param model object containing the view data, sent to the fetching method
+     * @param parent container instance that holder is configured for, sent to the fetching method
+     * @return list of attribute fields that should be placed into container, if no remotable
      *         fields were returned from the fetching method the list will be empty
      */
     public List<InputField> fetchAndTranslateRemoteFields(View view, Object model, Container parent) {
@@ -179,7 +179,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      * are keys in that map, with the corresponding map value giving the model value for the field
      * </p>
      *
-     * @return String path to property on model
+     * @return path to property on model
      */
     @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
@@ -232,7 +232,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      * For invoking the method on classes other than the view helper service, see {@link #getFetchingMethodInvoker()}
      * </p>
      *
-     * @return String name of method to invoke for fetching remote fields
+     * @return name of method to invoke for fetching remote fields
      */
     @BeanTagAttribute(name = "fetchingMethodToCall")
     public String getFetchingMethodToCall() {

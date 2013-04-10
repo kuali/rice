@@ -774,8 +774,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * The headerLabels list will contain the final list of header fields built
      * </p>
      *
-     * @param collectionGroup - CollectionGroup container the table applies to
-     * @param lineFields - fields for the data columns from which the headers are pulled
+     * @param collectionGroup CollectionGroup container the table applies to
+     * @param lineFields fields for the data columns from which the headers are pulled
      */
     protected void buildTableHeaderRows(CollectionGroup collectionGroup, List<Field> lineFields) {
         // row count needed to determine the row span for the sequence and
@@ -869,8 +869,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * the given component. After created the header field is added to the list
      * making up the table header
      *
-     * @param field - field instance the header field is being created for
-     * @param column - column number for the header, used for setting the id
+     * @param field field instance the header field is being created for
+     * @param column column number for the header, used for setting the id
      */
     protected void addHeaderField(Field field, int column) {
         Label headerLabel = ComponentUtils.copy(getHeaderLabelPrototype(), "_c" + column);
@@ -904,8 +904,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * the list of fields. Assumption is made that the total number of cells the
      * fields take up is evenly divisible by the configured number of columns
      *
-     * @param items - list of items that make up one collection line
-     * @return int number of rows
+     * @param items list of items that make up one collection line
+     * @return number of rows
      */
     protected int calculateNumberOfRows(List<? extends Field> items) {
         int rowCount = 0;
@@ -986,7 +986,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Indicates whether the short label for the collection field should be used
      * as the table header or the regular label
      *
-     * @return boolean true if short label should be used, false if long label
+     * @return true if short label should be used, false if long label
      *         should be used
      */
     @BeanTagAttribute(name = "useShortLabels")
@@ -1007,7 +1007,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Indicates whether the header should be repeated before each collection
      * row. If false the header is only rendered at the beginning of the table
      *
-     * @return boolean true if header should be repeated, false if it should
+     * @return true if header should be repeated, false if it should
      *         only be rendered once
      */
     @BeanTagAttribute(name = "repeatHeader")
@@ -1059,7 +1059,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Indicates whether the sequence field should be rendered for the
      * collection
      *
-     * @return boolean true if sequence field should be rendered, false if not
+     * @return true if sequence field should be rendered, false if not
      */
     @BeanTagAttribute(name = "renderSequenceField")
     public boolean isRenderSequenceField() {
@@ -1080,7 +1080,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * value of this field on the line will be retrieved and used as the
      * sequence value
      *
-     * @return String sequence property name
+     * @return sequence property name
      */
     @BeanTagAttribute(name = "sequencePropertyName")
     public String getSequencePropertyName() {
@@ -1112,7 +1112,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * current line number
      * </p>
      *
-     * @return boolean true if the sequence field should be generated from the
+     * @return true if the sequence field should be generated from the
      *         line number, false if not
      */
     @BeanTagAttribute(name = "generateAutoSequence")
@@ -1205,7 +1205,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * will use {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
      * </p>
      *
-     * @return Field select field prototype instance
+     * @return select field prototype instance
      */
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
@@ -1232,7 +1232,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * be placed into the group's footer.
      * </p>
      *
-     * @return boolean true if add line should be separated, false if it should be placed into the table
+     * @return true if add line should be separated, false if it should be placed into the table
      */
     @BeanTagAttribute(name = "separateAddLine")
     public boolean isSeparateAddLine() {
@@ -1280,7 +1280,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * List of {@code Component} instances that make up the tables body. Pulled
      * by the layout manager template to send through the Grid layout
      *
-     * @return List<Component> table body fields
+     * @return table body fields
      */
     public List<Component> getDataFields() {
         return this.dataFields;
@@ -1366,7 +1366,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Indicates the index of the action column
      *
-     * @return int = the action column index
+     * @return the action column index
      */
     @BeanTagAttribute(name = "actionColumnIndex")
     public int getActionColumnIndex() {
@@ -1381,7 +1381,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * takes all displayed columns, including sequence and selection columns, into account.
      * </p>
      *
-     * @return String - the action column placement
+     * @return the action column placement
      */
     @BeanTagAttribute(name = "actionColumnPlacement")
     public String getActionColumnPlacement() {
@@ -1391,7 +1391,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Setter for the action column placement
      *
-     * @param actionColumnPlacement - action column placement string
+     * @param actionColumnPlacement action column placement string
      */
     public void setActionColumnPlacement(String actionColumnPlacement) {
         this.actionColumnPlacement = actionColumnPlacement;
@@ -1491,7 +1491,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * The list must contain valid column indexes. The indexes takes all displayed columns into account.
      * </p>
      *
-     * @return List<String> the total columns list
+     * @return the total columns list
      */
     public List<String> getColumnsToCalculate() {
         return columnsToCalculate;
@@ -1501,8 +1501,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Validates different requirements of component compiling a series of reports detailing information on errors
      * found in the component.  Used by the RiceDictionaryValidator.
      *
-     * @param tracer Record of component's location
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
+     * @param tracer record of component's location
+     * @return a list of ErrorReports detailing errors found within the component and referenced within it
      */
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean("TableLayoutManager", getId());

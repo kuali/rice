@@ -77,7 +77,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	 * document.oldMaintainableObject.businessObject
 	 * </p>
 	 *
-	 * @return String path to the compare object
+	 * @return path to the compare object
 	 */
     @BeanTagAttribute(name="bindingObjectPath")
 	public String getBindingObjectPath() {
@@ -103,7 +103,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	 * version of the record
 	 * </p>
 	 *
-	 * @return String header text
+	 * @return header text
 	 */
     @BeanTagAttribute(name="headerText")
 	public String getHeaderText() {
@@ -122,7 +122,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	/**
 	 * Indicates whether the compare group should be read-only
 	 *
-	 * @return boolean true if the group should be read-only, false if edits are
+	 * @return true if the group should be read-only, false if edits are
 	 *         allowed
 	 */
     @BeanTagAttribute(name="readOnly")
@@ -174,7 +174,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	 * If not given, the items will receive a default id suffix
 	 * </p>
 	 *
-	 * @return String id suffix for comparison group
+	 * @return id suffix for comparison group
 	 */
     @BeanTagAttribute(name="idSuffix")
 	public String getIdSuffix() {
@@ -194,7 +194,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
      * Indicates whether this comparable group's field values should be compared
      * to when highlighting changes of values between comparables (versions)
      *
-     * @return boolean true if this comparable group should be used for
+     * @return true if this comparable group should be used for
      *         comparison, false if not
      * @see #isHighlightValueChange
      */
@@ -217,7 +217,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
      * highlighted if their values defer from the comparable group marked for
      * comparison
      *
-     * @return boolean true if the comparable fields should be highlighted,
+     * @return true if the comparable fields should be highlighted,
      *         false if they should not be highlighted (no comparison will be
      *         performed)
      * @see #isCompareToForValueChange

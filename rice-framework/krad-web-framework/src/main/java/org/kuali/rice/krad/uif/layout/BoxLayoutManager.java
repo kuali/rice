@@ -119,7 +119,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      * Indicates whether the components should be rendered in a horizontal or
      * vertical column
      *
-     * @return Orientation orientation configured for layout
+     * @return orientation configured for layout
      */
     @BeanTagAttribute(name = "orientation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Orientation getOrientation() {
@@ -165,7 +165,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      * item. By using a wrapping span the items can be aligned based on the
      * orientation and given the correct padding
      *
-     * @return String css style string
+     * @return css style string
      */
     @BeanTagAttribute(name = "itemStyle")
     public String getItemStyle() {
@@ -204,7 +204,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      * Builds the HTML class attribute string by combining the item styleClasses list
      * with a space delimiter
      *
-     * @return String class attribute string
+     * @return class attribute string
      */
     public String getItemStyleClassesAsString() {
         if (itemStyleClasses != null) {

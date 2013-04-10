@@ -81,7 +81,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * Adjusts the path on the query field mapping from property to match the binding
      * path prefix of the given <code>BindingInfo</code>
      *
-     * @param bindingInfo - binding info instance to copy binding path prefix from
+     * @param bindingInfo binding info instance to copy binding path prefix from
      */
     public void updateQueryFieldMapping(BindingInfo bindingInfo) {
         Map<String, String> adjustedQueryFieldMapping = new HashMap<String, String>();
@@ -99,7 +99,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * Adjusts the path on the return field mapping to property to match the binding
      * path prefix of the given <code>BindingInfo</code>
      *
-     * @param bindingInfo - binding info instance to copy binding path prefix from
+     * @param bindingInfo binding info instance to copy binding path prefix from
      */
     public void updateReturnFieldMapping(BindingInfo bindingInfo) {
         Map<String, String> adjustedReturnFieldMapping = new HashMap<String, String>();
@@ -117,7 +117,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * Adjusts the path on the query method arguments field list to match the binding
      * path prefix of the given <code>BindingInfo</code>
      *
-     * @param bindingInfo - binding info instance to copy binding path prefix from
+     * @param bindingInfo binding info instance to copy binding path prefix from
      */
     public void updateQueryMethodArgumentFieldList(BindingInfo bindingInfo) {
         List<String> adjustedArgumentFieldList = new ArrayList<String>();
@@ -133,7 +133,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * Builds String for passing the queryFieldMapping Map as a Javascript object
      * parameter
      *
-     * @return String js parameter string
+     * @return js parameter string
      */
     public String getQueryFieldMappingJsString() {
         String queryFieldMappingJs = "{";
@@ -155,7 +155,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * Builds String for passing the returnFieldMapping Map as a Javascript object
      * parameter
      *
-     * @return String js parameter string
+     * @return js parameter string
      */
     public String getReturnFieldMappingJsString() {
         String returnFieldMappingJs = "{";
@@ -176,7 +176,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     /**
      * Builds String for passing the queryMethodArgumentFieldList as a Javascript Object
      *
-     * @return String js parameter string
+     * @return js parameter string
      */
     public String getQueryMethodArgumentFieldsJsString() {
         String queryMethodArgsJs = "{";
@@ -200,7 +200,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * to call is given, or the query method invoker is not null it is assumed the
      * intention is to call a custom method
      *
-     * @return boolean true if a custom method is configured, false if not
+     * @return true if a custom method is configured, false if not
      */
     public boolean hasConfiguredMethod() {
         boolean configuredMethod = false;
@@ -219,7 +219,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     /**
      * Class name for the data object the query should be performed against
      *
-     * @return String data object class name
+     * @return data object class name
      */
     @BeanTagAttribute(name="dataObjectClassName")
     public String getDataObjectClassName() {
@@ -246,7 +246,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * populate.
      * </p>
      *
-     * @return Map<String, String> mapping of query parameters
+     * @return mapping of query parameters
      */
     @BeanTagAttribute(name="queryFieldMapping",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getQueryFieldMapping() {
@@ -273,7 +273,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * pull the value from
      * </p>
      *
-     * @return Map<String, String> return field mapping
+     * @return return field mapping
      */
     @BeanTagAttribute(name="returnFieldMapping",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getReturnFieldMapping() {
@@ -295,7 +295,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * apply to, and the map value is the value (literal) for the criteria. Standard
      * lookup wildcards are allowed
      *
-     * @return Map<String, String> field name/value pairs for query criteria
+     * @return field name/value pairs for query criteria
      */
     @BeanTagAttribute(name="additionalCriteria",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalCriteria() {
@@ -317,7 +317,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * within the list. Each property must be a valid property of the
      * return query object (the data object in case of the general query)
      *
-     * @return List<String> property names
+     * @return property names
      */
     @BeanTagAttribute(name="sortPropertyNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getSortPropertyNames() {
@@ -337,7 +337,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * Indicates whether a message should be added to the query result
      * object and displayed when the query return object is null
      *
-     * @return boolean true if not found message should be added, false otherwise
+     * @return true if not found message should be added, false otherwise
      */
     @BeanTagAttribute(name="renderNotFoundMessage")
     public boolean isRenderNotFoundMessage() {
@@ -356,7 +356,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     /**
      * Message text to display along with the query result
      *
-     * @return String literal message text
+     * @return literal message text
      */
     @BeanTagAttribute(name="returnMessageText")
     public String getReturnMessageText() {
@@ -376,7 +376,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * CSS Style classes that should be applied to the return message.
      * Multiple style classes should be delimited by a space
      *
-     * @return String style classes
+     * @return style classes
      */
     @BeanTagAttribute(name="returnMessageStyleClasses")
     public String getReturnMessageStyleClasses() {
@@ -402,7 +402,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * for the contained view.
      * </p>
      *
-     * @return String query method name
+     * @return query method name
      */
     @BeanTagAttribute(name="queryMethodToCall")
     public String getQueryMethodToCall() {
@@ -427,7 +427,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * to the query method as an argument
      * </p>
      *
-     * @return List<String> query method argument list
+     * @return query method argument list
      */
     @BeanTagAttribute(name="queryMethodArgumentFieldList",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getQueryMethodArgumentFieldList() {
@@ -454,7 +454,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * a static method can be configured
      * </p>
      *
-     * @return MethodInvokerConfig query method config
+     * @return query method config
      */
     @BeanTagAttribute(name="queryMethodInvokerConfig",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MethodInvokerConfig getQueryMethodInvokerConfig() {

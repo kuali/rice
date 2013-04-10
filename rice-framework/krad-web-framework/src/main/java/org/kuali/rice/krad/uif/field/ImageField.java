@@ -79,7 +79,7 @@ public class ImageField extends FieldBase {
     /**
      * Retrieves the {@link Image} element wrapped by this field
      *
-     * @return Image - the Image element representing the HTML IMG element
+     * @return the Image element representing the HTML IMG element
      */
     @BeanTagAttribute(name="image",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Image getImage() {
@@ -89,7 +89,7 @@ public class ImageField extends FieldBase {
     /**
      * Sets the Image to be wrapped by this field
      *
-     * @param image - the Image element to be wrapped by this field
+     * @param image the Image element to be wrapped by this field
      */
     public void setImage(Image image) {
         this.image = image;
@@ -99,7 +99,7 @@ public class ImageField extends FieldBase {
      * Retrieves the URL the image wrapped by this field
      *
      * @see org.kuali.rice.krad.uif.element.Image#getSource()
-     * @return String containing the URL for the image
+     * @return the URL for the image
      */
     @BeanTagAttribute(name="source")
     public String getSource() {
@@ -109,7 +109,7 @@ public class ImageField extends FieldBase {
     /**
      * Sets the source URL for the Image associated with this field
      *
-     * @param source - String URL for the image
+     * @param source URL for the image
      */
     public void setSource(String source) {
         image.setSource(source);
@@ -124,7 +124,7 @@ public class ImageField extends FieldBase {
      * </p>
      *
      * @see org.kuali.rice.krad.uif.element.Image#getAltText()
-     * @return a String representing alternative information about this image
+     * @return alternative information about this image
      */
     @BeanTagAttribute(name="altText")
     public String getAltText() {
@@ -134,7 +134,7 @@ public class ImageField extends FieldBase {
     /**
      * Sets the alternate text attribute of the image assosiated with this field
      *
-     * @param altText - a String containing the alternative information about the image
+     * @param altText the alternative information about the image
      */
     public void setAltText(String altText) {
         image.setAltText(altText);
@@ -143,7 +143,7 @@ public class ImageField extends FieldBase {
     /**
      * Gets the height of the image
      *
-     * @return String height
+     * @return height
      */
     @BeanTagAttribute(name="height")
     public String getHeight() {
@@ -171,7 +171,7 @@ public class ImageField extends FieldBase {
     /**
      * Gets the width of the image
      *
-     * @return String width
+     * @return width
      */
     @BeanTagAttribute(name="width")
     public String getWidth() {
@@ -181,7 +181,7 @@ public class ImageField extends FieldBase {
     /**
      * Gets the caption header text
      *
-     * @return String captionHeaderText
+     * @return captionHeaderText
      */
     @BeanTagAttribute(name="captionHeaderText")
     public String getCaptionHeaderText() {
@@ -200,7 +200,7 @@ public class ImageField extends FieldBase {
     /**
      * Gets the caption header
      *
-     * @return Header captionHeader
+     * @return captionHeader
      */
     @BeanTagAttribute(name="captionHeader",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Header getCaptionHeader() {
@@ -219,7 +219,7 @@ public class ImageField extends FieldBase {
     /**
      * Gets the cutline text
      *
-     * @return String cutlineText
+     * @return cutlineText
      */
     @BeanTagAttribute(name="cutlineText")
     public String getCutlineText() {
@@ -238,7 +238,7 @@ public class ImageField extends FieldBase {
     /**
      * Gets the cutline
      *
-     * @return Message cutline
+     * @return cutline
      */
     @BeanTagAttribute(name="cutline",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getCutline() {
@@ -257,7 +257,7 @@ public class ImageField extends FieldBase {
     /**
      * Gets boolen of whether the caption header is above the image
      *
-     * @return boolean captionHeaderAboveImage
+     * @return captionHeaderAboveImage
      */
     @BeanTagAttribute(name="captionHeaderAboveImage")
     public boolean isCaptionHeaderAboveImage() {

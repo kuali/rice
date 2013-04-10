@@ -73,8 +73,8 @@ public class ComponentConvertModifier extends ComponentModifierBase {
      * replacement component prototype is created and set as the property value.
      * The method is then called for each of the component's children
      *
-     * @param component - component instance to inspect properties for
-     * @param idSuffix - suffix string to use for any generated component
+     * @param component component instance to inspect properties for
+     * @param idSuffix suffix string to use for any generated component
      * replacements
      */
     protected void convertToReplacement(Component component, int idSuffix) {
@@ -105,9 +105,9 @@ public class ComponentConvertModifier extends ComponentModifierBase {
      * Creates a new instance of the replacement component prototype and sets a
      * the property value for the given property name and component instance
      *
-     * @param component - component instance to set property on
-     * @param componentProperty - property name to set
-     * @param idSuffix - suffix string to use for the generated component
+     * @param component component instance to set property on
+     * @param componentProperty property name to set
+     * @param idSuffix suffix string to use for the generated component
      */
     protected void performConversion(Component component, String componentProperty, int idSuffix) {
         // create new instance of replacement component
@@ -143,7 +143,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
      * Type of component that should be replaced with an instance of the
      * component prototype
      *
-     * @return Class<? extends Component> component type to replace
+     * @return component type to replace
      */
     @BeanTagAttribute(name = "componentTypeToReplace")
     public Class<? extends Component> getComponentTypeToReplace() {

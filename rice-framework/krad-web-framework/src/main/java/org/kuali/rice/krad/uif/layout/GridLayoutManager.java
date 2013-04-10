@@ -177,7 +177,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * number of columns is used
      * </p>
      *
-     * @return boolean true if the column count should match the container's
+     * @return true if the column count should match the container's
      *         field count, false to use the configured number of columns
      */
     @BeanTagAttribute(name = "suppressLineWrapping")
@@ -202,7 +202,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * See the configured template for the actual style classes used
      * </p>
      *
-     * @return boolean true if alternating styles should be applied, false if
+     * @return true if alternating styles should be applied, false if
      *         all rows should have the same style
      */
     @BeanTagAttribute(name = "applyAlternatingRowStyles")
@@ -227,7 +227,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * number of columns
      * </p>
      *
-     * @return boolean true if default cell widths should be applied, false if
+     * @return true if default cell widths should be applied, false if
      *         no defaults should be applied
      */
     @BeanTagAttribute(name = "applyDefaultCellWidths")
@@ -253,7 +253,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * as data cells, else they will alternate between cell headers
      * </p>
      *
-     * @return boolean true if first cell of each row should be rendered as a header cell
+     * @return true if first cell of each row should be rendered as a header cell
      */
     @BeanTagAttribute(name = "renderRowFirstCellHeader")
     public boolean isRenderRowFirstCellHeader() {
@@ -279,7 +279,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * possible
      * </p>
      *
-     * @return boolean true if first row should be rendered as header cells
+     * @return true if first row should be rendered as header cells
      */
     @BeanTagAttribute(name = "renderFirstRowHeader")
     public boolean isRenderFirstRowHeader() {
@@ -304,8 +304,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * every other cell in the row as a header
      * </p>
      *
-     * @return boolean true if alternating headers should be rendered, false if
-     *         not
+     * @return true if alternating headers should be rendered, false if not
      */
     @BeanTagAttribute(name = "renderAlternatingHeaderColumns")
     public boolean isRenderAlternatingHeaderColumns() {
@@ -331,7 +330,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * other special cases like the add item row.
      * </p>
      *
-     * @return List<String> list of styles for the rows
+     * @return list of styles for the rows
      */
     @BeanTagAttribute(name = "rowCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getRowCssClasses() {

@@ -242,10 +242,10 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * main comparable. If the value is different, adds script to the field on ready event to add the change icon to
      * the field and the containing group header
      *
-     * @param group - group that contains the item and whose header will be highlighted for changes
-     * @param compareItem - the compare item being generated and to pull attribute fields from
-     * @param model - object containing the data
-     * @param compareValueObjectBindingPath - object path for the comparison item
+     * @param group group that contains the item and whose header will be highlighted for changes
+     * @param compareItem the compare item being generated and to pull attribute fields from
+     * @param model object containing the data
+     * @param compareValueObjectBindingPath object path for the comparison item
      * @return true if the value in the field represented by compareItem is equal to the comparison items value, false
      *         otherwise
      */
@@ -290,9 +290,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * underscore
      * </p>
      *
-     * @param comparable - comparable info to check for id suffix
-     * @param index - sequence integer
-     * @return String id suffix
+     * @param comparable comparable info to check for id suffix
+     * @param index sequence integer
+     * @return id suffix
      * @see org.kuali.rice.krad.uif.modifier.ComparableInfo#getIdSuffix()
      */
     protected String getIdSuffix(ComparableInfo comparable, int index) {
@@ -331,7 +331,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * <code>ComparableInfo</code> instances that do not have the order property
      * set
      *
-     * @return int default sequence starting value
+     * @return default sequence starting value
      */
     @BeanTagAttribute(name = "defaultOrderSequence")
     public int getDefaultOrderSequence() {
@@ -357,7 +357,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * the headerText property of the comparable
      * </p>
      *
-     * @return boolean true if the headers should be created, false if no
+     * @return true if the headers should be created, false if no
      *         headers should be created
      */
     @BeanTagAttribute(name = "generateCompareHeaders")
@@ -378,7 +378,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * Prototype instance to use for creating the <code>HeaderField</code> for
      * each group of comparison fields (if generateCompareHeaders is true)
      *
-     * @return HeaderField header field prototype
+     * @return header field prototype
      */
     @BeanTagAttribute(name = "headerFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Header getHeaderFieldPrototype() {
@@ -403,7 +403,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * <code>Group</code> will be created for the comparison view
      * </p>
      *
-     * @return List<ComparableInfo> comparables to generate fields for
+     * @return comparables to generate fields for
      */
     @BeanTagAttribute(name = "comparables", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ComparableInfo> getComparables() {

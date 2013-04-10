@@ -45,7 +45,7 @@ public class FieldSecurity extends ComponentSecurity {
     /**
      * Indicates whether the field has edit in line authorization and KIM should be consulted
      *
-     * @return boolean true if the field has edit in line authorization, false if not
+     * @return true if the field has edit in line authorization, false if not
      */
     @BeanTagAttribute(name="editInLineAuthz")
     public boolean isEditInLineAuthz() {
@@ -64,7 +64,7 @@ public class FieldSecurity extends ComponentSecurity {
     /**
      * Indicates whether the field has view in line unmask authorization and KIM should be consulted
      *
-     * @return boolean true if the field has view in line unmask authorization, false if not
+     * @return true if the field has view in line unmask authorization, false if not
      */
     @BeanTagAttribute(name="viewInLineAuthz")
     public boolean isViewInLineAuthz() {

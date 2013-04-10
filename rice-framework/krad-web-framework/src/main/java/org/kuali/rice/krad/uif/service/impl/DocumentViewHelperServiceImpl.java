@@ -36,11 +36,11 @@ public class DocumentViewHelperServiceImpl extends ViewHelperServiceImpl {
      * Performs validation on the new collection line before it is added to the
      * corresponding collection
      *
-     * @param view - view instance that the action was taken on
-     * @param collectionGroup - collection group component for the collection
-     * @param addLine - new line instance to validate
-     * @param model - object instance that contains the views data
-     * @return boolean true if the line is valid and it should be added to the
+     * @param view view instance that the action was taken on
+     * @param collectionGroup collection group component for the collection
+     * @param addLine new line instance to validate
+     * @param model object instance that contains the views data
+     * @return true if the line is valid and it should be added to the
      *         collection, false if it was not valid and should not be added to
      *         the collection
      */
@@ -65,7 +65,7 @@ public class DocumentViewHelperServiceImpl extends ViewHelperServiceImpl {
     /**
      * Gets the Kuali rule service
      *
-     * @return KualiRuleService Kuali rule service
+     * @return Kuali rule service
      */
     protected KualiRuleService getKualiRuleService() {
         if (kualiRuleService == null) {

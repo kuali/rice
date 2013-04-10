@@ -302,8 +302,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * for the value and set it as additional display value.
      * </p>
      *
-     * @param view - the current view instance
-     * @param model - model instance
+     * @param view the current view instance
+     * @param model model instance
      */
     protected void setAlternateAndAdditionalDisplayValue(View view, Object model) {
         // if alternate or additional display values set don't use property names
@@ -374,8 +374,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * already contains a value for a property, the definitions value is not
      * used.
      *
-     * @param view - view instance the field belongs to
-     * @param attributeDefinition - AttributeDefinition instance the property values should be
+     * @param view view instance the field belongs to
+     * @param attributeDefinition AttributeDefinition instance the property values should be
      * copied from
      */
     public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
@@ -429,7 +429,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * Indicates whether the data field instance allows input, subclasses should override and set to
      * true if input is allowed
      *
-     * @return boolean true if input is allowed, false if read only
+     * @return true if input is allowed, false if read only
      */
     public boolean isInputAllowed() {
         return false;
@@ -523,7 +523,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * the <code>AttributeDefinition</code>
      * </p>
      *
-     * @return String attribute name
+     * @return attribute name
      */
     @BeanTagAttribute(name = "dictionaryAttributeName")
     public String getDictionaryAttributeName() {
@@ -582,7 +582,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * for the model property will be set to the given default value (if set)
      * </p>
      *
-     * @return String default value
+     * @return default value
      */
     @BeanTagAttribute(name = "defaultValue")
     public String getDefaultValue() {
@@ -602,7 +602,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * Gives Class that should be invoked to produce the default value for the
      * field
      *
-     * @return Class<? extends ValueFinder> default value finder class
+     * @return default value finder class
      */
     @BeanTagAttribute(name = "defaultValueFinderClass")
     public Class<? extends ValueFinder> getDefaultValueFinderClass() {
@@ -627,7 +627,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * for the model property will be set to the given default values (if set)
      * </p>
      *
-     * @return String default value
+     * @return default value
      */
     @BeanTagAttribute(name = "defaultValues", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public Object[] getDefaultValues() {
@@ -646,7 +646,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     /**
      * Summary help text for the field
      *
-     * @return String summary help text
+     * @return summary help text
      */
     @BeanTagAttribute(name = "helpSummary")
     public String getHelpSummary() {
@@ -674,7 +674,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     /**
      * Override to assert a {@link DataFieldSecurity} instance is set
      *
-     * @param componentSecurity - instance of DataFieldSecurity
+     * @param componentSecurity instance of DataFieldSecurity
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
@@ -700,7 +700,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * Useful for when a value is just displayed but is needed by script
      * </p>
      *
-     * @return boolean true if field should be readOnly hidden, false if not
+     * @return true if field should be readOnly hidden, false if not
      */
     @BeanTagAttribute(name = "addHiddenWhenReadOnly")
     public boolean isAddHiddenWhenReadOnly() {
@@ -796,7 +796,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * Additional display attribute name, which will be displayed next to the actual field value
      * when the field is readonly with hyphen in between like PropertyValue - AdditionalPropertyValue
      *
-     * @param readOnlyDisplaySuffixPropertyName - Name of the additional display property
+     * @param readOnlyDisplaySuffixPropertyName name of the additional display property
      */
     public void setReadOnlyDisplaySuffixPropertyName(String readOnlyDisplaySuffixPropertyName) {
         this.readOnlyDisplaySuffixPropertyName = readOnlyDisplaySuffixPropertyName;
@@ -805,7 +805,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     /**
      * Returns the additional display attribute name to be displayed when the field is readonly
      *
-     * @return Additional Display Attribute Name
+     * @return additional display attribute name
      */
     @BeanTagAttribute(name = "readOnlyDisplaceSuffixPropertyName")
     public String getReadOnlyDisplaySuffixPropertyName() {
@@ -816,7 +816,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * Sets the alternate display attribute name to be displayed when the field is readonly.
      * This properties value will be displayed instead of actual fields value when the field is readonly.
      *
-     * @param readOnlyDisplayReplacementPropertyName - alternate display property name
+     * @param readOnlyDisplayReplacementPropertyName alternate display property name
      */
     public void setReadOnlyDisplayReplacementPropertyName(String readOnlyDisplayReplacementPropertyName) {
         this.readOnlyDisplayReplacementPropertyName = readOnlyDisplayReplacementPropertyName;
@@ -932,7 +932,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * the mask formatter configured on the security object
      * </p>
      *
-     * @return boolean true if the field value should be masked, false if not
+     * @return true if the field value should be masked, false if not
      */
     @BeanTagAttribute(name = "applyMask")
     public boolean isApplyMask() {
@@ -976,7 +976,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * Allows specifying hidden property names without having to specify as a
      * field in the group config (that might impact layout)
      *
-     * @return List<String> hidden property names
+     * @return hidden property names
      */
     @BeanTagAttribute(name = "additionalHiddenPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalHiddenPropertyNames() {
@@ -1008,7 +1008,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * prefix will be added.
      * </p>
      *
-     * @return List<String> informational property names
+     * @return informational property names
      */
     @BeanTagAttribute(name = "propertyNamesForAdditionalDisplay", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getPropertyNamesForAdditionalDisplay() {
@@ -1073,7 +1073,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * has been marked as hidden due to an authorization check
      * </p>
      *
-     * @return boolean true if value is secure, false if not
+     * @return true if value is secure, false if not
      */
     public boolean hasSecureValue() {
         return isApplyMask() || ((getComponentSecurity().isViewAuthz()

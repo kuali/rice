@@ -222,9 +222,9 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * property expressions map to set the title for the line group (which will have the item context variable set)
      * </p>
      *
-     * @param line - Collection line containing data
-     * @param lineGroup - Group instance for rendering the line and whose title should be built
-     * @return String header text for line
+     * @param line Collection line containing data
+     * @param lineGroup Group instance for rendering the line and whose title should be built
+     * @return header text for line
      */
     protected String buildLineHeaderText(Object line, Group lineGroup) {
         // check for expression on summary title
@@ -300,7 +300,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * conjunction with {@link #getSummaryFields()} to build up the final header
      * text
      *
-     * @return String summary title text
+     * @return summary title text
      */
     @BeanTagAttribute(name = "summaryTitle")
     public String getSummaryTitle() {
@@ -322,7 +322,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * attribute is retrieved from the line instance. All the values are then
      * placed together with a separator.
      *
-     * @return List<String> summary field names
+     * @return summary field names
      * @see #buildLineHeaderText(Object, org.kuali.rice.krad.uif.container.Group)
      */
     @BeanTagAttribute(name = "summaryFields", type = BeanTagAttribute.AttributeType.LISTVALUE)
@@ -349,7 +349,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * of the line group prototype will be used for the add line.
      * </p>
      *
-     * @return Group add line group instance
+     * @return add line group instance
      * @see #getAddLineGroup()
      */
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -416,7 +416,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * will use {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
      * </p>
      *
-     * @return Field select field prototype instance
+     * @return select field prototype instance
      */
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
@@ -464,7 +464,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     /**
      * Final {@code List} of Groups to render for the collection
      *
-     * @return List<Group> collection groups
+     * @return collection groups
      */
     @BeanTagAttribute(name = "stackedGroups", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Group> getStackedGroups() {

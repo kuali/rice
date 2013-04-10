@@ -45,7 +45,7 @@ public class AttributeQueryResult implements Serializable {
      * Message text that should display (if non empty) with the results.
      * Can be used to given messages such as data not found
      *
-     * @return String text to display with results
+     * @return text to display with results
      */
     public String getResultMessage() {
         return resultMessage;
@@ -63,7 +63,7 @@ public class AttributeQueryResult implements Serializable {
     /**
      * CSS Style classes that should be applied to the result message text
      *
-     * @return String of CSS style classes
+     * @return CSS style classes
      */
     public String getResultMessageStyleClasses() {
         return resultMessageStyleClasses;
@@ -82,7 +82,7 @@ public class AttributeQueryResult implements Serializable {
      * Returns data for multiple fields as a Map where key is the field
      * name and map value is the field value
      *
-     * @return Map<String, String> result field data
+     * @return result field data
      */
     public Map<String, String> getResultFieldData() {
         return resultFieldData;
@@ -100,7 +100,7 @@ public class AttributeQueryResult implements Serializable {
     /**
      * Result of an attribute query that will be sent back to the client
      *
-     * @return List<Object> result data
+     * @return result data
      */
     public List<Object> getResultData() {
         return resultData;

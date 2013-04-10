@@ -232,7 +232,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * Builds the HTML class attribute string by combining the styleClasses list
 	 * with a space delimiter
 	 *
-	 * @return String class attribute string
+	 * @return class attribute string
 	 */
 	public String getStyleClassesAsString() {
 		if (cssClasses != null) {

@@ -429,8 +429,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * already contains a value for a property, the definitions value is not
      * used.
      *
-     * @param view - view instance the field belongs to
-     * @param attributeDefinition - AttributeDefinition instance the property values should be
+     * @param view view instance the field belongs to
+     * @param attributeDefinition AttributeDefinition instance the property values should be
      * copied from
      */
     @Override
@@ -647,7 +647,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * Setter that takes in the class name for the options finder and creates a
      * new instance to use as the finder for the input field
      *
-     * @param optionsFinderClass - the options finder class to set
+     * @param optionsFinderClass the options finder class to set
      */
     public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
         this.optionsFinder = ObjectUtils.newInstance(optionsFinderClass);
@@ -675,7 +675,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for the lookup widget
      *
-     * @param quickfinder - the field lookup widget to set
+     * @param quickfinder the field lookup widget to set
      */
     public void setQuickfinder(QuickFinder quickfinder) {
         this.quickfinder = quickfinder;
@@ -704,7 +704,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for the fields suggest widget
      *
-     * @param suggest - the field suggest widget to  set
+     * @param suggest the field suggest widget to  set
      */
     public void setSuggest(Suggest suggest) {
         this.suggest = suggest;
@@ -718,7 +718,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * in certain cases and so on (instructions)
      * </p>
      *
-     * @return String instructional message
+     * @return instructional message
      */
     @BeanTagAttribute(name = "instructionalText")
     public String getInstructionalText() {
@@ -728,7 +728,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for the instructional message
      *
-     * @param instructionalText - the instructional text to set
+     * @param instructionalText the instructional text to set
      */
     public void setInstructionalText(String instructionalText) {
         this.instructionalText = instructionalText;
@@ -742,7 +742,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * the styleClasses property will be of most interest
      * </p>
      *
-     * @return Message instructional message field
+     * @return instructional message field
      */
     @BeanTagAttribute(name = "instructionalMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getInstructionalMessage() {
@@ -757,7 +757,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * set on the field but can also be set using {@link #setInstructionalText(String)}
      * </p>
      *
-     * @param instructionalMessage - the instructional message to set
+     * @param instructionalMessage the instructional message to set
      */
     public void setInstructionalMessage(Message instructionalMessage) {
         this.instructionalMessage = instructionalMessage;
@@ -772,7 +772,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * it is visible when the user tabs to the field
      * </p>
      *
-     * @return String text to display for the constraint message
+     * @return text to display for the constraint message
      */
     @BeanTagAttribute(name = "constraintText")
     public String getConstraintText() {
@@ -782,7 +782,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for the constraint message text
      *
-     * @param constraintText - the constraint text to set
+     * @param constraintText the constraint text to set
      */
     public void setConstraintText(String constraintText) {
         this.constraintText = constraintText;
@@ -796,7 +796,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * the styleClasses property will be of most interest
      * </p>
      *
-     * @return Message constraint message field
+     * @return constraint message field
      */
     @BeanTagAttribute(name = "constraintMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getConstraintMessage() {
@@ -811,7 +811,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * set on the field but can also be set using {@link #setConstraintText(String)}
      * </p>
      *
-     * @param constraintMessage - the constrain message field to set
+     * @param constraintMessage the constrain message field to set
      */
     public void setConstraintMessage(Message constraintMessage) {
         this.constraintMessage = constraintMessage;
@@ -831,7 +831,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for {@code validCharacterConstraint}
      *
-     * @param validCharactersConstraint - the {@code ValidCharactersConstraint} to set
+     * @param validCharactersConstraint the {@code ValidCharactersConstraint} to set
      */
     public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
         this.validCharactersConstraint = validCharactersConstraint;
@@ -851,7 +851,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for {@code caseConstraint}
      *
-     * @param caseConstraint - the {@code CaseConstraint} to set
+     * @param caseConstraint the {@code CaseConstraint} to set
      */
     public void setCaseConstraint(CaseConstraint caseConstraint) {
         this.caseConstraint = caseConstraint;
@@ -870,7 +870,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for {@code dependencyConstraints}
      *
-     * @param dependencyConstraints - list of {@code PrerequisiteConstraint} to set
+     * @param dependencyConstraints list of {@code PrerequisiteConstraint} to set
      */
     public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
         this.dependencyConstraints = dependencyConstraints;
@@ -890,7 +890,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for {@code mustOccurConstraints}
      *
-     * @param mustOccurConstraints - list of {@code MustOccurConstraint} to set
+     * @param mustOccurConstraints list of {@code MustOccurConstraint} to set
      */
     public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
         this.mustOccurConstraints = mustOccurConstraints;
@@ -921,7 +921,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * the other gets/sets for defining simple constraints, not both.
      * </p>
      *
-     * @param simpleConstraint - the simple constraint to set
+     * @param simpleConstraint the simple constraint to set
      */
     public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
         this.simpleConstraint = simpleConstraint;
@@ -948,7 +948,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for input field max length
      *
-     * @param maxLength - the maximum length to set
+     * @param maxLength the maximum length to set
      */
     public void setMaxLength(Integer maxLength) {
         simpleConstraint.setMaxLength(maxLength);
@@ -974,7 +974,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for input field minimum length
      *
-     * @param minLength - the minLength to set
+     * @param minLength the minLength to set
      */
     public void setMinLength(Integer minLength) {
         simpleConstraint.setMinLength(minLength);
@@ -1019,7 +1019,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for the field's exclusive minimum value
      *
-     * @param exclusiveMin - the minimum value to set
+     * @param exclusiveMin the minimum value to set
      */
     public void setExclusiveMin(String exclusiveMin) {
         simpleConstraint.setExclusiveMin(exclusiveMin);
@@ -1047,7 +1047,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for the field's inclusive maximum value
      *
-     * @param inclusiveMax - the maximum value to set
+     * @param inclusiveMax the maximum value to set
      */
     public void setInclusiveMax(String inclusiveMax) {
         simpleConstraint.setInclusiveMax(inclusiveMax);
@@ -1099,7 +1099,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Setter for this field's performUppercase flag
      *
-     * @param uppercaseValue - boolean flag
+     * @param uppercaseValue boolean flag
      */
     public void setUppercaseValue(boolean uppercaseValue) {
         this.uppercaseValue = uppercaseValue;

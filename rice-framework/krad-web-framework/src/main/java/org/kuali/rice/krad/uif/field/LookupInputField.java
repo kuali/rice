@@ -133,7 +133,7 @@ public class LookupInputField extends InputField {
      * Override of InputField copy to setup properties necessary to make the field usable for inputting
      * search criteria
      *
-     * @param attributeDefinition - AttributeDefinition instance the property values should be copied from
+     * @param attributeDefinition AttributeDefinition instance the property values should be copied from
      * @see DataField#copyFromAttributeDefinition(org.kuali.rice.krad.uif.view.View,
      * org.kuali.rice.krad.datadictionary.AttributeDefinition)
      */
@@ -190,7 +190,7 @@ public class LookupInputField extends InputField {
      * If control definition is defined on the given attribute definition, converts to an appropriate control for
      * searching (if necessary) and returns a copy for setting on the field
      *
-     * @param attributeDefinition - attribute definition instance to retrieve control from
+     * @param attributeDefinition attribute definition instance to retrieve control from
      * @return Control instance or null if not found
      */
     protected static Control convertControlToLookupControl(AttributeDefinition attributeDefinition) {

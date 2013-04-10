@@ -130,8 +130,8 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * Helper method for suffixing the ids of the fields nested components
      *
-     * @param component - component to adjust id for
-     * @param suffix - suffix to append to id
+     * @param component component to adjust id for
+     * @param suffix suffix to append to id
      */
     protected void setNestedComponentIdAndSuffix(Component component, String suffix) {
         if (component != null) {
@@ -260,7 +260,7 @@ public class FieldBase extends ComponentBase implements Field {
      * the fields <code>Label</code> instance
      * </p>
      *
-     * @param showLabel boolean true if label should be displayed, false if the label
+     * @param showLabel true if label should be displayed, false if the label
      * should not be displayed
      */
     public void setShowLabel(boolean showLabel) {
@@ -288,7 +288,7 @@ public class FieldBase extends ComponentBase implements Field {
      * Indicates where the label is placed in relation to the field (valid options are
      * LEFT, RIGHT, BOTTOM, and TOP
      *
-     * @return Position position of label
+     * @return position of label
      */
     @BeanTagAttribute(name="labelPlacement",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Position getLabelPlacement() {
@@ -329,7 +329,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * Override to assert a {@link FieldSecurity} instance is set
      *
-     * @param componentSecurity - instance of FieldSecurity
+     * @param componentSecurity instance of FieldSecurity
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {

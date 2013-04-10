@@ -21,6 +21,11 @@
     <para>The Kuali Enterprise Notification system (KEN) provides for a way to programmatically
         send a notification. An application may construct a notification using the KEN web
         service API.</para>
+    <para>Alternatively, users can use the user interface (UI) to send notifications.</para>
+    <warning><para>When you send a notification, KEN generates a document for every person you send it to. So if
+            you send it to a work group or a role with n members, you'll instantaneously create n
+            number of workflow documents. Some workgroups or roles may have a huge number of members
+            so this feature needs to be taken into consideration.</para></warning>
     <section>
         <title>Send a Notification Using the Web Service API</title>
         <para>To send a notification using the web service API, the notification must be

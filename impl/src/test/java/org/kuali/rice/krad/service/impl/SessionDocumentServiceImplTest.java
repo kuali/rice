@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -44,6 +45,7 @@ import java.util.concurrent.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@Ignore //SessionDocumentServiceImpl has been Deprecated and removed from use in KRAD
 public class SessionDocumentServiceImplTest {
 
     // Generate sample objects for mocks and testing
@@ -62,6 +64,7 @@ public class SessionDocumentServiceImplTest {
     }
 
     @Test
+    @Ignore //SessionDocumentServiceImpl has been Deprecated and removed from use in KRAD
     public void testAddDocumentToUserSession() {
         try {
             sessionDocumentServiceImpl.addDocumentToUserSession(session, doc);
@@ -70,6 +73,7 @@ public class SessionDocumentServiceImplTest {
         }
     }
     @Test
+    @Ignore //SessionDocumentServiceImpl has been Deprecated and removed from use in KRAD
     public void testGetDocumentFromSessionWithEntry() {
         try {
             Mockito.when(session.retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME)).thenReturn(map);
@@ -81,6 +85,7 @@ public class SessionDocumentServiceImplTest {
     }
 
     @Test
+    @Ignore //SessionDocumentServiceImpl has been Deprecated and removed from use in KRAD
     public void testGetDocumentFromSessionWithNoEntry() {
         try {
             Mockito.when(session.retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME)).thenReturn(null);

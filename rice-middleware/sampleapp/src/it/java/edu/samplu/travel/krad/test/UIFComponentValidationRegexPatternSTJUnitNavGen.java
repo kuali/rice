@@ -15,7 +15,6 @@
  */
 package edu.samplu.travel.krad.test;
 
-import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.Test;
 
 /**

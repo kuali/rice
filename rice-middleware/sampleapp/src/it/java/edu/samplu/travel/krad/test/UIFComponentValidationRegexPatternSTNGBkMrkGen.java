@@ -24,6 +24,7 @@ import org.testng.annotations.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UIFComponentValidationRegexPatternSTNGBkMrkGen extends UIFComponentValidationRegexPatternSTNGBase {
+
     @Override
     public String getTestUrl() {
         return BOOKMARK_URL;

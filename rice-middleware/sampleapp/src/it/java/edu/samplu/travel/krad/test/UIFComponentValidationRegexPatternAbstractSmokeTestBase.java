@@ -24,7 +24,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase extends WebDriverLegacyITBase implements Failable {
+public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase extends WebDriverLegacyITBase  {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
 

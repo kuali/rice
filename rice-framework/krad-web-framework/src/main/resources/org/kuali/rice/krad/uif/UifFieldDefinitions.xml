@@ -158,6 +158,15 @@
     </property>
   </bean>
 
+  <bean id="Uif-LookupActiveInputField" parent="Uif-LookupActiveInputField-parentBean"/>
+  <bean id="Uif-LookupActiveInputField-parentBean" parent="Uif-LookupCriteriaInputField-parentBean">
+    <property name="propertyName" value="active"/>
+    <property name="label" value="Active"/>
+    <property name="control">
+      <bean parent="Uif-CheckboxControl"/>
+    </property>
+  </bean>
+
   <bean id="Uif-ActionField" parent="Uif-ActionField-parentBean"/>
   <bean id="Uif-ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField"
         parent="Uif-FieldBase-withLabel" scope="prototype">

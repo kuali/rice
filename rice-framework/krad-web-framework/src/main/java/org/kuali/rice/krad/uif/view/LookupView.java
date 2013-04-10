@@ -16,8 +16,12 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -28,9 +32,12 @@ import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.LookupForm;
@@ -102,12 +109,15 @@ public class LookupView extends FormView {
 
     private FieldGroup rangeFieldGroupPrototype;
 
+    private boolean autoAddActiveCriteria;
+
     public LookupView() {
         super();
 
         setViewTypeName(ViewType.LOOKUP);
         setApplyDirtyCheck(false);
         setTriggerOnChange(false);
+        setAutoAddActiveCriteria(true);
     }
 
     /**
@@ -122,6 +132,13 @@ public class LookupView extends FormView {
      */
     @Override
     public void performInitialization(View view, Object model) {
+
+        boolean isInactivatableClass = Inactivatable.class.isAssignableFrom(dataObjectClassName);
+
+        if (autoAddActiveCriteria && isInactivatableClass) {
+            autoAddActiveCriteria();
+        }
+
         initializeGroups();
 
         // since we don't have these as prototypes need to assign ids here
@@ -142,6 +159,35 @@ public class LookupView extends FormView {
         getObjectPathToConcreteClassMapping().put(UifPropertyPaths.LOOKUP_CRITERIA, getDataObjectClassName());
         if (StringUtils.isNotBlank(getDefaultBindingObjectPath())) {
             getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+        }
+    }
+
+    /**
+     * Adds the 'active' property criteria to the criteria fields if the BO is inactivatable
+     */
+    private void autoAddActiveCriteria() {
+        boolean hasActiveCriteria = false;
+
+        for (Component field : getCriteriaFields()) {
+            if (((InputField)field).getPropertyName().equals("active")) {
+                hasActiveCriteria = true;
+            }
+        }
+
+        if (!hasActiveCriteria) {
+            AttributeDefinition attributeDefinition = KRADServiceLocatorWeb.getDataDictionaryService().getAttributeDefinition(
+                    dataObjectClassName.getName(), "active");
+            LookupInputField activeField = new LookupInputField();
+
+            if (attributeDefinition == null) {
+                activeField = (LookupInputField)ComponentFactory.getNewComponentInstance("Uif-LookupActiveInputField");
+            }else{
+                activeField = (LookupInputField)ComponentFactory.getNewComponentInstance("Uif-LookupCriteriaInputField");
+                activeField.setPropertyName("active");
+                activeField.copyFromAttributeDefinition(this, attributeDefinition);
+            }
+
+            getCriteriaFields().add(activeField);
         }
     }
 
@@ -233,7 +279,7 @@ public class LookupView extends FormView {
         for (Component criteriaField : criteriaGroup.getItems()) {
 
             // Set the max length on the controls to allow for wildcards
-            Control control = ((LookupInputField)criteriaField).getControl();
+            Control control = ((InputField)criteriaField).getControl();
             if (control instanceof TextControl) {
                 ((TextControl) control).setMaxLength(null);
             } else if (control instanceof TextAreaControl) {
@@ -679,5 +725,24 @@ public class LookupView extends FormView {
      */
     public void setRangeFieldGroupPrototype(FieldGroup rangeFieldGroupPrototype) {
         this.rangeFieldGroupPrototype = rangeFieldGroupPrototype;
+    }
+
+    /**
+     * Indicates whether the 'active' criteria field must be added automatically for Inactivatable BO's
+     *
+     * @return boolean
+     */
+    public boolean isAutoAddActiveCriteria() {
+        return autoAddActiveCriteria;
+    }
+
+    /**
+     * Setter for the flag that indicates whether the 'active' criteria field must be added automatically for
+     * Inactivatable BO's
+     *
+     * @param autoAddActiveCriteria
+     */
+    public void setAutoAddActiveCriteria(boolean autoAddActiveCriteria) {
+        this.autoAddActiveCriteria = autoAddActiveCriteria;
     }
 }

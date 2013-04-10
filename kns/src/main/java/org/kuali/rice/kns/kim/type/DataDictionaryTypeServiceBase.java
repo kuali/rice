@@ -616,6 +616,9 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 		RemotableAttributeField.Builder field = RemotableAttributeField.Builder.create(typeAttribute.getKimAttribute().getAttributeName());
 		field.setLongLabel(typeAttribute.getKimAttribute().getAttributeLabel());
 
+        //KULRICE-9143 shortLabel must be set for KIM to render attribute
+        field.setShortLabel(typeAttribute.getKimAttribute().getAttributeLabel());
+
         KimAttributeField.Builder definition = KimAttributeField.Builder.create(field, typeAttribute.getKimAttribute().getId());
 
         if(uniqueAttributes!=null && uniqueAttributes.contains(typeAttribute.getKimAttribute().getAttributeName())){

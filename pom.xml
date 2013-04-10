@@ -138,13 +138,13 @@
     <!-- Quartz 1.8.5 appears to cause strange errors in spring on startup,
       Quartz 2.0.x is an impacting api and database-level change -->
     <quartz.version>1.8.4</quartz.version>
-    <selenium-java.version>2.23.0</selenium-java.version>
+    <selenium-java.version>2.31.0</selenium-java.version>
     <xalan.version>2.7.1</xalan.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.4</slf4j.version>
     <soa.model.core.version>1.2.2</soa.model.core.version>
-    <httpclient.version>4.1.2</httpclient.version>
+    <httpclient.version>4.2.3</httpclient.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>3.1.0.RELEASE</spring.version>
     <spring.security.version>3.1.0.RELEASE</spring.security.version>

@@ -233,7 +233,7 @@ public class WebDriverUtil {
             }
             try {
                 ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
-                        .usingChromeDriverExecutable(new File(System.getProperty(WEBDRIVER_CHROME_DRIVER)))
+                        .usingDriverExecutable(new File(System.getProperty(WEBDRIVER_CHROME_DRIVER)))
                         .usingAnyFreePort()
                         .build();
                 return chromeDriverService;

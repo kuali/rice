@@ -20,8 +20,8 @@ import org.junit.Assert;
 /**
  * Abstract base class for JUnit LoginLogout Smoke Tests.
  *
- * @see edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternSTJunitNavIT
- * @see edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternSTJUnitBkMrkIT
+ * @see edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternSTJUnitNavGen
+ * @see edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternSTJUnitBkMrkGen
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UIFComponentValidationRegexPatternSTJUnitBase extends UIFComponentValidationRegexPatternAbstractSmokeTestBase {

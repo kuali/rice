@@ -15,17 +15,24 @@
  */
 package edu.samplu.travel.krad.test;
 
-import edu.samplu.common.WebDriverLegacyITBase;
-import org.junit.Test;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 /**
  * tests that regex validation works as expected on input fields where it is configured
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UIFComponentValidationRegexPatternSTJUnitNavIT extends UIFComponentValidationRegexPatternSTJUnitBase {
-    @Test
-    public void testValidCharacterConstraintNav() throws Exception {
-        testValidCharacterConstraintNav(this);
+public class UIFComponentValidationRegexPatternSTNGBkMrkGen extends UIFComponentValidationRegexPatternSTNGBase {
+    @Override
+    public String getTestUrl() {
+        return BOOKMARK_URL;
+    }
+
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testValidCharacterConstraintBookmark")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testValidCharacterConstraintBookmark() throws Exception {
+        setUp();
+        testValidCharacterConstraintBookmark(this);
     }
 }

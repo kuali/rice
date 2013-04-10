@@ -115,6 +115,8 @@ public class KradSampleAppForm extends UifFormBase {
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
 
+    private List<UITestObject> subList = new ArrayList<UITestObject>();
+
     private String fakeTotal = "123(server value)";
 
     //preset fields
@@ -905,6 +907,20 @@ public class KradSampleAppForm extends UifFormBase {
      */
     public void setTree2(Tree<UITestObject, String> tree2) {
         this.tree2 = tree2;
+    }
+
+    /**
+     * @param subList the subList to set
+     */
+    public void setSubList(List<UITestObject> subList) {
+        this.subList = subList;
+    }
+
+    /**
+     * @return the subList
+     */
+    public List<UITestObject> getSubList() {
+        return subList;
     }
 
     public List<String> getOptionListSelection() {

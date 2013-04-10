@@ -292,7 +292,7 @@ public class UifConstants {
         public static final String GREATER_THAN = "greater_than";
         public static final String LESS_THAN = "less_than";
     }
-
+    
     public static final class JsFunctions {
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String SET_CONFIG_PARM = "setConfigParam";

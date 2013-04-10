@@ -16,10 +16,12 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.VersionHelper;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
@@ -71,6 +73,9 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
 
 import javax.xml.namespace.QName;
 import java.sql.Timestamp;
@@ -350,12 +355,18 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			errorsTemp = Collections.emptyList();
 			mapToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
-            RoleTypeService roleTypeService = getRoleTypeService(kimType);
-            boolean shouldNotValidate = true;
-            if (roleTypeService != null) {
-                shouldNotValidate = roleTypeService.shouldValidateQualifiersForMemberType( MemberType.fromCode(roleMember.getMemberTypeCode()));
-            }
 
+            VersionedService<RoleTypeService> versionedRoleTypeService = getVersionedRoleTypeService(kimType);
+            boolean shouldNotValidate = true;
+            if (versionedRoleTypeService != null) {
+                boolean versionOk = VersionHelper.compareVersion(versionedRoleTypeService.getVersion(),
+                        CoreConstants.Versions.VERSION_2_1_2)!=-1? true:false;
+                if(versionOk) {
+                    shouldNotValidate = versionedRoleTypeService.getService().shouldValidateQualifiersForMemberType( MemberType.fromCode(roleMember.getMemberTypeCode()));
+                } else {
+                    shouldNotValidate = false;
+                }
+            }
             if(!shouldNotValidate){
 				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
 				validationErrors.addAll(attributeValidationHelper.convertErrorsForMappedFields(
@@ -839,6 +850,52 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
             } catch (Exception ex) {
                 return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
             }
+        }
+        return null;
+    }
+
+    private static class VersionedService<T> {
+
+        String version;
+        T service;
+
+        VersionedService(String version, T service) {
+            this.version = version;
+            this.service = service;
+        }
+
+        T getService() {
+            return this.service;
+        }
+
+        String getVersion() {
+            return this.version;
+        }
+
+    }
+
+    protected VersionedService<RoleTypeService> getVersionedRoleTypeService(KimType typeInfo) {
+        String serviceName = typeInfo.getServiceName();
+        if (serviceName != null) {
+            String version = "2.0.0"; // default version since the base services have been available since then
+            RoleTypeService roleTypeService = null;
+            try {
+
+                ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+                Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(serviceName));
+                if (endpoint != null) {
+                    version = endpoint.getServiceConfiguration().getServiceVersion();
+                }
+                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
+                if (service != null && service instanceof RoleTypeService) {
+                    roleTypeService = (RoleTypeService) service;
+                } else {
+                    roleTypeService = (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+                }
+            } catch (Exception ex) {
+                roleTypeService = (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+            }
+            return new VersionedService<RoleTypeService>(version, roleTypeService);
         }
         return null;
     }

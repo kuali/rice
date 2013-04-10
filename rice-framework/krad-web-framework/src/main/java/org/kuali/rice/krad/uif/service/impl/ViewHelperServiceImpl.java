@@ -1064,8 +1064,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Here client side state is initialized along with configuration variables that need exposed to script
      * </p>
      *
-     * @param view view instance that is being built
-     * @param model model containing the client side state map
+     * @param view - view instance that is being built
+     * @param model - model containing the client side state map
      */
     protected String buildClientSideStateScript(View view, Object model) {
         Map<String, Object> clientSideState = ((ViewModel) model).getClientStateForSyncing();
@@ -1153,10 +1153,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Update state of the given component and does final preparation for
      * rendering
      *
-     * @param view view instance the component belongs to
-     * @param component the component instance that should be updated
-     * @param model top level object containing the data
-     * @param parent parent component for the component being finalized
+     * @param view - view instance the component belongs to
+     * @param component - the component instance that should be updated
+     * @param model - top level object containing the data
+     * @param parent - Parent component for the component being finalized
      */
     protected void performComponentFinalize(View view, Component component, Object model, Component parent) {
         if (component == null) {

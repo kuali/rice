@@ -40,9 +40,11 @@ public abstract class AddingNameSpacesAbstractSmokeTestBase extends AdminTmplMth
 
     public void testAddingNamespaceBookmark(Failable failable) throws Exception {
         testAddingNamespace(this);
+        passed();
     }
     public void testAddingNamespaceNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testAddingNamespace(this);
+        passed();
     }
 }

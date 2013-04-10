@@ -21,8 +21,6 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.view.History;
-import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -115,12 +113,6 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         // Set the view object
         incidentReportForm.setView(getViewService().getViewById("Uif-IncidentReportView"));
-
-        // Add a new History entry to avoid errors in the postHandle
-        History history = new History();
-        HistoryEntry entry = new HistoryEntry("", "", "Incident Report", "", "");
-        history.setCurrent(entry);
-        incidentReportForm.setFormHistory(history);
 
         // Set the ajax return type
         incidentReportForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATEVIEW.getKey());

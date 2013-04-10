@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2006-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.DialogManager;
-import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -65,6 +64,12 @@ public class UifFormBase implements ViewModel {
     protected String pageId;
     protected String methodToCall;
     protected String formKey;
+    protected String flowKey;
+
+    @SessionTransient
+    protected HistoryFlow historyFlow;
+    @SessionTransient
+    protected HistoryManager historyManager;
 
     @SessionTransient
     protected String jumpToId;
@@ -76,6 +81,8 @@ public class UifFormBase implements ViewModel {
     protected String formPostUrl;
     protected String controllerMapping;
 
+    @SessionTransient
+    private String requestUrl;
     private Map<String, String> initialRequestParameters;
 
     protected String state;
@@ -113,8 +120,6 @@ public class UifFormBase implements ViewModel {
     protected boolean ajaxRequest;
     @SessionTransient
     protected String ajaxReturnType;
-
-    protected History formHistory;
 
     // dialog fields
     @SessionTransient
@@ -200,7 +205,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewId(java.lang.String)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewId(String)
      */
     @Override
     public void setViewId(String viewId) {
@@ -216,7 +221,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewName(java.lang.String)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewName(String)
      */
     @Override
     public void setViewName(String viewName) {
@@ -248,7 +253,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setPageId(java.lang.String)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setPageId(String)
      */
     @Override
     public void setPageId(String pageId) {
@@ -264,7 +269,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setFormPostUrl(java.lang.String)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setFormPostUrl(String)
      */
     @Override
     public void setFormPostUrl(String formPostUrl) {
@@ -281,22 +286,95 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * The initialRequestParameters represent all the parameters in the query string that were initially passed to this View
+     * The current HistoryFlow for this form
+     *
+     * @return the HistoryFlow
+     */
+    public HistoryFlow getHistoryFlow() {
+        return historyFlow;
+    }
+
+    /**
+     * Set the current HistoryFlow for this form
+     *
+     * @param historyFlow
+     */
+    public void setHistoryFlow(HistoryFlow historyFlow) {
+        this.historyFlow = historyFlow;
+    }
+
+    /**
+     * The current HistoryManager that was pulled from session
+     *
+     * @return the HistoryManager
+     */
+    public HistoryManager getHistoryManager() {
+        return historyManager;
+    }
+
+    /**
+     * Set the current HistoryManager
+     *
+     * @param historyManager
+     */
+    public void setHistoryManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
+
+    /**
+     * The flowKey representing the HistoryFlow this form may be in.  If null or blank, no flow (or path based
+     * breadcrumbs) are being tracked.
+     *
+     * @return the flowKey
+     */
+    public String getFlowKey() {
+        return flowKey;
+    }
+
+    /**
+     * Set the flowKey
+     *
+     * @param flowKey
+     */
+    public void setFlowKey(String flowKey) {
+        this.flowKey = flowKey;
+    }
+
+    /**
+     * The original requestUrl for the View represented by this form
+     *
+     * @return the requestUrl
+     */
+    public String getRequestUrl() {
+        return requestUrl;
+    }
+
+    /**
+     * Set the requestUrl
+     *
+     * @param requestUrl
+     */
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
+    }
+
+    /**
+     * The requestParameters represent all the parameters in the query string that were initially passed to this View
      * by the initial request
      *
-     * @return the initialRequestParameters
+     * @return the requestParameters
      */
     public Map<String, String> getInitialRequestParameters() {
         return initialRequestParameters;
     }
 
     /**
-     * Set the initialRequestParameters
+     * Set the requestParameters
      *
-     * @param initialRequestParameters
+     * @param requestParameters
      */
-    public void setInitialRequestParameters(Map<String, String> initialRequestParameters) {
-        this.initialRequestParameters = initialRequestParameters;
+    public void setInitialRequestParameters(Map<String, String> requestParameters) {
+        this.initialRequestParameters = requestParameters;
     }
 
     public String getReturnLocation() {
@@ -344,7 +422,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewRequestParameters(java.util.Map<java.lang.String,java.lang.String>)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewRequestParameters(java.util.Map<String,String>)
      */
     @Override
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
@@ -360,7 +438,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setReadOnlyFieldsList(java.util.List<java.lang.String>)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setReadOnlyFieldsList(java.util.List<String>)
      */
     @Override
     public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
@@ -376,7 +454,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setNewCollectionLines(java.util.Map<java.lang.String,java.lang.Object>)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setNewCollectionLines(java.util.Map<String,Object>)
      */
     @Override
     public void setNewCollectionLines(Map<String, Object> newCollectionLines) {
@@ -401,7 +479,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setActionParameters(java.util.Map<java.lang.String,java.lang.String>)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setActionParameters(java.util.Map<String,String>)
      */
     @Override
     public void setActionParameters(Map<String, String> actionParameters) {
@@ -469,7 +547,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setSelectedCollectionLines(java.util.Map<java.lang.String,java.util.Set<java.lang.String>>)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setSelectedCollectionLines(java.util.Map<String,java.util.Set<String>>)
      */
     @Override
     public void setSelectedCollectionLines(Map<String, Set<String>> selectedCollectionLines) {
@@ -667,30 +745,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * History parameter representing the History of views that have come before the
-     * viewing of the current view
-     *
-     * <p>
-     * Used for breadcrumb widget generation on the view and also for navigating back
-     * to previous or hub locations
-     * </p>
-     *
-     * @return History instance giving current history
-     */
-    public History getFormHistory() {
-        return formHistory;
-    }
-
-    /**
-     * Setter for the current History object
-     *
-     * @param history the history to set
-     */
-    public void setFormHistory(History history) {
-        this.formHistory = history;
-    }
-
-    /**
      * Indicates whether the view is rendered within a lightbox
      *
      * <p>
@@ -723,7 +777,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setGrowlScript(java.lang.String)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setGrowlScript(String)
      */
     @Override
     public void setGrowlScript(String growlScript) {
@@ -738,7 +792,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see ViewModel#setState(String)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setState(String)
      */
     public void setState(String state) {
         this.state = state;
@@ -753,7 +807,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setLightboxScript(java.lang.String)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setLightboxScript(String)
      */
     @Override
     public void setLightboxScript(String lightboxScript) {
@@ -841,7 +895,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxReturnType(java.lang.String)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxReturnType(String)
      */
     @Override
     public void setAjaxReturnType(String ajaxReturnType) {
@@ -923,7 +977,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setExtensionData(java.util.Map<java.lang.String,java.lang.Object>)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setExtensionData(java.util.Map<String,Object>)
      */
     public void setExtensionData(Map<String, Object> extensionData) {
         this.extensionData = extensionData;

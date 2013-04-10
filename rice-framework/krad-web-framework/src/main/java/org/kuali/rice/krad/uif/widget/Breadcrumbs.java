@@ -19,7 +19,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
-import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 
@@ -39,6 +38,7 @@ public class Breadcrumbs extends WidgetBase {
     private static final long serialVersionUID = -2864287914665842251L;
 
     private boolean displayBreadcrumbsWhenOne;
+    private boolean usePathBasedBreadcrumbs;
 
     public Breadcrumbs() {
 
@@ -77,4 +77,22 @@ public class Breadcrumbs extends WidgetBase {
         this.displayBreadcrumbsWhenOne = displayBreadcrumbsWhenOne;
     }
 
+    /**
+     * If set to true, the breadcrumbs on the View will always be path-based (history backed)
+     *
+     * @return true if using path based breadcrumbs, false otherwise
+     */
+    @BeanTagAttribute(name="usePathBasedBreadcrumbs")
+    public boolean isUsePathBasedBreadcrumbs() {
+        return usePathBasedBreadcrumbs;
+    }
+
+    /**
+     * Set usePathBasedBreadcrumbs to true to use path-based breadcrumbs
+     *
+     * @param usePathBasedBreadcrumbs
+     */
+    public void setUsePathBasedBreadcrumbs(boolean usePathBasedBreadcrumbs) {
+        this.usePathBasedBreadcrumbs = usePathBasedBreadcrumbs;
+    }
 }

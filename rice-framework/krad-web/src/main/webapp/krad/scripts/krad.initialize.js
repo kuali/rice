@@ -579,14 +579,22 @@ function setupPage(validate) {
     //handle page history/url
     if (history.replaceState) {
         //HTML5 history is supported...
+
+        //get formKey
+        var formKeyField = jQuery("#formKey");
+        var queryString = "";
+        if(formKeyField.length && formKeyField.val()){
+            queryString = getHistoryQueryString("formKey", formKeyField.val());
+        }
+
         var urlPageId = getUrlParameter("pageId");
         if (urlPageId && pageId && urlPageId != pageId) {
             //push state if new page
-            history.pushState({pageId: pageId}, null, getHistoryQueryString("pageId", pageId));
+            history.pushState({pageId: pageId}, null, "?" + getHistoryQueryString("pageId", pageId, queryString));
         }
         else {
             //otherwise replace state
-            history.replaceState({pageId: pageId}, null, getHistoryQueryString("pageId", pageId));
+            history.replaceState({pageId: pageId}, null, "?" + getHistoryQueryString("pageId", pageId, queryString));
         }
     }
     else {

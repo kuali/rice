@@ -50,6 +50,9 @@
                 <#-- all forms will be stored in session, this is the conversation key -->
                 <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
 
+                <#-- flow key to maintain a history flow -->
+                <@spring.formHiddenInput id="flowKey" path="KualiForm.flowKey"/>
+
                 <#-- Based on the view setting, form elements will be checked for dirtyness -->
                 <@spring.formHiddenInput id="validateDirty" path="KualiForm.view.applyDirtyCheck"/>
 

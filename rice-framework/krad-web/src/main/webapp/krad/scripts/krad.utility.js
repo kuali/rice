@@ -2120,24 +2120,26 @@ function getUrlParameter(paramName, searchString) {
  * @param appendageValue value to append
  * @return {String} the new query string value to append via history pushState/replaceState
  */
-function getHistoryQueryString(appendageId, appendageValue) {
-    var searchString = window.location.search.substring(1);
+function getHistoryQueryString(appendageId, appendageValue, searchString) {
+    if(searchString == undefined){
+        searchString = window.location.search.substring(1);
+    }
     var i;
     var val;
 
     //if parameters are blank return back current query string
     if (!appendageId || !appendageValue) {
-        return "?" + searchString;
+        return searchString;
     }
 
     //if the query string has nothing, append and return (should never happen in KRAD views in current implementation)
     if (!searchString) {
-        return "?" + appendageId + "=" + appendageValue;
+        return appendageId + "=" + appendageValue;
     }
 
     //if the current query parameters do not contain the id, just append and return
     if (searchString && searchString.indexOf(appendageId) == -1) {
-        return "?" + searchString + "&" + appendageId + "=" + appendageValue;
+        return searchString + "&" + appendageId + "=" + appendageValue;
     }
 
     //id already exists so replace it
@@ -2155,7 +2157,7 @@ function getHistoryQueryString(appendageId, appendageValue) {
             queryString = queryString + "&" + val[0] + "=" + val[1];
         }
         else {
-            queryString = "?" + val[0] + "=" + val[1];
+            queryString = val[0] + "=" + val[1];
         }
     }
 
@@ -2164,7 +2166,7 @@ function getHistoryQueryString(appendageId, appendageValue) {
         queryString = queryString + "&" + appendageId + "=" + appendageValue;
     }
     else {
-        queryString = "?" + appendageId + "=" + appendageValue;
+        queryString = appendageId + "=" + appendageValue;
     }
 
     return queryString;

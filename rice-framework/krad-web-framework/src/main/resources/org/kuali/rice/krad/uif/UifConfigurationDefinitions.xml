@@ -26,12 +26,6 @@
   <bean id="Uif-ComponentBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.component.ComponentBase"
         scope="prototype"/>
 
-  <!-- History -->
-
-  <bean id="Uif-HistoryEntry" parent="Uif-HistoryEntry-parentBean"/>
-  <bean id="Uif-HistoryEntry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.view.HistoryEntry"
-        scope="prototype"/>
-
   <!-- Modifiers -->
 
   <bean id="Uif-CompareFieldCreate-Modifier" parent="Uif-CompareFieldCreate-Modifier-parentBean"/>
@@ -168,7 +162,16 @@
     </property>
   </bean>
 
-  <bean id="Uif-BreadcrumbOptions" class="org.kuali.rice.krad.uif.util.BreadcrumbOptions" scope="prototype"/>
+  <bean id="Uif-PageBreadcrumbOptions" class="org.kuali.rice.krad.uif.util.PageBreadcrumbOptions" scope="prototype">
+      <property name="renderViewBreadcrumb" value="true"/>
+      <property name="renderPrePageBreadcrumbs" value="true"/>
+      <property name="renderPreViewBreadcrumbs" value="true"/>
+      <property name="renderParentLocations" value="true"/>
+    </bean>
+
+
+  <bean id="Uif-BreadcrumbOptions" class="org.kuali.rice.krad.uif.util.BreadcrumbOptions" scope="prototype">
+  </bean>
 
   <bean id="Uif-Url" class="org.kuali.rice.krad.uif.util.UrlInfo" scope="prototype">
     <property name="baseUrl" value="@{#ConfigProperties['krad.url']}"/>

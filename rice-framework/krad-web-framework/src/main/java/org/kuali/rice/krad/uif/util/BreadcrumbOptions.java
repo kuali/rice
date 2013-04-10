@@ -26,8 +26,8 @@ import java.util.List;
  *
  * <p>
  * This class allows
- * for complete override of all breadcrumbs, ability to add breadcrumbs before the view and page breadcrumb items, and
- * various rendering options.  Important note: breadcrumbOptions for preViewBreadcrumbs, prePageBreadcrumbs, and
+ * for complete override of all breadcrumbs, and ability to add breadcrumbs before the view and page breadcrumb items.
+ * Important note: breadcrumbOptions for preViewBreadcrumbs, prePageBreadcrumbs, and
  * breadcrumbOverrides are inherited from the View if not explicitly set from the PageGroup level's breadcrumbOptions
  * (if they contain a value at the view level and the property is null at the page level - default behavior).
  * Explicitly providing an empty list or setting these properties at the PageGroup level will
@@ -39,93 +39,10 @@ public class BreadcrumbOptions implements Serializable {
 
     private static final long serialVersionUID = -6705552809624394000L;
 
-    //render options
-    private boolean renderViewBreadcrumb;
-    private boolean renderPreViewBreadcrumbs;
-    private boolean renderPrePageBreadcrumbs;
-    private boolean renderParentLocations;
-
     //custom breadcrumbs
     private List<BreadcrumbItem> preViewBreadcrumbs;
     private List<BreadcrumbItem> prePageBreadcrumbs;
     private List<BreadcrumbItem> breadcrumbOverrides;
-
-    /**
-     * Whether or not to render the view breadcrumb at this level
-     *
-     * @return true if rendering the view breadcrumb, false otherwise
-     */
-    @BeanTagAttribute(name = "renderViewBreadcrumb")
-    public boolean isRenderViewBreadcrumb() {
-        return renderViewBreadcrumb;
-    }
-
-    /**
-     * Set renderViewBreadcrumb
-     *
-     * @param renderViewBreadcrumb
-     */
-    public void setRenderViewBreadcrumb(boolean renderViewBreadcrumb) {
-        this.renderViewBreadcrumb = renderViewBreadcrumb;
-    }
-
-    /**
-     * If true, render the preViewBreadcrumbs (if any are set), otherwise do not render them
-     *
-     * @return true if rendering preViewBreadcrumbs, false otherwise
-     */
-    @BeanTagAttribute(name = "renderPreViewBreadcrumbs")
-    public boolean isRenderPreViewBreadcrumbs() {
-        return renderPreViewBreadcrumbs;
-    }
-
-    /**
-     * Set renderPreViewBreadcrumbs
-     *
-     * @param renderPreViewBreadcrumbs
-     */
-    public void setRenderPreViewBreadcrumbs(boolean renderPreViewBreadcrumbs) {
-        this.renderPreViewBreadcrumbs = renderPreViewBreadcrumbs;
-    }
-
-    /**
-     * If true, render the prePageBreadcrumbs (if any are set), otherwise do not render them
-     *
-     * @return true if rendering prePageBreadcrumbs, false otherwise
-     */
-    @BeanTagAttribute(name = "renderPrePageBreadcrumbs")
-    public boolean isRenderPrePageBreadcrumbs() {
-        return renderPrePageBreadcrumbs;
-    }
-
-    /**
-     * Set renderPrePageBreadcrumbs
-     *
-     * @param renderPrePageBreadcrumbs
-     */
-    public void setRenderPrePageBreadcrumbs(boolean renderPrePageBreadcrumbs) {
-        this.renderPrePageBreadcrumbs = renderPrePageBreadcrumbs;
-    }
-
-    /**
-     * If true, render the parent location breadcrumbs.  These BreadcrumbItems are automatically generated based on the
-     * view's parentLocation property settings by traversing parent views/pages or based on a history path.
-     *
-     * @return true if rendering the parent location breadcrumbs, false otherwise
-     */
-    @BeanTagAttribute(name = "renderParentLocations")
-    public boolean isRenderParentLocations() {
-        return renderParentLocations;
-    }
-
-    /**
-     * Set renderParentLocations
-     *
-     * @param renderParentLocations
-     */
-    public void setRenderParentLocations(boolean renderParentLocations) {
-        this.renderParentLocations = renderParentLocations;
-    }
 
     /**
      * The preViewBreadcrumbs list represents BreadcrumbItems that will be shown before the View's BreadcrumbItem,

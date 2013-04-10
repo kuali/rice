@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.SessionTransient;
-import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.io.Serializable;
@@ -139,11 +138,6 @@ public class UifFormManager implements Serializable {
      */
     public void removeFormWithHistoryFormsByKey(String formKey) {
         if (sessionForms.containsKey(formKey)) {
-            // Remove forms from breadcrumb history as well
-            for (HistoryEntry historyEntry : sessionForms.get(formKey).getFormHistory().getHistoryEntries()) {
-                removeSessionFormByKey(historyEntry.getFormKey());
-            }
-
             removeSessionFormByKey(formKey);
         }
     }

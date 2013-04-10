@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2006-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,14 +29,14 @@ import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.view.DialogManager;
-import org.kuali.rice.krad.uif.view.History;
-import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.form.HistoryFlow;
+import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.validation.BindingResult;
@@ -89,6 +89,8 @@ public abstract class UifControllerBase {
     public UifFormBase initForm(HttpServletRequest request) {
         UifFormBase requestForm = null;
 
+
+
         // get Uif form manager from session if exists or setup a new one for the session
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         if (uifFormManager == null) {
@@ -108,15 +110,17 @@ public abstract class UifControllerBase {
             uifFormManager.updateFormWithSession(requestForm, formKeyParam);
         }
 
-        // if form exist, remove unused forms from breadcrumb history
-        if (requestForm != null) {
-            UifControllerHelper.removeUnusedBreadcrumbs(uifFormManager, requestForm.getFormKey(), request.getParameter(
-                    UifConstants.UrlParams.LAST_FORM_KEY));
+        String referer = request.getHeader("Referer");
+        //get the initial referer
+        if (StringUtils.isBlank(requestForm.getReturnLocation()) && StringUtils.isNotBlank(referer)){
+            requestForm.setReturnLocation(referer);
         }
 
+        //get initial request params
         if (requestForm != null && requestForm.getInitialRequestParameters() == null) {
             Map<String, String> requestParams = new HashMap<String, String>();
             Enumeration<String> names = request.getParameterNames();
+            Map mappy = request.getParameterMap();
             while (names != null && names.hasMoreElements()) {
                 String name = names.nextElement();
                 requestParams.put(name, request.getParameter(name));
@@ -124,6 +128,18 @@ public abstract class UifControllerBase {
             requestParams.remove("__login_user");
             //requestParams.remove();
             requestForm.setInitialRequestParameters(requestParams);
+        }
+
+        //set the original request url for this view/form
+        requestForm.setRequestUrl(KRADUtils.getFullURL(request));
+
+        Object historyManager = request.getSession().getAttribute("historyManager");
+        String flowKey = request.getParameter("flow");
+
+        //add history manager and current flowKey to the form
+        if (requestForm != null && historyManager != null && historyManager instanceof HistoryManager) {
+            requestForm.setHistoryManager((HistoryManager)historyManager);
+            requestForm.setFlowKey(flowKey);
         }
 
         // sets the request form in the request for later retrieval
@@ -362,26 +378,10 @@ public abstract class UifControllerBase {
      * in the history
      */
     public ModelAndView returnToHistory(UifFormBase form, boolean homeFlag) {
-        // Get the history from the form
-        History hist = form.getFormHistory();
-        List<HistoryEntry> histEntries = hist.getHistoryEntries();
+        String returnUrl = form.getReturnLocation();
 
-        // Get the history page url. Default to the application url if there is no history.
-        String histUrl = null;
-        if (histEntries.isEmpty()) {
-            // TODO: use configuration service here
-            histUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
-        } else {
-            // For home get the first entry, for previous get the last entry.
-            // Remove history up to where page is opened
-            if (homeFlag) {
-                histUrl = histEntries.get(0).getUrl();
-                histEntries.clear();
-            } else {
-                histUrl = histEntries.get(histEntries.size() - 1).getUrl();
-                histEntries.remove(histEntries.size() - 1);
-                hist.setCurrent(null);
-            }
+        if (StringUtils.isBlank(returnUrl) || homeFlag){
+            returnUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
         }
 
         // Add the refresh call
@@ -391,7 +391,7 @@ public abstract class UifControllerBase {
         // clear current form from session
         GlobalVariables.getUifFormManager().removeSessionForm(form);
 
-        return performRedirect(form, histUrl, props);
+        return performRedirect(form, returnUrl, props);
     }
 
     /**
@@ -803,11 +803,6 @@ public abstract class UifControllerBase {
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.REDIRECT.getKey());
 
         if (urlParameters != null) {
-            // On post redirects we need to make sure we are sending the history forward:
-            if (form.getFormHistory() != null) {
-                urlParameters.setProperty(UifConstants.UrlParams.HISTORY,
-                        form.getFormHistory().getHistoryParameterString());
-            }
             // If this is an Light Box call only return the redirectURL view with the URL
             // set this is to avoid automatic redirect when using light boxes
             if (urlParameters.get(UifParameters.LIGHTBOX_CALL) != null && urlParameters.get(UifParameters.LIGHTBOX_CALL)

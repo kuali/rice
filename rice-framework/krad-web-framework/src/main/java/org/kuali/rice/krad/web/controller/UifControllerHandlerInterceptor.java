@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -60,6 +61,11 @@ import javax.servlet.http.HttpServletResponse;
 
         if (session == null) {
             throw new IllegalStateException("the user session has not been established");
+        }
+
+        //add the HistoryManager for storing HistoryFlows to the session
+        if (request.getSession().getAttribute("historyManager") == null){
+            request.getSession().setAttribute("historyManager", new HistoryManager());
         }
 
         GlobalVariables.setUserSession(session);

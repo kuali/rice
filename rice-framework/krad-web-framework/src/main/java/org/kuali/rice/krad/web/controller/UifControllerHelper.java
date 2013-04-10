@@ -23,8 +23,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.view.History;
-import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.service.ViewService;
@@ -107,9 +105,6 @@ public class UifControllerHelper {
             if (component != null) {
                 modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
             }
-
-            // update history for view
-            prepareHistory(request, form);
         }
 
         // expose additional objects to the templates
@@ -119,77 +114,6 @@ public class UifControllerHelper {
 
         Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
         modelAndView.addObject(UifParameters.CONFIG_PROPERTIES, properties);
-    }
-
-    /**
-     * Updates the history object (or constructs a new History) for the view we are getting ready
-     * to render
-     *
-     * @param request - Http request object containing the request parameters
-     * @param form - object containing the view data
-     */
-    public static void prepareHistory(HttpServletRequest request, UifFormBase form) {
-        View view = form.getView();
-
-        // main history/breadcrumb tracking support
-        History history = form.getFormHistory();
-        if (history == null || request.getMethod().equals("GET")) {
-            history = new History();
-
-            processReturnLocationOverride(form);
-
-/*            history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
-            history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());*/
-
-            // passed settings ALWAYS override the defaults
-            if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))) {
-                history.setAppendHomewardPath(Boolean.parseBoolean(request.getParameter(
-                        UifConstants.UrlParams.SHOW_HOME)));
-            }
-
-            // do not append the history for dialog boxes
-            if (form.getDialogManager().getDialogs().size() > 0) {
-                history.setAppendPassedHistory(false);
-            } else if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))) {
-                history.setAppendPassedHistory(Boolean.parseBoolean(request.getParameter(
-                        UifConstants.UrlParams.SHOW_HISTORY)));
-            } else {
-                /*history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());*/
-            }
-
-            history.buildCurrentEntryFromRequest(form, request);
-            history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
-
-            form.setFormHistory(history);
-        }
-    }
-
-    /**
-     * Checks for the return location parameter and overrides the homeward path if necesssary
-     *
-     * @param form form instance that contains the view and return location
-     */
-    protected static void processReturnLocationOverride(UifFormBase form) {
-        View view = form.getView();
-
-        if (form.getReturnLocation() == null) {
-            return;
-        }
-
-/*        List<HistoryEntry> homewardPathList = new ArrayList<HistoryEntry>();
-        if ((view != null) && (view.getBreadcrumbs() != null) &&
-                (view.getBreadcrumbs().getHomewardPathList() != null)) {
-            homewardPathList = view.getBreadcrumbs().getHomewardPathList();
-        }
-
-        HistoryEntry historyEntry = new HistoryEntry("", "", "Home", form.getReturnLocation(), "");
-        if (homewardPathList.isEmpty()) {
-            homewardPathList.add(historyEntry);
-        } else if (StringUtils.equals(homewardPathList.get(0).getTitle(), "Home")) {
-            homewardPathList.set(0, historyEntry);
-        } else {
-            homewardPathList.add(0, historyEntry);
-        }*/
     }
 
     /**
@@ -275,17 +199,6 @@ public class UifControllerHelper {
         UifFormBase previousForm = uifFormManager.getSessionForm(lastFormKey);
         if (previousForm == null) {
             return;
-        }
-
-        boolean cleanUpRemainingForms = false;
-        for (HistoryEntry historyEntry : previousForm.getFormHistory().getHistoryEntries()) {
-            if (cleanUpRemainingForms) {
-                uifFormManager.removeSessionFormByKey(historyEntry.getFormKey());
-            } else {
-                if (StringUtils.equals(formKey, historyEntry.getFormKey())) {
-                    cleanUpRemainingForms = true;
-                }
-            }
         }
 
         uifFormManager.removeSessionFormByKey(lastFormKey);

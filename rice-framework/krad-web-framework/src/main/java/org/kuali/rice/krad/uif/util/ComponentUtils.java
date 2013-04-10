@@ -18,11 +18,10 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
-import org.kuali.rice.krad.uif.container.ContainerBase;
+import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -48,7 +47,6 @@ import java.util.Set;
 public class ComponentUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ComponentUtils.class);
 
-
     public static <T extends Component> T copy(T component) {
         return copy(component, null);
     }
@@ -71,8 +69,7 @@ public class ComponentUtils {
         T copy = null;
         try {
             copy = CloneUtils.deepClone(object);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -88,16 +85,15 @@ public class ComponentUtils {
         Object copyValue = propertyValue;
 
         Class<?> valuePropertyType = propertyValue.getClass();
-        if (propertiesForReferenceCopy.contains(propertyName) || TypeUtils.isSimpleType(valuePropertyType)
-                || TypeUtils.isClassClass(valuePropertyType)) {
+        if (propertiesForReferenceCopy.contains(propertyName) || TypeUtils.isSimpleType(valuePropertyType) || TypeUtils
+                .isClassClass(valuePropertyType)) {
             return copyValue;
         }
 
-        if (Component.class.isAssignableFrom(valuePropertyType)
-                || LayoutManager.class.isAssignableFrom(valuePropertyType)) {
+        if (Component.class.isAssignableFrom(valuePropertyType) || LayoutManager.class.isAssignableFrom(
+                valuePropertyType)) {
             copyValue = copyObject(propertyValue);
-        }
-        else {
+        } else {
             copyValue = ObjectUtils.deepCopy((Serializable) propertyValue);
         }
 
@@ -109,8 +105,7 @@ public class ComponentUtils {
         T copy = null;
         try {
             copy = (T) object.getClass().newInstance();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Unable to create new instance of class: " + object.getClass());
         }
 
@@ -275,8 +270,7 @@ public class ComponentUtils {
         for (Field field : fields) {
             if (field instanceof DataBinding) {
                 prefixBindingPath((DataBinding) field, addBindingPrefix);
-            }
-            else if ((field instanceof FieldGroup) && (((FieldGroup) field).getItems() != null) ) {
+            } else if ((field instanceof FieldGroup) && (((FieldGroup) field).getItems() != null)) {
                 List<Field> groupFields = getComponentsOfTypeDeep(((FieldGroup) field).getItems(), Field.class);
                 prefixBindingPath(groupFields, addBindingPrefix);
             }
@@ -286,15 +280,15 @@ public class ComponentUtils {
     public static void prefixBindingPathNested(Component component, String addBindingPrefix) {
         if (component instanceof DataBinding) {
             if (LOG.isDebugEnabled()) {
-                LOG.info("setting nested binding prefix '"+ addBindingPrefix  +"' on " + component);
+                LOG.info("setting nested binding prefix '" + addBindingPrefix + "' on " + component);
             }
             prefixBindingPath((DataBinding) component, addBindingPrefix);
         }
 
         for (Component nested : component.getComponentsForLifecycle()) {
-           if (nested != null) {
-              prefixBindingPathNested(nested, addBindingPrefix);
-           }
+            if (nested != null) {
+                prefixBindingPathNested(nested, addBindingPrefix);
+            }
         }
     }
 
@@ -333,6 +327,41 @@ public class ComponentUtils {
         for (Component nested : component.getPropertyReplacerComponents()) {
             if (nested != null) {
                 updateIdsWithSuffixNested(nested, idSuffix);
+            }
+        }
+    }
+
+    /**
+     * Clear all ids from a component and its children.  If there are features that depend on a static id of this
+     * component, this call may cause errors.
+     *
+     * @param component the component to clear all ids from
+     */
+    public static void clearIds(Component component) {
+        component.setId(null);
+
+        if (Container.class.isAssignableFrom(component.getClass())) {
+            LayoutManager layoutManager = ((Container) component).getLayoutManager();
+            layoutManager.setId(null);
+        }
+
+        for (Component nested : component.getComponentsForLifecycle()) {
+            if (nested != null) {
+                clearIds(nested);
+            }
+        }
+
+        for (Component nested : component.getPropertyReplacerComponents()) {
+            if (nested != null) {
+               clearIds(nested);
+            }
+        }
+    }
+
+    public static void clearIds(List<? extends Component> components) {
+        for (Component component : components) {
+            if (component != null){
+                clearIds(component);
             }
         }
     }
@@ -387,7 +416,8 @@ public class ComponentUtils {
      * @param contextName a value to be used as a key to retrieve the object
      * @param contextValue the value to be placed in the context
      */
-    public static void pushObjectToContext(List<? extends Component> components, String contextName, Object contextValue) {
+    public static void pushObjectToContext(List<? extends Component> components, String contextName,
+            Object contextValue) {
         for (Component component : components) {
             pushObjectToContext(component, contextName, contextValue);
         }
@@ -441,8 +471,8 @@ public class ComponentUtils {
      * @param lineIndex the line index
      * @param lineSuffix id suffix for components in the line to make them unique
      */
-    public static void updateContextsForLine(List<? extends Component> components, Object collectionLine,
-            int lineIndex, String lineSuffix) {
+    public static void updateContextsForLine(List<? extends Component> components, Object collectionLine, int lineIndex,
+            String lineSuffix) {
         for (Component component : components) {
             updateContextForLine(component, collectionLine, lineIndex, lineSuffix);
         }

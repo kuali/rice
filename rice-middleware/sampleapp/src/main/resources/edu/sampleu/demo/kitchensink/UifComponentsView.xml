@@ -34,6 +34,7 @@
     <property name="parentLocation">
       <bean parent="Uif-RicePortalParentLocation"/>
     </property>
+    <property name="breadcrumbs.usePathBasedBreadcrumbs" value="true"/>
     <property name="stickyHeader" value="true"/>
     <property name="stickyBreadcrumbs" value="true"/>
     <property name="topGroup">

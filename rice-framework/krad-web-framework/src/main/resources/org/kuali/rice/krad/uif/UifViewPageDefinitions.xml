@@ -88,12 +88,7 @@
       <bean parent="Uif-Breadcrumbs"/>
     </property>
     <property name="breadcrumbOptions">
-      <bean parent="Uif-BreadcrumbOptions">
-        <property name="renderViewBreadcrumb" value="true"/>
-        <property name="renderPrePageBreadcrumbs" value="true"/>
-        <property name="renderPreViewBreadcrumbs" value="true"/>
-        <property name="renderParentLocations" value="true"/>
-      </bean>
+      <bean parent="Uif-BreadcrumbOptions"/>
     </property>
     <property name="breadcrumbItem">
       <bean parent="Uif-BreadcrumbItem">
@@ -195,12 +190,7 @@
       <bean parent="Uif-PageValidationMessages"/>
     </property>
     <property name="breadcrumbOptions">
-      <bean parent="Uif-BreadcrumbOptions">
-        <property name="renderViewBreadcrumb" value="true"/>
-        <property name="renderPrePageBreadcrumbs" value="true"/>
-        <property name="renderPreViewBreadcrumbs" value="true"/>
-        <property name="renderParentLocations" value="true"/>
-      </bean>
+      <bean parent="Uif-PageBreadcrumbOptions"/>
     </property>
     <property name="breadcrumbItem">
       <bean parent="Uif-BreadcrumbItem">

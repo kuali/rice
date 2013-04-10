@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2006-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,11 +43,14 @@ import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ParentLocation;
 import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -122,6 +125,7 @@ public class View extends ContainerBase {
     private BreadcrumbOptions breadcrumbOptions;
     private BreadcrumbItem breadcrumbItem;
     private ParentLocation parentLocation;
+    private List<BreadcrumbItem> pathBasedBreadcrumbs;
 
     // Growls support
     private Growls growls;
@@ -190,7 +194,7 @@ public class View extends ContainerBase {
         mergeWithPageItems = true;
         translateCodesOnReadOnlyDisplay = false;
         viewTypeName = ViewType.DEFAULT;
-        viewStatus = UifConstants.ViewStatus.CREATED;
+        viewStatus = ViewStatus.CREATED;
         formClass = UifFormBase.class;
         supportsRequestOverrideOfReadOnlyFields = true;
         persistFormToSession = true;
@@ -218,7 +222,8 @@ public class View extends ContainerBase {
      * the items list</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(View, java.lang.Object)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      Object)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -248,6 +253,8 @@ public class View extends ContainerBase {
                 throw new RuntimeException("For single paged views the page Group must be set.");
             }
         }
+
+        setupBreadcrumbsAndHistory(model);
     }
 
     /**
@@ -277,8 +284,8 @@ public class View extends ContainerBase {
      * up the validator for this view</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performFinalize(View view, Object model, Component parent) {
@@ -323,10 +330,61 @@ public class View extends ContainerBase {
         this.setOnDocumentReadyScript(onReadyScript + "jQuery.extend(jQuery.validator.messages, " +
                 ClientValidationUtils.generateValidatorMessagesOption() + ");");
 
+        finalizeBreadcrumbs(model);
+    }
+
+    /**
+     * Sets up the history and breadcrumb configuration for this View.  Should be called from performInitialization.
+     *
+     * @param model the model
+     */
+    protected void setupBreadcrumbsAndHistory(Object model) {
+        if (model != null && model instanceof UifFormBase) {
+            UifFormBase form = (UifFormBase) model;
+
+            //flow is being tracked if there is a flowKey or the breadcrumbs widget is forcing it
+            boolean usingFlow = StringUtils.isNotBlank(form.getFlowKey()) || (breadcrumbs != null && breadcrumbs
+                    .isUsePathBasedBreadcrumbs());
+
+            //if using flow setup a new HistoryFlow for this view and set into the HistoryManager
+            if (usingFlow && form.getHistoryManager() != null) {
+                HistoryFlow historyFlow = form.getHistoryManager().process(form.getFlowKey(), form.getFormKey(),
+                        form.getRequestUrl());
+                if (historyFlow != null) {
+                    form.setHistoryFlow(historyFlow);
+                    form.setFlowKey(historyFlow.getFlowKey());
+                }
+            }
+
+            breadcrumbs.setUsePathBasedBreadcrumbs(usingFlow);
+
+            //get the pastItems from the flow and set them so they can be picked up by the Breadcrumbs widget
+            if (breadcrumbs != null
+                    && breadcrumbs.isUsePathBasedBreadcrumbs()
+                    && form.getHistoryFlow().getPastItems() != null) {
+                List<BreadcrumbItem> pastItems = form.getHistoryFlow().getPastItems();
+
+                ComponentUtils.clearIds(pastItems);
+                for (BreadcrumbItem item : pastItems) {
+                    this.assignComponentIds(item);
+                }
+                pathBasedBreadcrumbs = pastItems;
+            }
+        }
+
+    }
+
+    /**
+     * Finalize the setup of the BreadcrumbOptions and the BreadcrumbItem for the View.  To be called from the
+     * performFinalize method.
+     *
+     * @param model the model
+     */
+    protected void finalizeBreadcrumbs(Object model) {
         //set breadcrumbItem label same as the header, if not set
         if (StringUtils.isBlank(breadcrumbItem.getLabel()) && this.getHeader() != null && !StringUtils.isBlank(
-                this.getHeader().getHeaderText())) {
-            breadcrumbItem.setLabel(this.getHeader().getHeaderText());
+                this.getHeader().getHeaderText()) && model instanceof UifFormBase) {
+            breadcrumbItem.setLabel(KRADUtils.generateUniqueViewTitle((UifFormBase) model, this));
         }
 
         //if label still blank, don't render
@@ -348,12 +406,16 @@ public class View extends ContainerBase {
             requestParameters.remove("ajaxReturnType");
             requestParameters.remove("ajaxRequest");
 
+            //remove pageId so we can use special handling
+            requestParameters.remove("pageId");
+
             breadcrumbItem.getUrl().setRequestParameters(requestParameters);
         }
 
         //form key handling
-        if (breadcrumbItem.getUrl().getFormKey() == null && model instanceof UifFormBase
-                && ((UifFormBase) model).getFormKey() != null){
+        if (breadcrumbItem.getUrl().getFormKey() == null
+                && model instanceof UifFormBase
+                && ((UifFormBase) model).getFormKey() != null) {
             breadcrumbItem.getUrl().setFormKey(((UifFormBase) model).getFormKey());
         }
 
@@ -363,7 +425,29 @@ public class View extends ContainerBase {
         }
 
         if (breadcrumbItem.getUrl().getViewId() == null) {
-            breadcrumbItem.getUrl().setViewId(view.getId());
+            breadcrumbItem.getUrl().setViewId(this.getId());
+        }
+
+        //explicitly set the page to default for the view breadcrumb when not using path based (path based will pick
+        //up the breadcrumb pageId from the form data automatically)
+        if (breadcrumbItem.getUrl().getPageId() == null && !breadcrumbs.isUsePathBasedBreadcrumbs()) {
+            //set breadcrumb to default to the default page if an explicit page id for view breadcrumb is not set
+            if (this.getEntryPageId() != null) {
+                breadcrumbItem.getUrl().setPageId(this.getEntryPageId());
+            } else if (isSinglePageView() && this.getPage() != null) {
+                //single page
+                breadcrumbItem.getUrl().setPageId(this.getPage().getId());
+            } else if (items.get(0) != null) {
+                //multi page
+                breadcrumbItem.getUrl().setPageId(items.get(0).getId());
+            }
+        }
+
+        //add to breadcrumbItem to current items if it is set to use in path based
+        if (model instanceof UifFormBase
+                && breadcrumbOptions != null
+                && ((UifFormBase) model).getHistoryFlow() != null) {
+            ((UifFormBase) model).getHistoryFlow().setCurrentViewItem(this.getBreadcrumbItem());
         }
 
     }
@@ -1740,7 +1824,7 @@ public class View extends ContainerBase {
 
         // Check to insure the view as not already been set
         if (tracer.getValidationStage() == ValidationTrace.START_UP) {
-            if (getViewStatus().compareTo(UifConstants.ViewStatus.CREATED) != 0) {
+            if (getViewStatus().compareTo(ViewStatus.CREATED) != 0) {
                 String currentValues[] = {"viewStatus = " + getViewStatus()};
                 tracer.createError("ViewStatus should not be set", currentValues);
             }
@@ -1874,6 +1958,15 @@ public class View extends ContainerBase {
      */
     public void setParentLocation(ParentLocation parentLocation) {
         this.parentLocation = parentLocation;
+    }
+
+    /**
+     * The pathBasedBreadcrumbs for this View.  These can only be set by the framework.
+     *
+     * @return the path based breadcrumbs
+     */
+    public List<BreadcrumbItem> getPathBasedBreadcrumbs() {
+        return pathBasedBreadcrumbs;
     }
 
     /**

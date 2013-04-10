@@ -209,8 +209,11 @@ function createLightBoxLink(linkId, options, addAppParms) {
     jQuery(function () {
         var renderedInLightBox = isCalledWithinLightbox();
 
-        // first time content is brought up in lightbox we don't want to show history
-        var showHistory = renderedInLightBox;
+        // first time content is brought up in lightbox we don't want to continue history
+        var flow = 'start';
+        if (renderedInLightBox){
+            flow = jQuery("#flowKey").val();
+        }
 
         // Check if this is called within a light box
         if (!renderedInLightBox) {
@@ -224,9 +227,6 @@ function createLightBoxLink(linkId, options, addAppParms) {
             });
         } else {
             jQuery("#" + linkId).attr('target', '_self');
-
-            // for going to a new view in a lightbox we want to show history
-            showHistory = true;
         }
 
         if (addAppParms) {
@@ -235,14 +235,7 @@ function createLightBoxLink(linkId, options, addAppParms) {
                 var href = jQuery("#" + linkId).attr('href');
                 var anchor = "";
 
-                if (jQuery("#" + linkId).attr('href').indexOf('#') != -1) {
-                    href = jQuery("#" + linkId).attr('href').substring(0, jQuery("#" + linkId).attr('href').indexOf('#'));
-                    anchor = jQuery("#" + linkId).attr('href').substring(jQuery("#" + linkId).attr('href').indexOf('#'));
-                }
-
-                jQuery("#" + linkId).attr('href', href + '&renderedInLightBox=true'
-                        + '&showHome=false' + '&showHistory=' + showHistory
-                        + '&history=' + jQuery('#historyParameterString').val() + anchor);
+                jQuery("#" + linkId).attr('href', href + '&renderedInLightBox=true&flow=' + flow);
             }
         }
     });
@@ -282,8 +275,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                 data['jumpToId'] = componentId;
                 data['actionParameters[renderedInLightBox]'] = 'true';
                 data['actionParameters[lightBoxCall]'] = 'true';
-                data['actionParameters[showHistory]'] = 'false';
-                data['actionParameters[showHome]'] = 'false';
+                data['actionParameters[flowKey]'] = 'start';
                 data['actionParameters[returnByScript]'] = '' + lookupReturnByScript;
 
                 // If this is the top frame, the page is not displayed in the iframeprotlet
@@ -331,8 +323,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
 
                 data['actionParameters[renderedInLightBox]'] = 'true';
                 data['actionParameters[returnTarget]'] = '_self';
-                data['actionParameters[showHistory]'] = 'true';
-                data['actionParameters[showHome]'] = 'false';
+                data['actionParameters[flowKey]'] = jQuery("#flowKey").val();
 
                 nonAjaxSubmitForm(data['methodToCall'], data);
             });
@@ -346,7 +337,12 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
  * @return true if called within a lightbox, false otherwise
  */
 function isCalledWithinLightbox() {
-    return jQuery('#renderedInLightBox').val() == 'true'
+    if (jQuery('#renderedInLightBox').val() == undefined){
+        return false;
+    }
+
+    return jQuery('#renderedInLightBox').val().toUpperCase() == 'TRUE' ||
+            jQuery('#renderedInLightBox').val().toUpperCase() == 'YES';
     // reverting for KULRICE-8346
 //    try {
 //        // For security reasons the browsers will not allow cross server scripts and
@@ -440,7 +436,7 @@ function setMultiValueReturnTarget() {
  */
 function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
     var parameterPairs = paramMap.split(",");
-    var queryString = "&showHome=false";
+    var queryString = "";
 
     for (i in parameterPairs) {
         var parameters = parameterPairs[i].split(":");
@@ -459,16 +455,16 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
             // Perform cleanup when lightbox is closed
             lightBoxOptions['beforeClose'] = cleanupClosedLightboxForms;
 
-            queryString = queryString + "&showHistory=false&renderedInLightBox=true";
+            queryString = queryString + "&flow=start&renderedInLightBox=true";
             lightBoxOptions['href'] = url + queryString;
             getContext().fancybox(lightBoxOptions);
         } else {
             // If this is already in a lightbox just open in current lightbox
-            queryString = queryString + "&showHistory=true&renderedInLightBox=true";
+            queryString = queryString + "&flow=" + jQuery("#flowKey").val() + "&renderedInLightBox=true";
             window.open(url + queryString, "_self");
         }
     } else {
-        queryString = queryString + "&showHistory=false";
+        queryString = queryString;
         window.open(url + queryString, "_blank", "width=640, height=600, scrollbars=yes");
     }
 }

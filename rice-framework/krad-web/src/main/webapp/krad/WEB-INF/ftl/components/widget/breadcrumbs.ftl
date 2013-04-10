@@ -21,50 +21,55 @@
     <#local options=page.breadcrumbOptions/>
 
 <ol ${krad.attrBuild(widget)} role="navigation">
-    <#if KualiForm.view.parentLocation?has_content &&
-    KualiForm.view.parentLocation.resolvedBreadcrumbItems?has_content &&
-    options.renderParentLocations>
-    <#-- process view parent locations -->
+    <#-- process parent locations (if set) -->
+    <#if !widget.usePathBasedBreadcrumbs && KualiForm.view.parentLocation?has_content &&
+        KualiForm.view.parentLocation.resolvedBreadcrumbItems?has_content && options.renderParentLocations>
         <#list KualiForm.view.parentLocation.resolvedBreadcrumbItems as crumb>
             <@krad.template component=crumb breadcrumbsWidget=widget/>
         </#list>
     </#if>
 
-
-<#if options.breadcrumbOverrides?has_content>
-<#-- process only the overrides, if set -->
-    <#list options.breadcrumbOverrides as crumb>
-        <@krad.template component=crumb breadcrumbsWidget=widget/>
-    </#list>
-<#else>
-<#-- preView Breadcrumbs -->
-    <#if options.renderPreViewBreadcrumbs && options.preViewBreadcrumbs?has_content>
-        <#list options.preViewBreadcrumbs as crumb>
+    <#-- process path based breadcrumbs (if set)-->
+    <#if widget.usePathBasedBreadcrumbs && KualiForm.view.pathBasedBreadcrumbs?has_content>
+        <#list KualiForm.view.pathBasedBreadcrumbs as crumb>
             <@krad.template component=crumb breadcrumbsWidget=widget/>
         </#list>
     </#if>
 
-<#-- View Breadcrumb -->
-    <#if options.renderViewBreadcrumb && KualiForm.view.breadcrumbItem?has_content>
-        <@krad.template component=KualiForm.view.breadcrumbItem breadcrumbsWidget=widget/>
-    </#if>
-
-<#-- prePage Breadcrumbs -->
-    <#if options.renderPrePageBreadcrumbs && options.prePageBreadcrumbs?has_content>
-        <#list options.prePageBreadcrumbs as crumb>
+    <#if options.breadcrumbOverrides?has_content>
+    <#-- process only the breadcrumb overrides (if set) -->
+        <#list options.breadcrumbOverrides as crumb>
             <@krad.template component=crumb breadcrumbsWidget=widget/>
         </#list>
-    </#if>
+    <#else>
+    <#-- preView Breadcrumbs -->
+        <#if options.renderPreViewBreadcrumbs && options.preViewBreadcrumbs?has_content>
+            <#list options.preViewBreadcrumbs as crumb>
+                <@krad.template component=crumb breadcrumbsWidget=widget/>
+            </#list>
+        </#if>
 
-<#-- Page Breadcrumb -->
-    <#if page.breadcrumbItem?has_content>
-        <@krad.template component=page.breadcrumbItem breadcrumbsWidget=widget/>
+    <#-- View Breadcrumb -->
+        <#if options.renderViewBreadcrumb && KualiForm.view.breadcrumbItem?has_content>
+            <@krad.template component=KualiForm.view.breadcrumbItem breadcrumbsWidget=widget/>
+        </#if>
+
+    <#-- prePage Breadcrumbs -->
+        <#if options.renderPrePageBreadcrumbs && options.prePageBreadcrumbs?has_content>
+            <#list options.prePageBreadcrumbs as crumb>
+                <@krad.template component=crumb breadcrumbsWidget=widget/>
+            </#list>
+        </#if>
+
+    <#-- Page Breadcrumb -->
+        <#if page.breadcrumbItem?has_content>
+            <@krad.template component=page.breadcrumbItem breadcrumbsWidget=widget/>
+        </#if>
     </#if>
-</#if>
 
 </ol>
 
-    <@krad.script value="setupBreadcrumbs(${widget.displayBreadcrumbsWhenOne?string});" />
+<@krad.script value="setupBreadcrumbs(${widget.displayBreadcrumbsWhenOne?string});" />
 
 </#macro>
 

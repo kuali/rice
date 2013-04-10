@@ -16,20 +16,25 @@
 package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.Truth;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.web.format.BooleanFormatter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
-import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -525,9 +530,9 @@ public final class KRADUtils {
             if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName)) {
                 try {
-                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                        propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
-                                EncryptionService.ENCRYPTION_POST_PREFIX;
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue)
+                                + EncryptionService.ENCRYPTION_POST_PREFIX;
                     }
                 } catch (GeneralSecurityException e) {
                     throw new RuntimeException("Exception while trying to encrypt value for key/value map.", e);
@@ -701,24 +706,114 @@ public final class KRADUtils {
      *
      * @param requestParameters the request parameters to use in the string
      * @return a request parameter string starting with "?" with "&" separators, or blank if the mapped passed in is
-     * blank
+     *         blank
      */
-    public static String getRequestStringFromMap (Map<String,String> requestParameters){
+    public static String getRequestStringFromMap(Map<String, String> requestParameters) {
         String requestString = "";
 
-        if(requestParameters.isEmpty()){
+        if (requestParameters.isEmpty()) {
             return requestString;
         }
 
-        for(String key: requestParameters.keySet()){
-            if(StringUtils.isNotBlank(requestString)){
+        for (String key : requestParameters.keySet()) {
+            if (StringUtils.isNotBlank(requestString)) {
                 requestString = requestString + "&" + key + "=" + requestParameters.get(key);
-            }
-            else{
+            } else {
                 requestString = key + "=" + requestParameters.get(key);
             }
         }
 
         return "?" + requestString;
+    }
+
+    /**
+     * Get the full url for a request (requestURL + queryString)
+     *
+     * @param request the request
+     * @return the fullUrl
+     */
+    public static String getFullURL(HttpServletRequest request) {
+        if (request == null) {
+            return null;
+        }
+
+        StringBuffer requestURL = request.getRequestURL();
+        String queryString = request.getQueryString();
+
+        if (queryString == null) {
+            return requestURL.toString();
+        } else {
+            return requestURL.append('?').append(queryString).toString();
+        }
+    }
+
+    /**
+     * Attempts to generate a unique view title by combining the View's headerText with the title attribute for the
+     * dataObjectClass found through the DataObjectMetaDataService.  If the title attribute cannot be found, just the
+     * headerText is returned.
+     *
+     * @param form the form
+     * @param view the view
+     * @return the headerText with the title attribute in paranthesis or just the headerText if it title attribute
+     * cannot be determined
+     */
+    public static String generateUniqueViewTitle(UifFormBase form, View view) {
+        String title = view.getHeader().getHeaderText();
+
+        String viewLabelPropertyName = "";
+
+        Class<?> dataObjectClass;
+        if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
+            dataObjectClass = ObjectPropertyUtils.getPropertyType(form, view.getDefaultBindingObjectPath());
+        } else {
+            dataObjectClass = view.getFormClass();
+        }
+
+        DataObjectMetaDataService mds = KRADServiceLocatorWeb.getDataObjectMetaDataService();
+        if (dataObjectClass != null) {
+            viewLabelPropertyName = mds.getTitleAttribute(dataObjectClass);
+        }
+
+        String viewLabelPropertyPath = "";
+        if (StringUtils.isNotBlank(viewLabelPropertyName)) {
+            // adjust binding prefix
+            if (!viewLabelPropertyName.startsWith(UifConstants.NO_BIND_ADJUST_PREFIX)) {
+                if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
+                    viewLabelPropertyPath = view.getDefaultBindingObjectPath() + "." + viewLabelPropertyName;
+                }
+            } else {
+                viewLabelPropertyPath = StringUtils.removeStart(viewLabelPropertyName,
+                        UifConstants.NO_BIND_ADJUST_PREFIX);
+            }
+        } else {
+            // attempt to get title attribute
+            if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
+                dataObjectClass = ViewModelUtils.getObjectClassForMetadata(view, form,
+                        view.getDefaultBindingObjectPath());
+            } else {
+                dataObjectClass = view.getFormClass();
+            }
+
+            if (dataObjectClass != null) {
+                String titleAttribute = mds.getTitleAttribute(dataObjectClass);
+                if (StringUtils.isNotBlank(titleAttribute)) {
+                    viewLabelPropertyPath = view.getDefaultBindingObjectPath() + "." + titleAttribute;
+                }
+            }
+        }
+
+        Object viewLabelPropertyValue = null;
+        if (StringUtils.isNotBlank(viewLabelPropertyPath) && ObjectPropertyUtils.isReadableProperty(form,
+                viewLabelPropertyPath)) {
+            viewLabelPropertyValue = ObjectPropertyUtils.getPropertyValue(form, viewLabelPropertyPath);
+        }
+
+        String titleAppend = "";
+        if (viewLabelPropertyValue != null && StringUtils.isNotBlank(viewLabelPropertyValue.toString()) && StringUtils
+                .isNotBlank(title)) {
+            return title + " (" + viewLabelPropertyValue.toString() + ")";
+        } else {
+            return title;
+        }
     }
 }

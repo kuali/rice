@@ -1022,14 +1022,6 @@ Layout manager that organizes its components in a table based grid
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="history-bean" type="history-bean-type">
-    <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.view.History" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.view.History
-
-History class used to keep track of views visited so they can be displayed in the ui
- as breadcrumbs - both as homeward path and history path interpretations]]></xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
   <xsd:element name="dataTable-bean" type="dataTable-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.element.DataTable" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.element.DataTable
@@ -4991,16 +4983,6 @@ Layout manager that organizes components in a single row (horizontal) or
  vertical orientation, the span style is set to block. Additional styling can
  be set for the items by using the itemSpanStyle property.
  ]]></xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="historyEntry-bean" type="historyEntry-bean-type">
-    <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.view.HistoryEntry" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.view.HistoryEntry
-
-A simple object that keeps track of various HistoryInformation
-
- TODO a variety of these settings are not used in the current implementation of breadcrumbs
- and history, they may be removed later if they prove unuseful in future changes]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="prerequisiteConstraint-bean" type="prerequisiteConstraint-bean-type">

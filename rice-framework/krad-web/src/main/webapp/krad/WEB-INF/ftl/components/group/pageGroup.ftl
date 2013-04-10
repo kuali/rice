@@ -42,7 +42,6 @@
 <!-- PAGE RELATED VARS -->
     <#if KualiForm.view.renderForm>
         <@spring.formHiddenInput id="pageId" path="KualiForm.view.currentPageId"/>
-        <@spring.formHiddenInput id="historyParameterString" path="KualiForm.formHistory.historyParameterString"/>
 
     </#if>
 

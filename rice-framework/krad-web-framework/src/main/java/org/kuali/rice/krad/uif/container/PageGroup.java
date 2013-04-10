@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2006-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
+import org.kuali.rice.krad.uif.util.PageBreadcrumbOptions;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -45,7 +46,7 @@ public class PageGroup extends Group {
 
     private boolean autoFocus = false;
 
-    private BreadcrumbOptions breadcrumbOptions;
+    private PageBreadcrumbOptions breadcrumbOptions;
     private BreadcrumbItem breadcrumbItem;
     private boolean stickyFooter;
 
@@ -59,6 +60,44 @@ public class PageGroup extends Group {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
+        setupBreadcrumbs(view, model);
+    }
+
+    /**
+     * Perform finalize here adds to its document ready script the
+     * setupValidator js function for setting up the validator for this view.  Also setup various breadcrumb related
+     * settings for the page.
+     *
+     * @see ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        this.addDataAttribute("type", "Page");
+
+        String prefixScript = "";
+        if (this.getOnDocumentReadyScript() != null) {
+            prefixScript = this.getOnDocumentReadyScript();
+        }
+
+        if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true);");
+        } else {
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
+        }
+
+        finalizeBreadcrumbs(view, model);
+    }
+
+    /**
+     * Setup the BreadcrumbOptions and BreadcrumbItem for a PageGroup.  To be called from performInitialization.
+     *
+     * @param view the page's View
+     * @param model the model
+     */
+    protected void setupBreadcrumbs(View view, Object model) {
         BreadcrumbOptions viewBreadcrumbOptions = view.getBreadcrumbOptions();
 
         //inherit prePageBreadcrumbs, preViewBreadcrumbs, and overrides from the view if not set
@@ -82,30 +121,13 @@ public class PageGroup extends Group {
     }
 
     /**
-     * Perform finalize here adds to its document ready script the
-     * setupValidator js function for setting up the validator for this view.  Also setup various breadcrumb related
-     * settings for the page.
+     * Finalize the setup of the BreadcrumbOptions and the BreadcrumbItem for the PageGroup.  To be called from the
+     * performFinalize method.
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @param view the page's View
+     * @param model the model
      */
-    @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
-
-        this.addDataAttribute("type", "Page");
-
-        String prefixScript = "";
-        if (this.getOnDocumentReadyScript() != null) {
-            prefixScript = this.getOnDocumentReadyScript();
-        }
-
-        if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
-            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true);");
-        } else {
-            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
-        }
-
+    protected void finalizeBreadcrumbs(View view, Object model) {
         //set breadcrumbItem label same as the header, if not set
         if (StringUtils.isBlank(breadcrumbItem.getLabel()) && this.getHeader() != null && StringUtils.isNotBlank(
                 this.getHeader().getHeaderText())) {
@@ -131,16 +153,20 @@ public class PageGroup extends Group {
             requestParameters.remove("ajaxReturnType");
             requestParameters.remove("ajaxRequest");
 
+            //remove pageId because this should be set by the BreadcrumbItem setting
+            requestParameters.remove("pageId");
+
             breadcrumbItem.getUrl().setRequestParameters(requestParameters);
         }
 
         //form key handling
-        if (breadcrumbItem.getUrl().getFormKey() == null && model instanceof UifFormBase
-                && ((UifFormBase) model).getFormKey() != null){
+        if (breadcrumbItem.getUrl().getFormKey() == null
+                && model instanceof UifFormBase
+                && ((UifFormBase) model).getFormKey() != null) {
             breadcrumbItem.getUrl().setFormKey(((UifFormBase) model).getFormKey());
         }
 
-        //automatically set breadcrumbItem UifUrl properties if not set
+        //automatically set breadcrumbItem UifUrl properties below, if not set
         if (breadcrumbItem.getUrl().getControllerMapping() == null && model instanceof UifFormBase) {
             breadcrumbItem.getUrl().setControllerMapping(((UifFormBase) model).getControllerMapping());
         }
@@ -220,8 +246,8 @@ public class PageGroup extends Group {
      *
      * @return the breadcrumbOptions
      */
-    @BeanTagAttribute(name = "breadcrumbOptions", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BreadcrumbOptions getBreadcrumbOptions() {
+    @BeanTagAttribute(name = "breadcrumbOptions", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public PageBreadcrumbOptions getBreadcrumbOptions() {
         return breadcrumbOptions;
     }
 
@@ -230,7 +256,7 @@ public class PageGroup extends Group {
      *
      * @param breadcrumbOptions
      */
-    public void setBreadcrumbOptions(BreadcrumbOptions breadcrumbOptions) {
+    public void setBreadcrumbOptions(PageBreadcrumbOptions breadcrumbOptions) {
         this.breadcrumbOptions = breadcrumbOptions;
     }
 
@@ -246,7 +272,7 @@ public class PageGroup extends Group {
      *
      * @return the breadcrumbItem for this page
      */
-    @BeanTagAttribute(name = "breadcrumbItem", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "breadcrumbItem", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BreadcrumbItem getBreadcrumbItem() {
         return breadcrumbItem;
     }
@@ -277,7 +303,7 @@ public class PageGroup extends Group {
      */
     public void setStickyFooter(boolean stickyFooter) {
         this.stickyFooter = stickyFooter;
-        if(this.getFooter() != null){
+        if (this.getFooter() != null) {
             this.getFooter().addDataAttribute("stickyFooter", Boolean.toString(stickyFooter));
         }
     }

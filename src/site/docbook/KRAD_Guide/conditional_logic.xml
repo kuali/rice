@@ -270,7 +270,7 @@
                                 <listitem>
                                 <para>boolean #empty(Object value) – Used to check whether a given
                                     value is empty (null or empty string) (eg
-                                    '@{!#empty(field1)}')</para>
+                                    '@{!empty(field1)}')</para>
                             </listitem>
                                 <listitem>
                                 <para>String #getName(Class&lt;?&gt; clazz) – Returns the name for a
@@ -287,8 +287,8 @@
                                     parameter as a Boolean</para>
                             </listitem>
                                 <listitem>
-                                <para>boolean #hasPerm(String namespaceCode, String permissionName)
-                                    – Checks whether the current user has the given KIM
+                                <para>boolean hasPerm(String namespaceCode, String permissionName) –
+                                    Checks whether the current user has the given KIM
                                     permission</para>
                             </listitem>
                                 <listitem>

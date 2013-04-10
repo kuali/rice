@@ -983,11 +983,13 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         if (documentType != null) {
             docTypeId = documentType.getId();
         }
+        if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
+            return true;
+        }
         List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
-        return (( KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
-                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
-                (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
+                principalId, getDocTypeName(), routeNodeInstances, documentStatus);
     }
 	
 	public boolean isSuperUserApproveDocumentAuthorized() {
@@ -998,11 +1000,13 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         if (documentType != null) {
             docTypeId = documentType.getId();
         }
+        if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
+            return true;
+        }
 	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
-        return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
-                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
-                (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
+                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus);
 	}
 	
 	public boolean isSuperUserDisapproveDocumentAuthorized() {
@@ -1013,11 +1017,13 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         if (documentType != null) {
             docTypeId = documentType.getId();
         }
+        if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
+            return true;
+        }
 	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
-        return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument(
-            principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
-            (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument(
+            principalId, this.getDocTypeName(), routeNodeInstances, documentStatus);
    	}
 
     public boolean isSuperUserAuthorized() {
@@ -1032,6 +1038,9 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             docTypeId = documentType.getId();
         }
         String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
+            return true;
+        }
         List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(
                 docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
@@ -1040,8 +1049,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
                 (KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
                     principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
                 (KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument (
-                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
-                (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
+                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus))) ;
     }
 	
     public boolean isStateAllowsApproveOrDisapprove() {

@@ -2851,51 +2851,51 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertFalse(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
     }
 
-    protected void testInquiry() throws Exception {
-        selectFrameIframePortlet();
-        waitAndTypeByName("lookupCriteria[number]", "a1");
-        waitAndClickByXpath("//*[@alt='Direct Inquiry']");
-        selectTopFrame();
-        Thread.sleep(5000);
-        WebElement iframe1 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
-        driver.switchTo().frame(iframe1);
-        SeleneseTestBase.assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
-        assertElementPresentByLinkText("a1");
-        waitAndClickByXpath("//button[@id='u16']"); // close
-        selectFrameIframePortlet();
-        waitAndClickByXpath("//button[contains(text(),'Clear Values')]");
-
-        //        -----------------------------Code will not work as page has freemarker exceptions------------------------
-        //Thread.sleep(2000);
-        //waitAndClickByXpath("//*[@alt='Direct Inquiry']");
-        //Alert a1 = driver.switchTo().alert();
-        //assertEquals("Please enter a value in the appropriate field.", a1.getText());
-        //a1.accept();
-        //switchToWindow("null");
-        //selectFrame("iframeportlet");
-
-        //No Direct Inquiry Option for Fiscal Officer.
-        //waitAndTypeByName("lookupCriteria[foId]", "1");
-        //waitAndClickByXpath("//*[@id='u229']");
-        //selectTopFrame();
-        //Thread.sleep(5000);
-        //WebElement iframe2 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
-        //driver.switchTo().frame(iframe2);
-        //assertEquals("Fiscal Officer Lookup", getTextByXpath("//h1/span").trim());
-        //assertEquals("1", getAttributeByName("lookupCriteria[id]", "value"));
-        //waitAndClickByXpath("//div[contains(button, 'Search')]/button[3]");
-        //selectFrame("iframeportlet");
-        //selectOptionByName("lookupCriteria[extension.accountTypeCode]", "CAT");
-        //waitAndClickByXpath("//fieldset[@id='u232_fieldset']/input[@alt='Search Field']");
-        //selectTopFrame();
-        //Thread.sleep(5000);
-        //WebElement iframe3 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
-        //driver.switchTo().frame(iframe3);
-        //assertEquals("Travel Account Type Lookup", getTextByXpath("//h1/span").trim());
-        //assertEquals("CAT", getAttributeByName("lookupCriteria[accountTypeCode]", "value"));
-        //waitAndClickByXpath("//div[contains(button, 'Search')]/button[3]");
-        //selectFrame("iframeportlet");
-    }
+//    protected void testInquiry() throws Exception {
+//        selectFrameIframePortlet();
+//        waitAndTypeByName("lookupCriteria[number]", "a1");
+//        waitAndClickByXpath("//*[@alt='Direct Inquiry']");
+//        selectTopFrame();
+//        Thread.sleep(5000);
+//        WebElement iframe1 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
+//        driver.switchTo().frame(iframe1);
+//        SeleneseTestBase.assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
+//        assertElementPresentByLinkText("a1");
+//        waitAndClickByXpath("//button[@id='u16']"); // close
+//        selectFrameIframePortlet();
+//        waitAndClickByXpath("//button[contains(text(),'Clear Values')]");
+//
+//        //        -----------------------------Code will not work as page has freemarker exceptions------------------------
+//        //Thread.sleep(2000);
+//        //waitAndClickByXpath("//*[@alt='Direct Inquiry']");
+//        //Alert a1 = driver.switchTo().alert();
+//        //assertEquals("Please enter a value in the appropriate field.", a1.getText());
+//        //a1.accept();
+//        //switchToWindow("null");
+//        //selectFrame("iframeportlet");
+//
+//        //No Direct Inquiry Option for Fiscal Officer.
+//        //waitAndTypeByName("lookupCriteria[foId]", "1");
+//        //waitAndClickByXpath("//*[@id='u229']");
+//        //selectTopFrame();
+//        //Thread.sleep(5000);
+//        //WebElement iframe2 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
+//        //driver.switchTo().frame(iframe2);
+//        //assertEquals("Fiscal Officer Lookup", getTextByXpath("//h1/span").trim());
+//        //assertEquals("1", getAttributeByName("lookupCriteria[id]", "value"));
+//        //waitAndClickByXpath("//div[contains(button, 'Search')]/button[3]");
+//        //selectFrame("iframeportlet");
+//        //selectOptionByName("lookupCriteria[extension.accountTypeCode]", "CAT");
+//        //waitAndClickByXpath("//fieldset[@id='u232_fieldset']/input[@alt='Search Field']");
+//        //selectTopFrame();
+//        //Thread.sleep(5000);
+//        //WebElement iframe3 = driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
+//        //driver.switchTo().frame(iframe3);
+//        //assertEquals("Travel Account Type Lookup", getTextByXpath("//h1/span").trim());
+//        //assertEquals("CAT", getAttributeByName("lookupCriteria[accountTypeCode]", "value"));
+//        //waitAndClickByXpath("//div[contains(button, 'Search')]/button[3]");
+//        //selectFrame("iframeportlet");
+//    }
 
     protected void testCategoryLookUp() throws Exception {
         waitForPageToLoad();

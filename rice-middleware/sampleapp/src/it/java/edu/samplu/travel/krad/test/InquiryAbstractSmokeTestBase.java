@@ -19,8 +19,6 @@ import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
-import java.util.List;
-
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -35,6 +33,13 @@ import com.thoughtworks.selenium.SeleneseTestBase;
  */
 public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
+    /**
+     * ITUtil.PORTAL
+     + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
+     + ITUtil.getBaseUrlString()
+     + "/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation="
+     + ITUtil.PORTAL_URL + "&hideReturnLink=true&showMaintenanceLinks=true"
+     */
     public static final String BOOKMARK_URL = ITUtil.PORTAL
             + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
             + ITUtil.getBaseUrlString()
@@ -42,7 +47,7 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
             + ITUtil.PORTAL_URL + "&hideReturnLink=true&showMaintenanceLinks=true";
 
     /**
-     * //*[contains(button,"earch")]/button
+     * //*[contains(button,"Search")]/button
      */
     public static final String SEARCH_BUTTON_XPATH ="//div[contains(button, 'Search')]/button[3]";
     
@@ -67,7 +72,7 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
     }
 
     protected void navigation() throws Exception {
-        waitAndClickByLinkText("KRAD");
+        waitAndClickKRAD();
         //waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);
         waitAndClickByXpath("(//a[contains(text(),'Travel Account Lookup')])[3]");
     }
@@ -105,7 +110,7 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
         Assert.assertEquals("Please enter a value in the appropriate field.", a1.getText());
         a1.accept();
         switchToWindow("null");
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
 
         //No Direct Inquiry Option for Fiscal Officer.
         waitAndTypeByName(CRITERIA_NAME+"[foId]", "1");
@@ -117,7 +122,7 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
         Assert.assertEquals("Fiscal Officer Lookup", getTextByXpath("//h1/span").trim());
         Assert.assertEquals("1", getAttributeByName(CRITERIA_NAME+"[id]", "value"));
         waitAndClickByXpath(SEARCH_BUTTON_XPATH);
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
         selectOptionByName(CRITERIA_NAME+"[extension.accountTypeCode]", "CAT");
         waitAndClickByXpath("//fieldset[@id='u232_fieldset']/input[@alt='Search Field']");
         selectTopFrame();
@@ -127,6 +132,6 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
         Assert.assertEquals("Travel Account Type Lookup", getTextByXpath("//h1/span").trim());
         Assert.assertEquals("CAT", getAttributeByName(CRITERIA_NAME+"[accountTypeCode]", "value"));
         waitAndClickByXpath(SEARCH_BUTTON_XPATH);
-        selectFrame("iframeportlet");
+        selectFrameIframePortlet();
     }
 }

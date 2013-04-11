@@ -335,17 +335,58 @@
             <para>(add information here)</para>
         </section> -->
     <section>
+        <title>Example Rule</title>
+        <para>Previously if a newly hired employee met a set of criteria, they would need to have an 
+            eVerify check ran in addition to the standard I-9 process. The initial requirement stated that
+            if the original hire date of an employee is greater that August 1, 2006, the grant is of a 
+            Government type, the grant amount is greater than $5,000, the grant is longer than 2 months, 
+            and the employee has not previously completed an eVerify check then their hire document needs 
+            to be routed to the special HR eVerify workgroup.</para>
+        <para>...or put another way</para>
+        <para><code>
+            IF hr.hire_date > "08/01/2006) and
+            cg.grant_type = "GOV" and
+            cg.grant_amount > "$5,000" and
+            cg.grant_duration > 60 and
+            hr.eVerify_comp = "N"
+            THEN ...
+        </code></para>
+    </section>
+    <section>
         <title>KRMS Terms and Concepts</title>
         <itemizedlist>
-            <listitem><para><emphasis role="bold">Agenda</emphasis> - a collection of rules in a defined plan.</para></listitem>
+            <listitem><para><emphasis role="bold">Agenda</emphasis> - a collection of rules in a defined plan.</para>
+                <para>KRMS agendas support conditional logic, e.g. 
+                    <itemizedlist>
+                        <listitem>
+                            <para>rule 1: is initiator admin?</para>
+                            <itemizedlist>
+                                <listitem>
+                                    <para>When FALSE:</para>
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>rule 2: initiator has special
+                                                permission?</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>rule 3: exceeds dollar amount
+                                                threshold?</para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </listitem>
+                            </itemizedlist>
+                        </listitem>
+                    </itemizedlist>
+                </para></listitem>
             <listitem><para><emphasis role="bold">Rule</emphasis> - the logical expression in an Agenda. It consists of
-                two parts, a proposition that returns a true of false value and an action or
+                two parts, a proposition (condition or statement) that returns a true of false value, and an action or
                 set of actions. The entire example presented above is a rule.</para></listitem>
             <listitem><para><emphasis role="bold">Proposition</emphasis> - the logic that makes up a rule. A proposition
                 is a single expression of logic that returns true or false. Propositions can
                 be compounded, created using AND, OR, or both to create more complex logic.
                 The entire IF statement in the example above comprises a compound
-                proposition.</para></listitem>
+                propositio
+                </para></listitem>
             <listitem><para><emphasis role="bold">Action</emphasis> - the steps to perform in the event that the rule,
                 after being evaluated against the propositions, returns TRUE. In the example
                 stated above this would involve routing the document to the HR eVerify
@@ -365,6 +406,19 @@
             <listitem><para><emphasis role="bold">Term</emphasis> - the definition of data that is evaluated in a
                 proposition. hr.hire_date, cg.grant_type, etc. are examples of Terms in the
                 working example.</para></listitem>
+            <listitem><para><emphasis role="bold">Term Resolver</emphasis> - the term specification that is evaluated in a
+                proposition. Each term (for example, hr.hire_date, cg.grant_type, etc.) is given a specification which includes:</para>
+                <para><simplelist><member>Namespace</member><member>Name</member>
+                    <member>Data Type</member><member>Context Id</member><member>Context Namespace</member>
+                    <member>Category Id</member><member>Category Namespace</member>
+            </simplelist></para><para>This information is maintained and viewed via the Term Specification Lookup option from the
+                    Main Menu.</para>
+                <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRMS_Guide/KRMS-term-specification-lookup-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                    </imageobject>
+                </inlinemediaobject></para>
+            </listitem>
             <listitem><para><emphasis role="bold">Fact</emphasis> - the actual data for the term being evaluated in a
                 proposition, the data being passed in for evaluation. In the example above,
                 if the grant in question had an amount of $10,000, then $10,000 would be the
@@ -373,87 +427,5 @@
                 specifications. In our example a context of "HReVerify" would be established
                 for easy identification of the items related to these business rules.</para></listitem>
         </itemizedlist>
-        <!--<variablelist>
-                <varlistentry>
-                    <term>Rule</term>
-                    <listitem>
-                        <para>There are two parts to a Rule: A logical Proposition ("condition" or
-                            "statement" may be more natural) and an Action.</para>
-                    </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>Action</term>
-                    <listitem>
-                        <para>something you do if a Rule's logical Proposition is true, e.g. <itemizedlist>
-                                <listitem>
-                                    <para>route to a <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/UG.html#peopleflow_ug_kew">PeopleFlow</link></para>
-                                </listitem>
-                                <listitem>
-                                    <para>present a questionnaire</para>
-                                </listitem>
-                                <listitem>
-                                    <para>display a validation error</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>Proposition</term>
-                    <listitem>
-                        <para>the expression of some business logic, e.g. <itemizedlist>
-                                <listitem>
-                                    <para>activity != reasearch AND sponsor = NASA</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>Term</term>
-                    <listitem>
-                        <para>defines a piece of business data usable in Rules, e.g. <itemizedlist>
-                                <listitem>
-                                    <para>in the example Proposition (see above), activity and
-                                        sponsor are Terms.</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>Fact</term>
-                    <listitem>
-                        <para>the actual value for a Term when an Agenda of Rules execute against
-                            some set of data</para>
-                    </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>Agenda</term>
-                    <listitem>
-                        <para>An execution plan for some number of rules. KRMS agendas support
-                            conditional logic, e.g. <itemizedlist>
-                                <listitem>
-                                    <para>rule 1: is initiator admin?</para>
-                                    <itemizedlist>
-                                        <listitem>
-                                            <para>When FALSE:</para>
-                                            <itemizedlist>
-                                                <listitem>
-                                                  <para>rule 2: initiator has special
-                                                  permission?</para>
-                                                </listitem>
-                                                <listitem>
-                                                  <para>rule 3: exceeds dollar amount
-                                                  threshold?</para>
-                                                </listitem>
-                                            </itemizedlist>
-                                        </listitem>
-                                    </itemizedlist>
-                                </listitem>
-                            </itemizedlist></para>
-                    </listitem>
-                </varlistentry>
-            </variablelist>-->
     </section>
 </chapter>

@@ -267,7 +267,7 @@
                 </section>
                 -->
             </section>
-            <!-- Commenting out, there is inaccurate info that needs to be corrected in here
+            
             <section>
                 <title>Do I have to define permissions or approval processes so that people can
                     create and maintain KRMS agendas and rules?</title>
@@ -278,13 +278,13 @@
                 <para><itemizedlist xml:id="internal-source-marker_0.6076412396925063">
                         <listitem>
                             <para>First, in the Kuali Rice portal, go to the Administration tab, and
-                                in the Identity category, select "Permission".  Create a new
-                                permission:  give it a unique name and select the namespace you'd
-                                like to associate it with.  For example, give it the name 'Maintain
-                                KRMS Agenda' and select the appropriate namespace.</para>
+                            in the Identity category, select "Permission". Create a new permission:
+                            give it a unique Permission name and select the namespace you'd like to
+                            associate it with. For example, give it the name 'Maintain KRMS Agenda'
+                            and select the appropriate namespace.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/KRMS_Guide/KRMS-exmpl- - -Identity-permission-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                        <imagedata fileref="../images/KRMS_Guide/KRMS-Identity-permission-creation-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -294,32 +294,34 @@
                                 to the Administration tab, and in the Identity category, select
                                 "Role".  You can search for the role you just created (in the
                                 example above,  'Maintain KRMS Agenda', and select to edit
-                                it.</para>
+                                it.</para><para><inlinemediaobject>
+                                    <imageobject>
+                                        <imagedata fileref="../images/KRMS_Guide/KRMS-permission-search.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                    </imageobject>
+                                </inlinemediaobject></para>
                             <para>Add the individuals you would like to this role, so that they will
-                                have the permissions needed to create and maintain agendas and
-                                rules.</para>
+                            have the permissions needed to create and maintain agendas and rules.
+                            Click on the <emphasis role="keyword">edit</emphasis> action to bring up the following screen to add the
+                            individuals to this role. </para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/KRMS_Guide/KRMS-exmpl- - -role-maintenance-edit-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
+                                        <imagedata fileref="../images/KRMS_Guide/KRMS-exmpl---role-maintenance-edit-screen.png"  scalefit="1" width="100%" contentdepth="100%" />
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
                     </itemizedlist>Alternatively, you could set up these permissions via code - see
                     SQL server code examples below: </para>
-                <para>
-                    <itemizedlist>
-                        <listitem>
-                            <para>insert into krim_role_perm_id_s values (null);</para>
-                        </listitem>
-                        <listitem>
-                            <para>insert into krim_role_perm_t (role_perm_id, role_id, perm_id,
+                
+                    
+                            <para><code>insert into krim_role_perm_id_s values (null);</code></para>
+                       
+                            <para><code>insert into krim_role_perm_t (role_perm_id, role_id, perm_id,
                                 actv_ind, ver_nbr, obj_id) values ((select max(id) from
                                 krim_role_perm_id_s), &lt;YOUR_ROLE_ID>, &lt;YOUR_PERMISSION_ID>,
-                                'Y', 1, uuid());</para>
-                        </listitem>
-                    </itemizedlist>
-                </para>
-            </section> -->
+                                'Y', 1, uuid());</code></para>
+                        
+                
+            </section>
             <!--
             <section>
                 <title>(Other? Anything we have to do to setup integration/interaction with KEW?

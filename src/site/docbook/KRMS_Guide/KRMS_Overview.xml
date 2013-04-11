@@ -84,24 +84,6 @@
             </itemizedlist></para>
     </section>
     <section>
-        <title>Example Rule</title>
-        <para>Previously if a newly hired employee met a set of criteria, they would need to have an 
-            eVerify check ran in addition to the standard I-9 process. The initial requirement stated that
-            if the original hire date of an employee is greater that August 1, 2006, the grant is of a 
-            Government type, the grant amount is greater than $5,000, the grant is longer than 2 months, 
-            and the employee has not previously completed an eVerify check then their hire document needs 
-            to be routed to the special HR eVerify workgroup.</para>
-        <para>...or put another way</para>
-        <para><code>
-            IF hr.hire_date > "08/01/2006) and
-            cg.grant_type = "GOV" and
-            cg.grant_amount > "$5,000" and
-            cg.grant_duration > 60 and
-            hr.eVerify_comp = "N"
-            THEN ...
-        </code></para>
-    </section>
-    <section>
         <title>What problems or functions does KRMS solve?</title>
         <para/>
         <para>KRMS gives business applications a powerful tool to externalize logic in places

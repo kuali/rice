@@ -13,30 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.validationmessagesview;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
-import org.junit.Test;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClientErrorsNavIT extends WebDriverLegacyITBase {
+public class ClientErrorsSTNGNavGen extends ClientErrorsSTNGBase {
 
-    @Override
-    public String getTestUrl() {
-        return ITUtil.PORTAL;
-    }
-
-    @Test
-    public void testClientErrors() throws Exception {
-        waitAndClickKRAD();
-        waitAndClickByXpath(VALIDATION_FRAMEWORK_DEMO_XPATH);
-        switchToWindow(KUALI_VIEW_WINDOW_TITLE);
-        super.testClientErrors();
-        passed();
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testClientErrorsNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testClientErrorsNav() throws Exception {
+        testClientErrorsNav(this);
     }
 }

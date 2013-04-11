@@ -13,26 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.validationmessagesview;
 
-import edu.samplu.common.WebDriverLegacyITBase;
-
-import org.junit.Test;
+import edu.samplu.travel.krad.test.TravelAccountLookupAbstractSmokeTestBase;
+import org.testng.AssertJUnit;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClientErrorsWDIT extends WebDriverLegacyITBase {
+public abstract class ClientErrorsSTNGBase extends ClientErrorsAbstractSmokeTestBase{
 
     @Override
-    public String getTestUrl() {
-        return "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start";
-    }
-
-    @Test
-    public void testClientErrors() throws Exception {
-        super.testClientErrors();
-        passed();
+    public void fail(String message){
+        AssertJUnit.fail(message);
     }
 }

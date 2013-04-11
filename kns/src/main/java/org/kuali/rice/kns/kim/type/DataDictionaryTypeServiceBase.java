@@ -260,12 +260,15 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 				}
 			}
 		}
-		
-		for (Map.Entry<String, BusinessObject> entry : componentClassInstances.entrySet()) {
-			List<RelationshipDefinition> relationships = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(entry.getKey()).getRelationships();
-			if (relationships == null) {
-				continue;
-			}
+
+        for (Map.Entry<String, BusinessObject> entry : componentClassInstances.entrySet()) {
+            List<RelationshipDefinition> relationships = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(entry.getKey()).getRelationships();
+            if (relationships == null) {
+                relationships = getDataDictionaryService().getDataDictionary().getDataObjectEntry(entry.getKey()).getRelationships();
+                if (relationships == null) {
+                    continue;
+                }
+            }
 			
 			for (RelationshipDefinition relationshipDefinition : relationships) {
 				List<PrimitiveAttributeDefinition> primitiveAttributes = relationshipDefinition.getPrimitiveAttributes();
@@ -523,7 +526,15 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 		try {
             if (StringUtils.isNotBlank(componentClassName)) {
                 componentClass = (Class<? extends BusinessObject>) Class.forName(componentClassName);
-                baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
+                AttributeDefinition baseDefinitionTemp =
+                        getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName)
+                                .getAttributeDefinition(attributeName);
+                if (baseDefinitionTemp == null) {
+                    baseDefinition = getDataDictionaryService().getDataDictionary().getDataObjectEntry(
+                            componentClassName).getAttributeDefinition(attributeName);
+                } else {
+                    baseDefinition = baseDefinitionTemp;
+                }
             } else {
                 baseDefinition = null;
                 componentClass = null;

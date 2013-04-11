@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,27 +15,22 @@
  */
 package edu.samplu.travel.krad.test;
 
-import org.junit.Test;
-
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 /**
- * it tests travel account lookup screen.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TravelAccountLookupNavIT extends WebDriverLegacyITBase {
+public class TravelAccountLookupSTNGBkMrkGen extends TravelAccountLookupSTNGBase {
+
     @Override
     public String getTestUrl() {
-        return ITUtil.PORTAL;
+        return BOOKMARK_URL;
     }
-    
-    @Test
-    public void testTravelAccountLookup() throws Exception {
-        waitAndClickKRAD();
-        waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);
-//        super.testTravelAccountLookup();
-        passed();
+
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testTravelAccountLookupBookmark")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testTravelAccountLookupBookmark() throws Exception {
+        testTravelAccountLookupBookmark(this);
     }
 }

@@ -63,6 +63,21 @@ public class ITUtil {
     public static final String PORTAL_URL_ENCODED = URLEncoder.encode(PORTAL_URL);
 
     /**
+     *  &showMaintenanceLinks=true
+     */
+    public static final String SHOW_MAINTENANCE_LINKS =  "&showMaintenanceLinks=true";
+
+    /**
+     *  &hideReturnLink=true
+     */
+    public static final String HIDE_RETURN_LINK =  "&hideReturnLink=true";
+
+    /**
+     * /kr-krad/lookup?methodToCall=start&dataObjectClassName=
+     */
+    public static final String KRAD_LOOKUP_METHOD =  "/kr-krad/lookup?methodToCall=start&dataObjectClassName=";
+
+    /**
      * Calendar.getInstance().getTimeInMillis() + ""
      */
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";

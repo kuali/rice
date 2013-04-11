@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,27 +15,15 @@
  */
 package edu.samplu.travel.krad.test;
 
-import org.junit.Test;
-
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.junit.Assert;
 
 /**
- * it tests travel account lookup screen.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TravelAccountLookupNavIT extends WebDriverLegacyITBase {
+public abstract class TravelAccountLookupSTJUnitBase extends TravelAccountLookupAbstractSmokeTestBase {
+
     @Override
-    public String getTestUrl() {
-        return ITUtil.PORTAL;
-    }
-    
-    @Test
-    public void testTravelAccountLookup() throws Exception {
-        waitAndClickKRAD();
-        waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);
-//        super.testTravelAccountLookup();
-        passed();
+    public void fail(String message) {
+        Assert.fail(message);
     }
 }

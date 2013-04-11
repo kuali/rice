@@ -700,36 +700,36 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         passed();
     }
 
-    protected void deleteSubCollectionLine() throws Exception {
-        // click on collections page link
-        waitAndClickByLinkText(COLLECTIONS_LINK_TEXT);
-        Thread.sleep(5000);
-
-        // wait for collections page to load by checking the presence of a sub collection line item
-        waitForElementPresentByName("list4[0].subList[0].field1");
-
-        // change a value in the line to be deleted
-        waitAndTypeByName("list4[0].subList[0].field1", "selenium");
-
-        // click the delete button
-        waitAndClickByXpath("//div[@id='collection4_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div[@class='uif-group uif-gridGroup uif-collectionItem uif-gridCollectionItem']/table/tbody/tr[5]/td/div/fieldset/div/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button");
-        Thread.sleep(2000);
-
-        // confirm that the input box containing the modified value is not present
-        for (int second = 0;; second++) {
-            if (second >= waitSeconds)
-                fail(TIMEOUT_MESSAGE);
-            try {
-                System.out.println("Loop ----- " + second);
-                if (!"selenium".equals(getAttributeByName("list4[0].subList[0].field1", "value")))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        // verify that the value has changed for the input box in the line that has replaced the deleted one
-        assertNotSame("selenium", getAttributeByName("list4[0].subList[0].field1", "value"));
-    }
+//    protected void deleteSubCollectionLine() throws Exception {
+//        // click on collections page link
+//        waitAndClickByLinkText(COLLECTIONS_LINK_TEXT);
+//        Thread.sleep(5000);
+//
+//        // wait for collections page to load by checking the presence of a sub collection line item
+//        waitForElementPresentByName("list4[0].subList[0].field1");
+//
+//        // change a value in the line to be deleted
+//        waitAndTypeByName("list4[0].subList[0].field1", "selenium");
+//
+//        // click the delete button
+//        waitAndClickByXpath("//div[@id='collection4_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div[@class='uif-group uif-gridGroup uif-collectionItem uif-gridCollectionItem']/table/tbody/tr[5]/td/div/fieldset/div/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button");
+//        Thread.sleep(2000);
+//
+//        // confirm that the input box containing the modified value is not present
+//        for (int second = 0;; second++) {
+//            if (second >= waitSeconds)
+//                fail(TIMEOUT_MESSAGE);
+//            try {
+//                System.out.println("Loop ----- " + second);
+//                if (!"selenium".equals(getAttributeByName("list4[0].subList[0].field1", "value")))
+//                    break;
+//            } catch (Exception e) {}
+//            Thread.sleep(1000);
+//        }
+//
+//        // verify that the value has changed for the input box in the line that has replaced the deleted one
+//        assertNotSame("selenium", getAttributeByName("list4[0].subList[0].field1", "value"));
+//    }
 
     protected void expandColapseByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
         waitAndClickByXpath(clickLocator);

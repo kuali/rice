@@ -17,10 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.Failable;
 import edu.samplu.common.FreemarkerSTBase;
-import edu.samplu.common.FreemarkerUtil;
 import edu.samplu.common.ITUtil;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.template.Configuration;
 import org.openqa.selenium.By;
 
 import java.io.File;
@@ -61,6 +58,16 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
     protected abstract File newTempFile(String name) throws IOException;
 
     /**
+     * {@inheritDoc}
+     * {@link #DIR_TMPL}
+     * @return
+     */
+    @Override
+    protected String getTemplateDir() {
+        return DIR_TMPL;
+    }
+
+    /**
      * Nav tests start at {@link ITUtil#PORTAL}.  Bookmark Tests should override and return {@link XMLIngesterAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
@@ -92,14 +99,6 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
         checkForIncidentReport("XML Ingester", failable, "");
     }
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        // generated load users and group resources
-        cfg = new Configuration();
-        cfg.setTemplateLoader(new ClassTemplateLoader(getClass().getClassLoader().getClass(), DIR_TMPL));
-    }
-
     /**
      * Navigate to the page under test and call {@link #testIngestion}
      *
@@ -123,6 +122,7 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
      *
      */
     protected void testIngestion(Failable failable) throws Exception {
+        selectFrameIframePortlet();
         List<File> fileUploadList = buildFileUploadList();
         int cnt = 0;
 

@@ -47,15 +47,6 @@ public class NeustarJSTemplate extends FreemarkerSTBase {
     private static final String DIR_TMPL = "/NeustarJSTemplate/";
     private static final String TMPL_CONTENT = "CreateNewTmpl.ftl";
 
-
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        // generated load users and group resources
-        cfg = new Configuration();
-        cfg.setTemplateLoader(new ClassTemplateLoader(getClass().getClassLoader().getClass(), DIR_TMPL));
-    }
-
     private void buildFileList(Properties props) throws Exception {
         Integer pageCount= Integer.parseInt(props.getProperty("pageCount"));
         
@@ -78,6 +69,16 @@ public class NeustarJSTemplate extends FreemarkerSTBase {
                 throw new Exception("Unable to generate files for upload", e);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     * {@link #DIR_TMPL}
+     * @return
+     */
+    @Override
+    protected String getTemplateDir() {
+        return DIR_TMPL;
     }
 
     @Test

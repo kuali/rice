@@ -15,10 +15,13 @@
  */
 package edu.samplu.common;
 
+import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.log4j.Logger;
+import org.junit.Before;
+import org.testng.annotations.BeforeMethod;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +38,18 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
     protected final Logger LOG = Logger.getLogger(getClass());
 
     protected Configuration cfg;
+
+    protected abstract String getTemplateDir();
+
+    @Override
+    @Before
+    @BeforeMethod
+    public void setUp() throws Exception {
+        super.setUp();
+        // generated load users and group resources
+        cfg = new Configuration();
+        cfg.setTemplateLoader(new ClassTemplateLoader(getClass().getClassLoader().getClass(), getTemplateDir()));
+    }
 
     /**
      * Calls ftlWrite that also accepts a key, using the output getName as the key.

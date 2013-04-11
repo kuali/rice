@@ -238,18 +238,29 @@ public class LookupView extends FormView {
             String searchButtonId = searchButton.getId();
 
             for (Component criteriaField : criteriaGroup.getItems()) {
-                if (criteriaField instanceof LookupInputField) {
-
-                    criteriaField.setOnKeyPressScript("if(e.which == 13) { e.preventDefault();jQuery('#" + searchButtonId + "' ).click();}");
-
-                    if (isTriggerOnChange() || ((LookupInputField)criteriaField).isTriggerOnChange()) {
-                        criteriaField.setOnChangeScript("jQuery('#" + searchButtonId + "' ).click();");
-                    }
-                }
+                addTriggerScripts(searchButtonId, criteriaField);
             }
         }
 
         super.performApplyModel(view, model, parent);
+    }
+
+    /**
+     * Adds an on change script to fields with the isTriggerOnChange set to true. Also prevents adds script to execute
+     * search on enter when focus is in a criteris field
+     *
+     * @param searchButtonId the id of the search button
+     * @param criteriaField that the script will be added to
+     */
+    private void addTriggerScripts(String searchButtonId, Component criteriaField) {
+        if (criteriaField instanceof LookupInputField) {
+
+            criteriaField.setOnKeyPressScript("if(e.which == 13) { e.preventDefault();jQuery('#" + searchButtonId + "' ).click();}");
+
+            if (isTriggerOnChange() || ((LookupInputField)criteriaField).isTriggerOnChange()) {
+                criteriaField.setOnChangeScript("jQuery('#" + searchButtonId + "' ).click();");
+            }
+        }
     }
 
     /**
@@ -330,8 +341,6 @@ public class LookupView extends FormView {
     @Override
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
-
-        components.add(rangeFieldGroupPrototype);
 
         components.add(rangeFieldGroupPrototype);
 

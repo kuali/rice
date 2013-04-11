@@ -394,7 +394,7 @@
                 actions include:</para>
                 <itemizedlist>
                     <listitem>
-                        <para>Route to a <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/UG.html#peopleflow_ug_kew">PeopleFlow</link></para>
+                        <para>Route to a <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KEW_Guide.html#peopleflow_ug_kew">PeopleFlow</link></para>
                     </listitem>
                     <listitem>
                         <para>Present a questionnaire</para>

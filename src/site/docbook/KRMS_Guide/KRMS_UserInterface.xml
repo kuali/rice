@@ -85,7 +85,7 @@
         </para>
         <para>And below is the same Rule but scrolled down further on the page to show the
             Action configuration as well.  In this example, when the logical proposition for
-            this rule is satisfied (when it is true), the rule will call a <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/UG.html#peopleflow_ug_kew">PeopleFlow</link> to route a
+            this rule is satisfied (when it is true), the rule will call a <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KEW_Guide.html#peopleflow_ug_kew">PeopleFlow</link> to route a
             request to it.</para>
         <para>
             <figure>

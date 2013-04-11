@@ -172,9 +172,6 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         form.setDocument(doc);
         WorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
         form.setDocTypeName(workflowDoc.getDocumentTypeName());
-
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                workflowDoc);
     }
 
     /**

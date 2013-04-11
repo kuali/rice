@@ -547,7 +547,9 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
             definition.setRequired(false);
         }
 
-        definition.setForceUpperCase(baseDefinition.getForceUppercase());
+        if (baseDefinition.getForceUppercase() != null) {
+            definition.setForceUpperCase(baseDefinition.getForceUppercase());
+        }
         definition.setControl(DataDictionaryTypeServiceHelper.toRemotableAbstractControlBuilder(
                 baseDefinition));
         final RemotableQuickFinder.Builder qf = createQuickFinder(componentClass, attributeName);

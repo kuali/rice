@@ -25,6 +25,8 @@ import org.kuali.rice.krad.web.form.DocumentFormBase;
  * Service API for persisting <code>Document</code> form content and
  * retrieving back
  *
+ * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
+ *
  * <p>
  * Used as an extension to session support. If a session times out, the doucment contents
  * can be retrieved from the persistence storage and work resumed
@@ -32,6 +34,7 @@ import org.kuali.rice.krad.web.form.DocumentFormBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public interface SessionDocumentService {
 
     /**

@@ -586,6 +586,7 @@
     </property>
   </bean>
 
+  <!-- Deprecated and removed from use in KRAD (KULRICE-9149) -->
   <bean id="sessionDocumentService" class="org.kuali.rice.krad.service.impl.SessionDocumentServiceImpl">
     <property name="businessObjectService">
       <ref bean="businessObjectService"/>

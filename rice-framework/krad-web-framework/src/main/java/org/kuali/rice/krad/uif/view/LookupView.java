@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -329,6 +330,8 @@ public class LookupView extends FormView {
     @Override
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
+
+        components.add(rangeFieldGroupPrototype);
 
         components.add(rangeFieldGroupPrototype);
 
@@ -745,4 +748,5 @@ public class LookupView extends FormView {
     public void setAutoAddActiveCriteria(boolean autoAddActiveCriteria) {
         this.autoAddActiveCriteria = autoAddActiveCriteria;
     }
+
 }

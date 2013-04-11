@@ -129,9 +129,6 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().save(savedDocument.getDocumentHeader().getWorkflowDocument(), null);
 
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                savedDocument.getDocumentHeader().getWorkflowDocument());
-
         return savedDocument;
     }
 
@@ -191,8 +188,6 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService()
                 .route(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -214,8 +209,6 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService()
                 .approve(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -229,8 +222,6 @@ public class DocumentServiceImpl implements DocumentService {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -244,8 +235,6 @@ public class DocumentServiceImpl implements DocumentService {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -269,8 +258,6 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService()
                 .superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -299,8 +286,6 @@ public class DocumentServiceImpl implements DocumentService {
 
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().disapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -328,8 +313,6 @@ public class DocumentServiceImpl implements DocumentService {
         }
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         //getBusinessObjectService().delete(document.getAdHocRoutePersons());
         //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
         removeAdHocPersonsAndWorkgroups(document);
@@ -346,8 +329,6 @@ public class DocumentServiceImpl implements DocumentService {
 
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().recall(document.getDocumentHeader().getWorkflowDocument(), annotation, cancel);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -367,8 +348,6 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService()
                 .acknowledge(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -390,8 +369,6 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService()
                 .blanketApprove(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -407,8 +384,6 @@ public class DocumentServiceImpl implements DocumentService {
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         getWorkflowDocumentService().clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -429,9 +404,6 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().complete(document.getDocumentHeader().getWorkflowDocument(), annotation,
                 adHocRecipients);
-
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
 
         removeAdHocPersonsAndWorkgroups(document);
 
@@ -578,7 +550,6 @@ public class DocumentServiceImpl implements DocumentService {
 
         // initiate new workflow entry, get the workflow doc
         WorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, initiator);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
         // create a new document header object
         DocumentHeader documentHeader = null;
@@ -680,8 +651,6 @@ public class DocumentServiceImpl implements DocumentService {
             }
             workflowDocument = getWorkflowDocumentService()
                     .loadWorkflowDocument(documentHeaderId, GlobalVariables.getUserSession().getPerson());
-            KRADServiceLocatorWeb.getSessionDocumentService()
-                    .addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
 
 	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentTypeName());
 
@@ -1045,8 +1014,6 @@ public class DocumentServiceImpl implements DocumentService {
         getWorkflowDocumentService()
                 .sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), annotation,
                         adHocRecipients);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
         //getBusinessObjectService().delete(document.getAdHocRoutePersons());
         //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
         removeAdHocPersonsAndWorkgroups(document);

@@ -44,9 +44,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * Implementation of <code>SessionDocumentService</code> that persists the document form
  * contents to the underlying database
  *
+ * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Transactional
+@Deprecated
 public class SessionDocumentServiceImpl implements SessionDocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SessionDocumentServiceImpl.class);
 
@@ -61,7 +64,12 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
     private DataDictionaryService dataDictionaryService;
     private SessionDocumentDao sessionDocumentDao;
 
+    /**
+     * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
+     *
+     */
     @Override
+    @Deprecated
     public DocumentFormBase getDocumentForm(String documentNumber, String docFormKey, UserSession userSession,
             String ipAddress) {
         DocumentFormBase documentForm = null;
@@ -83,6 +91,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
         return documentForm;
     }
 
+    @Deprecated
     protected Object retrieveDocumentForm(UserSession userSession, String sessionId, String documentNumber,
             String ipAddress) throws Exception {
         HashMap<String, String> primaryKeys = new HashMap<String, String>(4);
@@ -108,7 +117,12 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
         return null;
     }
 
+    /**
+     * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
+     *
+     */
     @Override
+    @Deprecated
     public WorkflowDocument getDocumentFromSession(UserSession userSession, String docId) {
         synchronized (userSession) {
             @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
@@ -127,8 +141,11 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
     /**
      * @see org.kuali.rice.krad.service.SessionDocumentService#addDocumentToUserSession(org.kuali.rice.krad.UserSession,
      *      org.kuali.rice.krad.workflow.service.KualiWorkflowDocument)
+     *
+     * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)     *
      */
     @Override
+    @Deprecated
     public void addDocumentToUserSession(UserSession userSession, WorkflowDocument document) {
         synchronized (userSession) {
             @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
@@ -148,8 +165,11 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
     /**
      * @see org.kuali.rice.krad.service.SessionDocumentService#purgeDocumentForm(String
      *      documentNumber, String docFormKey, UserSession userSession)
+     *
+     * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
      */
     @Override
+    @Deprecated
     public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress) {
         synchronized (userSession) {
             LOG.debug("purge document form from session");
@@ -169,7 +189,12 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
         }
     }
 
+    /**
+     * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
+     *
+     */
     @Override
+    @Deprecated
     public void setDocumentForm(DocumentFormBase form, UserSession userSession, String ipAddress) {
         synchronized (userSession) {
             //formKey was set in KualiDocumentActionBase execute method
@@ -186,6 +211,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
         }
     }
 
+    @Deprecated
     protected void persistDocumentForm(DocumentFormBase form, UserSession userSession, String ipAddress,
             String sessionId, String documentNumber) {
         try {
@@ -240,28 +266,44 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
 
     /**
      * @see org.kuali.rice.krad.service.SessionDocumentService#purgeAllSessionDocuments(java.sql.Timestamp)
+     *
+     * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
      */
     @Override
+    @Deprecated
     public void purgeAllSessionDocuments(Timestamp expirationDate) {
         sessionDocumentDao.purgeAllSessionDocuments(expirationDate);
     }
 
+    @Deprecated
     protected SessionDocumentDao getSessionDocumentDao() {
         return this.sessionDocumentDao;
     }
 
+    /**
+     * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
+     *
+     */
+    @Deprecated
     public void setSessionDocumentDao(SessionDocumentDao sessionDocumentDao) {
         this.sessionDocumentDao = sessionDocumentDao;
     }
 
+    @Deprecated
     protected BusinessObjectService getBusinessObjectService() {
         return this.businessObjectService;
     }
 
+    /**
+     * @deprecated (Deprecated and removed from use in KRAD  (KULRICE-9149)
+     *
+     */
+    @Deprecated
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
 
+    @Deprecated
     protected EncryptionService getEncryptionService() {
         if (encryptionService == null) {
             encryptionService = CoreApiServiceLocator.getEncryptionService();
@@ -269,6 +311,8 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
         return encryptionService;
     }
 
+
+    @Deprecated
     protected DataDictionaryService getDataDictionaryService() {
         if (dataDictionaryService == null) {
             dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();

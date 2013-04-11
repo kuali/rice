@@ -186,12 +186,13 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     public boolean processRouteDocument(Document document) {
         boolean isValid = true;
 
-        isValid = isDocumentAttributesValid(document, true);
+        isValid = isDocumentOverviewValid(document);
 
         boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(document);
 
         // Validate the document if the header is valid and no pending completion requests
         if (isValid && !completeRequestPending) {
+            isValid &= isDocumentAttributesValid(document, true);
             isValid &= processCustomRouteDocumentBusinessRules(document);
         }
 

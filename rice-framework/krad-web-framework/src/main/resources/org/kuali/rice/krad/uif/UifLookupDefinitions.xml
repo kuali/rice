@@ -52,6 +52,15 @@
     <property name="rangeFieldGroupPrototype">
       <bean parent="Uif-HorizontalFieldGroup"/>
     </property>
+
+    <property name="resultsActionsFieldGroup">
+      <bean parent="Uif-FieldGroupBase">
+        <property name="label" value="Actions"/>
+        <property name="group">
+          <bean parent="Uif-LookupView-ResultActions"/>
+        </property>
+      </bean>
+    </property>
   </bean>
 
   <bean id="Uif-LookupView-ResultActions" parent="Uif-LinkGroup">

@@ -46,6 +46,7 @@ import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinderFactory;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,10 +75,10 @@ public final class DataDictionaryTypeServiceHelper {
 	}
 
     public static RemotableAbstractControl.Builder toRemotableAbstractControlBuilder(AttributeDefinition attr) {
-            ControlDefinition control = attr.getControl();
-
+        ControlDefinition control = attr.getControl();
+        if (ObjectUtils.isNotNull(control)) {
             if (control.isCheckbox()) {
-                 return RemotableCheckbox.Builder.create();
+                return RemotableCheckbox.Builder.create();
             } else if (control.isHidden()) {
                 return RemotableHiddenInput.Builder.create();
             } else if (control.isMultiselect()) {
@@ -101,6 +102,7 @@ public final class DataDictionaryTypeServiceHelper {
                 b.setRows(control.getRows());
                 return b;
             }
+        }
         return null;
     }
 

@@ -28,11 +28,12 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TermLookUpWDIT extends WebDriverLegacyITBase {
-    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Term%20Lookup&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.TermBo&showMaintenanceLinks=true&returnLocation=" +
-            ITUtil.PORTAL_URL + "&hideReturnLink=true";
-   
-    
+    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Term%20Lookup&channelUrl="
+            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + "org.kuali.rice.krms.impl.repository.TermBo"
+            + ITUtil.SHOW_MAINTENANCE_LINKS
+            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+
     /**
      * This overridden method ...
      * 

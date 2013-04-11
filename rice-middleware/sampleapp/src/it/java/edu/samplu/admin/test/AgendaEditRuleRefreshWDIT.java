@@ -28,7 +28,9 @@ import edu.samplu.common.WebDriverLegacyITBase;
  */
 public class AgendaEditRuleRefreshWDIT extends WebDriverLegacyITBase {
 
-    public static final String TEST_URL =ITUtil.PORTAL+"?channelTitle=Agenda%20Lookup&channelUrl="+ITUtil.getBaseUrlString()+"/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.AgendaBo&showMaintenanceLinks=true&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
+    public static final String TEST_URL =ITUtil.PORTAL+"?channelTitle=Agenda%20Lookup&channelUrl="
+            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + "org.kuali.rice.krms.impl.repository.AgendaBo&showMaintenanceLinks=true&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
     
     @Override
     public String getTestUrl(){

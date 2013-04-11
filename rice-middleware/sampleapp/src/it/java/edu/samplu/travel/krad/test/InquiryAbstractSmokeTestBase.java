@@ -34,17 +34,16 @@ import com.thoughtworks.selenium.SeleneseTestBase;
 public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
-     * ITUtil.PORTAL
-     + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
-     + ITUtil.getBaseUrlString()
-     + "/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation="
-     + ITUtil.PORTAL_URL + "&hideReturnLink=true&showMaintenanceLinks=true"
+     * ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
+     * + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     * +"edu.sampleu.travel.bo.TravelAccount&returnLocation="
+     * + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL
             + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
-            + ITUtil.getBaseUrlString()
-            + "/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation="
-            + ITUtil.PORTAL_URL + "&hideReturnLink=true&showMaintenanceLinks=true";
+            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + "edu.sampleu.travel.bo.TravelAccount"
+            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS;
 
     /**
      * //*[contains(button,"Search")]/button

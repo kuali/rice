@@ -28,9 +28,11 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CategoryLookUpWDIT extends WebDriverLegacyITBase{
-    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Category%20Lookup&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.CategoryBo&showMaintenanceLinks=true&returnLocation=" +
-            ITUtil.PORTAL_URL + "&hideReturnLink=true";
+    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Category%20Lookup&channelUrl="
+            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + "org.kuali.rice.krms.impl.repository.CategoryBo"
+            + ITUtil.SHOW_MAINTENANCE_LINKS
+            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
     
     @Override
     public String getTestUrl() {

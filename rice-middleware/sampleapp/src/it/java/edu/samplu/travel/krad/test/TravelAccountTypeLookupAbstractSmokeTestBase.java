@@ -27,7 +27,9 @@ public abstract class TravelAccountTypeLookupAbstractSmokeTestBase extends WebDr
     /**
      * /portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl=" +ITUtil.getBaseUrlString()+ /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
      */
-    public static final String BOOKMARK_URL = "/portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl=" +ITUtil.getBaseUrlString()+ "/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccountType";
+    public static final String BOOKMARK_URL = "/portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl="
+            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + "edu.sampleu.travel.bo.TravelAccountType";
 
     /**
      * //*[contains(button,"earch")]/button

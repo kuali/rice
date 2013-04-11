@@ -28,9 +28,10 @@ import edu.samplu.common.WebDriverLegacyITBase;
  */
 public class PeopleFlowCreateNewWDIT extends WebDriverLegacyITBase {
   
-    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo&returnLocation=" +
-            ITUtil.PORTAL_URL + "&showMaintenanceLinks=true";
+    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl="
+            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
+            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.SHOW_MAINTENANCE_LINKS;
    
     @Override
     public String getTestUrl() {

@@ -20,7 +20,6 @@
 	<xsl:import href="appendix.xsl"/>
 	<xsl:import href="xref.xsl"/>
 	<xsl:import href="titlepage.xsl"/>
-<<<<<<< .working
     <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl"/>
     <xsl:template match="*[@role = 'keyword']" mode="class.value">
         <xsl:value-of select="'keyword'"/>
@@ -35,9 +34,6 @@
         </fo:inline>
     </xsl:template>
     <xsl:template match="section[@role = 'NotInToc']" mode="toc" />
-=======
-    <xsl:template match="section[@role = 'NotInToc']" mode="toc" />
->>>>>>> .merge-right.r38348
     <xsl:attribute-set name="monospace.verbatim.properties">
         <xsl:attribute name="wrap-option">wrap</xsl:attribute>
         <xsl:attribute name="font-size">7pt</xsl:attribute>

@@ -30,7 +30,9 @@ public class AgendaEditRuleRefreshWDIT extends WebDriverLegacyITBase {
 
     public static final String TEST_URL =ITUtil.PORTAL+"?channelTitle=Agenda%20Lookup&channelUrl="
             + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
-            + "org.kuali.rice.krms.impl.repository.AgendaBo&showMaintenanceLinks=true&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
+            + "org.kuali.rice.krms.impl.repository.AgendaBo"
+            + ITUtil.SHOW_MAINTENANCE_LINKS
+            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
     
     @Override
     public String getTestUrl(){

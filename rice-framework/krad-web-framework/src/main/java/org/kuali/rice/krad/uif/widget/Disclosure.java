@@ -48,7 +48,7 @@ public class Disclosure extends WidgetBase {
     /**
      * Path to the images that should be displayed to collapse the group
      *
-     * @return String image path
+     * @return image path
      */
     @BeanTagAttribute(name="CollapseImageSrc")
     public String getCollapseImageSrc() {
@@ -67,7 +67,7 @@ public class Disclosure extends WidgetBase {
     /**
      * Path to the images that should be displayed to expand the group
      *
-     * @return String image path
+     * @return image path
      */
     @BeanTagAttribute(name="expandImageSrc")
     public String getExpandImageSrc() {
@@ -87,7 +87,7 @@ public class Disclosure extends WidgetBase {
      * Gives the speed for the open/close animation, a smaller int will result
      * in a faster animation
      *
-     * @return int animation speed
+     * @return animation speed
      */
     @BeanTagAttribute(name="animationSpeed")
     public int getAnimationSpeed() {
@@ -106,7 +106,7 @@ public class Disclosure extends WidgetBase {
     /**
      * Indicates whether the group should be initially open
      *
-     * @return boolean true if group should be initially open, false if it
+     * @return true if group should be initially open, false if it
      *         should be closed
      */
     @BeanTagAttribute(name="defaultOpen")
@@ -127,7 +127,7 @@ public class Disclosure extends WidgetBase {
      * Indicates whether the expand/collapse image should be rendered for the closure, if set to false only
      * the group title will be clickable
      *
-     * @return boolean true to render the expand/colapse image false to not
+     * @return true to render the expand/colapse image false to not
      */
     @BeanTagAttribute(name="renderImage")
     public boolean isRenderImage() {

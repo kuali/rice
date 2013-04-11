@@ -77,7 +77,7 @@ public class Reorderer extends WidgetBase {
      * reorderer widget through the options
      * </p>
      *
-     * @return String style class
+     * @return style class
      */
     @BeanTagAttribute(name="movableStyleClass")
     public String getMovableStyleClass() {

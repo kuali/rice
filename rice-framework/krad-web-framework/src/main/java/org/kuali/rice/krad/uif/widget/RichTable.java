@@ -137,7 +137,7 @@ public class RichTable extends WidgetBase {
     /**
      * Builds the footer callback template option for column totals
      *
-     * @param collectionGroup - the collection group
+     * @param collectionGroup the collection group
      */
     private void setTotalOptions(CollectionGroup collectionGroup) {
         LayoutManager layoutManager = collectionGroup.getLayoutManager();
@@ -361,9 +361,9 @@ public class RichTable extends WidgetBase {
     /**
      * Construct the column options for a data field
      *
-     * @param collectionGroup - the collectionGroup in which the data field is defined
-     * @param field - the field to construction options for
-     * @return - options as valid for datatable
+     * @param collectionGroup the collectionGroup in which the data field is defined
+     * @param field the field to construction options for
+     * @return options as valid for datatable
      */
     protected String getDataFieldColumnOptions(int target, CollectionGroup collectionGroup, DataField field) {
         String sortType = null;
@@ -395,10 +395,10 @@ public class RichTable extends WidgetBase {
      * Constructs the sort data type for each data table columns in a format that will be used to initialize the data
      * table widget via javascript
      *
-     * @param isSortable - whether a column should be marked as sortable
-     * @param dataTypeClass - the class type of the column value - used determine the sType option - which identifies
+     * @param isSortable whether a column should be marked as sortable
+     * @param dataTypeClass the class type of the column value - used determine the sType option - which identifies
      * the search plugin to use
-     * @param sortDataType - Defines a data source type for the sorting which can be used to read realtime information
+     * @param sortDataType Defines a data source type for the sorting which can be used to read realtime information
      * from the table
      * @return a formatted string with data table options for one column
      */
@@ -511,7 +511,7 @@ public class RichTable extends WidgetBase {
     /**
      * Setter for the hidden columns set
      *
-     * @param hiddenColumns - a set containing propertyNames
+     * @param hiddenColumns a set containing propertyNames
      */
     public void setHiddenColumns(Set<String> hiddenColumns) {
         this.hiddenColumns = hiddenColumns;
@@ -532,7 +532,7 @@ public class RichTable extends WidgetBase {
     /**
      * Setter for sortable columns
      *
-     * @param sortableColumns - a set containing propertyNames of columns to be sorted
+     * @param sortableColumns a set containing propertyNames of columns to be sorted
      */
     public void setSortableColumns(Set<String> sortableColumns) {
         this.sortableColumns = sortableColumns;
@@ -547,7 +547,7 @@ public class RichTable extends WidgetBase {
      * with uses progressive enhancement to decorate a table that has already been rendereed
      * </p>
      *
-     * @return String URL for ajax source
+     * @return URL for ajax source
      */
     @BeanTagAttribute(name = "ajaxSource")
     public String getAjaxSource() {

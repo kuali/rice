@@ -74,11 +74,9 @@ public class CssConstants {
 	 * Replaces parameters in the given CSS string with the corresponding
 	 * parameter values given
 	 *
-	 * @param style
-	 *            - String with parameters to replace
-	 * @param parameters
-	 *            - One or more parameter values
-	 * @return String given string with filled parameters
+	 * @param style string with parameters to replace
+	 * @param parameters one or more parameter values
+	 * @return given string with filled parameters
 	 */
 	public static final String getCssStyle(String style, String... parameters) {
 		MessageFormat cssStyle = new MessageFormat(style);

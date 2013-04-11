@@ -153,9 +153,9 @@ public class Inquiry extends WidgetBase {
      * by DirectInquiry.
      * </p>
      *
-     * @param view - Container View
-     * @param model - model
-     * @param field - The parent Attribute field
+     * @param view Container View
+     * @param model model
+     * @param field The parent Attribute field
      */
     public void setupLink(View view, Object model, DataField field) {
         String propertyName = field.getBindingInfo().getBindingName();
@@ -187,7 +187,7 @@ public class Inquiry extends WidgetBase {
      * Adjusts the path on the inquiry parameter property to match the binding
      * path prefix of the given {@code BindingInfo}
      *
-     * @param bindingInfo - binding info instance to copy binding path prefix from
+     * @param bindingInfo binding info instance to copy binding path prefix from
      */
     public void updateInquiryParameters(BindingInfo bindingInfo) {
         Map<String, String> adjustedInquiryParameters = new HashMap<String, String>();
@@ -204,11 +204,11 @@ public class Inquiry extends WidgetBase {
     /**
      * Builds the inquiry link based on the given inquiry class and parameters
      *
-     * @param dataObject - parent object that contains the data (used to pull inquiry
+     * @param dataObject parent object that contains the data (used to pull inquiry
      * parameters)
-     * @param propertyName - name of the property the inquiry is set on
-     * @param inquiryObjectClass - class of the object the inquiry should point to
-     * @param inquiryParams - map of key field mappings for the inquiry
+     * @param propertyName name of the property the inquiry is set on
+     * @param inquiryObjectClass class of the object the inquiry should point to
+     * @param inquiryParams map of key field mappings for the inquiry
      */
     public void buildInquiryLink(Object dataObject, String propertyName, Class<?> inquiryObjectClass,
             Map<String, String> inquiryParams) {
@@ -334,8 +334,8 @@ public class Inquiry extends WidgetBase {
     /**
      * Gets text to prepend to the inquiry link title
      *
-     * @param dataObjectClass - data object class being inquired into
-     * @return String title prepend text
+     * @param dataObjectClass data object class being inquired into
+     * @return title prepend text
      */
     public String createTitleText(Class<?> dataObjectClass) {
         String titleText = "";
@@ -378,7 +378,7 @@ public class Inquiry extends WidgetBase {
      * server
      * </p>
      *
-     * @return String inquiry base URL
+     * @return inquiry base URL
      */
     @BeanTagAttribute(name="baseInquiryUrl")
     public String getBaseInquiryUrl() {
@@ -403,7 +403,7 @@ public class Inquiry extends WidgetBase {
      * data object class name, the {@link #getViewName()} property should be specified to select the view to render).
      * </p>
      *
-     * @return String inquiry class name
+     * @return inquiry class name
      */
     @BeanTagAttribute(name="dataObjectClassName")
     public String getDataObjectClassName() {
@@ -454,7 +454,7 @@ public class Inquiry extends WidgetBase {
      * the inquiry)
      * </p>
      *
-     * @return Map<String, String> mapping of calling view properties to inquiry data object properties
+     * @return mapping of calling view properties to inquiry data object properties
      */
     @BeanTagAttribute(name="inquiryParameters",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getInquiryParameters() {
@@ -484,7 +484,7 @@ public class Inquiry extends WidgetBase {
     /**
      * Setter for the inquiry {@code Link}
      *
-     * @param inquiryLink - the inquiry {@link Link} object
+     * @param inquiryLink the inquiry {@link Link} object
      */
     public void setInquiryLink(Link inquiryLink) {
         this.inquiryLink = inquiryLink;
@@ -512,7 +512,7 @@ public class Inquiry extends WidgetBase {
     /**
      * Indicates that the direct inquiry will not be rendered
      *
-     * @return boolean true if the direct inquiry should be rendered, false if not
+     * @return true if the direct inquiry should be rendered, false if not
      */
     @BeanTagAttribute(name="enableDirectInquiry")
     public boolean isEnableDirectInquiry() {

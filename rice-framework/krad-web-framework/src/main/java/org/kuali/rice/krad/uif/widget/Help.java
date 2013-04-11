@@ -117,7 +117,7 @@ public class Help extends WidgetBase {
      * Set the html title attribute of the help icon.
      * </p>
      *
-     * @param view - used to get the default namespace
+     * @param view used to get the default namespace
      * @param parent used to get the help title text used in the html title attribute of the help icon
      */
     protected void buildExternalHelp(View view, Component parent) {
@@ -235,7 +235,7 @@ public class Help extends WidgetBase {
      * the system parameters.
      * </p>
      *
-     * * @return Url of the external help
+     * @return Url of the external help
      */
     @BeanTagAttribute(name="externalHelpUrl")
     public String getExternalHelpUrl() {

@@ -283,7 +283,7 @@ public class QuickFinder extends WidgetBase {
      * Adjusts the path on the field conversion to property to match the binding
      * path prefix of the given <code>BindingInfo</code>
      *
-     * @param bindingInfo - binding info instance to copy binding path prefix from
+     * @param bindingInfo binding info instance to copy binding path prefix from
      */
     public void updateFieldConversions(BindingInfo bindingInfo) {
         Map<String, String> adjustedFieldConversions = new HashMap<String, String>();
@@ -301,7 +301,7 @@ public class QuickFinder extends WidgetBase {
      * Adjusts the path on the lookup parameter from property to match the binding
      * path prefix of the given <code>BindingInfo</code>
      *
-     * @param bindingInfo - binding info instance to copy binding path prefix from
+     * @param bindingInfo binding info instance to copy binding path prefix from
      */
     public void updateLookupParameters(BindingInfo bindingInfo) {
         Map<String, String> adjustedLookupParameters = new HashMap<String, String>();
@@ -338,7 +338,7 @@ public class QuickFinder extends WidgetBase {
      * server
      * </p>
      *
-     * @return String lookup base URL
+     * @return lookup base URL
      */
     @BeanTagAttribute(name = "baseLookupUrl")
     public String getBaseLookupUrl() {
@@ -363,7 +363,7 @@ public class QuickFinder extends WidgetBase {
      * data object class name, the {@link #getViewName()} property should be specified to select the view to render).
      * </p>
      *
-     * @return String lookup class name
+     * @return lookup class name
      */
     @BeanTagAttribute(name = "dataOjbectClassName")
     public String getDataObjectClassName() {
@@ -418,7 +418,7 @@ public class QuickFinder extends WidgetBase {
      * useful if the lookup returns a foreign key field and the related record is needed.
      * </p>
      *
-     * @return String list of property names to refresh
+     * @return list of property names to refresh
      *         TODO: refactor this to be a List type
      */
     @BeanTagAttribute(name = "referencesToRefresh")
@@ -455,7 +455,7 @@ public class QuickFinder extends WidgetBase {
      * field (map key) to the calling view field (map value).
      * </p>
      *
-     * @return Map<String, String> mapping of lookup data object property names to view property names
+     * @return mapping of lookup data object property names to view property names
      */
     @BeanTagAttribute(name = "fieldConversions", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getFieldConversions() {
@@ -484,7 +484,7 @@ public class QuickFinder extends WidgetBase {
      * lookup view properties
      * </p>
      *
-     * @return Map<String, String> mapping of calling view properties to lookup view search fields
+     * @return mapping of calling view properties to lookup view search fields
      */
     @BeanTagAttribute(name = "lookupParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getLookupParameters() {
@@ -510,7 +510,7 @@ public class QuickFinder extends WidgetBase {
      * not be allowed to change the value
      * </p>
      *
-     * @return String property names (delimited by a comma) whose criteria fields should be read-only on the
+     * @return property names (delimited by a comma) whose criteria fields should be read-only on the
      *         lookup view
      */
     @BeanTagAttribute(name = "readOnlySearchFields")
@@ -537,7 +537,7 @@ public class QuickFinder extends WidgetBase {
      * return link can be disabled by setting this property to true
      * </p>
      *
-     * @return boolean true if the return link should not be shown, false if it should be
+     * @return true if the return link should not be shown, false if it should be
      */
     @BeanTagAttribute(name = "hideReturnLink")
     public Boolean getHideReturnLink() {
@@ -568,7 +568,7 @@ public class QuickFinder extends WidgetBase {
      * these cases you don't want to the user going off to another view (such as the maintenance view)
      * </p>
      *
-     * @return boolean true if actions should be rendered, false if not
+     * @return true if actions should be rendered, false if not
      */
     @BeanTagAttribute(name = "suppressActions")
     public Boolean getSuppressActions() {
@@ -593,7 +593,7 @@ public class QuickFinder extends WidgetBase {
      * generally used when search criteria is being passed in as well
      * </p>
      *
-     * @return boolean true if the search should be performed initially, false if not
+     * @return true if the search should be performed initially, false if not
      */
     @BeanTagAttribute(name = "autoSearch")
     public Boolean getAutoSearch() {
@@ -702,7 +702,7 @@ public class QuickFinder extends WidgetBase {
      * maintenance links in this situation, not the complete actions column TODO: this is not in place!
      * </p>
      *
-     * @return boolean true if maintenance links should be shown on the lookup view, false if not
+     * @return true if maintenance links should be shown on the lookup view, false if not
      */
     @BeanTagAttribute(name = "showMaintenanceLinks")
     public Boolean getShowMaintenanceLinks() {
@@ -770,7 +770,7 @@ public class QuickFinder extends WidgetBase {
     /**
      * Indicates whether a multi-values lookup should be requested
      *
-     * @return boolean true if multi-value lookup should be requested, false for normal lookup
+     * @return true if multi-value lookup should be requested, false for normal lookup
      */
     @BeanTagAttribute(name = "MultipleValuesSelect")
     public Boolean getMultipleValuesSelect() {
@@ -795,7 +795,7 @@ public class QuickFinder extends WidgetBase {
      * set automatically from the collection name associated with the group
      * </p>
      *
-     * @return String collection name (must be full binding path)
+     * @return collection name (must be full binding path)
      */
     @BeanTagAttribute(name = "lookupCollectionName")
     public String getLookupCollectionName() {

@@ -195,7 +195,7 @@ public class Suggest extends WidgetBase {
      * the property's value on the object will be used for both the value inserted on selection and the suggestion
      * text (most default cases only a valuePropertyName would be set).</p>
      *
-     * @return String source property name
+     * @return source property name
      */
     @BeanTagAttribute(name = "valuePropertyName")
     public String getValuePropertyName() {
@@ -275,7 +275,7 @@ public class Suggest extends WidgetBase {
      * subset of the properties on the object.
      * </p>
      *
-     * @return boolean true if the query method results should be used as the suggestions, false to assume
+     * @return true if the query method results should be used as the suggestions, false to assume
      *         objects are returned and suggestions are formed using the source property name
      */
     @BeanTagAttribute(name = "returnFullQueryObject")
@@ -308,7 +308,7 @@ public class Suggest extends WidgetBase {
      * set through configuration or a view helper method (for example a component finalize method)
      * </p>
      *
-     * @return boolean true to provide the suggest options initially, false to use ajax retrieval based on the
+     * @return true to provide the suggest options initially, false to use ajax retrieval based on the
      *         user's input
      */
     @BeanTagAttribute(name = "retrieveAllSuggestions")
@@ -339,7 +339,7 @@ public class Suggest extends WidgetBase {
      * and select method must be provided
      * </p>
      *
-     * @return List<Object> list of suggest options
+     * @return list of suggest options
      */
     @BeanTagAttribute(name = "suggestOptions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Object> getSuggestOptions() {
@@ -358,7 +358,7 @@ public class Suggest extends WidgetBase {
     /**
      * Returns the suggest options as a JS String (set by the framework from method invocation)
      *
-     * @return String suggest options JS string
+     * @return suggest options JS string
      */
     public String getSuggestOptionsJsString() {
         if (StringUtils.isNotBlank(suggestOptionsJsString)) {

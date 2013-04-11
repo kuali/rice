@@ -69,7 +69,7 @@ public class BlockUI extends WidgetBase {
      * the overlay. If not given just the message will be displayed
      * </p>
      *
-     * @return String url to the blocking image
+     * @return url to the blocking image
      */
     @BeanTagAttribute(name="blockingImageSource")
     public String getBlockingImageSource() {

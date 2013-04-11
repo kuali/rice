@@ -3477,55 +3477,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='standalone-external-help-missing']"));
     }
     
-    protected void testTravelAccountLookup() throws Exception {
-        selectFrameIframePortlet();
-
-        //Blank Search
-        waitAndClickByXpath(SEARCH_XPATH_3);
-        Thread.sleep(2000);
-
-        //  --------------------------------Further code will not run due to page exception------------------------------------
-        //assertElementPresentByLinkText("a1");
-        //ssertElementPresentByLinkText("a2");
-        //assertElementPresentByLinkText("a3");
-        
-        //QuickFinder Lookup
-        //waitAndTypeByName("lookupCriteria[number]", "a*");
-        //waitAndClickByXpath("//*[@id='u18']");
-        //Thread.sleep(2000);
-        //assertElementPresentByLinkText("a1");
-        //assertElementPresentByLinkText("a2");
-        //assertElementPresentByLinkText("a3");
-        //waitAndClickByXpath("//button[@id='u19']");
-        //Thread.sleep(2000);        
-        
-        //search with each field
-        //waitAndTypeByName("lookupCriteria[number]", "a2");
-        //waitAndClickByXpath("//*[@id='u18']");
-        //Thread.sleep(2000);
-        //assertElementPresentByLinkText("a2");
-        //waitAndClickByXpath("//button[@id='u19']");
-        //Thread.sleep(2000);               
-        // waitAndTypeByName("lookupCriteria[foId]", "1");
-        //waitAndClickByXpath("//*[@id='u18']");
-        //Thread.sleep(2000);
-        //assertEquals("1", getTextByXpath("//table[@id='u27']//tr//td[8]").trim().substring(0, 1));
-        //waitAndClickByXpath("//button[@id='u19']");
-        //Thread.sleep(2000);        
-        //selectOptionByName("lookupCriteria[extension.accountTypeCode]", "CAT");
-        //waitAndClickByXpath("//*[@id='u18']");
-        //waitAndClickByXpath("//table[@id='u27']//tr//td[2]//a");
-        //Thread.sleep(2000);
-        //selectTopFrame();
-        //Thread.sleep(5000);
-        //WebElement iframe1= driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
-        //driver.switchTo().frame(iframe1);
-        //assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
-        //assertEquals("CAT - Clearing Account Type", getTextByXpath("//*[@id='u44_control']").trim());
-        //waitAndClickByXpath("//button[@id='u13']");
-        //selectFrame("iframeportlet");
-    }
-
     protected void testReferenceCampusTypeBlanketApprove() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();

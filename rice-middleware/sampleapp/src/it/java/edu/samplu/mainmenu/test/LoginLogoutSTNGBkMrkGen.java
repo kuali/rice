@@ -19,7 +19,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 /**
- * TestNG implementation of LoginLogoutSTNGBase that goes directly to the page under test by a bookmarkable url,
+ * TestNG implementation of (@link LoginLogoutSTNGBase} that goes directly to the page under test by a bookmarkable url,
  * avoiding navigation.  In the future the idea is to generate this class using the test methods
  * from LoginLogoutAbstractSmokeTestBase and following the simple pattern of <pre>testMethodBookmark(this);</pre>
 
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 public class LoginLogoutSTNGBkMrkGen extends LoginLogoutSTNGBase {
 
     /**
-     * {@link LoginLogoutSTNGBase#testLogoutBookmark(edu.samplu.common.Failable)}
+     * {@link LoginLogoutAbstractSmokeTestBase#testLogoutBookmark(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testLogoutBookmark")

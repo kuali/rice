@@ -18,8 +18,8 @@ package edu.samplu.mainmenu.test;
 import org.junit.Test;
 
 /**
- * JUnit implementation of LoginLogoutSTJUnitBase that goes directly to the page under test by a bookmarkable url,
- * avoiding navigation.  In the future the idea is to generate this class using the test methods from LoginLogoutAbstractSmokeTestBase and following the
+ * JUnit implementation of {@link LoginLogoutSTJUnitBase} that goes directly to the page under test by a bookmarkable url,
+ * avoiding navigation.  In the future the idea is to generate this class using the test methods from {@link LoginLogoutAbstractSmokeTestBase} and following the
  * simple pattern of <pre>testMethodBookmark(this);</pre>
  *
  * @see LoginLogoutSTJUnitBase
@@ -29,7 +29,7 @@ import org.junit.Test;
 public class LoginLogoutSTJUnitBkMrkGen extends LoginLogoutSTJUnitBase {
 
     /**
-     * {@link LoginLogoutSTJUnitBase#testLogoutBookmark(edu.samplu.common.Failable)}
+     * {@link LoginLogoutAbstractSmokeTestBase#testLogoutBookmark(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test

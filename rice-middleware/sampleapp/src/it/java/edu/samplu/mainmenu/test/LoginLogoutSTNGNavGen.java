@@ -19,8 +19,8 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 /**
- * TestNG implementation of LoginLogoutSTNGBase that navigates through the UI to the page under test.  In the future
- * the idea is to generate this class using the test methods from LoginLogoutAbstractSmokeTestBase and following the simple pattern of
+ * TestNG implementation of (@link LoginLogoutSTNGBase} that navigates through the UI to the page under test.  In the future
+ * the idea is to generate this class using the test methods from {@link LoginLogoutAbstractSmokeTestBase} and following the simple pattern of
  * <pre>testMethodNav(this);</pre>.
  *
  * @see LoginLogoutSTNGBase
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 public class LoginLogoutSTNGNavGen extends LoginLogoutSTNGBase {
 
     /**
-     * {@link LoginLogoutSTNGBase#testLogoutNav(edu.samplu.common.Failable)}
+     * {@link LoginLogoutAbstractSmokeTestBase#testLogoutNav(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test(groups = { "all", "fast", "default", "nav" }, description = "testLogoutNav")

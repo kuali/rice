@@ -18,8 +18,8 @@ package edu.samplu.mainmenu.test;
 import org.junit.Test;
 
 /**
- * JUnit implementation of LoginLogoutSTJUnitBase that navigates through the UI to the page under test.  In the future
- * the idea is to generate this class using the test methods from LoginLogoutAbstractSmokeTestBase and following the simple pattern of
+ * JUnit implementation of {@link LoginLogoutSTJUnitBase} that navigates through the UI to the page under test.  In the future
+ * the idea is to generate this class using the test methods from {@link LoginLogoutAbstractSmokeTestBase} and following the simple pattern of
  * <pre>super.testMethodNav(this);</pre>
  *
  * @see LoginLogoutSTJUnitBase
@@ -29,7 +29,7 @@ import org.junit.Test;
 public class LoginLogoutSTJUnitNavGen extends LoginLogoutSTJUnitBase {
 
     /**
-     * {@link LoginLogoutSTJUnitBase#testLogoutNav(edu.samplu.common.Failable)}
+     * {@link LoginLogoutAbstractSmokeTestBase#testLogoutNav(edu.samplu.common.Failable)}
      * @throws Exception
      */
     @Test

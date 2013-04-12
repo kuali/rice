@@ -25,11 +25,24 @@
       section that has the problem in the Jira. Thanks for your help in improving the
       documentation!</para></legalnotice>
   </info>
-
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KEW.xml" />
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KEW_AG.xml" />
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_KEW.xml" />
-
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Overview.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Peopleflow.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Actions.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Documents.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Preferences.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Routing.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Docops.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Build.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Config.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Admin.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Parms.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Defs.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Workflow.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_eDocLite.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_DocSearch.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_DocLink.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_Reporting.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_WFPlugin.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KEW_Guide/KEW_ServiceBus.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../common/glossary.xml"/>
-
 </book>

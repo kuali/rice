@@ -82,13 +82,14 @@ public abstract class DeleteSubCollectionLineAbstractSmokeTestBase extends WebDr
 
         // confirm that the input box containing the modified value is not present
         for (int second = 0;; second++) {
-            if (second >= waitSeconds)
-                fail(TIMEOUT_MESSAGE);
+            if (second >= waitSeconds)fail(TIMEOUT_MESSAGE);
+            
             try {
                 System.out.println("Loop ----- " + second);
                 if (!"selenium".equals(getAttributeByName(FIELD_ELEMENT_NAME, "value")))
                     break;
             } catch (Exception e) {}
+            
             Thread.sleep(1000);
         }
 

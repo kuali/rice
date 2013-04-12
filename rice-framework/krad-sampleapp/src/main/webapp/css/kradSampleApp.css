@@ -263,6 +263,14 @@
     font-size: 14px;
 }
 
+.uif-page > .uif-header-contentWrapper{
+    position: relative;
+}
+
+.uif-page > .uif-header-contentWrapper > .uif-header{
+    position: static;
+}
+
 .demo-componentLibView .demo-sampleAppPage > .uif-pageHeader > h2 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 24px;

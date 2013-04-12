@@ -201,9 +201,12 @@ ul.uif-readOnlyStringList li {
     width: 100%;
 }
 
+.uif-header{
+    position: relative;
+}
+
 .uif-viewHeader {
     /* relative to position some icons/links on header line */
-    position: relative;
     padding-left: 15px;
 }
 

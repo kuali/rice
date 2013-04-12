@@ -1156,9 +1156,8 @@ tail -n 500 -f catalina.out</programlisting>
                         directory. </para>
                 </listitem>
                 <listitem>
-                    <para>You can generate the keystore yourself. Please refer to the <link xlink:href="TRG.html#security_and_keystores">Security and Keystores</link> 
-                        section in the <link xlink:href="TRG.html#TRG_KSB">KSB chapter</link> of the <link xlink:href="TRG.html">Technical Reference Guide</link> for the
-                        steps to accomplish this.</para>
+                    <para>You can generate the keystore yourself. Please refer to the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KSB_Guide.html#security_and_keystores">Security and Keystores</link> 
+                        section in the KSB Guide for the steps to accomplish this.</para>
                 </listitem>
             </orderedlist></para>
         </section>

@@ -175,6 +175,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         if (serviceName != null) {
             String version = "2.0.0"; // default version since the base services have been available since then
             RoleTypeService roleTypeService = null;
+
             try {
 
                 ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
@@ -191,8 +192,10 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
             } catch (Exception ex) {
                 roleTypeService = (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
             }
+
             return new VersionedService<RoleTypeService>(version, roleTypeService);
         }
+
         return null;
     }
 

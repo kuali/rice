@@ -55,7 +55,6 @@ public abstract class TravelAccountLookupAbstractSmokeTestBase extends WebDriver
 
     protected void navigation() throws InterruptedException {
         waitAndClickKRAD();
-        selectFrameIframePortlet();
         waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);
     }
 

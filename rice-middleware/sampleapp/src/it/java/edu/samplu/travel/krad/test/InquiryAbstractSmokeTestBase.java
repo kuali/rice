@@ -72,7 +72,6 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
 
     protected void navigation() throws Exception {
         waitAndClickKRAD();
-        selectFrameIframePortlet();
         //waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);
         waitAndClickByXpath("(//a[contains(text(),'Travel Account Lookup')])[3]");
     }

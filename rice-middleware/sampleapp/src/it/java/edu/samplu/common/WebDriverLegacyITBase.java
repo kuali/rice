@@ -517,7 +517,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         try {
             driver.findElement(By.xpath(locator));
         } catch (Exception e) {
-            SeleneseTestBase.fail(locator + " not present " + message);
+            jiraAwareFail(By.xpath(locator), message, e);
         }
     }
 

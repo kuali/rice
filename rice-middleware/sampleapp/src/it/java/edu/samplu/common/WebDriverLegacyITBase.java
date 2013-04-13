@@ -958,7 +958,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     private void jiraAwareFail(By by, String message, Throwable t) {
-        ITUtil.failOnMatchedJira(by.toString(), this);
+        ITUtil.failOnMatchedJira(by.toString(), message, this);
         // if there isn't a matched jira to fail on, then fail
         fail(t.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
     }

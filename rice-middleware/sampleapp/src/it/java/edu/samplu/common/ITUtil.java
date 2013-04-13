@@ -330,6 +330,17 @@ public class ITUtil {
         }
     }
 
+    /**
+     * Calls failOnMatchedJira with the contents and if no match is detected then the message.
+     * @param contents to check for containing of the jiraMatches keys.
+     * @param message to check for containing of the jiraMatches keys if contents doesn't
+     * @param failable to fail with the jiraMatches value if the contents or message is detected
+     */
+    public static void failOnMatchedJira(String contents, String message, Failable failable) {
+        failOnMatchedJira(contents, failable);
+        failOnMatchedJira(message, failable);
+    }
+
     private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
         final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
         failable.fail(incidentReportInformation);

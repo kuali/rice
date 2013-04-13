@@ -85,7 +85,6 @@ public abstract class DeleteSubCollectionLineAbstractSmokeTestBase extends WebDr
             if (second >= waitSeconds)fail(TIMEOUT_MESSAGE);
             
             try {
-                System.out.println("Loop ----- " + second);
                 if (!"selenium".equals(getAttributeByName(FIELD_ELEMENT_NAME, "value")))
                     break;
             } catch (Exception e) {}

@@ -68,7 +68,6 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
     protected void testClientErrors() throws Exception {
         fireEvent("field1", "focus");
         fireEvent("field1", "blur");
-        System.out.println("This is value ----------------" + getAttributeByName("field1", "aria-invalid"));
         Thread.sleep(3000);
         fireMouseOverEventByName("field1");
         SeleneseTestBase.assertEquals("true", getAttributeByName("field1", "aria-invalid"));

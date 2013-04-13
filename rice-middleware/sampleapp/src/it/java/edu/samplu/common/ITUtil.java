@@ -181,14 +181,11 @@ public class ITUtil {
         jiraMatches.put(ComponentAbstractSmokeTestBase.CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT + ComponentAbstractSmokeTestBase.FOR_TEST_MESSAGE,
                 KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
-        jiraMatches.put("Unable to locate element: {\"method\":\"xpath\",\"selector\":\"//*[@id='u229']\"}",
-                KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
+        jiraMatches.put("//*[@id='u229']", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
-        jiraMatches.put("Unable to locate element: {\"method\":\"xpath\",\"selector\":\"(//a[contains(text(),'Travel Account Lookup')])[3]\"}",
-                KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
+        jiraMatches.put("//a[contains(text(),'Travel Account Lookup')])[3]", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
-        jiraMatches.put("Unable to locate element: {\"method\":\"link text\",\"selector\":\"Travel Account Lookup\"}",
-                KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
+        jiraMatches.put("By.linkText: Travel Account Lookup", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
         //        jiraMatches.put("",
 //                "");

@@ -725,7 +725,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 //            if (second >= waitSeconds)
 //                fail(TIMEOUT_MESSAGE);
 //            try {
-//                System.out.println("Loop ----- " + second);
 //                if (!"selenium".equals(getAttributeByName("list4[0].subList[0].field1", "value")))
 //                    break;
 //            } catch (Exception e) {}
@@ -1345,7 +1344,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("--------------------------------New Parameter Created-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
@@ -1376,7 +1374,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("--------------------------------New Parameter Type Created-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
@@ -1418,7 +1415,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("-----------------------------------Parameter Copied-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
@@ -1450,7 +1446,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("-----------------------------------Parameter Type Copied-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
@@ -1540,7 +1535,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("-----------------------------------Parameter Type Edited-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
@@ -1571,7 +1565,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
-        System.out.println("-----------------------------------Parameter Edited-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
@@ -1650,7 +1643,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         //waitAndClick("link=Main Menu");
         //waitForPageToLoad50000();
         //assertEquals(windowTitles[0], getTitle());
-        //System.out.println("---------------------- :: Test complete :: ----------------------");
         //-----Step 3 verified that doc is final -------
     }
 
@@ -1904,7 +1896,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 .trim());
         waitAndClickCloseWindow();
         switchToWindow("null");
-        System.out.println("--------------------------------Lookup And View Successful-------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterName);
@@ -2016,7 +2007,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertElementPresentByXpath("//div[contains(.,'Template (Template) is a required field.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'Permission Namespace (Permission Namespace) is a required field.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'Permission Name (Permission Name) is a required field.')]/img[@alt='error']");
-        System.out.println("------------------------------------Validation Test Successful--------------------------");
         selectOptionByName("document.newMaintainableObject.templateId", "36");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-SYS");
         permissionName = "removeme" + ITUtil.DTS_TWO;
@@ -2031,7 +2021,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitForPageToLoad();
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         SeleneseTestBase.assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
-        System.out.println("------------------------------------Permission document submitted successfully--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
@@ -2045,7 +2034,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByName("name", permissionName);
         waitAndClickSearch();
         isElementPresentByLinkText(permissionName);
-        System.out.println("----------------------------------Lookup successful-----------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
@@ -2063,8 +2051,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickSubmit();
         waitForPageToLoad();
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
-        System.out.println(
-                "------------------------------------Inactivation of Permission successfull--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
@@ -2104,7 +2090,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'At least one name must be entered.')]/img[@alt='error']");
-        System.out.println("------------------------------------Validation Test Successful--------------------------");     
         selectOptionByName("newAffln.affiliationTypeCode", "STDNT");
         selectOptionByName("newAffln.campusCode", "BL");
         checkByName("newAffln.dflt");
@@ -2122,7 +2107,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitForPageToLoad();
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         SeleneseTestBase.assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
-        System.out.println("------------------------------------Person document submitted successfully--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
@@ -2148,7 +2132,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByName("campusCode", "BL");
         waitAndClickSearch();
         isElementPresentByLinkText(personName);
-        System.out.println("----------------------------------Lookup successful-----------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
@@ -2184,7 +2167,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Membership']");
         waitAndClickCloseWindow();
         switchToWindow("null");
-        System.out.println("------------------------------------Viewing from Inquiry Framework Test Successful--------------------------");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
@@ -3078,7 +3060,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 "element[1].style.display='none'"; 
         Thread.sleep(3000);
         ((JavascriptExecutor) driver).executeScript(javascript);
-        System.out.println("==============="+isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         
         // test tooltip help of field with label to the right

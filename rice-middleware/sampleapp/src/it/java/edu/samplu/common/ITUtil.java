@@ -15,6 +15,7 @@
  */
 package edu.samplu.common;
 
+import edu.samplu.admin.test.ComponentAbstractSmokeTestBase;
 import org.apache.commons.lang.RandomStringUtils;
 
 import java.io.BufferedReader;
@@ -171,6 +172,9 @@ public class ITUtil {
         jiraMatches.put("Error: on line 135, column 39 in krad/WEB-INF/ftl/lib/grid.ftl",
                 "KULRICE-9047 Term maintenance freemarker exception ");
 
+        jiraMatches.put(ComponentAbstractSmokeTestBase.CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT + ComponentAbstractSmokeTestBase.FOR_TEST_MESSAGE,
+                "KULRICE-8823 Fix broken smoke tests in CI");
+
         //        jiraMatches.put("",
 //                "");
 
@@ -308,6 +312,12 @@ public class ITUtil {
         }
     }
 */
+
+    /**
+     * If the contents contents the jiraMatches key, call fail on failable passing in the jiraMatches value for the matched key.
+     * @param contents to check for containing of the jiraMatches keys.
+     * @param failable to fail with the jiraMatches value if the jiraMatches key is contained in the contents
+     */
     public static void failOnMatchedJira(String contents, Failable failable) {
         Iterator<String> iter = jiraMatches.keySet().iterator();
         String key = null;

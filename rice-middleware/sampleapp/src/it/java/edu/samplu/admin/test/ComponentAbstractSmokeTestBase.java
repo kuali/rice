@@ -25,7 +25,13 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBase {
+
     String docId;
+
+    /**
+     *  for Component Parameter
+     */
+    public static final String FOR_TEST_MESSAGE = " for Component Parameter";
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + ITUtil.getBaseUrlString() +
@@ -85,7 +91,7 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
         waitAndCreateNew();
         String componentName = "TestName" + ITUtil.DTS_TWO;
         String componentCode = "TestCode" + ITUtil.DTS_TWO;
-        docId = testCreateNewComponent(componentName, componentCode);
+        docId = testCreateNewComponent(componentName, componentCode, FOR_TEST_MESSAGE);
 
         //Lookup
         gotoTest();

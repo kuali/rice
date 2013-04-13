@@ -123,6 +123,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String COPY_LINK_TEXT = "copy";
 
     /**
+     * New Document not submitted successfully
+     */
+    public static final String CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT = "New Document not submitted successfully";
+
+    /**
      * //img[@alt='create new']
      */
     public static final String CREATE_NEW_XPATH = "//img[@alt='create new']";
@@ -2879,8 +2884,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByName("methodToCall.processAnswer.button0");
         passed();
     }
-    
+
     protected String testCreateNewComponent(String componentName, String componentCode) throws Exception {
+        return testCreateNewComponent(componentName, componentCode, "");
+    }
+
+    protected String testCreateNewComponent(String componentName, String componentCode, String message) throws Exception {
         waitForPageToLoad();
         String docId = waitForDocId();
         
@@ -2893,7 +2902,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickSave();
         waitAndClickSubmit();
         waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT  + message);
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();

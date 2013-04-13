@@ -49,6 +49,11 @@ public class ITUtil {
     public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
 
     /**
+     * remote.driver.dontTearDown
+     */
+    public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
+
+    /**
      * /portal.do
      */
     public static final  String PORTAL = "/portal.do";
@@ -134,15 +139,16 @@ public class ITUtil {
     public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
 
     /**
-     * remote.driver.dontTearDown
+     * KULRICE-8823 Fix broken smoke tests in CI
      */
-    public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
+    public static final String KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI = "KULRICE-8823 Fix broken smoke tests in CI";
 
     /**
      * https://jira.kuali.org/browse/
      */
     public static final String JIRA_BROWSE_URL = "https://jira.kuali.org/browse/";
     static Map<String, String> jiraMatches;
+
     static {
         jiraMatches = new HashMap<String, String>();
         jiraMatches.put("Error setting property values; nested exception is org.springframework.beans.NotWritablePropertyException: Invalid property 'refreshWhenChanged' of bean class [org.kuali.rice.krad.uif.element.Action]: Bean property 'refreshWhenChanged' is not writable or has an invalid setter method. Does the parameter type of the setter match the return type of the getter?",
@@ -173,7 +179,16 @@ public class ITUtil {
                 "KULRICE-9047 Term maintenance freemarker exception ");
 
         jiraMatches.put(ComponentAbstractSmokeTestBase.CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT + ComponentAbstractSmokeTestBase.FOR_TEST_MESSAGE,
-                "KULRICE-8823 Fix broken smoke tests in CI");
+                KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
+
+        jiraMatches.put("Unable to locate element: {\"method\":\"xpath\",\"selector\":\"//*[@id='u229']\"}",
+                KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
+
+        jiraMatches.put("Unable to locate element: {\"method\":\"xpath\",\"selector\":\"(//a[contains(text(),'Travel Account Lookup')])[3]\"}",
+                KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
+
+        jiraMatches.put("Unable to locate element: {\"method\":\"link text\",\"selector\":\"Travel Account Lookup\"}",
+                KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
         //        jiraMatches.put("",
 //                "");

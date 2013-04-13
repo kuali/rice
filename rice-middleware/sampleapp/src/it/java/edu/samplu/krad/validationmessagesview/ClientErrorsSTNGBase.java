@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.validationmessagesview;
 
-import edu.samplu.travel.krad.test.TravelAccountLookupAbstractSmokeTestBase;
 import org.testng.AssertJUnit;
 
 /**

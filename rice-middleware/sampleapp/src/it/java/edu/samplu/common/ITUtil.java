@@ -151,32 +151,6 @@ public class ITUtil {
 
     static {
         jiraMatches = new HashMap<String, String>();
-        jiraMatches.put("Error setting property values; nested exception is org.springframework.beans.NotWritablePropertyException: Invalid property 'refreshWhenChanged' of bean class [org.kuali.rice.krad.uif.element.Action]: Bean property 'refreshWhenChanged' is not writable or has an invalid setter method. Does the parameter type of the setter match the return type of the getter?",
-                "KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'");
-
-        jiraMatches.put("org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules(MaintenanceDocumentRuleBase.",
-                "KULRICE-8142 NPE in MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules");
-
-        jiraMatches.put("at org.kuali.rice.krad.rules.DocumentRuleBase.isDocumentOverviewValid(DocumentRuleBase.",
-                "KULRICE-8134 NPE in DocumentRuleBase.isDocumentOverviewValid(DocumentRuleBase");
-
-        jiraMatches.put("org.kuali.rice.krad.uif.layout.TableLayoutManager.buildLine(TableLayoutManager.",
-                "KULRICE-8160 NPE at TableLayoutManager.buildLine(TableLayoutManager");
-
-        jiraMatches.put("Bean property 'configFileLocations' is not writable or has an invalid setter method. Does the parameter type of the setter match the return type of the getter?",
-                "KULRICE-8173 Bean property 'configFileLocations' is not writable or has an invalid setter method");
-
-        jiraMatches.put("Bean property 'componentSecurity' is not readable or has an invalid getter method: Does the return type of the getter match the parameter type of the setter?",
-                "KULRICE-8182 JDK7 Bean property 'componentSecurity' is not readable...");
-
-        jiraMatches.put("java.sql.SQLSyntaxErrorException: ORA-00904: \"ROUTEHEADERID\": invalid identifier",
-                "KULRICE-8277 Several ITs fail with OJB operation; bad SQL grammar []; nested exception is java.sql.SQLException: ORA-00904: \"ROUTEHEADERID\": invalid identifier");
-
-        jiraMatches.put("By.xpath: //button[@data-loadingmessage='Adding Line...']",
-                "KULRICE-9044 KRAD \"stacked\" collection elements are not rendering add/delete buttons ");
-
-        jiraMatches.put("Error: on line 135, column 39 in krad/WEB-INF/ftl/lib/grid.ftl",
-                "KULRICE-9047 Term maintenance freemarker exception ");
 
         jiraMatches.put(ComponentAbstractSmokeTestBase.CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT + ComponentAbstractSmokeTestBase.FOR_TEST_MESSAGE,
                 KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
@@ -187,7 +161,9 @@ public class ITUtil {
 
         jiraMatches.put("By.linkText: Travel Account Lookup", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
-        //        jiraMatches.put("",
+        jiraMatches.put("//a[contains(text(),'Validation - Regex')", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
+
+//        jiraMatches.put("",
 //                "");
 
     }

@@ -341,12 +341,19 @@ public class ITUtil {
      * @return
      */
     public static String prettyHttp(String baseUrl) {
+
+        if (baseUrl.indexOf(".") == -1) {
+            baseUrl = baseUrl + ".rice.kuali.org";
+        }
+
         if (baseUrl.endsWith("/")) {
             baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
         }
+
         if (!baseUrl.startsWith("http")) {
             baseUrl = "http://" + baseUrl;
         }
+
         return baseUrl;
     }
 

@@ -381,6 +381,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public abstract String getTestUrl();
 
+    @org.junit.BeforeClass
+    @org.testng.annotations.BeforeClass
+    public static void beforeClass() {
+        System.out.println();
+    }
+
     /**
      * Setup the WebDriver properties, test, and login
      *

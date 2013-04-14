@@ -287,7 +287,7 @@ public class WebDriverUtil {
     }
     
     public static void failOnMatchedJira(String contents, Failable failable) {
-        ITUtil.failOnMatchedJira(contents, failable);
+        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
     }
     
     private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {

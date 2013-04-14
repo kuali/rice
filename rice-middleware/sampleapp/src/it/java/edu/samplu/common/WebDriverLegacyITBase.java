@@ -957,7 +957,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     private void jiraAwareFail(By by, String message, Throwable t) {
-        ITUtil.failOnMatchedJira(by.toString(), message, this);
+        JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
         // if there isn't a matched jira to fail on, then fail
         fail(t.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
     }
@@ -4038,7 +4038,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             jiraAwareWaitFor(by, "");
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
-            ITUtil.failOnMatchedJira(by.toString(), this);
+            JiraAwareFailureUtil.failOnMatchedJira(by.toString(), this);
             fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
                     + " current url " + driver.getCurrentUrl()
                     + "\n" + ITUtil.deLinespace(driver.getPageSource()));

@@ -15,7 +15,6 @@
  */
 package edu.samplu.common;
 
-import edu.samplu.admin.test.ComponentAbstractSmokeTestBase;
 import org.apache.commons.lang.RandomStringUtils;
 
 import java.io.BufferedReader;
@@ -26,21 +25,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * TODO:
  * <ol>
+ *   <li>Keep WebDriver dependencies out of this class, those should be in {@link WebDriverUtil}</li>
  *   <li>Keep JUnit or TestNG dependencies out of in this class.</li>
- *   <li>Once and Only Once WAIT_DEFAULT_SECONDS and WebDriverLegacyITBase.DEFAULT_WAIT_SEC</li>
+ *   <li>Extract Hub specific logic?/li>
  *   <li>Rename to SmokeTestUtil or such</li>
- *   <li>Extract jiraMatches data to property file</li>
  * </ol>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class ITUtil {
 
     /**
@@ -49,9 +44,54 @@ public class ITUtil {
     public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
 
     /**
+     * //div[@class='error']"
+     */
+    public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
+
+    /**
+     * //div[@class='msg-excol']
+     */
+    public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
+
+    /**
      * remote.driver.dontTearDown
      */
     public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
+
+    /**
+     * Calendar.getInstance().getTimeInMillis() + ""
+     */
+    public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
+
+    /**
+     * Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase()
+     */
+    public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
+
+    /**
+     *  &hideReturnLink=true
+     */
+    public static final String HIDE_RETURN_LINK =  "&hideReturnLink=true";
+
+    /**
+     * remote.public.hub
+     */
+    public static final String HUB_PROPERTY = "remote.public.hub";
+
+    /**
+     * remote.public.driver
+     */
+    public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
+
+    /**
+     * http://localhost:4444/wd/hub
+     */
+    public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
+
+    /**
+     * /kr-krad/lookup?methodToCall=start&dataObjectClassName=
+     */
+    public static final String KRAD_LOOKUP_METHOD =  "/kr-krad/lookup?methodToCall=start&dataObjectClassName=";
 
     /**
      * /portal.do
@@ -74,46 +114,6 @@ public class ITUtil {
     public static final String SHOW_MAINTENANCE_LINKS =  "&showMaintenanceLinks=true";
 
     /**
-     *  &hideReturnLink=true
-     */
-    public static final String HIDE_RETURN_LINK =  "&hideReturnLink=true";
-
-    /**
-     * /kr-krad/lookup?methodToCall=start&dataObjectClassName=
-     */
-    public static final String KRAD_LOOKUP_METHOD =  "/kr-krad/lookup?methodToCall=start&dataObjectClassName=";
-
-    /**
-     * Calendar.getInstance().getTimeInMillis() + ""
-     */
-    public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
-
-    /**
-     * Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase()
-     */
-    public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
-
-    /**
-     * //div[@class='error']"
-     */
-    public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
-
-    /**
-     * //div[@class='msg-excol']
-     */
-    public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
-
-    /**
-     * 60
-     */
-    public static final int WAIT_DEFAULT_SECONDS = 60;
-
-    /**
-     * "30000"
-     */
-    public static final String DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT = "30000";
-
-    /**
      * remote.public.url
      */
     public static final String REMOTE_PUBLIC_URL_PROPERTY = "remote.public.url";
@@ -122,51 +122,6 @@ public class ITUtil {
      * remote.autologin
      */
     public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
-
-    /**
-     * remote.public.hub
-     */
-    public static final String HUB_PROPERTY = "remote.public.hub";
-
-    /**
-     * remote.public.driver
-     */
-    public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
-
-    /**
-     * http://localhost:4444/wd/hub
-     */
-    public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
-
-    /**
-     * KULRICE-8823 Fix broken smoke tests in CI
-     */
-    public static final String KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI = "KULRICE-8823 Fix broken smoke tests in CI";
-
-    /**
-     * https://jira.kuali.org/browse/
-     */
-    public static final String JIRA_BROWSE_URL = "https://jira.kuali.org/browse/";
-    static Map<String, String> jiraMatches;
-
-    static {
-        jiraMatches = new HashMap<String, String>();
-
-        jiraMatches.put(ComponentAbstractSmokeTestBase.CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT + ComponentAbstractSmokeTestBase.FOR_TEST_MESSAGE,
-                KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
-
-        jiraMatches.put("//*[@id='u229']", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
-
-        jiraMatches.put("//a[contains(text(),'Travel Account Lookup')])[3]", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
-
-        jiraMatches.put("By.linkText: Travel Account Lookup", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
-
-        jiraMatches.put("//a[contains(text(),'Validation - Regex')", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
-
-//        jiraMatches.put("",
-//                "");
-
-    }
 
     public static String blanketApprovalCleanUpErrorText(String errorText) {
         errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
@@ -301,34 +256,6 @@ public class ITUtil {
     }
 */
 
-    /**
-     * If the contents contents the jiraMatches key, call fail on failable passing in the jiraMatches value for the matched key.
-     * @param contents to check for containing of the jiraMatches keys.
-     * @param failable to fail with the jiraMatches value if the jiraMatches key is contained in the contents
-     */
-    public static void failOnMatchedJira(String contents, Failable failable) {
-        Iterator<String> iter = jiraMatches.keySet().iterator();
-        String key = null;
-
-        while (iter.hasNext()) {
-            key = iter.next();
-            if (contents.contains(key)) {
-                failable.fail(JIRA_BROWSE_URL + jiraMatches.get(key));
-            }
-        }
-    }
-
-    /**
-     * Calls failOnMatchedJira with the contents and if no match is detected then the message.
-     * @param contents to check for containing of the jiraMatches keys.
-     * @param message to check for containing of the jiraMatches keys if contents doesn't
-     * @param failable to fail with the jiraMatches value if the contents or message is detected
-     */
-    public static void failOnMatchedJira(String contents, String message, Failable failable) {
-        failOnMatchedJira(contents, failable);
-        failOnMatchedJira(message, failable);
-    }
-
     private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
         final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
         failable.fail(incidentReportInformation);
@@ -424,7 +351,7 @@ public class ITUtil {
     }
 
     private static void processFreemarkerException(String contents, String linkLocator, Failable failable, String message) {
-        failOnMatchedJira(contents, failable);
+        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
         String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
         failable.fail(
                 "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + stackTrace
@@ -454,7 +381,7 @@ public class ITUtil {
 */
 
     protected static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
-        failOnMatchedJira(contents, failable);
+        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
 
         if (contents.indexOf("Incident Feedback") > -1) {
             failWithReportInfo(contents, linkLocator, failable, message);

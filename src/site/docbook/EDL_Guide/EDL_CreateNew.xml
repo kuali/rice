@@ -181,12 +181,12 @@
             <title>Restricted read/write rights</title>
             <itemizedlist>
                 <listitem>
-                    <para>Some fields in eDocLite can be set as <emphasis role="bold"
+                    <para>Some fields in eDocLite can be set as <emphasis role="keyword"
                         >GlobalReadOnly</emphasis>. With this setting they are disabled
                         and can’t be edited by any user other than the author. </para>
                 </listitem>
                 <listitem>
-                    <para>Some fields in eDocLite can be set as <emphasis role="bold"
+                    <para>Some fields in eDocLite can be set as <emphasis role="keyword"
                         >ReadOnly</emphasis>, but users with rights can still edit them.
                         After the initiator writes them they are disabled and become locked
                         to some of the users in the routing process. But for users with

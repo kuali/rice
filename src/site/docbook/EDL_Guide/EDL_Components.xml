@@ -45,7 +45,7 @@
                     definition. The file Edoclite.xsd found in source under the
                     impl/src/main/resources/schema/ directory describes the xml rules for this
                     section.</para>
-                <para>Note that the first few lines proceeding <emphasis role="italic">&lt;edl
+                <para>Note that the first few lines proceeding <emphasis role="keyword">&lt;edl
                         name="eDoc.Example1.Form"</emphasis> relate to namespace definitions. These
                     are common across all eDocLites, so this guide does not discuss them. </para>
                 <para>In this example, any XML markup that has no value shown or that is not
@@ -134,10 +134,10 @@
     &lt;/edl>
     &lt;/eDocLite>
 &lt;/data></programlisting>
-                <para>In the EDL XML file, field definition is embodied in the <emphasis role="bold"
-                        >edl</emphasis> element. This element has a <emphasis role="bold"
+                <para>In the EDL XML file, field definition is embodied in the <emphasis role="keyword"
+                    >edl</emphasis> element. This element has a <emphasis role="keyword"
                         >name</emphasis> attribute that is used to identify this file as a
-                    definition of an EDL form. It often has a <emphasis role="bold">title</emphasis>
+                    definition of an EDL form. It often has a <emphasis role="keyword">title</emphasis>
                     for display purposes.</para>
                 <para>Examination of this code shows that <itemizedlist>
                         <listitem>
@@ -169,23 +169,23 @@
                     EDL that the browser will present and contains logic to determine how data is
                     rendered to the user.</para>
                 <para>A major workhorse of the XSLT code is contained in a style sheet library
-                    called <emphasis role="bold">widgets.xml</emphasis>. In the example below, it's
-                    included in the style sheet using an <emphasis role="italic"
+                    called <emphasis role="keyword">widgets.xml</emphasis>. In the example below, it's
+                    included in the style sheet using an <emphasis role="keyword"
                         >xsl:include</emphasis> directive.</para>
                 <para>Workflow Java classes have API’s that offer methods that supply valuable
                     information to the XSLT style sheet logic. XML allows you to interrogate the
-                    current value of <emphasis role="italic">EDL</emphasis>-defined fields, and it
+                    current value of <emphasis role="keyword">EDL</emphasis>-defined fields, and it
                     provides a variety of built-in functions.</para>
                 <para>Together, these helpers allow the eDocLite style sheet programmer to focus on
                     rendering fields and titles using library (widget) calls and to perform
                     necessary logic using the constructs built into the XML language(<emphasis
-                        role="bold">if</emphasis>, <emphasis role="bold">choose…when</emphasis>,
+                        role="keyword">if</emphasis>, <emphasis role="keyword">choose…when</emphasis>,
                     etc.).</para>
                 <para>This is the area of eDocLite development that takes the longest and is the
-                    most tedious. Much of what the eDocLite style sheet programmer writes focuses on
-                    which fields and titles appear, in what order, to which users, and whether the
-                    fields are <emphasis role="italic">readOnly</emphasis>, <emphasis role="italic"
-                        >editable</emphasis>, or <emphasis role="italic">hidden</emphasis>.</para>
+            most tedious. Much of what the eDocLite style sheet programmer writes focuses on are:
+            which fields and titles appear, in what order, to which users, and whether the fields
+            are <emphasis role="keyword">readOnly</emphasis>, <emphasis role="keyword"
+                >editable</emphasis>, or <emphasis role="keyword">hidden</emphasis>.</para>
                 <para>Below is the style sheet section of the EDL XML form for our example. It
                     contains embedded comments.</para>
                 <programlisting>&lt;!-- widgets is simply more xslt that contains common functionality that greatly simplifies html rendering 
@@ -371,30 +371,30 @@ EDL EDoclite Example
                 <para>The beginning portion of this style sheet defines some XSL variables that are
                     often useful to drive logic choices. For simplicity, this example uses very
                     little logic. </para>
-                <para>The <emphasis role="italic">isPastInitiated</emphasis> variable drives whether
+                <para>The <emphasis role="keyword">isPastInitiated</emphasis> variable drives whether
                     a user-defined EDL field renders readOnly or not. </para>
-                <para>The <emphasis role="italic">mainform</emphasis> often serves to call some
+                <para>The <emphasis role="keyword">mainform</emphasis> often serves to call some
                     common widget templates that add canned functionality. The <emphasis
-                        role="italic">mainform</emphasis> then calls the <emphasis role="italic"
+                        role="keyword">mainform</emphasis> then calls the <emphasis role="keyword"
                         >mainBody</emphasis> template, which creates the html to render the
-                    EDL-defined fields. The <emphasis role="italic">mainform</emphasis> then
-                    (optional) calls the notes, buttons, and footer templates.</para>
-                <para>The majority of your programming effort goes into the <emphasis role="italic"
-                        >mainBody</emphasis>, where calls to <emphasis role="italic"
+                    EDL-defined fields. The <emphasis role="keyword">mainform</emphasis> then
+                    (optionally) calls the notes, buttons, and footer templates.</para>
+                <para>The majority of your programming effort goes into the <emphasis role="keyword"
+                    >mainBody</emphasis>, where calls to <emphasis role="keyword"
                         >widget_render</emphasis> generate much of the field-specific title and
-                    value information. Various options can be passed into <emphasis role="italic"
+                    value information. Various options can be passed into <emphasis role="keyword"
                         >widgets_render</emphasis> to allow client events to be executed. The
-                        <emphasis role="italic">mainBody</emphasis> is usually one or more html
+                    <emphasis role="keyword">mainBody</emphasis> is usually one or more html
                     tables and sometimes makes calls to programmer-defined sub-templates. The XSLT
                     stylesheet generates the HTML rendered by the browser.</para>
                 <para>The main and repeating theme of the example involves calling <emphasis
-                        role="italic">widget_render</emphasis> with the title of an EDL field,
-                    followed by calling <emphasis role="italic">widget_render</emphasis> again with
+                    role="keyword">widget_render</emphasis> with the title of an EDL field,
+                    followed by calling <emphasis role="keyword">widget_render</emphasis> again with
                     the input field. Widgets are a wrapper for XSLT stylesheets that offer the
-                    ability to create HTML. Paramters offer different ways to render HTML when
-                    making calls to widgets. Note that the variable value <emphasis role="italic"
+                    ability to create HTML. Parameters offer different ways to render HTML when
+                    making calls to widgets. Note that the variable value <emphasis role="keyword"
                         >$isPastInitiated</emphasis> is passed as a parameter to widgets_render so
-                    that the html <emphasis role="italic">readOnly</emphasis> attribute is generated
-                    when the form is past the initiator’s node.</para>
+                    that the html <emphasis role="keyword">readOnly</emphasis> attribute is generated
+                    when the form is passed the initiator’s node.</para>
             </section>
 </chapter>

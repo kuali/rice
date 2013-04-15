@@ -23,7 +23,7 @@
         for the development of simple web applications, their forms and simple routing
         configurations using XML. Users only have to enter data into the form and then submit it.
         Rules can be constructed so that the form is then routed to a specific user or KIM Group
-        based on the data entered. It can be integrated with larger applications usng a database
+        based on the data entered. It can be integrated with larger applications using a database
         layer post-processor component. </para>
     <para>Web pages called eDoc's are generated and are associated with a specific document
         type definition that provides the overall definition for how the document can be
@@ -46,12 +46,12 @@
             </para>
         </listitem>
         <listitem>
-            <para>No java code required for developments; only XML with optional
-                javascript for client side editing (workflow handles execution) </para>
+            <para>No java code required for developments; only XML with optional JavaScript for
+                    client side editing (workflow handles execution) </para>
         </listitem>
         <listitem>
-            <para>Some validation javascript is automatically generated like regular
-                expression editing and 'required field checking'. </para>
+            <para>Some validation JavaScript is automatically generated like regular expression
+                    editing and 'required field checking'. </para>
         </listitem>
     </itemizedlist></para>
     <para>The form uses an XSLT stylesheet to generate the html code. It uses XML to define form

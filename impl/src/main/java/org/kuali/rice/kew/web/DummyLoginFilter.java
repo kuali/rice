@@ -63,7 +63,7 @@ public class DummyLoginFilter implements Filter {
        		request.setAttribute("showPasswordField", Boolean.valueOf(showPassword));
             final String user = request.getParameter("__login_user");
             final String password = request.getParameter("__login_pw");
-            if (user != null) {
+            if (user != null && !user.trim().isEmpty()) {
             	// Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
             	final Principal principal = showPassword ? auth.getPrincipalByPrincipalNameAndPassword(user, password) : auth.getPrincipalByPrincipalName(user);
             	if (principal == null) {

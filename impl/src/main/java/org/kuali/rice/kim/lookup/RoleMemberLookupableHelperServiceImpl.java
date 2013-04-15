@@ -136,20 +136,25 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
        	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
     	Map<String, String> searchCriteria;
     	List<Principal> principals = new ArrayList<Principal>();
-        if(StringUtils.isNotEmpty(assignedToPrincipalName)){
-            QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
-            query.setPredicates(like("principals.principalName", WILDCARD+assignedToPrincipalName+WILDCARD));
-        	EntityQueryResults qr = KimApiServiceLocator.getIdentityService().findEntities(query.build());
-        	if(qr.getResults() == null || qr.getResults().isEmpty()) {
-        		return null;
-        	} else {
-        		for (Entity kimEntityInfo : qr.getResults()) {
-        			if(kimEntityInfo.getPrincipals() != null){
-        				principals.addAll(kimEntityInfo.getPrincipals());
-        			}
-        		}
-        	}
+
+        if(StringUtils.isNotEmpty(assignedToPrincipalName)) { // if a principal name is specified in the search
+            // KULRICE-9153: Analyze IU patch for preventing role member lookup from causing out of memory exceptions
+            // Changing to exact match on principal name to prevent blowing up Rice by loading every user into memory
+            if (assignedToPrincipalName.contains("*")) {
+                return null; // bail out, wild cards are not allowed since
+                             // IdentityServiceImpl.getPrincipalByPrincipalName has weird behavior around wildcards
+            }
+
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(assignedToPrincipalName);
+
+            if (principal == null) {
+                return null; // bail out, if no principal matched and a principal name was supplied, then there will be
+                             // no valid matching roles.
+            }
+
+            principals.add(principal);
         }
+
         String assignedToGroupNamespaceCode = fieldValues.get(ASSIGNED_TO_GROUP_NAMESPACE_CODE);
         String assignedToGroupName = fieldValues.get(ASSIGNED_TO_GROUP_NAME);
         List<Group> groups = null;

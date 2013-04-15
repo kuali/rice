@@ -18,20 +18,21 @@
 -->
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
   <info>
-    <title> Kuali Rice ${project.version} Client Developer Guide</title>
+    <title> Kuali Rice ${project.version} eDocLite Guide</title>
     <legalnotice><para>Some of the documentation in this guide has not been updated to reflect changes for
       ${project.version}. If you find a problem, please <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/Intro_To_Rice.html#reporting_rice_jira">report
-        in Jira</link> and set the component to Documentation. Indicate the guide and
+        it in Jira</link> and set the component to Documentation. Indicate the guide and
       section that has the problem in the Jira. Thanks for your help in improving the
       documentation!</para></legalnotice>
   </info>
-
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/creating_rice_enabled_application.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/coding_templates.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/framework_annotations.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/unit_testing_framework.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/writing_unit_tests.xml"/>
-
+  
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_Overview.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_Components.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_LazyImport.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_Lookup.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_Inquiry.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_CreateNew.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_Examples.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../common/glossary.xml"/>
 
 </book>

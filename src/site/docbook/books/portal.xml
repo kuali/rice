@@ -70,10 +70,13 @@
                                     xlink:href="KRAD_Guide.html">HTML</link> /<link xlink:show="new"
                                     xlink:href="../pdf/KRAD_Guide.pdf">PDF</link> ) - Manual on how
                                 to get started and use Kuali Rapid Application Development (KRAD),
-                                Rice's primary development framework</para>
+                                Rice's primary development framework.</para>
                     </listitem>
                     <listitem>
-                        <para>eDocLite</para>
+                        <para><emphasis role="bold">eDocLite</emphasis>(<link xlink:show="new"
+                            xlink:href="eDocLite_Guide.html">HTML</link> /<link xlink:show="new"
+                                xlink:href="../pdf/eDocLite_Guide.pdf">PDF</link> ) - Manual on how
+                            to get started and use eDocLite.</para>
                     </listitem>
                     <listitem>
                         <para>KNS - See the <link xlink:show="new" xlink:href="http://site.kuali.org/rice/2.2.1/reference/html/portal.html">2.2.1 documentation</link> for reference information on the deprecated, older development framework. KNS is

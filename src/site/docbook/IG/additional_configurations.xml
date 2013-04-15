@@ -98,17 +98,15 @@
                 <para>Ensure that all service bus endpoint URLs are unique on each machine: Make
                     sure that each Rice server in the cluster has a unique serviceServletUrl
                     parameter in the rice-config.xml configuration file.</para>
-                <para>One way to accomplish this is to pass a system parameter into the JVM that
-                    runs the Tomcat server that identifies the IP and port number of that particular
-                    Tomcat Server. For example: </para>
+                <para>One way to accomplish this is to modify the <emphasis role="bold"
+                    >serviceServletUrl</emphasis> in the <emphasis role="bold"
+                        >rice-config.xml</emphasis> on each machine in the cluster. </para>
+                <para>For example, if one of your endpoint url's was 129.79.216.156:8806, you would
+                        change your <emphasis role="bold">serviceServletUrl</emphasis> in the
+                            <emphasis role="bold">rice-config.xml</emphasis> to use that IP and port
+                        number as follows. </para>
                 <para>
-                    <programlisting>-Dhttp.url=129.79.216.156:8806</programlisting>
-                </para>
-                <para>You can then configure your <emphasis role="bold">serviceServletUrl</emphasis>
-                    in the <emphasis role="bold">rice-config.xml</emphasis> to use that IP and port
-                    number. </para>
-                <para>
-                    <programlisting>&lt;param name="serviceServletUrl">http://${http.url}/${app.context.name}/remoting/&lt;/param> </programlisting>
+                    <programlisting>&lt;param name="serviceServletUrl">http://129.79.216.156:8806/${app.context.name}/remoting/&lt;/param> </programlisting>
                 </para>
                 <para>You could have different values for <emphasis role="bold"
                     >serviceServletUrl</emphasis> in the <emphasis role="bold"

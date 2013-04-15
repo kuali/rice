@@ -80,11 +80,13 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
             if (second >= 10) {
                 SeleneseTestBase.fail(TIMEOUT_MESSAGE);
             }
+
             try {
                 if (isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
                     break;
                 }
             } catch (Exception e) {}
+
             Thread.sleep(1000);
         }
 
@@ -98,11 +100,13 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
             if (second >= 10) {
                 SeleneseTestBase.fail(TIMEOUT_MESSAGE);
             }
+
             try {
                 if (!isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
                     break;
                 }
             } catch (Exception e) {}
+
             Thread.sleep(1000);
         }
 
@@ -166,11 +170,13 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
             if (second >= 10) {
                 SeleneseTestBase.fail(TIMEOUT_MESSAGE);
             }
+
             try {
                 if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
                     break;
                 }
             } catch (Exception e) {}
+
             Thread.sleep(1000);
         }
 
@@ -188,11 +194,13 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
             if (second >= waitSeconds) {
                 SeleneseTestBase.fail(TIMEOUT_MESSAGE);
             }
+
             try {
                 if (!isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']")) {
                     break;
                 }
             } catch (Exception e) {}
+
             Thread.sleep(1000);
         }
 
@@ -225,11 +233,13 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
             if (second >= waitSeconds) {
                 SeleneseTestBase.fail(TIMEOUT_MESSAGE);
             }
+
             try {
                 if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
                     break;
                 }
             } catch (Exception e) {}
+
             Thread.sleep(1000);
         }
 
@@ -246,11 +256,13 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
             if (second >= waitSeconds) {
                 SeleneseTestBase.fail(TIMEOUT_MESSAGE);
             }
+
             try {
                 if (!isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']")) {
                     break;
                 }
             } catch (Exception e) {}
+
             Thread.sleep(1000);
         }
 

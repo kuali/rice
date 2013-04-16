@@ -94,6 +94,11 @@ public class ITUtil {
     public static final String KRAD_LOOKUP_METHOD =  "/kr-krad/lookup?methodToCall=start&dataObjectClassName=";
 
     /**
+     * /kr/lookup.do?methodToCall=start&businessObjectClassName=
+     */
+    public static final String KNS_LOOKUP_METHOD =  "/kr/lookup.do?methodToCall=start&businessObjectClassName=";
+
+    /**
      * /portal.do
      */
     public static final  String PORTAL = "/portal.do";

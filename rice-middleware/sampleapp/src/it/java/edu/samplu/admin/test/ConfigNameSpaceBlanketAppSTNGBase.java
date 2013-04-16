@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -15,21 +15,15 @@
  */
 package edu.samplu.admin.test;
 
-import org.junit.Test;
+import org.testng.AssertJUnit;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigNameSpaceBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavBase {
+public abstract class ConfigNameSpaceBlanketAppSTNGBase extends ConfigNameSpaceBlanketAppAbstractSmokeTestBase{
 
     @Override
-    protected String getLinkLocator() {
-        return "Namespace";
+    public void fail(String message){
+        AssertJUnit.fail(message);
     }
-
-    @Test
-    public void test() throws Exception {
-        gotoMenuLinkLocator();
-        super.testConfigNamespaceBlanketApprove();
-   }
 }

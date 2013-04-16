@@ -585,6 +585,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    /**
+     * Tests blanket approve action.
+     * This method is used by several different tests which perform various types of blanket approvals.
+     * Therefore, this is a candidate to remain in this base class
+     *
+     * @throws InterruptedException
+     */
     protected void blanketApproveTest() throws InterruptedException {
         ITUtil.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, this, "");
         waitAndClickByName(BLANKET_APPROVE_NAME,
@@ -1223,15 +1230,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testCancelConfirmation() throws InterruptedException {
         waitAndCancelConfirmation();
-        passed();
-    }
-
-    protected void testConfigNamespaceBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = configNameSpaceBlanketApprove();
-        blanketApproveTest();
-        assertDocFinal(docId);
         passed();
     }
 

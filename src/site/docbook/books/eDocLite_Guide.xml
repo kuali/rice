@@ -32,7 +32,9 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_Lookup.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_Inquiry.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_CreateNew.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_XMLIngestion.xml"/> 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_Examples.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../EDL_Guide/EDL_SupportNotes.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../common/glossary.xml"/>
 
 </book>

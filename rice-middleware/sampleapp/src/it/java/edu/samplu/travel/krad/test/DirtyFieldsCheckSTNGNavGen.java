@@ -13,31 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.travel.krad.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-
-import org.junit.Test;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 /**
- * test that dirty fields check happens for all pages in a view
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DirtyFieldsCheckNavIT extends WebDriverLegacyITBase {
+public class DirtyFieldsCheckSTNGNavGen extends DirtyFieldsCheckSTNGBase {
 
-    @Override
-	public String getTestUrl() {
-		return ITUtil.PORTAL;
-	}
-
-	@Test
-	public void testDirtyFieldsCheck() throws Exception {
-	    waitAndClickKRAD();
-        waitAndClickByLinkText(UIF_COMPONENTS_KITCHEN_SINK_LINK_TEXT);
-        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
-		super.testDirtyFieldsCheck();
-	}
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testDirtyFieldsCheckNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testDirtyFieldsCheckNav() throws Exception {
+        testDirtyFieldsCheckNav(this);
+    }
 }

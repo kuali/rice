@@ -1460,39 +1460,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return params;
     }
 
-    protected void testDirtyFieldsCheck() throws Exception {
-        checkForIncidentReport(getTestUrl());
-        Thread.sleep(5000);
-        waitAndTypeByName("field1", "test 1");
-        waitAndTypeByName("field102", "test 2");
-        assertCancelConfirmation();
-
-        // testing manually
-        waitForElementPresentByName("field100");
-        waitAndTypeByName("field100", "here");
-        waitAndTypeByName("field103", "there");
-
-        // 'Validation' navigation link
-        assertCancelConfirmation();
-
-        // testing manually
-        waitForElementPresentByName("field106");
-
-        // //Asserting text-field style to uppercase. This style would display
-        // input text in uppercase.
-        SeleneseTestBase.assertEquals("text-transform: uppercase;",getAttributeByName("field112", "style"));
-        assertCancelConfirmation();
-        waitForElementPresentByName("field101");
-        SeleneseTestBase.assertEquals("val", getAttributeByName("field101","value"));
-        clearTextByName("field101");
-        waitAndTypeByName("field101", "1");
-        waitAndTypeByName("field104", "");
-        SeleneseTestBase.assertEquals("1", getAttributeByName("field101","value"));
-        waitAndTypeByName("field104", "2");
-
-        // 'Progressive Disclosure' navigation link
-        assertCancelConfirmation();
-    }
 
     protected void testDocTypeLookup() throws Exception {
         selectFrameIframePortlet();

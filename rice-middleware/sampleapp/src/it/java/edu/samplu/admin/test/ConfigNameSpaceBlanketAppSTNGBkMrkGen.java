@@ -30,7 +30,7 @@ public class ConfigNameSpaceBlanketAppSTNGBkMrkGen extends ConfigNameSpaceBlanke
 
     @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testConfigNamespaceBlanketApproveBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testConfigNamespaceBlanketApprovepBookmark() throws Exception {
+    public void testConfigNamespaceBlanketApproveBookmark() throws Exception {
         testConfigNamespaceBlanketApproveBookmark(this);
     }
 }

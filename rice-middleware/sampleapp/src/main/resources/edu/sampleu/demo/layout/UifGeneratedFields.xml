@@ -46,6 +46,10 @@
                 <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
                 <property name="propertyName" value="list1generated"/>
                 <property name="layoutManager.sequencePropertyName" value="field1"/>
+                <property name="layoutManager.generateAutoSequence" value ="false"/>
+                <property name="layoutManager.sequenceFieldPrototype">
+                  <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+                </property>
                 <property name="layoutManager.richTable.render" value="false"/>
                 <property name="items">
                   <list>
@@ -164,6 +168,10 @@
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="subList"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.sequenceFieldPrototype">
+      <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+    </property>
     <property name="layoutManager.richTable.render" value="true"/>
     <property name="items">
       <list>

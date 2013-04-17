@@ -645,6 +645,10 @@
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list1"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.sequenceFieldPrototype">
+      <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+    </property>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>

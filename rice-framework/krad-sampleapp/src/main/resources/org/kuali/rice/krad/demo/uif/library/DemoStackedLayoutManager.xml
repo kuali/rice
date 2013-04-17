@@ -143,6 +143,10 @@
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
           <property name="propertyName" value="subList" />
           <property name="layoutManager.sequencePropertyName" value="field1" />
+          <property name="layoutManager.generateAutoSequence" value ="false"/>
+          <property name="layoutManager.sequenceFieldPrototype">
+            <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+          </property>
           <property name="layoutManager.richTable.render" value="true" />
           <property name="items">
             <list>

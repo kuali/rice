@@ -121,6 +121,10 @@
       <property name="propertyName" value="accounts"/>
       <property name="instructionalText" value="Travel Accounts for Fiscal Officer"/>
       <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="layoutManager.generateAutoSequence" value ="false"/>
+      <property name="layoutManager.sequenceFieldPrototype">
+        <bean parent="Uif-InputField" p:propertyName="number" p:readOnly="true"/>
+      </property>
       <property name="items">
         <list>
           <bean parent="Uif-InputField" p:propertyName="number"/>

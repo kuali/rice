@@ -213,6 +213,10 @@
     <property name="collectionObjectClass"
               value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.sequenceFieldPrototype">
+      <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+    </property>
     <property name="readOnly" value="true"/>
     <property name="items">
       <list>
@@ -323,6 +327,10 @@
     <property name="collectionObjectClass"
               value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.sequenceFieldPrototype">
+      <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+    </property>
     <property name="layoutManager.numberOfColumns" value="4"/>
     <property name="propertyName" value="subList"/>
     <property name="items">

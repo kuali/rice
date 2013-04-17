@@ -889,6 +889,10 @@
     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ActionBo"/>
     <property name="propertyName" value="agendaItemLine.rule.actions"/>
     <property name="layoutManager.sequencePropertyName" value="sequenceNumber"/>
+    <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.sequenceFieldPrototype">
+      <bean parent="Uif-InputField" p:propertyName="sequenceNumber" p:readOnly="true"/>
+    </property>
     <!--<property name="layoutManager.renderSequenceField" value="false"/> // if you want to hide the sequence number in the table-->
     <property name="layoutManager.richTable.render" value="true"/>
     <property name="collectionLookup.render" value="false"/>

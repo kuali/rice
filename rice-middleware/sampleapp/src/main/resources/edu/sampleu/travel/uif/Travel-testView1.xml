@@ -212,6 +212,10 @@
     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="layoutManager.sequencePropertyName" value="number"/>
+    <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.sequenceFieldPrototype">
+      <bean parent="Uif-InputField" p:propertyName="number" p:readOnly="true"/>
+    </property>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="number" p:required="true"/>

@@ -157,6 +157,8 @@ jQuery(document).ready(function () {
         handleStickyFooterContent();
     });
 
+    hideEmptyCells();
+
     //focus on first field
     performFocus("FIRST");
 

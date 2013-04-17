@@ -116,14 +116,10 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
                 </#if>
 
                 <th scope="${headerScope}" ${cellWidth!} colspan="${item.colSpan}"
-                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}>
-                    <@template component=item/>
-                </th>
+                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}><@template component=item/></th>
             <#else>
                 <td role="presentation" ${cellWidth!} colspan="${item.colSpan}"
-                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}>
-                    <@template component=item/>
-                </td>
+                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}><@template component=item/></td>
             </#if>
 
             <#local columnLoopArray = columnLoopArray + item.rowSpan + splitter />

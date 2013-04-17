@@ -50,6 +50,8 @@ KradResponse.prototype = {
             if (handlerFunc) {
                 handlerFunc(div, div.data());
             }
+
+            hideEmptyCells();
         });
     },
 

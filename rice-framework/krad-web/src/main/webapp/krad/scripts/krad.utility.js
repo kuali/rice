@@ -2384,3 +2384,26 @@ function handleStickyFooterContent(){
     }
 
 }
+
+/**
+ * Hides any cells and headers in a table if they have no content to prevent empty rows from displaying in grid layout
+ * when all cells are render=false or hidden by disclosure
+ */
+function hideEmptyCells() {
+    // get all the td elements
+    jQuery('td').each( function() {
+        // check if the children is hidden (progressive) or if there is no content(render=false)
+        var cellEmpty = !jQuery(this).children().is(':visible') || jQuery(this).is(':empty');
+
+        if(cellEmpty) {
+            // hide the header only if the cell and the header is empty
+            var hd = jQuery(this).siblings('th');
+            var headerEmpty = !jQuery(hd).children().is(':visible') || jQuery(hd).is(':empty');
+            if (headerEmpty) {
+                hd.hide();
+            }
+            // hide the cell
+            jQuery(this).hide();
+        }
+    });
+}

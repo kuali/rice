@@ -445,6 +445,8 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
                         displayWithLabel.parent().hide();
                     }
                 }
+
+                hideEmptyCells();
             }
         });
     }

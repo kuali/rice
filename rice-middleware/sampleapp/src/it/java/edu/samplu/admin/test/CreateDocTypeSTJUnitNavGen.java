@@ -18,20 +18,14 @@ package edu.samplu.admin.test;
 import org.junit.Test;
 
 /**
- * Create a document type via the document type creation screen and verify it in docsearch
+ * tests adding a namespace to Rice.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateDocTypeNavIT extends AdminTmplMthdSTNavBase {
-
-    @Override
-    protected String getLinkLocator() {
-        return "Document Type";
-    }
+public class CreateDocTypeSTJUnitNavGen extends CreateDocTypeSTJUnitBase {
 
     @Test
-    public void createDocType() throws Exception {
-        gotoMenuLinkLocator();
-        super.testCreateDocType();
+    public void testCreateDocTypeNav() throws Exception {
+        testCreateDocTypeNav(this);
     }
 }

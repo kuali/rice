@@ -91,7 +91,15 @@
             </listitem>
             <listitem>
                 <para>To change a rule template<simplelist>
-                    <member>export xml, modify it accordingly, then add an attribute to the <emphasis role="keyword">&lt;ruleTemplate></emphasis> making it look like: <emphasis role="keyword">&lt;ruleTemplate allowOverwrite="true" ></emphasis>. This is a safety feature, because when a template is changed the rules behind it are affected. Note that the schema definition file is named RuleTemplate.xsd in Eclipse; which describes what is valid for the xml construct. If you added a rule attribute to the template, validate the rule attribute exists, or create it new if you must.</member>
+                    <member>export the xml, modify it accordingly, then add an attribute to the
+                                    <emphasis role="keyword">&lt;ruleTemplate></emphasis> making it
+                                look like: <emphasis role="keyword">&lt;ruleTemplate
+                                    allowOverwrite="true" ></emphasis>. This is a safety feature,
+                                because when a template is changed the rules behind it are affected.
+                                Note that the schema definition file is named RuleTemplate.xsd in
+                                Eclipse; which describes what is valid for the xml construct. If you
+                                added a rule attribute to the template, validate the rule attribute
+                                exists, or create it new if you must.</member>
                     <member>Next you would create the routing rule(s) for the modified doctype/ruleTemplate.</member>
                 </simplelist></para>
             </listitem>

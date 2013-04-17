@@ -97,6 +97,20 @@
                         xlink:href="https://test.kuali.org/confluence/download/attachments/82837979/IU.EDLs.zip?version=1"
                         >Confluence</link></member>
             </simplelist>
+            <note><para>Please ingest the samples in the correct order, by title (which includes number). That is:
+            <simplelist>
+                <member>01-OAA_Workgroups.xml</member>
+                <member>02-OAA_Attributes.xml</member>    
+                <member>03-OAA_RuleTemplates.xml</member>    
+                <member>04-OAA_ParentDocumentType.xml</member>
+                <member>05-OAA_ChildDoctypes.xml</member>    
+                <member>06-OAA_Rules.xml</member>    
+                <member>07-OAA_InterviewRequestEdl.xml</member>    
+                <member>08-OAA_OfferRequestEdl.xml</member>    
+                <member>09-OAA_SearchStatusEdl.xml</member>    
+                <member>10-OAA_VacancyNoticeEdl.xml</member>
+                <member>11-OAA_WaiverRequestEdl.xml</member>
+            </simplelist>You can ingest the first 10 at one time on the first screen, if they are ordered as above.</para></note>
         </para>
         <para> The <link linkend="EDL_Examples">examples</link> section of this guide
             looks at some of these. </para>

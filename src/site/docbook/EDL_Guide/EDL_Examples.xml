@@ -64,7 +64,8 @@
             to document the final results of the search. The OAA number used is the same as the one for the 
             corresponding Vacancy Notice or Waiver Request.
             <inlinemediaobject><imageobject><imagedata fileref="../images/EDL_Guide/search.png" align="center"/></imageobject></inlinemediaobject>
-            In the event that the Offer Status is selected as Declined or No Offer was made, a new list of 
+            </para>
+        <para>In the event that the Offer Status is selected as Declined or No Offer was made, a new list of 
             values is provided to outline what the next steps for this search will be.</para>
     </section>
     <section><title>Vacancy Form</title>
@@ -86,11 +87,9 @@
         <para>The Waiver Request document is similar to the Vacancy Notice in that the department initiating the 
             search completes it, but in this case the department is also requesting a waiver from the normal 
             academic search requirements.<inlinemediaobject><imageobject><imagedata fileref="../images/EDL_Guide/waiver.png"></imagedata></imageobject></inlinemediaobject>
-        The first field on the document is an OAA number; this is not a required field and will be entered 
+        </para><para>The first field on the document is an OAA number; this is not a required field and will be entered 
             when the document reaches the Office of Affirmative Action for approval.</para>
         <para>You may wish to attach a letter such as an offer to recommend an appointment.
-        </para>
-        <para>
             <simplelist>
                 <member>After youʼve created the letter (which may be another eDocLite
                     document), you need to attach it to the document for review at the

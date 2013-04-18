@@ -2391,7 +2391,7 @@ function handleStickyFooterContent(){
  */
 function hideEmptyCells() {
     // get all the td elements
-    jQuery('td').each( function() {
+    jQuery('td.uif-gridLayoutCell').each( function() {
         // check if the children is hidden (progressive) or if there is no content(render=false)
         var cellEmpty = !jQuery(this).children().is(':visible') || jQuery(this).is(':empty');
 

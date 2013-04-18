@@ -23,6 +23,7 @@ import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.springframework.util.CollectionUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -55,6 +56,12 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
 		    	}
 		    }
         }
+
+        // KULRICE-7930  Check for field validation errors
+        if(!CollectionUtils.isEmpty(GlobalVariables.getMessageMap().getErrorMessagesForProperty("newRole.*", true))) {
+            rulePassed = false;
+        }
+
 		return rulePassed;
 	} 
 

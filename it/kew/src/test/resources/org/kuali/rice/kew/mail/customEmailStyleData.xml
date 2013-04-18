@@ -32,7 +32,7 @@
     <xsl:key name="doctypes-by-name" match="actionItem/documentType" use="name"/>
 
     <xsl:template match="immediateReminder">
-        <xsl:variable name="docHandlerUrl" select="actionItem/documentType/docHandlerUrl"/>
+        <xsl:variable name="docHandlerUrl" select="actionItem/actionItem/docHandlerURL"/>
         <email>
             <subject>CUSTOM: Action List Reminder <xsl:value-of select="actionItem/customSubject"/></subject>
             <body>CUSTOM: Your Action List has an eDoc(electronic document) that needs your attention: 

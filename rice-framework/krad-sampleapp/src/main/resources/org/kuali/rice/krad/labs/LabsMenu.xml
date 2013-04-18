@@ -34,6 +34,8 @@
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ClientSideState"/>
                         <bean parent="Uif-Link" p:linkText="File Upload View" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/fileUploads?viewId=Lab-FileUploads"/>
+                        <bean parent="Uif-Link" p:linkText="Encryption Utility" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/encryption?viewId=Lab-Encryption"/>
                       </list>
                   </property>
               </bean>

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.doctype.service;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -30,10 +31,10 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
-    @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, Permission.Cache.NAME}, allEntries = true)
     void versionAndSave(DocumentType documentType);
 
-    @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, Permission.Cache.NAME}, allEntries = true)
     void save(DocumentType documentType);
 
     @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}allCurrentRootDocuments'")

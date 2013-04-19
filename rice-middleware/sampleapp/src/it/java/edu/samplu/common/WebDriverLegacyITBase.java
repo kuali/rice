@@ -250,7 +250,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * ^[\s\S]*valid[\s\S]*$
      */
-    public static final String REGEX_VALID = "^[\\s\\S]*valid[\\s\\S]*$";
+    public static final String REGEX_VALID = "^.*\\bvalid\\b.*$";
 
     /**
      * Set -Dremote.public.user= to the username to login as
@@ -405,7 +405,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             e.printStackTrace();
         }
         WebDriverUtil.login(driver, user, this);
-        String javascript="$.jGrowl('Smoke Test " + getClass().getSimpleName() + "." + testName.getMethodName() + "');";
+        String javascript="jQuery.jGrowl('Smoke Test " + getClass().getSimpleName() + "." + testName.getMethodName() + "' , {sticky: true});";
         ((JavascriptExecutor) driver).executeScript(javascript);
 
     }
@@ -3716,12 +3716,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         blanketApproveTest();
         assertDocFinal(docId);
-    }
-
-    private void typeBlurFocus(String name, String text) throws InterruptedException {
-        waitAndTypeByName(name, text);
-        fireEvent(name, "blur");
-        fireEvent(name, "focus");
     }
 
     protected void uncheck(By by) throws InterruptedException {

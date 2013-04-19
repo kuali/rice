@@ -405,6 +405,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             e.printStackTrace();
         }
         WebDriverUtil.login(driver, user, this);
+        String javascript="$.jGrowl('Smoke Test " + getClass().getSimpleName() + "." + testName.getMethodName() + "');";
+        ((JavascriptExecutor) driver).executeScript(javascript);
+
     }
 
     /**
@@ -468,9 +471,17 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         alert.dismiss();
     }
 
+    protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
+        String attribute = getAttributeByName(field, "class");
+        SeleneseTestBase.assertTrue("getAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
+        SeleneseTestBase.assertFalse("attribute " + attribute + " matches regex " + regex + " and it should not",
+                attribute.matches(regex));
+    }
 
     protected void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
-        SeleneseTestBase.assertTrue(getAttributeByName(field, "class").matches(regex));
+        String attribute = getAttributeByName(field, "class");
+        SeleneseTestBase.assertTrue("getAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
+        SeleneseTestBase.assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(regex));
     }
 
     protected void assertBlanketApproveButtonsPresent() {
@@ -533,14 +544,31 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         fireEvent(field, "focus");
         waitAndTypeByName(field, textToType);
         fireEvent(field, "blur");
+        Thread.sleep(200);
         assertAttributeClassRegexMatches(field, REGEX_ERROR);
+    }
+
+    protected void assertFocusTypeBlurError(String field, String[] errorInputs) throws InterruptedException {
+        for (String errorInput: errorInputs) {
+            assertFocusTypeBlurError(field, errorInput);
+            clearTextByName(field);
+        }
     }
 
     protected void assertFocusTypeBlurValid(String field, String textToType) throws InterruptedException {
         fireEvent(field, "focus");
         waitAndTypeByName(field, textToType);
         fireEvent(field, "blur");
+        Thread.sleep(200);
         assertAttributeClassRegexMatches(field, REGEX_VALID);
+        assertAttributeClassRegexDoesntMatch(field, REGEX_ERROR);
+    }
+
+    protected void assertFocusTypeBlurValid(String field, String[] validInputs) throws InterruptedException {
+        for (String validInput: validInputs) {
+            assertFocusTypeBlurValid(field, validInput);
+            clearTextByName(field);
+        }
     }
 
     /**
@@ -2179,75 +2207,100 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void testValidCharsConstraintIT() throws Exception {
-        assertFocusTypeBlurError("field50", "12.33");
-        assertFocusTypeBlurValid("field50", "123.33");
+        assertFocusTypeBlurValidation("field50", new String[]{"12.333", "-123.33"}, new String[]{"123.33"});
 
-        assertFocusTypeBlurError("field51", "A");
-        assertFocusTypeBlurValid("field51", "-123.33");
+        assertFocusTypeBlurValidation("field51", new String[]{"A"}, new String[]{"-123.33"});
 
+        // TODO continue to convert to assertFocusTypeBlurValidation
         assertFocusTypeBlurError("field77", "1.1");
+        clearTextByName("field77");
         assertFocusTypeBlurValid("field77", "12");
 
         assertFocusTypeBlurError("field52", "5551112222");
+        clearTextByName("field52");
         assertFocusTypeBlurValid("field52", "555-111-1111");
 
-        // TODO finish updating to assertFocusTypeBlurError assertFocusTypeBlurValid https://jira.kuali.org/browse/KULRICE-9255
         assertFocusTypeBlurError("field53", "1ClassName.java");
+        clearTextByName("field53");
         assertFocusTypeBlurValid("field53", "ClassName.java");
 
         assertFocusTypeBlurError("field54", "aaaaa");
+        clearTextByName("field54");
         assertFocusTypeBlurValid("field54", "aaaaa@kuali.org");
 
         assertFocusTypeBlurError("field84", "aaaaa");
+        clearTextByName("field84");
         assertFocusTypeBlurValid("field84", "http://www.kuali.org");
         
         assertFocusTypeBlurError("field55", "023512");
+        clearTextByName("field55");
         assertFocusTypeBlurValid("field55", "022812");
 
         assertFocusTypeBlurError("field75", "02/35/12");
+        clearTextByName("field75");
         assertFocusTypeBlurValid("field75", "02/28/12");
         
         assertFocusTypeBlurError("field82", "13:22");
+        clearTextByName("field82");
         assertFocusTypeBlurValid("field82", "02:33");
 
         assertFocusTypeBlurError("field83", "25:22");
+        clearTextByName("field83");
         assertFocusTypeBlurValid("field83", "14:33");
         
         assertFocusTypeBlurError("field57", "0");
+        clearTextByName("field57");
         assertFocusTypeBlurValid("field57", "2020");
         
         assertFocusTypeBlurError("field58", "13");
+        clearTextByName("field58");
         assertFocusTypeBlurValid("field58", "12");
         
         assertFocusTypeBlurError("field61", "5555-444");
+        clearTextByName("field61");
         assertFocusTypeBlurValid("field61", "55555-4444");
         
         assertFocusTypeBlurError("field62", "aa5bb6_a");
+        clearTextByName("field62");
         assertFocusTypeBlurValid("field62", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890");
         
         assertFocusTypeBlurError("field63", "fff555$");
+        clearTextByName("field63");
         assertFocusTypeBlurValid("field63", "aa22 _/");
         
         assertFocusTypeBlurError("field64", "AABB55");
+        clearTextByName("field64");
         assertFocusTypeBlurValid("field64", "ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z");
         
         assertFocusTypeBlurError("field76", "AA~BB%");
+        clearTextByName("field76");
         assertFocusTypeBlurValid("field76", "abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?");
         
         assertFocusTypeBlurError("field65", "sdfs$#$# dsffs");
+        clearTextByName("field65");
         assertFocusTypeBlurValid("field65", "sdfs$#$#sffs");
         
         assertFocusTypeBlurError("field66", "abcABCD");
+        clearTextByName("field66");
         assertFocusTypeBlurValid("field66", "ABCabc");
 
         assertFocusTypeBlurError("field67", "(111)B-(222)A");
+        clearTextByName("field67");
         assertFocusTypeBlurValid("field67", "(12345)-(67890)");
         
         assertFocusTypeBlurError("field68", "A.66");
+        clearTextByName("field68");
         assertFocusTypeBlurValid("field68", "a.4");
 
         assertFocusTypeBlurError("field56", "2020-06-02");
+        clearTextByName("field56");
         assertFocusTypeBlurValid("field56", "2020-06-02 03:30:30.22");
+    }
+
+    protected void assertFocusTypeBlurValidation(String field, String[] errorInputs, String[] validInputs) throws InterruptedException {
+        assertFocusTypeBlurError(field, errorInputs);
+        clearTextByName(field);
+        assertFocusTypeBlurValid(field, validInputs);
     }
 
     protected void testSubCollectionSize() throws Exception {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,16 @@ import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
- * TODO vchauhan don't forget to fill this in.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PeopleFlowCreateNewWDIT extends WebDriverLegacyITBase {
-  
+
+    /**
+     * ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl="
+     + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
+     + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.SHOW_MAINTENANCE_LINKS
+     */
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl="
             + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
@@ -37,11 +41,11 @@ public class PeopleFlowCreateNewWDIT extends WebDriverLegacyITBase {
     public String getTestUrl() {
         return TEST_URL;
     }
-    
-    
+
     @Test
     public void testPeopleFlow() throws Exception {
-      super.testPeopleFlow();
+        super.testPeopleFlow();
+        passed();
     }
 
     /**
@@ -52,7 +56,6 @@ public class PeopleFlowCreateNewWDIT extends WebDriverLegacyITBase {
   
     public void lookupAssertions() {
         // nothing
-
     }
 
     /**
@@ -60,14 +63,11 @@ public class PeopleFlowCreateNewWDIT extends WebDriverLegacyITBase {
      * 
      * @see edu.samplu.common.MenuITBase#getLinkLocator()
      */
-
     protected String getLinkLocator() {
         return "People Flow";
     }
 
-    
     @Ignore // No Need to     
     @Test
- 
     public void testLookUp() throws Exception {}
 }

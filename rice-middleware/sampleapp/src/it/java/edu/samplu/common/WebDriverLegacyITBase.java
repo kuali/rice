@@ -29,6 +29,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
@@ -208,6 +209,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String EDIT_LINK_TEXT = "edit";
 
     /**
+     * true
+     * TODO upgrade to config via JVM param.
+     */
+    public static final boolean JGROWL_ERROR_FAILURE = false;
+
+    /**
      * iframeportlet
      */
     public static final String IFRAMEPORTLET_NAME = "iframeportlet";
@@ -359,6 +366,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public @Rule
     TestName testName = new TestName();
 
+    protected String testMethodName;
+
+    protected String jGrowlHeader;
+
     String sessionId = null;
 
     /**
@@ -385,12 +396,19 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * Setup the WebDriver properties, test, and login
      *
      * {@link WebDriverUtil#determineUser(String)}
-     * {@link WebDriverUtil#setUp(String, String, String, org.junit.rules.TestName)}
+     * {@link WebDriverUtil#setUp(String, String, String, String)}
      * @throws Exception
      */
     @Before
     @BeforeMethod
     public void setUp() throws Exception {
+
+        if (testName != null) {
+            testMethodName = testName.getMethodName();
+        } else {
+            testMethodName = "TODO TestNG test method name.";
+        }
+
         try {
             waitSeconds = Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + ""));
             String givenUser = WebDriverUtil.determineUser(this.toString());
@@ -398,16 +416,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 user = givenUser;
             }
 
-            driver = WebDriverUtil.setUp(getUserName(), getTestUrl(), getClass().getSimpleName(), testName);
+            driver = WebDriverUtil.setUp(getUserName(), getTestUrl(), getClass().getSimpleName(), testMethodName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
         } catch (Exception e) {
             fail("Exception in setUp " + e.getMessage());
             e.printStackTrace();
         }
         WebDriverUtil.login(driver, user, this);
-        String javascript="jQuery.jGrowl('Smoke Test " + getClass().getSimpleName() + "." + testName.getMethodName() + "' , {sticky: true});";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-
+        jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
+        jGrowl("setUp");
     }
 
     /**
@@ -421,6 +438,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     @AfterMethod
     public void tearDown() throws Exception {
         try {
+            if (!passed) {
+                jGrowlSticky("FAILURE!");
+            }
             WebDriverUtil.tearDown(passed, sessionId, this.toString().trim(), user);
         } catch (Exception e) {
             System.out.println("Exception in tearDown " + e.getMessage());
@@ -443,6 +463,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     protected void passed() {
         passed = true;
+        jGrowlSticky("Passed");
     }
 
     protected void agendaLookupAssertions() throws Exception {
@@ -910,6 +931,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     @Override
     public void fail(String message) {
         SeleneseTestBase.fail(message);
+        jGrowlSticky(message);
     }
 
     protected void fireEvent(String name, String event) {
@@ -989,6 +1011,27 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected boolean isVisibleByXpath(String locator) {
         return isVisible(By.xpath(locator));
+    }
+
+    protected void jGrowl(String message) {
+        try {
+            String javascript="jQuery.jGrowl('" + message + "' , {sticky: false, header : '" + jGrowlHeader + "'});";
+            ((JavascriptExecutor) driver).executeScript(javascript);
+        } catch (Throwable t) {
+            System.out.println("jGrowl failure " + t.getMessage());
+            if (JGROWL_ERROR_FAILURE) {
+                fail(t.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Sticky is used on fail, making a call to jGrowl(String) from this method will result
+     * in an infinite loop if JGROWL_ERROR_FAILURE is true so please don't.
+     */
+    protected void jGrowlSticky(String message) {
+        String javascript="jQuery.jGrowl('" + message + "' , {sticky: true, header : '" + jGrowlHeader + "'});";
+        ((JavascriptExecutor) driver).executeScript(javascript);
     }
 
     private void jiraAwareFail(By by, String message, Throwable t) {
@@ -1902,32 +1945,34 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         //Click Main Menu and Create New
         // waitAndCreateNew();
         // waitForPageToLoad();
+        jGrowl("Create New");
         waitAndClickByLinkText("Create New");
         
         //jiraAwareWaitAndClick(By.linkText("Create New"));
         //Save docId
         waitForElementPresent("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
         String docId = getText("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
+        jGrowlSticky("Doc Id is " + docId);
         driver.findElement(By.name("document.documentHeader.documentDescription")).clear();
         driver.findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
         new Select(driver.findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode"))).selectByVisibleText("KUALI - Kuali Systems");
         driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
         driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + ITUtil.DTS);
 
-        //Add Row1
+        jGrowl("Add Member kr");
         driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
         driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("kr");
         driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
         Thread.sleep(3000);
-        
-        //Add Row2
+
+        jGrowl("Add Member admin");
         driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
         driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("admin");
         driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
         Thread.sleep(3000);
 
-        //Blanket approve
         driver.findElement(By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button")).click();
+        jGrowl("Blanket Approve");
         Thread.sleep(5000);
         
         //Close the Doc
@@ -1936,12 +1981,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
         driver.findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
         Thread.sleep(5000);
+        jGrowl("Document Search is " + docId + " present?");
         selectFrameIframePortlet();
         driver.findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         Thread.sleep(5000);
+        jGrowl("Is doc status final?");
         SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
         driver.switchTo().defaultContent();
         driver.findElement(By.name("imageField")).click();
+        Thread.sleep(5000);
+        // TODO open the document and verify data is as we expect.
     }
 
     protected void testTermLookupAssertions() throws Exception {
@@ -4076,6 +4125,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitAndCreateNew() throws InterruptedException {
         selectFrameIframePortlet();
         try {
+            jGrowl("Create New");
             waitAndClickCreateNew(); // timing out in CI rice-trunk-smoke-test-jdk7/494
         } catch (Exception e) {
             System.out.println("waitAndClickByXpath(\"//img[@alt='create new']\") failed trying title method with " + e.getMessage());

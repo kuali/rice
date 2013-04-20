@@ -52,8 +52,7 @@ public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyIT
      */
     public void testLogoutNav(Failable failable) throws Exception {
         navigate(failable);
-        waitAndClickLogout(failable);
-        passed();
+        testLogout(failable);
     }
 
     /**
@@ -63,6 +62,11 @@ public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyIT
      * @throws Exception
      */
     public void testLogoutBookmark(Failable failable) throws Exception {
+        testLogout(failable);
+    }
+
+    private void testLogout(Failable failable) throws InterruptedException {
+        jGrowl("Logging Out");
         waitAndClickLogout(failable);
         passed();
     }

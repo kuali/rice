@@ -16,7 +16,6 @@
 
 package edu.samplu.common;
 
-import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
@@ -33,9 +32,6 @@ import com.thoughtworks.selenium.SeleneseTestBase;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -107,7 +103,7 @@ public class WebDriverUtil {
      * @return driver
      * @throws Exception
      */
-    public static WebDriver setUp(String username, String url, String className, TestName testName) throws Exception {
+    public static WebDriver setUp(String username, String url, String className, String testName) throws Exception {
         WebDriver driver = null;
         if (System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
             driver = getWebDriver();

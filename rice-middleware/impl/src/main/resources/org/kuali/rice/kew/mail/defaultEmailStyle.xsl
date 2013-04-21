@@ -33,7 +33,7 @@
     <xsl:key name="doctypes-by-name" match="summarizedActionItem" use="docName"/>
 
     <xsl:template match="immediateReminder">
-        <xsl:variable name="docHandlerUrl" select="actionItem/documentType/docHandlerUrl"/>
+        <xsl:variable name="docHandlerUrl" select="actionItem/actionItem/docHandlerURL"/>
         <email>
             <subject>Action List Reminder <xsl:value-of select="actionItem/customSubject"/></subject>
             <body>Your Action List has an eDoc(electronic document) that needs your attention: 
@@ -50,12 +50,12 @@ To respond to this eDoc:
   <xsl:otherwise>?</xsl:otherwise>
 </xsl:choose>docId=<xsl:value-of select="actionItem/actionItem/documentId"/>&amp;command=displayActionListView
 
-&tab;Or you may access the eDoc from your Action List: 
-&tab;Go to <xsl:value-of select="@actionListUrl"/>, and then click on the numeric Document ID: <xsl:value-of select="actionItem/actionItem/documentId"/> in the first column of the List. 
+&tab;Or you may access the eDoc from your Action List:
+              &tab;Go to <xsl:value-of select="@actionListUrl"/>, and then click on the numeric Document ID: <xsl:value-of select="actionItem/actionItem/documentId"/> in the first column of the List.
 
 
 
-To change how these email notifications are sent(daily, weekly or none): 
+              To change how these email notifications are sent(daily, weekly or none):
 &tab;Go to <xsl:value-of select="@preferencesUrl"/>
 
 

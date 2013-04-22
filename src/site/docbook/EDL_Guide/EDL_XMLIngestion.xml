@@ -87,16 +87,7 @@
                     <para>Anything else - Like optional custom Email Stylesheet </para>
                 </listitem>
             </orderedlist></para>
-        <para>IU has a set of sample eDocLite documents you can upload and start using from one of
-            the following locations: 
-            <simplelist>
-                <member><link
-                        xlink:href="http://svn.kuali.org/repos/rice/tags/builds/rice-2.2/2.2.0/20121202-r36062/sampleapp/src/it/resources/OAA/"
-                        >SVN Respository</link></member>
-                <member><link
-                        xlink:href="https://test.kuali.org/confluence/download/attachments/82837979/IU.EDLs.zip?version=1"
-                        >Confluence</link></member>
-            </simplelist>
+        <para>A set of sample eDocLite documents you can upload and start using from the Developer Documentation wiki page at <link xlink:href="https://wiki.kuali.org/display/KULRICE/eDocLite+Examples">this</link> location.  
             <note><para>Please ingest the samples in the correct order, by title (which includes number). That is:
             <simplelist>
                 <member>01-OAA_Workgroups.xml</member>

@@ -79,8 +79,8 @@
         <section><title>Base Lookup Bean</title>
             <para>
                 <itemizedlist>
-                    <listitem><para>Lookups are now defined via <emphasis role="keyword">Uif-LookupView</emphasis> definitions in
-                            stead of the KNS <emphasis role="keyword">LookupDefinition</emphasis>
+                    <listitem><para>Lookups are now defined via <emphasis role="keyword">Uif-LookupView</emphasis> definitions 
+                            instead of the KNS <emphasis role="keyword">LookupDefinition</emphasis>
                             beans. [KNS line: 1, KRAD line: 1] [script converted: yes]</para></listitem>
                     <listitem><para>The title of the view is specified via the <emphasis role="keyword">headerText</emphasis>
                             property instead of the <emphasis role="keyword">title</emphasis>
@@ -90,7 +90,7 @@
                         <para>The data object class is specified via the <emphasis role="keyword"
                                 >dataObjectClassName</emphasis> property and is no longer specified
                             via the <emphasis role="keyword">BusinessObjectEntry</emphasis> as it
-                            doesn’t exist in KRAD anymore. A businessObject is no longer required
+                            doesn’t exist in KRAD anymore. A <emphasis role="keyword">businessObject</emphasis> is no longer required
                             and any object can be used. [KNS line: n/a, KRAD line: 3] [script
                             converted: yes]</para>
                     </listitem>
@@ -126,7 +126,7 @@
     </section>
     
     <section><title>Lookupable / LookupableHelper Service</title>
-        <para>KRAD combines the Lookupable and LookupableHelperService from KNS. The LookupableImpl does not need to be extended unless advanced customizations are required.</para>
+        <para>KRAD combines the <emphasis role="keyword">Lookupable</emphasis> and <emphasis role="keyword">LookupableHelperService</emphasis> from KNS. The <emphasis role="keyword">LookupableImpl</emphasis> does not need to be extended unless advanced customizations are required.</para>
         <section>
             <title>Lookupable</title>
             <para>

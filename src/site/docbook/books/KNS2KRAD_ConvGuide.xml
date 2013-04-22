@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    
+    Copyright 2005-2013 The Kuali Foundation
+    
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.opensource.org/licenses/ecl2.php
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    
+-->
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">    
+    <title>KNS To KRAD Conversion Guide</title>
+    <para></para>
+    <section><title></title>
+        <para>
+            <programlisting linenumbering="numbered" startinglinenumber="12" language="java">
+            <?dbhtml use.extensions="1" linenumbering.extensions="1" linenumbering.everyNth="1"?>
+    /**
+     * Constructs a PropertyComparator for comparing beans using the properties named in the given List.
+     *
+     * &lt;p>Properties will be compared
+     * in the order in which they are listed. Case will be ignored if ignoreCase is true.&lt;/p>
+     * 
+     * @param propertyNames List of property names (as Strings) used to compare beans
+     * @param ignoreCase if true, case will be ignored during String comparisons
+     */
+    public BeanPropertyComparator(List propertyNames, boolean ignoreCase) {
+        if (propertyNames == null) {
+            throw new IllegalArgumentException("invalid (null) propertyNames list");
+        }
+        if (propertyNames.size() == 0) {
+            throw new IllegalArgumentException("invalid (empty) propertyNames list");
+        }
+        this.propertyNames = Collections.unmodifiableList(propertyNames);
+        this.ignoreCase = ignoreCase;
+
+        if (ignoreCase) {
+            this.stringComparator = String.CASE_INSENSITIVE_ORDER;
+        }
+        else {
+            this.stringComparator = ComparableComparator.getInstance();
+        }
+        this.booleanComparator = new Comparator() {
+            public int compare(Object o1, Object o2) {
+                int compared = 0;
+
+                Boolean b1 = (Boolean) o1;
+                Boolean b2 = (Boolean) o2;
+
+                if (!b1.equals(b2)) {
+                    if (b1.equals(Boolean.FALSE)) {
+                        compared = -1;
+                    }
+                    else {
+                        compared = 1;
+                    }
+                }
+
+                return compared;
+            }
+
+        };
+        this.genericComparator = ComparableComparator.getInstance();
+    }
+            </programlisting>
+        </para>
+    </section>
+</article>

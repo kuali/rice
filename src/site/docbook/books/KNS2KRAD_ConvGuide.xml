@@ -16,61 +16,400 @@
     limitations under the License.
     
 -->
-<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">    
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>KNS To KRAD Conversion Guide</title>
     <para></para>
-    <section><title></title>
-        <para>
-            <programlisting linenumbering="numbered" startinglinenumber="12" language="java">
-            <?dbhtml use.extensions="1" linenumbering.extensions="1" linenumbering.everyNth="1"?>
-    /**
-     * Constructs a PropertyComparator for comparing beans using the properties named in the given List.
-     *
-     * &lt;p>Properties will be compared
-     * in the order in which they are listed. Case will be ignored if ignoreCase is true.&lt;/p>
-     * 
-     * @param propertyNames List of property names (as Strings) used to compare beans
-     * @param ignoreCase if true, case will be ignored during String comparisons
-     */
-    public BeanPropertyComparator(List propertyNames, boolean ignoreCase) {
-        if (propertyNames == null) {
-            throw new IllegalArgumentException("invalid (null) propertyNames list");
-        }
-        if (propertyNames.size() == 0) {
-            throw new IllegalArgumentException("invalid (empty) propertyNames list");
-        }
-        this.propertyNames = Collections.unmodifiableList(propertyNames);
-        this.ignoreCase = ignoreCase;
-
-        if (ignoreCase) {
-            this.stringComparator = String.CASE_INSENSITIVE_ORDER;
-        }
-        else {
-            this.stringComparator = ComparableComparator.getInstance();
-        }
-        this.booleanComparator = new Comparator() {
-            public int compare(Object o1, Object o2) {
-                int compared = 0;
-
-                Boolean b1 = (Boolean) o1;
-                Boolean b2 = (Boolean) o2;
-
-                if (!b1.equals(b2)) {
-                    if (b1.equals(Boolean.FALSE)) {
-                        compared = -1;
-                    }
-                    else {
-                        compared = 1;
-                    }
-                }
-
-                return compared;
-            }
-
-        };
-        this.genericComparator = ComparableComparator.getInstance();
-    }
-            </programlisting>
+    <section><title>Introduction</title>
+        <para>Identify audience</para>
+    </section>
+    <section><title>Data Dictionary</title>
+        <para></para>
+    </section>
+    <section><title>Inquiry</title>
+        <para></para>
+    </section>
+    <section><title>Lookup</title><para></para>
+        <section><title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
+            <para>KRAD uses Uif-LookupView definitions instead of the KNS LookupDefinition. All LookupDefinitions has to be converted to Uif-LookupView definitions.</para>
+            <para><emphasis role="bold">KNS Code example:</emphasis></para>
+            <para>
+                
+                <programlisting>1  &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
+2   &lt;property name="title" value="Entity Type Lookup"/>
+3   &lt;property name="lookupFields">
+4      &lt;list>
+5          &lt;bean parent="FieldDefinition" p:attributeName="code"/>
+6          &lt;bean parent="FieldDefinition" p:attributeName="name"/>
+7          &lt;bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
+8      &lt;/list>
+9   &lt;/property>
+10  &lt;property name="resultFields">
+11     &lt;list>
+12         &lt;bean parent="FieldDefinition" p:attributeName="code"/>
+13         &lt;bean parent="FieldDefinition" p:attributeName="name"/>
+14         &lt;bean parent="FieldDefinition" p:attributeName="sortCode"/>
+15         &lt;bean parent="FieldDefinition" p:attributeName="active"/>
+16     &lt;/list>
+17   &lt;/property>
+18  &lt;/bean></programlisting>    
+            </para>
+            <para>
+                <emphasis role="bold">KRAD code example:</emphasis>
+                <programlisting>1  &lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
+2    &lt;property name="headerText" value="Entity Type Lookup" />
+3    &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo" />
+4    &lt;property name="criteriaFields">
+5        &lt;list>
+6            &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" />
+7            &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+8            &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" />
+9        &lt;/list>
+10    &lt;/property>
+11    &lt;property name="resultFields">
+12        &lt;list>
+13            &lt;bean parent="Uif-DataField" p:propertyName="code" />
+14            &lt;bean parent="Uif-DataField" p:propertyName="name" />
+15            &lt;bean parent="Uif-DataField" p:propertyName="sortCode"/>
+16            &lt;bean parent="Uif-DataField" p:propertyName="active" />
+17        &lt;/list>
+18    &lt;/property>
+19  &lt;/bean></programlisting>
+            </para>
+        </section>
+        <section><title>Base Lookup Bean</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>Lookups are now defined via <emphasis role="keyword">Uif-LookupView</emphasis> definitions in
+                            stead of the KNS <emphasis role="keyword">LookupDefinition</emphasis>
+                            beans. [KNS line: 1, KRAD line: 1] [script converted: yes]</para></listitem>
+                    <listitem><para>The title of the view is specified via the <emphasis role="keyword">headerText</emphasis>
+                            property instead of the <emphasis role="keyword">title</emphasis>
+                            property. [KNS line: 2, KRAD line: 2] [script converted: yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>The data object class is specified via the <emphasis role="keyword"
+                                >dataObjectClassName</emphasis> property and is no longer specified
+                            via the <emphasis role="keyword">BusinessObjectEntry</emphasis> as it
+                            doesn’t exist in KRAD anymore. A businessObject is no longer required
+                            and any object can be used. [KNS line: n/a, KRAD line: 3] [script
+                            converted: yes]</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section><title>Criteria Fields</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>The property that contains the lookup criteria fields was renamed from <emphasis
+                                role="keyword">lookupFields</emphasis> to <emphasis role="keyword"
+                                >criteriaFields</emphasis>. [KNS line: 3, KRAD line: 4] [script
+                            converted: yes]</para></listitem>
+                    <listitem><para>Criteria fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to <emphasis
+                                role="keyword">Uif-LookupCriteriaInput</emphasis> fields. [KNS line:
+                            5-7, KRAD line: 6-8] [script converted: yes]</para></listitem>
+                    <listitem><para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now a <emphasis
+                                role="keyword">propertyName</emphasis> property. [KNS line: 5-7,
+                            KRAD line: 6-8] [script converted: yes]</para></listitem>               
+                </itemizedlist>
+            </para>
+        </section>
+        <section><title>Results Fields</title>
+            <para><emphasis role="italic">Data dictionary configured ordered list of result fields</emphasis></para>
+            <para>For the <emphasis role="keyword">resultFiles</emphasis> property list the
+                    <emphasis role="keyword">FieldDefinition</emphasis> parent beans has been
+                renamed to <emphasis role="keyword">Uif-DataField</emphasis> (see KNS line numbers
+                5-6, KRAD line numbers 5-6) (see KRAD Documentation: lookup result ordering). The
+                    <emphasis role="keyword">forceInquiry</emphasis> property does not need to be
+                set under most conditions as it derives automatically (see KRAD documentation:
+                foo-bar).</para>
+        </section>
+    </section>
+    
+    <section><title>Lookupable / LookupableHelper Service</title>
+        <para>KRAD combines the Lookupable and LookupableHelperService from KNS. The LookupableImpl does not need to be extended unless advanced customizations are required.</para>
+        <section>
+            <title>Lookupable</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para><emphasis role="keyword">set/getBusinessObjectClass</emphasis>have been renamed to set/getDataObjectClass.  Since now all data objects are supported the requirement that the object is a BusinessObject has been removed.  The rename of these methods reflect this change. However, don’t use this method.  In KRAD the data object is be specified via the dataObjectClassName property of the extended Uif-LookupView bean.
+                    <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  &lt;property name="dataObjectClassName" value="org.kuali.rice.SampleBo" />
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getHtmlMenuBar/getSupplementalMenuBar</emphasis>have been removed.
+                            Instead these menu bars are configred via Uif. The HtmlMenuBar used to
+                            add additional HTML content to the right of the "Create New" button,
+                            while the SupplementalMenuBar replaces the "Create New" button with the
+                            specified HTML content. Note that with KRAD the "Create New" has been
+                            moved out of the lookup header area and instead is right below the
+                            header, still at the right side. The following sample displays how to
+                            add content after the "Create New". In this example a Message is used
+                            but any Uif component could be used. Append a custom button after the
+                            "Create New":
+                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="page.header.lowerGroup.items">
+    &lt;list>
+      &lt;bean parent="Uif-CreateNewLink" />
+      &lt;bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
+            p:actionScript="alert('JavaScript triggered action.')"/>
+    &lt;/list>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting>
+                    </para>
+                        <para>Append a custom message to the right in the header
+                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="header.rightGroup">
+    &lt;bean parent="Uif-HeaderRightGroup">
+      &lt;property name="items">
+        &lt;list>
+          &lt;bean parent="Uif-Message" p:messageText="Right Group of headerText"/>
+        &lt;/list>
+      &lt;/property
+    &lt;/bean>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting>Instead
+                            of "rightGroup", "upperGroup" and "lowerGroup" can be used to position
+                            components above and below the header. </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getRows</emphasis> has been removed. Criteria fields can be conditionally displayed and configured via Uif.
+                    </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getColumns</emphasis> has been removed. The result columns are now
+                            specified via the Uif-LookupView (see resultFields property).
+                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="resultFields">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:propertyName="cd" />
+      &lt;bean parent="Uif-DataField" p:propertyName="description" />
+    &lt;/list>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">validateSearchParameters</emphasis> takes the LookupForm as an additional parameter and returns a boolean value indicating that no validation error message has occurred (true = no error).  Warning and informational messages do not affect this return indicator.  A ValidationException is no longer thrown.
+                        Try using Uif configurations for more complex validation that the default KRAD validation can’t handle (e.g. <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#constraints">Constraints</link>)
+                    </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">performLookup</emphasis> has been renamed to performSearch.  The resultTable parameter has been removed and takes searchCriteria as an additional parameter.
+                    </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getSearchResults</emphasis> takes the LookupForm and indicator for bounded/unbounded search as additional parameters.  <emphasis role="keyword">getSearchResultsUnbounded</emphasis> has been removed.
+                    </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">performClear</emphasis> takes the <emphasis role="keyword">searchCriteria</emphasis> map as an additional parameter since it is no longer stored in the Lookupable. The <emphasis role="keyword">searchCriteria</emphasis> map is returned after clearing the criteria and setting their default values.
+                    </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getReturnUrl</emphasis> has been renamed to getReturnUrlForResults which accepts the LinkField that returns the result from the lookup and the model.  Configuration via the Uif-LookupView is also possible:
+                    <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="resultsReturnField">
+    &lt;bean parent="Uif-linkField" p:href="http://www.kuali.org" p:linkText="Kuali"/>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getCreateNewUrl</emphasis> has been removed.  The create new url is now specified via the Uif-LookupView:
+                    <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="page.header.lowerGroup.items">
+    &lt;list>
+      &lt;bean parent="Uif-Link" p:linkText="Create New" p:href="http://www.kuali.org">
+        &lt;property name="cssClasses">
+          &lt;list merge="true">
+            &lt;value>uif-createNewLink&lt;/value>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getTitle</emphasis> has been removed. The title is now specified via
+                            the Uif-LookupView (see headerText property).
+                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  &lt;property name="headerText" value="Sample Lookup" />
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getReturnKeys</emphasis> takes the <emphasis role="keyword">LookupView, LookupForm</emphasis> and the data object as an additional parameter.</para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getReturnLocation</emphasis> has been removed. The return location is now stored on the form. Use <emphasis role="keyword">LookupForm.getReturnLocation.</emphasis></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getExtraButtonSource</emphasis> has been removed.  Buttons are configured via <emphasis role="keyword">Uif-LookupCriteriaGroup</emphasis> (see footer property).
+                    </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getExtraButtonParams</emphasis> has been removed.  Buttons are configured via <emphasis role="keyword">Uif-LookupCriteriaGroup</emphasis> (see footer property).
+                    </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">checkForAdditionalFields</emphasis> has been removed.  Use <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#disclosure">progressive disclosure</link> of the Uif.</para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getDefaultSortColumns</emphasis> has been removed.  Sort columns are configured via Uif-LookupView (see defaultSortAttributeNames property). </para>
+                    <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="defaultSortAttributeNames">
+    &lt;list>
+      &lt;value>cd&lt;/value>
+      &lt;value>description&lt;/value>
+    &lt;/list>
+  &lt;/property>
+  ...
+&lt;/bean>
+</programlisting></listitem>
+                    <listitem><para><emphasis role="keyword">set/getDocFormKey</emphasis> has been removed.  The document form key is stored on the form.  Use <emphasis role="keyword">LookupForm.getFormKey</emphasis>.
+                    </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">setFieldConversions</emphasis> has been removed. The field conversion
+                            is specified via Uif (see quickfinder.fieldConversions property).
+                            <programlisting>&lt;bean parent="Uif-InputField">
+  ...
+  &lt;property name="quickfinder.fieldConversions">
+    &lt;map>
+      &lt;entry key="cd" value="sampleCd" />
+      &lt;entry key="description" value="sample.description" />
+    &lt;/map>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">setReadOnlyFieldsList</emphasis> has been removed.  Read only criteria fields are specified via Uif (see <emphasis role="keyword">readOnly</emphasis> property).
+                    <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="criteriaFields">
+    &lt;list>
+      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespace" 
+            p:readOnly="true" />
+      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="cd" />
+    &lt;/list>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">set/getLookupableHelperService</emphasis> has been removed.  Lookupable helper services are specified via <emphasis role="keyword">Uif-LookupView</emphasis>:
+                    <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  &lt;property name="viewHelperServiceClass"
+            value="org.kuali.rice.SampleLookupableHelperServiceImpl" />
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">isSearchUsingOnlyPrimaryKeyValues</emphasis> has been removed. </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getPrimaryKeyFieldLabels</emphasis> has been removed.</para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">shouldDisplayHeaderNonMaintActions</emphasis> has been removed.</para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">shouldDisplayLookupCriteria</emphasis> has been removed.</para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">performCustomAction</emphasis> has been removed. Create <emphasis role="keyword">methodToCall</emphasis> methods for the actions in the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#controllers">controller</link> for the data object. </para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">getExtraField</emphasis> has been removed (see getHtmlMenuBar/getSupplementalMenuBar above).</para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">get/setExtraOnLoad</emphasis> has been removed. OnLoad scripts can be specified via the Uif-LookupView:
+                    <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  &lt;property name="onLoadScript" value="alert('Hi!')" />
+  ...
+&lt;/bean></programlisting></para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">applyFieldAuthorizationsFromNestedLookups</emphasis> has been removed.</para>
+                    </listitem>
+                    <listitem><para><emphasis role="keyword">applyConditionalLogicForFieldDisplay</emphasis> has been removed.
+                            Conditional displaying of criteria field is done through Uif
+                            configuration.
+                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="criteriaFields">
+    &lt;list>
+      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="cd" 
+            p:readOnly="@{!#empty(#dp.lookupCriteria['cd'])}" />
+      &lt;bean parent="Uif-DataField" p:propertyName="description" 
+            p:required="@{#dp.lookupCriteria['CD'] == 'A_CD'}" />
+      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespace" 
+            p:hidden="@{#dp.lookupCriteria['CD'] == 'A_CD'}" />
+    &lt;/list>
+  &lt;/property>
+  ...
+&lt;/bean>
+</programlisting></para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title>LookupableHelper</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para><emphasis role="keyword">getInquiryUrl</emphasis>blah</para></listitem>
+                </itemizedlist>
+            </para>
+        </section>
+    </section>
+    <section><title>Transactional Documents</title>
+        <para></para>
+    </section>
+    <section><title>Conversion Tools</title>
+        <para></para>
+        <section><title>Introduction</title>
+            <para></para>
+        </section>
+        <section><title>Lookup</title>
+            <para></para>
+        </section>
+        <section><title>Inquiry</title>
+            <para></para>
+        </section>
+        <section><title>Maintenance</title>
+            <para></para>
+        </section>
+        <section><title>Transactional</title>
+            <para></para>
+        </section>
+    </section>
+    <section>
+        <title>KNS to KRAD Conversion Script</title>
+        <para>KNS to KRAD conversion is setup into four steps:
+            <orderedlist>
+                <listitem><para>Convert data dictionary into krad compliant format
+                <simplelist>
+                    <member>Convert validation patterns to constraint</member>
+                    <member>Convert control definitions into uif controls</member>
+                </simplelist>
+                </para></listitem>
+                <listitem>
+                    <para>Convert KNS definitions into KRAD UIF components
+                    <simplelist>
+                        <member>Convert inquiry and lookup definitions into view</member>
+                        <member>Convert section definition into uif groups</member>
+                        <member>Convert field definitions into uif input fields</member>
+                    </simplelist></para>
+                </listitem>
+                <listitem>
+                    <para>Convert struts to spring mvc
+                    <simplelist>
+                        <member>Convert struts and their actions into uif controllers</member>
+                        <member>Convert action paths into request mapping annotations in the controller</member>
+                    </simplelist></para>
+                </listitem>
+                <listitem>
+                    <para>Convert jsp and tags into uif components
+                    <simplelist>
+                        <member>Convert jsp tags into UIF components</member>
+                        <member>Convert jstl calls into spring el conditionals</member>
+                        <member>Convert document into view</member>
+                        <member>Convert kul:tabs into UIF disclosure</member>
+                        <member>Convert html tables into grid layouts</member>
+                        <member>Convert attributes/control tags into UIF input fields</member>
+                        <member>Convert image submit tags into action buttons</member>
+                    </simplelist></para>
+                </listitem>
+        </orderedlist>
+            The existing script for KRAD conversion is included in KRADConversion.groovy. 
+            The script will process lookup, inquiry, and MaintenanceDocumentEntries into KRAD-compliant XML files.  
         </para>
     </section>
 </article>

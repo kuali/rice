@@ -16,13 +16,16 @@
 
 package edu.samplu.common;
 
+import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchFrameException;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -80,7 +83,13 @@ public class WebDriverUtil {
      * TODO parametrize for JVM Arg
      */
     public static final int SETUP_URL_LOAD_WAIT_SECONDS = 120;
-    
+
+    /**
+     * local proxy used for running tests thru jmeter.
+     * Include host name and port number. Example: localhost:7777
+     */
+    public static final String PROXY_HOST_PROPERTY = "remote.public.proxy";
+
     /**
      * Setup the WebDriver test, login, and load the given web page
      *
@@ -208,21 +217,32 @@ public class WebDriverUtil {
     /**
      * remote.public.driver set to chrome or firefox (null assumes firefox)
      * if remote.public.hub is set a RemoteWebDriver is created (Selenium Grid)
+     * if proxy.host is set, the web driver is setup to use a proxy
      * @return WebDriver or null if unable to create
      */
     public static WebDriver getWebDriver() {
         String driverParam = System.getProperty(ITUtil.HUB_DRIVER_PROPERTY);
         String hubParam = System.getProperty(ITUtil.HUB_PROPERTY);
+        String proxyParam = System.getProperty(PROXY_HOST_PROPERTY);
+
+        // setup proxy if specified as VM Arg
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        WebDriver webDriver = null;
+        if (StringUtils.isNotEmpty(proxyParam)) {
+            capabilities.setCapability(CapabilityType.PROXY, new Proxy().setHttpProxy(proxyParam));
+        }
+
         if (hubParam == null) {
             if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
                 FirefoxProfile profile = new FirefoxProfile();
                 profile.setEnableNativeEvents(false);
-                return new FirefoxDriver(profile);
+                capabilities.setCapability(FirefoxDriver.PROFILE, profile);
+                return new FirefoxDriver(capabilities);
             } else if ("chrome".equalsIgnoreCase(driverParam)) {
-                return new ChromeDriver();
+                return new ChromeDriver(capabilities);
             } else if ("safari".equals(driverParam)) {
                 System.out.println("SafariDriver probably won't work, if it does please contact Erik M.");
-                return new SafariDriver();
+                return new SafariDriver(capabilities);
             }
         } else {
             try {

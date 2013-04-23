@@ -108,4 +108,36 @@
       </list>
     </property>
   </bean>
+
+  <bean id="LookupSampleViewConditionalCriteria" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewConditionalCriteria"/>
+    <property name="headerText" value="Lookup Sample with Conditional Criteria Field"/>
+
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"
+              p:required="@{#dp.lookupCriteria['number'] == 'a1'}"
+              p:readOnly="@{#dp.lookupCriteria['number'] == 'a2'}"
+              p:render="@{#dp.lookupCriteria['number'] != 'a3'}"/>
+      </list>
+    </property>
+
+    <property name="header.lowerGroup">
+      <bean parent="Uif-HeaderLowerGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="[b]*[/b] Enter the value &quot;a1&quot; into the
+                [b]Travel Account Number[/b] criteria field to make the [b]Date Created[/b] criteria a read only. [br/]
+                [b]*[/b] Enter the value &quot;a2&quot; into the [b]Travel Account Number[/b] criteria field to make
+                the [b]Date Created[/b] a required. [br/]
+                [b]*[/b] Enter the value &quot;a3&quot; into the [b]Travel Account Number[/b] criteria field to hide
+                the [b]Date Created[/b] criteria."/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
 </beans>

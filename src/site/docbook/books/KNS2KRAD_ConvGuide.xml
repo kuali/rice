@@ -17,8 +17,11 @@
     
 -->
 <article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
-    <title>KNS To KRAD Conversion Guide</title>
-    <para></para>
+    <info>
+        <title>Kuali Rice ${project.version} KNS to KRAD Conversion Guide</title>
+        <edition>${project.version}</edition>
+        <pubdate>Released: ${docbook.build.timestamp}</pubdate>
+    </info>
     <section><title>Introduction</title>
         <para>Identify audience</para>
     </section>

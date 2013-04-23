@@ -80,7 +80,9 @@
                     </listitem>
                     <listitem>
                         <para>KNS - See the <link xlink:show="new" xlink:href="http://site.kuali.org/rice/2.2.1/reference/html/portal.html">2.2.1 documentation</link> for reference information on the deprecated, older development framework. KNS is
-                                expected to be removed in Rice 3.0.</para>
+                            expected to be removed in Rice 3.0.</para><para>KNS to KRAD Conversion Guide ( <link xlink:show="new"
+                                xlink:href="KNS2KRAD_ConvGuide.html">HTML</link> / <link xlink:show="new"
+                                    xlink:href="../pdf/KNS2KRAD_ConvGuide.pdf">PDF</link> )</para>
                     </listitem>
                 </itemizedlist>
                 </listitem>

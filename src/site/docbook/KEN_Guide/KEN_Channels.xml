@@ -19,7 +19,7 @@
 <chapter xml:id="ken_channels" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0"> 
     <title>KEN Channels</title>
     <para>A KEN Channel is correlated to a specific type of notification. An example of a
-        Channel’s use may be to send out information about upcoming Library Events or broadcast
+        Channel's use may be to send out information about upcoming Library Events or broadcast
         general announcements on upcoming concerts. Channels are subscribed to in the act of
         receiving notifications from a publisher or producer. They can also be unsubscribed to
         and removed from the data store from within the UI. The Channel Definitions are stored
@@ -71,7 +71,7 @@
         <para>Subscriptions are divided into two categories:<itemizedlist>
             <listitem>
                 <para><emphasis role="bold">Subscribers</emphasis> – Users can subscribe to
-                    any channel where the Subscription Flag is set to “Yes”. </para>
+                    any channel where the Subscription Flag is set to "Yes". </para>
             </listitem>
             <listitem>
                 <para><emphasis role="bold">Default Recipients</emphasis> – Each channel has
@@ -140,9 +140,9 @@
             <listitem>
                 <para><emphasis role="bold">Subscription Flag</emphasis> – This flag
                     identifies whether users can adjust their subscription status on the
-                    channel. If “Yes”, users can see the channel in the “Channel
-                    Subscriptions” form and change their subscription status. If “No”, a
-                    user’s subscription to the channel is managed by other means (for
+                    channel. If "Yes", users can see the channel in the "Channel
+                    Subscriptions" form and change their subscription status. If "No", a
+                    user's subscription to the channel is managed by other means (for
                     example, group membership). </para>
             </listitem>
             <listitem>

@@ -63,7 +63,7 @@
                     </row>
                     <row>
                         <entry>PRODCR_ID</entry>
-                        <entry>The Producer’s Channel Identifier. See the KREN_CHNL_PRODCR_T
+                        <entry>The Producer's Channel Identifier. See the KREN_CHNL_PRODCR_T
                             table found in the database for more information on how Producers
                             link to Channels.</entry>
                     </row>

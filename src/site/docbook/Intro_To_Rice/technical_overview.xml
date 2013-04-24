@@ -95,7 +95,7 @@
 
           <para>Kuali Nervous System/KRAD is a software development framework
           that enables developers to quickly build business applications in an
-          efficient and agile fashion. KNS is an abstracted layer of “glue”
+          efficient and agile fashion. KNS is an abstracted layer of "glue"
           code that provides developers easy integration with the other Rice
           components.</para>
         </listitem>
@@ -215,9 +215,9 @@
           <listitem>
             <para><emphasis role="bold">Persisted Callback</emphasis> - Send
             callback objects with any message. These objects will be called
-            each time a service is “requested.” This provides a mechanism to
+            each time a service is "requested." This provides a mechanism to
             pass along a message. In this way, deployed services can
-            communicate back to a “callback registrant,” such as an
+            communicate back to a "callback registrant," such as an
             application registering a callback, with application data even as
             that data is moving through the system.</para>
           </listitem>
@@ -354,7 +354,7 @@
         features:<itemizedlist>
             <listitem>
               <para><emphasis role="bold">Action List</emphasis> for each
-              user, also known as a user’s work list</para>
+              user, also known as a user's work list</para>
             </listitem>
 
             <listitem>
@@ -462,7 +462,7 @@
         validate, and render new content types.</para>
 
         <para><emphasis role="bold">Multiple Integration
-        Interfaces:</emphasis> Use KEN’s Java services and web services
+        Interfaces:</emphasis> Use KEN's Java services and web services
         (exposed on the KSB) to send messages from one system to another, or
         use the Rice generic message-sending form (with workflow built in) to
         send messages by hand.</para>

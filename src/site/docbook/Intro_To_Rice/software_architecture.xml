@@ -34,7 +34,7 @@
         <section>
             <title>Bundled</title>
             <para>When an application bundles all of the Rice functionality (including what is
-                usually handled by the standalone server) into the client application, it’s called a
+                usually handled by the standalone server) into the client application, it's called a
                 Bundled Distribution. For example, Kuali Financial Systems (KFS) has done this for
                 their past releases. In those KFS releases, you did not need to set up and install a
                 Rice standalone server; the necessary Rice functionality was bundled with
@@ -54,7 +54,7 @@
             <title>Binary Distribution</title>
             <para>The Binary Distribution (also known as the client distribution) is a collection of
                 JAR files. It is used when other applications need to use your Rice implementation
-                and you won’t be using the Rice web application. It is designed for embedding Rice
+                and you won't be using the Rice web application. It is designed for embedding Rice
                 and can be used as a set of libraries for client applications.</para>
             <para>The Binary Distribution of Kuali Rice is implemented as an application framework
                 consisting of application programming interfaces (APIs), libraries, and the web

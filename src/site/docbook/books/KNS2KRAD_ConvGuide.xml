@@ -34,49 +34,76 @@
     <section><title>Lookup</title><para></para>
         <section><title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
             <para>KRAD uses Uif-LookupView definitions instead of the KNS LookupDefinition. All LookupDefinitions has to be converted to Uif-LookupView definitions.</para>
+            <para><emphasis role="italic">Note that the code example is very inclusive to show the
+                    configurations that have changed.  As a result the lookups themselve have
+                    conflicting settings (i.e. why have custom search buttons when hiding
+                    them).</emphasis></para>
             <para><emphasis role="bold">KNS Code example:</emphasis></para>
             <para>
                 
-                <programlisting>1  &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
-2   &lt;property name="title" value="Entity Type Lookup"/>
-3   &lt;property name="lookupFields">
-4      &lt;list>
-5          &lt;bean parent="FieldDefinition" p:attributeName="code"/>
-6          &lt;bean parent="FieldDefinition" p:attributeName="name"/>
-7          &lt;bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
-8      &lt;/list>
-9   &lt;/property>
-10  &lt;property name="resultFields">
-11     &lt;list>
-12         &lt;bean parent="FieldDefinition" p:attributeName="code"/>
-13         &lt;bean parent="FieldDefinition" p:attributeName="name"/>
-14         &lt;bean parent="FieldDefinition" p:attributeName="sortCode"/>
-15         &lt;bean parent="FieldDefinition" p:attributeName="active"/>
-16     &lt;/list>
-17   &lt;/property>
-18  &lt;/bean></programlisting>    
+                <programlisting>1   &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
+2     &lt;property name="title" value="Entity Type Lookup"/>
+3     &lt;property name="menubar" value="&amp;lt;a href=&amp;quot;javascript:void(0)&amp;quot; 
+4         onclick=&amp;quot;alert('JavaScript triggered action.')&amp;quot;&amp;gt;Custom Button&amp;lt;/a&amp;gt;"/>
+5     &lt;property name="numOfColumns" value="2"/>
+6     &lt;property name="extraButtonSource" value="images/tinybutton-createnew.gif"/>
+7     &lt;property name="extraButtonParams" value="createNew"/>
+8     &lt;property name="disableSearchButtons" value="true"/>
+9     &lt;property name="lookupFields">
+10      &lt;list>
+11        &lt;bean parent="FieldDefinition" p:attributeName="code"/>
+12        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
+13        &lt;bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
+14       &lt;/list>
+15    &lt;/property>
+16    &lt;property name="resultFields">
+17      &lt;list>
+18        &lt;bean parent="FieldDefinition" p:attributeName="code"/>
+19        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
+20        &lt;bean parent="FieldDefinition" p:attributeName="sortCode"/>
+21        &lt;bean parent="FieldDefinition" p:attributeName="active"/>
+22      &lt;/list>
+23    &lt;/property>
+24  &lt;/bean></programlisting>    
             </para>
             <para>
                 <emphasis role="bold">KRAD code example:</emphasis>
-                <programlisting>1  &lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
-2    &lt;property name="headerText" value="Entity Type Lookup" />
-3    &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo" />
-4    &lt;property name="criteriaFields">
-5        &lt;list>
-6            &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" />
-7            &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
-8            &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" />
-9        &lt;/list>
-10    &lt;/property>
-11    &lt;property name="resultFields">
-12        &lt;list>
-13            &lt;bean parent="Uif-DataField" p:propertyName="code" />
-14            &lt;bean parent="Uif-DataField" p:propertyName="name" />
-15            &lt;bean parent="Uif-DataField" p:propertyName="sortCode"/>
-16            &lt;bean parent="Uif-DataField" p:propertyName="active" />
-17        &lt;/list>
-18    &lt;/property>
-19  &lt;/bean></programlisting>
+                <programlisting>1   &lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
+2     &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+3     &lt;property name="headerText" value="Entity Type Lookup" />
+4     &lt;property name="page.header.lowerGroup.items">
+5       &lt;list merge="true">
+6         &lt;bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
+7               p:actionScript="alert('JavaScript triggered action.')"/>
+8       &lt;/list>
+9     &lt;/property>
+10    &lt;property name="criteriaGroup.layoutManager.numberOfColumns" value="4"/>
+11    &lt;property name="criteriaGroup.footer">
+12      &lt;bean parent="Uif-LookupCriteriaFooter">
+13        &lt;property name="items">
+14          &lt;list merge="true">
+15            &lt;bean parent="Uif-PrimaryActionButton" p:methodToCall="createNew" p:actionLabel="create new"/>
+16          &lt;/list>
+17        &lt;/property>
+18      &lt;/bean>
+19    &lt;/property>
+20    &lt;property name="renderSearchButtons" value="false"/>
+21    &lt;property name="criteriaFields">
+22      &lt;list>
+23        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code"/>
+24        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:quickfinder.render="false"/>
+25        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+26      &lt;/list>
+27    &lt;/property>
+28    &lt;property name="resultFields">
+29      &lt;list>
+30        &lt;bean parent="Uif-DataField" p:propertyName="code"/>
+31        &lt;bean parent="Uif-DataField" p:propertyName="name"/>
+32        &lt;bean parent="Uif-DataField" p:propertyName="sortCode"/>
+33        &lt;bean parent="Uif-DataField" p:propertyName="active"/>
+34      &lt;/list>
+35    &lt;/property>
+36  &lt;/bean></programlisting>
             </para>
         </section>
         <section><title>Base Lookup Bean</title>
@@ -87,15 +114,32 @@
                             beans. [KNS line: 1, KRAD line: 1] [script converted: yes]</para></listitem>
                     <listitem><para>The title of the view is specified via the <emphasis role="keyword">headerText</emphasis>
                             property instead of the <emphasis role="keyword">title</emphasis>
-                            property. [KNS line: 2, KRAD line: 2] [script converted: yes]</para>
+                            property. [KNS line: 2, KRAD line: 3] [script converted: yes]</para>
                     </listitem>
                     <listitem>
                         <para>The data object class is specified via the <emphasis role="keyword"
                                 >dataObjectClassName</emphasis> property and is no longer specified
                             via the <emphasis role="keyword">BusinessObjectEntry</emphasis> as it
-                            doesn't exist in KRAD anymore. A <emphasis role="keyword">businessObject</emphasis> is no longer required
-                            and any object can be used. [KNS line: n/a, KRAD line: 3] [script
-                            converted: yes]</para>
+                            doesn't exist in KRAD anymore. A <emphasis role="keyword"
+                                >businessObject</emphasis> is no longer required and any object can
+                            be used. [KNS line: n/a, KRAD line: 2] [script converted: yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>Instead of specifying the supplemental menu bar via the <emphasis
+                                role="keyword">menubar</emphasis> property, the <emphasis
+                                role="keyword">page.header.lowerGroup.items</emphasis> property is
+                            used. [KNS line: 3-4, KRAD line: 4-9] [script converted: yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>To use multiple columns for the criteria fields use the <emphasis
+                                role="keyword"
+                                >criteriaGroup.layoutManager.numberOfColumns</emphasis> property to
+                            configure the layout manager instead of specifying the <emphasis
+                                role="keyword">numOfColumns</emphasis> property. Note that in the
+                            layout manager the field label and the field itself have their own
+                            columns and therefore the old <emphasis role="keyword"
+                                >numOfColumns</emphasis> value needs to be doubled. [KNS line: 5,
+                            KRAD line: 10] [script converted: yes]</para>
                     </listitem>
                 </itemizedlist>
             </para>
@@ -105,14 +149,49 @@
                 <itemizedlist>
                     <listitem><para>The property that contains the lookup criteria fields was renamed from <emphasis
                                 role="keyword">lookupFields</emphasis> to <emphasis role="keyword"
-                                >criteriaFields</emphasis>. [KNS line: 3, KRAD line: 4] [script
+                                >criteriaFields</emphasis>. [KNS line: 9, KRAD line: 21] [script
                             converted: yes]</para></listitem>
                     <listitem><para>Criteria fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to <emphasis
-                                role="keyword">Uif-LookupCriteriaInput</emphasis> fields. [KNS line:
-                            5-7, KRAD line: 6-8] [script converted: yes]</para></listitem>
-                    <listitem><para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now a <emphasis
-                                role="keyword">propertyName</emphasis> property. [KNS line: 5-7,
-                            KRAD line: 6-8] [script converted: yes]</para></listitem>               
+                                role="keyword">Uif-LookupCriteriaInput</emphasis>. [KNS line: 11-13,
+                            KRAD line: 23-25] [script converted: yes]</para></listitem>
+                    <listitem>
+                        <para>The <emphasis role="keyword">attributeName</emphasis> property on the
+                            field is now a <emphasis role="keyword">propertyName</emphasis>
+                            property. [KNS line: 11-13, KRAD line: 23-25] [script converted:
+                            yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>Not rendering a quickfinder on a lookup criteria field is specified
+                            via the<emphasis role="keyword">quickfinder.render</emphasis> property
+                            instead of the <emphasis role="keyword">noLookup</emphasis> property.
+                            [KNS line: 12, KRAD line 24] [script converted: yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>To use multiple columns for the criteria fields use the <emphasis
+                                role="keyword"
+                                >criteriaGroup.layoutManager.numberOfColumns</emphasis> property to
+                            configure the layout manager instead of specifying the <emphasis
+                                role="keyword">numOfColumns</emphasis> property. Note that in the
+                            layout manager the field label and the field itself have their own
+                            columns and therefore the old <emphasis role="keyword"
+                                >numOfColumns</emphasis> value needs to be doubled. [KNS line: 5,
+                            KRAD line: 10] [script converted: yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>Adding additional buttons to the bottom of the search criterias is
+                            done by adding a <emphasis role="keyword"
+                                >Uif-PrimaryActionButton</emphasis> to the <emphasis role="keyword"
+                                >criteriaGroup.footer</emphasis> item list instead of using the
+                                <emphasis role="keyword">extraButtonSource</emphasis> and <emphasis
+                                role="keyword">extraButtonParms</emphasis> properties. [KNS line:
+                            6-7, KRAD line: 11-19] [script converted: yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>The property that specifies wether or not to show the search buttons
+                            changed from <emphasis role="keyword">disableSearchButtons</emphasis> to
+                                <emphasis role="keyword">renderSearchButtons</emphasis>. [KNS line:
+                            8, KRAD line: 20] [script converted: yes]</para>
+                    </listitem>               
                 </itemizedlist>
             </para>
         </section>

@@ -25,7 +25,7 @@
         <section>
             <title>Kuali Foundation</title>
             <para>The Kuali Foundation employs staff to coordinate partner efforts and to manage and
-                protect the Foundation’s intellectual property. The Kuali Foundation manages a
+                protect the Foundation's intellectual property. The Kuali Foundation manages a
                 growing portfolio of enterprise software applications for colleges and universities.
                 A lightweight Foundation staff coordinates the activities of Foundation members for
                 critical software development and coordination activities such as source code
@@ -46,7 +46,7 @@
                 and some modular functionality while its components are able to stand alone to
                 perform unique functions. While all are designed for seamless integration with each
                 other, each project is made up of modules that offer a variety of implementation
-                combinations to suit any Carnegie-class institution’s unique business needs.</para>
+                combinations to suit any Carnegie-class institution's unique business needs.</para>
             <para>Should you want to learn more detail about how the Rice community is organized,
                 structured and operates you should reference the Rice Charter which is available for
                 review in the Foundation archives.</para>
@@ -423,7 +423,7 @@
                                         <imagedata fileref="../images/button_submit.png"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
-                            <entry>Click this button to send this screen’s information to Rice for
+                            <entry>Click this button to send this screen's information to Rice for
                                 processing</entry>
                         </row>
                         <row>
@@ -446,13 +446,13 @@
                 are useful for your Rice Role and the function you need. For example, if your Role
                 in Rice lets you create new Rice documents, then you can see a create new button on
                 appropriate screens. If you click this button, you go directly to the screen for
-                creating new documents. People whose Role doesn’t create new documents aren’t
+                creating new documents. People whose Role doesn't create new documents aren't
                 bothered with this button on their screens.</para>
             <para>Screens with information or functions that can be used in many places in Rice are
                 very conveniently linked to those places, so useful screens are always at your
                 fingertips. For example, screens that use Person information display a link to the
                 Person Lookup screen. This lets you search for the exact Person you need and enter
-                that Person’s information automatically on those screens. (In Rice, a Person is a
+                that Person's information automatically on those screens. (In Rice, a Person is a
                 set of information about a real person or something that stands for real people,
                 like a job title.)</para>
             <para>Not only will you find links to a useful screen like Person Lookup on many other
@@ -483,7 +483,7 @@
                     </listitem>
                     <listitem>
                         <para>Range operators allowed on numbers and dates in searches: >, &lt;, >=,
-                            &lt;=, or ‘..’. All operators except ‘..’ should be before a date. Use
+                            &lt;=, or '..'. All operators except '..' should be before a date. Use
                             operators to separate dates. If you need more information about using
                             range operators in searches, do a search in your favorite Internet
                             search engine to find one of many explanations of range operators in
@@ -1109,12 +1109,12 @@
                             your issue. </para>
                     </listitem>
                     <listitem>
-                        <para>If you don’t find an issue similar to the one you want to report, try
+                        <para>If you don't find an issue similar to the one you want to report, try
                             searching with different text in the query field. </para>
                     </listitem>
                     <listitem>
                         <para>If you do find an issue that is similar to the new one that you want
-                            to report, don’t enter a new issue. Simply add a comment to that
+                            to report, don't enter a new issue. Simply add a comment to that
                             existing issue that describes any differences in your issue or adds
                             information about the issue. </para>
                     </listitem>
@@ -1127,7 +1127,7 @@
         </section>
         <section>
             <title>Step 2: Create an Issue in JIRA</title>
-            <para>If you didn’t find a similar issue on the Issue Navigator page, then please create
+            <para>If you didn't find a similar issue on the Issue Navigator page, then please create
                 a new issue in JIRA. (If you are a developer, you also determined that this is an
                 issue with Kuali Rice and not with your application.)<orderedlist>
                     <listitem>
@@ -1147,7 +1147,7 @@
                                 </listitem>
                                 <listitem>
                                     <para>For enhancements, select either Improvement or, for
-                                        something that’s not yet developed: New Feature, as
+                                        something that's not yet developed: New Feature, as
                                         appropriate. </para>
                                 </listitem>
                                 <listitem>

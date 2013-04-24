@@ -50,9 +50,9 @@
                     <listitem>
                         <para><emphasis role="bold">Subscription Flag</emphasis> – This flag
                             identifies whether users can adjust their subscription status on the
-                            channel. If “Yes”, users can see the channel in the “Channel
-                            Subscriptions” form and change their subscription status. If “No”, a
-                            user’s subscription to the channel is managed by other means (for
+                            channel. If "Yes", users can see the channel in the "Channel
+                            Subscriptions" form and change their subscription status. If "No", a
+                            user's subscription to the channel is managed by other means (for
                             example, group membership). </para>
                     </listitem>
                     <listitem>
@@ -84,7 +84,7 @@
             <para>Subscriptions are divided into two categories:<itemizedlist>
                     <listitem>
                         <para><emphasis role="bold">Subscribers</emphasis> – Users can subscribe to
-                            any channel where the Subscription Flag is set to “Yes”. </para>
+                            any channel where the Subscription Flag is set to "Yes". </para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Default Recipients</emphasis> – Each channel has

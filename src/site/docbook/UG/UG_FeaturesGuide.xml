@@ -19,8 +19,8 @@
 <chapter xml:id="UG_FeaturesGuide" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>High-Level Features Guide</title>
     <para>This document is planned as a high level overview of what the various modules of Rice have to 
-        offer. For a more in depth view please refer to the User’s Guide or Technical Guide that we also 
-        provide. If you don’t already have a Rice environment to use, please visit this site to download 
+        offer. For a more in depth view please refer to the User's Guide or Technical Guide that we also 
+        provide. If you don't already have a Rice environment to use, please visit this site to download 
         the latest version of Rice for yourself.</para>
         <section>
             <title>Nervous System (KNS)</title>

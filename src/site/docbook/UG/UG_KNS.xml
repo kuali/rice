@@ -26,13 +26,13 @@
             <title>What is KNS?</title>
             <itemizedlist>
                 <listitem>
-                    <para>It’s a framework to enforce consistency. </para>
+                    <para>It's a framework to enforce consistency. </para>
                 </listitem>
                 <listitem>
                     <para>It adheres to development standards and architectural principles. </para>
                 </listitem>
                 <listitem>
-                    <para>It’s a stable core for efficient development. </para>
+                    <para>It's a stable core for efficient development. </para>
                 </listitem>
                 <listitem>
                     <para>It reduces the amount of code you need to write and supports code reuse.
@@ -60,9 +60,9 @@
                     </imageobject>
                 </mediaobject></figure>
             <para>Essentially, KNS is a common set of service methods you can use to take actions on
-                a document. It’s very similar to a business object service, for example, one that
+                a document. It's very similar to a business object service, for example, one that
                 persists documents and integrates with a workflow. One of the ways the KNS subsystem
-                accomplishes this is by using Spring’s transaction management features:<itemizedlist>
+                accomplishes this is by using Spring's transaction management features:<itemizedlist>
                     <listitem>
                         <para>documentService.save(document); </para>
                     </listitem>
@@ -377,7 +377,7 @@
                     </imageobject>
                     </mediaobject>
                 </figure>
-            <para>You’ll also notice that the screen has changed and now has different buttons at
+            <para>You'll also notice that the screen has changed and now has different buttons at
                 the bottom. Click the close button to close the current screen and return to your
                 starting point.</para>
         </section>
@@ -537,7 +537,7 @@
                 </mediaobject>
             </figure>
             <para>You can sort the search results in ascending or descending order by one column by
-                clicking that column’s heading. If you want to save the search results, you can
+                clicking that column's heading. If you want to save the search results, you can
                 export the entire list in CSV, spreadsheet, or XML format. </para>
             <para>Click a Namespace Code in the search results list to display more information
                 about that code.</para>

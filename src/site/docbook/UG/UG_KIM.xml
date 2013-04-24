@@ -28,7 +28,7 @@
     information.</para>
     <para>KIM is designed to be used with both Kuali and non-Kuali
     applications. The permissions and responsibilities it provides are defined
-    by each user’s Role or Roles in the system. Roles can be customized to
+    by each user's Role or Roles in the system. Roles can be customized to
     handle permissions and responsibilities in a variety of ways based on your
     particular needs.</para>
 
@@ -54,7 +54,7 @@
           <para>KIM allows you to override its core services. </para>
         </listitem>
         <listitem>
-          <para>KIM consists of these services, which encompass it’s
+          <para>KIM consists of these services, which encompass it's
           API:<itemizedlist>
               <listitem>
                 <para>AuthenticationService</para>
@@ -112,7 +112,7 @@
       Kuali, a Person is a set of information about a real person or something
       that stands for real people, like a job title.) From the Person Lookup
       screen, you can also link to screens where you can create new Persons
-      and edit a Person’s information if you have permission to do so.</para>
+      and edit a Person's information if you have permission to do so.</para>
 
       <section>
         <title>Finding the Person Lookup Screen</title>
@@ -246,11 +246,11 @@
           section (next) in this User Guide.</para>
 
           <para>If you need to edit information for a Person in KIM, you first
-          need to display that Person’s information. Search for the Person
+          need to display that Person's information. Search for the Person
           (see search instructions above) from the <emphasis
-          role="bold">Administration</emphasis> tab’s link for <emphasis
+          role="bold">Administration</emphasis> tab's link for <emphasis
           role="bold">Person</emphasis>. When Kuali displays the list of
-          Persons that match your search, you’ll notice one difference in the
+          Persons that match your search, you'll notice one difference in the
           columns because you did your search from the Administration tab –
           there is an <emphasis role="bold">Actions</emphasis> column on the
           left.</para>
@@ -258,7 +258,7 @@
           <para>The <emphasis role="bold">Actions</emphasis> column has an
           <emphasis role="bold">edit</emphasis> link for each person. Click
           this edit link to go to the <emphasis role="bold">Person
-          Document</emphasis> screen where you can edit this Person’s
+          Document</emphasis> screen where you can edit this Person's
           information. For more information on working with Person
           information, see the <emphasis role="bold">Person
           Maintenance</emphasis> section (next) in this User Guide.</para>
@@ -269,7 +269,7 @@
       <title>Person Maintenance</title>
 
       <para>The Person Document allows you to identify and maintain each user
-      in KIM. Each Person Document includes data about that user’s
+      in KIM. Each Person Document includes data about that user's
       relationship with your institution as well as the roles and groups to
       which the person belongs.</para>
 
@@ -277,7 +277,7 @@
       role="italic">Entity ID</emphasis> and a <emphasis
       role="italic">Principal ID</emphasis>. The Entity ID represents a Person
       with a unique number, and the Person Document associates the Entity ID
-      with the user’s Principal ID number and Principal Name (often referred
+      with the user's Principal ID number and Principal Name (often referred
       to as a user name or user ID). When searching for or working with users
       in KIM, you usually use either the Principal ID or the Principal Name. A
       single Entity ID can have multiple Principals associated with it, but
@@ -369,7 +369,7 @@
         affiliated with your institution. Two types of affiliations—<emphasis
         role="bold">Staff</emphasis> and <emphasis
         role="bold">Faculty</emphasis>—contain additional data fields to
-        further define a person’s relationship with your institution.</para>
+        further define a person's relationship with your institution.</para>
 
         <para>The instructions below assume that you are manually entering
         this information. Many institutions either have this data fed from an
@@ -511,7 +511,7 @@
                     <entry>Default</entry>
 
                     <entry>Check the box to indicate that this Affiliation is
-                    this Principal’s default association with your
+                    this Principal's default association with your
                     institution. Each Principal must have at least one default
                     Affiliation.</entry>
                   </row>
@@ -563,7 +563,7 @@
                     <entry>Primary</entry>
 
                     <entry>Check this box to indicate that this Faculty or
-                    Staff affiliation represents the Principal’s primary job
+                    Staff affiliation represents the Principal's primary job
                     with your institution. Each Principal with a Faculty or
                     Staff affiliation must have exactly one affiliation marked
                     as Primary.</entry>
@@ -1054,31 +1054,31 @@
                   <entry>Suppress Name</entry>
 
                   <entry>Optional. Check this box to specify NOT to display
-                  this person’s names.</entry>
+                  this person's names.</entry>
                 </row>
                 <row>
                   <entry>Suppress Personal</entry>
 
                   <entry>Optional. Check this box to specify NOT to display
-                  any of this person’s personal data.</entry>
+                  any of this person's personal data.</entry>
                 </row>
                 <row>
                   <entry>Suppress Phone</entry>
 
                   <entry>Optional. Check this box to specify NOT to display
-                  this person’s phone numbers.</entry>
+                  this person's phone numbers.</entry>
                 </row>
                 <row>
                   <entry>Suppress Address</entry>
 
                   <entry>Optional. Check this box to specify NOT to display
-                  this person’s addresses.</entry>
+                  this person's addresses.</entry>
                 </row>
                 <row>
                   <entry>Suppress Email</entry>
 
                   <entry>Optional. Check this box to specify NOT to display
-                  this person’s email addresses.</entry>
+                  this person's email addresses.</entry>
                 </row>
               </tbody>
             </tgroup>
@@ -1150,14 +1150,14 @@
                   <row>
                     <entry>Active From Date</entry>
 
-                    <entry>Optional. If this user’s assignment to this group
+                    <entry>Optional. If this user's assignment to this group
                     is to be effective as of a certain date, enter that date
                     here.</entry>
                   </row>
                   <row>
                     <entry>Active To Date</entry>
 
-                    <entry>Optional. If this user’s assignment to this group
+                    <entry>Optional. If this user's assignment to this group
                     is to terminate as of a certain date, enter that date
                     here.</entry>
                   </row>
@@ -1172,7 +1172,7 @@
             </table></para>
 
           <note>
-            <para>There is no way to delete a person’s assignment to a group.
+            <para>There is no way to delete a person's assignment to a group.
             To remove a person from a group, use the Active To Date field to
             specify a date in the past.</para>
           </note>
@@ -1219,13 +1219,13 @@
                   </row>
                   <row>
                     <entry>Active From Date</entry>
-                    <entry>Optional. If this user’s assignment to this role is
+                    <entry>Optional. If this user's assignment to this role is
                     to be effective as of a certain date, enter that date
                     here.</entry>
                   </row>
                   <row>
                     <entry>Active To Date</entry>
-                    <entry>Optional. If this user’s assignment to this role is
+                    <entry>Optional. If this user's assignment to this role is
                     to terminate as of a certain date, enter that date
                     here.</entry>
                   </row>
@@ -1240,13 +1240,13 @@
             </table></para>
 
           <note>
-            <para>There is no way to delete a person’s assignment to a role.
+            <para>There is no way to delete a person's assignment to a role.
             To remove a person from a role, use the Active To Date field to
             specify a date in the past.</para>
           </note>
 
           <para>When assigning some roles, you may need to supply additional
-          qualifying information that further defines this person’s
+          qualifying information that further defines this person's
           assignment. For more information on Roles see the Role Maintenance
           section in this User Guide.</para>
         </section>
@@ -1586,9 +1586,9 @@
           existing members.</para>
 
           <para>Note that for members not added to the group on this
-          maintenance document, the “delete” button to remove that member is
-          inactive. If a member’s association with a group is past, users
-          should set the “Active To Date” field to the end of the membership;
+          maintenance document, the "delete" button to remove that member is
+          inactive. If a member's association with a group is past, users
+          should set the "Active To Date" field to the end of the membership;
           the member will not be an active member of the group after that
           date.</para>
 
@@ -2258,7 +2258,7 @@
           value of <emphasis role="bold">False</emphasis>, you must complete
           additional fields in a Responsibility Action sub-section. KIM
           automatically displays this sub-section immediately beneath the
-          Responsibility you’ve just added.</para>
+          Responsibility you've just added.</para>
 
           <para>The fields in this sub-section define the type of Action
           Requests generated for, and the general workflow behavior associated
@@ -2338,7 +2338,7 @@
                     role="italic">FIRST</emphasis> indicates that the first
                     Group member to take action on the document causes KIM to
                     clear all the requests for this Responsibility that may be
-                    in other Group member’s action lists. A value of <emphasis
+                    in other Group member's action lists. A value of <emphasis
                     role="italic">ALL</emphasis> indicates that each Group
                     member must take individual action to clear his or her own
                     requests.</entry>
@@ -2367,9 +2367,9 @@
           associated with existing members.</para>
 
           <para>Just as with group, role members not added by the specific
-          maintenance document will have their “delete” buttons inactivated.
-          To end that member’s active association with the group, set the
-          “Active To Date” field to the end of the membership.</para>
+          maintenance document will have their "delete" buttons inactivated.
+          To end that member's active association with the group, set the
+          "Active To Date" field to the end of the membership.</para>
 
           <figure>
             <title>Role Maintenance Document: Assignees Tab</title>
@@ -2447,7 +2447,7 @@
                   <row>
                     <entry>Active To Dt</entry>
 
-                    <entry><para>Optional. Allows you to deactivate a member’s
+                    <entry><para>Optional. Allows you to deactivate a member's
                     association with a Role on a specific date. Enter the date
                     the user is no longer a member of this Role.</para>
                     <para><emphasis role="bold">Note: </emphasis>You cannot
@@ -2484,8 +2484,8 @@
           qualifiers as the Role member with which they are associated.</para>
 
           <para>Just as with Group and Role Associations, delegations added
-          outside of the current maintenance document have inactive “delete”
-          buttons and must have the “Active To Date” field set to end the
+          outside of the current maintenance document have inactive "delete"
+          buttons and must have the "Active To Date" field set to end the
           delegation.</para>
 
           <figure>
@@ -2563,7 +2563,7 @@
                   <row>
                     <entry>Active From Date</entry>
 
-                    <entry>Optional. You may choose to qualify this Delegate’s
+                    <entry>Optional. You may choose to qualify this Delegate's
                     association with this Role by date. Entering an <emphasis
                     role="bold">Active From Date</emphasis> is the earliest
                     date on which this Delegate is valid for this
@@ -2574,7 +2574,7 @@
                     <entry>Active To Date</entry>
 
                     <entry><para>Optional. Allows you to deactivate a
-                    Delegate’s association with a Role on a specific date. The
+                    Delegate's association with a Role on a specific date. The
                     date you enter is the date on which this user is no longer
                     a Delegate for this Role.</para> <para><emphasis
                     role="bold">Note: </emphasis>You <emphasis
@@ -2840,7 +2840,7 @@
                 A template usually defines, in a broad sense, what the
                 responsibility is. Since responsibilities normally are
                 associated with action requests for user review, most
-                responsibilities have a template name of “Review.”</entry>
+                responsibilities have a template name of "Review."</entry>
               </row>
 
               <row>
@@ -2857,7 +2857,7 @@
 
                 <entry>Optional. The name of this responsibility. In most
                 cases, the responsibility name is the same as the associated
-                template name (“Review”). Like permission names,
+                template name ("Review"). Like permission names,
                 responsibility names are not unique.</entry>
               </row>
 
@@ -2890,7 +2890,7 @@
                 <entry>Group Namespace</entry>
 
                 <entry>Optional. The namespace of groups that have this
-                responsibility through the group’s association with a
+                responsibility through the group's association with a
                 role</entry>
               </row>
 
@@ -2960,7 +2960,7 @@
                 generally contain these elements:</para> <itemizedlist>
                     <listitem>
                       <para><emphasis role="bold">routeNodeName</emphasis>:
-                      The point in a document’s workflow routing at which this
+                      The point in a document's workflow routing at which this
                       responsibility generates requests.</para>
                     </listitem>
 
@@ -3148,7 +3148,7 @@
                 <entry>Group Namespace</entry>
 
                 <entry>Optional. The namespace of groups that have this
-                permission through the groups’ association with a role</entry>
+                permission through the groups' association with a role</entry>
               </row>
 
               <row>
@@ -3162,7 +3162,7 @@
                 <entry>Permission Detail Values</entry>
 
                 <entry><para>Optional. Detailed information that, in
-                combination with the permission name, defines the permission’s
+                combination with the permission name, defines the permission's
                 function For example, if the permission name is <emphasis
                 role="bold">Initiate Document</emphasis>, the <emphasis
                 role="bold">Permission Detail Values</emphasis> field
@@ -3178,7 +3178,7 @@
 
                     <listitem>
                       <para><emphasis role="bold">routeNodeName</emphasis>:
-                      The point in a document’s workflow routing at which this
+                      The point in a document's workflow routing at which this
                       permission becomes relevant.</para>
                     </listitem>
 

@@ -58,7 +58,7 @@
 15    &lt;/property>
 16    &lt;property name="resultFields">
 17      &lt;list>
-18        &lt;bean parent="FieldDefinition" p:attributeName="code"/>
+18        &lt;bean parent="FieldDefinition" p:attributeName="code" p:triggerOnChange="true"/>
 19        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
 20        &lt;bean parent="FieldDefinition" p:attributeName="sortCode"/>
 21        &lt;bean parent="FieldDefinition" p:attributeName="active"/>
@@ -90,7 +90,7 @@
 20    &lt;property name="renderSearchButtons" value="false"/>
 21    &lt;property name="criteriaFields">
 22      &lt;list>
-23        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code"/>
+23        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" p:triggerOnChange="true"/>
 24        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:quickfinder.render="false"/>
 25        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
 26      &lt;/list>

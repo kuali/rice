@@ -56,7 +56,7 @@
                                 <para>Sending email to specified individuals </para>
                             </listitem>
                             <listitem>
-                                <para>Turning off some of the Rice “back doors” </para>
+                                <para>Turning off some of the Rice "back doors" </para>
                             </listitem>
                         </orderedlist></para>
                 </listitem>
@@ -74,14 +74,14 @@
                                 a clustered production environment. </para>
                         </listitem>
                         <listitem>
-                            <para>Rice’s initial settings are in the file,
+                            <para>Rice's initial settings are in the file,
                                 common-config-defaults.xml. </para>
                         </listitem>
                     </orderedlist></para>
                 <para>Here are some of the parameters in the common-config-defaults.xml that setup
                     Quartz for clustering:</para>
                 <para><programlisting>&lt;param name="useQuartzDatabase" override="false">true&lt;/param>
-&lt;param name="ksb.org.quartz.scheduler.instanceId” override="false">AUTO&lt;/param>
+&lt;param name="ksb.org.quartz.scheduler.instanceId" override="false">AUTO&lt;/param>
 &lt;param name="ksb.org.quartz.scheduler.instanceName" override="false">KSBScheduler&lt;/param>
 &lt;param name="ksb.org.quartz.jobStore.isClustered" override="false">true&lt;/param>
 &lt;param name="ksb.org.quartz.jobStore.tablePrefix" override="false">KRSB_QRTZ_&lt;/param></programlisting></para>
@@ -159,7 +159,7 @@
                 >kualirice-stg</emphasis> and <emphasis role="bold">kualirice-tst</emphasis>
             instances pointing to the same database. However, you could set up two different
             databases, one for staging and one for testing. How you configure Rice for the scenario
-            of a database for the “stg” instance and a separate database for the “tst” instance
+            of a database for the "stg" instance and a separate database for the "tst" instance
             depends on how you want to set up Rice. That scenario is not documented here.<itemizedlist>
                 <listitem>
                     <para>We are assuming that you performed all the installation steps above to
@@ -170,7 +170,7 @@
                 </listitem>
                 <listitem>
                     <para>You must compile the source code with a different environment variable. To
-                        add the environment variable, environment, to the WAR file’s <emphasis
+                        add the environment variable, environment, to the WAR file's <emphasis
                             role="bold">WEB-INF/web.xml</emphasis> file, recompile the source code
                         with this parameter:</para>
                     <para><programlisting>ant -Drice.environment=some-environment-variable dist-war</programlisting></para>
@@ -298,7 +298,7 @@ Using JRE_HOME:		/usr/java/jdk1.6.0_16</programlisting></para>
                                 <para>Sends email to specified individuals </para>
                             </listitem>
                             <listitem>
-                                <para>Turns off some of the Rice “back doors” </para>
+                                <para>Turns off some of the Rice "back doors" </para>
                             </listitem>
                         </orderedlist></para>
                 </listitem>

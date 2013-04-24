@@ -60,7 +60,7 @@
 17      &lt;list>
 18        &lt;bean parent="FieldDefinition" p:attributeName="code" p:triggerOnChange="true"/>
 19        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
-20        &lt;bean parent="FieldDefinition" p:attributeName="sortCode"/>
+20        &lt;bean parent="FieldDefinition" p:attributeName="sortCode" p:forceInquiry="true"/>
 21        &lt;bean parent="FieldDefinition" p:attributeName="active"/>
 22      &lt;/list>
 23    &lt;/property>
@@ -196,14 +196,30 @@
             </para>
         </section>
         <section><title>Results Fields</title>
-            <para><emphasis role="italic">Data dictionary configured ordered list of result fields</emphasis></para>
-            <para>For the <emphasis role="keyword">resultFiles</emphasis> property list the
-                    <emphasis role="keyword">FieldDefinition</emphasis> parent beans has been
-                renamed to <emphasis role="keyword">Uif-DataField</emphasis> (see KNS line numbers
-                5-6, KRAD line numbers 5-6) (see KRAD Documentation: lookup result ordering). The
-                    <emphasis role="keyword">forceInquiry</emphasis> property does not need to be
-                set under most conditions as it derives automatically (see KRAD documentation:
-                foo-bar).</para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Criteria fields changed from <emphasis role="keyword"
+                                >FieldDefinition</emphasis> to <emphasis role="keyword"
+                                >Uif-DataField</emphasis>. [KNS line: 18-21, KRAD line: 30-33]
+                            [script converted: yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="keyword">attributeName</emphasis> property on the
+                            field is now a <emphasis role="keyword">propertyName</emphasis>
+                            property. [KNS line: 18-21, KRAD line: 30-33] [script converted:
+                            yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="keyword">forceInquiry</emphasis> property does not
+                            need to be set as inquiry links are rendered automatically. Set the
+                                <emphasis role="keyword">inquiry.render</emphasis> property on the
+                                <emphasis role="keyword">Uif-DataField</emphasis> to false to
+                            supress the rendering of the inquiry link. [KNS line: 20, KRAD line:
+                            n/a] [script converted: yes]</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
         </section>
     </section>
     

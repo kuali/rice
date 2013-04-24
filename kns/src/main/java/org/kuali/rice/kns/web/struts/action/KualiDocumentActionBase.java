@@ -23,8 +23,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
@@ -68,6 +66,7 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
@@ -404,8 +403,9 @@ public class KualiDocumentActionBase extends KualiAction {
         kualiDocumentFormBase.setDocument(doc);
         WorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
         kualiDocumentFormBase.setDocTypeName(workflowDoc.getDocumentTypeName());
+
         // KualiDocumentFormBase.populate() needs this updated in the session
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDoc);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(), workflowDoc);
     }
 
 
@@ -418,6 +418,8 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     protected void createDocument(KualiDocumentFormBase kualiDocumentFormBase) throws WorkflowException {
         Document doc = getDocumentService().getNewDocument(kualiDocumentFormBase.getDocTypeName());
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                doc.getDocumentHeader().getWorkflowDocument());
 
         kualiDocumentFormBase.setDocument(doc);
         kualiDocumentFormBase.setDocTypeName(doc.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());

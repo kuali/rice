@@ -54,7 +54,7 @@
                                     validation.</para>
                             </listitem>
                                 <listitem>
-                                <para>Document Framework – Provides the ability to create ‘e-docs’
+                                <para>Document Framework – Provides the ability to create 'e-docs'
                                     that are integrated with the KEW module for workflow and the KIM
                                     module for authorization. In addition to the integration the
                                     framework, it also provides several reusable pieces for creating
@@ -72,7 +72,7 @@
                                     of the KRAD training is focused on this area.</para>
                             </listitem>
                             <listitem>
-                                <para>Inquiry, Lookup, Maintenance – ‘Pre-built’ views complete with
+                                <para>Inquiry, Lookup, Maintenance – 'Pre-built' views complete with
                                     a backend implementation that can be quickly configured to
                                     create new search screens, screens that display data for
                                     information, and screens that allow table data to be
@@ -118,7 +118,7 @@
             <title>Bean Configuration</title>
             <para>Spring supports various methods for bean configuration, the most common of these
                 being XML. Each XML file must adhere to the Spring bean doctype and is sometimes
-                referred to as ‘Spring Bean XML’. The following is the shows the doctype definition
+                referred to as 'Spring Bean XML'. The following is the shows the doctype definition
                 for the 3.1 release:</para>
             <programlisting>
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
@@ -130,7 +130,7 @@
             <para>Note this sets up use for the bean namespace. Spring provides many other XML
                 namespaces that are used for various purposes. If one of these are used, the
                 corresponding definition must be declared with the bean doctype. One of these other
-                namespaces, the ‘p’ namespace, will be covered later on in this section.</para>
+                namespaces, the 'p' namespace, will be covered later on in this section.</para>
             <para>Once we have our XML file setup, we can begin specifying the bean configuration.
                 Each file may contain as many bean configurations as we like (we will see later on
                 certain best practices for Spring file organization). To start a new bean
@@ -157,7 +157,7 @@
         </section>
         <section><title>Primitive Properties</title><para/>
             <para>The above definition is perfectly acceptable and would result in Spring creating a
-                new Address object. However, now let’s add some property configuration. In order to
+                new Address object. However, now let's add some property configuration. In order to
                 do this, we must know the available properties on our Address object:</para>
             <para>public class Address { </para>
             <para>  private String street;</para>
@@ -187,7 +187,7 @@ address.setState("IN");  
             <para>Notice that in order for Spring to
                 instantiate our object with the above bean configuration, we needed to have a
                 default no-argument constructor. However, if our class requires a constructor
-                argument, that’s no problem. We can use the constructor-arg tag to specify the
+                argument, that's no problem. We can use the constructor-arg tag to specify the
                 values for the arguments. Suppose our Address class looks like the following:</para>
             <programlisting> 
 public class Address {
@@ -251,7 +251,7 @@ List&lt;String&gt; phoneNumbers = new ArrayList&lt;String&gt;();
 phoneNumbers.add("812-333-9090");
 phoneNumbers.add("812-444-9900");
             </programlisting>
-            <para>Now let’s take a look at a Map
+            <para>Now let's take a look at a Map
                 example. Suppose we had the following property with type Map&lt;String,
                 String&gt;:</para>
             <programlisting>
@@ -291,7 +291,7 @@ private Map&lt;String, String&gt; stateCodeNames;
                 difference between these attributes pertains to container and scoping rules
                 (discussed later on). The most common case with Rice is to use the bean
                 attribute.</para>
-            <para>For example, in our Address objects, let’s now change the state property (of type
+            <para>For example, in our Address objects, let's now change the state property (of type
                 String) to type State. The State class is as follows:</para>
             <programlisting>
 private class State {
@@ -360,7 +360,7 @@ address.setState(state);
                 bean configurations exactly as we do other bean configurations. The only difference
                 is they do not need an id attribute (as stated), and the bean tag falls within a
                 property tag.</para>
-            <para>To see this in action, let’s suppose we did not any bean configurations for State
+            <para>To see this in action, let's suppose we did not any bean configurations for State
                 in our XML. Using inner beans, we can accomplish the same result:</para>
             <programlisting>
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
@@ -387,9 +387,9 @@ address.setState(state);
         </section>
         <section>
             <title>Compound Property Names</title>
-            <para>As of Spring version 3.0, we can configure so called ‘Compound’ property names.
+            <para>As of Spring version 3.0, we can configure so called 'Compound' property names.
                 This is a basically a shortcut for setting a property on a reference (nested)
-                object. Let’s again take the example of the Address class with a property of type
+                object. Let's again take the example of the Address class with a property of type
                 State. We saw earlier how we can use bean references or inner beans to create and
                 populate the State object for the Address property. Using component property names,
                 we can sets property values on the State object using the property tag without a
@@ -410,7 +410,7 @@ address.setState(state);
             <title>The P-Namespace</title>
             <para>As we have seen and will continue to see, the use of XML configuration for
                 constructing objects has many benefits. However, one drawback is the XML is much
-                more verbose than code. To help with this problem, Spring introduces the ‘p’ XML
+                more verbose than code. To help with this problem, Spring introduces the 'p' XML
                 namespace. This namespace essentially adds the ability to specify property values as
                 attributes on the bean tag instead of the inner property tags. The attribute name
                 given with the p namespace should match the name of the property to populate.</para>
@@ -420,7 +420,7 @@ address.setState(state);
 &lt;bean id="address" class="edu.myedu.sample.Address" p:street="197 H St" p:city="Bloomington" p:state="IN"/&gt;
             </programlisting>
             <para>Using the p namespace we can also configure references to other beans. The syntax
-                for doing this is to add ‘-ref’ after the property name.</para>
+                for doing this is to add '-ref' after the property name.</para>
             <programlisting>
 &lt;bean id="address" class="edu.myedu.sample.Address" p:street="197 H St" p:city="Bloomington" p:state-ref="state-IN"/&gt;
             </programlisting>    
@@ -428,7 +428,7 @@ address.setState(state);
                 use the object constructed from that bean configuration to set the state property on
                 Address.</para>
             <para>With the p-namespace we can also set compound property names such as
-                ‘state.stateCode’. Using the p-namespace for setting property values is limited
+                'state.stateCode'. Using the p-namespace for setting property values is limited
                 however. For instance, there is no mechanism for setting collection property
                 types.</para>
         </section>
@@ -437,7 +437,7 @@ address.setState(state);
                 the bean which configuration should be inherited from. Configuration such as the
                 class, property and constructor arguments, initialization methods, and so on, will
                 be inherited for the child definition. The child bean definition can override the
-                inherited configuration, and add to it.</para><para>As an example let’s assume we have a Car class defined as
+                inherited configuration, and add to it.</para><para>As an example let's assume we have a Car class defined as
                 follows:</para><programlisting>
 public class Car {
     private String make;
@@ -452,9 +452,9 @@ public class Car {
 &lt;bean id="redFusion" parent="fordCar" p:make="Fusion" p:color="Red"/&gt;
 &lt;bean id="blueEscape" parent="blueFusion" p:make="Escape"/&gt;
             </programlisting><para>Notice for the three child beans we did not have to specify the class attribute since it is
-                inherited from the parent. In the ‘blueFusion’ and ‘redFusion’ beans we are
-                extending the ‘fordCar’ bean to specify the car make and color. For the ‘blueEscape’
-                bean we extend ‘blueFusion’ to override the make property. There is no restriction
+                inherited from the parent. In the 'blueFusion' and 'redFusion' beans we are
+                extending the 'fordCar' bean to specify the car make and color. For the 'blueEscape'
+                bean we extend 'blueFusion' to override the make property. There is no restriction
                 on the number of levels the bean inheritance can have.</para><tip>
                 <title>Circular Dependencies</title>
                 <para>Be careful not to introduce circular dependencies when using bean inheritance.
@@ -482,7 +482,7 @@ public class Car {
     &lt;/property&gt;
 &lt;/bean&gt;
             </programlisting>
-            <para>With the merge attribute set to true, Joe’s address
+            <para>With the merge attribute set to true, Joe's address
                 will have three phone numbers configured. Taking the merge attribute off (or setting
                 to false) will result in Joe only having one configured phone number.</para>
             <tip>
@@ -493,7 +493,7 @@ public class Car {
                     the bean configuration is loaded depends on the configuration (order of files).
                     This functionality is important to how Rice and the other Kuali applications
                     provide a great deal of flexibility. An institution implementing the project can
-                    specify one or more ‘institutional’ spring files. These files are loaded after
+                    specify one or more 'institutional' spring files. These files are loaded after
                     the project Spring files, thus any beans within the institutional files with the
                     same id as a bean in the project Spring files will override. This allows
                     changing beans such as service implementations without modifying a project file.
@@ -503,7 +503,7 @@ public class Car {
         <section>
             <title>Bean Containers</title>
             <para>So far we have looked at how we can use XML to provide bean configuration. Now
-                let’s look at how Spring uses that information to manage our objects.</para>
+                let's look at how Spring uses that information to manage our objects.</para>
             <para>The objects created from the bean configuration are managed within a container. An
                 application may contain more than one bean container, depending on configuration. A
                 bean container is associated with a set of bean configurations, loaded from a set of
@@ -547,13 +547,13 @@ public class Car {
             <programlisting>
 &lt;bean id="MyBean" class="..." scope="singleton"&gt;
             </programlisting>
-            <para>The default scope for a bean is ‘singleton’. An object with scope singleton is
+            <para>The default scope for a bean is 'singleton'. An object with scope singleton is
                 created only once per bean container. When requests are made to obtain an object for
                 the correspond bean, the same object instance is always returned. By default, the
                 singleton object is created during container initialization, however we may add
                 lazy-init="true" to the bean tag to indicate that the object should not be created
                 until a request for the object is made.</para>
-            <para>Another scope we can use is ‘prototype’. When a bean is marked with a scope of
+            <para>Another scope we can use is 'prototype'. When a bean is marked with a scope of
                 prototype, a new object instance is created for each request. Prototype objects are
                 not created initially during container initialization.</para>
             <tip>
@@ -573,7 +573,7 @@ public class Car {
                 <itemizedlist>
                     <listitem>
                         <para>Spring provides a configuration mechanism that allows us to define a
-                            ‘recipe’ for creating instances of a class. </para>
+                            'recipe' for creating instances of a class. </para>
                     </listitem>
                     <listitem>
                         <para>We can use XML to provide bean configurations. A bean configuration is
@@ -630,10 +630,10 @@ public class Car {
                 Environment)</emphasis> – This is the tool you will use to developer the source code
             and resources for your project. It can be a simple text editor if you want, however it
             is recommended to use one of the Java IDE tools available. Of these Eclipse, Intellij,
-            and NetBeans are the most popular in today’s market. Any of these will be fine for
+            and NetBeans are the most popular in today's market. Any of these will be fine for
             developing a Rice project. However, as we will learn about next, Rice provides its own
             tooling to help getting started with Eclipse. Eclipse is chosen due to its high use and
-            that it is a free open source tool. The latest release is ‘Indigo’ and can be downloaded
+            that it is a free open source tool. The latest release is 'Indigo' and can be downloaded
             here:</para><para><link
                 xlink:href="http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/indigosr2"
                 >http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/indigosr2</link></para><para><emphasis
@@ -641,8 +641,8 @@ public class Car {
             database for persisting application data. Rice itself will use the database for
             supporting the various Rice modules (workflow, identity management, and so on). Within
             the Rice distribution datasets are provided that can be used to create the initial
-            database schema. You can choose to load the ‘bootstrap’ dataset, which provides the
-            baseline data needed to run Rice, or the ‘demo’ dataset which adds additional demo data
+            database schema. You can choose to load the 'bootstrap' dataset, which provides the
+            baseline data needed to run Rice, or the 'demo' dataset which adds additional demo data
             (such as example KIM data and workflow doc types).   </para><para>Although it is possible to provide a shared database for development, it is recommended for
             productivity reasons for each developer to have a local database installed. Both MySQL
             and Oracle provide freely available databases for development. Currently Rice has been
@@ -740,7 +740,7 @@ public class Car {
             independent way and then creates the resulting database in either Oracle or MySQL. To
             use this tool we simply provide configuration about the location of the source dataset,
             along with connectivity information for our target database. This is done by creating a
-            properties file named ‘impex-build.properties’ in the user home directory. Once the
+            properties file named 'impex-build.properties' in the user home directory. Once the
             configuration is complete, we can invoke the tool using ant or maven and our database
             will be created.</para><note>
             <title>Supported Databases</title>
@@ -830,7 +830,7 @@ Apache Maven 3.0.4 (r1232337; 2012-01-17 03:44:56-0500)
             such as Jetty. The Rice project provides a sample Jetty Server that can be used for your
             project. The next section will cover this in more detail.</para>
     </section>
-    <section xml:id="new_project_setup"><title> New Project Setup </title><para>Now let’s look at creating a new Rice enabled project. To do this, we will use a tool from the
+    <section xml:id="new_project_setup"><title> New Project Setup </title><para>Now let's look at creating a new Rice enabled project. To do this, we will use a tool from the
             Rice project that performs most of the initial bootstrapping. The tool is included
             within the Rice project.  Therefore, we need to start by downloading the Rice 2.0
             release. The Rice distribution can be downloaded at:</para><para><link xlink:href="http://kuali.org/download"
@@ -841,8 +841,8 @@ Apache Maven 3.0.4 (r1232337; 2012-01-17 03:44:56-0500)
             checked out, not just the tool. The tool creates the initial artifacts by copying from
             the Rice working copy.</para><para>The Rice project contents should be placed into a
             folder in the local file system. A standard practice is to create a top level directory
-            named ‘java’, followed by a ‘projects’ directory, and then a directory named ‘rice’ that
-            contains the actual project (‘/java/projects/rice’).</para><para>The particular tool we
+            named 'java', followed by a 'projects' directory, and then a directory named 'rice' that
+            contains the actual project ('/java/projects/rice').</para><para>The particular tool we
             will be using was written in Groovy, therefore we need to download the Groovy runtime.
             This can be downloaded at the following URL:</para><para><link
                 xlink:href="http://groovy.codehaus.org/Download"
@@ -851,18 +851,18 @@ Apache Maven 3.0.4 (r1232337; 2012-01-17 03:44:56-0500)
             downloaded which will install Groovy and perform any necessary configuration (including
             add groovy to your path).</para><para>Once groovy is installed we are ready to run the create project script. Start up a console (on
             Windows you can use the PowerShell) and change into the directory that contains the Rice
-            project (e.g. ‘/java/projects/rice’). From the root project folder, change into the
-            scripts folder. This folder should contain a file named ‘createproject.groovy’.</para><para>There are a few options supported by the
-            create project script, but let’s start with the most basic way of running. The command
+            project (e.g. '/java/projects/rice'). From the root project folder, change into the
+            scripts folder. This folder should contain a file named 'createproject.groovy'.</para><para>There are a few options supported by the
+            create project script, but let's start with the most basic way of running. The command
             we will give
             is:</para><programlisting>
 groovy createproject.groovy -name PROJECT_NAME
         </programlisting><para>First
             we are invoking the groovy executable (this assumes groovy is on your path, if not the
             full path to the groovy executable needs to be specified). Groovy then expects the name
-            of the script we want to run, which is ‘creatproject.groovy’. Next we specify the one
+            of the script we want to run, which is 'creatproject.groovy'. Next we specify the one
             required argument for the create project script which is the name for the project we
-            want to create. Assuming we want to create a new project named ‘MyRiceApp’, the command
+            want to create. Assuming we want to create a new project named 'MyRiceApp', the command
             would be the
             following:</para><programlisting>
 groovy createproject.groovy -name MyRiceApp
@@ -885,18 +885,18 @@ If this is not what you want, please supply more information:
 
 Do you want to continue (yes/no)?
         </programlisting>
-        <para>Type ‘yes’ and then enter to resume the program. You will then see logging output from
+        <para>Type 'yes' and then enter to resume the program. You will then see logging output from
             the script about various files being created, the maven build, and finally printed
             instructions, and how to complete the project setup. </para>
         <para>Notice we did not tell the script where to put our new project, nor where to find the
             Rice project. This is because the script defaults to the project location of
-            ‘/java/projects’. If we want our project to be generated in a different location, we can
-            do so by passing the directory path with the ‘-pdir’ argument:</para>
+            '/java/projects'. If we want our project to be generated in a different location, we can
+            do so by passing the directory path with the '-pdir' argument:</para>
         <para>groovy createproject.groovy -name MyRiceApp –pdir /home/myapps</para>
         <para>The project directory given will be the parent for the project folder. The script will
             create another folder within this with the same name as the given project name.</para>
         <para>Similarly, if our source Rice project is in another directory, we can specify that
-            using the ‘-rdir’ argument:</para>
+            using the '-rdir' argument:</para>
         <programlisting>
 groovy createproject.groovy -name MyRiceApp –rdir /home/myapps/rice
         </programlisting>
@@ -919,11 +919,11 @@ groovy createproject.groovy -name MyRiceApp –standalone
             <title>Project Structure and Configuration Files</title>
             <para>The result of running the create project script is a new maven based Rice client
                 project. This includes the directory structures for building out your application,
-                along with the necessary configuration files. Let’s start by looking at the
+                along with the necessary configuration files. Let's start by looking at the
                 directories that were created. </para>
-            <para>Project Root (eg ‘/java/projects/myapp’) – This is the root folder that was
+            <para>Project Root (eg '/java/projects/myapp') – This is the root folder that was
                 created to hold all the project contents. Within this folder you will find three
-                sub-folders, a ‘.classpath’, ‘.project’, ‘instructions.txt’, and ‘pom.xml’
+                sub-folders, a '.classpath', '.project', 'instructions.txt', and 'pom.xml'
                 file.</para>
             <para>.settings – This folder contains settings configuration for the Eclipse IDE</para>
             <para>src – This folder is for the application source files and resources. Within this
@@ -1013,7 +1013,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 </table></para>
             <para>* All of these files are located within the src/main/resources directory </para>
             <para>In addition to the files created within the project, two files are created in the
-                ‘{user home}/kuali/main/dev’ folder. These include:</para>
+                '{user home}/kuali/main/dev' folder. These include:</para>
             <para>
                 <itemizedlist>
                     <listitem>
@@ -1095,16 +1095,16 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 going to first import our project to Eclipse so that we will be ready to  further
                 develop the application code.</para>
             <para>Navigate to the Eclipse installation directory. There you should find an
-                executable named ‘eclipse.exe’. Once this file is found double click it to start the
+                executable named 'eclipse.exe'. Once this file is found double click it to start the
                 IDE. When Eclipse starts up for the first time, it will ask you to choose a
                 workspace. This is a directory that Eclipse places newly created projects, and will
                 also read current projects from. A standard within the community is to use
-                ‘/java/projects’ for your working space. Note you can select the checkbox to use the
+                '/java/projects' for your working space. Note you can select the checkbox to use the
                 directory as your default and Eclipse will not prompt on the next startup. </para>
             <tip>
                 <title>Eclipse Memory</title>
                 <para>It is generally needed and recommended to allocate additional JVM memory for
-                    the Eclipse runtime. This can be done by opening up the file named ‘eclipse.ini’
+                    the Eclipse runtime. This can be done by opening up the file named 'eclipse.ini'
                     that exists in the root installation directory. At the end of the file you
                     specify VM arguments as follows: <itemizedlist>
                         <listitem>
@@ -1137,7 +1137,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
                     </imageobject>
                 </mediaobject>
             </figure>
-            <para>For the import source select ‘Existing Projects info Workspace’. This should bring
+            <para>For the import source select 'Existing Projects info Workspace'. This should bring
                 up a dialog that looks like the example below. </para>
             <figure>
                 <title>Selecting Project Eclipse</title>
@@ -1147,8 +1147,8 @@ groovy createproject.groovy -name MyRiceApp –standalone
                     </imageobject>
                 </mediaobject>
             </figure>
-            <para>Here click the ‘Browse’ button to locate the directory for the project. After
-                selecting the project location click the ‘Finish’ button. Eclipse will then import
+            <para>Here click the 'Browse' button to locate the directory for the project. After
+                selecting the project location click the 'Finish' button. Eclipse will then import
                 the project contents and you are ready to begin coding!</para>
             <para>To run our project we again have many options. One of these is to deploy to an
                 external servlet container such as Tomcat. Using the Eclipse Web Tools platform, we
@@ -1169,7 +1169,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 ModuleConfiguration is a bean wired in Spring XML specifying the following
                 information:</para><itemizedlist>
                 <listitem>
-                    <para>The module’s namespace</para>
+                    <para>The module's namespace</para>
                 </listitem>
                 <listitem>
                     <para>The Data Dictionary files to load</para>
@@ -1219,8 +1219,8 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 service. This is a service that will provide metadata for our module.
                 Responsibilities of the module service include determining whether a data object
                 belongs to a module, and if the object is external to the application (in which case
-                the module service will also provide links for the object’s lookup and inquiry). If
-                we don’t need to customize a module service (which is the case if the module has
+                the module service will also provide links for the object's lookup and inquiry). If
+                we don't need to customize a module service (which is the case if the module has
                 external data objects), then we can simply use the provide service base and set the
                 nested module configuration property to our module bean:</para>
             <programlisting>
@@ -1236,7 +1236,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
             opportunity to work hands on with KRAD. For completing these exercises, you will use the
             project provided with the training thumb drive, which is a new Rice enabled client
             application (with the sample app content). The exercises will ask you to work in one of
-            two areas. The first is a general ‘labs’ area that has no real functional purpose.
+            two areas. The first is a general 'labs' area that has no real functional purpose.
             Basically, this is a playground for trying various ideas presented. Then, you will work
             on putting the skills together for building a sports application! This will have all the
             ingredients of an enterprise application along with a more modern and rich UI. </para>

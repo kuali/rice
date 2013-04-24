@@ -72,7 +72,7 @@
               </listitem>
               <listitem>
                 <para>progressiveRenderViaAJAX set to true – if this property of
-                                    Component is set to true and the component’s progressive render
+                                    Component is set to true and the component's progressive render
                                     condition is not initially true, the content will not be sent to
                                     the client. When the condition becomes true on the client, a
                                     request with AJAX will be made to retrieve the content. Once the
@@ -113,7 +113,7 @@
         </listitem>
         <listitem>
           <para>Component refresh is similar to progressive disclosure in that a certain
-                        condition will trigger an update for the component’s contents </para>
+                        condition will trigger an update for the component's contents </para>
         </listitem>
         <listitem>
           <para> All KRAD components support the component refresh process </para>
@@ -171,9 +171,9 @@
       <listitem><para><emphasis role="keyword">disabled </emphasis>(Boolean expression) – can be any valid springEl boolean expression (or just true or false) – no custom SpringEL functions allowed</para></listitem>
       <listitem><para><emphasis role="keyword">evaluateDisabledOnKeyUp </emphasis>(Boolean) – if true, rather than evaluating the disable condition on the onChange event, the condition will be evaluated on each keystroke allowing immediate feedback to the user. This can only be used on textual inputs.</para></listitem>
       <listitem><para><emphasis role="keyword">disabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will disable THIS control. Useful for disallowing input when something else changes.</para></listitem>
-      <listitem><para><emphasis role="keyword">enabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will enable THIS control. Useful for when the control starts out with disable=”true” and any user interaction with another control causes this one to be enabled.</para></listitem>
+      <listitem><para><emphasis role="keyword">enabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will enable THIS control. Useful for when the control starts out with disable="true" and any user interaction with another control causes this one to be enabled.</para></listitem>
     </itemizedlist>
-    <para>In this example, field2’s TextControl input will be disabled when field118’s value is “disable”.  This is achieved through this property - p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;.  When field118’s value is not “disable” the control will be enabled.  The action button specified here follows the same rules.</para>
+    <para>In this example, field2's TextControl input will be disabled when field118's value is "disable".  This is achieved through this property - p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;.  When field118's value is not "disable" the control will be enabled.  The action button specified here follows the same rules.</para>
     <programlisting>&lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field118&quot; p:label=&quot;Choose&quot; p:width=&quot;auto&quot;
               p:instructionalText=&quot;Click option to disable and enable&quot;&gt;
           &lt;property name=&quot;control&quot;&gt;
@@ -364,7 +364,7 @@
               <listitem>
                 <para>Create a JavaScript file that references component content by
                                 id (or some other selector), then include the file through the
-                                view’s additionalScriptFiles property </para>
+                                view's additionalScriptFiles property </para>
               </listitem>
               <listitem>
                 <para>Add JavaScript code associated with a component event through
@@ -374,7 +374,7 @@
         </listitem>
         <listitem>
           <para>Component classes include properties for events that are applicable to the generate
-            HTML elements (for example ‘onBlurScript’ for control components) </para>
+            HTML elements (for example 'onBlurScript' for control components) </para>
         </listitem>
         <listitem>
           <para>Some common events include: <itemizedlist>
@@ -405,8 +405,8 @@
             JavaScript file and then invoked as a function </para>
         </listitem>
         <listitem>
-          <para>The jQuery object can be referenced by the full name of ‘jQuery’, or the
-                        abbreviated ‘jq’ name </para>
+          <para>The jQuery object can be referenced by the full name of 'jQuery', or the
+                        abbreviated 'jq' name </para>
         </listitem>
       </itemizedlist>
     </section>

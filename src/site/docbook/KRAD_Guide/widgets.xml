@@ -78,8 +78,8 @@
         <para>These options can be overridden by extending the widget bean in spring
             configuration:</para>
         <programlisting>&lt;bean id="Uif-CustomDatePicker" parent="Uif-DatePicker"/>
-    &lt;property name=”templateOptions”>
-        &lt;map merge=”true”>
+    &lt;property name="templateOptions">
+        &lt;map merge="true">
             &lt;entry key="showButtonPanel" value="false"/>
         &lt;/map>
     &lt;/property>

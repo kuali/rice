@@ -21,7 +21,7 @@
     <section>
         <title> Overview of the Rice Project </title>
         <para>Before diving into the exciting new Rice 2.0 KRAD framework and all its technical
-            details, let’s take a brief look at how the effort was formed and the general Kuali
+            details, let's take a brief look at how the effort was formed and the general Kuali
             ecosystem in which it exists.</para>
         <para>KRAD (Kuali Rapid Application Development) is a module within the Kuali Rice project.
             The Rice project provides the technical infrastructure for which the Kuali projects and
@@ -127,7 +127,7 @@
             <section>
                 <title>Not Invented Here </title>
                 <para>Rice leverages existing open source solutions that meet the needs of the Kuali
-                    projects. That is, Rice avoids ‘Reinventing the Wheel’ where possible.</para>
+                    projects. That is, Rice avoids 'Reinventing the Wheel' where possible.</para>
             </section>
             <section>
                 <title>Loosely-Coupled Components</title>
@@ -355,21 +355,21 @@
                 </imageobject>
             </mediaobject>
         </figure></para>
-        <para>Though “a foolish consistency is the hobgoblin of little minds” (quote attributed to
-            Ralph Waldo Emerson in his essay entitled “Self-reliance”), consistency within an
+        <para>Though "a foolish consistency is the hobgoblin of little minds" (quote attributed to
+            Ralph Waldo Emerson in his essay entitled "Self-reliance"), consistency within an
             application and across applications used in tandem is an important aspect, depended on
-            by users.   Today’s users are constantly multi-tasking, and they carry their learning
+            by users.   Today's users are constantly multi-tasking, and they carry their learning
             from one part of an application to another.  Random differences across an application
             typically snag these users, requiring them to think about the UI rather than focus on
             their task:  they have to remember which strategy applies in which part of the user
             interface, rather than just fluidly moving through their tasks. </para>
-        <para>But consistency doesn’t fetter innovation either, in teams that have produced leading
+        <para>But consistency doesn't fetter innovation either, in teams that have produced leading
             software.   Rather, these people/teams have worked out ways to speed the adoption of
             winning UI innovations across their features and developers, moving all the affected
             features to the new UI aspect at the right point in the process.   Sometimes this could
             mean delaying a new UI feature, if only one team can migrate their code to it in time
             for a release – or delaying a version in order to provide all developers the time to
-            move their code to it.  Not all differences will create these types of usage “snags”,
+            move their code to it.  Not all differences will create these types of usage "snags",
             but they can be reliably predicted through task analysis and good user
             engagement.</para>
         <section>
@@ -378,15 +378,15 @@
                 early phase of software development maturity, there is typically no UI guidance or
                 review.  The design space is 100% open across developers and feature teams -- there
                 is higher danger of meaningless inconsistencies (as opposed to intentional ones). 
-                Developers don’t disagree with each other’s approaches, they simply aren’t aware of
-                them and, if they were, they’d be able to quickly converge to a common approach.
+                Developers don't disagree with each other's approaches, they simply aren't aware of
+                them and, if they were, they'd be able to quickly converge to a common approach.
                 This can create transfer of learning problems for users, and requires more developer
                 time and more UX and QA time to find and fix UI problems and, ultimately, produces
                 more code that has to be maintained. </para>
             <para><emphasis role="bold">Phase 1: </emphasis>In teams that have formed and taken the
                 first steps to organize and manage their user interface efforts, there are common UI
                 guidelines.  Today, in addition to the KRAD framework of controls, you can take a
-                look at the Kuali Student project’s <link
+                look at the Kuali Student project's <link
                     xlink:href="https://wiki.kuali.org/display/STUDENT/User+Interaction+Model">User
                     Interaction Model</link> that documents the design components, design patterns,
                 and style guide they will use.  This covers the type of common UI guidelines shown
@@ -397,7 +397,7 @@
                 Kuali projects are free to use this as a model or create their own. </para>
             <para><emphasis role="bold">Phase 2:</emphasis> In the next step in growing a user
                 interface design leadership process, teams create common UI templates / models,
-                which enable “lighter-weight” efforts to design and code.  The UX effort is up-front
+                which enable "lighter-weight" efforts to design and code.  The UX effort is up-front
                 and the benefit is inherited by all developers and feature teams afterward.  There
                 are multi-disciplinary team members collaborating with developers, including
                 business analysts and UX staff trained in UI design.  Consultations and
@@ -504,7 +504,7 @@
                                 xlink:href="https://developer.mozilla.org/en/Accessibility/Web_applications_and_ARIA_FAQ"
                                 > Mozilla FAQ table</link>, <link
                                 xlink:href="http://caniuse.com/wai-aria">"Can I use"
-                            table</link>).  ARIA tags don’t create problems in browsers that don’t
+                            table</link>).  ARIA tags don't create problems in browsers that don't
                             support them – they are simply ignored by these older browsers.  The
                             ARIA candidate is projected to become the proposed recommendation this
                             spring, 2012 (to move to step 4 in the information box that follows). 
@@ -528,8 +528,8 @@
                     </listitem>
                 </itemizedlist>
             </para>
-            <tip><para><emphasis role="bold">What is the review process for standards?</emphasis> 5 “maturity
-                    levels”:  <orderedlist>
+            <tip><para><emphasis role="bold">What is the review process for standards?</emphasis> 5 "maturity
+                    levels":  <orderedlist>
                         <listitem>
                             <para>First Public Working Draft (out for public review and
                                 comment)</para>
@@ -542,7 +542,7 @@
                         </listitem>
                         <listitem>
                             <para>Call for implementation of Candidate Recommendation (this is like
-                                a ‘beta’). <emphasis role="bold">ARIA is here and expected to move
+                                a 'beta'). <emphasis role="bold">ARIA is here and expected to move
                                     to #4 in spring 2012! </emphasis></para>
                         </listitem>
                         <listitem>
@@ -631,32 +631,32 @@
                     <listitem>
                         <para><emphasis role="bold">The standard language tag was added to
                                 KRAD.</emphasis>  This supports level A criteria 3.1.1, in the
-                                <emphasis role="italic">Understandable</emphasis> category:  “The
+                                <emphasis role="italic">Understandable</emphasis> category:  "The
                             default human language of each web page can be
-                            programmatically-determined.”  </para>
+                            programmatically-determined."  </para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Buttons, which were formerly images of text in
                                 KNS, were changed to text buttons with background
                             images.</emphasis>  This supports level A criteria 1.4.3 and 1.4.4, in
-                            the <emphasis role="italic">Perceivable</emphasis> category:  “Contrast
-                            ratio of at least 4.5:1” (inherits high contract setting) and “Text can
-                            be resized up to 200% without assistive technologies” (inherits low
+                            the <emphasis role="italic">Perceivable</emphasis> category:  "Contrast
+                            ratio of at least 4.5:1" (inherits high contract setting) and "Text can
+                            be resized up to 200% without assistive technologies" (inherits low
                             DPI/large font settings).  This also supports level AA criteria 1.4.5,
-                            in this same category: “Text used instead of images of text except for
-                            customizable images (by user) and essential images (logotype)”.</para>
+                            in this same category: "Text used instead of images of text except for
+                            customizable images (by user) and essential images (logotype)".</para>
                     </listitem>
                 </itemizedlist>
             </para>
             <para>Several other bugs were fixed and changes made, including adding alt-text in many
                 places.  </para>
-            <para>Our intent moving forward is to invest in making KRAD’s UIF accessible, enabling
+            <para>Our intent moving forward is to invest in making KRAD's UIF accessible, enabling
                 applications built with the framework to inherit the benefit.  The first version of
                 KRAD, in Rice 2.0, meets most of the A-level criteria, and many of the AA criteria,
                 and in the areas where it does not meet, there are requirements listed for Rice 2.2
                 to bring us up to compliance.  </para>
             <para>The good news is that applications can resolve most of the aspects where Rice 2.0
-                KRAD doesn’t yet have the built-in accessibility support for you to inherit, and
+                KRAD doesn't yet have the built-in accessibility support for you to inherit, and
                 there will be additional support in Rice 2.2 KRAD.   </para>
             <para>Following are 7 areas that application developers using Rice 2.0 KRAD should
                 consider in their applications:<itemizedlist>
@@ -666,20 +666,20 @@
                             Rice 2.2 KRAD, applications can implement the fixes for these areas,
                             documented in the requirements related to table semantics, tab
                             semantics, and fieldset-legends.  This affects level A criteria 1.3.1,
-                            in the Perceivable category: “Information, structure &amp; relationships
-                            can be programmatically determined or are available in text.”  </para>
+                            in the Perceivable category: "Information, structure &amp; relationships
+                            can be programmatically determined or are available in text."  </para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Standard keyboard support.</emphasis>  This
-                            affects level A criteria 2.1.1, in the Operable category:  “All
+                            affects level A criteria 2.1.1, in the Operable category:  "All
                             functionality &amp; info is operable through a keyboard interface w/o
-                            requiring specific timings for individual keystrokes.” </para>
+                            requiring specific timings for individual keystrokes." </para>
                     </listitem>
                     <listitem>
-                        <para><emphasis role="bold">Standard “Jump to main content”
+                        <para><emphasis role="bold">Standard "Jump to main content"
                                 links.</emphasis> This affects level A criteria 2.4.1 in the
-                            Operable category: “Provide a way to bypass blocks of content that are
-                            repeated on multiple pages.”  A simple code snippet example that fixes
+                            Operable category: "Provide a way to bypass blocks of content that are
+                            repeated on multiple pages."  A simple code snippet example that fixes
                             this follows.</para>
                             <programlisting>&lt;div id="accessibility">
     &lt;a href="#nav">Jump to Navigation&lt;/a>
@@ -688,40 +688,40 @@
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Page titles.</emphasis>  This affects level A
-                            criteria 2.4.2 in the Operable category:  “Web pages have titles that
-                            describe topic or purpose.” Also, KULRICE-5688 is related to this,
-                            though not technically a “page”, the iframe title default is currently =
-                            “edoc”, which default should be changed to “main content” and updated by
+                            criteria 2.4.2 in the Operable category:  "Web pages have titles that
+                            describe topic or purpose." Also, KULRICE-5688 is related to this,
+                            though not technically a "page", the iframe title default is currently =
+                            "edoc", which default should be changed to "main content" and updated by
                             the application when they populate it. </para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Link titles. </emphasis> This affects level A
-                            criteria 2.4.4 in the Operable category:  “The purpose of each link can
+                            criteria 2.4.4 in the Operable category:  "The purpose of each link can
                             be determined from the link text alone or from the link text together
-                            with its programmatically-determined link context.”  Specifically, when
+                            with its programmatically-determined link context."  Specifically, when
                             a link will open a new browser tab or window, that should be conveyed to
-                            the user in link title text (e.g., “Opens new browser tab – link title
-                            text”).</para>
+                            the user in link title text (e.g., "Opens new browser tab – link title
+                            text").</para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Parsing standards:</emphasis> This affects level
-                            A criteria 4.1.1 in the Robust category:  “In content implemented using
+                            A criteria 4.1.1 in the Robust category:  "In content implemented using
                             markup languages, elements have complete start and end tags, elements
                             are nested according to their specifications, elements do not contain
                             duplicate attributes, &amp; IDs are unique (except where specs allow
-                            these features).“  The W3C has code validators you can use to find and
+                            these features)."  The W3C has code validators you can use to find and
                             fix violations.   See <link xlink:href="http://www.w3.org/QA/Tools/"
                                 >http://www.w3.org/QA/Tools/</link>.  See also the list of
                             accessibility code checkers in the previous material.</para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Name, role and value.</emphasis>  This affects
-                            level A criteria 4.1.2 in the Robust category:  “For all UI components,
+                            level A criteria 4.1.2 in the Robust category:  "For all UI components,
                             the name &amp; role can be programmatically determined;  states,
                             properties &amp; values set by the user can be programmatically set; and
                             notification of changes to these items is available to user agents,
-                            including assistive technologies.”   The new ARIA guidelines make it
-                            easier to address these criteria, and we’ll look at these guidelines
+                            including assistive technologies."   The new ARIA guidelines make it
+                            easier to address these criteria, and we'll look at these guidelines
                             next.</para>
                     </listitem>
                 </itemizedlist></para>
@@ -736,7 +736,7 @@
                 features in HTML5.</para>
             <para>From the <link xlink:href="http://www.w3.org/TR/wai-aria-primer/">WAI-ARIA
                     Primer</link>:  </para>
-            <para><emphasis role="italic">“Authors of JavaScript-generated content do not want to
+            <para><emphasis role="italic">"Authors of JavaScript-generated content do not want to
                     limit themselves to using standard tag elements that define the actual user
                     interface element such as tables, ordered lists, etc. Rather, they make
                     extensive use of elements such as DIV tags in which they dynamically apply a
@@ -768,13 +768,13 @@
             </para>
             <para><emphasis role="italic">In short, JavaScript needs an accessibility architecture
                     to write to such that a solution can be mapped to the accessibility frameworks
-                    on the native platform by the user agent.”</emphasis></para>
+                    on the native platform by the user agent."</emphasis></para>
             <para>ARIA gives us several new constructs to do this, to dynamically convey how
                 interactive features relate to each other and what is their current state:</para>
             <para>
                 <itemizedlist>
                     <listitem>
-                        <para>New “Roles”  (Role =" ") to describe: <itemizedlist>
+                        <para>New "Roles"  (Role =" ") to describe: <itemizedlist>
                                 <listitem>
                                     <para>the type of widget ("menu," "treeitem," "slider," and
                                         "progressmeter") </para>
@@ -791,7 +791,7 @@
                                     <para>the state of a widget or control  </para>
                                 </listitem>
                                 <listitem>
-                                    <para>the state of “live” regions on a page that will receive
+                                    <para>the state of "live" regions on a page that will receive
                                         updates, and how/when to handle those </para>
                                 </listitem>
                                 <listitem>
@@ -867,7 +867,7 @@
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Set states and properties in response to
-                                events.</emphasis> After you’ve created the elements with their
+                                events.</emphasis> After you've created the elements with their
                             roles in your code-base, be sure you add the code to change the state
                             and property in response to user interaction.  For example, when
                             something is selected, when something is expanded, and so on.  For
@@ -896,7 +896,7 @@
         </section>
         <section role="NotInToc">
             <title>RECAP</title>
-            <para> There are four major “take-aways” in this accessibility section: <itemizedlist>
+            <para> There are four major "take-aways" in this accessibility section: <itemizedlist>
                     <listitem>
                         <para>There are two accessibility guidelines that apply to web applications,
                             created by the W3C:  <itemizedlist>
@@ -928,7 +928,7 @@
                             widgets, Ajax live regions, and events) relate to each other and what is
                             their current state.  <itemizedlist>
                                 <listitem>
-                                    <para>There are new “roles” and properties to define states, new
+                                    <para>There are new "roles" and properties to define states, new
                                         drag-and-drop semantics and expanded support for enabling
                                         keyboard access. </para>
                                 </listitem>

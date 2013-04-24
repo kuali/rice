@@ -56,7 +56,7 @@
                         <para>No need for application plug-ins on the server </para>
                     </listitem>
                     <listitem>
-                        <para>Great for Enterprise deployment: It’s still a single Rice web
+                        <para>Great for Enterprise deployment: It's still a single Rice web
                             application, but scalability is increased because there are multiple
                             instances of embedded services. </para>
                     </listitem>
@@ -398,14 +398,14 @@
             <title>Overview</title>
             <para>The Rice System consists of a stack of ResourceLoader objects that contain
                 configuration information and expose service implementations (potentially from
-                remote sources). Each module supplies its own Spring context containing it’s
+                remote sources). Each module supplies its own Spring context containing it's
                 services. These Spring contexts are then wrapped by a ResourceLoader which is used
                 to locate and load those services.</para>
         </section>
         <section>
             <title>Implementation Details</title>
             <para>Rice is composed of a set of modules that provide distinct functionality and
-                expose various services. Each module loads it’s own Spring context which contains
+                expose various services. Each module loads it's own Spring context which contains
                 numerous services. These Spring contexts are wrapped by a ResourceLoader class that
                 provides access to those services. A ResourceLoader is similar to Spring's
                 BeanFactory interface, since you acquire instances of services by name. Rice adds
@@ -424,7 +424,7 @@
             </para>
             <para>All application code should use the GlobalResourceLoader to obtain service
                 instances. The getService(…) method iterates through each registered ResourceLoader
-                to locate a service registered with the specified name. In it’s default
+                to locate a service registered with the specified name. In it's default
                 configuration, the GlobalResourceLoader contacts the following resource loaders in
                 the specified order:<orderedlist>
                     <listitem>
@@ -443,7 +443,7 @@
                 </orderedlist>
             </para>
             <para>As shown above, the last ResourceLoader on the list is the one registered by KSB
-                to expose services available on the service bus. It’s important that this resource
+                to expose services available on the service bus. It's important that this resource
                 loader is consulted last because it gives priority to using locally deployed
                 services over remote services (if the service is available both locally and
                 remotely). This is meant to help maximize performance.</para>
@@ -468,7 +468,7 @@
                 <title>Using Annotations</title>
                 <para>Rice includes a Spring bean that extends the Spring auto-wire process (unlike
                     the current version of Spring, the auto-wire process in the version of Spring
-                    that’s included with Rice cannot be extended). With this bean configured into
+                    that's included with Rice cannot be extended). With this bean configured into
                     your application, you can use the @RiceService annotation to identify Rice
                     services to auto-wire.</para>
                 <para>Add this bean definition to the top of your Spring configuration file to
@@ -480,7 +480,7 @@
                     Spring rules for injection annotations. The annotation requires a name property
                     that specifies the name of the service to inject. If the name requires a
                     namespace other than the current context namespace, you must specify the
-                    namespace as a prefix (for example, “{KEW}actionListService”).</para>
+                    namespace as a prefix (for example, "{KEW}actionListService").</para>
                 <para>
                     <programlisting>@RiceService(name="workflowDocumentService")
 protected WorkflowDocumentService workflowDocumentService;
@@ -504,11 +504,11 @@ protected WorkflowDocumentService workflowDocumentService;
                 </para>
                 <para>In the above example, both myService1 and myService2 would be added to a
                     Resource Loader that would be put at the top of the Resource Loader stack. The
-                    names of these services would be “myService1” and “myService2” with no
+                    names of these services would be "myService1" and "myService2" with no
                     namespace. To load these services you would use the following call to the Global
                     Resource Loader:</para>
                 <para>
-                    <programlisting>MyService1 myService1 = GlobalResourceLoader.getService(“myService1”);</programlisting>
+                    <programlisting>MyService1 myService1 = GlobalResourceLoader.getService("myService1");</programlisting>
                 </para>
             </section>
             <section>
@@ -523,7 +523,7 @@ protected WorkflowDocumentService workflowDocumentService;
                         data from the KIM database tables. In many cases an implementer will already
                         have an existing identity management solution that they would like to
                         integrate with. By overriding the service reference implementation with a
-                        custom one, it’s possible to integrate with other institutional services
+                        custom one, it's possible to integrate with other institutional services
                         (such as LDAP or other services).</para>
                 </section>
                 <section>
@@ -592,7 +592,7 @@ protected WorkflowDocumentService workflowDocumentService;
                         need to place classes in the <emphasis role="bold"
                             >WEB-INF/classes</emphasis> directory of the war and any jars in the
                             <emphasis role="bold">WEB-INF/lib</emphasis> directory.</para>
-                    <para>It’s a standard behavior of Spring context loading that the last beans
+                    <para>It's a standard behavior of Spring context loading that the last beans
                         found in the context with a particular id will be the versions loaded during
                         context initialization. The <emphasis role="bold"
                             >additionalSpringFiles</emphasis> property will put any Spring files
@@ -600,14 +600,14 @@ protected WorkflowDocumentService workflowDocumentService;
                         defined in that file with the same id as beans in the internal Rice Spring
                         XML files will effectively override the out-of-the-box version of those
                         services.</para>
-                    <para>When working with the packaged Rice standalone server, you won’t have
+                    <para>When working with the packaged Rice standalone server, you won't have
                         access to the Spring XML file which configures the RiceConfigurer. In this
                         case, you can specify additional spring files using a configuration
                         parameter in your Rice configuration XML, as in the following
                         example:</para>
                     <para>
-                        <programlisting>&lt;param name=”rice.additionalSpringFiles”
-value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
+                        <programlisting>&lt;param name="rice.additionalSpringFiles"
+value="classpath:my/app/package/MyCustomSpringFile.xml"/>
 </programlisting>
                     </para>
                 </section>
@@ -836,7 +836,7 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                 <para>The driver for MySQL is already referenced by the Kuali Rice project. Rice
                     does not have out-of-the-box support for other RDBMS at this point in time.
                     However, if you want to use other databases, it is possible to add database
-                    support for that particular database as long as it’s supported by the Apache OJB
+                    support for that particular database as long as it's supported by the Apache OJB
                     project (<link xlink:href="http://db.apache.org/ojb"
                         >http://db.apache.org/ojb</link>).</para>
             </section>
@@ -1193,7 +1193,7 @@ config.parseConfig();             </programlisting>
                         >classpath:/whatever</emphasis>). The variable properties is a Properties
                     object containing the default property values.</para>
                 <para>Here is an example of retrieving a property value from Java code:</para>
-                <programlisting>String val = ConfigContext.getCurrentContextConfig().getProperty(“keystore.alias”);</programlisting>
+                <programlisting>String val = ConfigContext.getCurrentContextConfig().getProperty("keystore.alias");</programlisting>
             </section>
             <section>
                 <title>Aggregating Multiple Files</title>
@@ -1260,7 +1260,7 @@ config.parseConfig();             </programlisting>
             </section>
             <section>
                 <title>Initializing the Configuration Context in Rice</title>
-                <para>The Config object can be injected into the RiceConfigurer that’s configured in
+                <para>The Config object can be injected into the RiceConfigurer that's configured in
                     Spring and it will initialize the configuration context with those configuration
                     parameters.</para>
                 <para>This is done as follows:</para>
@@ -1269,7 +1269,7 @@ config.parseConfig();             </programlisting>
 &lt;/bean>
 
 &lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-    &lt;property name=”rootConfig” ref=”config”/>
+    &lt;property name="rootConfig" ref="config"/>
 &lt;/bean></programlisting>
             </section>
             <section>
@@ -1300,12 +1300,12 @@ config.parseConfig();             </programlisting>
                     will be <emphasis role="bold">apple yummy yummy</emphasis>. This demonstrates
                     that parameters that appear in the value are replaced by the current value of
                     the parameter at that point in the configuration file.</para>
-                <para>Additionally, you can define certain parameters in such that they won’t
-                    override an existing parameter value if it’s already set.</para>
+                <para>Additionally, you can define certain parameters in such that they won't
+                    override an existing parameter value if it's already set.</para>
                 <para>As an example of this, consider the following configuration file:</para>
                 <programlisting>&lt;config>
-    &lt;param name="taste" override=”false”>even yummier&lt;/param>
-    &lt;param name=”brand.new.param” override=”false”>brand new value&lt;/param>
+    &lt;param name="taste" override="false">even yummier&lt;/param>
+    &lt;param name="brand.new.param" override="false">brand new value&lt;/param>
 
 &lt;/config>
 </programlisting>
@@ -1315,7 +1315,7 @@ config.parseConfig();             </programlisting>
                         role="bold">override</emphasis> is set to false, it would not override that
                     value with <emphasis role="bold">even yummier</emphasis>. However, since
                         <emphasis role="bold">brand.new.param</emphasis> had not been defined
-                    previously, it’s value would be set.</para>
+                    previously, it's value would be set.</para>
             </section>
         </section>
         <section>
@@ -1388,15 +1388,15 @@ config.parseConfig();             </programlisting>
             <section>
                 <title>Configuring JOTM</title>
                 <para>Configure the JOTM transaction manager and user transaction objects as Spring
-                    beans in your application’s Spring configuration file. Here is an
+                    beans in your application's Spring configuration file. Here is an
                     example:</para>
                 <programlisting>&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
-    &lt;property name="defaultTimeout" value=”3600”/>
+    &lt;property name="defaultTimeout" value="3600"/>
 &lt;/bean>
     
 &lt;alias name="transactionManagerXAPool" alias="jtaTransactionManager"/>
 &lt;alias name="transactionManagerXAPool" alias="jtaUserTransaction"/></programlisting>
-                <para>You can use these beans in the configuration of Spring’s JTA transaction
+                <para>You can use these beans in the configuration of Spring's JTA transaction
                     manager and the Rice configurer. This configuration might look like the
                     following:</para>
                 <programlisting>&lt;bean id="springTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
@@ -1471,7 +1471,7 @@ config.parseConfig();             </programlisting>
               <title>Configuring Bitronix</title>
               <para>Configure the <link xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link>
                   transaction manager and user transaction objects as Spring
-                  beans in your application’s Spring configuration file. Here is an
+                  beans in your application's Spring configuration file. Here is an
                   example:</para>
               <programlisting>&lt;bean id="btmConfig" factory-method="getConfiguration"
           class="bitronix.tm.TransactionManagerServices" lazy-init="true"/>
@@ -1635,8 +1635,7 @@ config.parseConfig();             </programlisting>
                     </listitem>
                     <listitem>
                         <para>When implementing "callback" services, ensure that you are using the
-                                <code>CallbackServiceExporter</code> properly as specified in <xref
-                                linkend="callback_service_exporter"/></para>
+                            <code>CallbackServiceExporter</code> properly as specified in the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KSB_Guide.html#callback_service_exporter">KSB Guide</link></para>
                     </listitem>
                 </itemizedlist></para>
         </section>

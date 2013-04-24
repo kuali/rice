@@ -57,18 +57,18 @@
                 transaction is approved or denied individually in KEW.</para>
             <para>For example, John Doe may use a <emphasis role="italic">Leave Request</emphasis>
                 document in KEW to ask for a week off in June. The KEW Leave Request document
-                contains enough information for his supervisor to make a decision about John’s
+                contains enough information for his supervisor to make a decision about John's
                 leave. (The document may use data keys to retrieve external information, such as
-                John’s past Leave Requests and available hours.) Once John submits his Leave
-                Request, KEW routes it to John's supervisor for approval. Depending on how John’s
-                department has configured KEW for routing Leave Requests, after John’s supervisor
+                John's past Leave Requests and available hours.) Once John submits his Leave
+                Request, KEW routes it to John's supervisor for approval. Depending on how John's
+                department has configured KEW for routing Leave Requests, after John's supervisor
                 approves or denies his request, KEW may route it to more people for further action
                 to be taken.</para>
-            <para>Once John’s Leave Request document is processed, it triggers a <emphasis
+            <para>Once John's Leave Request document is processed, it triggers a <emphasis
                     role="bold">PostProcessor</emphasis>, which can peform any desired additional
-                processing. This is most commonly used to “finalize” the business transaction once
+                processing. This is most commonly used to "finalize" the business transaction once
                 all approvers have signed off on it. In this particular example, it might call
-                another service that would update records in the Leave Request application’s
+                another service that would update records in the Leave Request application's
                 database, indicating that the individual has successfully scheduled leave during
                 that time period. </para>
             <para>In addition, the KEW <emphasis role="bold">PostProcessor</emphasis> contains hooks
@@ -735,7 +735,7 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                     <listitem>
                         <para><emphasis role="bold">Remote Java Client</emphasis> – A Java client is
                             used which relies on the service bus to communicate with a Standalone Rice
-                            Server’s KEW services. </para>
+                            Server's KEW services. </para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Thin Java Client</emphasis> - A thin Java client is
@@ -1574,7 +1574,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 </table>
             </para>
             <section>
-                <title>The ‘embedded.server’ Parameter</title>
+                <title>The 'embedded.server' Parameter</title>
                 <para>If embedded.server parameter is enabled (set to true), then two additional
                     features will be loaded when KEW is started:<orderedlist>
                         <listitem>
@@ -1590,7 +1590,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     users that have their preferences set accordingly.</para>
             </section>
             <section>
-                <title>The ‘datasource.platform’ Parameter</title>
+                <title>The 'datasource.platform' Parameter</title>
                 <para>KEW requires and uses the database platform implementation in order to
                     function. These may be be implemented differently for each support database
                     management system. </para>
@@ -1714,16 +1714,16 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     role="italic">enEmailService</emphasis> loaded by the KEW module and implement a
                 custom email service. </para>
             <para>In order for KEW to send out emails, several steps need to be done. In order to
-                have KEW send out any emails, the “SEND_EMAIL_NOTIFICATION_IND” KNS System Parameter
-                needs to be set to ‘Y’. For emails to real people, the environment code must be set
-                to ‘prd’. If this is not set to ‘prd’, an email can still be sent out to a test
+                have KEW send out any emails, the "SEND_EMAIL_NOTIFICATION_IND" KNS System Parameter
+                needs to be set to 'Y'. For emails to real people, the environment code must be set
+                to 'prd'. If this is not set to 'prd', an email can still be sent out to a test
                 address. This test address is set by the KNS System Parameter,
-                “EMAIL_NOTIFICATION_TEST_ADDRESS”. Emails sent in a test system will only be sent to
-                the address specified by the EMAIL_NOTIFICATION_TEST_ADDRESS. The “from” address may
-                also be set with a System Parameter. To do this, set the “FROM_ADDRESS” System
+                "EMAIL_NOTIFICATION_TEST_ADDRESS". Emails sent in a test system will only be sent to
+                the address specified by the EMAIL_NOTIFICATION_TEST_ADDRESS. The "from" address may
+                also be set with a System Parameter. To do this, set the "FROM_ADDRESS" System
                 Parameter to the email address you want the KEW emails sent from. If the
-                FROM_ADDRESS parameter doesn’t exist or isn’t set, it will default to
-                “admin@localhost”.</para>
+                FROM_ADDRESS parameter doesn't exist or isn't set, it will default to
+                "admin@localhost".</para>
         </section>
         <section>
             <title>Periodic Email Reminders</title>
@@ -1782,12 +1782,12 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         </section>
         <section>
             <title>Workflow Preferences Configuration</title>
-            <para>Workflow users have the ability to update their preferences by going to the “User
-                Preferences” page. The default values for many of these preferences can now be
+            <para>Workflow users have the ability to update their preferences by going to the "User
+                Preferences" page. The default values for many of these preferences can now be
                 configured.</para>
             <para>For example, institutions will commonly override the default action list email
-                preference. By default it’s set to “immediate,” but it can be configured to “no”,
-                “daily”, “weekly”, or “immediate.” The user will still be able to override the
+                preference. By default it's set to "immediate," but it can be configured to "no",
+                "daily", "weekly", or "immediate." The user will still be able to override the
                 defaults on their User Preferences screen.</para>
             <para>Here a list of workflow preferences that can be configured:</para>
             <programlisting>&lt;!-- Default Option for Action List User Preferences. -->
@@ -1945,7 +1945,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             installation. Out of the box, KEW comes with a default setup that works well in
             development and test environments. However, when moving to a production environment,
             this setup requires adjustments. This document discusses basic administration as well as
-            instructions for working with some of KEW’s administration tools.</para>
+            instructions for working with some of KEW's administration tools.</para>
         <section>
             <title>Configuration Overview</title>
             <para>You configure KEW primarily through the <emphasis role="bold"
@@ -1966,7 +1966,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 constants which you may need to change:<itemizedlist>
                     <listitem>
                         <para><emphasis role="bold">ActionList.sendEmailNotification</emphasis> -
-                            This is usually set to false in test environments so emails aren’t
+                            This is usually set to false in test environments so emails aren't
                             generated during testing. Usually, this is set this to true in a
                             production environment to allow email notifications. You also need to
                             ensure that your email service is configured properly to allow KEW to
@@ -1975,7 +1975,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <listitem>
                         <para><emphasis role="bold">ApplicationContext</emphasis> - In a production
                             environment, this is usually something like en-prd. You must set this
-                            value correctly so that KEW’s email notifications contain valid links.
+                            value correctly so that KEW's email notifications contain valid links.
                         </para>
                     </listitem>
                     <listitem>
@@ -2170,7 +2170,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     entry. Currently, KEW doesn't implement any auto-detection of failure cases. To
                     put one of these entries in a state where it can be picked up by the route
                     manager again, simply click the <emphasis role="bold">Edit</emphasis> link and
-                    set the entry’s status back to <emphasis role="bold">QUEUED</emphasis>. Here's a
+                    set the entry's status back to <emphasis role="bold">QUEUED</emphasis>. Here's a
                     screen shot of the <emphasis role="bold">Route Queue Entry - Edit</emphasis>
                     screen:</para>
                 <figure>
@@ -2675,16 +2675,16 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             <row>
                                 <entry>NOTIFY_EXCLUDED_USERS_IND</entry>
                                 <entry/>
-                                <entry><para>Defines a group name (in the format “namespace:name”) which
+                                <entry><para>Defines a group name (in the format "namespace:name") which
                                     contains members who should never receive notification action
                                     requests from KEW. Notification requests in KEW are generated
                                     when someone disapproves or blanket approves are exist to notify
                                     other approvers that these actions have taken place. </para> 
                                     <para>The most
-                                    common use for this is in the case of “system” users who
+                                    common use for this is in the case of "system" users who
                                     participate in workflow transactions. In these cases, since they
-                                    aren’t actual users who would be checking their action list, it
-                                    doesn’t make sense to send them requests since they won’t ever
+                                    aren't actual users who would be checking their action list, it
+                                    doesn't make sense to send them requests since they won't ever
                                     be fulfilled.</para> </entry>
                             </row>
                         </tbody>
@@ -2769,7 +2769,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </row>
                             <row>
                                 <entry>label</entry>
-                                <entry>The label of the Document Type, how it’s recognized</entry>
+                                <entry>The label of the Document Type, how it's recognized</entry>
                             </row>
                             <row>
                                 <entry>postProcessorName</entry>
@@ -2970,9 +2970,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>BlanketApproveTest&lt;/description>
     &lt;label>BlanketApproveTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -3041,9 +3041,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>BlanketApproveSequentialTest&lt;/description>
     &lt;label>BlanketApproveSequentialTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW”>WorkflowAdmin&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”>WorkflowAdmin&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW">WorkflowAdmin&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin&lt;/defaultExceptionGroupName>
 
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
@@ -3186,9 +3186,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>BlanketApproveParallelTest&lt;/description>
     &lt;label>BlanketApproveParallelTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -3412,9 +3412,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>NotificationTest&lt;/description>
     &lt;label>NotificationTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -3572,9 +3572,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>NotificationTest&lt;/description>
     &lt;label>NotificationTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -3649,9 +3649,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>BlanketApproveMandatoryNodeTest&lt;/description>
     &lt;label>BlanketApproveMandatoryNodeTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -3802,9 +3802,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;name>SaveActionEventTest&lt;/name>
     &lt;description>SaveActionEventTest&lt;/description>
     &lt;label>SaveActionEventTest&lt;/label>		&lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -3918,9 +3918,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>SaveActionEventTest With No Initiator Only Save Required&lt;/description>
     &lt;label>SaveActionEventTestNonInitiator&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -4049,9 +4049,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>TakeWorkgroupAuthority Action Test&lt;/description>
     &lt;label>TakeWorkgroupAuthorityDoc&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -4162,9 +4162,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;label>Move Sequential Test&lt;/label>
 
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -4310,9 +4310,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>Move In Process Test&lt;/description>
     &lt;label>Move In Process Test&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -4458,9 +4458,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 	&lt;label>AdhocRouteTest&lt;/label>
 
 	&lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-	&lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-	&lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-	&lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+	&lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+	&lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+	&lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
 	&lt;docHandler>_blank&lt;/docHandler>
 	&lt;active>true&lt;/active>
 	&lt;routePaths>
@@ -4558,9 +4558,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;description>PreApprovalTest&lt;/description>
     &lt;label>PreApprovalTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -4656,9 +4656,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;label>VariablesTest&lt;/label>
 
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -4953,9 +4953,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;label>SUApproveDocumentNotifications&lt;/label>
 
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -5581,8 +5581,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <para>The section above defines the Document Type's name, its <emphasis role="bold"
                         >parent</emphasis>, <emphasis role="bold">description</emphasis>, and
                         <emphasis role="bold">label</emphasis>. The <emphasis role="bold"
-                        >name</emphasis> is used by the client application’s API to communicate with
-                    KEW. Here is a sample of code from the client application’s API communicating
+                        >name</emphasis> is used by the client application's API to communicate with
+                    KEW. Here is a sample of code from the client application's API communicating
                     with KEW:</para>
                 <programlisting>WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("username"), "DocumentTypeName");
 document.routeDocument("user inputted annotation");
@@ -5600,7 +5600,7 @@ document.routeDocument("user inputted annotation");
                         </listitem>
                         <listitem>
                             <para><emphasis role="bold">Description</emphasis> is defined as shown.
-                                The document’s <emphasis role="italic">Description</emphasis> is
+                                The document's <emphasis role="italic">Description</emphasis> is
                                 displayed on the Document Type report. </para>
                         </listitem>
                         <listitem>
@@ -5760,7 +5760,7 @@ document.routeDocument("user inputted annotation");
                         </mediaobject>
                     </figure>
                 </para>
-                <para>The <emphasis role="bold">mandatoryRoute</emphasis> key determines if it’s
+                <para>The <emphasis role="bold">mandatoryRoute</emphasis> key determines if it's
                     mandatory to generate approval requests. If a route node is <emphasis
                         role="italic">mandatory</emphasis> and it doesn't generate an <emphasis
                         role="italic">approve</emphasis> request, the document is put in exception
@@ -5886,8 +5886,8 @@ document.routeDocument("user inputted annotation");
             &lt;description>Add/Modify Workflow rules&lt;/description>
             &lt;label>Add/Modify Workflow rules&lt;/label>
             &lt;postProcessorName>org.kuali.rice.kew.postprocessor.RulePostProcessor&lt;/postProcessorName>
-            &lt;superUserGroupName namespace=KR-WKFLW”>WorkflowAdmin&lt;/superUserGroupName>
-            &lt;blanketApproveGroupName namespace=KR-WKFLW”>WorkflowAdmin&lt;/blanketApproveGroupName>
+            &lt;superUserGroupName namespace=KR-WKFLW">WorkflowAdmin&lt;/superUserGroupName>
+            &lt;blanketApproveGroupName namespace=KR-WKFLW">WorkflowAdmin&lt;/blanketApproveGroupName>
             &lt;defaultExceptionGroupName>&lt;/defaultExceptionGroupName>
             &lt;docHandler>https://uisapp2.iu.edu/en-prd/Rule.do?methodToCall=docHandler&lt;/docHandler>
             &lt;active>true&lt;/active>
@@ -6472,7 +6472,7 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                 those methods would be invoked are outlined primarily in the Java Documentation at
                     <link xlink:href="https://test.kuali.org/rice/rice-api-1.0-javadocs/"
                     >https://test.kuali.org/rice/rice-api-1.0-javadocs/</link>.</para>
-            <para>Document content methods modify the properties of a document’s content. A specific
+            <para>Document content methods modify the properties of a document's content. A specific
                 case is <emphasis role="italic">addAttributeDefinition()</emphasis>, where a
                     <emphasis role="italic">WorkflowAttribute</emphasis> is used to generate
                 attribute document content that will be appended to the existing document content.
@@ -6488,7 +6488,7 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
             <para>This class is the second client interface to KEW. The first time this object is
                 initialized, the client configuration is accessed to determine how to connect to
                 KEW. Methods invoked from this class can grab the routing header information based
-                on the principleId, or return a set of Action Requests for a document that’s in
+                on the principleId, or return a set of Action Requests for a document that's in
                 route based on the <emphasis role="italic">routeHeaderId</emphasis>, the <emphasis
                     role="italic">nodeName</emphasis> and the <emphasis role="italic"
                     >principalId</emphasis>. More information on the various constructors, methods,
@@ -6700,7 +6700,7 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                     called <emphasis role="bold">widgets.xml</emphasis>. In the example below, it's
                     included in the style sheet using an <emphasis role="italic"
                         >xsl:include</emphasis> directive.</para>
-                <para>Workflow Java classes have API’s that offer methods that supply valuable
+                <para>Workflow Java classes have API's that offer methods that supply valuable
                     information to the XSLT style sheet logic. XML allows you to interrogate the
                     current value of <emphasis role="italic">EDL</emphasis>-defined fields, and it
                     provides a variety of built-in functions.</para>
@@ -6923,7 +6923,7 @@ EDL EDoclite Example
                     making calls to widgets. Note that the variable value <emphasis role="italic"
                         >$isPastInitiated</emphasis> is passed as a parameter to widgets_render so
                     that the html <emphasis role="italic">readOnly</emphasis> attribute is generated
-                    when the form is past the initiator’s node.</para>
+                    when the form is past the initiator's node.</para>
             </section>
         </section>
         <section>
@@ -7064,7 +7064,7 @@ EDL EDoclite Example
                 <para><emphasis role="bold">parent</emphasis> - The parent value must exactly match
                     the name value of the parent document type. </para>
                 <para><emphasis role="bold">superUserGroupName</emphasis> - A group of people who
-                    have special privileges that can be defined using the management service that’s
+                    have special privileges that can be defined using the management service that's
                     part of the KIM module. </para>
                 <para><emphasis role="bold">defaultExceptionGroupName</emphasis> - A group of people
                     who address a document of this type when it goes into Exception routing </para>
@@ -7243,7 +7243,7 @@ EDL EDoclite Example
             result fields. </para>
         <section>
             <title>Custom Search Screen</title>
-            <para>As an example of customizing a Document Search screen, we’ll use a customized
+            <para>As an example of customizing a Document Search screen, we'll use a customized
                     <emphasis role="bold">Offer Request</emphasis> screen:</para>
             <figure><title>Custom Search Screen:Offer Request Example</title>
                 <mediaobject>
@@ -7688,7 +7688,7 @@ EDL EDoclite Example
                         >DocumentSearchCriteriaProcessor</emphasis> class can access the
                     WorkflowUser object of the user performing the search. By having access to these
                     objects, a custom processor class could implement dynamic hiding and showing of
-                    specific criteria fields based on ordinary user’s data or search field
+                    specific criteria fields based on ordinary user's data or search field
                     data.</para>
                 <section>
                     <title>Show or Hide All Criteria and/or the Workflow Header Bar</title>
@@ -8204,7 +8204,7 @@ EDL EDoclite Example
                         </para>
                     </listitem>
                     <listitem>
-                        <para>The user’s EMPL ID is equal to the searchable attribute on the
+                        <para>The user's EMPL ID is equal to the searchable attribute on the
                             document with the key of <emphasis role="italic">emplid</emphasis>
                             <emphasis role="bold">OR</emphasis>
                         </para>
@@ -9079,7 +9079,7 @@ META-INF/
                         library directories outside of the plugin space. This can be particularly
                         useful in development environments, where the plugin uses many of the same
                         classes as the main application that is integrating with Workflow. In these
-                        scenarios, configuring an extra Classpath may mean you don’t need to jar or
+                        scenarios, configuring an extra Classpath may mean you don't need to jar or
                         copy many common class files.</para>
                     <para>To do this, specify these properties in your plugin's <emphasis
                             role="bold">workflow.xml</emphasis> file:<orderedlist>
@@ -9348,7 +9348,7 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                     <para>The Notification service is responsible for notifying users when they
                         receive Action Items in their Action List.</para>
                     <para>The default implementation simply sends an email (using the EmailService)
-                        to the user according to the individual user’s preferences. A custom
+                        to the user according to the individual user's preferences. A custom
                         implementation might also notify other (external) systems in addition to
                         sending the email.</para>
                 </section>
@@ -9415,18 +9415,18 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                 various query or read-only operations against the workflow system.</para>
         </section>
         <section>
-            <title>Implications of using “Synchronous” KSB messaging with KEW</title>
+            <title>Implications of using "Synchronous" KSB messaging with KEW</title>
             <para>For general information on synchronous messaging and its implications in the KSB,
-                please read “Implications of synchronous vs. asynchronous Message Deliver” in the
+                please read "Implications of synchronous vs. asynchronous Message Deliver" in the
                 KSB technical reference guide.</para>
             <para>In terms of Kuali Enterprise Workflow, the usage of synchronous messing means that
                 operations like workflow engine processing will happen immediately and synchronously
-                at the time it’s invoked.</para>
+                at the time it's invoked.</para>
             <para>The main implication here besides what is listed in the KSB documentation is that,
-                since message exception handling isn’t implemented, exception routing does not work
+                since message exception handling isn't implemented, exception routing does not work
                 when using synchronous KSB messaging.</para>
             <para>This means that if this messaging model is being used in a batch job, or similar
-                type of program, routing exceptions will need to be manually caught. If it’s desired
+                type of program, routing exceptions will need to be manually caught. If it's desired
                 to place a document into exception status from here, there are methods on the KEW
                 APIs to do this manually.</para>
         </section>

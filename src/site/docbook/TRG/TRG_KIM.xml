@@ -344,7 +344,7 @@
 
         <para>Note that KIM, by default, stores principal names in lower case;
         the PRNCPL_NM column of KRIM_PRNCPL_T must store values in lower case.
-        If your institution’s existing identity systems do not handle
+        If your institution's existing identity systems do not handle
         lowercase principal names, then there are three points to override
         that setting:</para>
 
@@ -381,7 +381,7 @@
             </listitem>
           </orderedlist></para>
 
-        <para>Once these three points have been overridden, you’ll be able to
+        <para>Once these three points have been overridden, you'll be able to
         use uppercase principal names.</para>
       </section>
 
@@ -482,7 +482,7 @@ EntityDefault infoByPrincipalId = identityService.getEntityDefaultByPrincipalId(
         <para>To retrieve information about a group, use the <emphasis
         role="bold">getGroup</emphasis> or <emphasis
         role="bold">getGroupByNamespaceCodeAndName</emphasis> methods,
-        depending on whether you know the group’s ID or name:</para>
+        depending on whether you know the group's ID or name:</para>
 
         <programlisting>Group info = groupService.getGroup(groupId);
 Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupName);</programlisting>
@@ -574,7 +574,7 @@ Group info = groupService.getGroupByNamespaceCodeAndName(namespaceCode, groupNam
         <emphasis role="bold">GroupService</emphasis>, etc.).</para>
 
         <para>Instead, the role of this service is simply to extract the
-        authenticated user’s principal name from the <emphasis
+        authenticated user's principal name from the <emphasis
         role="bold">HttpServletRequest</emphasis> and inform the client-side
         development framework (typically, the KNS) about this information. KIM
         itself does not implement full authentication services, but rather

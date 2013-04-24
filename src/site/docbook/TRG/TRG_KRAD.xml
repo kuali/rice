@@ -822,7 +822,7 @@
 &lt;/list>
 &lt;/property>
             </programlisting>
-            <para>Likewise, this can be done for the ‘baselinePackages’ property on the dataDictionaryService bean.</para>
+            <para>Likewise, this can be done for the 'baselinePackages' property on the dataDictionaryService bean.</para>
         </section>
         <section>
             <title>Creating the KRAD database tables / connections to data?</title>

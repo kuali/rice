@@ -38,9 +38,9 @@
             <para>A rules management system in general includes a repository of decision logic and a
                 rules engine that can be executed by applications in a run-time environment. Again
                 from wikipedia: "... provides the ability to: register, define, classify, and manage
-                all the rules, verify consistency of rules definitions (”Gold-level customers are
-                eligible for free shipping when order quantity &gt; 10” and “maximum order quantity
-                for Silver-level customers = 15” ), define the relationships between different
+                all the rules, verify consistency of rules definitions ("Gold-level customers are
+                eligible for free shipping when order quantity &gt; 10" and "maximum order quantity
+                for Silver-level customers = 15" ), define the relationships between different
                 rules, and relate some of these rules to IT applications that are affected or need
                 to enforce one or more of the rules."</para>
         </section>
@@ -472,7 +472,7 @@
             (KRMS) installation. Out of the box, KRMS comes with a default setup that works well in
             development and test environments. However, when moving to a production environment,
             this setup requires adjustments. This document discusses basic administration as well as
-            instructions for working with some of KRMS’ administration tools.</para>
+            instructions for working with some of KRMS' administration tools.</para>
         <section>
             <title>Initial Set up tasks</title>
             <para>In this section we cover the types of tasks you'll need to do as a one-time setup

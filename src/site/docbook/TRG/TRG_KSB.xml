@@ -245,7 +245,7 @@
           </listitem>
 
           <listitem>
-            <para>Can still produce services, but they can’t be called
+            <para>Can still produce services, but they can't be called
             leveraging the KSB; clients need to discover and invoke the
             services directly (on their own).</para>
           </listitem>
@@ -398,7 +398,7 @@
       your transaction manager. This ensures that the messages you are sending
       are synchronized with the current executed transaction in your
       application. It also allows message persistence to be put in a different
-      database than the application’s logic if needed. Currently, <emphasis
+      database than the application's logic if needed. Currently, <emphasis
       role="italic">KSBTestHarnessSpring.xml</emphasis> uses JOTM to configure
       JTA without an application server. Bitronix is another JTA product that
       could be used in Rice and you could consider using it instead of JOTM.
@@ -422,7 +422,7 @@
 
 &lt;/bean&gt;</programlisting>
 
-      <para>Bittronix’s configuration is similar. Datasources for both are set
+      <para>Bittronix's configuration is similar. Datasources for both are set
       up in org.kuali.rice.core.RiceDataSourceSpringBeans.xml. If using JOTM,
       use the Rice XAPoolDataSource class as your data source because it
       addresses some bugs in the StandardXAPoolDataSource, which extends from
@@ -1052,7 +1052,7 @@
       more detail.</para>
 
       <section>
-        <title>Implications of “synchronous” vs. “asynchronous” Message
+        <title>Implications of "synchronous" vs. "asynchronous" Message
         Delivery</title>
 
         <para>As noted in Configuration Parameters, it is possible to
@@ -1063,12 +1063,12 @@
         <para>Asynchronous messing will result in messages being sent in a
         separate thread after the original transaction that requested the
         message to be sent is committed. This is the appropriate behavior in a
-        “fire-and-forget” messaging model. The option to configure message
+        "fire-and-forget" messaging model. The option to configure message
         deliver as synchronous was added for two reasons:<orderedlist>
             <listitem>
               <para>To allow for the implementation of automated unit tests
               which could perform various tests without having to right
-              “polling” code to wait for asynchronous messing to
+              "polling" code to wait for asynchronous messing to
               complete.</para>
             </listitem>
 
@@ -1103,7 +1103,7 @@
           role="bold">when</emphasis> the transaction is committed).</para>
 
           <para>In synchronous messaging, messages are processed <emphasis
-          role="bold">immediately</emphasis> when they are “sent”. This
+          role="bold">immediately</emphasis> when they are "sent". This
           results in a different ordering of execution when using these two
           different messaging models.</para>
         </section>
@@ -1132,9 +1132,9 @@
           Additionally, because an exception is being thrown, this will
           typically trigger a rollback in any transaction that the calling
           code is running. So transactional issues must be dealt with as well.
-          For example, if the failure of a single message shouldn’t cause the
+          For example, if the failure of a single message shouldn't cause the
           sending of all messages in a batch job to fail, then each message
-          will need to be sent in it’s own transaction, and errors handled
+          will need to be sent in it's own transaction, and errors handled
           appropriately.</para>
         </section>
       </section>
@@ -1150,8 +1150,8 @@
       <para>The Kuali Service Bus (KSB) uses Quartz to schedule delayed tasks,
       including retry attempts for messages that cannot be sent the first
       time. By default, KSB uses an embedded quartz scheduler that can be
-      configured by passing parameters starting with “<emphasis
-      role="italic">ksb.org.quartz.</emphasis>” into the Rice
+      configured by passing parameters starting with "<emphasis
+      role="italic">ksb.org.quartz.</emphasis>" into the Rice
       configuration.</para>
 
       <para>If the application is already running a quartz scheduler, you can
@@ -1277,7 +1277,7 @@ String result = echoService.echo(echoValue);</programlisting>
 
       <para>Again, the interface is all that is required to make the call.
       This is the server-side service declaration that deploys a bean using
-      Spring’s HttpInvoker as the underlying transport:</para>
+      Spring's HttpInvoker as the underlying transport:</para>
 
       <programlisting>&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
   ...
@@ -1585,7 +1585,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       <para>When message persistence is turned on, this object is serialized
       with any method call made through the messaging API. Take into
       consideration that this object (and the result of a method call) may
-      survive machine restart and therefore it’s recommended that you NOT
+      survive machine restart and therefore it's recommended that you NOT
       depend on certain transient in-memory resources.</para>
     </section>
   </section>
@@ -1600,7 +1600,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       using messaging.</para>
 
       <para>Services exported to the bus have automatic failover from the
-      client’s perspective. For example, if service A is deployed on machines
+      client's perspective. For example, if service A is deployed on machines
       1 and 2 and a client happens to get a proxy that points to machine 1 but
       machine 1 crashes, the KSB will automatically detect that the exception
       is a result of some network issue and direct the call to machine 2. KSB
@@ -1680,7 +1680,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
     <para>KSB supports two types of messaging paradigms; Queues and Topics,
     and the differences are explained below. These are very similar to JMS
     messaging concepts. An open source solution was not used for KSB messaging
-    because an open source JMS provider wasn’t found that provided JTA
+    because an open source JMS provider wasn't found that provided JTA
     synchronization, discovery, failover, and load balancing. Many claim such
     features, but when put to the test in real world scenarios (i.e., machines
     going down and coming back up, databases failing, network connectivity
@@ -1710,7 +1710,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       <para><emphasis
       role="italic">org.kuali.rice.ksb.messaging.MessageFetcher</emphasis> is
       a Runnable that needs to be configured by the client application to
-      retrieve stored messages from the database that weren’t processed when
+      retrieve stored messages from the database that weren't processed when
       the node went down. This can happen for many reasons. The machine can be
       under load and just crash.</para>
 
@@ -2334,7 +2334,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         and/or services (such as data sources and transaction managers) is
         done as described above. However, because in each module services can
         be injected into each other, overriding module services involves
-        overriding the respective module’s Spring context file.</para>
+        overriding the respective module's Spring context file.</para>
 
         <para>The cleanest way to do this is to set the
         rice.*.addtionalSpringFiles to an accessible spring beans file that
@@ -2376,7 +2376,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       <title>Overview</title>
 
       <para>Acegi handles the security layer for KSB. Acegi uses remote method
-      invocation to hold the application’s security context and to propagate
+      invocation to hold the application's security context and to propagate
       this object through to the service layer.</para>
     </section>
 

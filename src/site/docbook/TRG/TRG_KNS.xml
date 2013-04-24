@@ -27,7 +27,7 @@
         <para>To this end, configuration of the KNS in a client application can be accomplished by
             following these steps:<orderedlist>
                 <listitem>
-                    <para>Creation of database tables in the client application’s database that the
+                    <para>Creation of database tables in the client application's database that the
                         KNS requires to function. </para>
                 </listitem>
                 <listitem>
@@ -38,7 +38,7 @@
                 <listitem>
                     <para>Loading of the KNS struts module for the various UI components that the
                         KNS provides in addition to any filters or servlets that need to be defined
-                        in the client application’s <emphasis role="bold">web.xml</emphasis>. </para>
+                        in the client application's <emphasis role="bold">web.xml</emphasis>. </para>
                 </listitem>
                 <listitem>
                     <para>Creation of a <emphasis role="bold">ModuleConfiguration</emphasis> for the
@@ -54,15 +54,15 @@
         <section>
             <title>Database Creation</title>
             <para>In order for the KNS services to work, many of them require the ability to access
-                special tables within the client application’s database. These tables are used to
+                special tables within the client application's database. These tables are used to
                 store various pieces of data; from notes and attachments on documents to maintenance
                 document data and much more.</para>
             <para>These tables are included as part of either the demo-client-dataset or the
                 bootstrap-client-dataset. These datasets are provided with the Kuali Rice binary
                 distributions and instructions on how to install them can be found in the
                 Installation Guide. </para>
-            <note><para>It’s important to note that these tables should be installed in the client
-                application’s database, and not the Rice standalone server database.</para></note>
+            <note><para>It's important to note that these tables should be installed in the client
+                application's database, and not the Rice standalone server database.</para></note>
         </section>
         <section>
             <title>KNSConfigurer and RiceConfigurer</title>
@@ -72,7 +72,7 @@
                 the <emphasis role="bold">applicationDataSource</emphasis> and the <emphasis
                     role="bold">serverDataSource</emphasis> to be specified.</para>
             <para>The <emphasis role="bold">applicationDataSource</emphasis> should point to the
-                client application’s database. That database should contain the tables from one of
+                client application's database. That database should contain the tables from one of
                 the client datasets.</para>
             <para>The <emphasis role="bold">serverDataSource</emphasis> should point to the database
                 of the Rice standalone server. This is used for allowing access to the various KNS
@@ -84,8 +84,8 @@
     &lt;property name="knsConfigurer">
         &lt;bean class="org.kuali.rice.kns.config.KNSConfigurer"
 >
-            &lt;property name=”applicationDataSource” ref=”applicationDataSource”/>
-            &lt;property name=”serverDataSource” ref=”riceServerDataSource”/>
+            &lt;property name="applicationDataSource" ref="applicationDataSource"/>
+            &lt;property name="serverDataSource" ref="riceServerDataSource"/>
         &lt;/bean>
     &lt;/property>
     ...
@@ -112,7 +112,7 @@
                     copied into the root directory of your web application.</para>
                 <para>A special implementation of the Struts <emphasis role="bold"
                         >ActionServlet</emphasis> is provided to help with the loading of the struts
-                    modules. It can be configured in the application’s <emphasis role="bold"
+                    modules. It can be configured in the application's <emphasis role="bold"
                         >web.xml</emphasis> as in the following example:</para>
                 <programlisting>&lt;servlet>
     &lt;servlet-name>action&lt;/servlet-name>
@@ -125,14 +125,14 @@
 &lt;/servlet></programlisting>
                 <para>Notice the <emphasis role="bold">init-param</emphasis> above points to a
                     Struts configuration file. This file is intended to be the struts configuration
-                    file for the client application. It’s used by the KNS for doing redirects back
+                    file for the client application. It's used by the KNS for doing redirects back
                     to the main application and is also used for adding KNS-based screens within the
                     client application. Specifically, this is where action mappings go if using the
                     transactional document framework of the KNS.</para>
                 <para>There is an example file in the distributions under <emphasis role="bold"
                         >config/examples/struts-config.example.xml</emphasis>. This will need to be
                     renamed to <emphasis role="bold">struts-config.xml</emphasis> and copied to your
-                    web application’s <emphasis role="bold">WEB-INF</emphasis> directory. It can
+                    web application's <emphasis role="bold">WEB-INF</emphasis> directory. It can
                     then be loaded using the KualiActionServlet as seen in the example above.</para>
                 <para>In this example file you will see a reference to a message resource properties
                     file. As is the case with a standard Struts-based application, the resource
@@ -144,7 +144,7 @@
             <section>
                 <title>Configuring KNS Servlet Context Listeners</title>
                 <para>The KNS framework requires a couple of ServletContextListener classes to be
-                    configured in the application’s web.xml. These include:<itemizedlist>
+                    configured in the application's web.xml. These include:<itemizedlist>
                         <listitem>
                             <para><emphasis role="bold"
                                     >org.kuali.rice.kns.web.listener.JstlConstantsInitListener</emphasis>
@@ -185,12 +185,12 @@
                     KualiPropertyMessageResources, which takes in a comma delimited list of
                     .properties files.</para>
                 <para>This is set up in the struts-config.xml files near the end of the file:</para>
-                <programlisting>&lt;message-resources factory=”org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourceFactory” parameter=”” /></programlisting>
+                <programlisting>&lt;message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourceFactory" parameter="" /></programlisting>
                 <para>When the parameter above is set to an empty string, Rice uses the default
                     value of properties files. The default value is set by the
                     rice.struts.message.resources property the common-config-defaults.xml file. This
                     is the default setting:</para>
-                <programlisting>&lt;param name=”rice.struts.message.resources”>KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources” /></programlisting>
+                <programlisting>&lt;param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources" /></programlisting>
                 <para>This can be overridden in rice-config.xml. This value should be in a comma
                     delimited format. The list of files is loaded from left to right, with any
                     duplicated properties being overridden in that order. Therefore, in the list
@@ -203,7 +203,7 @@
                 <para>The KNS uses <link xlink:href="http://directwebremoting.org/dwr/index.html"
                         >DWR</link> to provide AJAX support. In order to enable this, the <emphasis
                         role="bold">org.kuali.rice.kns.web.servlet.KualiDWRServlet</emphasis> must
-                    be configured in the application’s <emphasis role="bold">web.xml </emphasis>as
+                    be configured in the application's <emphasis role="bold">web.xml </emphasis>as
                     follows:</para>
                 <programlisting>&lt;servlet>
     &lt;servlet-name>dwr-invoker&lt;/servlet-name>
@@ -229,7 +229,7 @@
         </section>
         <section>
             <title>Module Configuration – Loading Data Dictionary and OJB Files</title>
-            <para>One of the most important pieces of the KNS framework is the Data Dictionary. It’s
+            <para>One of the most important pieces of the KNS framework is the Data Dictionary. It's
                 used to define various pieces of metadata about business objects, maintenance
                 documents, lookups, inquiries and more. These Data Dictionary files are authored in
                 XML and are loaded using a <emphasis role="bold">ModuleConfiguration</emphasis>.
@@ -243,7 +243,7 @@
                 depending on how it is organized. This configuration allows for the specification of
                 the following:<itemizedlist>
                     <listitem>
-                        <para>The module’s namespace </para>
+                        <para>The module's namespace </para>
                     </listitem>
                     <listitem>
                         <para>The Data Dictionary files to load </para>
@@ -356,7 +356,7 @@
                             <row>
                                 <entry>production.environment.code</entry>
                                 <entry>The environment code that will be used to identify this
-                                    application as a “production” instance. Certain features are
+                                    application as a "production" instance. Certain features are
                                     turned off in non-production instances (email, for example) </entry>
                                 <entry>PRD</entry>
                             </row>
@@ -411,7 +411,7 @@
                             <row>
                                 <entry>kns.cache.nonDatabaseComponent.max.size </entry>
                                 <entry>The maximum size of the cache that is used to store parameter
-                                    components that don’t come from the database (i.e. are loaded
+                                    components that don't come from the database (i.e. are loaded
                                     from the Data Dictionary and other locations) </entry>
                                 <entry>50</entry>
                             </row>
@@ -685,13 +685,13 @@
                     <title>When to use OJB vs. data dictionary relationships</title>
                     <para>OJB relationships should be used to define relationships between tables
                         that are guaranteed to exist within the same database.</para>
-                    <para>For example, assume a sample Business Object class “Bank”. The Bank class
+                    <para>For example, assume a sample Business Object class "Bank". The Bank class
                         contains a BankType reference object. Typically a BankType class table would
                         exist in the same database as the Bank class table. In this example the
                         relationship between Bank and BankType can be defined by OJB. However, a
-                        “User” business object table typically will exist in an external system
+                        "User" business object table typically will exist in an external system
                         since it will likely be referenced by more than one Rice client application.
-                        If a BO had a relationship with a “User” BO, the mapping would require that
+                        If a BO had a relationship with a "User" BO, the mapping would require that
                         the relationship be set up via the data dictionary files (which will be
                         discussed in detail later in this document). Any business object
                         implementing the org.kuali.rice.kns.bo.ExternalizableBusinessObject
@@ -739,7 +739,7 @@
                                     is a BIGINT, and is used for locking </para>
                             </listitem>
                             <listitem>
-                                <para>The ACTV_IND column is mapped to the “active” property, is a
+                                <para>The ACTV_IND column is mapped to the "active" property, is a
                                     VARCHAR, and uses the conversion class <emphasis role="bold"
                                         >org.kuali.rice.kns.util.OjbCharBooleanConversion</emphasis>
                                 </para>
@@ -755,7 +755,7 @@
                                 <para>the auto-retrieve attribute is true: When the StateImpl is
                                     retrieved from OJB, the CountryImpl object will behave like it
                                     was retrieved as well (the <emphasis role="bold"
-                                        >proxy</emphasis> attribute of the ‘field-descriptor’ tag
+                                        >proxy</emphasis> attribute of the 'field-descriptor' tag
                                     can be set to true or false to determine whether the CountryImpl
                                     is really retrieved when the account is retrieved or not)
                                 </para>
@@ -775,8 +775,8 @@
                                     BO that are in a foreign key relationship and their order with
                                     the primary key fields in the CountryImpl BO. The CountryImpl BO
                                     has one primary key field, and the value from StateImpl's
-                                    “postalCountryCode” property is used as the value for
-                                    CountryImpl’s primary key value. </para>
+                                    "postalCountryCode" property is used as the value for
+                                    CountryImpl's primary key value. </para>
                             </listitem>
                         </orderedlist></para>
                 </section>
@@ -831,9 +831,9 @@
                             <listitem>
                                 <para>The &lt;inverse-foreignkey> specifies the fields of the
                                     element BO (i.e. Account) that will match the primary key fields
-                                    of the AccountManager BO. The “amId” attribute in the Account
+                                    of the AccountManager BO. The "amId" attribute in the Account
                                     table will be used to find objects that match the primary key of
-                                    the AccountManager object, or in this case the “id” attribute.
+                                    the AccountManager object, or in this case the "id" attribute.
                                 </para>
                             </listitem>
                         </orderedlist></para>
@@ -850,8 +850,8 @@
                     <emphasis role="bold">org.kuali.core.bo.BusinessObject</emphasis>. Business
                 Objects which extend from the class <emphasis role="bold"
                     >PersistableBusinessObjectBase</emphasis> also have an advantage in that they
-                will inherit getter and setter methods for the attributes ‘version number’ and
-                ‘object id’.</para>
+                will inherit getter and setter methods for the attributes 'version number' and
+                'object id'.</para>
             <para><emphasis role="bold">In each application, all simple class names (i.e. ignoring
                     the package) should be unique. If multiple packages contain the same class name,
                     the data dictionary may not load the duplicated classes
@@ -879,7 +879,7 @@
                     referenced by the values in a foreign key relationship. For example, the
                     CampusImpl BO/table has a column for a campus type code (CAMPUS_TYP_CD).
                     Therefore, the CampusImpl BO may have a referenced CampusTypeImpl object, which
-                    represents the campus type row referred to by the campus’ campus type code. Here
+                    represents the campus type row referred to by the campus' campus type code. Here
                     is the CampusImpl OJB mapping:</para>
                 <programlisting>&lt;class-descriptor class="org.kuali.rice.kns.bo.CampusImpl" table="KRNS_CAMPUS_T">
     &lt;field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
@@ -933,9 +933,9 @@ protected boolean active;
                         database, and refreshing can also be invoked manually.</para>
                     <para>Note that this means that if the value of a foreign key field is changed, the
                         corresponding reference object is not refreshed automatically. Taking the
-                        CampusImpl BO example above, if the code alters the CampusImpl’s campusTypeCode
+                        CampusImpl BO example above, if the code alters the CampusImpl's campusTypeCode
                         field, the framework will not automatically retrieve the new associated
-                        CampusTypeImpl BO reference object. To refresh the CampusImpl’s CampusTypeImpl
+                        CampusTypeImpl BO reference object. To refresh the CampusImpl's CampusTypeImpl
                         reference object with the new campus type code, refresh/retrieve must be
                         manually called (see below).</para>
                 </section>
@@ -1134,7 +1134,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     <title>Group by Attributes</title>
                     <para>In order to determine whether or not an InactivateableFromTo record is
                         current, the framework must know what fields of the business object to group
-                        by (see ‘current’ in ‘Explanation of InactivateableFromTo fields’). This is
+                        by (see 'current' in 'Explanation of InactivateableFromTo fields'). This is
                         configured by setting the groupByAttributesForEffectiveDating property on
                         the data dictionary BusinessObjectEntry.</para>
                     <para><emphasis role="italic">Example:</emphasis></para>
@@ -1178,7 +1178,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
             Dictionary files use the Spring Framework for configuration so the notation and parsing
             operation will match that of the files that define the module configurers.</para>
         <para>The contents of the data dictionary are defined by two sets of vocabularies; the
-            ‘business object’ and the ‘document’ data. </para>
+            'business object' and the 'document' data. </para>
         <section>
             <title>Business Object Data Dictionary</title>
             <para>Business Object Data Dictionary entries provide the KNS framework extra metadata
@@ -1187,7 +1187,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
             <para>The business object data dictionary contains information about:<itemizedlist>
                     <listitem>
                         <para>Descriptive labels for each attribute in the business object (data
-                            dictionary terminology uses the term “attribute” to refer to fields with
+                            dictionary terminology uses the term "attribute" to refer to fields with
                             getter/setter methods). </para>
                     </listitem>
                     <listitem>
@@ -1222,28 +1222,28 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 </itemizedlist></para>
             <section>
                 <title>Note About Following Documentation</title>
-                <para>One thing to note is the use of ‘abstract’ parent beans within the Rice files.
+                <para>One thing to note is the use of 'abstract' parent beans within the Rice files.
                     These are used to facilitate easy overriding of beans from Rice in a client
                     application or a customized Rice standalone server installation. Take the
-                    following example where the “RealBean” may be defined within Rice:</para>
-                <programlisting>&lt;bean id=”RealBean” parent=”RealBean-parent” />
+                    following example where the "RealBean" may be defined within Rice:</para>
+                <programlisting>&lt;bean id="RealBean" parent="RealBean-parent" />
 
-&lt;bean id=”RealBean-parent” abstract=”true” /></programlisting>
+&lt;bean id="RealBean-parent" abstract="true" /></programlisting>
                 <para>Client applications overriding this bean definition should always retain the
-                    id “RealBean”. This allows for any developer working with overriding data
+                    id "RealBean". This allows for any developer working with overriding data
                     dictionary files to easily define an override using the following parent bean
                     structure:</para>
-                <programlisting>&lt;bean id=”RealBean” parent=”RealBean-client-parent” />
+                <programlisting>&lt;bean id="RealBean" parent="RealBean-client-parent" />
 
 
-&lt;bean id=”RealBean-client-parent” abstract=”true” parent=”RealBean-parent” >
+&lt;bean id="RealBean-client-parent" abstract="true" parent="RealBean-parent" >
     
 &lt;!—- any client overrides go here -->
 &lt;/bean></programlisting>
                 <para>The setup above will take any configuration from the Rice defined
-                    “RealBean-parent” and allow the client developer to override individual
+                    "RealBean-parent" and allow the client developer to override individual
                     properties inside the bean. Then when anything inside Rice or the client
-                    application references the data dictionary bean “RealBean” they will get the
+                    application references the data dictionary bean "RealBean" they will get the
                     Rice defined values unless they were overridden by client application
                     developers. See the Spring Framework documentation for more examples of
                     this.</para>
@@ -1290,9 +1290,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
         &lt;/property>
     &lt;/bean>
     &lt;bean id="Account-inquiryDefinition" parent="Account-inquiryDefinition-parentBean"/>
-    &lt;!-- Definition of ‘Account-inquiryDefinition-parentBean’ bean goes here -->
+    &lt;!-- Definition of 'Account-inquiryDefinition-parentBean' bean goes here -->
     &lt;bean id="Account-lookupDefinition" parent="Account-lookupDefinition-parentBean"/>
-    &lt;!—Definition of ‘Account-lookupDefinition-parentBean’ bean goes here -->
+    &lt;!—Definition of 'Account-lookupDefinition-parentBean' bean goes here -->
 
 &lt;/beans></programlisting>
                 <para>A more specific Rice example might be the CampusImpl object (whose business
@@ -1371,9 +1371,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
     &lt;property name="description" value="The code identifying type of campus."/>
 &lt;/bean></programlisting>
                 <para>In client applications, it is common that several business objects share a
-                    field representing the same type of data. For example, a country’s postal code
+                    field representing the same type of data. For example, a country's postal code
                     may occur in many different tables. In these circumstances, the use of a parent
-                    bean reference (parent="Country-postalCountryCode”) definition allows the reuse
+                    bean reference (parent="Country-postalCountryCode") definition allows the reuse
                     of parts of a standard definition from the "master" business object. For
                     instance, the StateImpl business object (business object data dictionary file
                     State.xml) references the postalCountryCode property of the CountryImpl
@@ -1405,7 +1405,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>This type of definition (defining the attribute definition once and reusing
                     the bean as a parent bean) can be used inside common files as well. Rice has an
                     AttributeReference.xml business object data dictionary file as well as a
-                    java object AttributeReference.java file. This file’s sole purpose is to
+                    java object AttributeReference.java file. This file's sole purpose is to
                     place commonly defined attributes such as <emphasis role="bold"
                         >versionNumber</emphasis> (which is common across all business objects) in a
                     central location so that other business object attribute definitions can use
@@ -1503,7 +1503,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <section>
                     <title>Totals</title>
                     <para>Support exists in the lookup framework for totaling the lookup results. If
-                        the ‘total’ property is set to true on one or more FieldDefinition within
+                        the 'total' property is set to true on one or more FieldDefinition within
                         the resultFields, the total line will be rendered and totals displayed for
                         each field indicated.</para>
                     <para><emphasis role="italic">Example:</emphasis></para>
@@ -1574,55 +1574,55 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     KC). The lookup and result fields representing these custom attributes can be
                     arranged as desired using the <emphasis role="bold"
                         >DataDictionaryBeanOverride</emphasis>. In the example below, we wish to add
-                    a custom attribute named <emphasis role="bold">Campus Code</emphasis> to KFS’s
+                    a custom attribute named <emphasis role="bold">Campus Code</emphasis> to KFS's
                     existing Account bean. </para>
                 <programlisting>&lt;beans>
     ...
-    &lt;bean id=”Account” parent=”Account-parentBean">
+    &lt;bean id="Account" parent="Account-parentBean">
     &lt;property name="attributes">
-        &lt;list merge=”true”>
+        &lt;list merge="true">
             &lt;!-- list goes here -->
-            &lt;bean id=”Account.campusCode” parent=”Account-CampusCode” p:name=”Account.campusCode” />
+            &lt;bean id="Account.campusCode" parent="Account-CampusCode" p:name="Account.campusCode" />
             ...
         &lt;/list>
     &lt;/property>
     &lt;/bean>
     ...
 &lt;/beans></programlisting>
-                <para>Once the custom attribute is defined, we create a bean that takes KFS’s
+                <para>Once the custom attribute is defined, we create a bean that takes KFS's
                         <emphasis role="bold">Account-lookupDefinition</emphasis> bean and modifies
                     it such that <emphasis role="bold">Campus Code</emphasis> is displayed right
                     after the <emphasis role="bold">Sub-Fund Group Code</emphasis> attribute in the
                     Account lookup screen and search results.</para>
                 <programlisting>&lt;beans>
     ...
-    &lt;bean id=”Account-lookupDefinition-override” parent=”DataDictionaryBeanOverride">
-        &lt;property name="beanName" value=”Account-lookupDefinition” />
-        &lt;property name=”fieldOverrides”>
+    &lt;bean id="Account-lookupDefinition-override" parent="DataDictionaryBeanOverride">
+        &lt;property name="beanName" value="Account-lookupDefinition" />
+        &lt;property name="fieldOverrides">
             &lt;list>
                 &lt;!—- Place Campus Code after Account Sub-Fund Group Code in the lookup -->
-                &lt;bean parent=”FieldOverrideForListElementInsert”>
-                    &lt;property name=”propertyName” value=”lookupFields” />
-                    &lt;property name=”propertyNameForElementCompare” value=”attributeName” />
-                    &lt;property name=”element”>
-                        &lt;bean parent=”FieldDefinition” p:attributeName=”subFundGroupCode” />
+                &lt;bean parent="FieldOverrideForListElementInsert">
+                    &lt;property name="propertyName" value="lookupFields" />
+                    &lt;property name="propertyNameForElementCompare" value="attributeName" />
+                    &lt;property name="element">
+                        &lt;bean parent="FieldDefinition" p:attributeName="subFundGroupCode" />
                     &lt;/property>
-                    &lt;property name=”insertAfter”>
+                    &lt;property name="insertAfter">
                         &lt;list>
-                            &lt;bean parent=”FieldDefinition” p:attributeName=”Account.campusCode” />
+                            &lt;bean parent="FieldDefinition" p:attributeName="Account.campusCode" />
                         &lt;/list>
                     &lt;/property>
                 &lt;/bean>
                 &lt;!—- Place Campus Code after Account Sub-Fund Group Code in the search results -->
-                &lt;bean parent=”FieldOverrideForListElementInsert”>
-                    &lt;property name=”propertyName” value=”resultFields” />
-                    &lt;property name=”propertyNameForElementCompare” value=”attributeName” />
-                    &lt;property name=”element”>
-                        &lt;bean parent=”FieldDefinition” p:attributeName=”subFundGroupCode” />
+                &lt;bean parent="FieldOverrideForListElementInsert">
+                    &lt;property name="propertyName" value="resultFields" />
+                    &lt;property name="propertyNameForElementCompare" value="attributeName" />
+                    &lt;property name="element">
+                        &lt;bean parent="FieldDefinition" p:attributeName="subFundGroupCode" />
                     &lt;/property>
-                    &lt;property name=”insertAfter”>
+                    &lt;property name="insertAfter">
                         &lt;list>
-                            &lt;bean parent=”FieldDefinition” p:attributeName=”Account.campusCode” />
+                            &lt;bean parent="FieldDefinition" p:attributeName="Account.campusCode" />
                         &lt;/list>
                     &lt;/property>
                 &lt;/bean>
@@ -1644,15 +1644,15 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     KC). The fields representing these custom attributes can be arranged on the
                     inquiry screen as desired using the <emphasis role="bold"
                         >DataDictionaryBeanOverride</emphasis>. In the example below, we wish to add
-                    a custom attribute named <emphasis role="bold">Campus Code</emphasis> to KFS’s
+                    a custom attribute named <emphasis role="bold">Campus Code</emphasis> to KFS's
                     existing Account bean. </para>
                 <programlisting>&lt;beans>
     ...
-    &lt;bean id=”Account” parent=”Account-parentBean">
+    &lt;bean id="Account" parent="Account-parentBean">
         &lt;property name="attributes">
-            &lt;list merge=”true”>
+            &lt;list merge="true">
                 &lt;!-- list goes here -->
-                &lt;bean id=”Account.campusCode” parent=”Account-CampusCode” p:name=”Account.campusCode” />
+                &lt;bean id="Account.campusCode" parent="Account-CampusCode" p:name="Account.campusCode" />
                     ...
             &lt;/list>
         &lt;/property>
@@ -1660,27 +1660,27 @@ public void setActiveAsOfDate(Date activeAsOfDate);
     ...
 &lt;/beans>
 </programlisting>
-                <para>Once the custom attribute is defined, we create a bean that takes KFS’s
+                <para>Once the custom attribute is defined, we create a bean that takes KFS's
                         <emphasis role="bold">Account-inquiryDefinition</emphasis> bean and modifies
                     it such that <emphasis role="bold">Campus Code</emphasis> is displayed right
                     after the <emphasis role="bold">Sub-Fund Group Code</emphasis> attribute in the
                     Account inquiry screen.</para>
                 <programlisting>&lt;beans>
     ...
-    &lt;bean id=”Account-inquiryDefinition-override” parent=”DataDictionaryBeanOverride">
-        &lt;property name="beanName" value=”Account-inquiryDefinition” />
-        &lt;property name=”fieldOverrides”>
+    &lt;bean id="Account-inquiryDefinition-override" parent="DataDictionaryBeanOverride">
+        &lt;property name="beanName" value="Account-inquiryDefinition" />
+        &lt;property name="fieldOverrides">
             &lt;list>
                 &lt;!—- Place Campus Code after Account Sub-Fund Group Code in the Account Details section (inquirySections[0]) -->
-                &lt;bean parent=”FieldOverrideForListElementInsert”>
-                    &lt;property name=”propertyName” value=”inquirySections[0].inquiryFields” />
-                    &lt;property name=”propertyNameForElementCompare” value=”attributeName” />
-                    &lt;property name=”element”>
-                        &lt;bean parent=”FieldDefinition” p:attributeName=”subFundGroupCode” />
+                &lt;bean parent="FieldOverrideForListElementInsert">
+                    &lt;property name="propertyName" value="inquirySections[0].inquiryFields" />
+                    &lt;property name="propertyNameForElementCompare" value="attributeName" />
+                    &lt;property name="element">
+                        &lt;bean parent="FieldDefinition" p:attributeName="subFundGroupCode" />
                     &lt;/property>
-                    &lt;property name=”insertAfter”>
+                    &lt;property name="insertAfter">
                         &lt;list>
-                            &lt;bean parent=”FieldDefinition” p:attributeName=”Account.campusCode” />
+                            &lt;bean parent="FieldDefinition" p:attributeName="Account.campusCode" />
                         &lt;/list>
                     &lt;/property>
                 &lt;/bean>
@@ -1756,9 +1756,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>Each type of dictionary defines properties such as authorizations, rules and
                     workflow document types. </para>
                 <para>The following examples all follow the same structure with respect to the use
-                    of ‘abstract’ parent beans for Data Dictionary beans. A detailed description of
+                    of 'abstract' parent beans for Data Dictionary beans. A detailed description of
                     their use and why Kuali uses this type of implementation can be found in the
-                    beginning of the ‘Business Object Data Dictionary’ section.</para>
+                    beginning of the 'Business Object Data Dictionary' section.</para>
             </section>
         </section>
         <section>
@@ -1852,10 +1852,10 @@ public void setActiveAsOfDate(Date activeAsOfDate);
             <section>
                 <title>Basic Setup</title>
                 <para>The first bean defined for the ParameterMaintenanceDocument data dictionary
-                    file is the main definition bean “ParameterMaintenanceDocument-parentBean”. This
-                    bean uses the parent bean “MaintenanceDocumentEntry”. This is how this
+                    file is the main definition bean "ParameterMaintenanceDocument-parentBean". This
+                    bean uses the parent bean "MaintenanceDocumentEntry". This is how this
                     particular business object is defined specifically as a Maintenance Document.
-                    Inside the “ParameterMaintenanceDocument-parentBean” bean we see several
+                    Inside the "ParameterMaintenanceDocument-parentBean" bean we see several
                     properties being set:</para>
                 <programlisting>&lt;property name="businessObjectClass" value="org.kuali.rice.kns.bo.Parameter"/>
 &lt;property name="maintainableClass" value="org.kuali.rice.kns.document.ParameterMaintainable"/></programlisting>
@@ -1896,9 +1896,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     to save or submit.</para>
                 <para>The <emphasis role="bold">defaultExistenceCheck</emphasis> tag has a few
                     different ways it can operate. All involve setting a list of beans that use the
-                    “ReferenceDefinition” parent bean. This bean is defined in Rice and can be used
+                    "ReferenceDefinition" parent bean. This bean is defined in Rice and can be used
                     by any Maintenance Document Data Dictionary file. The properties that may be set
-                    for the “ReferenceDefinition” beans vary but the example shows the most common.
+                    for the "ReferenceDefinition" beans vary but the example shows the most common.
                     The <emphasis role="bold">attributeName</emphasis> property is set to the KNS
                     attribute name of the business object which must exist for the check to pass. In
                     this case the <emphasis role="bold">Namespace</emphasis> object in KNS has a
@@ -1916,9 +1916,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>Since maintenance documents edit one or more business objects, there is the
                     potential for race conditions. For example, if two business objects were created
                     with the same primary key field and they were both sent into routing at the same
-                    time, the first document that is approved to ‘Final’ status in Workflow could
+                    time, the first document that is approved to 'Final' status in Workflow could
                     potentially be overwritten in the database by the second document when it goes
-                    to ‘Final’ status. The KNS attempts to prevent these situations from arising by
+                    to 'Final' status. The KNS attempts to prevent these situations from arising by
                     creating a pessimistic lock on each business object going through workflow as
                     part of a maintenance document. In most cases, it uses the <emphasis role="bold"
                         >lockingKeys</emphasis> tag of the data dictionary for the maintenance
@@ -1950,7 +1950,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     is made up of one or more maintainable sections. Each section is named, and each
                     section creates a new tab as its visual representation on the web form. Here is
                     the section list property being set on the
-                    “ParameterMaintenanceDocument-parentBean” bean (only one section in this
+                    "ParameterMaintenanceDocument-parentBean" bean (only one section in this
                     document):</para>
                 <programlisting>&lt;property name="maintainableSections">
     &lt;list>
@@ -1958,9 +1958,9 @@ public void setActiveAsOfDate(Date activeAsOfDate);
     &lt;/list>
 &lt;/property></programlisting>
                 <para>The list of beans is defined in the main Maintenance Document Entry bean while
-                    each ‘Section Definition’ bean is defined below in the file. Here is the
+                    each 'Section Definition' bean is defined below in the file. Here is the
                         <emphasis role="bold">ParameterMaintenanceDocument</emphasis> example of the
-                    “ParameterMaintenanceDocument-EditParameter” bean definition:</para>
+                    "ParameterMaintenanceDocument-EditParameter" bean definition:</para>
                 <programlisting>&lt;bean id="ParameterMaintenanceDocument-EditParameter-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     &lt;property name="maintainableItems">
         &lt;list>
@@ -1978,12 +1978,12 @@ public void setActiveAsOfDate(Date activeAsOfDate);
     &lt;property name="title" value="Edit Parameter"/>
 &lt;/bean></programlisting>
                 <para>Each maintainable section is defined by using the parent bean
-                    “MaintainableSectionDefinition”. These beans, in turn, are made up of several
+                    "MaintainableSectionDefinition". These beans, in turn, are made up of several
                     different properties including an <emphasis role="bold">id</emphasis>, <emphasis
                         role="bold">title</emphasis>, and <emphasis role="bold"
                         >maintainableItems</emphasis>. The <emphasis role="bold"
                         >maintainableItems</emphasis> property is a list of maintainable fields.
-                    Each maintainable field bean uses the “MaintainableFieldDefinition” bean as its
+                    Each maintainable field bean uses the "MaintainableFieldDefinition" bean as its
                     parent bean and lists the attribute that should be shown. That attribute itself
                     has typically been defined in the data dictionary configuration for the business
                     object (see Business Object Data Dictionary Definition below). There is also a
@@ -2001,13 +2001,13 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     default values for any field can be set by using the <emphasis role="bold"
                         >defaultValue</emphasis> property, like so:</para>
                 <programlisting>&lt;bean parent="MaintainableFieldDefinition">
-    &lt;property name=”name” value="parameterApplicationNamespaceCode"/>
-    &lt;property name=”required” value="true"/>
-    &lt;property name=”defaultValue” value="KUALI"/>
+    &lt;property name="name" value="parameterApplicationNamespaceCode"/>
+    &lt;property name="required" value="true"/>
+    &lt;property name="defaultValue" value="KUALI"/>
 &lt;/bean>
 </programlisting>
                 <para>The example above example sets the default value of the <emphasis role="bold"
-                        >parameterApplicationNamespaceCode</emphasis> attribute to “KUALI”. </para>
+                        >parameterApplicationNamespaceCode</emphasis> attribute to "KUALI". </para>
                 <para>Another property that can be used to set a field with a default value in the
                     maintenance document data dictionary maintainableField beans is the <emphasis
                         role="bold">defaultValueFinderClass</emphasis> property. This property
@@ -2021,10 +2021,10 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     to use the <emphasis role="bold">defaultValueFinderClass</emphasis>
                     property:</para>
                 <programlisting>&lt;bean parent="MaintainableFieldDefinition">
-    &lt;property name=”name” value="permissionId"/>
-    &lt;property name=”unconditionallyReadOnly” value="true"/>
-    &lt;property name=”required” value="true"/>
-    &lt;property name=”defaultValueFinderClass” value="org.kuali.rice.kim.lookup.valuefinder.NextPermissionIdValuesFinder"/>
+    &lt;property name="name" value="permissionId"/>
+    &lt;property name="unconditionallyReadOnly" value="true"/>
+    &lt;property name="required" value="true"/>
+    &lt;property name="defaultValueFinderClass" value="org.kuali.rice.kim.lookup.valuefinder.NextPermissionIdValuesFinder"/>
 &lt;/bean>
 </programlisting>
                 <para>The above example pulls the next available id from a class for one of the
@@ -2036,14 +2036,14 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     this documentation. Below is a simulated example that does not exist in the Rice
                     code:</para>
                 <programlisting>&lt;bean parent="MaintainableFieldDefinition">
-    &lt;property name=”name” value="reconcilerGroup.groupName"/>
-    &lt;property name=”required” value="true"/>
-    &lt;property name=”overrideFieldConversions” value="groupId:cardGroupId,groupName:reconcilerGroup.groupName"/>
-    &lt;property name=”overrideLookupClass” value="org.kuali.rice.kim.bo.impl.GroupImpl"/>
+    &lt;property name="name" value="reconcilerGroup.groupName"/>
+    &lt;property name="required" value="true"/>
+    &lt;property name="overrideFieldConversions" value="groupId:cardGroupId,groupName:reconcilerGroup.groupName"/>
+    &lt;property name="overrideLookupClass" value="org.kuali.rice.kim.bo.impl.GroupImpl"/>
 &lt;/bean></programlisting>
                 <para>The <emphasis role="bold">overrideLookupClass</emphasis> property will set the
                     business object class of the lookup that should be used. This means in our
-                    example above that the lookup for the field “reconcilerGroup.groupName” will use
+                    example above that the lookup for the field "reconcilerGroup.groupName" will use
                     the <emphasis role="bold">org.kuali.rice.kim.bo.impl.GroupImpl</emphasis> class
                     lookup. The <emphasis role="bold">overrideFieldConversions</emphasis> property
                     is used to translate data attributes from the <emphasis role="bold"
@@ -2051,13 +2051,13 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     Object class for which the maintenance document data dictionary file is for.
                     These are separated with the colon character and a comma is used to delineate
                     each field translation if more than one is to be listed. In the example above
-                    the ‘groupId’ field (which exists on the <emphasis role="bold"
+                    the 'groupId' field (which exists on the <emphasis role="bold"
                         >org.kuali.rice.kim.bo.impl.GroupImpl</emphasis> class) will be set into the
-                    ‘cardGroupId’ field (which should exist on the business object class of the
+                    'cardGroupId' field (which should exist on the business object class of the
                     current maintainable data dictionary file). In some instances the <emphasis
                         role="bold">overrideFieldConversions</emphasis> may not be necessary if the
-                    field names are the same on the lookup’s business object class and the data
-                    dictionary’s business object class.</para>
+                    field names are the same on the lookup's business object class and the data
+                    dictionary's business object class.</para>
             </section>
             <section>
                 <title>Additional MaintainableFieldDefinition Properties</title>
@@ -2074,25 +2074,25 @@ public void setActiveAsOfDate(Date activeAsOfDate);
 7            &lt;bean parent="MaintainableFieldDefinition" p:name="linkedJob" p:noLookup="true" />
       ...</programlisting>
                 <para>In the example above on line 4 the field with <emphasis role="bold"
-                        >name</emphasis> value “ID” has a property named <emphasis role="bold"
-                        >unconditionallyReadOnly</emphasis> that is set to “true”. This means the
+                        >name</emphasis> value "ID" has a property named <emphasis role="bold"
+                        >unconditionallyReadOnly</emphasis> that is set to "true". This means the
                     field will be read only and uneditable in the User Interface at all times
                     regardless of document state. This could be helpful when setting a default value
                     that the user entering the document is not allowed to change.</para>
-                <para>The property <emphasis role="bold">readOnlyAfterAdd</emphasis> set to “true”
-                    on line 5 for the “Name” field means that once the maintenance document for this
+                <para>The property <emphasis role="bold">readOnlyAfterAdd</emphasis> set to "true"
+                    on line 5 for the "Name" field means that once the maintenance document for this
                     business object has been successfully saved and routed through all appropriate
-                    approvals, the “Name” field will be read only. This is useful in certain
+                    approvals, the "Name" field will be read only. This is useful in certain
                     instances when creating a new business object.</para>
                 <para>The property <emphasis role="bold">lookupReadOnly</emphasis> in line 6 is used
                     to change the UI so that a lookup link will be presented for the field but the
                     value that is displayed when returning an object from the lookup is read only.
-                    In the example above the “Type” variable will have a lookup (as defined by the
+                    In the example above the "Type" variable will have a lookup (as defined by the
                     Business Object Data Dictionary file… see the Business Object Data Dictionary
-                    section for more information) but the displayed value in the UI for “Type” will
+                    section for more information) but the displayed value in the UI for "Type" will
                     be uneditable by user entry. It may still be changed by going to the lookup link
                     again.</para>
-                <para>The noLookup property shown in line 7 for the “linkedJob” field is a way to
+                <para>The noLookup property shown in line 7 for the "linkedJob" field is a way to
                     override the default functionality coming from the Business Object Data
                     Dictionary file. If that DD file has a Lookup control element but the lookup
                     need to be hidden on the Maintenance Document then this attribute allows for
@@ -2122,7 +2122,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     &lt;list>
                         &lt;bean parent="MaintainableFieldDefinition" p:name="principalName" p:required="true"/>
                         &lt;bean parent="MaintainableFieldDefinition" p:name="actionRequestedCd" p:required="true"/>
-                        &lt;bean parent="MaintainableFieldDefinition" p:name="priority" p:required="true”/>
+                        &lt;bean parent="MaintainableFieldDefinition" p:name="priority" p:required="true"/>
                     &lt;/list>
                 &lt;/property>
                 &lt;property name="duplicateIdentificationFields">
@@ -2160,7 +2160,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         >summaryFields</emphasis> properties are used for display purposes once a
                     list element is added to the list on the UI screen. The specified data elements
                     will show when the full detail of the collection item is hidden using the
-                    ‘hide/show’ button functionality of the KNS. Usually these fields are specific
+                    'hide/show' button functionality of the KNS. Usually these fields are specific
                     to what uniquely defines the business objects contained within the
                     collection.</para>
                 <para>The <emphasis role="bold">duplicateIdentificationFields</emphasis> property is
@@ -2168,8 +2168,8 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     business object that cannot be duplicated in the list. In this way they act as
                     mini-locks. They will prevent more than one list element with the same set of
                     fields. For instance, in the example above, if a list element already exists
-                    with the <emphasis role="bold">actionRequestedCd</emphasis> ‘A’ and the
-                        <emphasis role="bold">principalName</emphasis> ‘john’ then another list
+                    with the <emphasis role="bold">actionRequestedCd</emphasis> 'A' and the
+                        <emphasis role="bold">principalName</emphasis> 'john' then another list
                     element with those same values cannot be added.</para>
                 <para>There are also a few more advanced type attributes that can be used. Take the
                     above example and the abbreviated alteration below.</para>
@@ -2191,11 +2191,11 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     collection.</para>
                 <para>On line 9 in the example above, the addition of the <emphasis role="bold"
                         >MaintainableFieldDefinition</emphasis> with the <emphasis role="bold"
-                        >name</emphasis> property value of “newCollectionRecord” is used to tell the
+                        >name</emphasis> property value of "newCollectionRecord" is used to tell the
                     maintenance framework that any records currently existing in the collection are
                     permanent - that is, there should not be delete buttons associated with them.
                     However, if the property <emphasis role="bold">includeAddLine</emphasis> is set
-                    to “false” (or omitted) in the <emphasis role="bold"
+                    to "false" (or omitted) in the <emphasis role="bold"
                         >MaintainableCollectionDefinition</emphasis> bean above, new lines could be
                     added to the collection and each of the new lines could be deleted (though lines
                     that had been previously saved and routed appropriately into the collection
@@ -2480,7 +2480,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
             <para>When doing persistent messaging, it is best to use JTA as your transaction
                 manager. This ensure the messages you are sending are synchronized with the current
                 executed transaction in your application and also allows message persistence to be
-                put in a different database than the application’s logic, if needed. Currently,
+                put in a different database than the application's logic, if needed. Currently,
                 KNSTestSpringBeans.xml uses JOTM to configure JTA without an application server.
                 Below is the bean definition for JOTM that can be found in Spring.</para>
             <programlisting>&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
@@ -2517,7 +2517,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
             <para>KNS validations are performed by rules classes, which respond to a specific
                 application event. An event is an object which encapsulates contextual information
                 about something which has been requested of a document. For instance, when a user on
-                a maintenance document clicks a “Route” button to route the document into workflow,
+                a maintenance document clicks a "Route" button to route the document into workflow,
                 the web-layer controller creates an instance of <emphasis role="bold"
                     >org.kuali.rice.kns.rule.event.RouteDocumentEvent</emphasis> which holds the
                 document which has just been routed. It then passes this event instance to <emphasis
@@ -2525,7 +2525,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
             <para>The KualiRuleService interrogates the data dictionary entry for the document to
                 find a rules class. The event then invokes the rules class against itself. This is
                 accomplished through a rule interface. Every event has an associated rule interface;
-                the class of this interface is returned by the Event’s <emphasis role="bold"
+                the class of this interface is returned by the Event's <emphasis role="bold"
                     >getRuleInterfaceClass()</emphasis> method. The event will cast the business
                 rule from the data dictionary to the interface which it expects, and then call a
                 standard method against that interface.</para>
@@ -2569,7 +2569,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
                             expected that the failure will be recorded in the Error map. </para>
                     </listitem>
                 </orderedlist></para>
-            <para>An excellent example of this can be found in the sample “Recipe application” which
+            <para>An excellent example of this can be found in the sample "Recipe application" which
                 ships with Rice, in edu.sampleu.recipe.document.rule.RecipeRules:</para>
             <programlisting>@Override
 protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
@@ -2595,10 +2595,10 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
 }</programlisting>
             <para>In this example, the processCustomSaveDocumentBusinessRules is called when the
                 document is saved. In turn, the validateIngredients method is called. It checks that
-                if the category is not null, then if “beef” is among the ingredients, then the
-                categoryName of the recipe must include the word “beef” in it. If that is the case,
+                if the category is not null, then if "beef" is among the ingredients, then the
+                categoryName of the recipe must include the word "beef" in it. If that is the case,
                 we see that the putFieldError – a convenience method – adds the user message to the
-                “categoryId” attribute (meaning the error message will be displayed close to that
+                "categoryId" attribute (meaning the error message will be displayed close to that
                 attribute) and that false is returned, meaning that the save is not carried
                 out.</para>
         </section>
@@ -2663,7 +2663,7 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
                                     document.</entry>
                                 <entry>org.kuali.rice.kns.rule.AddAdHocRoutePersonRule#processAdHocRoutePerson</entry>
                                 <entry>Validates that the ad hoc route Person is valid – that the
-                                    Person’s record exists and that the Person has the permission to
+                                    Person's record exists and that the Person has the permission to
                                     approve the document</entry>
                             </row>
                             <row>
@@ -2688,7 +2688,7 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
             </para>
             <para>Since the standard events have to perform standard validation, they have custom
                 methods to override. For instance, org.kuali.rice.kns.rules.DocumentRuleBase has a
-                method “processCustomRouteDocumentBusinessRules” and it is expected that client
+                method "processCustomRouteDocumentBusinessRules" and it is expected that client
                 applications will override this method rather than processRouteDocumentBusinessRules
                 directly.</para>
             <para>Maintenance documents add another event to this:
@@ -2705,8 +2705,8 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
                 store that text and is inquired during rendering to make sure messages are correctly
                 displayed. As mentioned previously, the MessageMap is made up of three different
                 maps: one for errors, one for warnings, and one for information messages. Each map
-                has a “put” command – for instance, putError; each has a “has” predicate, such as
-                “hasErrors”; and each have the ability to get the properties with form the keys of
+                has a "put" command – for instance, putError; each has a "has" predicate, such as
+                "hasErrors"; and each have the ability to get the properties with form the keys of
                 the map as well as any messages associated with that property. Adding, an error
                 message to the map is easy, as seen in this example from the
                 IdentityManagementGroupDocument:</para>
@@ -2725,13 +2725,13 @@ private boolean validateIngredients(MaintenanceDocument recipeDocument) {
                 have custom actions, it is common in transactional documents to have new events
                 beyond the standard ones provided by the KNS framework. Basically, any button
                 created on a transactional document – one which results in a call to a method in the
-                transactional document’s action class – may well have an event associated with it.
+                transactional document's action class – may well have an event associated with it.
                 In that case, there are three pieces to create for the rule: the new event, the rule
                 instance which is called from that event, and the default implementation for that
                 rule.</para>
             <para>An example from Kuali Financial Systems 3.0 will illustrate how these are used.
                 The Cash Control transactional document in the Accounts Receivable module has a
-                collection of details, added via an “add” button. To validate that action, an event
+                collection of details, added via an "add" button. To validate that action, an event
                 was created (this code has slightly been altered for the sake of
                 illustration):</para>
             <programlisting>package org.kuali.kfs.module.ar.document.validation.event;
@@ -2766,7 +2766,7 @@ public final class AddCashControlDetailEvent extends KualiDocumentEventBase {
 }</programlisting>
             <para>This is very straightforward. There is a rules class, in turn, which implements
                 this interface. Finally, the rules have to be called; that occurs when an event is
-                created and sent to the KualiRuleService, which is typically done in the web layer’s
+                created and sent to the KualiRuleService, which is typically done in the web layer's
                 controller. In our example, this occurs in the CashControlDocumentAction:</para>
             <programlisting>// apply rules for the new cash control detail
 rulePassed &amp;= ruleService.applyRules(new AddCashControlDetailEvent(ArConstants.NEW_CASH_CONTROL_DETAIL_ERROR_PATH_PREFIX, cashControlDocument, newCashControlDetail));</programlisting>
@@ -2801,10 +2801,10 @@ document.question.disapprove.text=Are you sure you want to [b]disapprove[/b] thi
 
 document.question.saveBeforeClose.text=Would you like to save this document before you close it?</programlisting>
         <para>This is the standard Java property file format, with keys (for instance,
-            “document.question.cancel.text”) related to messages.</para>
+            "document.question.cancel.text") related to messages.</para>
         <para>A message may also have escaped HTML tags and templated positions in the text for
             other Strings to be interpolated in. An example of this is found in the
-            “document.question.deleteContext.text” message. The [b] and [/b] will be translated
+            "document.question.deleteContext.text" message. The [b] and [/b] will be translated
             automatically to bold markup. The {0} will be replaced, if possible, by another String.
             An example of this will be covered below.</para>
         <para>Rice Best Practices suggest that each module in the client application have a
@@ -2826,13 +2826,13 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
                 method, <emphasis role="bold">getPropertyString</emphasis>, which, when handed the
                 key to the message, returns the message text.</para>
             <programlisting>final String message = CoreApiServiceLocator.getKualiConfigurationService().getPropertyString(RiceKeyConstants.ERROR_DATE_TIME);</programlisting>
-            <para>This will return the String “{0} is not a valid date/time.” Note that in this
+            <para>This will return the String "{0} is not a valid date/time." Note that in this
                 case, the String will not be interpolated; <emphasis role="bold"
                     >java.text.MessageFormat</emphasis> should be used to switch the {0} with an
                 actual, useful String.</para>
             <para>KualiConfigurationService also has a method, <emphasis role="bold"
                     >getPropertyAsBoolean</emphasis>, which translates the messages (regardless of
-                case) of “true”, “yes”, “on”, or “1” as a boolean true and everything else as a
+                case) of "true", "yes", "on", or "1" as a boolean true and everything else as a
                 false.</para>
         </section>
         <section>
@@ -2853,7 +2853,7 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
             <para>User messages are also available to the web layer of transactional documents and
                 user screens through the standard Struts <emphasis role="bold"
                     >bean:message</emphasis> tag.</para>
-            <para>Messages to be loaded to struts are configured via the client application’s
+            <para>Messages to be loaded to struts are configured via the client application's
                 project configuration file, in the <emphasis role="bold"
                     >rice.struts.message.resources</emphasis> property, like so:</para>
             <programlisting>&lt;param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources&lt;/param></programlisting>
@@ -2866,10 +2866,10 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
                 standard <emphasis role="bold">kul:page</emphasis> tag:</para>
             <programlisting>&lt;title>&lt;bean:message key="app.title" /> :: ${headerTitle}&lt;/title></programlisting>
             <para>In this case, the user message – set in KR-ApplicationResources.properties – with
-                the property key of “app.title” will be displayed (which, by default as
-                “Kuali”).</para>
+                the property key of "app.title" will be displayed (which, by default as
+                "Kuali").</para>
             <para>Developers curious about further information about the bean:message tag would be
-                advised to read Struts’ documentation of the feature: <link
+                advised to read Struts' documentation of the feature: <link
                     xlink:href="http://struts.apache.org/1.2.x/userGuide/struts-bean.html"
                     >http://struts.apache.org/1.2.x/userGuide/struts-bean.html</link>.</para>
         </section>
@@ -2928,7 +2928,7 @@ public boolean doPrompts(Document document) {
                 parameter and it returns a boolean variable. If true is returned, the document will
                 plow forward into validation. If false is returned, then the view should return to
                 another forward. Which forward used will be soon revealed.</para>
-            <para>Given this information, it’s obvious that the real work is occurring in <emphasis
+            <para>Given this information, it's obvious that the real work is occurring in <emphasis
                     role="bold">conditionallyAskQuestion</emphasis>. And indeed it is:</para>
             <programlisting>protected boolean conditionallyAskQuestion(Document document) {
     MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
@@ -2966,8 +2966,8 @@ public boolean doPrompts(Document document) {
     event.setActionForwardName(RiceConstants.MAPPING_BASIC);
     isAborting = true;
 }</programlisting>
-            <para>If application requirements determine that a “no” answer should navigate the user
-                to a different mapping than “basic”, then <emphasis role="bold"
+            <para>If application requirements determine that a "no" answer should navigate the user
+                to a different mapping than "basic", then <emphasis role="bold"
                     >abortRulesCheck</emphasis> should not be used, but instead, a false should be
                 returned from the method, and the correct action forward name should be set on the
                 event property inherited from <emphasis role="bold"
@@ -3061,7 +3061,7 @@ Example:
 </programlisting>
         <para>The actual <emphasis role="bold">DerivedValuesSetter</emphasis> itself attempts to use
             the <emphasis role="bold">PostalCodeService</emphasis> to set the city and state of the
-            organization. Here’s a simplified version:</para>
+            organization. Here's a simplified version:</para>
         <programlisting>public class OrgDerivedValuesSetter implements DerivedValuesSetter {
     public void setDerivedValues(KualiForm form, HttpServletRequest request) {
         final Organization newOrg = (Organization) ((MaintenanceDocumentBase)((KualiMaintenanceForm) form).getDocument()).getNewMaintainableObject().getBusinessObject();
@@ -3097,7 +3097,7 @@ Example:
             all persisting business objects in client applications support the addition of notes to
             them. This allows for a great amount of flexibility. A note, represented by objects of
             class <emphasis role="bold">org.kuali.rice.kns.bo.Note</emphasis>, hold both text and
-            links to attachments—as well as the note’s creator and the time it was created.
+            links to attachments—as well as the note's creator and the time it was created.
             Therefore, such text and attachments can be associated with any persisting business
             object.</para>
         <para>However, most Rice applications use Notes mostly on documents. In this case, the Note
@@ -3120,7 +3120,7 @@ Example:
             permission. Just as with <emphasis role="bold">Add Note / Attachment</emphasis>
             permissions, it requires a document type name and can have an optional <emphasis
                 role="bold">attachmentTypeCode</emphasis>.</para>
-        <para>Note’s attachments are handled by <emphasis role="bold"
+        <para>Note's attachments are handled by <emphasis role="bold"
                 >org.kuali.rice.kns.service.AttachmentService</emphasis>. By default, they attempt
             to move attachments into a directory specified by the <emphasis role="bold"
                 >attachments.directory</emphasis> configuration property; under that, each object
@@ -3143,10 +3143,10 @@ Example:
             the project. It bears mentioning, too, that the css.files property works the same way
             for CSS files:</para>
         <programlisting>&lt;param name="css.files">kr/css/kuali.css&lt;/param></programlisting>
-        <para>It’s not always the best idea to include Javascript pages, which the browser must
+        <para>It's not always the best idea to include Javascript pages, which the browser must
             parse, onto every single page. If only certain documents or even a single document needs
             a given Javascript file, it is easiest to simply tell the data dictionary entry to
-            import the file. Here is an example from KFS’s Account Maintenance Document (<emphasis
+            import the file. Here is an example from KFS's Account Maintenance Document (<emphasis
                 role="bold">AccountMaintenanceDocument.xml</emphasis>):</para>
         <programlisting>&lt;bean id="AccountMaintenanceDocument" parent="AccountMaintenanceDocument-parentBean"/>
 
@@ -3163,7 +3163,7 @@ Example:
 &lt;/bean></programlisting>
         <para>Values are expected to be relative to the base application URL of the document. In
             this case of a maintenance document, the URL is /application-name/kr/maintenance.do and
-            the javascript files are located under /application-name/scripts, hence the “..” in the
+            the javascript files are located under /application-name/scripts, hence the ".." in the
             directories.</para>
         <section>
             <title>Integrating Javascript with KNS tags</title>
@@ -3176,17 +3176,17 @@ Example:
                 radio buttons will render what was passed in the onchange attribute as <emphasis
                     role="bold">onclick</emphasis>, to enhance support for a highly popular legacy
                 browser.)</para>
-            <para>Extra buttons also support Javascript, specifically the “<emphasis role="bold"
-                    >onclick</emphasis>” event handler. By setting the <emphasis role="bold"
+            <para>Extra buttons also support Javascript, specifically the "<emphasis role="bold"
+                    >onclick</emphasis>" event handler. By setting the <emphasis role="bold"
                     >extraButtonOnclick</emphasis> property of an <emphasis role="bold"
                     >org.kuali.rice.kns.web.ui.ExtraButton</emphasis> object to the text that should
-                appear in the button’s <emphasis role="bold">onclick</emphasis> call, the developer
-                gains the ability to react, with Javascript, to the button’s click.</para>
+                appear in the button's <emphasis role="bold">onclick</emphasis> call, the developer
+                gains the ability to react, with Javascript, to the button's click.</para>
         </section>
         <section>
             <title>Incorporating AJAX</title>
             <para>Finally, we want to make our maintenance documents as interactive as possible to
-                facilitate efficient user experience. In this example, KFS’s <emphasis role="bold"
+                facilitate efficient user experience. In this example, KFS's <emphasis role="bold"
                     >AccountMaintenanceDocument</emphasis> wants to instantly give an error to users
                 if the sub fund group assigned to the account is restricted, based on other values
                 of the account.</para>
@@ -3231,7 +3231,7 @@ Example:
                 Unmask Field</emphasis> and <emphasis role="bold">KR-NS Partial Unmask
                 Field</emphasis>. Both of these permissions have two related permission attribute
             records: one for the field name, and one for the business object component name. That
-            masking will automatically be applied to every use of the business object’s field: on
+            masking will automatically be applied to every use of the business object's field: on
             inquiries, lookups, maintenance documents, transactional documents, and screens.</para>
         <programlisting>&lt;bean id="IdentityManagementPersonDocument-taxId-parentBean" parent="AttributeDefinition" abstract="true" p:name="taxId" p:forceUppercase="true" p:label="Tax Identification Number" p:shortLabel="Tax Id" p:maxLength="100" p:required="false">
     &lt;property name="control">
@@ -3248,14 +3248,14 @@ Example:
 &lt;/bean></programlisting>
         <para>Having a KIM permission set up is not enough, however. Client application developers
             also have to associate masking with the field of the business object in the business
-            object’s data dictionary. That is accomplished by specifying the an attribute security
+            object's data dictionary. That is accomplished by specifying the an attribute security
             object with the attribute. <emphasis role="bold"
-                >IdentityManagementPersonDocument</emphasis>’s taxId attribute has an example of an
+                >IdentityManagementPersonDocument</emphasis>'s taxId attribute has an example of an
             attribute security declaration:</para>
         <para>The taxId field has a <emphasis role="bold">TextControlDefinition</emphasis> for the
             control, and that is followed by the attribute security declaration.</para>
-        <para>The attribute security declaration has a parent of the “<emphasis role="bold"
-                >AttributeSecurity</emphasis>” bean. There are several boolean properties available
+        <para>The attribute security declaration has a parent of the "<emphasis role="bold"
+                >AttributeSecurity</emphasis>" bean. There are several boolean properties available
             within the AttributeSecurity bean, but the mask and partialMask properties are the most
             interesting. This declaration quite simply turns masking on – if the <emphasis
                 role="bold">AttributeSecurity</emphasis> is left null or if masking or partialMask
@@ -3267,12 +3267,12 @@ Example:
             this declaration. The KNS also provides two default implementations: <emphasis
                 role="bold">org.kuali.rice.kns.datadictionary.mask.MaskFormatterLiteral</emphasis>,
             which simply replaces a value which should be masked by a literal String (in the example
-            above, “*********”), and <emphasis role="bold"
+            above, "*********"), and <emphasis role="bold"
                 >org.kuali.rice.kns.datadictionary.mask.MaskFormatterSubString</emphasis>, which
             replaces all but a substring of the masked value as a String (this would be useful in
             partial mask situations).</para>
         <para>The final piece of the puzzle is to get the KNS to consult the KIM permission and the
-            business object’s data dictionary when deciding whether or not to mask the field. Of
+            business object's data dictionary when deciding whether or not to mask the field. Of
             course, the KNS renders maintenance documents, inquiry pages, and lookups automatically
             – it is expected that masking will be consulted in those situations.</para>
         <para>This leaves only the issue of transactional documents and screens, where a client
@@ -3346,7 +3346,7 @@ Example:
     </section>
     <section>
         <title>KNS Authorization</title>
-        <para>In most client applications, there’s going to be a need to guard certain end users
+        <para>In most client applications, there's going to be a need to guard certain end users
             from certain functionality. Certain documents may be locked down and only accessible to
             a small group of users. A tab on a certain document may only be visible based on if a
             System Parameter is turned on. KNS provides a standard way to turn on and off
@@ -3377,14 +3377,14 @@ Example:
             document authorizers must implement, and it also has two sub-interfaces,
             MaintenanceDocumentAuthorizer and TransactionalDocumentAuthorizer.</para>
         <para>In cases where an authorization is checked by both presentation controller and
-            authorizer, the presentation controller is called first, and then it’s result is somehow
+            authorizer, the presentation controller is called first, and then it's result is somehow
             sent to the authorizer. For instance, DocumentPresentationController has a method,
                 <emphasis role="bold">getActions()</emphasis>, which returns a Set of Strings, each
             representing a standard document action (for instance, the Route document action). That
             Set is then sent as an argument to the DocumentAuthorizer; the DocumentAuthorizer only
             performs KIM checks for the actions that have been handed to it.</para>
         <para>The classes for both the document authorizer and presentation controller are set in
-            the document in the data dictionary. Here’s an example, from the sample travel
+            the document in the data dictionary. Here's an example, from the sample travel
             application:</para>
         <programlisting>&lt;bean id="TravelRequest" parent="TravelRequest-parentBean"/>
 
@@ -3551,7 +3551,7 @@ Example:
                             <row>
                                 <entry><emphasis role="bold">protected boolean canFyi(Document
                                         document)</emphasis></entry>
-                                <entry>Determines if the document can be FYI’d.</entry>
+                                <entry>Determines if the document can be FYI'd.</entry>
                                 <entry>KR-NS Take Requested Action</entry>
                             </row>
                             <row>
@@ -3633,7 +3633,7 @@ Example:
                 they support to control authorizations in documents, so each will be treated
                 separately, save for the one method they do share.</para>
             <para>That one method is <emphasis role="bold">canCreate</emphasis>. Here is
-                MaintenanceDocumentPresentationController’s declaration of the method:</para>
+                MaintenanceDocumentPresentationController's declaration of the method:</para>
             <programlisting>public boolean canCreate(Class boClass);</programlisting>
             <para>It takes the class of the business object, of which the end user is attempting to
                 create a new record of through a maintenance document. Business logic can be written
@@ -3657,7 +3657,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 or names of the sections which are, given the current condition of the
                 MaintenanceDocument argument, currently read only is returned from the
                 method.</para>
-            <para>MaintenanceDocumentAuthorizer’s separate methods are similar to <emphasis
+            <para>MaintenanceDocumentAuthorizer's separate methods are similar to <emphasis
                     role="bold">canCreate</emphasis>. The first is <emphasis role="bold"
                     >canMaintain</emphasis>, which determines if the current user can edit an
                 already existing business object. There is also <emphasis role="bold"
@@ -3755,7 +3755,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             <para>Edit Modes also go through the document authorizer, meaning that there is a
                 permission associated with them: KR-NS Use Transactional Document. Expected
                 permission details are the document type and the name of edit mode (in this example,
-                “NO_EXTRA_SECTION”).</para>
+                "NO_EXTRA_SECTION").</para>
         </section>
         <section>
             <title>Other Authorizations</title>
@@ -3765,7 +3765,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                         <para>KR-NS Look Up Records, which determines if records of the given type
                             can be looked up by the current user. Client applications seeking to
                             change this based on business logic would likely override the business
-                            object’s implementation of <emphasis role="bold"
+                            object's implementation of <emphasis role="bold"
                                 >org.kuali.rice.kns.lookup.LookupableHelperService#getRows()</emphasis>.
                         </para>
                     </listitem>
@@ -3773,7 +3773,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                         <para>KR-NS Inquire Into Records, which determines if the current user can
                             inquire into records of the given business object. Client applications
                             seeking to change this based on business logic would likely override the
-                            business object’s implementation of <emphasis role="bold"
+                            business object's implementation of <emphasis role="bold"
                                 >org.kuali.rice.kns.lookup.LookupableHelperService#getInquiryUrl()</emphasis>
                             or its implementation of <emphasis role="bold"
                                 >org.kuali.rice.kns.inquiry.Inquirable#getInquiryUrl(BusinessObject
@@ -3821,11 +3821,11 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
         <para>Any complex Java system are subject to the occurrences of exceptions. From missed
             assignments which cause NullPointerExceptions to network issues which cause
             SQLExceptions be thrown, the unexpected happens—even in Rice applications.</para>
-        <para>Because of this, Rice builds on top of Struts’ exception mechanism to provide an easy
+        <para>Because of this, Rice builds on top of Struts' exception mechanism to provide an easy
             way for exceptions to be handled and for incidents to be reported to the proper
             maintenance group.</para>
         <para>When a developer creates a Rice application, there should be several struts-config.xml
-            files created. The developer’s own struts-config.xml, of course, exists in
+            files created. The developer's own struts-config.xml, of course, exists in
             {project_root}/src/main/webapp/WEB-INF. It will automatically be created with the
             following entry:</para>
         <programlisting>&lt;global-exceptions>
@@ -3851,7 +3851,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 >org.kuali.rice.kns.service.KualiExceptionIncidentService#report</emphasis> emails
             the mailing list specified in the <emphasis role="bold"
                 >KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST</emphasis> configuration
-            parameter. The rest of the mail can be configured by overriding the service bean’s
+            parameter. The rest of the mail can be configured by overriding the service bean's
             message template:</para>
         <programlisting>&lt;bean id="knsExceptionIncidentService" class="org.kuali.rice.kns.service.impl.KualiExceptionIncidentServiceImpl">
     &lt;property name="mailService">&lt;ref bean="mailService"/>&lt;/property>
@@ -3865,7 +3865,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
     &lt;/property>
 &lt;/bean></programlisting>
         <para>Then the action redirects the user to the error page. In production environments, this
-            page simply notes that an error occurred and that it had been reported to the system’s
+            page simply notes that an error occurred and that it had been reported to the system's
             administrators. Helpfully, it also provides a text box so the user can describe the
             steps leading up to the incident. In development environments, this page also displays
             the top stack trace of the exception which occurred.</para>
@@ -3896,11 +3896,11 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             <title>Getting text from a system parameter</title>
             <para>The data from a system parameter can be retrieved through the <emphasis
                     role="bold">ParameterService#getParameterValue</emphasis> method, using the
-                parameter’s name to identify the parameter. The parameter’s name has three
+                parameter's name to identify the parameter. The parameter's name has three
                 components: a namespace, a parameter detail type code, and a name field.</para>
-            <para>The namespace matches a KNS module’s namespace code, typically the namespace code
+            <para>The namespace matches a KNS module's namespace code, typically the namespace code
                 of the module which invokes the parameter. For instance, parameters called within
-                the KNS itself use the base namespace code of “KR-NS”</para>
+                the KNS itself use the base namespace code of "KR-NS"</para>
             <para>The name of the parameter should be unique within certain constraints: it must be
                 unique with the namespace, the parameter detail type code, and, as will be covered
                 below, the application namespace. This means that, for instance, if a client
@@ -3929,15 +3929,15 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                     <listitem>
                         <para>If the class represents a transactional class, then the parameter
                             detail type code will the sample name of the class with the trailing
-                            expected “Document” removed. For instance, <emphasis role="bold"
+                            expected "Document" removed. For instance, <emphasis role="bold"
                                 >org.kuali.kfs.fp.document.DisbursementVoucherDocument</emphasis>
-                            has a parameter detail type code of “DisbursementVoucher” </para>
+                            has a parameter detail type code of "DisbursementVoucher" </para>
                     </listitem>
                     <listitem>
                         <para>If the class represents a business object, then the parameter detail
                             type code will be the simple class name. Business object class
-                            “org.kuali.kfs.fp.businessobject.PayeeDetail” will have a parameter
-                            detail type code of “PayeeDetail” </para>
+                            "org.kuali.kfs.fp.businessobject.PayeeDetail" will have a parameter
+                            detail type code of "PayeeDetail" </para>
                     </listitem>
                     <listitem>
                         <para>Any other class will use the simple class name. This particular
@@ -3946,7 +3946,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 </itemizedlist></para>
             <para>Based on these standards, it should be easy to tell what the parameter detail type
                 code for a given parameter should be.</para>
-            <para>The parameter’s value is then a simple lookup using the class making the call to
+            <para>The parameter's value is then a simple lookup using the class making the call to
                 ParameterService and the name of the parameter:</para>
             <programlisting>final String parameterValue = KNSLocator.getParameterService().getParameterValue(this.getClass(), "SIMPLE_VALUE");</programlisting>
             <para>The parameterValue can then be used for whatever purpose the business logic
@@ -3954,7 +3954,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
         </section>
         <section>
             <title>Using an indicator parameter</title>
-            <para>An indicator parameter’s text is either “Y” or “N”; invoking that parameter as an
+            <para>An indicator parameter's text is either "Y" or "N"; invoking that parameter as an
                 indicator parameter simply means that the text will be translated to its
                 corresponding boolean value. It is accessed through <emphasis role="bold"
                     >ParameterService#getIndicatorParameter</emphasis>, which works much as
@@ -3976,12 +3976,12 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 separated by semi-colons as so: <emphasis role="bold"
                     >FirstDocumentType;SecondDocumentType;ThirdDocumentType</emphasis></para>
             <para>While that could be retrieved via the ParameterService#getParameterValue method
-                and then split, there’s a much better way to examine the value: through the use of a
+                and then split, there's a much better way to examine the value: through the use of a
                 parameter evaluator.</para>
             <para>ParameterEvaluators are simply objects which take values from the environment and
                 see if they made the constraints of the parameter. It will do the parsing of the
                 parameter itself and then attempt to match that against an input value:</para>
-            <programlisting>KNSServiceLocator.getParameterService().getParameterEvaluator(ParameterConstants.NERVOUS_SYSTEM_DOCUMENT, “BANK_DOCUMENT_TYPES”, document.getDocumentType()).evaluationSucceeds();</programlisting>
+            <programlisting>KNSServiceLocator.getParameterService().getParameterEvaluator(ParameterConstants.NERVOUS_SYSTEM_DOCUMENT, "BANK_DOCUMENT_TYPES", document.getDocumentType()).evaluationSucceeds();</programlisting>
             <para>This looks at the KR-NS / Document / BANK_DOCUMENT_TYPES parameter, splits its
                 semi-colon valued, and then matches <emphasis role="bold"
                     >document.getDocumentType()</emphasis> against each of the values returned from
@@ -3989,26 +3989,26 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             <para>The constraint code of the system parameter, mentioned earlier, is invoked at this
                 point. <emphasis role="bold">evaluationSucceeds()</emphasis> will return true if
                 document.getDocumentType() is within the values in the parameter and the parameter
-                constraint code is “A” (“allow”). If, on the other hand, the constraint code is “D”
-                (“deny”) and the document type is matched in the parameter’s values, a false will be
+                constraint code is "A" ("allow"). If, on the other hand, the constraint code is "D"
+                ("deny") and the document type is matched in the parameter's values, a false will be
                 returned – the document type sent in is denied by the parameter.</para>
             <para>(Parameter accessed through <emphasis role="bold">getParameterValue()</emphasis>
                 and <emphasis role="bold">getIndicatorParameter()</emphasis> should simply set their
-                constraint code to “A”).</para>
+                constraint code to "A").</para>
             <para>System parameters used for validation can add errors if the evaluation fails
             through the parameter value:</para>
-            <programlisting>KNSServiceLocator.getParameterService().getParameterEvaluator(ParameterConstants.NERVOUS_SYSTEM_DOCUMENT, “VALID_DOCUMENT_TYPES”, document.getDocumentType()).evaluateAndAddError(document.getClass(), “errorPropertyName”, “error.invalid.document.type.message”);</programlisting>
+            <programlisting>KNSServiceLocator.getParameterService().getParameterEvaluator(ParameterConstants.NERVOUS_SYSTEM_DOCUMENT, "VALID_DOCUMENT_TYPES", document.getDocumentType()).evaluateAndAddError(document.getClass(), "errorPropertyName", "error.invalid.document.type.message");</programlisting>
             <para>In this example, if the value of <emphasis role="bold"
                     >document.getDocumentType()</emphasis> does not match the values in the
                 parameter, an error will automatically be added to <emphasis role="bold"
                     >errorPropertyName</emphasis> on the document, and the user message with the key
                 of <emphasis role="bold">error.invalid.document.type.message</emphasis> will be
-                shown. Once against, the system parameter’s constraint code is used to determine if
+                shown. Once against, the system parameter's constraint code is used to determine if
                 the value succeeds or not.</para>
             <para>The parameter evaluator can handle more complex situations as well. Take an
                 example where a validation needs to check that, if a business object has a certain
-                “dispersementCode”, then a child business object has a specific “reimbursementCode”.
-                In this case, the system parameter’s value might look like this: <emphasis
+                "dispersementCode", then a child business object has a specific "reimbursementCode".
+                In this case, the system parameter's value might look like this: <emphasis
                     role="bold">A=Z</emphasis></para>
             <para>This means that if the dispursementCode of the parent is A, then the
                 reimbursementCode of the parent must be Z. This parameter can be used with the
@@ -4021,20 +4021,20 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             <para>Here, getParameterEvalutor is given the parameter class, the name of the
                 parameter, the code of the parent and then the code of the child, but works as
                 ParameterEvaluator worked before.</para>
-            <para>What if the parent’s disbursementCode allowed two different reimbursementCode’s?
-                Then the parameter’s text would look like this: <emphasis role="bold"
+            <para>What if the parent's disbursementCode allowed two different reimbursementCode's?
+                Then the parameter's text would look like this: <emphasis role="bold"
                     >A=Z,Y;B=X,Y;C=K,J,L</emphasis></para>
-            <para>Commas separate the child’s distinct values. The invocation of the parameter
+            <para>Commas separate the child's distinct values. The invocation of the parameter
                 evaluator is precisely the same as the call above:</para>
             <para><emphasis role="bold">ParameterService#getParameterValues()</emphasis> can return
                 a parsed version of a multiple value parameter, and there is a version of <emphasis
                     role="bold">ParameterService#getParameterValue()</emphasis> which takes in a
-                constrained value for parameters in the form of “A=B”; if given the value “A”, it
-                will simply return “B”.</para>
+                constrained value for parameters in the form of "A=B"; if given the value "A", it
+                will simply return "B".</para>
         </section>
         <section>
             <title>Calling missing System Parameters</title>
-            <para>All of the methods which use a parameter’s value – <emphasis role="bold"
+            <para>All of the methods which use a parameter's value – <emphasis role="bold"
                     >ParameterService#getParameterValue</emphasis>, <emphasis role="bold"
                     >ParameterService#getIndicatorParameter</emphasis>, and <emphasis role="bold"
                     >ParameterService#getParameterEvaluator</emphasis> – will throw an exception if
@@ -4042,7 +4042,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 expectation in the code that a parameter may not be found in the database, then it
                 is advisable to call <emphasis role="bold"
                     >ParameterService#parameterExists</emphasis> method first. If the method returns
-                true, then it is safe to use any of the methods above to utilize the parameter’s
+                true, then it is safe to use any of the methods above to utilize the parameter's
                 value.</para>
             <para>This is often useful in cases where there is a parameter that is different from
                 document to document, but for which there exists a default fallback case. It would
@@ -4055,15 +4055,15 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
 }
 </programlisting>
             <para>In this example, <emphasis role="bold">ParameterService#parameterExists</emphasis>
-                is called to see if there’s a parameter named “EXAMPLE_VALUE” with the namespace and
-                parameter detail code of “document”. If that exists, then it returns the value of
+                is called to see if there's a parameter named "EXAMPLE_VALUE" with the namespace and
+                parameter detail code of "document". If that exists, then it returns the value of
                 that parameter. If it does not exist, it uses the more general KR-NS / Document /
                 EXAMPLE_VALUE parameter.</para>
         </section>
         <section>
             <title>Overriding Rice Parameters</title>
             <para>Rice comes with a number of system parameters which affect KIM, the KNS, and KEW.
-                They have namespace codes “KR-IDM”, “KR-NS”, and “KR-WKFLW” respectively. These
+                They have namespace codes "KR-IDM", "KR-NS", and "KR-WKFLW" respectively. These
                 provide defaults for Rice behavior which occurs in sample applications.</para>
             <para>This poses a problem. If a client application is built to be used with a
                 standalone Rice server, then each client application would have to share the
@@ -4078,10 +4078,10 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
                 existing system parameter and the new system parameter would differ only in their
                 values and in their application namespace codes.</para>
             <para>All Rice system parameters come with the default Rice application namespace code
-                of “KUALI”. If the client application’s version of the KR-NS / All / DEFAULT_COUNTRY
+                of "KUALI". If the client application's version of the KR-NS / All / DEFAULT_COUNTRY
                 had an application namespace code matching that of the app.namespace configuration
                 property of the client application, then that would be used before the KR-NS / All /
-                DEFAULT_COUNTRY parameter with the “KUALI” application namespace.</para>
+                DEFAULT_COUNTRY parameter with the "KUALI" application namespace.</para>
         </section>
     </section>
 <!-- TODO: Section was in original Word Document as 'Topic Coming Soon'
@@ -4151,7 +4151,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 imported using a single import at the top of any custom developed JSP page:</para>
             <para>Having done that, the developer can use the <emphasis role="bold"
                     >kul:page</emphasis> tag to draw the main outline of the page, such as in this
-                example, from KFS’s Format Disbursements page (<emphasis role="bold"
+                example, from KFS's Format Disbursements page (<emphasis role="bold"
                     >formatselection.jsp</emphasis>):</para>
             <para>The <emphasis role="bold">kul:page</emphasis> simply draws the frame around the
                 page. It has two required attributes: the <emphasis role="bold">docTitle</emphasis>,
@@ -4159,7 +4159,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 top, and the <emphasis role="bold">transactionalDocument</emphasis> attribute, which
                 should only be true if the JSP page is supporting a transactional document.</para>
             <para>This example uses a number of other attributes as well. The <emphasis role="bold"
-                    >headerTitle</emphasis> is what will show in the browser’s title bar. <emphasis
+                    >headerTitle</emphasis> is what will show in the browser's title bar. <emphasis
                     role="bold">showDocumentInfo</emphasis> will treat the page as a document page
                 and will attempt to, for instance, show a link for document type. The <emphasis
                     role="bold">errorKey</emphasis> is the key for errors which should be associated
@@ -4167,7 +4167,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 Finally, the <emphasis role="bold">htmlFormAction</emphasis> is the url to the
                 action that the form within the page – every page is assumed to have HTML form data,
                 so an HTML form variable is constructed for it – should post to.</para>
-            <para>There’s also a convenience tag that encapsulates the <emphasis role="bold"
+            <para>There's also a convenience tag that encapsulates the <emphasis role="bold"
                     >kul:page</emphasis> with all of the attributes needed for documents turned on:
                 the aptly named <emphasis role="bold">kul:documentPage</emphasis>, exemplified here
                 from the sample travel app:</para>
@@ -4185,7 +4185,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
             <para>The next most distinctive visual feature of KNS pages are the tabs which visually
                 organize related information (through headers, it organizes the information for
                 sight disabled end users as well). The KNS provides a main tag to draw these: not
-                surprisingly, it’s the <emphasis role="bold">kul:tab</emphasis> tag.</para>
+                surprisingly, it's the <emphasis role="bold">kul:tab</emphasis> tag.</para>
             <para>Here is an example of the tag, again from <emphasis role="bold"
                     >travelDocument2.jsp</emphasis>, which is part of the sample travel
                 application:</para>
@@ -4199,22 +4199,22 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 lists the keys that will be associated with this tab; when those errors are
                 rendered, their messages will be associated with the given tab.</para>
             <para>Another thing to notice in the example was the inclusion of a <emphasis
-                    role="bold">div</emphasis> with class “<emphasis role="bold"
-                    >tab-container</emphasis>”. In practice, practically all KNS tabs have such a
+                    role="bold">div</emphasis> with class "<emphasis role="bold"
+                    >tab-container</emphasis>". In practice, practically all KNS tabs have such a
                 tab included. This leads to the natural question of why the tab is not part of the
                 tag itself.</para>
-            <para>The <emphasis role="bold">div</emphasis> with a class of “<emphasis role="bold"
-                    >h2-container</emphasis>” draws a header stripe at the top of the tab, with a
+            <para>The <emphasis role="bold">div</emphasis> with a class of "<emphasis role="bold"
+                    >h2-container</emphasis>" draws a header stripe at the top of the tab, with a
                 black background and white text. This distinctive visual element should be used to
                 mark off sub-sections of the tab.</para>
             <para>There is also a <emphasis role="bold">kul:subtab</emphasis>. This visually
                 provides an in-set tab, typically set off with a stripe that has a gray background
-                and bolded black text. KIM’s Identity Management Person Document, has such an
+                and bolded black text. KIM's Identity Management Person Document, has such an
                 example. It includes the tag <emphasis role="bold">personContact.tag</emphasis>,
                 which builds a tab:</para>
             <para>This splits the various sub-sections into distinctive visual elements.</para>
             <para>The only required attribute for the tag is width, which specifies the width of the
-                sub-element <emphasis role="bold">(kul:subtab</emphasis>’s are sometimes shorter
+                sub-element <emphasis role="bold">(kul:subtab</emphasis>'s are sometimes shorter
                 than their surrounding tab – while they are always rendered with some padding, the
                 amount of padding and thus the amount of visual separation can be increased as width
                 is decreased). </para>
@@ -4284,14 +4284,14 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 simply have a read only version of its value displayed, or a control will be
                 displayed. This attribute allows a lot of flexibility about when a field will be
                     <emphasis role="bold">readOnly</emphasis> or not. Typically, though, <emphasis
-                    role="bold">readOnly</emphasis> is determined based on the whether there’s an
-                action “can edit” in the form’s <emphasis role="bold">documentActions</emphasis>
+                    role="bold">readOnly</emphasis> is determined based on the whether there's an
+                action "can edit" in the form's <emphasis role="bold">documentActions</emphasis>
                 map:</para>
             <programlisting>&lt;c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" /></programlisting>
             <para>As covered earlier, masking is handled automatically if the field is read only. If
                 the value of the property should not be displayed at all, the attribute <emphasis
                     role="bold">readOnlyBody</emphasis> can be set to true and the value of the
-                tag’s body is displayed if the control attribute is rendered read only.</para>
+                tag's body is displayed if the control attribute is rendered read only.</para>
             <para>Among the other optional attributes are html attributes which are applied directly
                 to the drawn control, such as <emphasis role="bold">onblur</emphasis>, <emphasis
                     role="bold">onclick</emphasis>, and <emphasis role="bold">onchange</emphasis>.
@@ -4307,7 +4307,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 set to true.</para>
             <para>Also in the example, the tag <emphasis role="bold"
                     >kul:htmlAttributeHeaderCell</emphasis> is used. It displays the label for the
-                field in a &lt;td> cell. There aren’t officially any required attributes, though one
+                field in a &lt;td> cell. There aren't officially any required attributes, though one
                 of the following three would have a value set: <emphasis role="bold"
                     >attributeEntry</emphasis>, <emphasis role="bold">attributeEntryName</emphasis>,
                 and <emphasis role="bold">literalLabel</emphasis>. <emphasis role="bold"
@@ -4316,8 +4316,8 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 a data dictionary attribute to find an appropriate label; it needs to be handed the
                 proper label much as the <emphasis role="bold">kul:htmlControlAttribute</emphasis>
                 uses. <emphasis role="bold">attributeEntryName</emphasis> takes the full name of a
-                data dictionary attribute (such as “<emphasis role="bold"
-                    >DataDictionary.TravelRequest.attributes.origin</emphasis>”). The label will
+                data dictionary attribute (such as "<emphasis role="bold"
+                    >DataDictionary.TravelRequest.attributes.origin</emphasis>"). The label will
                 come from the data dictionary, though the tag will do all of the lookup
                 itself.</para>
             <para>There are a number of other attributes exist which control how the html of the
@@ -4420,7 +4420,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 and <emphasis role="bold">render</emphasis>. <emphasis role="bold">render</emphasis>
                 is an odd attribute. It decides whether the inquiry link will be rendered or not.
                 This allows some display level logic to check whether the field should actually be
-                rendered on. If render is false, then only the text of the tag’s body will be
+                rendered on. If render is false, then only the text of the tag's body will be
                 rendered.</para>
             <para><emphasis role="bold">keyValues</emphasis> hands in the query string to pass to
                 the inquiry page, theoretically with the keys the inquiry page will need to find the
@@ -4428,7 +4428,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
             <para><emphasis role="bold">kul:inquiry</emphasis> has no optional attributes.</para>
             <para>A variation of the <emphasis role="bold">kul:lookup</emphasis> tag also exists,
                 which supports multiple value lookups, <emphasis role="bold"
-                    >kul:multipleValueLookup</emphasis>. Here is an example from KC’s
+                    >kul:multipleValueLookup</emphasis>. Here is an example from KC's
                 awardKeywords.tag:</para>
             <programlisting>&lt;kul:multipleValueLookup boClassName="org.kuali.kra.bo.ScienceKeyword" lookedUpCollectionName="keywords" anchor="${tabKey}"/></programlisting>
             <para>Once again, <emphasis role="bold">boClassName</emphasis> of the business object
@@ -4461,9 +4461,9 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 >extraButtonSource</emphasis>, with the alternate text specified by <emphasis
                     role="bold">extraButtonAlt</emphasis>. The <emphasis role="bold"
                     >extraButtonProperty</emphasis> specifies the property of action to call (for
-                instance, the property of the route button is “<emphasis role="bold"
-                    >methodToCall.route</emphasis>”).</para>
-            <para>That’s fine for one extra button, but what if multiple extra buttons need to be
+                instance, the property of the route button is "<emphasis role="bold"
+                    >methodToCall.route</emphasis>").</para>
+            <para>That's fine for one extra button, but what if multiple extra buttons need to be
                 added? The KNS supports this as well. <emphasis role="bold"
                     >org.kuali.rice.kns.web.struts.form.KualiForm</emphasis> has a List property
                 named <emphasis role="bold">extraButtons</emphasis>. The List is made up of
@@ -4482,7 +4482,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 respectively.</para>
             <para>The form can have its <emphasis role="bold">extraButtons</emphasis> list populated
                 before reaching the presentation layer. Most often, this is accomplished by simply
-                overriding the form’s <emphasis role="bold">getExtraButtons()</emphasis> method.
+                overriding the form's <emphasis role="bold">getExtraButtons()</emphasis> method.
                 Then the extra buttons are simply sent from the form into the <emphasis role="bold"
                     >kul:documentControls</emphasis> tag, as so:</para>
             <programlisting>&lt;kul:documentControls transactionalDocument="false" extraButtons="${KualiForm.extraButtons}" /></programlisting>
@@ -4495,7 +4495,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
             <para>Finally, the KNS provides a number of tabs that happen to exist on most
                 documents.</para>
             <para>For instance, practically every document has the ability to add notes. If that
-                functionality is to be turned off, it’s much easier to do in the data dictionary –
+                functionality is to be turned off, it's much easier to do in the data dictionary –
                 so frankly, every document should have a place to enter notes. Documents should also
                 have the route log of the document, and a place where ad hoc KEW recipients can be
                 added. The KNS makes adding all of these tabs easy:</para>

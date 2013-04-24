@@ -34,7 +34,7 @@
                         <imagedata fileref="../images/KEN_Guide/KEN_message_flow.png"/>
                     </imageobject>
                 </mediaobject></figure>
-            <para>From a developer’s perspective the diagram below helps to represent the inner
+            <para>From a developer's perspective the diagram below helps to represent the inner
                 workings of how KEN stores data from the Data Modeling Layer into the Persistence
                 Layer. </para>
             <figure>
@@ -46,7 +46,7 @@
                 </mediaobject></figure>
             <para>The following sections of documentation aim at describing the inner workings of
                 KEN as well as how those pieces interact with Rice, specifically KEW. KEN itself is
-                an interface that sits on top of KEW’s API. This allows for registration and
+                an interface that sits on top of KEW's API. This allows for registration and
                 publishing of notifications, which then flow through KEW to result in a KEW action
                 request. See KEW Overview for more information. In addition to the action list, KEW
                 can be optionally configured to forward these requests to the Kuali Communications
@@ -182,7 +182,7 @@
     <section>
         <title>KEN Channels</title>
         <para>A KEN Channel is correlated to a specific type of notification. An example of a
-            Channel’s use may be to send out information about upcoming Library Events or broadcast
+            Channel's use may be to send out information about upcoming Library Events or broadcast
             general announcements on upcoming concerts. Channels are subscribed to in the act of
             receiving notifications from a publisher or producer. They can also be unsubscribed to
             and removed from the data store from within the UI. The Channel Definitions are stored
@@ -283,7 +283,7 @@
                         </row>
                         <row>
                             <entry>PRODCR_ID</entry>
-                            <entry>The Producer’s Channel Identifier. See the KREN_CHNL_PRODCR_T
+                            <entry>The Producer's Channel Identifier. See the KREN_CHNL_PRODCR_T
                                 table found in the database for more information on how Producers
                                 link to Channels.</entry>
                         </row>

@@ -384,7 +384,7 @@ Database changed</programlisting>
                     <title>With Oracle</title>
                     <para>Connecting to an Oracle database would have a JDBC URL like the following:
                         <emphasis role="bold">jdbc:oracle:thin:@localhost:1521:XE</emphasis>.</para>
-                    <para>The Rice SQL files use slash ‘/‘ as the statement delimiter. You may have to
+                    <para>The Rice SQL files use slash '/' as the statement delimiter. You may have to
                         configure your SQL client appropriately so it can run the Rice SQL. In SQuirreL, you
                         do this in Session->Session Properties->SQL->Statement Separator.</para>
                 </section>
@@ -913,7 +913,7 @@ tail -n 500 -f catalina.out</programlisting>
                     &lt;webappcontext> with a unique suffix of your choosing. Specify the context
                     name of the web application server as the value of this parameter.</para><para>By default context.names.app is set to app.context.name. This allows bundled mode usage
                     without additional configuration. With standalone mode, the server that hosts
-                    the portal also doesn’t need any additional configurations thanks to
+                    the portal also doesn't need any additional configurations thanks to
                     context.names.app.</para><para>
                          
                              <emphasis role="bold">Example:</emphasis> KFS is used with a standalone Rice server.</para><para>

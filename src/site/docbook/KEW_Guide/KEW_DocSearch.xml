@@ -25,7 +25,7 @@
             result fields. </para>
         <section>
             <title>Custom Search Screen</title>
-            <para>As an example of customizing a Document Search screen, we’ll use a customized
+            <para>As an example of customizing a Document Search screen, we'll use a customized
                     <emphasis role="bold">Offer Request</emphasis> screen:</para>
             <figure><title>Custom Search Screen:Offer Request Example</title>
                 <mediaobject>
@@ -470,7 +470,7 @@
                         >DocumentSearchCriteriaProcessor</emphasis> class can access the
                     WorkflowUser object of the user performing the search. By having access to these
                     objects, a custom processor class could implement dynamic hiding and showing of
-                    specific criteria fields based on ordinary user’s data or search field
+                    specific criteria fields based on ordinary user's data or search field
                     data.</para>
                 <section>
                     <title>Show or Hide All Criteria and/or the Workflow Header Bar</title>
@@ -986,7 +986,7 @@
                         </para>
                     </listitem>
                     <listitem>
-                        <para>The user’s EMPL ID is equal to the searchable attribute on the
+                        <para>The user's EMPL ID is equal to the searchable attribute on the
                             document with the key of <emphasis role="italic">emplid</emphasis>
                             <emphasis role="bold">OR</emphasis>
                         </para>

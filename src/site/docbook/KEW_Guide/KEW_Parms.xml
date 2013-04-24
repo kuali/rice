@@ -504,16 +504,16 @@
                             <row>
                                 <entry>NOTIFY_EXCLUDED_USERS_IND</entry>
                                 <entry/>
-                                <entry><para>Defines a group name (in the format “namespace:name”) which
+                                <entry><para>Defines a group name (in the format "namespace:name") which
                                     contains members who should never receive notification action
                                     requests from KEW. Notification requests in KEW are generated
                                     when someone disapproves or blanket approves are exist to notify
                                     other approvers that these actions have taken place. </para> 
                                     <para>The most
-                                    common use for this is in the case of “system” users who
+                                    common use for this is in the case of "system" users who
                                     participate in workflow transactions. In these cases, since they
-                                    aren’t actual users who would be checking their action list, it
-                                    doesn’t make sense to send them requests since they won’t ever
+                                    aren't actual users who would be checking their action list, it
+                                    doesn't make sense to send them requests since they won't ever
                                     be fulfilled.</para> </entry>
                             </row>
                         </tbody>

@@ -40,7 +40,7 @@
             those methods would be invoked are outlined primarily in the Java Documentation at
             <link xlink:href="https://test.kuali.org/rice/rice-api-1.0-javadocs/"
                 >https://test.kuali.org/rice/rice-api-1.0-javadocs/</link>.</para>
-        <para>Document content methods modify the properties of a document’s content. A specific
+        <para>Document content methods modify the properties of a document's content. A specific
             case is <emphasis role="italic">addAttributeDefinition()</emphasis>, where a
             <emphasis role="italic">WorkflowAttribute</emphasis> is used to generate
             attribute document content that will be appended to the existing document content.
@@ -56,7 +56,7 @@
         <para>This class is the second client interface to KEW. The first time this object is
             initialized, the client configuration is accessed to determine how to connect to
             KEW. Methods invoked from this class can grab the routing header information based
-            on the principleId, or return a set of Action Requests for a document that’s in
+            on the principleId, or return a set of Action Requests for a document that's in
             route based on the <emphasis role="italic">routeHeaderId</emphasis>, the <emphasis
                 role="italic">nodeName</emphasis> and the <emphasis role="italic"
                     >principalId</emphasis>. More information on the various constructors, methods,

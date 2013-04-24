@@ -22,7 +22,7 @@
         installation. Out of the box, KEW comes with a default setup that works well in
         development and test environments. However, when moving to a production environment,
         this setup requires adjustments. This document discusses basic administration as well as
-        instructions for working with some of KEW’s administration tools.</para>
+        instructions for working with some of KEW's administration tools.</para>
     <section>
         <title>Configuration Overview</title>
         <para>You configure KEW primarily through the <emphasis role="bold"
@@ -43,7 +43,7 @@
             constants which you may need to change:<itemizedlist>
                 <listitem>
                     <para><emphasis role="bold">ActionList.sendEmailNotification</emphasis> -
-                        This is usually set to false in test environments so emails aren’t
+                        This is usually set to false in test environments so emails aren't
                         generated during testing. Usually, this is set this to true in a
                         production environment to allow email notifications. You also need to
                         ensure that your email service is configured properly to allow KEW to
@@ -52,7 +52,7 @@
                 <listitem>
                     <para><emphasis role="bold">ApplicationContext</emphasis> - In a production
                         environment, this is usually something like en-prd. You must set this
-                        value correctly so that KEW’s email notifications contain valid links.
+                        value correctly so that KEW's email notifications contain valid links.
                     </para>
                 </listitem>
                 <listitem>
@@ -247,7 +247,7 @@
                 entry. Currently, KEW doesn't implement any auto-detection of failure cases. To
                 put one of these entries in a state where it can be picked up by the route
                 manager again, simply click the <emphasis role="bold">Edit</emphasis> link and
-                set the entry’s status back to <emphasis role="bold">QUEUED</emphasis>. Here's a
+                set the entry's status back to <emphasis role="bold">QUEUED</emphasis>. Here's a
                 screen shot of the <emphasis role="bold">Route Queue Entry - Edit</emphasis>
                 screen:</para>
             <figure>

@@ -405,7 +405,7 @@
                                 <row>
                                     <entry>Name</entry>
                                     <entry><para>he unique Name of the routing delegate Rule you are creating or editing.</para> 
-                                        <para><emphasis role="bold">Note: </emphasis>You are not required to enter a Name, but if you don’t, Rice assigns a unique Name to the Rule.</para>
+                                        <para><emphasis role="bold">Note: </emphasis>You are not required to enter a Name, but if you don't, Rice assigns a unique Name to the Rule.</para>
                                     </entry>
                                 </row>
                                 <row>
@@ -796,10 +796,10 @@
             </section>
             <section>
                 <title>Report Contents</title>
-                <para>The upper section of the report (labeled “ID: 0”) contains the basic document
+                <para>The upper section of the report (labeled "ID: 0") contains the basic document
                     information fields as if this was an actual document; several fields are blank
                     since there is no actual document.</para>
-                <para>The lower section of the report (labeled “Pending Action Requests”) contains
+                <para>The lower section of the report (labeled "Pending Action Requests") contains
                     the routing that the document would be given. Clicking the button on any action
                     displays more detail of the action:</para>
                 <figure><title>Routing Report: Route Log View, Pending Action Requests</title>
@@ -913,7 +913,7 @@
                                     <entry>Name</entry>
                                     <entry><para>The unique Name of the routing Name you are creating
                                             or editing.</para>
-                                        <para><emphasis role="bold">Note: </emphasis>It is not required that you enter a Name, but if you don’t the system will assign a unique value.</para>
+                                        <para><emphasis role="bold">Note: </emphasis>It is not required that you enter a Name, but if you don't the system will assign a unique value.</para>
                                     </entry>
                                 </row>
                                 <row>

@@ -218,7 +218,7 @@
                     called <emphasis role="bold">widgets.xml</emphasis>. In the example below, it's
                     included in the style sheet using an <emphasis role="italic"
                         >xsl:include</emphasis> directive.</para>
-                <para>Workflow Java classes have API’s that offer methods that supply valuable
+                <para>Workflow Java classes have API's that offer methods that supply valuable
                     information to the XSLT style sheet logic. XML allows you to interrogate the
                     current value of <emphasis role="italic">EDL</emphasis>-defined fields, and it
                     provides a variety of built-in functions.</para>
@@ -441,7 +441,7 @@ EDL EDoclite Example
                     making calls to widgets. Note that the variable value <emphasis role="italic"
                         >$isPastInitiated</emphasis> is passed as a parameter to widgets_render so
                     that the html <emphasis role="italic">readOnly</emphasis> attribute is generated
-                    when the form is past the initiator’s node.</para>
+                    when the form is past the initiator's node.</para>
             </section>
         </section>
         <section>
@@ -582,7 +582,7 @@ EDL EDoclite Example
                 <para><emphasis role="bold">parent</emphasis> - The parent value must exactly match
                     the name value of the parent document type. </para>
                 <para><emphasis role="bold">superUserGroupName</emphasis> - A group of people who
-                    have special privileges that can be defined using the management service that’s
+                    have special privileges that can be defined using the management service that's
                     part of the KIM module. </para>
                 <para><emphasis role="bold">defaultExceptionGroupName</emphasis> - A group of people
                     who address a document of this type when it goes into Exception routing </para>

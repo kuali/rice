@@ -57,18 +57,18 @@
                 transaction is approved or denied individually in KEW.</para>
             <para>For example, John Doe may use a <emphasis role="italic">Leave Request</emphasis>
                 document in KEW to ask for a week off in June. The KEW Leave Request document
-                contains enough information for his supervisor to make a decision about John’s
+                contains enough information for his supervisor to make a decision about John's
                 leave. (The document may use data keys to retrieve external information, such as
-                John’s past Leave Requests and available hours.) Once John submits his Leave
-                Request, KEW routes it to John's supervisor for approval. Depending on how John’s
-                department has configured KEW for routing Leave Requests, after John’s supervisor
+                John's past Leave Requests and available hours.) Once John submits his Leave
+                Request, KEW routes it to John's supervisor for approval. Depending on how John's
+                department has configured KEW for routing Leave Requests, after John's supervisor
                 approves or denies his request, KEW may route it to more people for further action
                 to be taken.</para>
-            <para>Once John’s Leave Request document is processed, it triggers a <emphasis
+            <para>Once John's Leave Request document is processed, it triggers a <emphasis
                 role="bold">PostProcessor</emphasis>, which can peform any desired additional
-                processing. This is most commonly used to “finalize” the business transaction once
+                processing. This is most commonly used to "finalize" the business transaction once
                 all approvers have signed off on it. In this particular example, it might call
-                another service that would update records in the Leave Request application’s
+                another service that would update records in the Leave Request application's
                 database, indicating that the individual has successfully scheduled leave during
                 that time period. </para>
             <para>In addition, the KEW <emphasis role="bold">PostProcessor</emphasis> contains hooks

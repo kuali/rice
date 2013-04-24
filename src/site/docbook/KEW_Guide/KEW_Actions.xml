@@ -51,7 +51,7 @@
             </para>
             <para>Clicking an Action List link or button displays your <emphasis role="bold"
                     >Action List</emphasis> page. This is a sample KEW Action List; your
-                institution’s may look somewhat different:</para>
+                institution's may look somewhat different:</para>
             <para>On your Action List page is the list of documents on which you need to take an
                 action, such as Approve, Disapprove, or Acknowledge, and those which you have
                 already completed. These are your action requests. Action requests that someone
@@ -70,18 +70,18 @@
                                     <para>When you click a Document Id, KEW displays the actions
                                         you can take on this document, such as Blanket Approve,
                                         Complete, Approve, Disapprove, and Cancel. The actions
-                                        you can take are determined by the document’s Type.
+                                        you can take are determined by the document's Type.
                                     </para>
                                 </listitem>
                                 <listitem>
-                                    <para>Based on your institution’s setup, you may see a Show
+                                    <para>Based on your institution's setup, you may see a Show
                                         button in the Document Id column. Click the Show button
                                         to see a summary of the document. </para>
                                 </listitem>
                             </itemizedlist></para>
                     </listitem>
                     <listitem>
-                        <para><emphasis role="bold">Type</emphasis>: The document’s type
+                        <para><emphasis role="bold">Type</emphasis>: The document's type
                             determines the actions you can take on it. </para>
                     </listitem>
                     <listitem>
@@ -100,7 +100,7 @@
                                 </listitem>
                                 <listitem>
                                     <para><emphasis role="bold">Cancelled</emphasis>: These
-                                        documents have been stopped. The document’s initiator
+                                        documents have been stopped. The document's initiator
                                         can Cancel it before routing begins, or a reviewer of
                                         the document can cancel it after routing begins. When a
                                         document is cancelled, routing stops; it is not sent to
@@ -129,7 +129,7 @@
                                 <listitem>
                                     <para><emphasis role="bold">Initiated</emphasis>: A user or
                                         a process has created this document, but it has not yet
-                                        been routed to anyone’s Action List. </para>
+                                        been routed to anyone's Action List. </para>
                                 </listitem>
                                 <listitem>
                                     <para><emphasis role="bold">Processed</emphasis>: These
@@ -144,7 +144,7 @@
                                         (initiator) can save a document before routing begins,
                                         or a reviewer can save a document before he or she takes
                                         action on it. When someone saves a document, the
-                                        document goes on that person’s Action List. </para>
+                                        document goes on that person's Action List. </para>
                                 </listitem>
                                 <listitem>
                                     <para><emphasis role="bold">Final</emphasis>: All required
@@ -166,7 +166,7 @@
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Initiator</emphasis>: The person who created
-                            this document in KEW. Click the initiator’s name to see information
+                            this document in KEW. Click the initiator's name to see information
                             about the initiator, including (depending on the initiator's privacy
                             preferences): <itemizedlist>
                                 <listitem>
@@ -245,9 +245,9 @@
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Actions</emphasis>: For documents that you
-                            receive only for your information (they don’t require that you take
+                            receive only for your information (they don't require that you take
                             any further action), there is a dropdown menu in the Actions column.
-                            You can use this menu to agree that you’ve received the document for
+                            You can use this menu to agree that you've received the document for
                             information purposes: Select FYI, then click the Take Actions button
                             at the bottom of the page. </para>
                         <para>
@@ -443,11 +443,11 @@
                     </imageobject>
                 </mediaobject>
             </figure>            
-            <para>The fields used to maintain email preferences are located in a new “Email 
-                Notification Preferences” section at the bottom of the Workflow Preferences 
+            <para>The fields used to maintain email preferences are located in a new "Email 
+                Notification Preferences" section at the bottom of the Workflow Preferences 
                 screen.
                 
-                The “Email Notification Preferences” section accommodates two new options and 
+                The "Email Notification Preferences" section accommodates two new options and 
                 allows selection of how and when to receive reminder emails on items sent to the 
                 Action List.</para>
             
@@ -459,7 +459,7 @@
                 <para>You can choose to get email reminders on one of these Default Email
                 Notification schedules: <itemizedlist>
                     <listitem>
-                        <para><emphasis role="bold">None</emphasis> (KEW won’t send you any email
+                        <para><emphasis role="bold">None</emphasis> (KEW won't send you any email
                             reminders for your Action List.) </para>
                     </listitem>
                     <listitem>
@@ -477,18 +477,18 @@
                     </listitem>
                 </itemizedlist></para>
             
-            <para>The first new option allows overriding of the ‘Default Email Notification’ preference 
+            <para>The first new option allows overriding of the 'Default Email Notification' preference 
                 and setting of different frequencies to receive notifications based on the document type 
                 of the action request (Timesheet, EPTO, Hire Employee eDoc, Create Additional Pay eDoc, 
                 Requisition, etc.).</para>
             <para>The parameters set for the default email notification and document-type notification work 
                 together to determine when a given action item is included in the immediate, daily, or 
                 weekly email reminders.</para>  
-            <para>If one sets a ‘Default Email Notification’ without any ‘Document Type Notifications,’ 
+            <para>If one sets a 'Default Email Notification' without any 'Document Type Notifications,' 
                 then emails are sent (or not sent), based on the default selection.</para>
             <para>The second new option allows one to turn notifications on or off based on the request 
-                type (Complete, Approve, Acknowledge, or FYI) when “Immediate” is set as the ‘Default 
-                Email Notification.’</para>
+                type (Complete, Approve, Acknowledge, or FYI) when "Immediate" is set as the 'Default 
+                Email Notification.'</para>
             <figure>
                 <title>Action List Preferences: Document Type Notifications</title>
                 <mediaobject>
@@ -497,26 +497,26 @@
                     </imageobject>
                 </mediaobject>
             </figure>    
-            <para>However, adding a ‘Document Type Notification’ that is different from 
-                the ‘Default Email Notification,’ forces the document-type notification to take 
+            <para>However, adding a 'Document Type Notification' that is different from 
+                the 'Default Email Notification,' forces the document-type notification to take 
                 precedence. This allows users to customize by document- type for email reminders. 
                 For example:<itemizedlist>
-                    <listitem><para>If ‘Immediate’ is set as the ‘Default Email Notification,’ but a 
-                        document-type rule is set to ’None’ for the Maintain Time Assignment eDoc; 
+                    <listitem><para>If 'Immediate' is set as the 'Default Email Notification,' but a 
+                        document-type rule is set to 'None' for the Maintain Time Assignment eDoc; 
                         then no email notifications are sent for that specific document.</para>
                     </listitem>
-                    <listitem><para>If ‘Daily’ is the ‘Default Email Notification,’ and a document-type rule 
-                        is added to receive ‘Weekly notifications for the Hire Employee eDoc; then for that document, 
+                    <listitem><para>If 'Daily' is the 'Default Email Notification,' and a document-type rule 
+                        is added to receive 'Weekly notifications for the Hire Employee eDoc; then for that document, 
                         the only action request email received is a Weekly reminder.</para>
                     </listitem>
-                    <listitem><para>If ‘None’ is set as the ‘Default Email Notification,’ and a document-type rule 
-                        is added to receive “Daily” notifications for EPIC Purchase Orders; then for that document, 
+                    <listitem><para>If 'None' is set as the 'Default Email Notification,' and a document-type rule 
+                        is added to receive "Daily" notifications for EPIC Purchase Orders; then for that document, 
                         the only action request email received is a Daily reminder.</para>
                     </listitem>
                 </itemizedlist></para>
-            <para>In addition, when the ‘Default Email Notification’ is set to “Immediate” one can use the Send Email 
+            <para>In addition, when the 'Default Email Notification' is set to "Immediate" one can use the Send Email 
                 Notifications For option to decide whether or not to receive notifications by request-type.</para>
-            <para>All four of the request-types are already “checked” by default in your Workflow Preferences screen.</para>
+            <para>All four of the request-types are already "checked" by default in your Workflow Preferences screen.</para>
             <figure>
                 <title>Action List Preferences: Action Requested Email Notification</title>
                 <mediaobject>
@@ -527,10 +527,10 @@
             </figure> 
             <para>When an action request is received, and the preference is set to receive an immediate reminder, the system 
                 checks to ensure that the request-type checkbox is turned-on (checked) before an email is sent.</para>
-            <para>This allows these checkboxes to be used as a switch to ‘turn-on or turn-off’ the “immediate” email 
+            <para>This allows these checkboxes to be used as a switch to 'turn-on or turn-off' the "immediate" email 
                 reminders for a given request type. For example:<itemizedlist>
                     <listitem><para>To stop the receipt of Acknowledgement emails when your preference is set to 
-                    receive “Immediate” reminders, just uncheck the “Acknowledge” checkbox.</para>
+                    receive "Immediate" reminders, just uncheck the "Acknowledge" checkbox.</para>
                     </listitem>
                 </itemizedlist></para>
             <para>Remember, all of these preferences and settings are on your Action List
@@ -581,12 +581,12 @@
                     </listitem>
                     <listitem>
                         <para>If you want the filter to display only the action requests that
-                            don’t match one or more criteria, then checkmark the Exclude?
+                            don't match one or more criteria, then checkmark the Exclude?
                             checkbox for each of these criteria. This tells KEW not to display
                             action requests that match these criteria. </para>
                     </listitem>
                     <listitem>
-                        <para>When you’ve selected the criteria you want to use in your filter,
+                        <para>When you've selected the criteria you want to use in your filter,
                             click the Filter button at the bottom of the Action List Filter
                             page. KEW displays your Action List filtered in the way you
                             requested. </para>
@@ -606,11 +606,11 @@
                 </itemizedlist>
                 <note><para>Note: The filter is case sensitive – use upper and lower case
                     (capital letters and small letters) exactly the same as the item
-                    you’re filtering. For example, if an actual document title is Travel
+                    you're filtering. For example, if an actual document title is Travel
                     Doc 2, then you must type this in the Document Title field with a
                     capital letter at the beginning of each word, exactly like the real
                     document title. If you type it as travel doc 2, then the filter
-                    won’t recognize this document because the capitalization is
+                    won't recognize this document because the capitalization is
                     different. </para></note>
             </section>
             <section>
@@ -688,14 +688,14 @@
                         <para><emphasis role="bold">Action Requested Group</emphasis>: You may
                             filter your action requests by the group to which the action
                             requests were sent. For example, if you are a member of two groups,
-                            you might use this filter to display only the action requests you’ve
+                            you might use this filter to display only the action requests you've
                             received as part of one of those groups.</para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Document Type</emphasis>: Use this to filter
                             based on Document Type. <itemizedlist>
                                 <listitem>
-                                    <para>The document’s type tells KEW who needs to take what
+                                    <para>The document's type tells KEW who needs to take what
                                         action on that document. This determines where KEW
                                         routes the document. </para>
                                 </listitem>
@@ -748,13 +748,13 @@
                             you need from the calendar. When you click a date on the calendar,
                             the small calendar disappears and that date is automatically entered
                             in the date field. Use the small arrowheads on either side of the
-                            month’s name to display other months. A single arrowhead moves the
+                            month's name to display other months. A single arrowhead moves the
                             calendar one month forward or back. A double arrowhead moves the
                             calendar to the same month a year ahead or back. </para>
                         <para>For example, if you could click the single arrowhead to the left
-                            of “April” on this calendar, the month displayed would change to
+                            of "April" on this calendar, the month displayed would change to
                             March 2009. If you could click the double arrowhead to the right of
-                            “April”, the month would change to April 2010.</para>
+                            "April", the month would change to April 2010.</para>
                         <figure><title>Date Widget</title>
                             <mediaobject>
                                 <imageobject>
@@ -802,7 +802,7 @@
                 document. You might ask someone to approve an expense, for example, or to
                 acknowledge that he or she received a copy of an expense report. </para>
             <para>Once an Action Request has been created in KEW, the associated document is sent to
-                the appropriate users’ action lists. A user can open his or her Action List and from
+                the appropriate users' action lists. A user can open his or her Action List and from
                 there, view information about the document, open the document, and/or take the
                 requested action. If a user takes an action, for example, approves or disapproves a
                 document, that is called an Action Taken.</para>
@@ -928,8 +928,8 @@
                 <para>In KEW, you may delegate, or give, your request authority to other people. For
                     example, if Joe is the fiscal officer for an account but he doesn't actually
                     approve documents, he may delegate his approval authority to Jane. Both Joe and
-                    Jane can now take actions on Joe’s action requests</para>
-                <para>If Jane approves a document as Joe’s delegate, Joe's action request is
+                    Jane can now take actions on Joe's action requests</para>
+                <para>If Jane approves a document as Joe's delegate, Joe's action request is
                     satisfied. If Joe approves the document, Jane's action request is satisfied.
                 </para>
             </section>
@@ -991,7 +991,7 @@
                     request and he takes an Approve action on it, his request is deactivated.
                     Request deactivation changes the status of the request from Initialized or
                     Activated to Deactivated. </para>
-                <para>If Joe’s action taken causes other action requests to be Deactivated, his
+                <para>If Joe's action taken causes other action requests to be Deactivated, his
                     action taken is associated with all of the requests that it Deactivates. </para>
                 <para>Unlike Activation, Deactivation always starts at the request that was
                     satisfied by the action taken. For example, if Joe is delegating to Jane and
@@ -1115,7 +1115,7 @@
                     requests. This allows certain users to "push" a document through its routing. To
                     take this action, you must have the appropriate KIM Permission (or be in the
                     Blanket Approve Group which is set in the Document Type, but that is a
-                    deprecated feature). Unless you select a specific node (point in the document’s
+                    deprecated feature). Unless you select a specific node (point in the document's
                     routing path) when you take a Blanket Approve Action, KEW finds all pending
                     Approve or Complete requests at the current level in the request tree and
                     Deactivates them. It records a Blanket Approve Action Taken and associates it
@@ -1139,7 +1139,7 @@
             <section>
                 <title>Clear FYI Action</title>
                 <para>Use this action to satisfy an FYI action request. You usually get an FYI just
-                    to notify you about a document. You don’t need to take any action on an FYI
+                    to notify you about a document. You don't need to take any action on an FYI
                     request, but if you want to remove that FYI and document from your Action List,
                     take the Clear FYI action.</para>
                 <para>When you take the Clear FYI action KEW locates all pending FYI requests on
@@ -1219,14 +1219,14 @@
                     Action Taken for a Route Document action is Complete.</para>
                 <para>When you use the Route Document action, it Deactivates all pending requests
                     for the initiator of the document and it associates a Complete Action Taken with
-                    the Deactivated requests. The document’s state is then set to Enroute.</para>
+                    the Deactivated requests. The document's state is then set to Enroute.</para>
             </section>
             <section>
                 <title>Save Document Action</title>
                 <para>Use this action to put a newly created document in the Action List of the
-                    document’s initiator. You can only use this action on a document in an Initiated
+                    document's initiator. You can only use this action on a document in an Initiated
                     status. When you use this action, KEW creates and Activates a Complete action
-                    request for the document’s initiator and then changes the document’s status to
+                    request for the document's initiator and then changes the document's status to
                     Saved.</para>
             </section>
             <section>

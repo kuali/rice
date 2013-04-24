@@ -411,7 +411,7 @@
                         <listitem>
                             <para>Some fields in eDocLite can be set as <emphasis role="bold"
                                     >GlobalReadOnly</emphasis>. With this setting they are disabled
-                                and can’t be edited by any user other than the author. </para>
+                                and can't be edited by any user other than the author. </para>
                         </listitem>
                         <listitem>
                             <para>Some fields in eDocLite can be set as <emphasis role="bold"

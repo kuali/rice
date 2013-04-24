@@ -33,7 +33,7 @@
                     <listitem>
                         <para><emphasis role="bold">Remote Java Client</emphasis> – A Java client is
                             used which relies on the service bus to communicate with a Standalone Rice
-                            Server’s KEW services. </para>
+                            Server's KEW services. </para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Thin Java Client</emphasis> - A thin Java client is
@@ -872,7 +872,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 </table>
             </para>
             <section>
-                <title>The ‘embedded.server’ Parameter</title>
+                <title>The 'embedded.server' Parameter</title>
                 <para>If embedded.server parameter is enabled (set to true), then two additional
                     features will be loaded when KEW is started:<orderedlist>
                         <listitem>
@@ -888,7 +888,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     users that have their preferences set accordingly.</para>
             </section>
             <section>
-                <title>The ‘datasource.platform’ Parameter</title>
+                <title>The 'datasource.platform' Parameter</title>
                 <para>KEW requires and uses the database platform implementation in order to
                     function. These may be be implemented differently for each support database
                     management system. </para>
@@ -1012,16 +1012,16 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     role="italic">enEmailService</emphasis> loaded by the KEW module and implement a
                 custom email service. </para>
             <para>In order for KEW to send out emails, several steps need to be done. In order to
-                have KEW send out any emails, the “SEND_EMAIL_NOTIFICATION_IND” KNS System Parameter
-                needs to be set to ‘Y’. For emails to real people, the environment code must be set
-                to ‘prd’. If this is not set to ‘prd’, an email can still be sent out to a test
+                have KEW send out any emails, the "SEND_EMAIL_NOTIFICATION_IND" KNS System Parameter
+                needs to be set to 'Y'. For emails to real people, the environment code must be set
+                to 'prd'. If this is not set to 'prd', an email can still be sent out to a test
                 address. This test address is set by the KNS System Parameter,
-                “EMAIL_NOTIFICATION_TEST_ADDRESS”. Emails sent in a test system will only be sent to
-                the address specified by the EMAIL_NOTIFICATION_TEST_ADDRESS. The “from” address may
-                also be set with a System Parameter. To do this, set the “FROM_ADDRESS” System
+                "EMAIL_NOTIFICATION_TEST_ADDRESS". Emails sent in a test system will only be sent to
+                the address specified by the EMAIL_NOTIFICATION_TEST_ADDRESS. The "from" address may
+                also be set with a System Parameter. To do this, set the "FROM_ADDRESS" System
                 Parameter to the email address you want the KEW emails sent from. If the
-                FROM_ADDRESS parameter doesn’t exist or isn’t set, it will default to
-                “admin@localhost”.</para>
+                FROM_ADDRESS parameter doesn't exist or isn't set, it will default to
+                "admin@localhost".</para>
         </section>
         <section>
             <title>Periodic Email Reminders</title>
@@ -1311,12 +1311,12 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
     </section>
         <section>
             <title>Workflow Preferences Configuration</title>
-            <para>Workflow users have the ability to update their preferences by going to the “User
-                Preferences” page. The default values for many of these preferences can now be
+            <para>Workflow users have the ability to update their preferences by going to the "User
+                Preferences" page. The default values for many of these preferences can now be
                 configured.</para>
             <para>For example, institutions will commonly override the default action list email
-                preference. By default it’s set to “immediate,” but it can be configured to “no”,
-                “daily”, “weekly”, or “immediate.” The user will still be able to override the
+                preference. By default it's set to "immediate," but it can be configured to "no",
+                "daily", "weekly", or "immediate." The user will still be able to override the
                 defaults on their User Preferences screen.</para>
             <para>Here a list of workflow preferences that can be configured:</para>
             <programlisting>&lt;!-- Default Option for Action List User Preferences. -->
@@ -1562,8 +1562,8 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
                 <para>The section above defines the Document Type's name, its <emphasis role="bold"
                         >parent</emphasis>, <emphasis role="bold">description</emphasis>, and
                         <emphasis role="bold">label</emphasis>. The <emphasis role="bold"
-                        >name</emphasis> is used by the client application’s API to communicate with
-                    KEW. Here is a sample of code from the client application’s API communicating
+                        >name</emphasis> is used by the client application's API to communicate with
+                    KEW. Here is a sample of code from the client application's API communicating
                     with KEW:</para>
                 <programlisting>WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("username"), "DocumentTypeName");
 document.routeDocument("user inputted annotation");
@@ -1581,7 +1581,7 @@ document.routeDocument("user inputted annotation");
                         </listitem>
                         <listitem>
                             <para><emphasis role="bold">Description</emphasis> is defined as shown.
-                                The document’s <emphasis role="italic">Description</emphasis> is
+                                The document's <emphasis role="italic">Description</emphasis> is
                                 displayed on the Document Type report. </para>
                         </listitem>
                         <listitem>
@@ -1741,7 +1741,7 @@ document.routeDocument("user inputted annotation");
                         </mediaobject>
                     </figure>
                 </para>
-                <para>The <emphasis role="bold">mandatoryRoute</emphasis> key determines if it’s
+                <para>The <emphasis role="bold">mandatoryRoute</emphasis> key determines if it's
                     mandatory to generate approval requests. If a route node is <emphasis
                         role="italic">mandatory</emphasis> and it doesn't generate an <emphasis
                         role="italic">approve</emphasis> request, the document is put in exception
@@ -1867,8 +1867,8 @@ document.routeDocument("user inputted annotation");
             &lt;description>Add/Modify Workflow rules&lt;/description>
             &lt;label>Add/Modify Workflow rules&lt;/label>
             &lt;postProcessorName>org.kuali.rice.kew.postprocessor.RulePostProcessor&lt;/postProcessorName>
-            &lt;superUserGroupName namespace=KR-WKFLW”>WorkflowAdmin&lt;/superUserGroupName>
-            &lt;blanketApproveGroupName namespace=KR-WKFLW”>WorkflowAdmin&lt;/blanketApproveGroupName>
+            &lt;superUserGroupName namespace=KR-WKFLW">WorkflowAdmin&lt;/superUserGroupName>
+            &lt;blanketApproveGroupName namespace=KR-WKFLW">WorkflowAdmin&lt;/blanketApproveGroupName>
             &lt;defaultExceptionGroupName>&lt;/defaultExceptionGroupName>
             &lt;docHandler>https://uisapp2.iu.edu/en-prd/Rule.do?methodToCall=docHandler&lt;/docHandler>
             &lt;active>true&lt;/active>

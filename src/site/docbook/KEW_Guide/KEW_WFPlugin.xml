@@ -185,7 +185,7 @@ META-INF/
                         library directories outside of the plugin space. This can be particularly
                         useful in development environments, where the plugin uses many of the same
                         classes as the main application that is integrating with Workflow. In these
-                        scenarios, configuring an extra Classpath may mean you don’t need to jar or
+                        scenarios, configuring an extra Classpath may mean you don't need to jar or
                         copy many common class files.</para>
                     <para>To do this, specify these properties in your plugin's <emphasis
                             role="bold">workflow.xml</emphasis> file:<orderedlist>
@@ -454,7 +454,7 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                     <para>The Notification service is responsible for notifying users when they
                         receive Action Items in their Action List.</para>
                     <para>The default implementation simply sends an email (using the EmailService)
-                        to the user according to the individual user’s preferences. A custom
+                        to the user according to the individual user's preferences. A custom
                         implementation might also notify other (external) systems in addition to
                         sending the email.</para>
                 </section>

@@ -94,7 +94,7 @@
                             </row>
                             <row>
                                 <entry>label</entry>
-                                <entry>The label of the Document Type, how it’s recognized</entry>
+                                <entry>The label of the Document Type, how it's recognized</entry>
                             </row>
                             <row>
                                 <entry>postProcessorName</entry>
@@ -295,9 +295,9 @@
     &lt;description>BlanketApproveTest&lt;/description>
     &lt;label>BlanketApproveTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -366,9 +366,9 @@
     &lt;description>BlanketApproveSequentialTest&lt;/description>
     &lt;label>BlanketApproveSequentialTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW”>WorkflowAdmin&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”>WorkflowAdmin&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW">WorkflowAdmin&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin&lt;/defaultExceptionGroupName>
 
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
@@ -511,9 +511,9 @@
     &lt;description>BlanketApproveParallelTest&lt;/description>
     &lt;label>BlanketApproveParallelTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -737,9 +737,9 @@
     &lt;description>NotificationTest&lt;/description>
     &lt;label>NotificationTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -897,9 +897,9 @@
     &lt;description>NotificationTest&lt;/description>
     &lt;label>NotificationTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -974,9 +974,9 @@
     &lt;description>BlanketApproveMandatoryNodeTest&lt;/description>
     &lt;label>BlanketApproveMandatoryNodeTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -1127,9 +1127,9 @@
     &lt;name>SaveActionEventTest&lt;/name>
     &lt;description>SaveActionEventTest&lt;/description>
     &lt;label>SaveActionEventTest&lt;/label>		&lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -1243,9 +1243,9 @@
     &lt;description>SaveActionEventTest With No Initiator Only Save Required&lt;/description>
     &lt;label>SaveActionEventTestNonInitiator&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -1374,9 +1374,9 @@
     &lt;description>TakeWorkgroupAuthority Action Test&lt;/description>
     &lt;label>TakeWorkgroupAuthorityDoc&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>
@@ -1487,9 +1487,9 @@
     &lt;label>Move Sequential Test&lt;/label>
 
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -1635,9 +1635,9 @@
     &lt;description>Move In Process Test&lt;/description>
     &lt;label>Move In Process Test&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -1783,9 +1783,9 @@
 	&lt;label>AdhocRouteTest&lt;/label>
 
 	&lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-	&lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-	&lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-	&lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+	&lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+	&lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+	&lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
 	&lt;docHandler>_blank&lt;/docHandler>
 	&lt;active>true&lt;/active>
 	&lt;routePaths>
@@ -1883,9 +1883,9 @@
     &lt;description>PreApprovalTest&lt;/description>
     &lt;label>PreApprovalTest&lt;/label>
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -1981,9 +1981,9 @@
     &lt;label>VariablesTest&lt;/label>
 
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;routePaths>
@@ -2278,9 +2278,9 @@
     &lt;label>SUApproveDocumentNotifications&lt;/label>
 
     &lt;postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor&lt;/postProcessorName>
-    &lt;superUserGroupName namespace=”KR-WKFLW” >TestWorkgroup&lt;/superUserGroupName>
-    &lt;blanketApproveGroupName namespace=”KR-WKFLW”>TestWorkgroup&lt;/blanketApproveGroupName>
-    &lt;defaultExceptionGroupName namespace=”KR-WKFLW”> TestWorkgroup&lt;/defaultExceptionGroupName>
+    &lt;superUserGroupName namespace="KR-WKFLW" >TestWorkgroup&lt;/superUserGroupName>
+    &lt;blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup&lt;/blanketApproveGroupName>
+    &lt;defaultExceptionGroupName namespace="KR-WKFLW"> TestWorkgroup&lt;/defaultExceptionGroupName>
     &lt;docHandler>_blank&lt;/docHandler>
     &lt;active>true&lt;/active>
     &lt;policies>

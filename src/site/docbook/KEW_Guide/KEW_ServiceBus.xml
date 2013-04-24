@@ -53,18 +53,18 @@
             various query or read-only operations against the workflow system.</para>
     </section>
     <section>
-        <title>Implications of using “Synchronous” KSB messaging with KEW</title>
+        <title>Implications of using "Synchronous" KSB messaging with KEW</title>
         <para>For general information on synchronous messaging and its implications in the KSB,
-            please read “Implications of synchronous vs. asynchronous Message Deliver” in the
+            please read "Implications of synchronous vs. asynchronous Message Deliver" in the
             KSB technical reference guide.</para>
         <para>In terms of Kuali Enterprise Workflow, the usage of synchronous messing means that
             operations like workflow engine processing will happen immediately and synchronously
-            at the time it’s invoked.</para>
+            at the time it's invoked.</para>
         <para>The main implication here besides what is listed in the KSB documentation is that,
-            since message exception handling isn’t implemented, exception routing does not work
+            since message exception handling isn't implemented, exception routing does not work
             when using synchronous KSB messaging.</para>
         <para>This means that if this messaging model is being used in a batch job, or similar
-            type of program, routing exceptions will need to be manually caught. If it’s desired
+            type of program, routing exceptions will need to be manually caught. If it's desired
             to place a document into exception status from here, there are methods on the KEW
             APIs to do this manually.</para>
     </section>

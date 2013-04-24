@@ -34,10 +34,10 @@
             <para>This is the tool you will use to developer the source code and resources for your
                 project. It can be a simple text editor if you want, however it is recommended to
                 use one of the Java IDE tools available. Of these Eclipse, Intellij, and NetBeans
-                are the most popular in today’s market. Any of these will be fine for developing a
+                are the most popular in today's market. Any of these will be fine for developing a
                 Rice project. However, as we will learn about next, Rice provides its own tooling to
                 help getting started with Eclipse. Eclipse is chosen due to its high use and that it
-                is a free open source tool. The latest release is ‘Indigo’ and can be downloaded
+                is a free open source tool. The latest release is 'Indigo' and can be downloaded
                 here: </para>
 
             <para>
@@ -53,7 +53,7 @@
                 application data. Rice itself will use the database for supporting the various Rice modules
                 (workflow, identity management, and so on). With each Rice distribution datasets are
                 provided that can be used to create the initial database schema. You can choose to load the
-                ‘bootstrap’ dataset, which provides the baseline data needed to run Rice, or the ‘demo’
+                'bootstrap' dataset, which provides the baseline data needed to run Rice, or the 'demo'
                 dataset which adds additional demo data (such as example KIM data and workflow doc types). 
                 Although it is possible to provide a shared database for development, it is recommended for
                 productivity reasons for each developer to have a local database installed. Both MySql and
@@ -153,7 +153,7 @@
                 and then creates the resulting database in either Oracle or MySQL. To use this tool we
                 simply provide configuration about the location of the source dataset, along with
                 connectivity information for our target database. This is done by creating a properties file
-                named ‘impex-build.properties’ in the user home directory. Once the configuration is
+                named 'impex-build.properties' in the user home directory. Once the configuration is
                 complete, we can invoke the tool using ant or maven and our database will be
                 created.</para>
         </section>
@@ -1100,14 +1100,14 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
         <title>Project Structure and Configuration Files</title>
         <para>The result of running the create project script is a new maven based Rice client
             project. This includes the directory structures for building out your application, along
-            with the necessary configuration files. Let’s start by looking the directories that were
+            with the necessary configuration files. Let's start by looking the directories that were
             created. </para>
 
         <itemizedlist>
             <listitem>
-                <para>Project Root (eg ‘/java/projects/myapp’) – This is the root folder that was created to
+                <para>Project Root (eg '/java/projects/myapp') – This is the root folder that was created to
                     hold all the project contents. Within this folder you will find three sub-folders, a
-                    ‘.classpath’, ‘.project’, ‘instructions.txt’, and ‘pom.xml’ file.</para>
+                    '.classpath', '.project', 'instructions.txt', and 'pom.xml' file.</para>
             </listitem>
             <listitem>
                 <para>.settings – This folder contains settings configuration for the Eclipse IDE</para>
@@ -1191,7 +1191,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
 
         <note><para>All of these files are located within the src/main/resources directory </para></note>
         <para>In addition to the files created within the project, two files are created in the
-            ‘{user home}/kuali/main/dev’ folder. These include:</para>
+            '{user home}/kuali/main/dev' folder. These include:</para>
 
         <itemizedlist>
             <listitem><para>{project}-config.xml – Configuration file for application. This is where the settings
@@ -1281,16 +1281,16 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             code.</para>
 
         <para>Navigate to the Eclipse installation directory. There you should find an executable
-            named ‘eclipse.exe’. Once this file is found double click to start the IDE. When Eclipse
+            named 'eclipse.exe'. Once this file is found double click to start the IDE. When Eclipse
             starts up for the first time it will ask you to choose a workspace. This is a directory
             that Eclipse place newly created projects and will also read current projects from. A
-            standard within the community is to use ‘/java/projects’ for your working space. Note
+            standard within the community is to use '/java/projects' for your working space. Note
             you can select the checkbox to use the directory as your default and Eclipse will not
             prompt on the next startup.</para>
 
         <para><emphasis role="bold">Eclipse Memory:</emphasis> It is generally needed and
             recommended to allocate additional JVM memory for the Eclipse runtime. This can be done
-            by opening up the file named ‘eclipse.ini’ that exists in the root installation
+            by opening up the file named 'eclipse.ini' that exists in the root installation
             directory. At the end of the file you specify VM arguments as follows:</para>
         <programlisting>-vmargs
 -Xms128m
@@ -1322,7 +1322,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             </mediaobject>
         </figure>
 
-         <para>For the import source select ‘Existing Projects info Workspace’. This should
+         <para>For the import source select 'Existing Projects info Workspace'. This should
          bring up a dialog that looks like the following figure. </para>
 
         <figure>
@@ -1335,8 +1335,8 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             </mediaobject>
         </figure>
 
-        <para>Here click the ‘Browse’ button to locate the directory for the project. After
-            selecting the project location click the ‘Finish’ button. Eclipse will then import the
+        <para>Here click the 'Browse' button to locate the directory for the project. After
+            selecting the project location click the 'Finish' button. Eclipse will then import the
             project contents and you are ready to begin coding!</para>
 
 

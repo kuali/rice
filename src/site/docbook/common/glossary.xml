@@ -198,7 +198,7 @@
         <glossentry xml:id="glossary.activated">
             <glossterm>Activated</glossterm>
             <glossdef>
-                <para>The state of an action request when it is has been sent to a user’s Action
+                <para>The state of an action request when it is has been sent to a user's Action
                     List.</para>
             </glossdef>
         </glossentry>
@@ -802,7 +802,7 @@
         <glossentry xml:id="glossary.entity.type">
             <glossterm>Entity Type</glossterm>
             <glossdef>
-                <para>Provides categorization to Entities. For example, a “System” could be
+                <para>Provides categorization to Entities. For example, a "System" could be
                     considered an Entity Type because something like a batch process may need to
                     interfact with the application.</para>
             </glossdef>
@@ -964,7 +964,7 @@
             <glossterm>Initialized</glossterm>
             <glossdef>
                 <para>The state of an Action Request when it is first created but has not yet been
-                    Activated (sent to a user’s Action List).</para>
+                    Activated (sent to a user's Action List).</para>
             </glossdef>
         </glossentry>
         <glossentry xml:id="glossary.initiated">
@@ -1042,7 +1042,7 @@
                         <para>Message integrity and delivery standards</para>
                     </listitem>
                     <listitem>
-                        <para>Delivery of notifications to a user’s Action List</para>
+                        <para>Delivery of notifications to a user's Action List</para>
                     </listitem>
                 </itemizedlist>
             </glossdef>
@@ -1255,7 +1255,7 @@
                     Accounts".</para>
                 <para>Out of the box, the system is bootstrapped with numerous Rice namespaces which
                     correspond to the different modules. There is also a default namespace of
-                    “KUALI”.</para>
+                    "KUALI".</para>
                 <para>Namespaces can be maintained at runtime through a maintenance document.</para>
             </glossdef>
         </glossentry>
@@ -1295,7 +1295,7 @@
         <glossentry xml:id="glossary.optimistic.locking">
             <glossterm>Optimistic Locking</glossterm>
             <glossdef>
-                <para>A type of “locking” that is placed on a database row by a process to prevent
+                <para>A type of "locking" that is placed on a database row by a process to prevent
                     other processes from updating that row before the first process is complete. A
                     characteristic of this locking technique is that another user who wants to make
                     modifications at the same time as another user is permitted to, but the first
@@ -1362,7 +1362,7 @@
             <glossterm>Parameter Type Code</glossterm>
             <glossdef>
                 <para>Code identifying the parameter type. Parameter Type Code is the primary key
-                    for its’ table.</para>
+                    for its' table.</para>
             </glossdef>
         </glossentry>
         <glossentry xml:id="glossary.parameter.value">
@@ -1468,7 +1468,7 @@
                     deployed into the Rice standalone server. Plugins usually contains only classes
                     used in routing such as custom rules or searchable attributes, but can contain
                     client application specific services. They are usually used only by clients
-                    being implemented by the ‘Thin Client’ method</para>
+                    being implemented by the 'Thin Client' method</para>
             </glossdef>
         </glossentry>
         <glossentry xml:id="glossary.post.processor">
@@ -1684,8 +1684,8 @@
                             and are waiting additional postprocessing.</para>
                     </listitem>
                     <listitem>
-                        <para>Cancelled: These documents have been stopped. The document’s initiator
-                            can ‘Cancel’ it before routing begins or a reviewer of the document can
+                        <para>Cancelled: These documents have been stopped. The document's initiator
+                            can 'Cancel' it before routing begins or a reviewer of the document can
                             cancel it after routing begins. When a document is cancelled, routing
                             stops; it is not sent to another Action List. </para>
                     </listitem>
@@ -1710,7 +1710,7 @@
                     </listitem>
                     <listitem>
                         <para>Initiated: A user or a process has created this document, but it has
-                            not yet been routed to anyone’s Action List.</para>
+                            not yet been routed to anyone's Action List.</para>
                     </listitem>
                     <listitem>
                         <para>Processed: These documents have been approved by all required users,
@@ -1721,7 +1721,7 @@
                         <para>Saved: These documents have been saved for later work. An author
                             (initiator) can save a document before routing begins or a reviewer can
                             save a document before he or she takes action on it. When someone saves
-                            a document, the document goes on that person’s Action List.</para>
+                            a document, the document goes on that person's Action List.</para>
                     </listitem>
                 </itemizedlist>
             </glossdef>
@@ -1773,7 +1773,7 @@
                         <para>Created against a Rule Template and a Document Type</para>
                     </listitem>
                     <listitem>
-                        <para>The Rule Template and it’s list of Rule Attributes define what fields
+                        <para>The Rule Template and it's list of Rule Attributes define what fields
                             will be collected in the Rule GUI</para>
                     </listitem>
                     <listitem>
@@ -1798,12 +1798,12 @@
                         </itemizedlist>
                     </listitem>
                     <listitem>
-                        <para>During routing, Rule Evaluation Sets are “selected” at each node.
+                        <para>During routing, Rule Evaluation Sets are "selected" at each node.
                             Default is to select by Document Type and Rule Template defined on the
                             Route Node</para>
                     </listitem>
                     <listitem>
-                        <para>Rules match (or ‘fire’) based on the evaluation of data on the
+                        <para>Rules match (or 'fire') based on the evaluation of data on the
                             document and data contained on the individual rule</para>
                     </listitem>
                     <listitem>
@@ -1814,7 +1814,7 @@
                                     request to Joe.</para>
                             </listitem>
                             <listitem>
-                                <para>If department is “HR” request an Acknowledgment from the
+                                <para>If department is "HR" request an Acknowledgment from the
                                     HR.Acknowledgers workgroup.</para>
                             </listitem>
                         </itemizedlist>
@@ -1879,13 +1879,13 @@
                         <para>They are a composition of Rule Attributes</para>
                     </listitem>
                     <listitem>
-                        <para>Adding a ‘Role’ attribute to a template allows for the use of the Role
+                        <para>Adding a 'Role' attribute to a template allows for the use of the Role
                             on any rules created against the template</para>
                     </listitem>
                     <listitem>
                         <para>When rule attributes are used for matching on rules, each attribute is
                             associated with the other attributes on the template using an implicit
-                            ‘and’ logic attributes</para>
+                            'and' logic attributes</para>
                     </listitem>
                     <listitem>
                         <para>Can be used to define various other aspects to be used by the rule
@@ -2082,7 +2082,7 @@
             <glossterm>User</glossterm>
             <glossdef>
                 <para>A person who can log in and use the application. This term is synonymous with
-                    “Principal” in KIM.  "Whereas Entity Id represents a unique Person, Principal Id
+                    "Principal" in KIM.  "Whereas Entity Id represents a unique Person, Principal Id
                     represents a set of login information for that Person." </para>
             </glossdef>
         </glossentry>

@@ -154,7 +154,7 @@
                 <para><emphasis role="keyword">parent</emphasis> - The parent value must exactly match
                     the name value of the parent document type. </para>
                 <para><emphasis role="keyword">superUserGroupName</emphasis> - A group of people who
-                    have special privileges that can be defined using the management service that’s
+                    have special privileges that can be defined using the management service that's
                     part of the KIM module. </para>
                 <para><emphasis role="keyword">defaultExceptionGroupName</emphasis> - A group of people
                     who address a document of this type when it goes into Exception routing </para>

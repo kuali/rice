@@ -172,7 +172,7 @@
                     called <emphasis role="keyword">widgets.xml</emphasis>. In the example below, it's
                     included in the style sheet using an <emphasis role="keyword"
                         >xsl:include</emphasis> directive.</para>
-                <para>Workflow Java classes have API’s that offer methods that supply valuable
+                <para>Workflow Java classes have API's that offer methods that supply valuable
                     information to the XSLT style sheet logic. XML allows you to interrogate the
                     current value of <emphasis role="keyword">EDL</emphasis>-defined fields, and it
                     provides a variety of built-in functions.</para>
@@ -395,6 +395,6 @@ EDL EDoclite Example
                     making calls to widgets. Note that the variable value <emphasis role="keyword"
                         >$isPastInitiated</emphasis> is passed as a parameter to widgets_render so
                     that the html <emphasis role="keyword">readOnly</emphasis> attribute is generated
-                    when the form is passed the initiator’s node.</para>
+                    when the form is passed the initiator's node.</para>
             </section>
 </chapter>

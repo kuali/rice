@@ -85,7 +85,7 @@
                     <member>The first field on the document is an OAA number; this is not a required field and will be entered 
                         when the document reaches the Office of Affirmative Action for approval. </member>
                     <member>A field provided for instances where a prior search is being continued is provided. The field, 
-                        “Reactivating Prior Year Search: OAA#”, is used for linking this new search to the prior one by 
+                        "Reactivating Prior Year Search: OAA#", is used for linking this new search to the prior one by 
                         providing the prior OAA #.</member>
                     <member>A separate section towards the bottom is presented for Utilization data. This section is to be 
                         completed only by the OAA group. After they have entered the information, this data will be 

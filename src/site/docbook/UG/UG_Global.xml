@@ -563,11 +563,11 @@
                 and their functions:<table frame="none" tabstyle="striped">
                     <title>Lookup Wildcards</title>
                     <tgroup cols="5">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <colspec colname="c3" colnum="3" colwidth="1.0*"/>
-                        <colspec colname="c4" colnum="4" colwidth="1.0*"/>
-                        <colspec colname="newCol5" colnum="5" colwidth="1.0*"/>
+                        <colspec colname="c4" colnum="4" colwidth="0.5*"/>
+                        <colspec colname="newCol5" colnum="5" colwidth="1.5*"/>
                         <thead>
                             <row>
                                 <entry>Operator</entry>
@@ -815,7 +815,7 @@
                             <thead>
                                 <row>
                                     <entry>Field</entry>
-                                    <entry/>
+                                    <entry>Description</entry>
                                 </row>
                             </thead>
                             <tbody>

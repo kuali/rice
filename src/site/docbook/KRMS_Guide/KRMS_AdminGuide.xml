@@ -25,7 +25,7 @@
             (KRMS) installation. Out of the box, KRMS comes with a default setup that works well in
             development and test environments. However, when moving to a production environment,
             this setup requires adjustments. This document discusses basic administration as well as
-            instructions for working with some of KRMS’ administration tools.</para>
+            instructions for working with some of KRMS' administration tools.</para>
         <section>
             <title>Initial Set up tasks</title>
             <para>In this section we cover the types of tasks you'll need to do as a one-time setup

@@ -36,9 +36,9 @@
         <para>A rules management system in general includes a repository of decision logic and a
             rules engine that can be executed by applications in a run-time environment. Again
             from wikipedia: "... provides the ability to: register, define, classify, and manage
-            all the rules, verify consistency of rules definitions (”Gold-level customers are
-            eligible for free shipping when order quantity &gt; 10” and “maximum order quantity
-            for Silver-level customers = 15” ), define the relationships between different
+            all the rules, verify consistency of rules definitions ("Gold-level customers are
+            eligible for free shipping when order quantity &gt; 10" and "maximum order quantity
+            for Silver-level customers = 15" ), define the relationships between different
             rules, and relate some of these rules to IT applications that are affected or need
             to enforce one or more of the rules."</para>
     </section>

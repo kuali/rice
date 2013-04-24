@@ -28,6 +28,6 @@
         <para>To avoid OutOfMemoryError errors, tune the JVM by increasing the allocated
             memory.</para>
         <para>Add these lines to the catalina.sh file in the tomcat/bin directory:</para>
-        <para><programlisting>JAVA_OPTS=”-Xmx=512m –XX:MaxPermSize=256m”</programlisting></para>
+        <para><programlisting>JAVA_OPTS="-Xmx=512m –XX:MaxPermSize=256m"</programlisting></para>
     </section>
 </chapter>

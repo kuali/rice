@@ -671,9 +671,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <table frame="none" tabstyle="striped">
                     <title>KEW Configuration Properties</title>
                     <tgroup cols="3">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c1" colnum="1" colwidth="0.8*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.2*"/>
                         <thead>
                             <row>
                                 <entry>Property </entry>

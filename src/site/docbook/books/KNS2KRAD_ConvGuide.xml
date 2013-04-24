@@ -93,7 +93,7 @@
                         <para>The data object class is specified via the <emphasis role="keyword"
                                 >dataObjectClassName</emphasis> property and is no longer specified
                             via the <emphasis role="keyword">BusinessObjectEntry</emphasis> as it
-                            doesn’t exist in KRAD anymore. A <emphasis role="keyword">businessObject</emphasis> is no longer required
+                            doesn't exist in KRAD anymore. A <emphasis role="keyword">businessObject</emphasis> is no longer required
                             and any object can be used. [KNS line: n/a, KRAD line: 3] [script
                             converted: yes]</para>
                     </listitem>
@@ -134,7 +134,7 @@
             <title>Lookupable</title>
             <para>
                 <itemizedlist>
-                    <listitem><para><emphasis role="keyword">set/getBusinessObjectClass</emphasis>have been renamed to set/getDataObjectClass.  Since now all data objects are supported the requirement that the object is a BusinessObject has been removed.  The rename of these methods reflect this change. However, don’t use this method.  In KRAD the data object is be specified via the dataObjectClassName property of the extended Uif-LookupView bean.
+                    <listitem><para><emphasis role="keyword">set/getBusinessObjectClass</emphasis>have been renamed to set/getDataObjectClass.  Since now all data objects are supported the requirement that the object is a BusinessObject has been removed.  The rename of these methods reflect this change. However, don't use this method.  In KRAD the data object is be specified via the dataObjectClassName property of the extended Uif-LookupView bean.
                     <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   &lt;property name="dataObjectClassName" value="org.kuali.rice.SampleBo" />
   ...
@@ -196,7 +196,7 @@
 &lt;/bean></programlisting></para>
                     </listitem>
                     <listitem><para><emphasis role="keyword">validateSearchParameters</emphasis> takes the LookupForm as an additional parameter and returns a boolean value indicating that no validation error message has occurred (true = no error).  Warning and informational messages do not affect this return indicator.  A ValidationException is no longer thrown.
-                        Try using Uif configurations for more complex validation that the default KRAD validation can’t handle (e.g. <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#constraints">Constraints</link>)
+                        Try using Uif configurations for more complex validation that the default KRAD validation can't handle (e.g. <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#constraints">Constraints</link>)
                     </para>
                     </listitem>
                     <listitem><para><emphasis role="keyword">performLookup</emphasis> has been renamed to performSearch.  The resultTable parameter has been removed and takes searchCriteria as an additional parameter.

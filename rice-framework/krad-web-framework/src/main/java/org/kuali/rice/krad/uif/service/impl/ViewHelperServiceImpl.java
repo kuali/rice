@@ -629,16 +629,18 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         ViewPresentationController presentationController = view.getPresentationController();
         ViewAuthorizer authorizer = view.getAuthorizer();
 
-        Person user = GlobalVariables.getUserSession().getPerson();
-
         Set<String> actionFlags = presentationController.getActionFlags(view, model);
-        actionFlags = authorizer.getActionFlags(view, model, user, actionFlags);
+        Set<String> editModes = presentationController.getEditModes(view, model);
+
+        // if user session is not established cannot invoke authorizer
+        if (GlobalVariables.getUserSession() != null) {
+            Person user = GlobalVariables.getUserSession().getPerson();
+
+            actionFlags = authorizer.getActionFlags(view, model, user, actionFlags);
+            editModes = authorizer.getEditModes(view, model, user, editModes);
+        }
 
         view.setActionFlags(new BooleanMap(actionFlags));
-
-        Set<String> editModes = presentationController.getEditModes(view, model);
-        editModes = authorizer.getEditModes(view, model, user, editModes);
-
         view.setEditModes(new BooleanMap(editModes));
     }
 
@@ -832,6 +834,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     protected void applyAuthorizationAndPresentationLogic(View view, Component component, ViewModel model) {
         ViewPresentationController presentationController = view.getPresentationController();
         ViewAuthorizer authorizer = view.getAuthorizer();
+
+        // if user session is not established cannot perform authorization
+        if (GlobalVariables.getUserSession() == null) {
+            return;
+        }
 
         Person user = GlobalVariables.getUserSession().getPerson();
 

@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-    public class UifControllerHandlerInterceptor implements HandlerInterceptor {
+public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     private static final Logger LOG = Logger.getLogger(UifControllerHandlerInterceptor.class);
 
     /**
@@ -58,10 +58,6 @@ import javax.servlet.http.HttpServletResponse;
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
         final UserSession session = KRADUtils.getUserSessionFromRequest(request);
-
-        if (session == null) {
-            throw new IllegalStateException("the user session has not been established");
-        }
 
         //add the HistoryManager for storing HistoryFlows to the session
         if (request.getSession().getAttribute("historyManager") == null){
@@ -131,7 +127,7 @@ import javax.servlet.http.HttpServletResponse;
 
         // remove the session transient variables from the request form before adding it to the list of
         // Uif session forms
-        if (persistFormToSession) {
+        if (persistFormToSession && (uifFormManager != null)) {
             uifFormManager.purgeForm(uifForm);
             uifFormManager.addSessionForm(uifForm);
         }

@@ -81,6 +81,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
             }
             incidentViewId = ((DocumentFormBase) form).getViewId();
         }
+
         GlobalVariables.getUifFormManager().removeSessionForm(form);
 
         UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
@@ -96,9 +97,13 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setIncidentDocId(incidentDocId);
         incidentReportForm.setIncidentViewId(incidentViewId);
         incidentReportForm.setController(handler.getClass().toString());
-        incidentReportForm.setUserId(userSession.getPrincipalId());
-        incidentReportForm.setUserName(userSession.getPrincipalName());
-        incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
+
+        if (userSession != null) {
+            incidentReportForm.setUserId(userSession.getPrincipalId());
+            incidentReportForm.setUserName(userSession.getPrincipalName());
+            incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
+        }
+
         incidentReportForm.setDevMode(!KRADUtils.isProductionEnvironment());
         incidentReportForm.setViewId("Uif-IncidentReportView");
 

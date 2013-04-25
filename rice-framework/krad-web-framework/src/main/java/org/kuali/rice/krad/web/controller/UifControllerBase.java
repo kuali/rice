@@ -38,6 +38,7 @@ import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.util.Assert;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -197,6 +198,11 @@ public abstract class UifControllerBase {
      * method invoked
      */
     public void checkViewAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
+        // if user session not established we cannnot authorize the view request
+        if (GlobalVariables.getUserSession() == null) {
+            return;
+        }
+
         Person user = GlobalVariables.getUserSession().getPerson();
 
         boolean canOpenView = form.getView().getAuthorizer().canOpenView(form.getView(), form, user);
@@ -205,6 +211,15 @@ public abstract class UifControllerBase {
                     "User '" + user.getPrincipalName() + "' is not authorized to open view ID: " + form.getView()
                             .getId(), null);
         }
+    }
+
+    /**
+     * Invoked when a session timeout occurs, default impl does nothing but render the view
+     */
+    @RequestMapping(params = "methodToCall=sessionTimeout")
+    public ModelAndView sessionTimeout(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -512,13 +527,7 @@ public abstract class UifControllerBase {
                 String lookupUrl = responsibleModuleService.getExternalizableDataObjectLookupUrl(lookupObjectClass,
                         lookupParameters);
 
-                Properties externalInquiryProperties = new Properties();
-                if (lookupParameters.containsKey(UifParameters.LIGHTBOX_CALL)) {
-                    externalInquiryProperties.put(UifParameters.LIGHTBOX_CALL, lookupParameters.get(
-                            UifParameters.LIGHTBOX_CALL));
-                }
-
-                return performRedirect(form, lookupUrl, externalInquiryProperties);
+                return performRedirect(form, lookupUrl, new Properties());
             }
         }
 
@@ -799,34 +808,20 @@ public abstract class UifControllerBase {
         // indicate a redirect is occuring to prevent view processing down the line
         form.setRequestRedirected(true);
 
-        //set the ajaxReturnType on the form this will override the return type requested by the client
+        // set the ajaxReturnType on the form this will override the return type requested by the client
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.REDIRECT.getKey());
 
-        if (urlParameters != null) {
-            // If this is an Light Box call only return the redirectURL view with the URL
-            // set this is to avoid automatic redirect when using light boxes
-            if (urlParameters.get(UifParameters.LIGHTBOX_CALL) != null && urlParameters.get(UifParameters.LIGHTBOX_CALL)
-                    .equals("true")) {
-                urlParameters.remove(UifParameters.LIGHTBOX_CALL);
-                String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
-
-                ModelAndView modelAndView = new ModelAndView(UifConstants.SPRING_REDIRECT_ID);
-                modelAndView.addObject("redirectUrl", redirectUrl);
-                return modelAndView;
-            }
-        }
         String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 
-        //If this is an ajax redirect get the model and view from the form
+        ModelAndView modelAndView;
         if (form.isAjaxRequest()) {
-            ModelAndView modelAndView = getUIFModelAndView(form, form.getPageId());
+            modelAndView = getUIFModelAndView(form, form.getPageId());
             modelAndView.addObject("redirectUrl", redirectUrl);
-            return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView(UifConstants.REDIRECT_PREFIX + redirectUrl);
-            return modelAndView;
+            modelAndView = new ModelAndView(UifConstants.REDIRECT_PREFIX + redirectUrl);
         }
 
+        return modelAndView;
     }
 
     /**
@@ -856,6 +851,13 @@ public abstract class UifControllerBase {
         return getUIFModelAndView(form);
     }
 
+    /**
+     * Configures the <code>ModelAndView</code> instance containing the form
+     * data and pointing to the UIF generic spring view
+     *
+     * @param form form instance containing the model data
+     * @return ModelAndView object with the contained form
+     */
     protected ModelAndView getUIFModelAndView(UifFormBase form) {
         return getUIFModelAndView(form, form.getPageId());
     }
@@ -864,8 +866,8 @@ public abstract class UifControllerBase {
      * Configures the <code>ModelAndView</code> instance containing the form
      * data and pointing to the UIF generic spring view
      *
-     * @param form - Form instance containing the model data
-     * @param pageId - Id of the page within the view that should be rendered, can
+     * @param form form instance containing the model data
+     * @param pageId id of the page within the view that should be rendered, can
      * be left blank in which the current or default page is rendered
      * @return ModelAndView object with the contained form
      */
@@ -873,7 +875,24 @@ public abstract class UifControllerBase {
         return UifControllerHelper.getUIFModelAndView(form, pageId);
     }
 
-    // TODO: add getUIFModelAndView that takes in a view id and can perform view switching
+    /**
+     * Retrieves a new view instance for the given view id and then configures the <code>ModelAndView</code>
+     * instance containing the form data and pointing to the UIF generic spring view
+     *
+     * @param form form instance containing the model data
+     * @param viewId id for the view that should be built
+     * @return ModelAndView object with the contained form
+     */
+    protected ModelAndView getUIFModelAndViewWithInit(UifFormBase form, String viewId) {
+        View view = getViewService().getViewById(viewId);
+
+        Assert.notNull(view, "View not found with id: " + viewId);
+
+        form.setView(view);
+        form.setViewId(viewId);
+
+        return UifControllerHelper.getUIFModelAndView(form, form.getPageId());
+    }
 
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();

@@ -32,14 +32,18 @@ public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
 
     @Test
     public void compareKewApiWsdls() {
-        File[] files = new File("../../" + getModuleName() + "/api/target/wsdl").listFiles();
+        String wsdlDirectory = "../../" + getModuleName() + "/api/target/wsdl";
+        File[] files = new File(wsdlDirectory).listFiles();
+        if (files == null) throw new RuntimeException("can't find wsdls at " + wsdlDirectory + " from " + (new File(".")).getAbsolutePath());
         compareWsdlFiles(files);
     }
 
 
     @Test
     public void compareKewFrameworkWsdls() {
-        File[] files = new File("../../" + getModuleName() + "/framework/target/wsdl").listFiles();
+        String wsdlDirectory = "../../" + getModuleName() + "/framework/target/wsdl";
+        File[] files = new File(wsdlDirectory).listFiles();
+        if (files == null) throw new RuntimeException("can't find wsdls at " + wsdlDirectory + " from " + (new File(".")).getAbsolutePath());
         compareWsdlFiles(files);
     }
 

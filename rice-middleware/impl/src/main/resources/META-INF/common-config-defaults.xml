@@ -112,8 +112,6 @@
     <param name="application.url" override="false">${appserver.url}/${app.context.name}</param>
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
-    <param name="krad.lookup.url" override="false">${krad.url}/lookup</param>
-    <param name="krad.inquiry.url" override="false">${krad.url}/inquiry</param>
     <param name="rice.server.url" override="false">${application.url}</param>
     <param name="workflow.url" override="false">${rice.server.url}/kew</param>
     <param name="workflow.documentsearch.base.url" override="false">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>

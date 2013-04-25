@@ -91,6 +91,10 @@
               <overlay>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>rice-web</artifactId>
+                <excludes>
+                  <exclude>${war.overlay.exclude.2}</exclude>
+                </excludes>
+                <filtered>false</filtered>
               </overlay>
             </overlays>
           </configuration>

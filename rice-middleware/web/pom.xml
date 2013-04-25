@@ -30,6 +30,7 @@
     <monitoring.filter />
     <monitoring.mapping />
     <monitoring.listener />
+    <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
   </properties>
 
   <dependencies>
@@ -112,6 +113,10 @@
             <overlay>
               <groupId>${project.groupId}</groupId>
               <artifactId>rice-krad-web</artifactId>
+              <excludes>
+                <exclude>${war.overlay.exclude.2}</exclude>
+              </excludes>
+              <filtered>false</filtered>
             </overlay>
           </overlays>
         </configuration>
@@ -188,6 +193,13 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>kuali-release</id>
+      <properties>
+        <war.overlay.exclude.2>**/ojdbc*.jar</war.overlay.exclude.2>
+      </properties>
+    </profile>
+
     <profile>
       <id>monitoring</id>
       <properties>

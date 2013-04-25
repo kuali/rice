@@ -27,10 +27,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
- * Automatically logs in with the user specified via filter init parameter {@link AutoLoginFilter#USER_PARAM_NAME}.
+ * Automatically logs in with the user specified via filter init parameter {@link AutoLoginFilter#USER_PARAM_NAME}
+ *
  * <p>
  * There are no guarantees made that the user specified is a valid user in the system.
  * </p>
+ *
  * <p>
  * In rice this Filter can be used via config like that following assuming the bootstrap filter is used: <br />
  * {@code <param name="filter.login.class">org.kuali.kra.test.infrastructure.AutoLoginFilter</param>} <br />

@@ -19,6 +19,8 @@
 <config>
 
   <param name="krad.url" override="false">${application.url}/kr-krad</param>
+  <param name="krad.lookup.url" override="false">${krad.url}/lookup</param>
+  <param name="krad.inquiry.url" override="false">${krad.url}/inquiry</param>
   <param name="rice.server.krad.url" override="false">${rice.server.url}/kr-krad</param>
   <param name="rice.server.krad.lookup.url" override="false">${rice.server.krad.url}/lookup</param>
   <param name="krad.externalizable.images.url" override="false">${application.url}/krad/images/</param>

@@ -33,6 +33,7 @@
     <bootstrap.spring.file>classpath:KradSampleAppBeans.xml</bootstrap.spring.file>
     <maven.surefire.skip>true</maven.surefire.skip>
     <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
+    <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <kuali.testjar.phase>none</kuali.testjar.phase>
     <kuali.generate.reports>false</kuali.generate.reports>
   </properties>
@@ -92,15 +93,10 @@
             <overlay>
               <groupId>${project.groupId}</groupId>
               <artifactId>rice-web</artifactId>
-              <includes>
-                <include>${war.overlay.pattern.1}</include>
-              </includes>
-              <filtered>true</filtered>
-            </overlay>
-
-            <overlay>
-              <groupId>${project.groupId}</groupId>
-              <artifactId>rice-web</artifactId>
+              <excludes>
+                <exclude>${war.overlay.exclude.2}</exclude>
+              </excludes>
+              <filtered>false</filtered>
             </overlay>
           </overlays>
         </configuration>

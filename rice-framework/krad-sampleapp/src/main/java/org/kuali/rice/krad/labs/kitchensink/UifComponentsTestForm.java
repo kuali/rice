@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2006-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.demo.kitchensink;
+package org.kuali.rice.krad.labs.kitchensink;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -214,8 +215,6 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list1generated = new ArrayList<UITestObject>();
     private List<UITestObject> list2generated = new ArrayList<UITestObject>();
     private List<UITestObject> list3generated = new ArrayList<UITestObject>();
-    private List<TimeInfo> listTimeInfo = new ArrayList<TimeInfo>();
-    private List<DayEvent> dayEvents = new ArrayList<DayEvent>();
 
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
@@ -2275,14 +2274,6 @@ public class UifComponentsTestForm extends UifFormBase {
         this.fileUpload = fileUpload;
     }
 
-    public List<TimeInfo> getListTimeInfo() {
-        return listTimeInfo;
-    }
-
-    public void setListTimeInfo(List<TimeInfo> listTimeInfo) {
-        this.listTimeInfo = listTimeInfo;
-    }
-
     public Date getDate1() {
         return date1;
     }
@@ -2337,14 +2328,6 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setDate7(Date date7) {
         this.date7 = date7;
-    }
-
-    public List<DayEvent> getDayEvents() {
-        return dayEvents;
-    }
-
-    public void setDayEvents(List<DayEvent> dayEvents) {
-        this.dayEvents = dayEvents;
     }
 
     public List<UITestObject> getList1generated() {

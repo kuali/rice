@@ -137,6 +137,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoUnifiedHeader.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoOptionListControl.xml</value>
         <value>classpath:org/kuali/rice/krad/labs</value>
+        <value>classpath:org/kuali/rice/krad/labs/kitchensink</value>
       </list>
     </property>
     <property name="databaseRepositoryFilePaths">
@@ -226,6 +227,18 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoStickyFooterResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoUnifiedHeaderResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoOptionListResources</value>
+        <!-- kitchen sink -->
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewResources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP2Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP3Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP4Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP5Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP6Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP7Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP8Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP9Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewPx10Resources</value>
+        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewPx11Resources</value>
       </list>
     </property>
   </bean>

@@ -964,13 +964,13 @@ tail -n 500 -f catalina.out</programlisting>
                                 <entry>
                                     <itemizedlist>
                                         <listitem>
-                                          <para>org.kuali.rice.core.database.platform.DerbyPlatform</para>
+                                            <para>org.kuali.rice.core.framework.persistence.platform.DerbyPlatform</para>
                                         </listitem>
                                         <listitem>
-                                          <para>org.kuali.rice.core.database.platform.OraclePlatform</para>
+                                            <para>org.kuali.rice.core.framework.persistence.platform.OraclePlatform</para>
                                         </listitem>
                                         <listitem>
-                                          <para>org.kuali.rice.core.database.platform.MySQLPlatform
+                                            <para>org.kuali.rice.core.framework.persistence.platform.MySQLDatabasePlatform
                                           </para>
                                         </listitem>
                                     </itemizedlist>

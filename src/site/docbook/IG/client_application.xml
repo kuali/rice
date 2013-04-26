@@ -1254,8 +1254,8 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <row>
               <entry>datasource.platform</entry>
               <entry>Rice platform implementation for the database</entry>
-              <entry>org.kuali.rice.core.database.platform.OraclePlatform
-                org.kuali.rice.core.database.platform.MySQLPlatform
+              <entry>org.kuali.rice.core.framework.persistence.platform.OraclePlatform
+                org.kuali.rice.core.framework.persistence.platform.MySQLDatabasePlatform
               </entry>
             </row>
             <row>

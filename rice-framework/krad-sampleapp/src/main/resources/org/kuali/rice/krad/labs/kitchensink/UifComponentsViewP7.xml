@@ -22,9 +22,13 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="collection1" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
      <property name="propertyName" value="list1"/>
      <property name="layoutManager.sequencePropertyName" value="field1"/>
+     <property name="layoutManager.generateAutoSequence" value ="false"/>
+     <property name="layoutManager.sequenceFieldPrototype">
+       <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+     </property>
      <property name="layoutManager.richTable.render" value="false"/>
      <property name="items">
        <list>
@@ -51,9 +55,13 @@
    </bean>
 
    <bean id="collection2" parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
-     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list2" />
      <property name="layoutManager.sequencePropertyName" value="field1" />
+     <property name="layoutManager.generateAutoSequence" value ="false"/>
+     <property name="layoutManager.sequenceFieldPrototype">
+       <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+     </property>
      <property name="layoutManager.sequenceFieldPrototype.width" value="10%" />
      <property name="layoutManager.actionFieldPrototype.width" value="10%" />
      <property name="layoutManager.actionColumnPlacement" value="LEFT" />
@@ -116,7 +124,7 @@
    </bean>
 
    <bean id="collection3" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list3" />
      <property name="layoutManager.summaryFields" value="field1" />
      <property name="items">
@@ -179,7 +187,7 @@
    </bean>
 
    <bean id="collection4" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list4" />
      <property name="items">
        <list>
@@ -208,9 +216,13 @@
 
    <bean id="subCollection1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
      p:layoutManager.numberOfColumns="4">
-     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="subList" />
      <property name="layoutManager.sequencePropertyName" value="field1" />
+     <property name="layoutManager.generateAutoSequence" value ="false"/>
+     <property name="layoutManager.sequenceFieldPrototype">
+       <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+     </property>
      <property name="layoutManager.richTable.render" value="true" />
      <property name="items">
        <list>
@@ -272,7 +284,7 @@
    </bean>
 
    <bean id="collection5" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list5" />
      <property name="layoutManager.summaryFields" value="field1" />
      <property name="items">
@@ -292,7 +304,7 @@
 
    <bean id="subCollection2" parent="Uif-StackedSubCollection-WithinSection">
      <property name="disclosure.render" value="false" />
-     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="subList" />
      <property name="layoutManager.summaryFields" value="field1" />
      <property name="items">
@@ -307,9 +319,12 @@
 
 
    <bean id="collection6" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list6" />
      <property name="layoutManager.sequencePropertyName" value="field1" />
+     <property name="layoutManager.sequenceFieldPrototype">
+       <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+     </property>
      <property name="layoutManager.renderSequenceField" value="false" />
      <property name="layoutManager.generateAutoSequence" value="false" />
      <property name="layoutManager.separateAddLine" value="true" />
@@ -344,7 +359,7 @@
 
   <bean id="UifCompView-CollectionList" parent="Uif-ListCollectionSection">
     <property name="collectionObjectClass"
-      value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+      value="edu.sampleu.demo.kitchensink.UITestObject" />
     <property name="propertyName" value="list2" />
     <property name="items">
       <list>

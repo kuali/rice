@@ -1596,14 +1596,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     management system. </para>
                 <para>The current functional implementations of this platform are:<itemizedlist>
                         <listitem>
-                            <para>org.kuali.rice.core.database.platform.OraclePlatform </para>
+                            <para>org.kuali.rice.core.framework.persistence.platform.OraclePlatform </para>
                         </listitem>
                         <listitem>
-                            <para>org.kuali.rice.core.database.platform.Oracle9iPlatform (deprecated
+                            <para>org.kuali.rice.core.framework.persistence.platform.Oracle9iPlatform (deprecated
                                 and just an alias for the OraclePlatform) </para>
                         </listitem>
                         <listitem>
-                            <para>org.kuali.rice.core.database.platform.MySQLPlatform </para>
+                            <para>org.kuali.rice.core.framework.persistence.platform.MySQLDatabasePlatform </para>
                         </listitem>
                     </itemizedlist></para>
             </section>

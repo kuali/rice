@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FileUploadsForm extends KradLabsForm {
+public class LabsFileUploadsForm extends KradLabsForm {
     private static final long serialVersionUID = -6189618372290245896L;
 
     @SessionTransient

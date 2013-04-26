@@ -35,7 +35,7 @@
 
   <filter>
   	<filter-name>ajaxSessionTimeoutFilter</filter-name>
-  	<filter-class>org.kuali.rice.krad.web.filter.AjaxSessionTimeoutFilter</filter-class>
+  	<filter-class>org.kuali.rice.krad.web.filter.SessionTimeoutFilter</filter-class>
   </filter>
 
   <filter>
@@ -65,7 +65,7 @@
 
   <filter>
       <filter-name>encodingFilter</filter-name>
-      <filter-class>org.kuali.rice.krad.web.CharsetFilter</filter-class>
+      <filter-class>org.kuali.rice.krad.web.filter.CharsetFilter</filter-class>
   </filter>
 
   ${monitoring.mapping}
@@ -91,11 +91,6 @@
   </filter-mapping>
 
   <filter-mapping>
-    <filter-name>UserPreferencesFilter</filter-name>
-    <servlet-name>krad</servlet-name>
-  </filter-mapping>
-
-  <filter-mapping>
     <filter-name>encodingFilter</filter-name>
     <servlet-name>krad</servlet-name>
   </filter-mapping>
@@ -116,11 +111,6 @@
   </filter-mapping>
 
   <filter-mapping>
-    <filter-name>UserPreferencesFilter</filter-name>
-    <servlet-name>kradguest</servlet-name>
-  </filter-mapping>
-
-  <filter-mapping>
     <filter-name>encodingFilter</filter-name>
     <servlet-name>kradguest</servlet-name>
   </filter-mapping>
@@ -133,7 +123,7 @@
   ${monitoring.listener}
 
   <listener>
-    <listener-class>org.kuali.rice.krad.web.session.NonSerializableSessionListener</listener-class>
+    <listener-class>org.kuali.rice.krad.web.listener.NonSerializableSessionListener</listener-class>
   </listener>
 
   <listener>

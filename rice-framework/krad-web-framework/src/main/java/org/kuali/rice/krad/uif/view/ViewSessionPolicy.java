@@ -1,0 +1,147 @@
+package org.kuali.rice.krad.uif.view;
+
+import org.kuali.rice.krad.datadictionary.DictionaryBeanBase;
+
+import java.io.Serializable;
+
+/**
+ * Holds configuration related to session handling of a view (and its related form)
+ *
+ * <p>
+ * The framework will keep track of the session for which a view is rendered in. When a request such as a
+ * post is made, the session id for the view will be compared against the current session. If different, or no
+ * session exists, a timeout will be assumed and the framework will take the action configured on this
+ * policy
+ * </p>
+ *
+ * <p>
+ * If none of the options are set here, the framework will allow a request after a timeout to go uninterrupted
+ * </p>
+ *
+ * <p>
+ * Notes carrying out the configured view session policy requires the filter
+ * {@link org.kuali.rice.krad.web.filter.SessionTimeoutFilter} to be configured first in the list of filters
+ * for the servlet
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class ViewSessionPolicy extends DictionaryBeanBase implements Serializable {
+    private static final long serialVersionUID = -5187545712142535662L;
+
+    private boolean redirectToHome;
+    private String redirectUrl;
+    private boolean renderTimeoutView;
+    private boolean enableTimeoutWarning;
+    private int timeoutWarningMinutes;
+
+    public ViewSessionPolicy() {
+        super();
+
+        timeoutWarningMinutes = 2;
+    }
+
+    /**
+     * Indicates when a session timeout occurs the user should be redirect to the application home url
+     * (determined by the configuration parameter 'application.url')
+     *
+     * @return true if the user should be redirected to the home URL
+     */
+    public boolean isRedirectToHome() {
+        return redirectToHome;
+    }
+
+    /**
+     * Setter for indicating whether the user should be redirected to the home URL on session timeout
+     *
+     * @param redirectToHome
+     */
+    public void setRedirectToHome(boolean redirectToHome) {
+        this.redirectToHome = redirectToHome;
+    }
+
+    /**
+     * URL the user should be redirected to when a session timeout occurs
+     *
+     * @return url to redirect user to
+     */
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    /**
+     * Setter for the URL to redirect the user to when a session timeout occurs
+     *
+     * @param redirectUrl
+     */
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    /**
+     * Indicates the user should be shown the timeout message view when a session timeout occurs
+     *
+     * @return true if the timeout view should be shown on session timeout
+     */
+    public boolean isRenderTimeoutView() {
+        return renderTimeoutView;
+    }
+
+    /**
+     * Setter to indicate the timeout view should be shown on session timeout
+     *
+     * @param renderTimeoutView
+     */
+    public void setRenderTimeoutView(boolean renderTimeoutView) {
+        this.renderTimeoutView = renderTimeoutView;
+    }
+
+    /**
+     * Enables the session timeout warning dialog and timeout dialog for the view
+     *
+     * <p>
+     * When enabled, a timer will be kept on the client to warning the user when their session is about
+     * to timeout, and if the timeout actually occurs. The amount of time before a timeout to warn is specified
+     * by {@link #getTimeoutWarningMinutes()}
+     * </p>
+     *
+     * <p>
+     * The dialogs shown for the warning and timeout are configured by the dialog groups with ids
+     * {@link org.kuali.rice.krad.uif.util.ComponentFactory#SESSION_TIMEOUT_WARNING_DIALOG} and
+     * {@link org.kuali.rice.krad.uif.util.ComponentFactory#SESSION_TIMEOUT_DIALOG}
+     * </p>
+     *
+     * @return true if the timeout warning dialog should be enabled
+     */
+    public boolean isEnableTimeoutWarning() {
+        return enableTimeoutWarning;
+    }
+
+    /**
+     * Setter for enabling the session timeout warning dialog
+     *
+     * @param enableTimeoutWarning
+     */
+    public void setEnableTimeoutWarning(boolean enableTimeoutWarning) {
+        this.enableTimeoutWarning = enableTimeoutWarning;
+    }
+
+    /**
+     * When {@link #isEnableTimeoutWarning()} is true, the number of minutes before a timeout occurs to give a
+     * warning (default is 2 minutes)
+     *
+     * @return number of minutes before timeout to give warning dialog
+     */
+    public int getTimeoutWarningMinutes() {
+        return timeoutWarningMinutes;
+    }
+
+    /**
+     * Setter for the number of minutes before timeout to give a warning dialog
+     *
+     * @param timeoutWarningMinutes
+     */
+    public void setTimeoutWarningMinutes(int timeoutWarningMinutes) {
+        this.timeoutWarningMinutes = timeoutWarningMinutes;
+    }
+}

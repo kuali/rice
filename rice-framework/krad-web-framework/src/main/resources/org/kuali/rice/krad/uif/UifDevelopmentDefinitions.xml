@@ -74,6 +74,7 @@
         <value>krad/plugins/infusion/infusion.reorderer.js</value>
         <value>krad/plugins/prettify/prettify.js</value>
         <value>krad/plugins/globalize/globalize.js</value>
+        <value>krad/plugins/countdown/jquery.countdown.js</value>
         <value>krad/scripts/krad.variables.js</value>
         <value>krad/scripts/krad.message.js</value>
         <value>krad/scripts/krad.widget.js</value>
@@ -83,6 +84,7 @@
         <value>krad/scripts/krad.response.js</value>
         <value>krad/scripts/krad.actions.js</value>
         <value>krad/scripts/krad.validate.js</value>
+        <value>krad/scripts/krad.session.js</value>
       </list>
     </property>
   </bean>

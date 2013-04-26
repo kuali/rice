@@ -19,11 +19,12 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
-import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
@@ -78,16 +79,70 @@ public class DialogGroup extends Group {
     private InputField explanation;
     private InputField responseInputField;
 
-    private boolean reverseButtonOrder = false;
-    private boolean displayExplanation = false;
-    private boolean useAjaxCallForContent = false;
+    private boolean reverseButtonOrder;
+    private boolean displayExplanation;
+    private boolean useAjaxCallForContent;
+
+    private String onDialogResponseScript;
+    private String onShowDialogScript;
 
     public DialogGroup() {
         super();
     }
 
     /**
-     * Process rich message content that may be in the options, by creating and initializing the richOptions
+     * The following actions are performed in this phase:
+     *
+     * <ul>
+     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection if they
+     * are not already present</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        // move dialogGroup custom properties into the items property.
+        // where they will be rendered by group.jsp
+        List<Component> newItems = new ArrayList<Component>();
+        List<? extends Component> items = getItems();
+
+        // do not add the custom properties if they are already present
+        if (!(items.contains(prompt))) {
+            view.assignComponentIds(prompt);
+            newItems.add(prompt);
+        }
+
+        if (!(items.contains(explanation))) {
+            view.assignComponentIds(explanation);
+            newItems.add(explanation);
+        }
+
+        newItems.addAll(getItems());
+
+        if (!(items.contains(responseInputField))) {
+            view.assignComponentIds(responseInputField);
+            newItems.add(responseInputField);
+        }
+
+        this.setItems(newItems);
+    }
+
+    /**
+     * The following actions are performed in this phase:
+     *
+     * <p>
+     * <ul>
+     * <li>set the promptText in the message</li>
+     * <li>sets whether to render explanation field</li>
+     * <li>set the options for the checkbox control to the availableResponses KeyValue property of
+     * this dialogGroup</li>
+     * <li>orders response buttons</li>
+     * </ul>
+     * </p>
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
@@ -118,67 +173,12 @@ public class DialogGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(prompt);
-        components.add(explanation);
-        components.add(responseInputField);
-
-        return components;
-    }
-
-    /**
-     * The following actions are performed:
+     * The following actions are performed in this phase:
      *
+     * <p>
      * <ul>
-     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection if they
-     * are not already present</li>
-     * </ul>
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
-     */
-    @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
-
-        // move dialogGroup custom properties into the items property.
-        // where they will be rendered by group.jsp
-        List<Component> newItems = new ArrayList<Component>();
-        List<? extends Component> items = getItems();
-
-        // do not add the custom properties if they are already present
-        if (!(items.contains(prompt))) {
-            newItems.add(prompt);
-        }
-
-        if (!(items.contains(explanation))) {
-            newItems.add(explanation);
-        }
-
-        newItems.addAll(getItems());
-
-        if (!(items.contains(responseInputField))) {
-            newItems.add(responseInputField);
-        }
-
-        this.setItems(newItems);
-    }
-
-    /**
-     * Performs the final phase of the component lifecycle.
-     *
-     * <p>For this DialogGroup component, perform the following:
-     * <ul>
-     * <li>set the promptText in the message</li>
-     * <li>sets whether to render explanation field</li>
-     * <li>set the options for the checkbox control to the availableResponses KeyValue property of
-     * this dialogGroup</li>
-     * <li>orders response buttons</li>
+     * <li>handle render via ajax configuration</li>
+     * <li>adds script to the response input field for trigger the 'response' event</li>
      * </ul>
      * </p>
      *
@@ -196,9 +196,41 @@ public class DialogGroup extends Group {
             setProgressiveRender("");
             setRender(false);
         }
+
+        if (responseInputField != null) {
+            String responseInputSelector = "#" + responseInputField.getId() + " [name='" +
+                    responseInputField.getBindingInfo().getBindingPath() + "']";
+
+            String onChangeScript = "var value = coerceValue(\"" + responseInputField.getBindingInfo().getBindingPath()
+                    + "\");";
+            onChangeScript += "jQuery('#" + getId() + "').trigger({type:'" + UifConstants.JsEvents.DIALOG_RESPONSE
+                    + "',value:value});";
+
+            String onChangeHandler = "jQuery(\"" + responseInputSelector + "\").change(function(e){" + onChangeScript
+                    + "});";
+
+            String onReadyScript = ScriptUtils.appendScript(getOnDocumentReadyScript(), onChangeHandler);
+            setOnDocumentReadyScript(onReadyScript);
+        }
     }
 
-    // Getters and Setters
+    /**
+     * Override to add the handler script for the dialog response and show dialog events
+     *
+     * @see org.kuali.rice.krad.uif.component.Component#getEventHandlerScript()
+     */
+    @Override
+    public String getEventHandlerScript() {
+        String handlerScript = super.getEventHandlerScript();
+
+        handlerScript += ScriptUtils.buildEventHandlerScript(getId(), UifConstants.JsEvents.DIALOG_RESPONSE,
+                getOnDialogResponseScript());
+
+        handlerScript += ScriptUtils.buildEventHandlerScript(getId(), UifConstants.JsEvents.SHOW_DIALOG,
+                getOnShowDialogScript());
+
+        return handlerScript;
+    }
 
     /**
      * Returns the text to be displayed as the prompt or main message in this simple dialog
@@ -392,4 +424,51 @@ public class DialogGroup extends Group {
         this.useAjaxCallForContent = useAjaxCallForContent;
     }
 
+    /**
+     * Script that will be invoked when the response event is thrown
+     *
+     * <p>
+     * The dialog group will throw a custom event type 'dialogresponse.uif' when a change occurs for the response
+     * input field (for example one of the response options is selected). Script given here will bind to that
+     * event as a handler
+     * </p>
+     *
+     * @return javascript that will execute for the response event
+     */
+    public String getOnDialogResponseScript() {
+        return onDialogResponseScript;
+    }
+
+    /**
+     * Setter for the 'dialogresponse.uif' event handler code
+     *
+     * @param onDialogResponseScript
+     */
+    public void setOnDialogResponseScript(String onDialogResponseScript) {
+        this.onDialogResponseScript = onDialogResponseScript;
+    }
+
+    /**
+     * Script that will get invoked when the dialog group is shown
+     *
+     * <p>
+     * Initially a dialog group will either be hidden in the DOM or not present at all (if retrieved via Ajax).
+     * When the dialog is triggered and shown, the 'showdialog.uif' event will be thrown and this script will
+     * be executed
+     * </p>
+     *
+     * @return JavaScript code to execute when the dialog is shown
+     */
+    public String getOnShowDialogScript() {
+        return onShowDialogScript;
+    }
+
+    /**
+     * Setter for the 'showdialog.uif' event handler code
+     *
+     * @param onShowDialogScript
+     */
+    public void setOnShowDialogScript(String onShowDialogScript) {
+        this.onShowDialogScript = onShowDialogScript;
+    }
 }

@@ -144,6 +144,16 @@ public interface DataDictionaryMapper {
     public View getViewById(UifDictionaryIndex index, String viewId);
 
     /**
+     * Gets a view instance from the pool or factory but does not replace the view, meant for view readonly
+     * access (not running the lifecycle but just checking configuration)
+     *
+     * @param index the view dictionary index
+     * @param viewId the unique id for the view
+     * @return View instance with the given id
+     */
+    public View getImmutableViewById(UifDictionaryIndex index, String viewId);
+
+    /**
      * Called to retrieve a <code>View</code> instance that is of the given type
      * based on the index key
      *
@@ -155,6 +165,18 @@ public interface DataDictionaryMapper {
      * @return View instance that matches the given index
      */
     public View getViewByTypeIndex(UifDictionaryIndex index, ViewType viewTypeName, Map<String, String> indexKey);
+
+    /**
+     * Returns the view id for the view that matches the given view type and index
+     *
+     * @param index the view dictionary index
+     * @param viewTypeName type name for the view
+     * @param indexKey Map of index key parameters, these are the parameters the
+     * indexer used to index the view initially and needs to identify
+     * an unique view instance
+     * @return id for the view that matches the view type and index or null if a match is not found
+     */
+    public String getViewIdByTypeIndex(UifDictionaryIndex index, ViewType viewTypeName, Map<String, String> indexKey);
 
     /**
      * Indicates whether a <code>View</code> exists for the given view type and index information

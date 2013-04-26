@@ -680,4 +680,7 @@ public final class KRADConstants {
     public static final String MESSAGE_KEY_PLACEHOLDER_PREFIX = "@msg{";
     public static final String MESSAGE_KEY_PLACEHOLDER_SUFFIX = "}";
     public static final String MESSAGE_KEY_PATH_INDICATOR = "#";
+
+    public static final String REQUEST_MAPPING_SESSION_TIMEOUT = "sessionTimout";
+    public static final String SESSION_TIMEOUT_VIEW_ID = "Uif-SessionTimeoutView";
 }

@@ -766,6 +766,14 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setToolTip(Tooltip toolTip);
 
     /**
+     * String containing JavaScript code for registering event handlers for this component
+     * (blur, focus, click, etc.)
+     *
+     * @return JS event handler script
+     */
+    public String getEventHandlerScript();
+
+    /**
      * The name of the method that should be invoked for finalizing the component
      * configuration (full method name, without parameters or return type)
      *

@@ -34,7 +34,7 @@ import java.util.Map;
 
 /**
  * Override of ServletRequestDataBinder in order to hook in the UifBeanPropertyBindingResult
- * which instantiates a custom BeanWrapperImpl.
+ * which instantiates a custom BeanWrapperImpl, and to initialize the view
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -47,11 +47,13 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 
     public UifServletRequestDataBinder(Object target) {
         super(target);
+
         setBindingErrorProcessor(new UifBindingErrorProcessor());
     }
 
     public UifServletRequestDataBinder(Object target, String name) {
         super(target, name);
+
         setBindingErrorProcessor(new UifBindingErrorProcessor());
     }
 
@@ -64,8 +66,10 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     public void initBeanPropertyAccess() {
         Assert.state(this.bindingResult == null,
                 "DataBinder is already initialized - call initBeanPropertyAccess before other configuration methods");
+
         this.bindingResult = new UifBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths(),
                 getAutoGrowCollectionLimit());
+
         if (this.conversionService != null) {
             this.bindingResult.initConversion(this.conversionService);
         }
@@ -81,6 +85,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         if (this.bindingResult == null) {
             initBeanPropertyAccess();
         }
+
         return this.bindingResult;
     }
 
@@ -124,44 +129,74 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         if (!form.isUpdateComponentRequest() && !form.isUpdateNoneRequest() && !form.isUpdateDialogRequest()) {
             View view = null;
 
-            // attempt to retrieve a view by unique identifier first
-            String viewId = request.getParameter(UifParameters.VIEW_ID);
-            if (viewId != null) {
+            // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
+            String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
+            if (StringUtils.isBlank(viewId)) {
+                viewId = request.getParameter(UifParameters.VIEW_ID);
+            }
+
+            if (StringUtils.isNotBlank(viewId)) {
                 view = getViewService().getViewById(viewId);
-            } else {
-                // attempt to get view instance by type parameters
-                String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
-                ViewType viewType = StringUtils.isBlank(viewTypeName) ? form.getViewTypeName() : ViewType.valueOf(
-                        viewTypeName);
+            }
 
-                if (viewType != null) {
-                    Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(
-                            request.getParameterMap());
-                    view = getViewService().getViewByType(viewType, parameterMap);
-                }
+            // attempt to get view instance by type parameters
+            if (view == null) {
+                view = getViewByType(request, form);
+            }
 
-                // if view not found attempt to find one based on the cached form
-                if (view == null) {
-                    view = getViewFromPreviousModel(form);
+            // if view not found attempt to find one based on the cached form
+            if (view == null) {
+                view = getViewFromPreviousModel(form);
 
-                    if (view != null) {
-                        LOG.warn("Obtained viewId from cached form, this may not be safe!");
-                    }
+                if (view != null) {
+                    LOG.warn("Obtained viewId from cached form, this may not be safe!");
                 }
             }
 
             if (view != null) {
                 form.setViewId(view.getId());
-                form.setView(view);
+
+
             } else {
                 form.setViewId(null);
-                form.setView(null);
             }
+
+            form.setView(view);
         }
 
+        // invoke form callback for custom binding
         form.postBind((HttpServletRequest) request);
     }
 
+    /**
+     * Attempts to get a view instance by looking for a view type name in the request or the form and querying
+     * that view type with the request parameters
+     *
+     * @param request request instance to pull parameters from
+     * @param form form instance to pull values from
+     * @return View instance if found or null
+     */
+    protected View getViewByType(ServletRequest request, UifFormBase form) {
+        View view = null;
+
+        String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
+        ViewType viewType = StringUtils.isBlank(viewTypeName) ? form.getViewTypeName() : ViewType.valueOf(viewTypeName);
+
+        if (viewType != null) {
+            Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+            view = getViewService().getViewByType(viewType, parameterMap);
+        }
+
+        return view;
+    }
+
+    /**
+     * Attempts to get a view instance based on the view id stored on the form (which might not be populated
+     * from the request but remaining from session)
+     *
+     * @param form form instance to pull view id from
+     * @return View instance associated with form's view id or null if id or view not found
+     */
     protected View getViewFromPreviousModel(UifFormBase form) {
         // maybe we have a view id from the session form
         if (form.getViewId() != null) {

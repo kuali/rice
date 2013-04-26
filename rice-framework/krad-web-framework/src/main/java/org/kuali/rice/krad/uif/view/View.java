@@ -43,8 +43,10 @@ import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ParentLocation;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
@@ -155,6 +157,7 @@ public class View extends ContainerBase {
     private Map<String, String> viewRequestParameters;
 
     private boolean persistFormToSession;
+    private ViewSessionPolicy sessionPolicy;
 
     private ViewPresentationController presentationController;
     private ViewAuthorizer authorizer;
@@ -169,7 +172,7 @@ public class View extends ContainerBase {
     private PageGroup page;
 
     private List<? extends Group> items;
-    private List<? extends Group> dialogs;
+    private List<Group> dialogs;
 
     private Link viewMenuLink;
     private String viewMenuGroupName;
@@ -198,6 +201,7 @@ public class View extends ContainerBase {
         formClass = UifFormBase.class;
         supportsRequestOverrideOfReadOnlyFields = true;
         persistFormToSession = true;
+        sessionPolicy = new ViewSessionPolicy();
 
         idSequence = 0;
         this.viewIndex = new ViewIndex();
@@ -220,6 +224,8 @@ public class View extends ContainerBase {
      * <ul>
      * <li>If a single paged view, set items in page group and put the page in
      * the items list</li>
+     * <li>If {@link ViewSessionPolicy#enableTimeoutWarning} is enabled add the session timeout dialogs to the
+     * views list of dialog groups</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View,
@@ -252,6 +258,20 @@ public class View extends ContainerBase {
             } else {
                 throw new RuntimeException("For single paged views the page Group must be set.");
             }
+        }
+
+        if (sessionPolicy.isEnableTimeoutWarning()) {
+            Group warningDialog = ComponentFactory.getSessionTimeoutWarningDialog();
+
+            warningDialog.setId(ComponentFactory.SESSION_TIMEOUT_WARNING_DIALOG);
+            view.assignComponentIds(warningDialog);
+            getDialogs().add(warningDialog);
+
+            Group timeoutDialog = ComponentFactory.getSessionTimeoutDialog();
+
+            timeoutDialog.setId(ComponentFactory.SESSION_TIMEOUT_DIALOG);
+            view.assignComponentIds(timeoutDialog);
+            getDialogs().add(timeoutDialog);
         }
 
         setupBreadcrumbsAndHistory(model);
@@ -327,8 +347,31 @@ public class View extends ContainerBase {
             onReadyScript = this.getOnDocumentReadyScript();
         }
 
-        this.setOnDocumentReadyScript(onReadyScript + "jQuery.extend(jQuery.validator.messages, " +
-                ClientValidationUtils.generateValidatorMessagesOption() + ");");
+        // initialize session timers for giving timeout warnings
+        if (sessionPolicy.isEnableTimeoutWarning()) {
+            // warning minutes gives us the time before the timeout occurs to give the warning,
+            // so we need to determine how long that should be from the session start
+            int sessionTimeoutInterval = ((UifFormBase) model).getSessionTimeoutInterval();
+            int sessionWarningMilliseconds = (sessionPolicy.getTimeoutWarningMinutes() * 60000);
+
+            if (sessionWarningMilliseconds >= sessionTimeoutInterval) {
+                throw new RuntimeException(
+                        "Time until giving the session warning should be less than the session timeout. Session Warning is "
+                                + sessionWarningMilliseconds + "ms, session timeout is " + sessionTimeoutInterval
+                                + "ms.");
+            }
+
+            int sessionWarningInterval = sessionTimeoutInterval - sessionWarningMilliseconds;
+
+            onReadyScript = ScriptUtils.appendScript(onReadyScript, ScriptUtils.buildFunctionCall(
+                    UifConstants.JsFunctions.INITIALIZE_SESSION_TIMERS, sessionWarningInterval,
+                    sessionTimeoutInterval));
+        }
+
+        onReadyScript = ScriptUtils.appendScript(onReadyScript, "jQuery.extend(jQuery.validator.messages, "
+                + ClientValidationUtils.generateValidatorMessagesOption() + ");");
+
+        this.setOnDocumentReadyScript(onReadyScript);
 
         finalizeBreadcrumbs(model);
     }
@@ -1197,6 +1240,14 @@ public class View extends ContainerBase {
         this.persistFormToSession = persistFormToSession;
     }
 
+    public ViewSessionPolicy getSessionPolicy() {
+        return sessionPolicy;
+    }
+
+    public void setSessionPolicy(ViewSessionPolicy sessionPolicy) {
+        this.sessionPolicy = sessionPolicy;
+    }
+
     /**
      * PresentationController that should be used for the <code>View</code> instance
      *
@@ -1442,7 +1493,7 @@ public class View extends ContainerBase {
      * @return List of dialog Groups
      */
     @BeanTagAttribute(name = "dialogs", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<? extends Group> getDialogs() {
+    public List<Group> getDialogs() {
         return dialogs;
     }
 
@@ -1451,7 +1502,7 @@ public class View extends ContainerBase {
      *
      * @param dialogs List of dialog groups
      */
-    public void setDialogs(List<? extends Group> dialogs) {
+    public void setDialogs(List<Group> dialogs) {
         this.dialogs = dialogs;
     }
 

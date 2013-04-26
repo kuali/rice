@@ -249,7 +249,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewById(org.kuali.rice.krad.datadictionary.view.ViewDictionaryIndex,
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewById(org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex,
      *      java.lang.String)
      */
     public View getViewById(UifDictionaryIndex index, String viewId) {
@@ -261,6 +261,18 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
         }
 
         return index.getViewById(viewId);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getImmutableViewById(org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex,
+     *      java.lang.String)
+     */
+    public View getImmutableViewById(UifDictionaryIndex index, String viewId) {
+        if (StringUtils.isBlank(viewId)) {
+            throw new IllegalArgumentException("invalid (blank) view id");
+        }
+
+        return index.getImmutableViewById(viewId);
     }
 
     /**
@@ -277,6 +289,23 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
         }
 
         return index.getViewByTypeIndex(viewTypeName, indexKey);
+    }
+
+    /**
+     * @see DataDictionaryMapper#getViewByTypeIndex(org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex,
+     * org.kuali.rice.krad.uif.UifConstants.ViewType, java.util.Map<java.lang.String,java.lang.String>)
+     */
+    public String getViewIdByTypeIndex(UifDictionaryIndex index, UifConstants.ViewType viewTypeName,
+            Map<String, String> indexKey) {
+        if (viewTypeName == null) {
+            throw new IllegalArgumentException("invalid (blank) view type name");
+        }
+
+        if ((indexKey == null) || indexKey.isEmpty()) {
+            throw new IllegalArgumentException("index key must have at least one entry");
+        }
+
+        return index.getViewIdByTypeIndex(viewTypeName, indexKey);
     }
 
     /**

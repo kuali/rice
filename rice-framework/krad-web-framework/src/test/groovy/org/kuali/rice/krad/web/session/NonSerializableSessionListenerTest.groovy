@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.web.session
 
+import org.kuali.rice.krad.web.listener.NonSerializableSessionListener
+
 import javax.servlet.http.HttpSessionBindingEvent
 import org.junit.Test
 import org.kuali.rice.core.api.config.property.Config

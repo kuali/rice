@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.web.session;
+package org.kuali.rice.krad.web.listener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,10 +27,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-//TODO: May want to have a way to turn this off that way we aren't incurring the overhead
-//of testing every session object if it is serializable by actually serializing it!
-
-/** A session listener that detects when a non-serializable attributes is added to session. **/
+/**
+ * A session listener that detects when a non-serializable attributes is added to session.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class NonSerializableSessionListener implements HttpSessionAttributeListener {
     private static final Log LOG = LogFactory.getLog(NonSerializableSessionListener.class);
     private static final String ENABLE_SERIALIZATION_CHECK = "enableSerializationCheck";

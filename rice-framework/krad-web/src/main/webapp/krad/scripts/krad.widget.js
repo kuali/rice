@@ -273,8 +273,8 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                 e.preventDefault();
 
                 data['jumpToId'] = componentId;
+                data['ajaxRequest'] = 'true';
                 data['actionParameters[renderedInLightBox]'] = 'true';
-                data['actionParameters[lightBoxCall]'] = 'true';
                 data['actionParameters[flowKey]'] = 'start';
                 data['actionParameters[returnByScript]'] = '' + lookupReturnByScript;
 
@@ -307,8 +307,11 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                         // way to clear forms when the lightbox performs a post back
                         // options['beforeClose'] = cleanupClosedLightboxForms;
 
+                        // get the lookup redirect URL from the response
+                        var lookupUrl = jQuery(data).text();
+
                         // Add the returned URL to the FancyBox href setting
-                        options['href'] = data.replace(/&amp;/g, '&');
+                        options['href'] = lookupUrl.replace(/&amp;/g, '&');
 
                         // Open the light box
                         getContext().fancybox(options);

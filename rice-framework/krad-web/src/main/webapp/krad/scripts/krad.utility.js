@@ -414,7 +414,17 @@ function runScriptsForId(id) {
  * @param jqueryObj - a jquery object representing a hidden input element with a script in its value attribute
  */
 function evalHiddenScript(jqueryObj) {
-    eval(jqueryObj.val());
+    try {
+        eval(jqueryObj.val());
+    }
+    catch (e) {
+        if (console) {
+            console.log("Error evaluating script: " + jqueryObj.val());
+            console.log(e.name);
+            console.log(e.message);
+        }
+    }
+
     jqueryObj.attr("script", "first_run");
     jqueryObj.removeAttr("name");
 }
@@ -1070,11 +1080,17 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
     var component = jQuery('#' + componentId);
     var cssDisplay = component.css('display');
 
-    // suppress scrollbar when not needed
-    // undo the div.clearfix hack (KULRICE-7467)
-    component.attr('class', component.attr('class').replace('clearfix', ''));
+    // suppress scrollbar when not needed, undo the div.clearfix hack (KULRICE-7467)
+    if (component.attr('class')) {
+        component.attr('class', component.attr('class').replace('clearfix', ''));
+    }
+
     component.find('div').each(function () {
-        jQuery(this).attr('class', jQuery(this).attr('class').replace('clearfix', ''));
+        var classAttribute = jQuery(this).attr('class');
+
+        if (classAttribute) {
+            jQuery(this).attr('class', classAttribute.replace('clearfix', ''));
+        }
     });
 
     if (top == self) {
@@ -1086,6 +1102,8 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
             jQuery('#tmpForm_' + componentId).replaceWith(jQuery('#' + componentId).detach());
             jQuery('#' + componentId).css('display', cssDisplay);
             jQuery('#renderedInLightBox').val(false);
+
+            activeDialogId = null;
         }});
     } else {
         // reattach component to KualiForm after fancybox closes
@@ -1096,12 +1114,21 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
             jQuery('#tmpForm_' + componentId).replaceWith(parent.jQuery('#' + componentId).detach());
             jQuery('#' + componentId).css('display', cssDisplay);
             jQuery('#renderedInLightBox').val(false);
+
+            activeDialogId = null;
         }});
     }
 
     // clone the content for the lightbox and make the element id unique
     showLightboxContent(component.clone(true, true).css('display', ''), overrideOptions);
     addIdPrefix(component, 'tmpForm_');
+
+    // indicate active dialog, note this is done after showing the lightbox since it could close an existing
+    // lightbox which will set activeDialogId to null (through the beforeClose handler above)
+    activeDialogId = componentId;
+
+    // trigger the show dialog event
+    jQuery('#tmpForm_' + componentId).trigger(kradVariables.SHOW_DIALOG_EVENT);
 }
 
 /**
@@ -1190,6 +1217,13 @@ function setupLightboxForm() {
 }
 
 /**
+ * Closes any open lightbox
+ */
+function closeLightbox() {
+    jQuery.fancybox.close();
+}
+
+/**
  * Internal function for appending callback function to fancybox options
  *
  * <p>
@@ -1265,19 +1299,6 @@ function removeIdPrefix(component, prefix) {
 function openLightboxOnLoad(dialogId) {
     showLightboxComponent(dialogId);
     jQuery('.uif-dialogButtons').button();
-}
-
-/**
- * script to run when a lightbox response button is selected.
- *
- * <p>
- * setup common return method for lightboxes, close the fancybox, and submit the form
- * </p>
- */
-function lightboxButtonScript() {
-    writeHiddenToForm('methodToCall', 'returnFromLightbox');
-    jQuery.fancybox.close();
-    jQuery('#kualiForm').submit();
 }
 
 /**
@@ -1756,16 +1777,16 @@ function getMessage(key, namespace, componentCode) {
 function invokeServerListener(methodToCall, params) {
     var serverResponse;
 
-    params.methodToCall = methodToCall;
-    params.ajaxRequest = true;
-    params.ajaxReturnType = 'update-none';
+    var requestData = {methodToCall: methodToCall, ajaxRequest: true, ajaxReturnType: 'update-none'};
+
+    jQuery.extend(requestData, params);
 
     var postUrl = getConfigParam("kradUrl") + "/listener";
 
     jQuery.ajax({
         url: postUrl,
         dataType: "json",
-        data: params,
+        data: requestData,
         async: false,
         beforeSend: null,
         complete: null,

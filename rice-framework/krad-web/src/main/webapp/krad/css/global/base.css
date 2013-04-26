@@ -1483,3 +1483,8 @@ ol.linenums li:nth-of-type(2n+1) {
     border: 1px solid #CCCCCC;
     padding-right: 0 !important;
 }
+
+/* div wrapper for the timer countdown plugin, by default want to display inline with the message */
+div.hasCountdown {
+    display: inline;
+}

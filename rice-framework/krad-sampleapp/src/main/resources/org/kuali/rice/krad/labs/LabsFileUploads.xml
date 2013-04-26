@@ -32,7 +32,7 @@
         </property>
       </bean>
     </property>
-    <property name="formClass" value="org.kuali.rice.krad.labs.fileUploads.FileUploadsForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.fileUploads.LabsFileUploadsForm"/>
   </bean>
 
   <bean id="Lab-FileUploads-Section" parent="Uif-VerticalBoxSection" p:headerText="Page 1"

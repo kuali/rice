@@ -30,6 +30,8 @@ import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewSessionPolicy;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.springframework.beans.PropertyValues;
@@ -138,19 +140,20 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
                 multipleValueSelectSpecifiedOnURL = true;
             }
 
-            if (!multipleValueSelectSpecifiedOnURL && lookupForm.getViewRequestParameters().containsKey(UifParameters.MULTIPLE_VALUES_SELECT)) {
+            if (!multipleValueSelectSpecifiedOnURL && lookupForm.getViewRequestParameters().containsKey(
+                    UifParameters.MULTIPLE_VALUES_SELECT)) {
                 String multiValueSelect = lookupForm.getViewRequestParameters().get(
                         UifParameters.MULTIPLE_VALUES_SELECT);
                 if (multiValueSelect.equalsIgnoreCase("true")) {
                     multipleValueSelectSpecifiedOnURL = true;
                 }
             }
-            lookupView = (LookupView)lookupForm.getView();
+            lookupView = (LookupView) lookupForm.getView();
         } else {
             Map<String, String> indexKey = new HashMap<String, String>();
             indexKey.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
             indexKey.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClass.getName());
-            lookupView = (LookupView)getDataDictionary().getViewByTypeIndex(ViewType.LOOKUP, indexKey);
+            lookupView = (LookupView) getDataDictionary().getViewByTypeIndex(ViewType.LOOKUP, indexKey);
         }
 
         if (lookupView != null) {
@@ -161,6 +164,24 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
             }
         }
         return null;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewDictionaryService#getViewSessionPolicy(java.lang.String)
+     */
+    public ViewSessionPolicy getViewSessionPolicy(String viewId) {
+        if (StringUtils.isBlank(viewId)) {
+            throw new IllegalArgumentException("view id is required for retrieving the view session policy");
+        }
+
+        ViewSessionPolicy viewSessionPolicy = null;
+
+        View view = getDataDictionary().getImmutableViewById(viewId);
+        if (view != null) {
+            viewSessionPolicy = view.getSessionPolicy();
+        }
+
+        return viewSessionPolicy;
     }
 
     protected DataDictionary getDataDictionary() {

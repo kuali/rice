@@ -83,7 +83,7 @@
     <property name="persistFormToSession" value="true"/>
     <property name="presentationControllerClass" value="org.kuali.rice.krad.uif.view.ViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.uif.view.ViewAuthorizerBase"/>
-    <property name="preloadPoolSize" value="1"/>
+    <property name="preloadPoolSize" value="2"/>
     <property name="breadcrumbs">
       <bean parent="Uif-Breadcrumbs"/>
     </property>
@@ -164,17 +164,21 @@
     <property name="breadcrumbs.render" value="false"/>
   </bean>
 
-  <bean id="Uif-AjaxTimeoutView" parent="Uif-AjaxTimeoutView-parentBean"/>
-  <bean id="Uif-AjaxTimeoutView-parentBean" abstract="true" parent="Uif-FormView">
-    <property name="page">
-      <bean parent="Uif-Page"/>
+  <bean id="Uif-SessionTimeoutView" parent="Uif-SessionTimeoutView-parentBean"/>
+  <bean id="Uif-SessionTimeoutView-parentBean" parent="Uif-MessageView">
+    <property name="messageText" value="[b]Your Session has timed out and the request could not be completed.[/b]"/>
+    <property name="formClass" value="org.kuali.rice.krad.web.form.SessionTimeoutForm"/>
+  </bean>
+
+  <bean id="Uif-LoggedOutView" parent="Uif-LoggedOutView-parentBean"/>
+  <bean id="Uif-LoggedOutView-parentBean" parent="Uif-MessageView">
+    <property name="messageText" value="You have been successfully logged out. To relogin return to the  [0]."/>
+    <property name="message.inlineComponents">
+      <list>
+        <bean parent="Uif-Link" p:href="@{#ConfigProperties['application.url']}" p:linkText="home screen"
+              p:target="_self"/>
+      </list>
     </property>
-    <property name="onLoadScript" value="parent.resubmitRequest();"/>
-    <property name="singlePageView" value="true"/>
-    <property name="persistFormToSession" value="false"/>
-    <property name="breadcrumbs.render" value="false"/>
-    <property name="applicationHeader.render" value="false"/>
-    <property name="applicationFooter.render" value="false"/>
   </bean>
 
   <bean id="Uif-Page" parent="Uif-Page-parentBean"/>

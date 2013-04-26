@@ -102,6 +102,21 @@ public class ViewServiceImpl implements ViewService {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.service.ViewService#getViewIdForViewType(org.kuali.rice.krad.uif.UifConstants.ViewType,
+     * java.util.Map<java.lang.String,java.lang.String>)
+     */
+    public String getViewIdForViewType(ViewType viewType, Map<String, String> parameters) {
+        ViewTypeService typeService = getViewTypeService(viewType);
+        if (typeService == null) {
+            throw new RuntimeException("Unable to find view type service for view type name: " + viewType);
+        }
+
+        Map<String, String> typeParameters = typeService.getParametersFromRequest(parameters);
+
+        return dataDictionaryService.getViewIdByTypeIndex(viewType, typeParameters);
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.view.View, java.lang.Object,
      *      java.util.Map<java.lang.String,java.lang.String>)
      */

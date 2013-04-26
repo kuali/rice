@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 
 import java.util.List;
 
@@ -29,7 +29,6 @@ import java.util.List;
 public class MessageView extends FormView {
     private static final long serialVersionUID = 5578210247236389466L;
 
-    private String messageText;
     private Message message;
 
     public MessageView() {
@@ -50,10 +49,6 @@ public class MessageView extends FormView {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        if (StringUtils.isNotBlank(messageText) && StringUtils.isBlank(message.getMessageText())) {
-            message.setMessageText(messageText);
-        }
-
         List<Component> newItems = (List<Component>) getPage().getItems();
         newItems.add(message);
         getPage().setItems(newItems);
@@ -72,24 +67,6 @@ public class MessageView extends FormView {
     }
 
     /**
-     * Test for the message to display
-     *
-     * @return message text
-     */
-    public String getMessageText() {
-        return messageText;
-    }
-
-    /**
-     * Setter for the views message text
-     *
-     * @param messageText
-     */
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
-    }
-
-    /**
      * Message component that will be used to display the message (used for styling and so on)
      *
      * @return Message component instance
@@ -105,5 +82,18 @@ public class MessageView extends FormView {
      */
     public void setMessage(Message message) {
         this.message = message;
+    }
+
+    /**
+     * Helper method for setting the message text
+     *
+     * @param messageText text to use for the message
+     */
+    public void setMessageText(String messageText) {
+        if (this.message == null) {
+            this.message = ComponentFactory.getMessage();
+        }
+
+        this.message.setMessageText(messageText);
     }
 }

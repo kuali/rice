@@ -302,12 +302,14 @@ KradRequest.prototype = {
                     showLoading(request.loadingMessage, request.elementToBlock, replaceElement);
                 }
             },
-            complete: function () {
+            complete: function (jqXHR, textStatus) {
                 // note that if you want to unblock simultaneous with showing the new retrieval
                 // you must do so in the successCallback
                 if (!request.disableBlocking) {
                     hideLoading(request.elementToBlock);
                 }
+
+                resetSessionTimers();
             },
             error: function () {
                 if (nonEmpty(request.elementToBlock) && request.elementToBlock.hasClass("uif-placeholder")) {
@@ -317,7 +319,7 @@ KradRequest.prototype = {
                     hideLoading(request.elementToBlock);
                 }
             },
-            statusCode: {403: function () {
+            statusCode: {403: function (jqXHR, textStatus) {
                 if (nonEmpty(request.elementToBlock) && request.elementToBlock.hasClass("uif-placeholder")) {
                     request.elementToBlock.hide();
                 }
@@ -325,17 +327,10 @@ KradRequest.prototype = {
                     hideLoading(request.elementToBlock);
                 }
 
-                request.handleAjaxSessionTimeout();
+                handleAjaxSessionTimeout(jqXHR.responseText);
             }}
         };
 
         jQuery.extend(options, elementBlockingOptions);
-    },
-
-    handleAjaxSessionTimeout : function() {
-        timedOutRequest = this;
-
-        var listenerUrl = getConfigParam("kradUrl") + "/listener?viewId=Uif-AjaxTimeoutView";
-        showLightboxUrl(listenerUrl);
     }
 }

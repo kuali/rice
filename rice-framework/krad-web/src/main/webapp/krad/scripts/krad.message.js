@@ -214,3 +214,4 @@ function showClientSideErrorNotification(message) {
 
     showGrowl(message, getMessage(kradVariables.MESSAGE_ERROR), 'errorGrowl');
 }
+

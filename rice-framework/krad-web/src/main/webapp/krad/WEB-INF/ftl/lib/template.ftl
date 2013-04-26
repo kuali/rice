@@ -53,7 +53,7 @@
         <@krad.script component=component role="dataScript" value="${component.complexDataAttributesJs}"/>
 
         <#-- generate event code for component -->
-        <@krad.eventScript component=component/>
+        <@krad.script component=component value="${component.eventHandlerScript}" />
     </#if>
 
     <#if componentUpdate>

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
+import org.springframework.util.Assert;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
@@ -327,6 +328,35 @@ public class ScriptUtils {
         }
 
         sb.append(");");
+
+        return sb.toString();
+    }
+
+    /**
+     * Builds the JavaScript string for binding the given script to the component with the given id
+     * for the given event name (using jQuery)
+     *
+     * @param id id of the element to handle the event for
+     * @param eventName name of the event the script will handle
+     * @param eventScript script to be executed when the event is thrown, if blank an empty string will
+     * be returned
+     * @return JS event handler script
+     */
+    public static String buildEventHandlerScript(String id, String eventName, String eventScript) {
+        if (StringUtils.isBlank(eventScript)) {
+            return "";
+        }
+
+        Assert.hasLength(id, "Id is required for building event handler script");
+        Assert.hasLength(eventName, "Event name is required for building event handler script");
+
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("jQuery('#" + id + "').on('");
+        sb.append(eventName);
+        sb.append("', function(e) {");
+        sb.append(eventScript);
+        sb.append("}); ");
 
         return sb.toString();
     }

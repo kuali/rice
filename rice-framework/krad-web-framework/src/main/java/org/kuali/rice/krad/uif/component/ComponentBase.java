@@ -969,6 +969,39 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * @see Component#getEventHandlerScript()
+     */
+    public String getEventHandlerScript() {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "load", getOnLoadScript()));
+
+        // special handling for ready since it needs to bind to the document
+        if (StringUtils.isNotBlank(getOnDocumentReadyScript())) {
+            sb.append("jQuery(document).ready(function(e) {");
+            sb.append(getOnDocumentReadyScript());
+            sb.append("});");
+        }
+
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "unload", getOnUnloadScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "blur", getOnBlurScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "change", getOnChangeScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "click", getOnClickScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "dblclick", getOnDblClickScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "focus", getOnFocusScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "keypress", getOnKeyPressScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "keyup", getOnKeyUpScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "keydown", getOnKeyDownScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "mouseover", getOnMouseOverScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "mouseout", getOnMouseOutScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "mouseup", getOnMouseUpScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "mousedown", getOnMouseDownScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "mousemove", getOnMouseMoveScript()));
+
+        return sb.toString();
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnLoadScript()
      */
     @BeanTagAttribute(name = "onLoadScript")

@@ -86,4 +86,17 @@ public class ScriptUtilsTest {
         String jsMap = " {'a':1, 'b':2} \n";
         assertEquals("map was not converted to js value as expected", jsMap, ScriptUtils.convertToJsValue(jsMap));
     }
+
+    /**
+     * Test building of event script matches the expected JavaScript
+     */
+    @Test
+    public void testBuildEventHandlerScript() {
+        String onClickScript = "alert('A click happened');";
+        String onClickHandler = ScriptUtils.buildEventHandlerScript("u09", "click", onClickScript);
+
+        String expectedHandler = "jQuery('#u09').click(function(e) {" + onClickScript + "});";
+
+        assertEquals("generate event script is not correct", expectedHandler, onClickHandler);
+    }
 }

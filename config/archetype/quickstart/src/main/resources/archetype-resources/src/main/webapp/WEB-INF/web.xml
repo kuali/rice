@@ -70,7 +70,7 @@ This file contains custom application specific web.xml content.
 
   <!-- in rice 2.2<filter>
       <filter-name>encodingFilter</filter-name>
-      <filter-class>org.kuali.rice.krad.web.CharsetFilter</filter-class>
+      <filter-class>org.kuali.rice.krad.web.filter.CharsetFilter</filter-class>
   </filter>-->
 
   <filter-mapping>
@@ -170,7 +170,7 @@ This file contains custom application specific web.xml content.
   </filter-mapping>
 
   <listener>
-    <listener-class>org.kuali.rice.krad.web.session.NonSerializableSessionListener</listener-class>
+    <listener-class>org.kuali.rice.krad.web.listener.NonSerializableSessionListener</listener-class>
   </listener>
 
   <listener>

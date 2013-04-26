@@ -486,4 +486,15 @@ public interface DataDictionaryService {
      * @return View instance that matches the given index
      */
     View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey);
+
+    /**
+     * Returns the view id for the view that matches the given view type and index
+     *
+     * @param viewTypeName type name for the view
+     * @param indexKey Map of index key parameters, these are the parameters the
+     * indexer used to index the view initially and needs to identify
+     * an unique view instance
+     * @return id for the view that matches the view type and index or null if a match is not found
+     */
+    String getViewIdByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey);
 }

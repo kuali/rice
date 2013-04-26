@@ -51,6 +51,47 @@ public class UifControllerHelper {
     private static final Logger LOG = Logger.getLogger(UifControllerHelper.class);
 
     /**
+     * Attempts to resolve a view id from the given request
+     *
+     * <p>
+     * First an attempt will be made to find the view id as a request parameter. If no such request parameter
+     * is found, the request will be looked at for view type information and a call will be made to the
+     * view service to find the view id by type
+     * </p>
+     *
+     * <p>
+     * If a view id is found it is stuck in the request as an attribute (under the key
+     * {@link org.kuali.rice.krad.uif.UifParameters#VIEW_ID}) for subsequent retrieval
+     * </p>
+     *
+     * @param request instance to resolve view id for
+     * @return view id if one is found, null if not found
+     */
+    public static String getViewIdFromRequest(HttpServletRequest request) {
+        String viewId = request.getParameter(UifParameters.VIEW_ID);
+
+        if (StringUtils.isBlank(viewId)) {
+            String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
+
+            UifConstants.ViewType viewType = null;
+            if (StringUtils.isNotBlank(viewTypeName)) {
+                viewType = UifConstants.ViewType.valueOf(viewTypeName);
+            }
+
+            if (viewType != null) {
+                Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+                viewId = getViewService().getViewIdForViewType(viewType, parameterMap);
+            }
+        }
+
+        if (StringUtils.isNotBlank(viewId)) {
+           request.setAttribute(UifParameters.VIEW_ID, viewId);
+        }
+
+        return viewId;
+    }
+
+    /**
      * Configures the <code>ModelAndView</code> instance containing the form
      * data and pointing to the UIF generic spring view
      *
@@ -78,15 +119,15 @@ public class UifControllerHelper {
      */
     public static void postControllerHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-        if (!(handler instanceof UifControllerBase) || (modelAndView == null)) {
+        if (modelAndView == null) {
             return;
         }
-        UifControllerBase controller = (UifControllerBase) handler;
 
         Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
         if (!(model instanceof UifFormBase)) {
             return;
         }
+
         UifFormBase form = (UifFormBase) model;
 
         // handle view building if not a redirect

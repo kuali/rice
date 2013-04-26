@@ -30,8 +30,10 @@ import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.springframework.util.Assert;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -724,6 +726,53 @@ public final class KRADUtils {
         }
 
         return "?" + requestString;
+    }
+
+    /**
+     * Helper method for building a URL that will invoke the given controller and render the given
+     * KRAD view
+     *
+     * @param baseUrl base url (domain, port)
+     * @param controllerMapping mapping for the controller that should be invoked
+     * @param viewId id for the view that should be rendered
+     * @return url for invoking the view
+     */
+    public static String buildViewUrl(String baseUrl, String controllerMapping, String viewId) {
+        Assert.hasLength(baseUrl, "base url is null or empty");
+        Assert.hasLength(controllerMapping, "controller mapping is null or empty");
+        Assert.hasLength(viewId, "view id is null or empty");
+
+        StringBuffer url = new StringBuffer();
+
+        url.append(baseUrl);
+
+        if (!baseUrl.endsWith("/")) {
+            url.append("/");
+        }
+
+        url.append(controllerMapping);
+
+        url.append("?");
+        url.append(UifParameters.VIEW_ID);
+        url.append("=");
+        url.append(viewId);
+
+        return url.toString();
+    }
+
+    /**
+     * Removes parameters from the given properties object that are request specific (useful when manupulating the
+     * current URL to invoke something else)
+     *
+     * @param requestParameters properties instance containing the parameters to clean
+     */
+    public static void cleanRequestParameters(Properties requestParameters) {
+        requestParameters.remove(UifParameters.SESSION_ID);
+        requestParameters.remove(UifParameters.AJAX_REQUEST);
+        requestParameters.remove(UifParameters.AJAX_RETURN_TYPE);
+        requestParameters.remove(UifParameters.FORM_KEY);
+        requestParameters.remove(UifParameters.JUMP_TO_ID);
+        requestParameters.remove(UifParameters.FOCUS_ID);
     }
 
     /**

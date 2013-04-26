@@ -36,17 +36,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping(value = "/fileUploads")
-public class FileUploadsController extends KradLabsController {
+public class LabsFileUploadsController extends KradLabsController {
 
     @Override
-    protected FileUploadsForm createInitialForm(HttpServletRequest request) {
-        return new FileUploadsForm();
+    protected LabsFileUploadsForm createInitialForm(HttpServletRequest request) {
+        return new LabsFileUploadsForm();
     }
 
     @RequestMapping(params = "methodToCall=uploadOne")
     public ModelAndView uploadOne(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        FileUploadsForm uploadForm = (FileUploadsForm) form;
+        LabsFileUploadsForm uploadForm = (LabsFileUploadsForm) form;
 
         if ((uploadForm.getUploadOne() == null) || StringUtils.isBlank(uploadForm.getUploadOne().getName())) {
             GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS, "labs.fileUpload", "one");
@@ -58,7 +58,7 @@ public class FileUploadsController extends KradLabsController {
     @RequestMapping(params = "methodToCall=uploadTwo")
     public ModelAndView uploadTwo(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        FileUploadsForm uploadForm = (FileUploadsForm) form;
+        LabsFileUploadsForm uploadForm = (LabsFileUploadsForm) form;
 
         if ((uploadForm.getUploadTwo() == null) || StringUtils.isBlank(uploadForm.getUploadTwo().getName())) {
             GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS, "labs.fileUpload", "two");

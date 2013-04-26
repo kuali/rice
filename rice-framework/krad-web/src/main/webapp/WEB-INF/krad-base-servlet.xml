@@ -78,7 +78,7 @@
     <property name="suffix" value=".ftl"/>
   </bean>
 
-  <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+  <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
     <property name="interceptors">
       <list>
         <ref bean="uifControllerHandlerInterceptor"/>
@@ -101,7 +101,7 @@
 
   <bean id="exceptionResolver" class="org.kuali.rice.krad.web.controller.UifHandlerExceptionResolver"/>
 
-  <bean class="org.kuali.rice.krad.web.controller.UifAnnotationMethodHandleAdapter">
+  <bean class="org.kuali.rice.krad.web.controller.UifRequestMappingHandlerAdapter">
     <property name="webBindingInitializer">
       <ref bean="kradConfigurableWebBindingInitializer"/>
     </property>

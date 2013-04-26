@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Sets up a new request configured from the given action component and submits
  * the request
@@ -91,16 +92,25 @@ function submitForm(methodToCall, additionalData, validate, ajaxSubmit, successC
 }
 
 /**
- * Invoked after an Ajax call has timed out and the user has re-authenticated, we simply
- * make the original request again after closing the login dialog
+ * Convenience method for redirecting to a URL
+ *
+ * @param url to redirect to
  */
-function resubmitRequest() {
-    jQuery.fancybox.close();
+function redirect(url) {
+    window.location = url;
+}
 
-    if (timedOutRequest) {
-        timedOutRequest.send();
-        timedOutRequest = null;
-    }
+/**
+ * Default handler for dialog responses
+ *
+ * <p>
+ * Simply closes the dialog and makes server call to handle the response
+ * </p>
+ */
+function submitDialogResponse() {
+    closeLightbox();
+
+    ajaxSubmitForm(kradVariables.RETURN_FROM_LIGHTBOX_METHOD_TO_CALL);
 }
 
 /**

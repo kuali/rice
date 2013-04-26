@@ -51,6 +51,8 @@ public class UifConstants {
     public static final String VALIDATE_VIEWS_ONBUILD = "validate.views.onbuild";
 
     public static final String MESSAGE_VIEW_ID = "Uif-MessageView";
+    public static final String SESSION_TIMEOUT_VIEW_ID = "Uif-SessionTimeoutView";
+    public static final String LOGGED_OUT_VIEW_ID = "Uif-LoggedOutView";
 
     public static enum ReadOnlyListTypes {
         DELIMITED, BREAK, OL, UL
@@ -119,6 +121,7 @@ public class UifConstants {
         public static final String DELETE_LINE = "deleteLine";
         public static final String REFRESH = "refresh";
         public static final String CANCEL = "cancel";
+        public static final String SESSION_TIMEOUT = "sessionTimeout";
     }
 
     public static class ActionEvents {
@@ -295,7 +298,15 @@ public class UifConstants {
     
     public static final class JsFunctions {
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
+        public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";
         public static final String SET_CONFIG_PARM = "setConfigParam";
+    }
+
+    public static final String EVENT_NAMESPACE = "uif";
+
+    public static final class JsEvents {
+        public static final String DIALOG_RESPONSE = "dialogresponse." + EVENT_NAMESPACE;
+        public static final String SHOW_DIALOG = "showdialog." + EVENT_NAMESPACE;
     }
 
     public static final class ConfigProperties {

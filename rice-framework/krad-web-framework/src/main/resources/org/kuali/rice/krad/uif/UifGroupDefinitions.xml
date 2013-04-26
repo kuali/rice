@@ -1100,7 +1100,6 @@
       <bean parent="Uif-HeaderThree"/>
     </property>
     <property name="header.cssClasses" value="uif-dialogHeader"/>
-    <property name="headerText" value=""/>
     <property name="hidden" value="true"/>
     <property name="promptText" value="Would You Like to Continue?"/>
     <property name="availableResponses">
@@ -1109,8 +1108,6 @@
         <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
       </list>
     </property>
-    <property name="displayExplanation" value="false"/>
-    <property name="reverseButtonOrder" value="false"/>
     <property name="forceSessionPersistence" value="true"/>
     <property name="prompt">
       <bean parent="Uif-DialogPrompt"/>
@@ -1126,6 +1123,7 @@
         <value>uif-dialogGroup</value>
       </list>
     </property>
+    <property name="onDialogResponseScript" value="submitDialogResponse();"/>
   </bean>
 
   <bean id="Uif-DialogPrompt" parent="Uif-MessageField">
@@ -1165,7 +1163,6 @@
         </property>
       </bean>
     </property>
-    <property name="onChangeScript" value="lightboxButtonScript();"/>
   </bean>
 
   <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup">
@@ -1256,6 +1253,51 @@
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
         <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-SessionTimeoutWarning-DialogGroup" parent="Uif-DialogGroup">
+    <property name="headerText" value="Still there?"/>
+    <property name="promptText">
+      <value>
+        [b]Due to inactivity, you will be logged out in [div id="UifTimeoutCountdown"]@{#view.sessionPolicy.timeoutWarningMinutes}[/div] minute(s).[/b][br]
+        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000} minutes of inactivity.
+      </value>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="continue" p:value="Continue Working"/>
+        <bean parent="Uif-KeyLabelPair" p:key="logout" p:value="Log out"/>
+      </list>
+    </property>
+    <property name="onDialogResponseScript" value="handleTimeoutWarningResponse(e);"/>
+    <property name="onShowDialogScript">
+      <value>
+        jQuery('#UifTimeoutCountdown').countdown({until: @{#view.sessionPolicy.timeoutWarningMinutes} * 60,format : 'MS', compact : true});
+      </value>
+    </property>
+  </bean>
+
+  <bean id="Uif-SessionTimeout-DialogGroup" parent="Uif-DialogGroup">
+    <property name="headerText" value="Logged out"/>
+    <property name="promptText">
+      <value>
+        [b]You have been logged out due to inactivity.[/b][br]
+        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000} minutes of inactivity.
+        Return to the [0].
+      </value>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="okay" p:value="Okay"/>
+      </list>
+    </property>
+    <property name="onDialogResponseScript" value="handleTimeoutResponse(e);"/>
+    <property name="prompt.inlineComponents">
+      <list>
+        <bean parent="Uif-ActionLink" p:actionLabel="home screen"
+              p:actionScript="redirect('@{#ConfigProperties['application.url']}');"/>
       </list>
     </property>
   </bean>

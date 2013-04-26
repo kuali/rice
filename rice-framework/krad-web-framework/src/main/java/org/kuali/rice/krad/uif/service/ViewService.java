@@ -61,6 +61,16 @@ public interface ViewService {
     public View getViewByType(ViewType viewType, Map<String, String> parameters);
 
     /**
+     * Retrieves the view id for the view associated with the given view type and view type parameters
+     *
+     * @param viewType name that identifies the view type
+     * @param parameters Map of parameter key/value pairs that are used to select the
+     * view, the parameters allowed depend on the view type
+     * @return id for the view or null if a matching view was not found
+     */
+    public String getViewIdForViewType(ViewType viewType, Map<String, String> parameters);
+
+    /**
      * Executes the view lifecycle on the given <code>View</code> instance which will
      * prepare it for rendering
      *

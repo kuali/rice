@@ -1047,7 +1047,8 @@ public class KualiDefaultListableBeanFactory extends AbstractAutowireCapableBean
 		}
 
 		private Class determineObjectFactoryType() {
-			Type type = this.descriptor.getGenericDependencyType();
+			Type type = this.descriptor.getDependencyType();
+                   // getGenericDependencyType();
 			if (type instanceof ParameterizedType) {
 				Type arg = ((ParameterizedType) type).getActualTypeArguments()[0];
 				if (arg instanceof Class) {

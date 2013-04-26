@@ -20,7 +20,7 @@
 <div class="demo-appHeader">
     <div>
         <div class="demo-headerFooterContainer">
-            <a href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start" class="demo-brand">
+            <a href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome" class="demo-brand">
                 <div class="demo-brandLogo">
                 <#--Image placeholder-->
                 </div>
@@ -29,13 +29,13 @@
             <div>
                 <ul class="demo-appNavigation">
                     <li><a id="Demo-HomeLink"
-                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start">Home</a>
+                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome">Home</a>
                     </li>
                     <li><a id="Demo-LibraryLink"
-                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=ComponentLibraryHome&amp;methodToCall=start">Library</a>
+                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=ComponentLibraryHome">Library</a>
                     </li>
                     <li><a id="Demo-DemoLink"
-                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppDemo&amp;methodToCall=start">Demo</a></li>
+                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppDemo">Demo</a></li>
                     <li><a id="Demo-DownloadLink" href="http://kuali.org/download/rice">Download</a></li>
                 </ul>
             </div>

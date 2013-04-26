@@ -24,6 +24,8 @@ package org.kuali.rice.krad.uif;
  */
 public class UifParameters {
 
+    public static final String AJAX_REQUEST = "ajaxRequest";
+    public static final String AJAX_RETURN_TYPE = "ajaxReturnType";
 	public static final String AUTO_SEARCH = "autoSearch";
 	public static final String BASE_LOOKUP_URL = "baseLookupUrl";
 	public static final String METHOD_TO_CALL = "methodToCall";
@@ -39,7 +41,8 @@ public class UifParameters {
     public static final String FORM_MANAGER = "formManager";
 	public static final String RENDER_HEADER = "renderHeader";
 	public static final String HIDE_RETURN_LINK = "hideReturnLink";
-    public static final String LIGHTBOX_CALL = "lightBoxCall";
+    public static final String JUMP_TO_ID = "jumpToId";
+    public static final String FOCUS_ID = "focusId";
 	public static final String RENDER_LOOKUP_CRITERIA = "renderlookupCriteria";
 	public static final String LOOKUP_PARAMETERS = "lookupParameters";
     public static final String LOOKUP_COLLECTION_NAME = "lookupCollectionName";
@@ -56,6 +59,7 @@ public class UifParameters {
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
     public static final String SELECTED_LINE_VALUES = "selectedLineValues";
+    public static final String SESSION_ID = "sessionId";
 	public static final String SHOW_MAINTENANCE_LINKS = "showMaintenanceLinks";
 	public static final String SUPPRESS_ACTIONS = "suppressActions";
 	public static final String SUPPLEMENTAL_ACTIONS_ENABLED = "supplementalActionsEnabled";
@@ -70,6 +74,4 @@ public class UifParameters {
     public static final String QUERY_FIELD_ID = "queryFieldId";
     public static final String QUERY_TERM = "queryTerm";
     public static final String UPDATE_COMPONENT_ID = "updateComponentId";
-    public static final String AJAX_REQUEST = "ajaxRequest";
-
 }

@@ -892,6 +892,14 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getViewIdByTypeIndex(org.kuali.rice.krad.uif.UifConstants.ViewType,
+     * java.util.Map<java.lang.String,java.lang.String>)
+     */
+    public String getViewIdByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey) {
+        return dataDictionary.getViewIdByTypeIndex(viewTypeName, indexKey);
+    }
+
+    /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getGroupByAttributesForEffectiveDating(java.lang.Class)
      */
     public List<String> getGroupByAttributesForEffectiveDating(Class dataObjectClass) {

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.service;
 
 import org.kuali.rice.krad.inquiry.Inquirable;
+import org.kuali.rice.krad.uif.view.ViewSessionPolicy;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 /**
@@ -84,4 +85,12 @@ public interface ViewDictionaryService {
      *         property could also be null on the view itself)
      */
     public Integer getResultSetLimitForLookup(Class<?> dataObjectClass, LookupForm form);
+
+    /**
+     * Retrieves the <code>ViewSessionPolicy</code> instance associated with the given view id
+     *
+     * @param viewId id for the view whose session policy should be retrieved
+     * @return view session policy instance for view or null if view not found for the given id
+     */
+    public ViewSessionPolicy getViewSessionPolicy(String viewId);
 }

@@ -34,6 +34,14 @@
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ClientSideState"/>
                         <bean parent="Uif-Link" p:linkText="File Upload View" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/fileUploads?viewId=Lab-FileUploads"/>
+                        <bean parent="Uif-Link" p:linkText="Session Policy Redirect Home" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-RedirectHome"/>
+                        <bean parent="Uif-Link" p:linkText="Session Policy Redirect URL View" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-RedirectUrl"/>
+                        <bean parent="Uif-Link" p:linkText="Session Policy Timeout View" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-TimeoutView"/>
+                        <bean parent="Uif-Link" p:linkText="Session Policy Timeout Warning" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-TimeoutWarning&amp;methodToCall=setSessionTimeout"/>
                         <bean parent="Uif-Link" p:linkText="Encryption Utility" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/encryption?viewId=Lab-Encryption"/>
                       </list>

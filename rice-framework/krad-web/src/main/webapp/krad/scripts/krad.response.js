@@ -167,10 +167,8 @@ KradResponse.prototype = {
             jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
             newComponent.animate({backgroundColor:"transparent"}, 6000);
             jQuery(component).find("#" + id).animate({backgroundColor:"transparent"}, 6000);
-        }
+            }
         });
-
-
     },
 
     // performs a redirect to the URL found in the returned contents

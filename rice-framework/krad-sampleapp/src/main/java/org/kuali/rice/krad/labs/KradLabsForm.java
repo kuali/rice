@@ -818,4 +818,8 @@ public class KradLabsForm extends UifFormBase {
         this.booleanField3 = booleanField3;
     }
 
+    public void setSessionTimeoutInterval(int interval) {
+        this.sessionTimeoutInterval = interval;
+    }
+
 }

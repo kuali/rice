@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,6 +66,8 @@ public class UifFormBase implements ViewModel {
     protected String methodToCall;
     protected String formKey;
     protected String flowKey;
+    protected String sessionId;
+    protected int sessionTimeoutInterval;
 
     @SessionTransient
     protected HistoryFlow historyFlow;
@@ -169,6 +172,11 @@ public class UifFormBase implements ViewModel {
     public void postBind(HttpServletRequest request) {
         // default form post URL to request URL
         formPostUrl = request.getRequestURL().toString();
+
+        if (request.getSession() != null) {
+            sessionId = request.getSession().getId();
+            sessionTimeoutInterval = request.getSession().getMaxInactiveInterval();
+        }
 
         //set controller mapping property
         controllerMapping = request.getPathInfo();
@@ -391,6 +399,39 @@ public class UifFormBase implements ViewModel {
 
     public void setReturnFormKey(String returnFormKey) {
         this.returnFormKey = returnFormKey;
+    }
+
+    /**
+     * Holds the id for the user's current session
+     *
+     * <p>
+     * The user's session id is used to track when a timeout has occurred and enforce the policy
+     * configured with the {@link org.kuali.rice.krad.uif.view.ViewSessionPolicy}. This property gets initialized
+     * in the {@link #postBind(javax.servlet.http.HttpServletRequest)} method and then is written out as a
+     * hidden on the view. Therefore each post done on the view will send back the session id when the view was
+     * rendering, and the {@link org.kuali.rice.krad.web.filter.SessionTimeoutFilter} can use that to determine
+     * if a timeout has occurred
+     * </p>
+     *
+     * @return id for the user's current session
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    /**
+     * Holds the configured session timeout interval
+     *
+     * <p>
+     * Holds the session timeout interval so it can be referenced to give the user notifications (for example the
+     * session timeout warning reads this property). This is initialized from the session object in
+     * {@link #postBind(javax.servlet.http.HttpServletRequest)}
+     * </p>
+     *
+     * @return amount of time in milliseconds before the session will timeout
+     */
+    public int getSessionTimeoutInterval() {
+        return sessionTimeoutInterval;
     }
 
     /**

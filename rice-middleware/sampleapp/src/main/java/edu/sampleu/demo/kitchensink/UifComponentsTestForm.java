@@ -1755,45 +1755,27 @@ public class UifComponentsTestForm extends UifFormBase {
         this.field81 = field81;
     }
 
-    /**
-     * @return the mField1
-     */
-    public String getmField1() {
-        return this.mField1;
+    public String getMField1() {
+        return mField1;
     }
 
-    /**
-     * @param mField1 the mField1 to set
-     */
-    public void setmField1(String mField1) {
+    public void setMField1(String mField1) {
         this.mField1 = mField1;
     }
 
-    /**
-     * @return the mField2
-     */
-    public String getmField2() {
-        return this.mField2;
+    public String getMField2() {
+        return mField2;
     }
 
-    /**
-     * @param mField2 the mField2 to set
-     */
-    public void setmField2(String mField2) {
+    public void setMField2(String mField2) {
         this.mField2 = mField2;
     }
 
-    /**
-     * @return the mField3
-     */
-    public String getmField3() {
-        return this.mField3;
+    public String getMField3() {
+        return mField3;
     }
 
-    /**
-     * @param mField3 the mField3 to set
-     */
-    public void setmField3(String mField3) {
+    public void setMField3(String mField3) {
         this.mField3 = mField3;
     }
 

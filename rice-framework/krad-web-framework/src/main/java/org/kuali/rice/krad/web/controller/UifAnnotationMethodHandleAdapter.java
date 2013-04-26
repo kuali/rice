@@ -42,5 +42,4 @@ public class UifAnnotationMethodHandleAdapter extends AnnotationMethodHandlerAda
 
         return super.createBinder(request, target, objectName);
     }
-
 }

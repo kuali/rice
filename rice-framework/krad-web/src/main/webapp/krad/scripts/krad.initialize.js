@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // global vars
 var jq = jQuery.noConflict();
 
@@ -51,7 +52,9 @@ var ajaxReturnHandlers = {};
 
 var gCurrentBubblePopupId;
 
-var timedOutRequest;
+var activeDialogId;
+var sessionWarningTimer;
+var sessionTimeoutTimer;
 
 //delay function
 var delay = (function () {
@@ -88,7 +91,13 @@ jQuery(document).ready(function () {
     jQuery.ajaxSetup({
         error: function (jqXHR, textStatus, errorThrown) {
             showGrowl(getMessage(kradVariables.MESSAGE_STATUS_ERROR, null, null, textStatus, errorThrown), getMessage(kradVariables.MESSAGE_SERVER_RESPONSE_ERROR), 'errorGrowl');
-        }
+        },
+        complete: function (jqXHR, textStatus) {
+            resetSessionTimers();
+        },
+        statusCode: {403: function (jqXHR, textStatus) {
+            handleAjaxSessionTimeout(jqXHR.responseText);
+        }}
     });
 
     // stop previous loading message

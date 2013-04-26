@@ -23,15 +23,6 @@
 
     <meta charset="UTF-8">
 
-    <#if SESSION_TIMEOUT_WARNING_MILLISECONDS?has_content>
-        <script type="text/javascript">
-            <!--
-            setTimeout("alert('Your session will expire in ${SESSION_TIMEOUT_WARNING_MINUTES} minutes.')",
-                    '${SESSION_TIMEOUT_WARNING_MILLISECONDS}');
-            // -->
-        </script>
-    </#if>
-
     <title>
         <@spring.message "app.title"/>
         <#if view.headerText?has_content>

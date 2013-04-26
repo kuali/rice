@@ -39,6 +39,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.LinkGroup;
 import org.kuali.rice.krad.uif.container.NavigationGroup;
@@ -150,6 +151,9 @@ public class ComponentFactory {
     protected static final String IMAGE_CUTLINE_MESSAGE = "Uif-ImageCutineMessage";
 
     protected static final String LIGHTBOX = "Uif-LightBox";
+
+    public static final String SESSION_TIMEOUT_WARNING_DIALOG = "Uif-SessionTimeoutWarning-DialogGroup";
+    public static final String SESSION_TIMEOUT_DIALOG = "Uif-SessionTimeout-DialogGroup";
 
     private static Map<String, Component> cache = new HashMap<String, Component>();
 
@@ -1105,5 +1109,23 @@ public class ComponentFactory {
      */
     public static LightBox getLightBox() {
         return (LightBox) getNewComponentInstance(LIGHTBOX);
+    }
+
+    /**
+     * Gets an instance of the session timeout warning dialog
+     *
+     * @return instance of session timeout warning dialog
+     */
+    public static DialogGroup getSessionTimeoutWarningDialog() {
+        return (DialogGroup) getNewComponentInstance(SESSION_TIMEOUT_WARNING_DIALOG);
+    }
+
+    /**
+     * Gets an instance of the session timeout dialog
+     *
+     * @return instance of session timeout dialog
+     */
+    public static DialogGroup getSessionTimeoutDialog() {
+        return (DialogGroup) getNewComponentInstance(SESSION_TIMEOUT_DIALOG);
     }
 }

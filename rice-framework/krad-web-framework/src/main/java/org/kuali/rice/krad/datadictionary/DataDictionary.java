@@ -458,11 +458,22 @@ public class DataDictionary {
     /**
      * Returns the View entry identified by the given id
      *
-     * @param viewId - unique id for view
+     * @param viewId unique id for view
      * @return View instance associated with the id
      */
     public View getViewById(String viewId) {
         return ddMapper.getViewById(uifIndex, viewId);
+    }
+
+    /**
+     * Returns the View entry identified by the given id, meant for view readonly
+     * access (not running the lifecycle but just checking configuration)
+     *
+     * @param viewId unique id for view
+     * @return View instance associated with the id
+     */
+    public View getImmutableViewById(String viewId) {
+        return ddMapper.getImmutableViewById(uifIndex, viewId);
     }
 
     /**
@@ -476,6 +487,19 @@ public class DataDictionary {
      */
     public View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey) {
         return ddMapper.getViewByTypeIndex(uifIndex, viewTypeName, indexKey);
+    }
+
+    /**
+     * Returns the view id for the view that matches the given view type and index
+     *
+     * @param viewTypeName type name for the view
+     * @param indexKey Map of index key parameters, these are the parameters the
+     * indexer used to index the view initially and needs to identify
+     * an unique view instance
+     * @return id for the view that matches the view type and index or null if a match is not found
+     */
+    public String getViewIdByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey) {
+        return ddMapper.getViewIdByTypeIndex(uifIndex, viewTypeName, indexKey);
     }
 
     /**

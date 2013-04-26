@@ -38,8 +38,6 @@
             <@krad.backdoor/>
         </#if>
 
-
-
         <@krad.form render=view.renderForm postUrl="${view.formPostUrl!KualiForm.formPostUrl}"
         onSubmitScript="${view.onSubmitScript!}">
 
@@ -49,6 +47,9 @@
 
                 <#-- all forms will be stored in session, this is the conversation key -->
                 <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
+
+                <#-- tracks the session, used to determine timeouts -->
+                <@spring.formHiddenInput id="sessionId" path="KualiForm.sessionId"/>
 
                 <#-- flow key to maintain a history flow -->
                 <@spring.formHiddenInput id="flowKey" path="KualiForm.flowKey"/>

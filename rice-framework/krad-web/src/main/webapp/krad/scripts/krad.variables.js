@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Common constants and variables for KRAD
  */
@@ -20,19 +21,6 @@ function JavascriptKradVariables () {
 }
 
 JavascriptKradVariables.prototype = {
-
-    // validation init
-//    var pageValidatorReady : false,
-//    var validateClient : true,
-//    var messageSummariesShown : false,
-//    var pauseTooltipDisplay : false,
-//
-//    var errorImage,
-//    var errorGreyImage,
-//    var warningImage,
-//    var infoImage,
-
-    // constants
      APPLICATION_CLASS  : "Uif-Application",
      APP_ID  : "Uif-Application",
      CHANGED_HEADER_ICON_CLASS : "uif-changedHeaderIcon",
@@ -60,6 +48,7 @@ JavascriptKradVariables.prototype = {
      INFO_MESSAGE_ITEM_CLASS : "uif-infoMessageItem-field",
      INPUT_FIELD_CLASS : "uif-inputField",
      INPUT_FIELD_SELECTOR : "[data-role:'InputField']",
+     KEEP_SESSION_ALIVE_METHOD_TO_CALL : "keepSessionAlive",
      KRAD_URL : "kradUrl",
      KUALI_FORM : "kualiForm",
      MESSAGE_COUNT_CLASS : "uif-messageCount",
@@ -99,10 +88,17 @@ JavascriptKradVariables.prototype = {
      REFRESH_METHOD_TO_CALL : "refresh",
      RETRIEVE_MESSAGE_METHOD_TO_CALL : "retrieveMessage",
      RETURN_TYPE_UPDATE_COMPONENT : "update-component",
+     RETURN_FROM_LIGHTBOX_METHOD_TO_CALL : "returnFromLightbox",
      REQUIRED_MESSAGE_CLASS : "uif-requiredMessage",
      SAVE_LINE_ACTION_CLASS : "uif-saveLineAction",
      SERVER_MESSAGE_ITEMS_CLASS : "uif-serverMessageItems",
+     SESSION_TIMEOUT_WARNING_DIALOG : "Uif-SessionTimeoutWarning-DialogGroup",
+     SESSION_TIMEOUT_DIALOG : "Uif-SessionTimeout-DialogGroup",
+     SESSION_TIMEOUT_WARNING_TIMER : "sessionTimeoutWarningTimer",
+     SESSION_TIMEOUT_TIMER : "sessionTimeoutTimer",
+     SHOW_DIALOG_EVENT : "showdialog.uif",
      STACKED_COLLECTION_LAYOUT_CLASS : "uif-stackedCollectionLayout",
+     SUCCESS_RESPONSE : "success",
      TABLE_COLLECTION_LAYOUT_CLASS : "uif-tableCollectionLayout",
      TAB_GROUP_CLASS : "Uif-TabGroup",
      TAB_MENU_CLASS : "uif-tabMenu",

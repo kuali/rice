@@ -24,6 +24,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -76,15 +77,19 @@ public class UifDictionaryIndex implements Runnable {
     @Override
     public void run() {
         LOG.info("Starting View Index Building");
+
         try {
             Integer size = new Integer(ConfigContext.getCurrentContextConfig().getProperty(
                     KRADConstants.KRAD_DICTIONARY_INDEX_POOL_SIZE));
             threadPoolSize = size;
+
             poolSizeSet = true;
         } catch (NumberFormatException nfe) {
             // ignore this, instead the pool will be set to DEFAULT_SIZE
         }
+
         buildViewIndicies();
+
         LOG.info("Completed View Index Building");
     }
 
@@ -97,14 +102,13 @@ public class UifDictionaryIndex implements Runnable {
      * by Spring from the bean factory
      * </p>
      *
-     * @param viewId - the unique id for the view
+     * @param viewId the unique id for the view
      * @return View instance with the given id
      * @throws org.kuali.rice.krad.datadictionary.DataDictionaryException if view doesn't exist for id
      */
     public View getViewById(final String viewId) {
         // check for preloaded view
         if (viewPools.containsKey(viewId)) {
-
             final UifViewPool viewPool = viewPools.get(viewId);
             synchronized (viewPool) {
                 if (!viewPool.isEmpty()) {
@@ -123,10 +127,31 @@ public class UifDictionaryIndex implements Runnable {
 
                     return view;
                 } else {
-                    LOG.info("Pool size for view with id: "
-                            + viewId
+                    LOG.info("Pool size for view with id: " + viewId
                             + " is empty. Considering increasing max pool size.");
                 }
+            }
+        }
+
+        // no pooling, get new instance from factory
+        return getViewInstanceFromFactory(viewId);
+    }
+
+    /**
+     * Gets a view instance from the pool or factory but does not replace the view, meant for view readonly
+     * access (not running the lifecycle but just checking configuration)
+     *
+     * @param viewId the unique id for the view
+     * @return View instance with the given id
+     */
+    public View getImmutableViewById(String viewId) {
+        // check for preloaded view
+        if (viewPools.containsKey(viewId)) {
+            UifViewPool viewPool = viewPools.get(viewId);
+            if (!viewPool.isEmpty()) {
+                View view = viewPool.getViewSharedInstance();
+
+                return view;
             }
         }
 
@@ -162,16 +187,28 @@ public class UifDictionaryIndex implements Runnable {
      *         found
      */
     public View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey) {
-        String index = buildTypeIndex(indexKey);
-
-        ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewTypeName);
-
-        String viewId = typeIndex.get(index);
+        String viewId = getViewIdByTypeIndex(viewTypeName, indexKey);
         if (StringUtils.isNotBlank(viewId)) {
             return getViewById(viewId);
         }
 
         return null;
+    }
+
+    /**
+     * Retrieves the id for the view that is associated with the given view type and index key
+     *
+     * @param viewTypeName type name for the view
+     * @param indexKey Map of index key parameters, these are the parameters the
+     * indexer used to index the view initially and needs to identify an unique view instance
+     * @return id for the view that matches the view type and index or null if a match is not found
+     */
+    public String getViewIdByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey) {
+        String index = buildTypeIndex(indexKey);
+
+        ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewTypeName);
+
+        return typeIndex.get(index);
     }
 
     /**

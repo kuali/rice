@@ -82,12 +82,21 @@ public class UifViewPool {
     }
 
     /**
-     * Retrieves a view instance from the pool
+     * Retrieves a view instance from the pool and removes the instance
      *
      * @return View instance
      */
     public View getViewInstance() {
         return views.pop();
+    }
+
+    /**
+     * Retrieves a view instance from the pool without removing it
+     *
+     * @return instance of a View
+     */
+    public View getViewSharedInstance() {
+        return views.peek();
     }
 
     /**

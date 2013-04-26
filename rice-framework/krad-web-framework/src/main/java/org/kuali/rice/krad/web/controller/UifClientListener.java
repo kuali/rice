@@ -16,15 +16,18 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -86,6 +89,30 @@ public class UifClientListener extends UifControllerBase {
         }
 
         return "{\"messageText\":\"" + messageText + "\"}";
+    }
+
+    /**
+     * Invoked from the session timeout warning dialog to keep a session alive on behalf of a user
+     *
+     * @return String json success string
+     */
+    @RequestMapping(params = "methodToCall=keepSessionAlive")
+    public
+    @ResponseBody
+    String keepSessionAlive(HttpServletRequest request, HttpServletResponse response) {
+        return "{\"status\":\"success\"}";
+    }
+
+    /**
+     * Invoked from the session timeout warning dialog to log the user out, forwards to logout message view
+     */
+    @RequestMapping(params = "methodToCall=logout")
+    public ModelAndView logout(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+                HttpServletRequest request, HttpServletResponse response) {
+
+        request.getSession().invalidate();
+
+        return getUIFModelAndViewWithInit(form, UifConstants.LOGGED_OUT_VIEW_ID);
     }
 
 }

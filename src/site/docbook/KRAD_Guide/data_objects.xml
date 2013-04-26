@@ -500,7 +500,7 @@
                 the case of KualiDecimal, the scale is set to 2, and the rounding behavior is 'Round
                 Half Up'. KualiInteger has a scale of 0, and uses 'Round Half Up' rounding as well
                 (for operations with decimal types). </para>
-            <tip><para><emphasis role="keyword">Round Up Half</emphasis>: Round Half Up is a common rounding strategy in
+            <tip><para><emphasis role="keyword">Round Half Up</emphasis>: Round Half Up is a common rounding strategy in
                     particular within financial applications. To calculate the rounded value, we add
                     0.5 to the value and then use the floor function (largest integer that does not
                     exceed value). For example, 23.5 rounds to 24, 23.4 round to 23, -23.5 rounds to

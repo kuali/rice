@@ -21,6 +21,10 @@ import org.junit.Test;
 import org.kuali.rice.vc.test.WsdlCompareTestCase;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
     private static final Logger LOG = Logger.getLogger(KewWsdlCompatibilityTest.class);
@@ -47,5 +51,24 @@ public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
         compareWsdlFiles(files);
     }
 
+    @Override
+    protected Map<String, List<WsdlCompareTestCase.VersionTransition>> getWsdlVersionTransitionBlacklists() {
+        Map<String, List<WsdlCompareTestCase.VersionTransition>> blacklist =
+                new HashMap<String, List<WsdlCompareTestCase.VersionTransition>>(super.getWsdlVersionTransitionBlacklists());
 
+        blacklist.put("ImmediateEmailReminderQueue",
+                Arrays.asList(
+                        new WsdlCompareTestCase.VersionTransition("2.1.0", "2.1.1"),
+                        new WsdlCompareTestCase.VersionTransition("2.0.2", "2.1.1")
+                ));
+
+        blacklist.put("ActionListService",
+                Arrays.asList(
+                        new WsdlCompareTestCase.VersionTransition("2.1.0", "2.1.1"),
+                        new WsdlCompareTestCase.VersionTransition("2.0.2", "2.1.1")
+                ));
+
+
+        return blacklist;
+    }
 }

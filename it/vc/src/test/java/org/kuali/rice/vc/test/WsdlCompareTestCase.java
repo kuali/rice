@@ -174,13 +174,13 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         try {
             wsdl1 = parser.parse(oldWsdl);
         } catch (com.predic8.xml.util.ResourceDownloadException e) {
-            LOG.error("COULDN'T PARSE " + oldWsdl);
+            LOG.info("Couldn't download " + oldWsdl + ", maybe the service didn't exist in this version?");
             return Collections.emptyList();
         }
         try {
             wsdl2 = parser.parse(newWsdl);
         } catch (com.predic8.xml.util.ResourceDownloadException e) {
-            LOG.error("COULDN'T PARSE " + newWsdl);
+            LOG.info("Couldn't download" + newWsdl + ", maybe the service didn't exist in this version?");
             return Collections.emptyList();
         }
 
@@ -225,12 +225,13 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
     }
 
     /**
-     * Allows an extending test to specify versions of specific wsdls to omit from testing.  This can be useful for
-     * ignoring version compatibility issues that have already been addressed in previous versions.
+     * Allows an extending test to specify versions transitions of specific wsdls to omit from testing.  This can be
+     * useful for ignoring version compatibility issues that have already been addressed in previously released
+     * versions.
      *
      * @return a Map from wsdl file name (e.g. "DocumentTypeService.wsdl") to a list of {@link MavenVersion}s to filter
      */
-    protected Map<String, List<VersionTransition>> getWsdlVersionBlacklists() {
+    protected Map<String, List<VersionTransition>> getWsdlVersionTransitionBlacklists() {
         return new HashMap<String, List<VersionTransition>>();
     }
 
@@ -247,15 +248,19 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
 
         for (File wsdlFile : wsdlFiles) { // we're effectively iterating through each service
             if (wsdlFile.getName().endsWith(".wsdl")) {
-                LOG.info("testing wsdl: " + wsdlFile.getAbsolutePath());
+                LOG.info("TESTING WSDL: " + wsdlFile.getAbsolutePath());
                 String newWsdl = wsdlFile.getAbsolutePath();
 
                 // do filtering to avoid testing blacklisted wsdl version transitions
-                List<VersionTransition> wsdlTransitionBlacklist = getWsdlVersionBlacklists().get(wsdlFile.getName());
+                List<VersionTransition> wsdlTransitionBlacklist =
+                        getWsdlVersionTransitionBlacklists().get(getServiceNameFromWsdlFile(wsdlFile));
+
                 if (wsdlTransitionBlacklist == null) { wsdlTransitionBlacklist = Collections.emptyList(); }
 
                 for (VersionTransition transition : transitions) if (!wsdlTransitionBlacklist.contains(transition)) {
                     breakages.addAll(testWsdlVersionTransition(currentVersion, wsdlFile, transition));
+                } else {
+                    LOG.info("Ignoring blacklisted " + transition);
                 }
             }
         }
@@ -263,6 +268,14 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         if (!breakages.isEmpty()) {
             fail(buildBreakagesSummary(breakages));
         }
+    }
+
+    // Quick and dirty, and AFAIK very specific to Rice's conventions
+    String getServiceNameFromWsdlFile(File wsdlFile) {
+        String fileName = wsdlFile.getName();
+        int beginIndex = 1 + fileName.lastIndexOf('-');
+        int endIndex = fileName.lastIndexOf('.');
+        return fileName.substring(beginIndex, endIndex);
     }
 
     /**
@@ -560,6 +573,14 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         private final String qualifier;
         private final Long timestamp;
 
+        /**
+         * Constructor that takes just a version string as an argument.  Beware, because 0 will be used as the timestamp!
+         * @param versionString
+         */
+        public MavenVersion(String versionString) {
+            this(versionString, "0");
+        }
+
         public MavenVersion(String versionString, String timestampString) {
             originalForm = versionString;
             if (versionString == null || "".equals(versionString.trim())) {
@@ -681,15 +702,19 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
     /**
      * A class representing a transition from one maven version to another
      */
-    static class VersionTransition {
+    public static class VersionTransition {
         private final MavenVersion fromVersion;
         private final MavenVersion toVersion;
 
-        private VersionTransition(MavenVersion fromVersion, MavenVersion toVersion) {
+        public VersionTransition(MavenVersion fromVersion, MavenVersion toVersion) {
             this.fromVersion = fromVersion;
             this.toVersion = toVersion;
             if (fromVersion == null) throw new IllegalArgumentException("fromVersion must not be null");
             if (toVersion == null) throw new IllegalArgumentException("toVersion must not be null");
+        }
+
+        public VersionTransition(String fromVersion, String toVersion) {
+            this(new MavenVersion(fromVersion), new MavenVersion(toVersion));
         }
 
         private MavenVersion getFromVersion() {

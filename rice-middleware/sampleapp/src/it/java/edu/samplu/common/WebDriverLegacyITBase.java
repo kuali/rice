@@ -1018,10 +1018,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             String javascript="jQuery.jGrowl('" + message + "' , {sticky: false, header : '" + jGrowlHeader + "'});";
             ((JavascriptExecutor) driver).executeScript(javascript);
         } catch (Throwable t) {
-            System.out.println("jGrowl failure " + t.getMessage());
-            if (JGROWL_ERROR_FAILURE) {
-                fail(t.getMessage());
-            }
+            jGrowlException(t);
         }
     }
 
@@ -1030,8 +1027,19 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * in an infinite loop if JGROWL_ERROR_FAILURE is true so please don't.
      */
     protected void jGrowlSticky(String message) {
-        String javascript="jQuery.jGrowl('" + message + "' , {sticky: true, header : '" + jGrowlHeader + "'});";
-        ((JavascriptExecutor) driver).executeScript(javascript);
+        try {
+            String javascript="jQuery.jGrowl('" + message + "' , {sticky: true, header : '" + jGrowlHeader + "'});";
+            ((JavascriptExecutor) driver).executeScript(javascript);
+        } catch (Throwable t) {
+            jGrowlException(t);
+        }
+    }
+
+    private void jGrowlException(Throwable t) {
+        System.out.println("jGrowl failure " + t.getMessage());
+        if (JGROWL_ERROR_FAILURE) {
+            fail(t.getMessage());
+        }
     }
 
     private void jiraAwareFail(By by, String message, Throwable t) {

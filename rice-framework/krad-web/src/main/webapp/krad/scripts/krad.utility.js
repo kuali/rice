@@ -2428,3 +2428,30 @@ function hideEmptyCells() {
         }
     });
 }
+
+/**
+ * Displays a countdown (days, hours, minutes) in the div given by the target id
+ *
+ * <p>
+ * Uses the jquery.countdown.js plugin: http://keith-wood.name/countdown.html
+ * </p>
+ *
+ * @param targetId id for the target element that should contain the countdown
+ * @param until date to countdown from
+ * @param overrideOptions any additional or override options for the countdown plugin
+ */
+function displayCountdown(targetId, until, overrideOptions) {
+    var options = {until: until, format: 'MS', compact: true};
+
+    jQuery.extend(true, options, overrideOptions);
+
+    var target = jQuery('#' + targetId);
+
+    if (target.length > 0) {
+        // in the case of redisplaying a countdown we need to clear the target's contents
+        target.removeClass(kradVariables.COUNTDOWN_CLASS);
+        target.empty();
+
+        target.countdown(options);
+    }
+}

@@ -1272,11 +1272,8 @@
       </list>
     </property>
     <property name="onDialogResponseScript" value="handleTimeoutWarningResponse(e);"/>
-    <property name="onShowDialogScript">
-      <value>
-        jQuery('#UifTimeoutCountdown').countdown({until: @{#view.sessionPolicy.timeoutWarningMinutes} * 60,format : 'MS', compact : true});
-      </value>
-    </property>
+    <property name="onShowDialogScript"
+              value="displayCountdown('UifTimeoutCountdown', @{#view.sessionPolicy.timeoutWarningMinutes} * 60);"/>
   </bean>
 
   <bean id="Uif-SessionTimeout-DialogGroup" parent="Uif-DialogGroup">
@@ -1285,7 +1282,7 @@
       <value>
         [b]You have been logged out due to inactivity.[/b][br]
         For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000} minutes of inactivity.
-        Return to the [0].
+        Return to the&nbsp;[0].
       </value>
     </property>
     <property name="availableResponses">

@@ -32,6 +32,7 @@ JavascriptKradVariables.prototype = {
      COLLAPSED_WARNINGS_CLASS : "uif-collapsedWarnings",
      COLLECTION_ITEM_CLASS : "uif-collectionItem",
      CONTROL_CLASS : "Uif-Application",
+     COUNTDOWN_CLASS : "hasCountdown",
      DIRTY_CLASS : "dirty",
      ERROR_HIGHLIGHT_SECTION_CLASS : "uif-errorHighlight-section",
      ERROR_MESSAGE_ITEM_CLASS : "uif-errorMessageItem-field",

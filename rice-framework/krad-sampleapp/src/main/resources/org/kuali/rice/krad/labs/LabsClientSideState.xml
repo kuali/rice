@@ -125,11 +125,26 @@
             </list>
           </property>
         </bean>
+
+        <bean parent="Uif-TabSection" p:headerText="Active Tab State">
+          <property name="items">
+            <list>
+              <bean parent="Lab-ClientSideState-TabGroup1" p:id="Lab-ClientSideState-TabGroup1"/>
+              <bean parent="Lab-ClientSideState-TabGroup2" p:id="Lab-ClientSideState-TabGroup2"/>
+              <bean parent="Lab-ClientSideState-TabGroup3" p:id="Lab-ClientSideState-TabGroup3"/>
+            </list>
+          </property>
+          <property name="tabsWidget.defaultActiveTabId" value="Lab-ClientSideState-TabGroup2"/>
+        </bean>
       </list>
     </property>
   </bean>
 
   <bean id="Lab-ClientSideState-Page2" parent="Lab-ClientSideState-Page1" p:headerText="Page 2"/>
+
+  <bean id="Lab-ClientSideState-TabGroup1" parent="Uif-HorizontalBoxSection" p:headerText="Tab Group One"/>
+  <bean id="Lab-ClientSideState-TabGroup2" parent="Uif-HorizontalBoxSection" p:headerText="Tab Group Two"/>
+  <bean id="Lab-ClientSideState-TabGroup3" parent="Uif-HorizontalBoxSection" p:headerText="Tab Group Three"/>
 
   <bean id="Lab-ClientSideState-Menu" parent="Uif-MenuNavigationGroup">
     <property name="items">

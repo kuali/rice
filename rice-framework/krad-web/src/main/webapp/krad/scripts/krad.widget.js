@@ -1008,9 +1008,25 @@ function createAccordion(id, options, active) {
     //jQuery("#id > ul").accordion("option", "active", active);
 }
 
-// Creates tabs for the tabs div id specified, this div is created by tabGroup
-function createTabs(id, options, position) {
+/**
+ * Create a tab group for the div given by the element id using the jQuery UI tab plugin
+ * (http://api.jqueryui.com/tabs/)
+ *
+ * @param id id of the element the tabs should be created for
+ * @param widgetId id for the tabs widget
+ * @param options object of options for tabs plugin (see plugin documentation for valid options)
+ * @param position position of tabs related to group content, options are TOP, BOTTOM, RIGHT, or LEFT
+ */
+function createTabs(id, widgetId, options, position) {
     var tabs = jQuery("#" + id + "_tabs").tabs(options);
+
+    // when active tab changes we need to update the client side state
+    tabs.on("tabsactivate", function (event, ui) {
+        var activeTabId = ui.newPanel.attr('id');
+        activeTabId = activeTabId.replace(/_tab$/, "");
+
+        setComponentState(widgetId, 'activeTab', activeTabId);
+    });
 
     if (position == "BOTTOM") {
         tabs.addClass("ui-tabs-bottom");

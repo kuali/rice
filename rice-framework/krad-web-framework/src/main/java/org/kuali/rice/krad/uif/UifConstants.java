@@ -226,6 +226,10 @@ public class UifConstants {
         public static final String MOVABLES = "movables";
     }
 
+    public static class TabOptionKeys {
+        public static final String ACTIVE = "active";
+    }
+
     public static class TitleAppendTypes {
         public static final String DASH = "dash";
         public static final String PARENTHESIS = "parenthesis";

@@ -17,8 +17,8 @@
 -->
 <#macro uif_tabs widget parent>
 
-    <@krad.script component=parent value="createTabs('${parent.id}', ${widget.templateOptionsJSString},
-        '${widget.position.toString()}');"/>
+    <@krad.script component=parent value="createTabs('${parent.id}', '${widget.id}',
+        ${widget.templateOptionsJSString}, '${widget.position.toString()}');"/>
 
 </#macro>
 

@@ -1282,7 +1282,7 @@
       <value>
         [b]You have been logged out due to inactivity.[/b][br]
         For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000} minutes of inactivity.
-        Return to the&nbsp;[0].
+        Return to the&amp;nbsp;[0].
       </value>
     </property>
     <property name="availableResponses">

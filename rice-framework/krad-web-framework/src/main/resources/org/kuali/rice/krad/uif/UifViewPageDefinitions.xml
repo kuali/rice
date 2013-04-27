@@ -172,7 +172,7 @@
 
   <bean id="Uif-LoggedOutView" parent="Uif-LoggedOutView-parentBean"/>
   <bean id="Uif-LoggedOutView-parentBean" parent="Uif-MessageView">
-    <property name="messageText" value="You have been successfully logged out. To relogin return to the&nbsp;[0]."/>
+    <property name="messageText" value="You have been successfully logged out. To relogin return to the&amp;nbsp;[0]."/>
     <property name="message.inlineComponents">
       <list>
         <bean parent="Uif-Link" p:href="@{#ConfigProperties['application.url']}" p:linkText="home screen"

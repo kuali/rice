@@ -55,6 +55,7 @@
       </property>
       <property name="singlePageView" value="true"/>
       <property name="breadcrumbs.render" value="false"/>
+      <property name="persistFormToSession" value="false"/>
   </bean>
 
 </beans>

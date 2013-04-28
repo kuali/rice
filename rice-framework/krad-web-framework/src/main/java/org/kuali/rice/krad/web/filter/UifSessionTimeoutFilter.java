@@ -103,6 +103,8 @@ public class UifSessionTimeoutFilter implements Filter {
         if (StringUtils.isBlank(viewId)) {
             //  can't retrieve a session policy if view id was not passed
             filerChain.doFilter(request, response);
+
+            return;
         }
 
         // check for requested form key and if found and session storage is enabled for the
@@ -120,6 +122,8 @@ public class UifSessionTimeoutFilter implements Filter {
         // if no timeout occurred continue filter chain
         if (!timeoutOccurred) {
             filerChain.doFilter(request, response);
+
+            return;
         }
 
         // retrieve timeout policy associated with the view to determine what steps to take

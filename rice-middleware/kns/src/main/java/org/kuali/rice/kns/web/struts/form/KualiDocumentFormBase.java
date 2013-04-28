@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
@@ -47,10 +38,9 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
+import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.kns.web.ui.HeaderField;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
@@ -65,6 +55,14 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application This class is
@@ -190,9 +188,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             // populate workflowDocument in documentHeader, if needed
         	// KULRICE-4444 Obtain Document Header using the Workflow Service to minimize overhead
             try {
-                SessionDocumentService sessionDocumentService = KNSServiceLocator.getSessionDocumentService();
-            	workflowDocument = sessionDocumentService.getDocumentFromSession( GlobalVariables.getUserSession(), getDocument().getDocumentNumber());
-         	 	if ( workflowDocument == null)
+                workflowDocument = UserSessionUtils.getWorkflowDocument(GlobalVariables.getUserSession(), getDocument().getDocumentNumber());
+                if ( workflowDocument == null)
          	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
@@ -201,7 +198,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
                         person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KRADConstants.SYSTEM_USER);
                     }
          	 		workflowDocument = KRADServiceLocatorWeb.getWorkflowDocumentService().loadWorkflowDocument(getDocument().getDocumentNumber(), person);
-         	 	 	sessionDocumentService.addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
+         	 	 	UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(), workflowDocument);
          	 	 	if (workflowDocument == null)
          	 	 	{
          	 	 		throw new WorkflowException("Unable to retrieve workflow document # " + getDocument().getDocumentNumber() + " from workflow document service createWorkflowDocument");

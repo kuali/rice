@@ -21,7 +21,7 @@ import org.kuali.rice.vc.test.WsdlCompareTestCase;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,23 +35,43 @@ public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
 
     @Test
     public void compareKewApiWsdls() {
-        File[] files = new File("../../" + getModuleName() + "/api/target/wsdl").listFiles();
+        String wsdlDirectory = "../../" + getModuleName() + "/api/target/wsdl";
+        File[] files = new File(wsdlDirectory).listFiles();
+        if (files == null) throw new RuntimeException("can't find wsdls at " + wsdlDirectory + " from " + (new File(".")).getAbsolutePath());
         compareWsdlFiles(files);
     }
 
 
     @Test
     public void compareKewFrameworkWsdls() {
-        File[] files = new File("../../" + getModuleName() + "/framework/target/wsdl").listFiles();
+        String wsdlDirectory = "../../" + getModuleName() + "/framework/target/wsdl";
+        File[] files = new File(wsdlDirectory).listFiles();
+        if (files == null) throw new RuntimeException("can't find wsdls at " + wsdlDirectory + " from " + (new File(".")).getAbsolutePath());
         compareWsdlFiles(files);
     }
 
-    /**
-     * WorkflowDocumentService.wsdl had an incompatible change in  2.2.0 that was corrected in 2.2.1
-     * @return
-     */
     @Override
-    protected Map<String, List<MavenVersion>> getWsdlVersionBlacklists() {
-        return Collections.singletonMap("WorkflowDocumentService.wsdl", Arrays.asList(new MavenVersion("2.2.0")));
+    protected Map<String, List<WsdlCompareTestCase.VersionTransition>> getWsdlVersionTransitionBlacklists() {
+        Map<String, List<WsdlCompareTestCase.VersionTransition>> blacklist =
+                new HashMap<String, List<WsdlCompareTestCase.VersionTransition>>(super.getWsdlVersionTransitionBlacklists());
+
+        blacklist.put("ImmediateEmailReminderQueue",
+                Arrays.asList(
+                        new WsdlCompareTestCase.VersionTransition("2.1.0", "2.1.1"),
+                        new WsdlCompareTestCase.VersionTransition("2.0.2", "2.1.1")
+                ));
+
+        blacklist.put("ActionListService",
+                Arrays.asList(
+                        new WsdlCompareTestCase.VersionTransition("2.1.0", "2.1.1"),
+                        new WsdlCompareTestCase.VersionTransition("2.0.2", "2.1.1")
+                ));
+
+        blacklist.put("WorkflowDocumentService",
+                Arrays.asList(
+                        new WsdlCompareTestCase.VersionTransition("2.2.0", "2.2.1")
+                ));
+
+        return blacklist;
     }
 }

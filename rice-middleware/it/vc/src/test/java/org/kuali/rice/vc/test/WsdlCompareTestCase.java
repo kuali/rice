@@ -41,13 +41,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertTrue;
@@ -86,7 +80,7 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
     private String previousVersion;
 
     private static final List<String> ignoreBreakageRegexps = Arrays.asList(
-            ".*Position of any null changed.$", // change in position of an 'any' doesn't indicate a breakage for us
+            ".*Position of any changed from .*", // change in position of an 'any' doesn't indicate a breakage for us
             ".*Position of element null changed.$" // this also indicates an 'any' changing position, ignore it too
     );
 
@@ -179,13 +173,13 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         try {
             wsdl1 = parser.parse(oldWsdl);
         } catch (com.predic8.xml.util.ResourceDownloadException e) {
-            LOG.error("COULDN'T PARSE " + oldWsdl);
+            LOG.info("Couldn't download " + oldWsdl + ", maybe the service didn't exist in this version?");
             return Collections.emptyList();
         }
         try {
             wsdl2 = parser.parse(newWsdl);
         } catch (com.predic8.xml.util.ResourceDownloadException e) {
-            LOG.error("COULDN'T PARSE " + newWsdl);
+            LOG.info("Couldn't download" + newWsdl + ", maybe the service didn't exist in this version?");
             return Collections.emptyList();
         }
 
@@ -230,93 +224,169 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
     }
 
     /**
-     * Allows an extending test to specify versions of specific wsdls to omit from testing.  This can be useful for
-     * ignoring version compatibility issues that have already been addressed in previous versions.
+     * Allows an extending test to specify versions transitions of specific wsdls to omit from testing.  This can be
+     * useful for ignoring version compatibility issues that have already been addressed in previously released
+     * versions.
      *
      * @return a Map from wsdl file name (e.g. "DocumentTypeService.wsdl") to a list of {@link MavenVersion}s to filter
      */
-    protected Map<String, List<MavenVersion>> getWsdlVersionBlacklists() {
-        return null;
+    protected Map<String, List<VersionTransition>> getWsdlVersionTransitionBlacklists() {
+        return new HashMap<String, List<VersionTransition>>();
     }
 
-    protected void compareWsdlFiles(File[] files) {
+    protected void compareWsdlFiles(File[] wsdlFiles) {
         List<VersionCompatibilityBreakage> breakages = new ArrayList<VersionCompatibilityBreakage>();
 
-        assertTrue("There should be wsdls to compare", files != null  && files.length > 0);
+        assertTrue("There should be wsdls to compare", wsdlFiles != null  && wsdlFiles.length > 0);
 
+        MavenVersion previousVersion = new MavenVersion(getPreviousVersion(),
+                "0" /*since this is the oldest version we'll deal with, setting the timestamp to 0 is ok for sorting */);
         MavenVersion currentVersion = getCurrentMavenVersion();
-        List<MavenVersion> versions = getInterveningVersions();
+        List<MavenVersion> versions = getVersionRange(previousVersion, currentVersion);
+        List<VersionTransition> transitions = generateVersionTransitions(currentVersion, versions);
 
-        for (File file : files) {
-            if (file.getName().endsWith(".wsdl")) {
-                LOG.info("new wsdl: " + file.getAbsolutePath());
-                String newWsdl = file.getAbsolutePath();
+        for (File wsdlFile : wsdlFiles) { // we're effectively iterating through each service
+            if (wsdlFile.getName().endsWith(".wsdl")) {
+                LOG.info("TESTING WSDL: " + wsdlFile.getAbsolutePath());
+                String newWsdl = wsdlFile.getAbsolutePath();
 
-                // do filtering to avoid comparing with blacklisted versions of wsdls
+                // do filtering to avoid testing blacklisted wsdl version transitions
+                List<VersionTransition> wsdlTransitionBlacklist =
+                        getWsdlVersionTransitionBlacklists().get(getServiceNameFromWsdlFile(wsdlFile));
 
-                List<MavenVersion> filteredVersions = new ArrayList<MavenVersion>(versions);
-                Map<String, List<MavenVersion>> wsdlVersionBlacklists = getWsdlVersionBlacklists();
+                if (wsdlTransitionBlacklist == null) { wsdlTransitionBlacklist = Collections.emptyList(); }
 
-                if (wsdlVersionBlacklists != null) {
-                    for (Map.Entry<String, List<MavenVersion>> wsdlVersionBlacklist : wsdlVersionBlacklists.entrySet()) {
-                        if (file.getName().equals(wsdlVersionBlacklist.getKey())) {
-                            LOG.info("filtering blacklisted versions of " + wsdlVersionBlacklist.getKey() + ": " +
-                                    StringUtils.join(wsdlVersionBlacklist.getValue(), ","));
-                            filteredVersions.removeAll(wsdlVersionBlacklist.getValue());
-                        }
-                    }
+                for (VersionTransition transition : transitions) if (!wsdlTransitionBlacklist.contains(transition)) {
+                    breakages.addAll(testWsdlVersionTransition(currentVersion, wsdlFile, transition));
+                } else {
+                    LOG.info("Ignoring blacklisted " + transition);
                 }
-
-                Iterator<MavenVersion> versionsIter = filteredVersions.iterator();
-
-                boolean processedCurrent = false;
-
-                MavenVersion v1;
-                MavenVersion v2 = versionsIter.next();
-
-                // walk the versions, checking diffs between each consecutive pair
-                while (versionsIter.hasNext() || !processedCurrent) {
-                    v1 = v2; // march down the list
-
-                    String v1Wsdl = getPreviousVersionWsdlUrl(file.getName(), v1);
-                    String v2Wsdl;
-
-                    if (versionsIter.hasNext()) {
-                        v2 = versionsIter.next();
-                        v2Wsdl = getPreviousVersionWsdlUrl(file.getName(), v2);
-                    } else {
-                        v2 = currentVersion;
-                        v2Wsdl = file.getAbsolutePath();
-                        processedCurrent = true;
-                    }
-
-                    LOG.info("checking version transition: " + v1.getOriginalForm() + " -> " + v2.getOriginalForm());
-
-                    if (v1Wsdl == null) {
-                        LOG.warn("SKIPPING check, wsdl not found for " + v1Wsdl);
-                    } else if (v2Wsdl == null) {
-                        LOG.warn("SKIPPING check, wsdl not found for " + v2Wsdl);
-                    } else {
-
-                        List<Difference> differences = compareWsdlDefinitions(v1Wsdl, v2Wsdl);
-                        for (Difference diff : differences) {
-                            List<String> breakageStrings = verifyWsdlDifferences(diff, "");
-
-                            for (String breakage : breakageStrings) {
-                                breakages.add(new VersionCompatibilityBreakage(v1, v2, v1Wsdl, v2Wsdl, breakage));
-                            }
-                        }
-                    }
-                }
-
             }
-
-
         }
 
         if (!breakages.isEmpty()) {
             fail(buildBreakagesSummary(breakages));
         }
+    }
+
+    // Quick and dirty, and AFAIK very specific to Rice's conventions
+    String getServiceNameFromWsdlFile(File wsdlFile) {
+        String fileName = wsdlFile.getName();
+        int beginIndex = 1 + fileName.lastIndexOf('-');
+        int endIndex = fileName.lastIndexOf('.');
+        return fileName.substring(beginIndex, endIndex);
+    }
+
+    /**
+     * find breakages for the given wsdl's version transition
+     * @param currentVersion the current version of Rice
+     * @param wsdlFile the local wsdl file
+     * @param transition the version transition to test
+     * @return any breakages detected
+     */
+    private List<VersionCompatibilityBreakage> testWsdlVersionTransition(MavenVersion currentVersion, File wsdlFile, VersionTransition transition) {
+        List<VersionCompatibilityBreakage> breakages = new ArrayList<VersionCompatibilityBreakage>();
+
+        String fromVersionWsdlUrl = getPreviousVersionWsdlUrl(wsdlFile.getName(), transition.getFromVersion());
+        String toVersionWsdlUrl = getPreviousVersionWsdlUrl(wsdlFile.getName(), transition.getToVersion());
+
+        // current version isn't in the maven repo, use the local file
+        if (transition.getToVersion().equals(currentVersion)) {
+            toVersionWsdlUrl = wsdlFile.getAbsolutePath();
+        }
+
+        getPreviousVersionWsdlUrl(wsdlFile.getName(), transition.getToVersion());
+
+        LOG.info("checking " + transition);
+
+        if (fromVersionWsdlUrl == null) {
+            LOG.warn("SKIPPING check, wsdl not found for " + fromVersionWsdlUrl);
+        } else if (toVersionWsdlUrl == null) {
+            LOG.warn("SKIPPING check, wsdl not found for " + toVersionWsdlUrl);
+        } else {
+            List<Difference> differences = compareWsdlDefinitions(fromVersionWsdlUrl, toVersionWsdlUrl);
+            for (Difference diff : differences) {
+                List<String> breakageStrings = verifyWsdlDifferences(diff, "");
+
+                for (String breakage : breakageStrings) {
+                    breakages.add(new VersionCompatibilityBreakage(
+                            transition.fromVersion, transition.toVersion,
+                            fromVersionWsdlUrl, toVersionWsdlUrl, breakage));
+                }
+            }
+        }
+
+        return breakages;
+    }
+
+    /**
+     * calculate which version transitions to test given the current version, and the list of versions to consider.  The
+     * results should contain a transition from the closest preceeding patch version at each minor version included in
+     * the range to the nearest newer patch version within the current minor version.  That is hard to understand, so
+     * an example is called for:
+     * {@literal
+     * 	2.0.0,
+     * 	2.0.1,
+     * 		2.1.0,
+     * 	2.0.2,
+     * 1.0.4,
+     * 		2.1.1,
+     * 		2.1.2,
+     * 			2.2.0,
+     * 		2.1.3,
+     * 			2.2.1,
+     * 		2.1.4,
+     * 			2.2.2,
+     * 		2.1.5,
+     * 			2.2.3,
+     * }
+     * So for the above version stream (which is sorted by time) the transitions for the range 1.0.4 to 2.2.3 would be:
+     * {@literal
+     * 1.0.4 -> 2.2.0,
+     * 2.1.2 -> 2.2.0,
+     * 2.1.3 -> 2.2.1,
+     * 2.1.4 -> 2.2.2,
+     * 2.1.5 -> 2.2.3,
+     * }
+     *
+     * @param currentVersion the current version of Rice
+     * @param versions the versions to consider
+     * @return the calculated List of VersionTransitions
+     */
+    protected List<VersionTransition> generateVersionTransitions(MavenVersion currentVersion, List<MavenVersion> versions) {
+        List<VersionTransition> results = new ArrayList<VersionTransition>();
+
+        versions = new ArrayList<MavenVersion>(versions);
+        versions.add(currentVersion);
+        Collections.sort(versions, mavenVersionTimestampComparator);
+
+        // the current minor version (ignoring the patch #)
+        MavenVersion currentMinorVersion = new MavenVersion(""+currentVersion.getNumbers().get(0)+"."+currentVersion.getNumbers().get(1), "0");
+
+        // collection of all the minor versions we've encountered
+        Set<MavenVersion> minorVersions = new HashSet<MavenVersion>();
+
+        // map from minor version to the last patch version of it that we've encountered
+        Map<MavenVersion, MavenVersion> minorVersionToLastPatch = new HashMap<MavenVersion, MavenVersion>();
+
+        for (MavenVersion version : versions) {
+            MavenVersion minorVersion = new MavenVersion(""+version.getNumbers().get(0)+"."+version.getNumbers().get(1), "0");
+            MavenVersion lastPatch = minorVersionToLastPatch.get(minorVersion);
+
+            if (lastPatch != null && minorVersion.equals(currentMinorVersion)) {  // only consider transitions to the current minor version
+                for (MavenVersion minorVersionKey : minorVersions) {
+                    if (minorVersion.compareTo(minorVersionKey) > -1 /* v1 >= v2 */ ) {
+                        MavenVersion compareFromVersion = minorVersionToLastPatch.remove(minorVersionKey);
+                        if (compareFromVersion != null) results.add(new VersionTransition(compareFromVersion, version));
+                    }
+                }
+            }
+
+            minorVersions.add(minorVersion);
+            minorVersionToLastPatch.put(minorVersion, version);
+        }
+
+        return results;
     }
 
     protected String buildBreakagesSummary(List<VersionCompatibilityBreakage> breakages) {
@@ -385,25 +455,26 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         return lifecycles;
     }
 
-
-    protected List<MavenVersion> getInterveningVersions() {
+    /**
+     * Returns the range of versions from previousVersion to currentVersion.  The versions will be in the numerical
+     * range, but will be sorted by timestamp. Note that if either of the given versions aren't in maven central, they
+     * won't be included in the results.
+     * @param lowestVersion the lowest version in the range
+     * @param highestVersion the highest version in the range
+     * @return
+     */
+    protected List<MavenVersion> getVersionRange(MavenVersion lowestVersion, MavenVersion highestVersion) {
         ArrayList<MavenVersion> results = new ArrayList<MavenVersion>();
 
-        MavenVersion previousVersion = new MavenVersion(getPreviousVersion());
-
-        MavenVersion currentVersion = getCurrentMavenVersion();
-
-        if (currentVersion.compareTo(previousVersion) <= 0) {
-            throw new IllegalStateException("currentVersion " + currentVersion +
-                    "  is <= previousVersion " + previousVersion);
+        if (highestVersion.compareTo(lowestVersion) <= 0) {
+            throw new IllegalStateException("currentVersion " + highestVersion +
+                    "  is <= previousVersion " + lowestVersion);
         }
-        String searchContent = getMavenSearchResults();
-
-        LinkedList<MavenVersion> riceVersions = parseSearchResults(searchContent);
+        List<MavenVersion> riceVersions = getRiceMavenVersions();
 
         for (MavenVersion riceVersion : riceVersions) {
-            if ( currentVersion.compareTo(riceVersion) > 0 &&
-                    previousVersion.compareTo(riceVersion) <= 0 &&
+            if ( highestVersion.compareTo(riceVersion) > 0 &&
+                    lowestVersion.compareTo(riceVersion) <= 0 &&
                     "".equals(riceVersion.getQualifier()) ) {
                 results.add(riceVersion);
             }
@@ -412,11 +483,35 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         return results;
     }
 
-    private MavenVersion getCurrentMavenVersion() {
-        return new MavenVersion(ConfigContext.getCurrentContextConfig().getProperty("rice.version"));
+    // "cache" for rice maven versions, since these will not differ between tests and we have to hit
+    // the maven central REST api to get them
+    private static List<MavenVersion> riceMavenVersions = null;
+
+    private static List<MavenVersion> getRiceMavenVersions() {
+        if (riceMavenVersions == null) {
+            String searchContent = getMavenSearchResults();
+            riceMavenVersions = parseSearchResults(searchContent);
+
+            Collections.sort(riceMavenVersions, mavenVersionTimestampComparator);
+
+            LOG.info("Published versions, sorted by timestamp:");
+            for (MavenVersion riceVersion : riceMavenVersions) {
+                LOG.info("" + riceVersion.getTimestamp() + " " + riceVersion.getOriginalForm());
+            }
+
+        }
+        return riceMavenVersions;
     }
 
-    private LinkedList<MavenVersion> parseSearchResults(String searchContent) {
+    /**
+     * @return the current version of Rice
+     */
+    private MavenVersion getCurrentMavenVersion() {
+        return new MavenVersion(ConfigContext.getCurrentContextConfig().getProperty("rice.version"),
+                ""+System.currentTimeMillis());
+    }
+
+    private static List<MavenVersion> parseSearchResults(String searchContent) {
         LinkedList<MavenVersion> riceVersions = new LinkedList<MavenVersion>();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -430,15 +525,16 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
 
         for (JsonNode node : docsNode) {
             String versionStr = node.get("v").toString();
+            String timestampStr = node.get("timestamp").toString();
             // System.out.println(versionStr);
-            riceVersions.add(new MavenVersion(versionStr.replace(/* strip out surrounding quotes */ "\"","")));
+            riceVersions.add(new MavenVersion(versionStr.replace(/* strip out surrounding quotes */ "\"",""), timestampStr));
         }
 
         Collections.sort(riceVersions);
         return riceVersions;
     }
 
-    private String getMavenSearchResults() {
+    private static String getMavenSearchResults() {
         // using the maven search REST api specified here: http://search.maven.org/#api
         // this query gets all versions of Rice from maven central
         final String mavenSearchUrlString =
@@ -474,8 +570,17 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         private final List<Integer> numbers;
         private final String originalForm;
         private final String qualifier;
+        private final Long timestamp;
 
+        /**
+         * Constructor that takes just a version string as an argument.  Beware, because 0 will be used as the timestamp!
+         * @param versionString
+         */
         public MavenVersion(String versionString) {
+            this(versionString, "0");
+        }
+
+        public MavenVersion(String versionString, String timestampString) {
             originalForm = versionString;
             if (versionString == null || "".equals(versionString.trim())) {
                 throw new IllegalArgumentException("empty or null version string");
@@ -498,6 +603,8 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
             }
 
             numbers = Collections.unmodifiableList(numbersBuilder);
+
+            timestamp = Long.valueOf(timestampString);
         }
 
         @Override
@@ -542,6 +649,10 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
             return qualifier;
         }
 
+        public Long getTimestamp() {
+            return timestamp;
+        }
+
         public String getOriginalForm() {
             return originalForm;
         }
@@ -574,6 +685,71 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         @Override
         public int hashCode() {
             return originalForm.hashCode();
+        }
+    }
+
+    /**
+     * Comparator which can be used to sort MavenVersions by timestamp
+     */
+    private static final Comparator<MavenVersion> mavenVersionTimestampComparator = new Comparator<MavenVersion>() {
+        @Override
+        public int compare(MavenVersion o1, MavenVersion o2) {
+            return o1.getTimestamp().compareTo(o2.getTimestamp());
+        }
+    };
+
+    /**
+     * A class representing a transition from one maven version to another
+     */
+    public static class VersionTransition {
+        private final MavenVersion fromVersion;
+        private final MavenVersion toVersion;
+
+        public VersionTransition(MavenVersion fromVersion, MavenVersion toVersion) {
+            this.fromVersion = fromVersion;
+            this.toVersion = toVersion;
+            if (fromVersion == null) throw new IllegalArgumentException("fromVersion must not be null");
+            if (toVersion == null) throw new IllegalArgumentException("toVersion must not be null");
+        }
+
+        public VersionTransition(String fromVersion, String toVersion) {
+            this(new MavenVersion(fromVersion), new MavenVersion(toVersion));
+        }
+
+        private MavenVersion getFromVersion() {
+            return fromVersion;
+        }
+
+        private MavenVersion getToVersion() {
+            return toVersion;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            VersionTransition that = (VersionTransition) o;
+
+            if (!fromVersion.equals(that.fromVersion)) return false;
+            if (!toVersion.equals(that.toVersion)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = fromVersion.hashCode();
+            result = 31 * result + toVersion.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "VersionTransition{" +
+                    fromVersion.getOriginalForm() +
+                    " -> " + toVersion.getOriginalForm() +
+                    '}';
         }
     }
 

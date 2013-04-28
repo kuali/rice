@@ -25,6 +25,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.DocumentHeader;
@@ -172,6 +173,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         form.setDocument(doc);
         WorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
         form.setDocTypeName(workflowDoc.getDocumentTypeName());
+
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(), workflowDoc);
     }
 
     /**

@@ -28,6 +28,7 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
@@ -129,6 +130,9 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().save(savedDocument.getDocumentHeader().getWorkflowDocument(), null);
 
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                savedDocument.getDocumentHeader().getWorkflowDocument());
+
         return savedDocument;
     }
 
@@ -188,6 +192,8 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService()
                 .route(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -209,6 +215,8 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService()
                 .approve(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -222,6 +230,8 @@ public class DocumentServiceImpl implements DocumentService {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -235,6 +245,8 @@ public class DocumentServiceImpl implements DocumentService {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -258,6 +270,8 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService()
                 .superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -286,6 +300,8 @@ public class DocumentServiceImpl implements DocumentService {
 
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().disapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -313,6 +329,8 @@ public class DocumentServiceImpl implements DocumentService {
         }
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         //getBusinessObjectService().delete(document.getAdHocRoutePersons());
         //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
         removeAdHocPersonsAndWorkgroups(document);
@@ -329,6 +347,8 @@ public class DocumentServiceImpl implements DocumentService {
 
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().recall(document.getDocumentHeader().getWorkflowDocument(), annotation, cancel);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -348,6 +368,8 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService()
                 .acknowledge(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -369,6 +391,8 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService()
                 .blanketApprove(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -384,6 +408,8 @@ public class DocumentServiceImpl implements DocumentService {
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         getWorkflowDocumentService().clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -404,6 +430,9 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().complete(document.getDocumentHeader().getWorkflowDocument(), annotation,
                 adHocRecipients);
+
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
 
         removeAdHocPersonsAndWorkgroups(document);
 
@@ -550,6 +579,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         // initiate new workflow entry, get the workflow doc
         WorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, initiator);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(), workflowDocument);
 
         // create a new document header object
         DocumentHeader documentHeader = null;
@@ -651,6 +681,7 @@ public class DocumentServiceImpl implements DocumentService {
             }
             workflowDocument = getWorkflowDocumentService()
                     .loadWorkflowDocument(documentHeaderId, GlobalVariables.getUserSession().getPerson());
+            UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(), workflowDocument);
 
 	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentTypeName());
 
@@ -1014,6 +1045,8 @@ public class DocumentServiceImpl implements DocumentService {
         getWorkflowDocumentService()
                 .sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), annotation,
                         adHocRecipients);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         //getBusinessObjectService().delete(document.getAdHocRoutePersons());
         //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
         removeAdHocPersonsAndWorkgroups(document);

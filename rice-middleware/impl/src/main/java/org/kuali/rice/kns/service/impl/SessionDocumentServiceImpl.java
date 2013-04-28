@@ -20,12 +20,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.bo.SessionDocument;
 import org.kuali.rice.krad.dao.SessionDocumentDao;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
@@ -157,7 +157,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
                     KRADConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY))) {
                         WorkflowDocument workflowDocument =
                             documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
-                        addDocumentToUserSession(userSession, workflowDocument);
+                UserSessionUtils.addWorkflowDocument(userSession, workflowDocument);
             }
         } catch (Exception e) {
             LOG.error("getDocumentForm failed for SessId/DocNum/PrinId/IP:" + userSession.getKualiSessionId() + "/" +
@@ -194,38 +194,16 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 
     @Override
     public WorkflowDocument getDocumentFromSession(UserSession userSession, String docId) {
-        synchronized (userSession) {
-        @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
-                (Map<String, WorkflowDocument>) userSession
-                        .retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
-
-            if (workflowDocMap == null) {
-                workflowDocMap = new ConcurrentHashMap<String, WorkflowDocument> ();
-                userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
-                return null;
-            }
-            return workflowDocMap.get(docId);
-        }
+        return UserSessionUtils.getWorkflowDocument(userSession, docId);
     }
 
     /**
      * @see org.kuali.rice.krad.service.SessionDocumentService#addDocumentToUserSession(org.kuali.rice.krad.UserSession,
-     *      org.kuali.rice.krad.workflow.service.KualiWorkflowDocument)
+     *      org.kuali.rice.kew.api.WorkflowDocument)
      */
     @Override
     public void addDocumentToUserSession(UserSession userSession, WorkflowDocument document) {
-        synchronized (userSession) {
-            @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
-                (Map<String, WorkflowDocument>) userSession
-                        .retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
-            if (workflowDocMap == null) {
-                workflowDocMap = new ConcurrentHashMap<String, WorkflowDocument> ();
-            }
-            if(document != null && document.getDocumentId() != null) {
-                workflowDocMap.put(document.getDocumentId(), document);
-            }
-            userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
-        }
+        UserSessionUtils.addWorkflowDocument(userSession, document);
     }
 
     /**

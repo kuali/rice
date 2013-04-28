@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.view.ViewSessionPolicy;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.springframework.beans.PropertyValues;
+import org.springframework.util.Assert;
 
 /**
  * Implementation of <code>ViewDictionaryService</code>
@@ -170,9 +171,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
      * @see org.kuali.rice.krad.uif.service.ViewDictionaryService#getViewSessionPolicy(java.lang.String)
      */
     public ViewSessionPolicy getViewSessionPolicy(String viewId) {
-        if (StringUtils.isBlank(viewId)) {
-            throw new IllegalArgumentException("view id is required for retrieving the view session policy");
-        }
+        Assert.hasLength(viewId, "view id is required for retrieving the view session policy");
 
         ViewSessionPolicy viewSessionPolicy = null;
 
@@ -182,6 +181,22 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
         }
 
         return viewSessionPolicy;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewDictionaryService#isSessionStorageEnabled(java.lang.String)
+     */
+    public boolean isSessionStorageEnabled(String viewId) {
+        Assert.hasLength(viewId, "view id is required for retrieving session indicator");
+
+        boolean sessionStorageEnabled = false;
+
+        View view = getDataDictionary().getImmutableViewById(viewId);
+        if (view != null) {
+            sessionStorageEnabled = view.isPersistFormToSession();
+        }
+
+        return sessionStorageEnabled;
     }
 
     protected DataDictionary getDataDictionary() {

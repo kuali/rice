@@ -93,4 +93,12 @@ public interface ViewDictionaryService {
      * @return view session policy instance for view or null if view not found for the given id
      */
     public ViewSessionPolicy getViewSessionPolicy(String viewId);
+
+    /**
+     * Indicates whether session storage is enabled for the view associated with the given id
+     *
+     * @param viewId id for the view to check
+     * @return true if session storage is enabled, false if not enabled or the view was not found
+     */
+    public boolean isSessionStorageEnabled(String viewId);
 }

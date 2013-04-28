@@ -35,7 +35,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.Assert;
@@ -52,7 +51,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -84,13 +82,12 @@ public abstract class UifControllerBase {
      * is not intended to be overridden by client applications as it handles framework setup and session
      * maintenance. Clients should override createInitialForm() instead when they need custom form initialization.
      *
-     * @param request - the http request that was made
+     * @param request the http request that was made
+     * @param response the http response object
      */
     @ModelAttribute(value = "KualiForm")
-    public UifFormBase initForm(HttpServletRequest request) {
+    public UifFormBase initForm(HttpServletRequest request, HttpServletResponse response) {
         UifFormBase requestForm = null;
-
-
 
         // get Uif form manager from session if exists or setup a new one for the session
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
@@ -798,20 +795,31 @@ public abstract class UifControllerBase {
      * Builds a <code>ModelAndView</code> instance configured to redirect to the
      * URL formed by joining the base URL with the given URL parameters
      *
-     * @param form - current form instance
-     * @param baseUrl - base url to redirect to
-     * @param urlParameters - properties containing key/value pairs for the url parameters, if null or empty,
+     * @param form current form instance
+     * @param baseUrl base url to redirect to
+     * @param urlParameters properties containing key/value pairs for the url parameters, if null or empty,
      * the baseUrl will be used as the full URL
      * @return ModelAndView configured to redirect to the given URL
      */
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
+        String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
+
+        return performRedirect(form, redirectUrl);
+    }
+
+    /**
+     * Builds a <code>ModelAndView</code> instance configured to redirect to the given URL
+     *
+     * @param form current form instance
+     * @param redirectUrl URL to redirect to
+     * @return ModelAndView configured to redirect to the given URL
+     */
+    protected ModelAndView performRedirect(UifFormBase form, String redirectUrl) {
         // indicate a redirect is occuring to prevent view processing down the line
         form.setRequestRedirected(true);
 
         // set the ajaxReturnType on the form this will override the return type requested by the client
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.REDIRECT.getKey());
-
-        String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 
         ModelAndView modelAndView;
         if (form.isAjaxRequest()) {

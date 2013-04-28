@@ -46,7 +46,8 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
 
     /**
      * Before the controller executes the user session is set on GlobalVariables
-     * and messages are cleared
+     * and messages are cleared, in addition setup for the history manager and a check on missing session
+     * forms is performed
      *
      * TODO: do we need to clear the messages before this so that formatting and
      * validation errors done during the binding are not cleared out?
@@ -59,13 +60,13 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             Object handler) throws Exception {
         final UserSession session = KRADUtils.getUserSessionFromRequest(request);
 
-        //add the HistoryManager for storing HistoryFlows to the session
+        GlobalVariables.setUserSession(session);
+        GlobalVariables.clear();
+
+        // add the HistoryManager for storing HistoryFlows to the session
         if (request.getSession().getAttribute("historyManager") == null){
             request.getSession().setAttribute("historyManager", new HistoryManager());
         }
-
-        GlobalVariables.setUserSession(session);
-        GlobalVariables.clear();
 
         return true;
     }

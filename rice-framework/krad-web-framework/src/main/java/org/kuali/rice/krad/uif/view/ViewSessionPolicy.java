@@ -35,7 +35,7 @@ import java.io.Serializable;
  *
  * <p>
  * Notes carrying out the configured view session policy requires the filter
- * {@link org.kuali.rice.krad.web.filter.SessionTimeoutFilter} to be configured first in the list of filters
+ * {@link org.kuali.rice.krad.web.filter.UifSessionTimeoutFilter} to be configured first in the list of filters
  * for the servlet
  * </p>
  *

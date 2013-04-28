@@ -38,7 +38,7 @@
 
   <filter>
   	<filter-name>ajaxSessionTimeoutFilter</filter-name>
-  	<filter-class>org.kuali.rice.krad.web.filter.SessionTimeoutFilter</filter-class>
+  	<filter-class>org.kuali.rice.krad.web.filter.UifSessionTimeoutFilter</filter-class>
   </filter>
 
   <filter>

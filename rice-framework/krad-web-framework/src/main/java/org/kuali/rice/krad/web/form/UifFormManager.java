@@ -158,6 +158,16 @@ public class UifFormManager implements Serializable {
     }
 
     /**
+     * Indicates whether the form manager has a session form with the given key
+     *
+     * @param formKey key of the form in session to check for
+     * @return true if the manager contains the session form, false if not
+     */
+    public boolean hasSessionForm(String formKey) {
+        return sessionForms.containsKey(formKey);
+    }
+
+    /**
      * Retrieves the session form based on the formkey and updates the non session transient
      * variables on the request form from the session form
      *

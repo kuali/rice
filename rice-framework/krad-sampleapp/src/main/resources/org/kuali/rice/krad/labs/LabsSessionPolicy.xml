@@ -100,4 +100,26 @@
     <property name="sessionPolicy.timeoutWarningMinutes" value="1"/>
   </bean>
 
+  <bean id="Lab-SessionPolicy-MissingForm" parent="Uif-FormView">
+    <property name="headerText" value="Session Timeout - Missing Form"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-VerticalBoxSection">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-Link" p:linkText="Missing Form" p:target="_self"
+                        p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm&amp;formKey=999999"/>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="sessionPolicy.renderTimeoutView" value="true"/>
+  </bean>
+
 </beans>

@@ -19,6 +19,12 @@
 
 <#compress>
 
+    <#if KualiForm.ajaxRequest && KualiForm.ajaxReturnType == "redirect">
+        <div data-returntype="redirect">
+            <#include "redirect.ftl" parse=true/>
+        </div>
+    </#if>
+
     <#if !KualiForm.ajaxRequest || (KualiForm.ajaxReturnType == "update-view")
          || (KualiForm.ajaxReturnType == "update-page")>
         <#global view=KualiForm.view/>
@@ -47,11 +53,6 @@
         <#elseif KualiForm.ajaxReturnType == "update-page">
             <div data-returntype="update-page">
                 <#include "updatePage.ftl" parse=true/>
-            </div>
-
-       <#elseif KualiForm.ajaxReturnType == "redirect">
-            <div data-returntype="redirect">
-                <#include "redirect.ftl" parse=true/>
             </div>
 
        <#elseif KualiForm.ajaxReturnType == "display-lightbox">

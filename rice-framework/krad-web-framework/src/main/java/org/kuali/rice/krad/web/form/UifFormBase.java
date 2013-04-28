@@ -28,7 +28,6 @@ import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -409,7 +408,7 @@ public class UifFormBase implements ViewModel {
      * configured with the {@link org.kuali.rice.krad.uif.view.ViewSessionPolicy}. This property gets initialized
      * in the {@link #postBind(javax.servlet.http.HttpServletRequest)} method and then is written out as a
      * hidden on the view. Therefore each post done on the view will send back the session id when the view was
-     * rendering, and the {@link org.kuali.rice.krad.web.filter.SessionTimeoutFilter} can use that to determine
+     * rendering, and the {@link org.kuali.rice.krad.web.filter.UifSessionTimeoutFilter} can use that to determine
      * if a timeout has occurred
      * </p>
      *

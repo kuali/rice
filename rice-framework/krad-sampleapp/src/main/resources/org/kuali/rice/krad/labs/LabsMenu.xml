@@ -30,6 +30,8 @@
               <bean parent="Uif-VerticalFieldGroup">
                   <property name="items">
                       <list>
+                        <bean parent="Uif-Link" p:linkText="Kitchen Sink" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=UifCompView"/>
                         <bean parent="Uif-Link" p:linkText="Client Side State Test View" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ClientSideState"/>
                         <bean parent="Uif-Link" p:linkText="File Upload View" p:target="_self"
@@ -44,6 +46,8 @@
                               p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-TimeoutWarning&amp;methodToCall=setSessionTimeout"/>
                         <bean parent="Uif-Link" p:linkText="Encryption Utility" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/encryption?viewId=Lab-Encryption"/>
+                        <bean parent="Uif-Link" p:linkText="Session Policy Missing Form" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm"/>
                       </list>
                   </property>
               </bean>

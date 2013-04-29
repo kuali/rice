@@ -274,6 +274,7 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         String fileName = wsdlFile.getName();
         int beginIndex = 1 + fileName.lastIndexOf('-');
         int endIndex = fileName.lastIndexOf('.');
+
         return fileName.substring(beginIndex, endIndex);
     }
 
@@ -325,20 +326,20 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
      * the range to the nearest newer patch version within the current minor version.  That is hard to understand, so
      * an example is called for:
      * {@literal
-     * 	2.0.0,
-     * 	2.0.1,
-     * 		2.1.0,
-     * 	2.0.2,
+     *             2.0.0,
+     *             2.0.1,
+     *                         2.1.0,
+     *             2.0.2,
      * 1.0.4,
-     * 		2.1.1,
-     * 		2.1.2,
-     * 			2.2.0,
-     * 		2.1.3,
-     * 			2.2.1,
-     * 		2.1.4,
-     * 			2.2.2,
-     * 		2.1.5,
-     * 			2.2.3,
+     *                         2.1.1,
+     *                         2.1.2,
+     *                                     2.2.0,
+     *                         2.1.3,
+     *                                     2.2.1,
+     *                         2.1.4,
+     *                                     2.2.2,
+     *                         2.1.5,
+     *                                     2.2.3,
      * }
      * So for the above version stream (which is sorted by time) the transitions for the range 1.0.4 to 2.2.3 would be:
      * {@literal
@@ -357,36 +358,42 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         List<VersionTransition> results = new ArrayList<VersionTransition>();
 
         versions = new ArrayList<MavenVersion>(versions);
-        versions.add(currentVersion);
         Collections.sort(versions, mavenVersionTimestampComparator);
+        // We want to iterate through from newest to oldest, so reverse
+        Collections.reverse(versions);
 
-        // the current minor version (ignoring the patch #)
-        MavenVersion currentMinorVersion = new MavenVersion(""+currentVersion.getNumbers().get(0)+"."+currentVersion.getNumbers().get(1), "0");
+        final MavenVersion currentMinorVersion = trimToMinorVersion(currentVersion);
+        MavenVersion buildingTransitionsTo = currentVersion; // the version we're currently looking at transitions to
 
-        // collection of all the minor versions we've encountered
-        Set<MavenVersion> minorVersions = new HashSet<MavenVersion>();
+        // Keep track of minor versions we've used to build transitions to buildingTransitionsTo
+        // because we want at most one transition from each minor version to any given version
+        Set<MavenVersion> minorVersionsFrom = new HashSet<MavenVersion>();
 
-        // map from minor version to the last patch version of it that we've encountered
-        Map<MavenVersion, MavenVersion> minorVersionToLastPatch = new HashMap<MavenVersion, MavenVersion>();
-
-        for (MavenVersion version : versions) {
-            MavenVersion minorVersion = new MavenVersion(""+version.getNumbers().get(0)+"."+version.getNumbers().get(1), "0");
-            MavenVersion lastPatch = minorVersionToLastPatch.get(minorVersion);
-
-            if (lastPatch != null && minorVersion.equals(currentMinorVersion)) {  // only consider transitions to the current minor version
-                for (MavenVersion minorVersionKey : minorVersions) {
-                    if (minorVersion.compareTo(minorVersionKey) > -1 /* v1 >= v2 */ ) {
-                        MavenVersion compareFromVersion = minorVersionToLastPatch.remove(minorVersionKey);
-                        if (compareFromVersion != null) results.add(new VersionTransition(compareFromVersion, version));
-                    }
-                }
+        for (MavenVersion version : versions) if (version.compareTo(buildingTransitionsTo) < 0) {
+            MavenVersion minorVersion = trimToMinorVersion(version);
+            if (minorVersion.equals(currentMinorVersion)) {
+                // One last transition to add, then start building transitions to this one
+                results.add(new VersionTransition(version, buildingTransitionsTo));
+                buildingTransitionsTo = version;
+                // also, reset the blacklist of versions we can transition from
+                minorVersionsFrom.clear();
+            } else if (!minorVersionsFrom.contains(minorVersion)) {
+                results.add(new VersionTransition(version, buildingTransitionsTo));
+                minorVersionsFrom.add(minorVersion);
             }
-
-            minorVersions.add(minorVersion);
-            minorVersionToLastPatch.put(minorVersion, version);
         }
 
+        // reverse our results so they go from old to new
+        Collections.reverse(results);
+
         return results;
+    }
+
+    /**
+     * Peel off the patch version and return a MavenVersion that just extends to the minor portion of the given version
+     */
+    private MavenVersion trimToMinorVersion(MavenVersion fullVersion) {
+        return new MavenVersion(""+fullVersion.getNumbers().get(0)+"."+fullVersion.getNumbers().get(1), "0");
     }
 
     protected String buildBreakagesSummary(List<VersionCompatibilityBreakage> breakages) {

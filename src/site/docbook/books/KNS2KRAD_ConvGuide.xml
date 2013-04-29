@@ -33,7 +33,6 @@
     </section>
     <section><title>Lookup</title><para></para>
         <section><title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
-            <para>KRAD uses Uif-LookupView definitions instead of the KNS LookupDefinition. All LookupDefinitions has to be converted to Uif-LookupView definitions.</para>
             <para><emphasis role="italic">Note that the code example is very inclusive to show the
                     configurations that have changed.  As a result the lookups themselve have
                     conflicting settings (i.e. why have custom search buttons when hiding
@@ -64,7 +63,17 @@
 21        &lt;bean parent="FieldDefinition" p:attributeName="active"/>
 22      &lt;/list>
 23    &lt;/property>
-24  &lt;/bean></programlisting>    
+24    &lt;property name="defaultSort">
+25      &lt;bean parent="SortDefinition">
+26        &lt;property name="sortAscending" value="false" />
+27        &lt;property name="attributeNames">
+28          &lt;list>
+29            &lt;value>code&lt;/value>
+30          &lt;/list>
+31        &lt;/property>
+32      &lt;/bean>
+33    &lt;/property>
+34  &lt;/bean></programlisting>    
             </para>
             <para>
                 <emphasis role="bold">KRAD code example:</emphasis>
@@ -103,7 +112,13 @@
 33        &lt;bean parent="Uif-DataField" p:propertyName="active"/>
 34      &lt;/list>
 35    &lt;/property>
-36  &lt;/bean></programlisting>
+36    &lt;property name="defaultSortAscending" value="false"/>
+37    &lt;property name="defaultSortAttributeNames">
+40      &lt;list>
+41        &lt;value>code&lt;/value>
+42      &lt;/list>
+43    &lt;/property>
+46  &lt;/bean></programlisting>
             </para>
         </section>
         <section><title>Base Lookup Bean</title>
@@ -217,6 +232,28 @@
                                 <emphasis role="keyword">Uif-DataField</emphasis> to false to
                             supress the rendering of the inquiry link. [KNS line: 20, KRAD line:
                             n/a] [script converted: yes]</para>
+                    </listitem>
+                    <listitem>
+                        <para>Custom actions in the result rows are no longer specified by
+                            overriding the <emphasis role="keyword">getCustomActionUrls</emphasis>
+                            method of <emphasis role="keyword">LookupableHelperService</emphasis>.
+                            Instead the <emphasis role="keyword">resultsGroup.lineActions</emphasis>
+                            property list is extended or overridden.
+                            <?oxy_comment_start author="cniesen" timestamp="20130425T151431-0500" comment="Do we need to add detailed example of how to add custom actions?"?>Look
+                            in <emphasis role="keyword">UifLookupDefinition.xml</emphasis> to see
+                            how the edit, copy and delete actions are defined.<?oxy_comment_end?>
+                            [script converted: no]</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="keyword">SortDefinition</emphasis> bean with the
+                                <emphasis role="keyword">sortAscending</emphasis> and <emphasis
+                                role="keyword">attributeName</emphasis> properties has been
+                            replaced.  The sort order is specified via the <emphasis role="keyword"
+                                >defaultSortAscending</emphasis> property and the sort fields via
+                            the <emphasis role="keyword">defaultSortAttributeName</emphasis>
+                            property list on the <emphasis role="keyword"
+                            >Uif-Lookup-View</emphasis>.  [KNS line: 24-33, KRAD line: 36-43]
+                            [script converted: yes]</para>
                     </listitem>
                 </itemizedlist>
             </para>

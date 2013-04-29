@@ -104,7 +104,6 @@
                 <jsSourceFile>plugins/infusion/infusion.reorderer.js</jsSourceFile>
                 <jsSourceFile>plugins/prettify/prettify.js</jsSourceFile>
                 <jsSourceFile>plugins/globalize/globalize.js</jsSourceFile>
-                <jsSourceFile>plugins/timer/jquery.timer.js</jsSourceFile>
                 <jsSourceFile>plugins/countdown/jquery.countdown.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.message.js</jsSourceFile>

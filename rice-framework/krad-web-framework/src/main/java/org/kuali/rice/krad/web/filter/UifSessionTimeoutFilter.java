@@ -110,7 +110,8 @@ public class UifSessionTimeoutFilter implements Filter {
         // check for requested form key and if found and session storage is enabled for the
         // view, verify the form is present in the form manager
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
-        if (StringUtils.isNotBlank(formKeyParam) && getViewDictionaryService().isSessionStorageEnabled(viewId)) {
+        if (StringUtils.isNotBlank(formKeyParam) && getViewDictionaryService().isSessionStorageEnabled(viewId) &&
+                (httpSession != null)) {
             UifFormManager uifFormManager = (UifFormManager) httpSession.getAttribute(UifParameters.FORM_MANAGER);
 
             // if session form not found, treat like a session timeout

@@ -359,6 +359,7 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
 
         versions = new ArrayList<MavenVersion>(versions);
         Collections.sort(versions, mavenVersionTimestampComparator);
+
         // We want to iterate through from newest to oldest, so reverse
         Collections.reverse(versions);
 
@@ -375,6 +376,7 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
                 // One last transition to add, then start building transitions to this one
                 results.add(new VersionTransition(version, buildingTransitionsTo));
                 buildingTransitionsTo = version;
+
                 // also, reset the blacklist of versions we can transition from
                 minorVersionsFrom.clear();
             } else if (!minorVersionsFrom.contains(minorVersion)) {

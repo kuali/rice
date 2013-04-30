@@ -693,19 +693,36 @@ function collapseDisclosures() {
  * documentation on these options
  *
  * @param tableId id for the table that should be decorated
- * @param options map of option settings (option name/value pairs) for the plugin
+ * @param additionalOptions map of additional or override option settings (option name/value pairs) for the plugin
  * @param groupingOptions (optional) if supplied, the collection will use rowGrouping with these options
  */
-function createTable(tableId, options, groupingOptions) {
+function createTable(tableId, additionalOptions, groupingOptions) {
     jQuery(document).ready(function () {
-        options.bDestroy = true;
         var table = jQuery("#" + tableId);
+
         var detailsOpen = table.parent().data("detailsdefaultopen");
         table.data("open", detailsOpen);
 
         if (groupingOptions) {
             table.attr("data-groups", "true");
         }
+
+        var options = {
+            "bDestory" : true,
+            "bStateSave" : true,
+            "fnStateSave" : function (oSettings, oData) {
+                              setComponentState(tableId, 'richTableState', oData);
+                            },
+            "fnStateLoad" : function (oSettings) {
+                              var oData = getComponentState(tableId, 'richTableState');
+
+                              return oData;
+                            }
+        }
+
+        jQuery.extend(options, additionalOptions);
+
+        //options.bDestroy = true;
 
         var oTable = table.dataTable(options);
 

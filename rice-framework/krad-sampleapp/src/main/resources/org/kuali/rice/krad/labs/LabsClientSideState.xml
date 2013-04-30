@@ -45,6 +45,16 @@
         </property>
       </bean>
     </property>
+    <property name="header.lowerGroup">
+      <bean parent="Uif-HeaderLowerGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Go Forward - Test Back Button State" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/lookup?dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&amp;showMaintenanceLinks=true"/>
+            </list>
+          </property>
+      </bean>
+    </property>
   </bean>
 
   <bean id="Lab-ClientSideState-Page1" parent="Uif-Page" p:headerText="Page 1"
@@ -136,6 +146,21 @@
           </property>
           <property name="tabsWidget.defaultActiveTabId" value="Lab-ClientSideState-TabGroup2"/>
         </bean>
+
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:headerText="Collection State">
+           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+           <property name="propertyName" value="collection1"/>
+           <property name="layoutManager.generateAutoSequence" value ="true"/>
+           <property name="items">
+             <list>
+               <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+               <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+               <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+               <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+             </list>
+           </property>
+         </bean>
+
       </list>
     </property>
   </bean>

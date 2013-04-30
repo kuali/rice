@@ -104,17 +104,17 @@ public class View extends ContainerBase {
     private String stateObjectBindingPath;
     private StateMapping stateMapping;
 
-    //view header setting
+    // view header setting
     private boolean unifiedHeader;
 
-    //additional view group(s)
+    // additional view group(s)
     private Group topGroup;
 
     // application
     private Header applicationHeader;
     private Group applicationFooter;
 
-    //sticky flags
+    // sticky flags
     private boolean stickyTopGroup;
     private boolean stickyBreadcrumbs;
     private boolean stickyHeader;
@@ -180,6 +180,7 @@ public class View extends ContainerBase {
     private boolean applyDirtyCheck;
     private boolean translateCodesOnReadOnlyDisplay;
     private boolean supportsRequestOverrideOfReadOnlyFields;
+    private boolean disableNativeAutocomplete;
 
     private String preLoadScript;
 
@@ -1758,6 +1759,30 @@ public class View extends ContainerBase {
      */
     public void setSupportsRequestOverrideOfReadOnlyFields(boolean supportsRequestOverrideOfReadOnlyFields) {
         this.supportsRequestOverrideOfReadOnlyFields = supportsRequestOverrideOfReadOnlyFields;
+    }
+
+    /**
+     * Indicates whether the browser autocomplete functionality should be disabled for the
+     * entire form (adds autocomplete="off")
+     *
+     * <p>
+     * The browser's native autocomplete functionality can cause issues with security fields and also fields
+     * with the UIF suggest widget enabled
+     * </p>
+     *
+     * @return true if the native autocomplete should be turned off for the form, false if not
+     */
+    public boolean isDisableNativeAutocomplete() {
+        return disableNativeAutocomplete;
+    }
+
+    /**
+     * Setter to disable browser autocomplete for the view's form
+     *
+     * @param disableNativeAutocomplete
+     */
+    public void setDisableNativeAutocomplete(boolean disableNativeAutocomplete) {
+        this.disableNativeAutocomplete = disableNativeAutocomplete;
     }
 
     /**

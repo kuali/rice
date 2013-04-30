@@ -93,11 +93,9 @@ public class Suggest extends WidgetBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        // if source property name or query method or options not set then we can't render the Suggest widget
-        if (StringUtils.isBlank(valuePropertyName) &&
-                !suggestQuery.hasConfiguredMethod() &&
-                (suggestOptions == null || suggestOptions.isEmpty())) {
-            setRender(false);
+        // check for necessary configuration
+        if (!isSuggestConfigured()) {
+           setRender(false);
         }
 
         if (!isRender()) {
@@ -120,6 +118,21 @@ public class Suggest extends WidgetBase {
             BindingInfo bindingInfo = field.getBindingInfo();
             suggestQuery.updateQueryFieldMapping(bindingInfo);
         }
+    }
+
+    /**
+     * Indicates whether the suggest widget has the necessary configuration to render
+     *
+     * @return true if the necessary configuration is present, false if not
+     */
+    public boolean isSuggestConfigured() {
+        if (StringUtils.isNotBlank(valuePropertyName) ||
+                suggestQuery.hasConfiguredMethod() ||
+                (suggestOptions != null && !suggestOptions.isEmpty())) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

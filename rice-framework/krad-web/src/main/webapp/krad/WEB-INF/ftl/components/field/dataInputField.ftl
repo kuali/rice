@@ -27,6 +27,7 @@
                 <fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
                     <legend style="display: none">${field.label!}</legend>
             </#if>
+
             <#-- render field value (if read-only) or control (if edit) -->
             <#if readOnly>
 
@@ -107,8 +108,8 @@
 
         </@krad.fieldLbl>
 
-    <!-- placeholder for dynamic field markers -->
-    <span id="${field.id}_markers"></span>
+        <!-- placeholder for dynamic field markers -->
+        <span id="${field.id}_markers"></span>
 
         <#if !readOnly>
             <#-- render error container for field -->

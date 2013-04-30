@@ -17,14 +17,18 @@
 -->
 <#-- generate the standard HTML form element -->
 
-<#macro form postUrl onSubmitScript render=true>
+<#macro form postUrl onSubmitScript disableNativeAutocomplete=false render=true>
 
     <#if !postUrl?has_content>
         <#local render=false>
     </#if>
 
     <#if render>
-      <form id="kualiForm" action="${postUrl}" method="post" onsubmit="${onSubmitScript}">
+      <#if disableNativeAutocomplete>
+          <#local disableAutocompleteAttr='autocomplete="off"'/>
+      </#if>
+
+      <form id="kualiForm" action="${postUrl}" method="post" onsubmit="${onSubmitScript}" ${disableAutocompleteAttr!}>
           <a id="topOfForm"></a>
 
           <#nested/>

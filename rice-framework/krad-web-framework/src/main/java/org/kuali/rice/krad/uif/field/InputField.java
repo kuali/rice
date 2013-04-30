@@ -112,6 +112,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private KeyValuesFinder optionsFinder;
 
     private boolean uppercaseValue;
+    private boolean disableNativeAutocomplete;
 
     private ValidationMessages validationMessages;
 
@@ -244,6 +245,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * <li>Set the ids for the various attribute components</li>
      * <li>Sets up the client side validation for constraints on this field. In
      * addition, it sets up the messages applied to this field</li>
+     * <li>Disable native autocomplete with the suggest widget is configured</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
@@ -267,6 +269,11 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
                 String uppercasedValue = ((String) currentPropertyValue).toUpperCase();
                 ObjectPropertyUtils.setPropertyValue(model, getBindingInfo().getBindingPath(), uppercasedValue);
             }
+        }
+
+        // browser's native autocomplete causes issues with the suggest plugin
+        if ((suggest != null) && suggest.isSuggestConfigured()) {
+           setDisableNativeAutocomplete(true);
         }
 
         // adjust paths on PrerequisiteConstraint property names
@@ -1103,6 +1110,30 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     public void setUppercaseValue(boolean uppercaseValue) {
         this.uppercaseValue = uppercaseValue;
+    }
+
+    /**
+     * Indicates whether the browser autocomplete functionality should be disabled for the
+     * input field (adds autocomplete="off")
+     *
+     * <p>
+     * The browser's native autocomplete functionality can cause issues with security fields and also fields
+     * with the UIF suggest widget enabled
+     * </p>
+     *
+     * @return true if the native autocomplete should be turned off for the input field, false if not
+     */
+    public boolean isDisableNativeAutocomplete() {
+        return disableNativeAutocomplete;
+    }
+
+    /**
+     * Setter to disable browser autocomplete for the input field
+     *
+     * @param disableNativeAutocomplete
+     */
+    public void setDisableNativeAutocomplete(boolean disableNativeAutocomplete) {
+        this.disableNativeAutocomplete = disableNativeAutocomplete;
     }
 
     /**

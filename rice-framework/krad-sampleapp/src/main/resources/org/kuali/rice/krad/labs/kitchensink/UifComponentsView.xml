@@ -400,7 +400,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:labelPlacement="TOP"
-              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
+              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false" p:disableNativeAutocomplete="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>

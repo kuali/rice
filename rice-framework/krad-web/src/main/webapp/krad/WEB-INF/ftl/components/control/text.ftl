@@ -45,6 +45,10 @@
         <#local attributes='${attributes} minLength="${control.minLength}"'/>
     </#if>
 
+    <#if field.disableNativeAutocomplete>
+        <#local attributes='${attributes} autocomplete="off"'/>
+    </#if>
+
     <@spring.formInput id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 
     <#if control.watermarkText?has_content>

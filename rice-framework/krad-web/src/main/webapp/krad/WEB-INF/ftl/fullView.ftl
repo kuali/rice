@@ -39,7 +39,7 @@
         </#if>
 
         <@krad.form render=view.renderForm postUrl="${view.formPostUrl!KualiForm.formPostUrl}"
-        onSubmitScript="${view.onSubmitScript!}">
+        onSubmitScript="${view.onSubmitScript!}" disableNativeAutocomplete=view.disableNativeAutocomplete>
 
             <#if view.renderForm>
                 <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->

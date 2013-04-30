@@ -37,6 +37,7 @@ public class UifPropertyPaths {
     public static final String OBJECT_ID = "objectId";
     public static final String PROPERTY_EXPRESSIONS = "propertyExpressions";
     public static final String LOOKUP_CRITERIA = "lookupCriteria";
+    public static final String RENDER = "render";
     public static final String REQUIRED = "required";
     public static final String READ_ONLY = "readOnly";
     public static final String ROW_SPAN = "rowSpan";

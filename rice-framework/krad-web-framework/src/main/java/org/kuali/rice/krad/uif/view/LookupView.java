@@ -20,8 +20,8 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -32,9 +32,6 @@ import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Link;
-import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
@@ -47,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * View type for Maintenance documents
@@ -227,7 +225,7 @@ public class LookupView extends FormView {
             getHeader().setRender(false);
         }
 
-        setupLookupCriteriaFields();
+        setupLookupCriteriaFields(view, model);
 
         // Get the search action button for trigger on change and trigger on enter
         Group actionGroup = criteriaGroup.getFooter();
@@ -283,7 +281,7 @@ public class LookupView extends FormView {
     /**
      * Helper method to do any lookup specific changes to the criteria fields
      */
-    private void setupLookupCriteriaFields() {
+    private void setupLookupCriteriaFields(View view, Object model) {
 
         int rangeIndex = 0;
         HashMap<Integer, Component> dateRangeFieldMap = new HashMap<Integer, Component>();
@@ -302,6 +300,12 @@ public class LookupView extends FormView {
                 // Create field group
                 FieldGroup rangeFieldGroup = ComponentUtils.copy(rangeFieldGroupPrototype, criteriaField.getId());
                 rangeFieldGroup.setLabel(((LookupInputField)criteriaField).getLabel());
+
+                // Evaluate and set the render property
+                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluatePropertyExpression(view, model,
+                        criteriaField.getContext(), criteriaField, UifPropertyPaths.RENDER, true);
+                rangeFieldGroup.setRender(criteriaField.isRender());
+
                 List<Component> fieldGroupItems = new ArrayList<Component>();
 
                 // Create a new from date field

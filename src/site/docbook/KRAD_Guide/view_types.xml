@@ -269,7 +269,7 @@
           primary keys of the data object.
         </para>
         <programlisting>
-&lt;bean id="BookMaintenanceView" parent="Uif-MaintenanceView"&gt;
+&lt;bean id="BookMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
  ...
 &lt;property name="lockingKeys" &gt;
 &lt;list&gt;

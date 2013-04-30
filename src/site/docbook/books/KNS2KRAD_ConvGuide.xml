@@ -465,7 +465,7 @@
       &lt;bean parent="Uif-DataField" p:propertyName="description" 
             p:required="@{#dp.lookupCriteria['CD'] == 'A_CD'}" />
       &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespace" 
-            p:hidden="@{#dp.lookupCriteria['CD'] == 'A_CD'}" />
+            p:render="@{#dp.lookupCriteria['CD'] == 'A_CD'}" />
     &lt;/list>
   &lt;/property>
   ...

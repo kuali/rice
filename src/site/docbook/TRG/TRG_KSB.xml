@@ -2247,7 +2247,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
 
               <mediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/global_resource_loader.png"
+                  <imagedata fileref="../images/KSB_Guide/global_resource_loader.png"
                     contentwidth="100%" contentdepth="100%" />
                 </imageobject>
               </mediaobject>

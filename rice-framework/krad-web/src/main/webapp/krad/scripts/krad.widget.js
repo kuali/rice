@@ -42,8 +42,8 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
         if(content.length && !content.is(":visible") && breadcrumb.length && !jQuery(siblingLink).data("close")){
             content.attr("style", "");
             content.position({
-            my: "left bottom",
-            at: "left top",
+            my: "left top",
+            at: "left bottom+5",
             of: breadcrumb
             });
             content.show();

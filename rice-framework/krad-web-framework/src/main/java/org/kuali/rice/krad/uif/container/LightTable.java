@@ -57,7 +57,7 @@ import java.util.regex.Pattern;
 
 /**
  * LightTable is a light-weight collection table implementation that supports a subset of features.
- * Current know supported features are
+ * Current known supported features are:
  * <ul>
  *     <li>DataField</li>
  *     <li>InputField with TextControl, CheckboxControl, or single SelectControl</li>

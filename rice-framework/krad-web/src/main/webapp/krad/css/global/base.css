@@ -337,16 +337,34 @@ img.uif-disclosure-image {
     background-color: white;
     width: 100%;
     z-index: 10 !important;
+    line-height: 18px;
+    background: linear-gradient(to bottom, #FFFFFF 0%, #F5F5F5 100%) repeat scroll 0 0 transparent;
+    border-bottom: 1px solid #E2E2E2;
+    border-top: 1px solid #E2E2E2;
+    height: 28px;
 }
 
 ol.uif-breadcrumbs {
     display: block;
     letter-spacing: 0.02em;
-    padding: 6px 0 3px 15px;
+    padding-left: 15px;
+    height: 28px;
 }
+
+
 
 .uif-breadcrumbs > li > a {
     text-decoration: none;
+}
+
+.uif-breadcrumbs > li > a,  .uif-breadcrumbs > li > span{
+    padding: .4em 0 0 1em;
+    float: left;
+    color: #5B5B5B;
+}
+
+.uif-breadcrumbs > li:first-child > a {
+    padding-left: 0;
 }
 
 .uif-breadcrumbs > li:last-child > span, .uif-breadcrumbs > li:last-child > a {
@@ -357,12 +375,14 @@ ol.uif-breadcrumbs {
     text-decoration: none;
 }
 
-.uif-breadcrumbs > li:after {
-    content: "\00BB";
+.uif-breadcrumbs > li {
+    background-image: url(../../images/divider-breadcrumb.png);
+    background-position: right center;
+    background-repeat: no-repeat;
 }
 
-.uif-breadcrumbs > li:last-child:after {
-    content: "";
+.uif-breadcrumbs > li:last-child{
+    background-image: none;
 }
 
 .uif-breadcrumbs  > li > a:focus, .uif-breadcrumbs > li > a:hover {
@@ -370,18 +390,28 @@ ol.uif-breadcrumbs {
 }
 
 ol.uif-breadcrumbs, .uif-breadcrumbs > li {
-    display: inline;
     margin: 0;
     list-style: none;
     width: auto;
+    float: left;
+    height: 28px;
+    padding-right: 30px;
+}
+
+.uif-homeBreadcrumbLink {
+    content: "";
+}
+
+.uif-breadcrumbSiblingLink{
+    padding-left: .8em !important;
+    font-size: 9px;
 }
 
 .uif-breadcrumbSiblingContent {
     position: absolute;
     background: white;
     /*border: 1px solid black;*/
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 6px 6px 6px 6px;
+    border: 1px solid #CCCCCC;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     min-width: 180px;
     padding: 5px;

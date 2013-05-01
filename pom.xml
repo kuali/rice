@@ -2025,9 +2025,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/rice/tags/rice-2.1-rc2</connection>
-    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/tags/rice-2.1-rc2</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/tags/rice-2.1-rc2</url>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/tags/rice-2.1.6-rc2</connection>
+    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/tags/rice-2.1.6-rc2</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/tags/rice-2.1.6-rc2</url>
   </scm>
 
 </project>

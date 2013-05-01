@@ -22,6 +22,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.view.View;
@@ -72,11 +73,11 @@ public class Help extends WidgetBase {
                 helpAction = ComponentFactory.getHelpAction();
 
                 view.assignComponentIds(helpAction);
-                helpAction.addDataAttribute("role", "help");
+                helpAction.addDataAttribute(UifConstants.DataAttributes.ROLE, "help");
             }
         }
         else{
-            helpAction.addDataAttribute("role", "help");
+            helpAction.addDataAttribute(UifConstants.DataAttributes.ROLE, "help");
         }
     }
 

@@ -27,6 +27,10 @@
     <#if component.render || (component.progressiveRender?has_content && !component.progressiveRenderViaAJAX
      && !component.progressiveRenderAndRefresh)>
 
+        <#if component.preRenderContent?has_content>
+            ${component.preRenderContent?html}
+        </#if>
+
         <#if component.selfRendered>
             ${component.renderedHtmlOutput}
         <#else>
@@ -49,11 +53,12 @@
             <@macroInvoke />
         </#if>
 
-        <#-- write data attributes -->
-        <@krad.script component=component role="dataScript" value="${component.complexDataAttributesJs}"/>
-
         <#-- generate event code for component -->
-        <@krad.script component=component value="${component.eventHandlerScript}" />
+        <@krad.eventScript component=component/>
+
+        <#if component.postRenderContent?has_content>
+            ${component.postRenderContent?html}
+        </#if>
     </#if>
 
     <#if componentUpdate>

@@ -42,7 +42,6 @@ public class UifConstants {
 
     public static final String SPACE = " ";
 
-    public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
     public static final String REQUEST_FORM = "requestForm";
 
     public static final String BLOCKUI_NAVOPTS = "navigation";
@@ -270,8 +269,14 @@ public class UifConstants {
     }
 
     public static final class DataAttributes {
-        public static final String SERVER_MESSAGES = "server-messages";
-        public static final String VALIDATION_MESSAGES = "validationMessages";
+        public static final String TYPE = "type";
+        public static final String ROLE = "role";
+        public static final String ONCLICK = "onclick";
+        public static final String SUBMIT_DATA = "submit_data";
+        public static final String SERVER_MESSAGES = "server_messages";
+        public static final String VALIDATION_MESSAGES = "validation_messages";
+        public static final String MESSAGES_FOR = "messages_for";
+        public static final String PARENT = "parent";
         public static final String SUMMARIZE = "summarize";
         public static final String DISPLAY_MESSAGES = "displayMessages";
         public static final String COLLAPSE_FIELD_MESSAGES = "collapseFieldMessages";
@@ -287,6 +292,16 @@ public class UifConstants {
         public static final String SERVER_WARNINGS = "serverWarnings";
         public static final String SERVER_INFO = "serverInfo";
         public static final String VIGNORE = "vignore";
+        public static final String TOTAL = "total";
+        public static final String SKIP_TOTAL = "skip_total";
+        public static final String LABEL = "label";
+        public static final String GROUP = "group";
+        public static final String LABEL_FOR = "label_for";
+        public static final String CONTROL_FOR = "control_for";
+        public static final String ADD_CONTROLS = "add_controls";
+        public static final String HEADER_FOR = "header_for";
+        public static final String STICKY_FOOTER = "sticky_footer";
+        public static final String DETAILS_DEFAULT_OPEN = "details_default_open";
     }
 
     public static final class CaseConstraintOperators {

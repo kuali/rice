@@ -676,7 +676,7 @@ function performFocus(focusId) {
     }
 
     if (focusId == "FIRST" && gAutoFocus) {
-        var id = jQuery("div[data-role='InputField'] .uif-control:input:first", "#kualiForm").attr("id");
+        var id = jQuery("div[data-role='InputField']:first .uif-control:input:first", "#kualiForm").attr("id");
         focus(id);
         return;
     }
@@ -1346,7 +1346,7 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
             //find the totalsBlocks in the column footer cell, and calculate the appropriate totals
             jQuery("div[data-role='totalsBlock']", cell).each(function () {
                 var totalDiv = jQuery(this).find("div[data-role='total']");
-                var skipTotal = totalDiv.data("skiptotal");
+                var skipTotal = totalDiv.data(kradVariables.SKIP_TOTAL);
 
                 if (!skipTotal && totalDiv.length) {
                     calculateTotal(totalDiv, 0, aaData.length, columns[c], aaData, aiDisplay);

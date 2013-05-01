@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
@@ -66,6 +67,20 @@ public class Link extends ContentElementBase {
 
         if (openInLightbox && (lightBox == null)) {
             lightBox = ComponentFactory.getLightBox();
+        }
+    }
+
+    /**
+     * Special handling for lightbox links to add and onclick data attribute to be handled by a global handler
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        if (lightBox != null && lightBox.isRender()){
+            this.addDataAttribute(UifConstants.DataAttributes.ONCLICK, "handleLightboxOpen(jQuery(this), " +
+                    lightBox.getTemplateOptionsJSString() + ", " + lightBox.isAddAppParms() + ", e);");
+            lightBox.setRender(false);
         }
     }
 

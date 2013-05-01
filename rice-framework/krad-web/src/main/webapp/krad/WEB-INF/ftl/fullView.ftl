@@ -78,7 +78,7 @@
     <#if view.applicationFooter?has_content>
         <#assign appFooterData=""/>
         <#if view.stickyApplicationFooter>
-            <#assign appFooterData="data-stickyFooter='true'"/>
+            <#assign appFooterData="data-sticky_footer='true'"/>
         </#if>
 
         <div id="Uif-ApplicationFooter-Wrapper" ${appFooterData}>

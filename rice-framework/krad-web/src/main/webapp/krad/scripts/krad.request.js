@@ -26,7 +26,8 @@ function KradRequest(action) {
             this.ajaxSubmit = action.data("ajaxsubmit");
         }
 
-        this.additionalData = action.data("submitData");
+        this.additionalData = action.data(kradVariables.SUBMIT_DATA);
+
         this.methodToCall = this.additionalData['methodToCall'];
 
         if (action.data("successcallback") !== undefined) {

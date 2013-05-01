@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -153,6 +154,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private List<PropertyReplacer> propertyReplacers;
 
     private Map<String, String> dataAttributes;
+
+    private String preRenderContent;
+    private String postRenderContent;
 
     public ComponentBase() {
         super();
@@ -1681,60 +1685,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Returns js that will add data to this component by the element which matches its id.
-     * This will return script for only the complex data elements (containing {});
-     *
-     * @return jQuery data script for adding complex data attributes
-     */
-    public String getComplexDataAttributesJs() {
-        String js = "";
-        if (getDataAttributes() == null) {
-            return js;
-        } else {
-            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
-                if (data != null && data.getValue() != null &&
-                        data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")) {
-                    js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey() + "', " + data.getValue() + ");";
-                }
-            }
-            return js;
-        }
-    }
-
-    /**
-     * Returns a string that can be put into a the tag of a component to add data attributes inline.
-     * This does not include the complex attributes which contain {}
+     * Returns a string that can be put into a the tag of a component to add all data attributes inline.
      *
      * @return html string for data attributes for the simple attributes
      */
+    @Override
     public String getSimpleDataAttributes() {
         String attributes = "";
         if (getDataAttributes() == null) {
             return attributes;
         } else {
             for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
-                if (data != null && data.getValue() != null && !data.getValue().trim().startsWith("{")) {
-                    attributes = attributes + " " + "data-" + data.getKey() + "=\"" + data.getValue() + "\"";
+                if (data != null && data.getValue() != null) {
+                    attributes = attributes + " " + "data-" + data.getKey() + "=\"" +
+                            KRADUtils.convertToHTMLAttributeSafeString(data.getValue()) + "\"";
                 }
             }
             return attributes;
-        }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getAllDataAttributesJs()
-     */
-    @Override
-    public String getAllDataAttributesJs() {
-        String js = "";
-        if (getDataAttributes() == null) {
-            return js;
-        } else {
-            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
-                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey() + "', " + ScriptUtils
-                        .convertToJsValue(data.getValue()) + ");";
-            }
-            return js;
         }
     }
 
@@ -1839,4 +1806,33 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
     }
 
+    /**
+     * @see Component#getPreRenderContent()
+     */
+    @BeanTagAttribute(name = "preRenderContent")
+    public String getPreRenderContent() {
+        return preRenderContent;
+    }
+
+    /**
+     * @see Component#setPreRenderContent(String)
+     */
+    public void setPreRenderContent(String preRenderContent) {
+        this.preRenderContent = preRenderContent;
+    }
+
+    /**
+     * @see Component#getPostRenderContent()
+     */
+    @BeanTagAttribute(name = "postRenderContent")
+    public String getPostRenderContent() {
+        return postRenderContent;
+    }
+
+    /**
+     * @see Component#setPostRenderContent(String)
+     */
+    public void setPostRenderContent(String postRenderContent) {
+        this.postRenderContent = postRenderContent;
+    }
 }

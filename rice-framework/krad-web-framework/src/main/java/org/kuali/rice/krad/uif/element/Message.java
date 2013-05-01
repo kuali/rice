@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -100,7 +101,7 @@ public class Message extends ContentElementBase {
         super.performFinalize(view, model, parent);
 
         // message needs to be aware of its own parent because it now contains content that can have validation
-        this.addDataAttribute("parent", parent.getId());
+        this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());
     }
 
     /**

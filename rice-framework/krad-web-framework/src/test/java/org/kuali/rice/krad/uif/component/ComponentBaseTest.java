@@ -56,20 +56,7 @@ public class ComponentBaseTest {
         // set data attributes - for testing purposes only - they do not have any functional significance
         dataAttributes.put("iconTemplateName", "cool-icon-%s.png");
         dataAttributes.put("transitions", "3");
-        dataAttributes.put("growing-seasons", "{summer:'hot', winter:'cold'}");
-        dataAttributes.put("intervals", "{short:2, medium:5, long:13}");
         component.setDataAttributes(dataAttributes);
-    }
-
-    @Test
-    /**
-     * test that complex date attributes are converted into a jquery script ok
-     */
-    public void testGetComplexDataAttributesJs() throws Exception {
-        assertNotNull(component.getComplexDataAttributesJs());
-        String expected = "jQuery('#action1').data('growing-seasons', {summer:'hot', winter:'cold'});"
-                + "jQuery('#action1').data('intervals', {short:2, medium:5, long:13});";
-        assertEquals("complex attributes JS string did not match", expected, component.getComplexDataAttributesJs());
     }
 
     @Test
@@ -84,63 +71,10 @@ public class ComponentBaseTest {
 
     @Test
     /**
-     * test that get all attributes js works ok even when the data attributes are null
-     */
-    public void testGetAllDataAttributesJs() throws Exception {
-        assertNotNull(component.getAllDataAttributesJs());
-        String expected = "jQuery('#action1').data('growing-seasons', {summer:'hot', winter:'cold'});"
-                + "jQuery('#action1').data('iconTemplateName', 'cool-icon-%s.png');"
-                + "jQuery('#action1').data('intervals', {short:2, medium:5, long:13});"
-                + "jQuery('#action1').data('transitions', 3);";
-        assertEquals("all attributes JS string did not match", expected, component.getAllDataAttributesJs());
-    }
-
-    @Test
-    /**
-     *  test that complex date attributes are converted into a jquery script ok even when data attributes are null
-     */
-    public  void testGetComplexAttributesJSWhenNull () throws Exception{
-        component.setDataAttributes(null);
-        assertEquals("complex attributes JS string did not match", "", component.getComplexDataAttributesJs());
-    }
-
-    @Test
-    /**
      * test that simple data attributes are converted into inline attributes ok  when data attributes are null
      */
     public void testGetSimpleDataAttributesWhenNull() throws Exception {
         component.setDataAttributes(null);
         assertEquals("simple attributes did not match", "", component.getSimpleDataAttributes());
-    }
-
-    @Test
-    /**
-     * test that get all attributes js works ok even when the data attributes are null
-     */
-    public void testGetAllDataAttributesJsWhenNull() throws Exception {
-        component.setDataAttributes(null);
-        assertEquals("simple attributes did not match", "", component.getAllDataAttributesJs());
-    }
-
-    /**
-     * test that controls that need to override getComplexAttributes work as expected
-     */
-    @Test
-    public void testGetComplexAttributesOverridingControls() {
-        Component[] overridingControls = {new TextControl(), new TextAreaControl(), new FileControl(), new UserControl()};
-        for (int i=0; i<overridingControls.length; i++) {
-            overridingControls[i].setDataAttributes(dataAttributes);
-            assertTrue(overridingControls[i].getClass() + " does not override getComplexAttributes",
-                    overridingControls[i].getAllDataAttributesJs().equalsIgnoreCase(
-                            overridingControls[i].getComplexDataAttributesJs()));
-        }
-        // other controls should have a different value for
-        Component[] nonOverridingControls = {new Image(), new Action(), new LinkField(), new Message()};
-        for (Component component: nonOverridingControls) {
-            component.setDataAttributes(dataAttributes);
-            assertFalse(component.getClass() + " should not override getComplexAttributes",
-                    component.getAllDataAttributesJs().equalsIgnoreCase(
-                            component.getComplexDataAttributesJs()));
-        }
     }
 }

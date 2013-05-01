@@ -151,7 +151,7 @@ jQuery(document).ready(function () {
     }
 
     //find and initialize stickyFooters
-    stickyFooterContent = jQuery("[data-stickyFooter='true']");
+    stickyFooterContent = jQuery("[data-sticky_footer='true']");
     applicationFooter = jQuery("#Uif-ApplicationFooter-Wrapper");
     initStickyFooterContent();
 
@@ -194,6 +194,15 @@ function initFieldHandlers() {
         tail: {align: "left"},
         themeMargins: {total: "13px", difference: "2px"}
     };
+
+    //add global action handler
+    jQuery(document).on("click", "a[data-onclick], button[data-onclick], img[data-onclick], input[data-onclick]",
+            function(e){
+        var functionData = jQuery(this).data("onclick");
+        eval("var actionFunction = function(e) {" + functionData + "};");
+
+        return actionFunction.call(this, e);
+    });
 
     //add a focus handler for scroll manipulation when there is a sticky header or footer, so content stays in view
     jQuery("#Uif-PageContentWrapper").on("focus", "a[href], area[href], input:not([disabled]), "
@@ -239,7 +248,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
-                var data = jQuery("#" + fieldId).data("validationMessages");
+                var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
                 if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
@@ -253,7 +262,7 @@ function initFieldHandlers() {
                                 || jQuery(element).filter("input").is(":focus");
                     }
 
-                    var hasMessages = jQuery("[data-messagesFor='" + fieldId + "']").children().length;
+                    var hasMessages = jQuery("[data-messages_for='" + fieldId + "']").children().length;
 
                     //only display the tooltip if not already focused or already showing
                     if (!focus && hasMessages && !jQuery(tooltipElement).IsBubblePopupOpen()) {
@@ -282,7 +291,7 @@ function initFieldHandlers() {
                         if (show) {
                             var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
                             validationTooltipOptions.themeName = data.tooltipTheme;
-                            validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
+                            validationTooltipOptions.innerHTML = jQuery("[data-messages_for='" + fieldId + "']").html();
                             //set the margin to offset it from the left appropriately
                             validationTooltipOptions.divStyle = {margin: getTooltipMargin(tooltipElement)};
                             jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
@@ -303,7 +312,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
-                var data = jQuery("#" + fieldId).data("validationMessages");
+                var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
                 if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
@@ -518,7 +527,6 @@ function initFieldHandlers() {
             refreshDatatableCellRedraw(input)
         }, 300);
     });
-
 }
 
 /**
@@ -534,7 +542,6 @@ function initBubblePopups() {
     jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
             + "select, textarea, .uif-tooltip", {   manageMouseEvents: false,
         themePath: "../krad/plugins/tooltip/jquerybubblepopup-theme/"});
-
 }
 
 function hideBubblePopups(element) {
@@ -570,7 +577,7 @@ function setupPage(validate) {
     setupImages();
 
     //reinitialize sticky footer content because page footer can be sticky
-    stickyFooterContent = jQuery("[data-stickyFooter='true']");
+    stickyFooterContent = jQuery("[data-sticky_footer='true']");
     initStickyFooterContent();
     handleStickyFooterContent();
     initStickyContent();
@@ -614,7 +621,7 @@ function setupPage(validate) {
     }
 
     //skip input field iteration and validation message writing, if no server messages
-    var hasServerMessagesData = jQuery("[data-type='Page']").data("server-messages");
+    var hasServerMessagesData = jQuery("[data-type='Page']").data(kradVariables.SERVER_MESSAGES);
     if (hasServerMessagesData) {
         //Handle messages at field, if any
         jQuery("div[data-role='InputField']").each(function () {

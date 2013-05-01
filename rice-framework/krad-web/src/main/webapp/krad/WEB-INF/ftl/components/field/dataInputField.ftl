@@ -33,7 +33,9 @@
 
                 <#local readOnlyDisplay>
                     <#-- if it is a textarea add a pre tag to preserve formatting-->
-                    <#if field.multiLineReadOnlyDisplay>
+                    <#if field.forcedValue?has_content>
+                        ${field.forcedValue}
+                    <#elseif field.multiLineReadOnlyDisplay>
                         <pre>
                             <#-- display replacement display value if set -->
                             <#if field.readOnlyDisplayReplacement?has_content>

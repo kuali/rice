@@ -171,31 +171,6 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     }
 
     /**
-     * Returns js that will add data to this component by the element which matches its id.
-     *
-     * <p> This will return script for all the data elements since this component is implemented as a spring form:input
-     * tag
-     * that does not allow for the insertion of simple attributes. Therefore, the complex attributes script should
-     * include
-     * all the attributes since is it is inserted each time krad:template is used to display a control</p>
-     *
-     * @return jQuery data script for all data attributes
-     */
-    @Override
-    public String getComplexDataAttributesJs() {
-        /*TODO find out if all controls will need to override this. If not, uncomment and add the ones that need to the array
-        // classes which will exhibit the overriding behaviour
-        Class[] allowedcontrols = {TextAreaControl.class, TextControl.class, FileControl.class};
-        for (Class klass: allowedcontrols) {
-            if (klass.isAssignableFrom(this.getClass())) {
-                return super.getAllDataAttributesJs();
-            }
-        }
-        return super.getComplexDataAttributesJs();*/
-        return super.getAllDataAttributesJs();
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override

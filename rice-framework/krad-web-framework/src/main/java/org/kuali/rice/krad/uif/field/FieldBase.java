@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Label;
@@ -119,9 +120,9 @@ public class FieldBase extends ComponentBase implements Field {
                 fieldLabel.addStyleClass("uif-labelBlock");
             }
 
-            fieldLabel.addDataAttribute("labelFor", this.getId());
+            fieldLabel.addDataAttribute(UifConstants.DataAttributes.LABEL_FOR, this.getId());
             if(StringUtils.isNotBlank(this.getFieldLabel().getLabelText())){
-                this.addDataAttribute("label",
+                this.addDataAttribute(UifConstants.DataAttributes.LABEL,
                         MessageStructureUtils.translateStringMessage(this.getFieldLabel().getLabelText()));
             }
         }

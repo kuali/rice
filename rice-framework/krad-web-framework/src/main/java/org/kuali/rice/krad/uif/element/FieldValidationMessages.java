@@ -17,9 +17,12 @@ package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
+
+import java.util.HashMap;
 
 /**
  * ValidationMessages for logic and options specific to groups
@@ -43,31 +46,24 @@ public class FieldValidationMessages extends ValidationMessages {
         if (!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()) {
             hasMessages = true;
         }
-        parent.addDataAttribute("validationMessages", "{"
-                + "displayMessages:"
-                + this.isDisplayMessages()
-                + ","
-                + "useTooltip:"
-                + useTooltip
-                + ","
-                + "messagingEnabled:"
-                + this.isDisplayMessages()
-                + ","
-                + "hasOwnMessages:"
-                + hasMessages
-                + ","
-                + "showIcons:"
-                + showIcons
-                + ","
-                + "serverErrors:"
-                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors()))
-                + ","
-                + "serverWarnings:"
-                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings()))
-                + ","
-                + "serverInfo:"
-                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
-                + "}");
+        HashMap<String, Object> validationMessagesDataAttributes = new HashMap<String, Object>();
+
+        //display
+        validationMessagesDataAttributes.put("displayMessages", this.isDisplayMessages());
+
+        //options
+        validationMessagesDataAttributes.put("useTooltip", useTooltip);
+        validationMessagesDataAttributes.put("messagingEnabled", this.isDisplayMessages());
+        validationMessagesDataAttributes.put("hasOwnMessages", hasMessages);
+        validationMessagesDataAttributes.put("showIcons", showIcons);
+
+        //server messages
+        validationMessagesDataAttributes.put("serverErrors", ScriptUtils.escapeHtml(this.getErrors()));
+        validationMessagesDataAttributes.put("serverWarnings", ScriptUtils.escapeHtml(this.getWarnings()));
+        validationMessagesDataAttributes.put("serverInfo", ScriptUtils.escapeHtml(this.getInfos()));
+
+        parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
+                        validationMessagesDataAttributes));
     }
 
     /**

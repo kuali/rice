@@ -80,7 +80,7 @@ public class ScriptUtils {
 
             Map<Object, Object> map = (Map<Object, Object>) value;
             for (Map.Entry<Object, Object> mapEntry : map.entrySet()) {
-                jsValue += mapEntry.getKey().toString() + ":";
+                jsValue += "\"" + mapEntry.getKey().toString() + "\":";
                 jsValue += translateValue(mapEntry.getValue());
                 jsValue += ",";
             }

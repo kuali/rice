@@ -1170,16 +1170,6 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setDataAttributes(Map<String, String> dataAttributes);
 
     /**
-     * A JavaScript script that will add data to this component by the element which matches its id
-     *
-     * <p>
-     * This will return script for only the complex data elements (containing {})</p>
-     *
-     * @return jQuery data script for adding complex data attributes
-     */
-    String getComplexDataAttributesJs();
-
-    /**
      * The string that can be put into a the tag of a component to add data attributes inline
      *
      * <p>
@@ -1190,16 +1180,6 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     String getSimpleDataAttributes();
 
     /**
-     * A JavaScript script that will add data to this component by the element which matches its id
-     *
-     * <p>This will return script for all the complex data elements.
-     * This method is useful for controls that are implemented as spring form tags</p>
-     *
-     * @return jQuery data script for adding all data attributes
-     */
-    String getAllDataAttributesJs();
-
-    /**
      * Validates different requirements of component compiling a series of reports detailing information on errors
      * found in the component.  Used by the RiceDictionaryValidator.
      *
@@ -1207,4 +1187,31 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      */
     void completeValidation(ValidationTrace tracer);
 
+    /**
+     * Raw html or string content to render before this component renders
+     *
+     * @return the preRenderContent string
+     */
+    public String getPreRenderContent();
+
+    /**
+     * Set the preRenderContent
+     *
+     * @param preRenderContent
+     */
+    public void setPreRenderContent(String preRenderContent);
+
+    /**
+     * Raw html or string content to render after this component renders
+     *
+     * @return the postRenderContent string
+     */
+    public String getPostRenderContent();
+
+    /**
+     * Set the postRenderContent
+     *
+     * @param postRenderContent
+     */
+    public void setPostRenderContent(String postRenderContent);
 }

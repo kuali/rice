@@ -400,7 +400,7 @@ public class CollectionGroupBuilder implements Serializable {
                     }
                 }
             }
-            collectionGroup.addDataAttribute("addControls", selector.replaceFirst(",", ""));
+            collectionGroup.addDataAttribute(UifConstants.DataAttributes.ADD_CONTROLS, selector.replaceFirst(",", ""));
         }
     }
 

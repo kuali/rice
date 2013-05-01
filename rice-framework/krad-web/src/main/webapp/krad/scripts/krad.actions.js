@@ -204,7 +204,7 @@ function retrieveComponent(id, methodToCall, successCallback, additionalData) {
  */
 function validateAddLine(collectionGroupId, addViaLightbox) {
     var collectionGroup = jQuery("#" + collectionGroupId);
-    var addControls = collectionGroup.data("addcontrols");
+    var addControls = collectionGroup.data(kradVariables.ADD_CONTROLS);
 
     if (addViaLightbox) {
         collectionGroup = jQuery("#kualiLightboxForm");

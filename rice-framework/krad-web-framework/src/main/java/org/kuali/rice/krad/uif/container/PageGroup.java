@@ -20,6 +20,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
@@ -75,7 +76,7 @@ public class PageGroup extends Group {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        this.addDataAttribute("type", "Page");
+        this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Page");
 
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {
@@ -304,7 +305,7 @@ public class PageGroup extends Group {
     public void setStickyFooter(boolean stickyFooter) {
         this.stickyFooter = stickyFooter;
         if (this.getFooter() != null) {
-            this.getFooter().addDataAttribute("stickyFooter", Boolean.toString(stickyFooter));
+            this.getFooter().addDataAttribute(UifConstants.DataAttributes.STICKY_FOOTER, Boolean.toString(stickyFooter));
         }
     }
 }

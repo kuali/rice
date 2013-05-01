@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.container;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Accordion;
@@ -59,7 +60,7 @@ public class AccordionGroup extends Group {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-        this.addDataAttribute("type", "Uif-AccordionGroup");
+        this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Uif-AccordionGroup");
     }
 
     /**

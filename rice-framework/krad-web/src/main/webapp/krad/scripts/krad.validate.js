@@ -193,7 +193,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
             options.themeMargins = elementInfo.themeMargins;
         }
 
-        var hasMessages = jQuery("[data-messagesFor='" + fieldId + "']").children().length;
+        var hasMessages = jQuery("[data-messages_for='" + fieldId + "']").children().length;
 
         if (hasMessages) {
             if (data.tooltipTimer) {
@@ -202,7 +202,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                 clearTimeout(data.tooltipTimer);
             }
 
-            options.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
+            options.innerHTML = jQuery("[data-messages_for='" + fieldId + "']").html();
             options.themeName = data.tooltipTheme;
 
             var show = true;
@@ -278,7 +278,7 @@ function writeMessagesAtField(id) {
             data.info = [];
         }
 
-        var messagesDiv = jQuery("[data-messagesFor='" + id + "']");
+        var messagesDiv = jQuery("[data-messages_for='" + id + "']");
         //ensure the messagesDiv is hidden and empty
         if (data.useTooltip) {
             messagesDiv.hide();
@@ -472,7 +472,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
 
         //retrieve header for section
         if (data.isSection == undefined) {
-            var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label");
+            var sectionHeader = jQuery("[data-header_for='" + id + "']").find("> :header, > label");
             data.isSection = sectionHeader.length;
         }
 
@@ -484,7 +484,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
             //Display counts in the header even if messages aren't displayed at that level
             data = calculateMessageTotals(id, data);
             displayHeaderMessageCount(id, data);
-            var forceWrite = jQuery("div[data-messagesfor='" + id + "']").find("li[data-messageitemfor='" + fieldId + "']").length;
+            var forceWrite = jQuery("div[data-messages_for='" + id + "']").find("li[data-messageitemfor='" + fieldId + "']").length;
             writeMessagesForGroup(id, data, forceWrite);
         }
     }
@@ -513,7 +513,7 @@ function writeMessagesForGroup(id, data, forceWrite) {
 
         //retrieve header for section
         if (data.isSection == undefined) {
-            var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label");
+            var sectionHeader = jQuery("[data-header_for='" + id + "']").find("> :header, > label");
             data.isSection = sectionHeader.length;
         }
 
@@ -568,7 +568,7 @@ function writeMessagesForGroup(id, data, forceWrite) {
                     }
                 }
 
-                var messageBlock = jQuery("[data-messagesFor='" + id + "']");
+                var messageBlock = jQuery("[data-messages_for='" + id + "']");
 
                 //remove old block styling
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_ERROR_CLASS);
@@ -593,7 +593,7 @@ function writeMessagesForGroup(id, data, forceWrite) {
                 //page level validation messsage header handling
                 if (pageLevel) {
                     if (newList.children().length) {
-                        var messagesDiv = jQuery("[data-messagesFor='" + id + "']");
+                        var messagesDiv = jQuery("[data-messages_for='" + id + "']");
                         var countMessage = generateCountString(data.errorTotal, data.warningTotal,
                                 data.infoTotal);
 
@@ -880,7 +880,7 @@ function recursiveGroupMessageCount(parentId) {
  */
 function displayHeaderMessageCount(sectionId, sectionData) {
     if (sectionData && sectionData.displayHeaderSummary) {
-        var sectionHeader = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label");
+        var sectionHeader = jQuery("[data-header_for='" + sectionId + "']").find("> :header, > label");
 
         if (errorImage == undefined) {
             setupImages();
@@ -982,7 +982,7 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
  * @param hide - wherether or not to also hide the message div after clearing
  */
 function clearMessages(messagesForId, hide) {
-    var messagesDiv = jQuery("[data-messagesFor='" + messagesForId + "']");
+    var messagesDiv = jQuery("[data-messages_for='" + messagesForId + "']");
     jQuery(messagesDiv).empty();
     if (hide) {
         jQuery(messagesDiv).hide();
@@ -996,7 +996,7 @@ function clearMessages(messagesForId, hide) {
  */
 function writeMessages(messagesForId, newList) {
     var data = jQuery("#" + messagesForId).data(kradVariables.VALIDATION_MESSAGES);
-    var messagesDiv = jQuery("[data-messagesFor='" + messagesForId + "']");
+    var messagesDiv = jQuery("[data-messages_for='" + messagesForId + "']");
     if (newList.children().length && data.displayMessages) {
         jQuery(messagesDiv).show();
         jQuery(newList).appendTo(messagesDiv);
@@ -1445,7 +1445,7 @@ function handleCollapsedElements(messageData, collapsedErrors, collapsedWarnings
  */
 function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, sectionId, before) {
 
-    var sectionTitle = jQuery("[data-headerFor='" + sectionId + "']").find("> :header .uif-headerText-span, "
+    var sectionTitle = jQuery("[data-header_for='" + sectionId + "']").find("> :header .uif-headerText-span, "
             + "> label .uif-headerText-span").text();
     var sectionType = "section";
     if (sectionTitle == null || sectionTitle == "") {
@@ -1528,7 +1528,7 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
  */
 function generateSummaryLink(sectionId) {
     //determine section title and section type
-    var sectionTitle = jQuery("[data-headerFor='" + sectionId + "']").find("> :header .uif-headerText-span, "
+    var sectionTitle = jQuery("[data-header_for='" + sectionId + "']").find("> :header .uif-headerText-span, "
             + "> label .uif-headerText-span").text();
     var sectionType = "section";
     if (sectionTitle == null || sectionTitle == "") {
@@ -1545,7 +1545,7 @@ function generateSummaryLink(sectionId) {
     var linkType = "";
     var highlight = "";
 
-    var sectionHasCorrectedErrors = jQuery("div[data-messagesfor='" + sectionId + "']").find("span.uif-correctedError").length;
+    var sectionHasCorrectedErrors = jQuery("div[data-messages_for='" + sectionId + "']").find("span.uif-correctedError").length;
 
     if (sectionData && (sectionData.messageTotal || sectionHasCorrectedErrors)) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
@@ -1575,10 +1575,10 @@ function generateSummaryLink(sectionId) {
 
         summaryLink.find("a").click(function (event) {
             event.preventDefault();
-            var header = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label");
+            var header = jQuery("[data-header_for='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label");
             jumpToElementById(sectionId);
 
-            var firstItem = jQuery("[data-messagesFor='" + sectionId + "'] > ul > li:first");
+            var firstItem = jQuery("[data-messages_for='" + sectionId + "'] > ul > li:first");
             if (firstItem.length) {
                 if (jQuery(firstItem).find("> a").length) {
                     jQuery(firstItem).find("> a").focus();
@@ -1606,7 +1606,7 @@ function generateSummaryLink(sectionId) {
 
         //case where this section is not showing its own messages show them here
         if (!sectionData.displayMessages) {
-            var sectionLinks = jQuery("[data-messagesfor='" + sectionId + "']");
+            var sectionLinks = jQuery("[data-messages_for='" + sectionId + "']");
             sectionLinks.removeAttr("class");
             sectionLinks.removeAttr("style");
             //summaryLink.append(sectionLinks); (incase we want to go back to previous impl)

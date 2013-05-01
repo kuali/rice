@@ -98,6 +98,7 @@
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP9.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewPx10.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewPx11.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifLightTableTest.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifValidationDemoServerSide.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifStateBasedValidation.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifRowDetailsDemo.xml</value>

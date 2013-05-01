@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -124,15 +125,7 @@ public class ClientValidationUtils {
         }
 
         //replace characters that might cause issues with their equivalent html codes
-        if (message.contains("\"")) {
-            message = message.replace("\"", "&quot;");
-        }
-        if (message.contains("'")) {
-            message = message.replace("'", "&#39;");
-        }
-        if (message.contains("\\")) {
-            message = message.replace("\\", "&#92;");
-        }
+        message = KRADUtils.convertToHTMLAttributeSafeString(message);
 
         return message;
     }

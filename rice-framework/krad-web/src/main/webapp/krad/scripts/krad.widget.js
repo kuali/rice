@@ -215,30 +215,62 @@ function createLightBoxLink(linkId, options, addAppParms) {
             flow = jQuery("#flowKey").val();
         }
 
+        var link = jQuery("#" + linkId);
         // Check if this is called within a light box
         if (!renderedInLightBox) {
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
-            jQuery("#" + linkId).click(function (e) {
+            link.click(function (e) {
                 e.preventDefault();
 
-                options['href'] = jQuery("#" + linkId).attr('href');
+                options['href'] = link.attr('href');
                 getContext().fancybox(options);
             });
         } else {
-            jQuery("#" + linkId).attr('target', '_self');
+            link.attr('target', '_self');
         }
 
         if (addAppParms) {
             // Set the renderedInLightBox = true param
-            if (jQuery("#" + linkId).attr('href').indexOf('&renderedInLightBox=true') == -1) {
-                var href = jQuery("#" + linkId).attr('href');
-                var anchor = "";
+            if (link.attr('href').indexOf('&renderedInLightBox=true') == -1) {
+                var href = link.attr('href');
 
-                jQuery("#" + linkId).attr('href', href + '&renderedInLightBox=true&flow=' + flow);
+                link.attr('href', href + '&renderedInLightBox=true&flow=' + flow);
             }
         }
     });
+}
+
+function handleLightboxOpen(link, options, addAppParms, event){
+    event.preventDefault();
+    var renderedInLightBox = isCalledWithinLightbox();
+
+    // first time content is brought up in lightbox we don't want to continue history
+    var flow = 'start';
+    if (renderedInLightBox){
+        flow = jQuery("#flowKey").val();
+    }
+
+    if (addAppParms) {
+        // Set the renderedInLightBox = true param
+        if (link.attr('href').indexOf('&renderedInLightBox=true') == -1) {
+            var href = link.attr('href');
+
+            //set lightbox flag and continue flow
+            link.attr('href', href + '&renderedInLightBox=true&flow=' + flow);
+        }
+    }
+
+
+    // Check if this is called within a light box
+    if (!renderedInLightBox) {
+        // If this is not the top frame, then create the lightbox
+        // on the top frame to put overlay over whole window
+        options['href'] = link.attr('href');
+        getContext().fancybox(options);
+    } else {
+        window.location = link.attr('href');
+    }
 }
 
 /**
@@ -262,7 +294,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
         // get data that should be submitted when the action is selected
         var data = {};
 
-        var submitData = jQuery("#" + componentId).data("submitData");
+        var submitData = jQuery("#" + componentId).data(kradVariables.SUBMIT_DATA);
         jQuery.extend(data, submitData);
 
         // Check if this is not called within a lightbox

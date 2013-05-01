@@ -929,7 +929,7 @@
     <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Select 2"/>
     <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Select 3"/>
     <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select 4"/>
-    <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select 5"/>
+    <bean parent="Uif-KeyLabelPair" p:key="5" p:value="Select 5"/>
   </util:list>
 
   <!--

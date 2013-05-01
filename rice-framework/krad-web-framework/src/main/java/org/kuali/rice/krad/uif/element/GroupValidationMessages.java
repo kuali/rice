@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -101,63 +102,40 @@ public class GroupValidationMessages extends ValidationMessages {
         if (!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()) {
             hasMessages = true;
         }
-        parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, "{"
-                + UifConstants.DataAttributes.SUMMARIZE
-                + ":"
-                + true
-                + ","
-                + UifConstants.DataAttributes.DISPLAY_MESSAGES
-                + ":"
-                + this.isDisplayMessages()
-                + ","
-                + UifConstants.DataAttributes.COLLAPSE_FIELD_MESSAGES
-                + ":"
-                + collapseAdditionalFieldLinkMessages
-                + ","
-                + UifConstants.DataAttributes.SHOW_PAGE_SUMMARY_HEADER
-                + ":"
-                + showPageSummaryHeader
-                + ","
-                + UifConstants.DataAttributes.DISPLAY_LABEL
-                + ":"
-                + displayFieldLabelWithMessages
-                + ","
-                + UifConstants.DataAttributes.DISPLAY_HEADER_SUMMARY
-                + ":"
-                + displayHeaderMessageSummary
-                + ","
-                + UifConstants.DataAttributes.HAS_OWN_MESSAGES
-                + ":"
-                + hasMessages
-                + ","
-                + UifConstants.DataAttributes.PAGE_LEVEL
-                + ":"
-                + pageLevel
-                + ","
-                + UifConstants.DataAttributes.FORCE_SHOW
-                + ":"
-                + forceShow
-                + ","
-                + UifConstants.DataAttributes.SECTIONS
-                + ":"
-                + ScriptUtils.convertStringListToJsArray(sectionIds)
-                + ","
-                + UifConstants.DataAttributes.ORDER
-                + ":"
-                + ScriptUtils.convertStringListToJsArray(fieldOrder)
-                + ","
-                + UifConstants.DataAttributes.SERVER_ERRORS
-                + ":"
-                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors()))
-                + ","
-                + UifConstants.DataAttributes.SERVER_WARNINGS
-                + ":"
-                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings()))
-                + ","
-                + UifConstants.DataAttributes.SERVER_INFO
-                + ":"
-                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
-                + "}");
+
+        HashMap<String, Object> validationMessagesDataAttributes = new HashMap<String, Object>();
+
+        //add necessary data attributes to map
+        //display related
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SUMMARIZE, true);
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.DISPLAY_MESSAGES, this.isDisplayMessages());
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.COLLAPSE_FIELD_MESSAGES,
+                collapseAdditionalFieldLinkMessages);
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SHOW_PAGE_SUMMARY_HEADER,
+                showPageSummaryHeader);
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.DISPLAY_LABEL, displayFieldLabelWithMessages);
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.DISPLAY_HEADER_SUMMARY,
+                displayHeaderMessageSummary);
+
+        //options
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.HAS_OWN_MESSAGES, hasMessages);
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.PAGE_LEVEL, pageLevel);
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.FORCE_SHOW, forceShow);
+
+        //order related
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SECTIONS,sectionIds);
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.ORDER, fieldOrder);
+
+        //server messages
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SERVER_ERRORS, ScriptUtils.escapeHtml(
+                this.getErrors()));
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SERVER_WARNINGS, ScriptUtils.escapeHtml(
+                this.getWarnings()));
+        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SERVER_INFO, ScriptUtils.escapeHtml(
+                this.getInfos()));
+
+        parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
+                validationMessagesDataAttributes));
     }
 
     /**

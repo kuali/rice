@@ -1958,8 +1958,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         
         //jiraAwareWaitAndClick(By.linkText("Create New"));
         //Save docId
-        waitForElementPresent("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
-        String docId = getText("div[data-headerfor='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
+        waitForElementPresent("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
+        String docId = getText("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
         jGrowlSticky("Doc Id is " + docId);
         driver.findElement(By.name("document.documentHeader.documentDescription")).clear();
         driver.findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
@@ -3262,7 +3262,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitForPageToLoad();
         Thread.sleep(5000);
         assertElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem");
-        waitIsVisibleByXpath("//div[@data-headerfor='Demo-ValidationLayout-Section1']");
+        waitIsVisibleByXpath("//div[@data-header_for='Demo-ValidationLayout-Section1']");
         assertElementPresentByXpath("//*[@data-messageitemfor='Demo-ValidationLayout-Section1' and @class='uif-errorMessageItem']");
         assertElementPresent("div[data-role=\"InputField\"] img[alt=\"Error\"]");
         assertElementPresentByXpath("//a[contains(.,'Section 1 Title')]");

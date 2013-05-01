@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.control;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Message;
@@ -110,7 +111,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
             if (components != null && !components.isEmpty()) {
                 for (Component c : components) {
                     if (c instanceof Container || c instanceof InputField) {
-                        c.addDataAttribute("parent", parent.getId());
+                        c.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());
                     }
                 }
             }

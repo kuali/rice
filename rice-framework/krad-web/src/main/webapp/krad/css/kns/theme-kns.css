@@ -109,13 +109,13 @@ h6.uif-headerText {
 	font-family: Verdana, Geneva, sans-serif;
 }
 
-.uif-header.uif-subSectionHeader[data-headerfor="Uif-AdHocPersonCollection"] .uif-headerText,
-.uif-header.uif-subSectionHeader[data-headerfor="CollectionGroup_AdHocWorkgroup"] .uif-headerText {
+.uif-header.uif-subSectionHeader[data-header_for="Uif-AdHocPersonCollection"] .uif-headerText,
+.uif-header.uif-subSectionHeader[data-header_for="CollectionGroup_AdHocWorkgroup"] .uif-headerText {
 	background: #C3C3C3;
 	margin: 0px;
 	padding:4px;
 }
-.uif-header.uif-subSectionHeader[data-headerfor="CollectionGroup_AdHocWorkgroup"] .uif-headerText { margin-top:-10px;}
+.uif-header.uif-subSectionHeader[data-header_for="CollectionGroup_AdHocWorkgroup"] .uif-headerText { margin-top:-10px;}
 
 .uif-viewHeader-contentWrapper{
     background: url(../../images/kns/masthead1.png);

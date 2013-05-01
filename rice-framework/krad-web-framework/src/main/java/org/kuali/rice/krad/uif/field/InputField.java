@@ -256,7 +256,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         super.performFinalize(view, model, parent);
 
         setupIds();
-        this.addDataAttribute("role", "InputField");
+        this.addDataAttribute(UifConstants.DataAttributes.ROLE, "InputField");
 
         // if read only or the control is null no input can be given so no need to setup validation
         if (isReadOnly() || getControl() == null) {
@@ -348,9 +348,9 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
                     }
                 }
             }
-            super.generateReadOnlyListDisplayReplacement(newList);
+            this.setReadOnlyDisplayReplacement(super.generateReadOnlyListDisplayReplacement(newList));
         } else {
-            super.generateReadOnlyListDisplayReplacement(originalList);
+            this.setReadOnlyDisplayReplacement(super.generateReadOnlyListDisplayReplacement(originalList));
         }
     }
 
@@ -425,7 +425,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         setNestedComponentIdAndSuffix(getSuggest(), UifConstants.IdSuffixes.SUGGEST);
 
         if (this.getControl() != null) {
-            this.getControl().addDataAttribute(UifConstants.DATA_ATTRIBUTE_CONTROL_FOR, this.getId());
+            this.getControl().addDataAttribute(UifConstants.DataAttributes.CONTROL_FOR, this.getId());
         }
     }
 

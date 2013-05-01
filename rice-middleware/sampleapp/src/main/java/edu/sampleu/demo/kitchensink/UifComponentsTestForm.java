@@ -207,6 +207,7 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list4 = new ArrayList<UITestObject>();
     private List<UITestObject> list5 = new ArrayList<UITestObject>();
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
+    private List<UITestObject> emptyList = new ArrayList<UITestObject>();
     private List<UITestObject> groupedList1 = new ArrayList<UITestObject>();
     private List<UITestObject> groupedList2 = new ArrayList<UITestObject>();
     private List<UITestObject> groupedList3 = new ArrayList<UITestObject>();
@@ -376,8 +377,12 @@ public class UifComponentsTestForm extends UifFormBase {
         doubleGroupedList.add(new UITestObject("Spring", "2003", "DDD123", "2"));
 
         for (int i = 0; i < 1000; i++) {
-            list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6),
-                    RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6)));
+            UITestObject newObj = new UITestObject(RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6),
+                                RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomNumeric(1));
+            if(i%2 == 0){
+                newObj.setBfield(true);
+            }
+            list6.add(newObj);
         }
 
         { // scope for name hiding purposes
@@ -474,6 +479,8 @@ public class UifComponentsTestForm extends UifFormBase {
         catch(Exception e){
 
         }
+
+        emptyList.clear();
     }
 
     @Override
@@ -1805,6 +1812,14 @@ public class UifComponentsTestForm extends UifFormBase {
      */
     public void setList6(List<UITestObject> list6) {
         this.list6 = list6;
+    }
+
+    public List<UITestObject> getEmptyList() {
+        return emptyList;
+    }
+
+    public void setEmptyList(List<UITestObject> emptyList) {
+        this.emptyList = emptyList;
     }
 
     /**

@@ -71,6 +71,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     private String defaultValue;
     private Class<? extends ValueFinder> defaultValueFinderClass;
     private Object[] defaultValues;
+    private String forcedValue;
 
     private PropertyEditor propertyEditor;
 
@@ -214,7 +215,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param originalList originalList of values
      */
     protected void processReadOnlyListDisplay(Object model, List<?> originalList) {
-        generateReadOnlyListDisplayReplacement(originalList);
+        this.setReadOnlyDisplayReplacement(generateReadOnlyListDisplayReplacement(originalList));
     }
 
     /**
@@ -224,7 +225,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @param list the list to be converted to readOnly html
      */
-    protected void generateReadOnlyListDisplayReplacement(List<?> list) {
+    protected String generateReadOnlyListDisplayReplacement(List<?> list) {
         String generatedHtml = "";
 
         //Default to delimited if nothing is set
@@ -274,11 +275,12 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
             generatedHtml = StringUtils.removeEnd(generatedHtml, this.getReadOnlyListDelimiter());
         }
 
+
         if (StringUtils.isNotBlank(generatedHtml)) {
-            this.setReadOnlyDisplayReplacement(generatedHtml);
+            return generatedHtml;
         } else {
             //this must be done or the ftl will skip and throw error
-            this.setReadOnlyDisplayReplacement("&nbsp;");
+            return "&nbsp;";
         }
     }
 
@@ -641,6 +643,14 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public void setDefaultValues(Object[] defaultValues) {
         this.defaultValues = defaultValues;
+    }
+
+    public String getForcedValue() {
+        return forcedValue;
+    }
+
+    public void setForcedValue(String forcedValue) {
+        this.forcedValue = forcedValue;
     }
 
     /**

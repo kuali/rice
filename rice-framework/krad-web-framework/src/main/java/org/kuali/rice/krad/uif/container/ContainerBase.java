@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.element.Header;
@@ -133,7 +134,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		super.performFinalize(view, model, parent);
 
         if(header != null){
-            header.addDataAttribute("headerFor", this.getId());
+            header.addDataAttribute(UifConstants.DataAttributes.HEADER_FOR, this.getId());
         }
 
 		if (layoutManager != null) {

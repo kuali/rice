@@ -28,12 +28,12 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.DataFieldSecurity;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -253,7 +253,9 @@ public class Action extends ContentElementBase {
         }
         onClickScript = "if(jQuery(this).hasClass('disabled')){ return false; }" + onClickScript;
 
-        setOnClickScript("e.preventDefault();" + onClickScript);
+        //on click script becomes a data attribute for use in a global handler on the client
+        this.addDataAttribute(UifConstants.DataAttributes.ONCLICK, KRADUtils.convertToHTMLAttributeSafeString(
+                "e.preventDefault();" + onClickScript));
     }
 
     /**
@@ -375,7 +377,7 @@ public class Action extends ContentElementBase {
             submitData.put("jumpToName", jumpToNameAfterSubmit);
         }
 
-        addDataAttribute("submitData", ScriptUtils.toJSON(submitData));
+        addDataAttribute(UifConstants.DataAttributes.SUBMIT_DATA, ScriptUtils.toJSON(submitData));
     }
 
     /**

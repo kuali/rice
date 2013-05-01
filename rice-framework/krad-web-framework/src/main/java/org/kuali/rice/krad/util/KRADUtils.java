@@ -865,4 +865,28 @@ public final class KRADUtils {
             return title;
         }
     }
+
+    /**
+     * Helper method to change common characters into HTML attribute safe characters
+     *
+     * @param message the string to convert
+     * @return the converted string with quotes, sing quotes, and slash replaced
+     */
+    public static String convertToHTMLAttributeSafeString(String message){
+        if(StringUtils.isBlank(message)){
+            return message;
+        }
+
+        if (message.contains("\"")) {
+            message = message.replace("\"", "&quot;");
+        }
+        if (message.contains("'")) {
+            message = message.replace("'", "&#39;");
+        }
+        if (message.contains("\\")) {
+            message = message.replace("\\", "&#92;");
+        }
+
+        return message;
+    }
 }

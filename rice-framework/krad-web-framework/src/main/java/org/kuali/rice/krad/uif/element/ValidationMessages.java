@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
@@ -117,10 +118,10 @@ public class ValidationMessages extends ContentElementBase {
         }
 
         //Add identifying data attributes
-        this.addDataAttribute("messagesFor", parent.getId());
+        this.addDataAttribute(UifConstants.DataAttributes.MESSAGES_FOR, parent.getId());
 
-        if (parent.getDataAttributes().get("parent") == null) {
-            parent.addDataAttribute("parent", parentContainerId);
+        if (parent.getDataAttributes().get(UifConstants.DataAttributes.PARENT) == null) {
+            parent.addDataAttribute(UifConstants.DataAttributes.PARENT, parentContainerId);
         }
 
         //Handle the special FieldGroup case - adds the FieldGroup itself to ids handled by this group (this must

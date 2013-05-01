@@ -332,7 +332,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             //Create a new field group to hold the totals fields
             calculationFieldGroup = ComponentFactory.getFieldGroup();
-            calculationFieldGroup.addDataAttribute("role", "totalsBlock");
+            calculationFieldGroup.addDataAttribute(UifConstants.DataAttributes.ROLE, "totalsBlock");
             groupItems = new ArrayList<Component>();
 
             //setup page total field and add it to footer's group for this column
@@ -351,7 +351,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                             ((MessageField)totalDataField).getMessage().getMessageText());
                 }*/
                 if (!cInfo.isRecalculateTotalClientside()) {
-                    totalDataField.addDataAttribute("skipTotal", "true");
+                    totalDataField.addDataAttribute(UifConstants.DataAttributes.SKIP_TOTAL, "true");
                 }
 
                 groupItems.add(totalDataField);
@@ -410,14 +410,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             if (this.isShowGroupTotal()) {
                 //display none - this label is copied by the javascript
                 groupTotalLabelPrototype.setStyle("display: none;");
-                groupTotalLabelPrototype.addDataAttribute("role", "groupTotalLabel");
+                groupTotalLabelPrototype.addDataAttribute(UifConstants.DataAttributes.ROLE, "groupTotalLabel");
                 view.assignComponentIds(groupTotalLabelPrototype);
                 groupItems.add(groupTotalLabelPrototype);
             }
 
             if (this.isShowPageTotal()) {
                 view.assignComponentIds(pageTotalLabel);
-                pageTotalLabel.addDataAttribute("role", "pageTotal");
+                pageTotalLabel.addDataAttribute(UifConstants.DataAttributes.ROLE, "pageTotal");
                 groupItems.add(pageTotalLabel);
             }
 
@@ -459,7 +459,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             String type, int leftLabelColumnIndex) {
         //setup the totals field
         Field totalDataField = totalField;
-        totalDataField.addDataAttribute("role", type);
+        totalDataField.addDataAttribute(UifConstants.DataAttributes.ROLE, type);
         totalDataField.addDataAttribute("function", cInfo.getCalculationFunctionName());
         totalDataField.addDataAttribute("params", cInfo.getCalculationFunctionExtraData());
 
@@ -713,9 +713,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 for (ColumnCalculationInfo cInfo : columnCalculations) {
                     if (cInfo.getPropertyName().equals(((InputField) lineField).getPropertyName())) {
                         if (cInfo.isCalculateOnKeyUp()) {
-                            lineField.addDataAttribute("total", "keyup");
+                            lineField.addDataAttribute(UifConstants.DataAttributes.TOTAL, "keyup");
                         } else {
-                            lineField.addDataAttribute("total", "change");
+                            lineField.addDataAttribute(UifConstants.DataAttributes.TOTAL, "change");
                         }
                         lineField.addStyleClass("uif-calculationField");
                     }
@@ -1443,7 +1443,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         //data attribute to mark this group to open itself when rendered
-        collectionGroup.addDataAttribute("detailsDefaultOpen", Boolean.toString(this.rowDetailsOpen));
+        collectionGroup.addDataAttribute(UifConstants.DataAttributes.DETAILS_DEFAULT_OPEN, Boolean.toString(this.rowDetailsOpen));
 
         toggleAllDetailsAction.addDataAttribute("open", Boolean.toString(this.rowDetailsOpen));
         toggleAllDetailsAction.addDataAttribute("tableid", this.getId());
@@ -1457,7 +1457,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         detailsFieldGroup.setDataAttributes(dataAttributes);
 
         Action rowDetailsAction = this.getExpandDetailsActionPrototype();
-        rowDetailsAction.addDataAttribute("role", "detailsLink");
+        rowDetailsAction.addDataAttribute(UifConstants.DataAttributes.ROLE, "detailsLink");
         rowDetailsAction.setId(collectionGroup.getId() + "_detLink");
 
         List<Component> detailsItems = new ArrayList<Component>();

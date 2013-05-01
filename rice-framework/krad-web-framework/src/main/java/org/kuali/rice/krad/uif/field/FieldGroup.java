@@ -69,9 +69,9 @@ public class FieldGroup extends FieldBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        this.addDataAttribute("parent", parent.getId());
+        this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());
         if (group != null) {
-            this.addDataAttribute("group", group.getId());
+            this.addDataAttribute(UifConstants.DataAttributes.GROUP, group.getId());
         }
 
         setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);

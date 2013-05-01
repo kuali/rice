@@ -42,7 +42,7 @@
                         privileges on the document</para>
                 </listitem>
                 <listitem>
-                    <para><link linkend="locking_workflow_process">#Locking for Workflow Processing</link> - locks are created when a workflow process is begun
+                    <para><link linkend="locking_workflow_process">Locking for Workflow Processing</link> - locks are created when a workflow process is begun
                     </para>    
                 </listitem>
             </itemizedlist>

@@ -144,7 +144,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/kuali_service_bus.png"/>
+            <imagedata fileref="../images/KSB_Guide/kuali_service_bus.png"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -262,7 +262,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/supported_service_protocols.png"/>
+                <imagedata fileref="../images/KSB_Guide/supported_service_protocols.png"/>
               </imageobject>
             </mediaobject>
           </figure> <note>

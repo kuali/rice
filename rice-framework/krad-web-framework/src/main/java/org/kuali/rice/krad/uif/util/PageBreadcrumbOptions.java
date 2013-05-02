@@ -27,6 +27,7 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
 
     //render options
     private boolean renderViewBreadcrumb;
+    private boolean renderHomewardPathBreadcrumbs;
     private boolean renderPreViewBreadcrumbs;
     private boolean renderPrePageBreadcrumbs;
     private boolean renderParentLocations;
@@ -48,6 +49,25 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
      */
     public void setRenderViewBreadcrumb(boolean renderViewBreadcrumb) {
         this.renderViewBreadcrumb = renderViewBreadcrumb;
+    }
+
+    /**
+     * If true, render the homewardPathBreadcrumbs (if any are set), otherwise do not render them
+     *
+     * @return true if rendering homewardPathBreadcrumbs, false otherwise
+     */
+    @BeanTagAttribute(name = "renderHomewardPathBreadcrumbs")
+    public boolean isRenderHomewardPathBreadcrumbs() {
+        return renderHomewardPathBreadcrumbs;
+    }
+
+    /**
+     * Set renderHomewardPathBreadcrumbs
+     *
+     * @param renderHomewardPathBreadcrumbs
+     */
+    public void setRenderHomewardPathBreadcrumbs(boolean renderHomewardPathBreadcrumbs) {
+        this.renderHomewardPathBreadcrumbs = renderHomewardPathBreadcrumbs;
     }
 
     /**

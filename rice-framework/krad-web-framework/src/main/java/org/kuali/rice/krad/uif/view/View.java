@@ -1968,7 +1968,8 @@ public class View extends ContainerBase {
      * The breadcrumbOptions for this view.
      *
      * <p>Render options set at the view level are always ignored (only apply to
-     * page level BreadcrumbOptions).  BreadcrumbOptions for preViewBreadcrumbs, prePageBreadcrumbs,
+     * page level BreadcrumbOptions).  BreadcrumbOptions for homewardPathBreadcrumbs,
+     * preViewBreadcrumbs, prePageBreadcrumbs,
      * and breadcrumbOverrides are inherited by
      * child pages unless they override them themselves.</p>
      *

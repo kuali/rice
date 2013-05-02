@@ -31,8 +31,13 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView" parent="Uif-FormView" p:additionalCssClasses="testClass1,testClass2">
-    <property name="parentLocation">
-      <bean parent="Uif-RicePortalParentLocation"/>
+    <property name="breadcrumbOptions.homewardPathBreadcrumbs">
+      <list>
+        <bean parent="Uif-BreadcrumbItem">
+          <property name="label" value="Home"/>
+          <property name="url.href" value="@{#ConfigProperties['application.url']}/portal.do"/>
+        </bean>
+      </list>
     </property>
     <property name="breadcrumbs.usePathBasedBreadcrumbs" value="true"/>
     <property name="stickyHeader" value="true"/>

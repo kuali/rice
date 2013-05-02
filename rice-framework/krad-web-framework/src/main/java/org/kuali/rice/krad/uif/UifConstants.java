@@ -52,6 +52,7 @@ public class UifConstants {
     public static final String MESSAGE_VIEW_ID = "Uif-MessageView";
     public static final String SESSION_TIMEOUT_VIEW_ID = "Uif-SessionTimeoutView";
     public static final String LOGGED_OUT_VIEW_ID = "Uif-LoggedOutView";
+    public static final String REFERER = "Referer";
 
     public static enum ReadOnlyListTypes {
         DELIMITED, BREAK, OL, UL
@@ -245,6 +246,7 @@ public class UifConstants {
         public static final String PAGE_ID = "pageId";
         public static final String HISTORY = "history";
         public static final String LAST_FORM_KEY = "lastFormKey";
+        public static final String LOGIN_USER = "__login_user";
     }
 
     public static class Messages {
@@ -266,6 +268,13 @@ public class UifConstants {
         public static final String LOOKUP = "LOOKUP";
         public static final String MULTI_VALUE_LOOKUP = "MULTI_VALUE_LOOKUP";
         public static final String QUESTION = "QUESTION";
+    }
+
+    public static final class HistoryFlow {
+        public static final String HISTORY_MANAGER = "historyManager";
+        public static final String FLOW = "flow";
+        public static final String START = "start";
+        public static final String SEPARATOR = "@@";
     }
 
     public static final class DataAttributes {

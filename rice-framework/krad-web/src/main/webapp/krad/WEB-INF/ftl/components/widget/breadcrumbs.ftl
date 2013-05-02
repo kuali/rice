@@ -21,6 +21,14 @@
     <#local options=page.breadcrumbOptions/>
 
 <ol ${krad.attrBuild(widget)} role="navigation">
+
+    <#-- process homewardPath breadcrumbs -->
+    <#if options.renderHomewardPathBreadcrumbs && options.homewardPathBreadcrumbs?has_content>
+        <#list options.homewardPathBreadcrumbs as crumb>
+            <@krad.template component=crumb breadcrumbsWidget=widget/>
+        </#list>
+    </#if>
+
     <#-- process parent locations (if set) -->
     <#if !widget.usePathBasedBreadcrumbs && KualiForm.view.parentLocation?has_content &&
         KualiForm.view.parentLocation.resolvedBreadcrumbItems?has_content && options.renderParentLocations>

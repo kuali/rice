@@ -108,7 +108,7 @@ public abstract class UifControllerBase {
             uifFormManager.updateFormWithSession(requestForm, formKeyParam);
         }
 
-        String referer = request.getHeader("Referer");
+        String referer = request.getHeader(UifConstants.REFERER);
         //get the initial referer
         if (StringUtils.isBlank(requestForm.getReturnLocation()) && StringUtils.isNotBlank(referer)){
             requestForm.setReturnLocation(referer);
@@ -123,7 +123,7 @@ public abstract class UifControllerBase {
                 String name = names.nextElement();
                 requestParams.put(name, request.getParameter(name));
             }
-            requestParams.remove("__login_user");
+            requestParams.remove(UifConstants.UrlParams.LOGIN_USER);
             //requestParams.remove();
             requestForm.setInitialRequestParameters(requestParams);
         }
@@ -131,8 +131,8 @@ public abstract class UifControllerBase {
         //set the original request url for this view/form
         requestForm.setRequestUrl(KRADUtils.getFullURL(request));
 
-        Object historyManager = request.getSession().getAttribute("historyManager");
-        String flowKey = request.getParameter("flow");
+        Object historyManager = request.getSession().getAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER);
+        String flowKey = request.getParameter(UifConstants.HistoryFlow.FLOW);
 
         //add history manager and current flowKey to the form
         if (requestForm != null && historyManager != null && historyManager instanceof HistoryManager) {

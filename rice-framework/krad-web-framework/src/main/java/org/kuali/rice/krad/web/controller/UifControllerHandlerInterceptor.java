@@ -64,8 +64,8 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         GlobalVariables.clear();
 
         // add the HistoryManager for storing HistoryFlows to the session
-        if (request.getSession().getAttribute("historyManager") == null){
-            request.getSession().setAttribute("historyManager", new HistoryManager());
+        if (request.getSession().getAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER) == null){
+            request.getSession().setAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER, new HistoryManager());
         }
 
         return true;

@@ -40,9 +40,30 @@ public class BreadcrumbOptions implements Serializable {
     private static final long serialVersionUID = -6705552809624394000L;
 
     //custom breadcrumbs
+    private List<BreadcrumbItem> homewardPathBreadcrumbs;
     private List<BreadcrumbItem> preViewBreadcrumbs;
     private List<BreadcrumbItem> prePageBreadcrumbs;
     private List<BreadcrumbItem> breadcrumbOverrides;
+
+    /**
+     * The homewardPathBreadcrumbs represent the path to "Home" location, these appear before anything else - including
+     * parentLocation/path based breadcrumbs.
+     *
+     * @return the homewardPathBreadcrumbs to render
+     */
+    @BeanTagAttribute(name = "homewardPathBreadcrumbs", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    public List<BreadcrumbItem> getHomewardPathBreadcrumbs() {
+        return homewardPathBreadcrumbs;
+    }
+
+    /**
+     * Set the homewardPathBreadcrumbs
+     *
+     * @param homewardPathBreadcrumbs
+     */
+    public void setHomewardPathBreadcrumbs(List<BreadcrumbItem> homewardPathBreadcrumbs) {
+        this.homewardPathBreadcrumbs = homewardPathBreadcrumbs;
+    }
 
     /**
      * The preViewBreadcrumbs list represents BreadcrumbItems that will be shown before the View's BreadcrumbItem,

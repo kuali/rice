@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.web.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class HistoryManager implements Serializable {
      * @return the HistoryFlow which represents the current HistoryFlow based on the parameters passed in
      */
     public HistoryFlow process(String flowKey, String formKey, String currentUrl) {
-        if (StringUtils.isBlank(flowKey) || flowKey.equalsIgnoreCase("start")) {
+        if (StringUtils.isBlank(flowKey) || flowKey.equalsIgnoreCase(UifConstants.HistoryFlow.START)) {
             flowKey = UUID.randomUUID().toString();
         }
 
@@ -62,7 +63,7 @@ public class HistoryManager implements Serializable {
         }
 
         recentFlows.put(flowKey, newFlow);
-        historyFlowMap.put(flowKey + "@@" + formKey, newFlow);
+        historyFlowMap.put(flowKey + UifConstants.HistoryFlow.SEPARATOR + formKey, newFlow);
 
         return newFlow;
     }
@@ -93,6 +94,6 @@ public class HistoryManager implements Serializable {
             return null;
         }
 
-        return historyFlowMap.get(key + "@@" + formKey);
+        return historyFlowMap.get(key + UifConstants.HistoryFlow.SEPARATOR + formKey);
     }
 }

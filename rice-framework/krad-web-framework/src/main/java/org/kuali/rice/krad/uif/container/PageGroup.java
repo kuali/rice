@@ -102,22 +102,44 @@ public class PageGroup extends Group {
         BreadcrumbOptions viewBreadcrumbOptions = view.getBreadcrumbOptions();
 
         //inherit prePageBreadcrumbs, preViewBreadcrumbs, and overrides from the view if not set
+        if (breadcrumbOptions.getHomewardPathBreadcrumbs() == null
+                && viewBreadcrumbOptions != null
+                && viewBreadcrumbOptions.getHomewardPathBreadcrumbs() != null) {
+            breadcrumbOptions.setHomewardPathBreadcrumbs(viewBreadcrumbOptions.getHomewardPathBreadcrumbs());
+
+            for (BreadcrumbItem item: breadcrumbOptions.getHomewardPathBreadcrumbs()){
+                view.assignComponentIds(item);
+            }
+        }
+
         if (breadcrumbOptions.getPrePageBreadcrumbs() == null
                 && viewBreadcrumbOptions != null
                 && viewBreadcrumbOptions.getPrePageBreadcrumbs() != null) {
             breadcrumbOptions.setPrePageBreadcrumbs(viewBreadcrumbOptions.getPrePageBreadcrumbs());
+
+            for (BreadcrumbItem item: breadcrumbOptions.getPrePageBreadcrumbs()){
+                view.assignComponentIds(item);
+            }
         }
 
         if (breadcrumbOptions.getPreViewBreadcrumbs() == null
                 && viewBreadcrumbOptions != null
                 && viewBreadcrumbOptions.getPreViewBreadcrumbs() != null) {
             breadcrumbOptions.setPreViewBreadcrumbs(viewBreadcrumbOptions.getPreViewBreadcrumbs());
+
+            for (BreadcrumbItem item: breadcrumbOptions.getPreViewBreadcrumbs()){
+                view.assignComponentIds(item);
+            }
         }
 
         if (breadcrumbOptions.getBreadcrumbOverrides() == null
                 && viewBreadcrumbOptions != null
                 && viewBreadcrumbOptions.getBreadcrumbOverrides() != null) {
             breadcrumbOptions.setBreadcrumbOverrides(viewBreadcrumbOptions.getBreadcrumbOverrides());
+
+            for (BreadcrumbItem item: breadcrumbOptions.getBreadcrumbOverrides()){
+                view.assignComponentIds(item);
+            }
         }
     }
 
@@ -189,6 +211,25 @@ public class PageGroup extends Group {
         List<Component> components = new ArrayList<Component>();
 
         components.add(breadcrumbItem);
+
+        if (breadcrumbOptions != null) {
+            if (breadcrumbOptions.getHomewardPathBreadcrumbs() != null) {
+                components.addAll(breadcrumbOptions.getHomewardPathBreadcrumbs());
+            }
+
+            if (breadcrumbOptions.getPreViewBreadcrumbs() != null) {
+                components.addAll(breadcrumbOptions.getPreViewBreadcrumbs());
+            }
+
+            if (breadcrumbOptions.getPrePageBreadcrumbs() != null) {
+                components.addAll(breadcrumbOptions.getPrePageBreadcrumbs());
+            }
+
+            if (breadcrumbOptions.getBreadcrumbOverrides() != null) {
+                components.addAll(breadcrumbOptions.getBreadcrumbOverrides());
+            }
+        }
+
         components.addAll(super.getComponentsForLifecycle());
 
         return components;
@@ -305,7 +346,8 @@ public class PageGroup extends Group {
     public void setStickyFooter(boolean stickyFooter) {
         this.stickyFooter = stickyFooter;
         if (this.getFooter() != null) {
-            this.getFooter().addDataAttribute(UifConstants.DataAttributes.STICKY_FOOTER, Boolean.toString(stickyFooter));
+            this.getFooter().addDataAttribute(UifConstants.DataAttributes.STICKY_FOOTER, Boolean.toString(
+                    stickyFooter));
         }
     }
 }

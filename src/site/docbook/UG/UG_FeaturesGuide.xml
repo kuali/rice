@@ -106,12 +106,20 @@
         </section>
         <section>
             <title>Identity Management (KIM)</title>
-            <para>Kuali Enterprise Notification (KEN) acts as a broker for all university business related communications 
-                by allowing end-users and other systems to push informative messages to the campus community in a secure 
-                and consistent manner. All notifications are processed asynchronously and are delivered to a single list 
-                where other messages such as workflow related items (KEW action items) also reside. In addition, 
-                end-users can configure their profile to have certain types of messages delivered to other end points 
-                such as email, mobile phones, etc.</para>
+            <para>Kuali Identity Management (KIM) provides central identity and access management services. 
+                It also provides management features for Identity, Groups, Roles, Permissions, and their 
+                relationships with each other. All integration with KIM is through a simple and consistent 
+                service API (Java or Web Services). The services are implemented as a general-purpose solution 
+                that could be leveraged by both Kuali and non-Kuali applications alike.
+            </para>
+            <para>Furthermore, the KIM services are architected in such a way to allow for the reference 
+                implementations to be swapped out for custom implementations that integrate with other 3rd 
+                party Identity and Access Management solutions. The various services can be swapped out 
+                independently of each other. For example, many institutions may have a directory solution 
+                for identity, but may not have a central group or permission system. In cases like this, the 
+                Identity Service implementation can be replaced while the reference implementations for the 
+                other services can remain intact.
+            </para>
         </section> 
         <section>
             <title>Rules Management System (KRMS)</title>

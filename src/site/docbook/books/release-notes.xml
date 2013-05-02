@@ -95,8 +95,8 @@
             <title>Documentation</title>
             <para>API Documentation can be found at <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">http://site.kuali.org/rice/${project.version}/apidocs/index.html</link></para>
             <para>Formal documentation can be found at <link xlink:show="new"
-                    xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/portal.html"
-                    >http://site.kuali.org/rice/${project.version}/reference/html/portal.html</link>.
+                    xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/index.html"
+                    >http://site.kuali.org/rice/${project.version}/reference/html/index.html</link>.
                 This documentation is still in the process of review and update  which will continue
                 through subsequent releases, so please follow the notes in each document to report
                 any outdated information.</para>

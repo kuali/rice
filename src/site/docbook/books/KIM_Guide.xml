@@ -21,14 +21,21 @@
     <title> Kuali Rice ${project.version} KIM Guide</title>
     <legalnotice><para>Some of the documentation in this guide has not been updated to reflect changes for
       ${project.version}. If you find a problem, please <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/Intro_To_Rice.html#reporting_rice_jira">report
-        in Jira</link> and set the component to Documentation. Indicate the guide and
+        it in Jira</link> and set the component to Documentation. Indicate the guide and
       section that has the problem in the Jira. Thanks for your help in improving the
       documentation!</para></legalnotice>
   </info>
-
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KIM.xml" />
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_KIM.xml" />
-
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Overview.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Person.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Group.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Role.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Type.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Responsibility.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Permission.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Terminology.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Services.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_Callbacks.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KIM_Guide/KIM_DatabaseTables.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../common/glossary.xml"/>
 
 </book>

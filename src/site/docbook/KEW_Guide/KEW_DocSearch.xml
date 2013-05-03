@@ -1037,26 +1037,15 @@
                         <emphasis role="italic">SecurityAttribute</emphasis> interface class. There
                     are two methods of defining a security attribute:<itemizedlist>
                         <listitem>
-                            <para>Class Name: Define the fully qualified class name using the XML
-                            attribute class</para>
+                            <para>KEW Attribute Name: Specify an already-defined attribute (via KEW
+                            XML ingestion) using the XML attribute <emphasis role="italic"
+                                >name</emphasis> . </para>
+                        <para> (Use of applicationId in a ruleAttribute specification sets the id of
+                            the application which contains the implementation of the security
+                            attribute.)</para>
                             <programlisting>&lt;documentType>
-    ....
-	
-    &lt;security>
-        &lt;securityAttribute class="org.kuali.security.SecurityFilterAttribute"/>
-    &lt;/security>
     ....
 
-&lt;/documentType>
-</programlisting>
-                        </listitem>
-                        <listitem>
-                            <para>KEW Attribute Name: Specify an already-defined attribute (via KEW
-                                XML ingestion) using the XML attribute <emphasis role="italic"
-                                    >name</emphasis>
-                            </para>
-                            <programlisting>&lt;documentType>
-    ....
     &lt;security>
         &lt;securityAttribute name="TestSecurityAttribute"/>
     &lt;/security>
@@ -1065,6 +1054,22 @@
 &lt;/documentType>
 </programlisting>
                         </listitem>
+                        <listitem>
+                        <para>Class Name: Define the fully qualified class name using the XML
+                            attribute class.
+                            </para>
+                        <para>(Use of Class Name is limited to classes which are
+                            locally defined.)</para>
+                        <programlisting>&lt;documentType>
+    ....
+    &lt;security>
+        &lt;securityAttribute class="org.kuali.security.SecurityFilterAttribute"/>
+    &lt;/security>
+    ....
+
+&lt;/documentType>
+</programlisting>
+                    </listitem>
                     </itemizedlist></para>
             </section>
             <section>

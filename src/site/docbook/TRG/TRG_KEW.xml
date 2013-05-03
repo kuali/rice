@@ -293,7 +293,7 @@
             &lt;className>edu.sampleu.travel.workflow.EmployeeAttribute&lt;/className>
             &lt;label>Employee Routing&lt;/label>
             &lt;description>Employee Routing&lt;/description>
-            &lt;serviceNamespace>TRAVEL&lt;/serviceNamespace>
+            &lt;applicationId>TRAVEL&lt;/applicationId>
             &lt;type>RuleAttribute&lt;/type>
         &lt;/ruleAttribute>
 
@@ -302,7 +302,7 @@
             &lt;className>edu.sampleu.travel.workflow.AccountAttribute&lt;/className>
             &lt;label>Account Routing&lt;/label>
             &lt;description>Account Routing&lt;/description>
-            &lt;serviceNamespace>TRAVEL&lt;/serviceNamespace>
+            &lt;applicationId>TRAVEL&lt;/applicationId>
             &lt;type>RuleAttribute&lt;/type>
         &lt;/ruleAttribute>
     &lt;/ruleAttributes>

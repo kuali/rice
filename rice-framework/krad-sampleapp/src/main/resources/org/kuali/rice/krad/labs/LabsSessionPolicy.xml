@@ -52,17 +52,42 @@
 
   <bean id="Lab-SessionPolicy-TimeoutView" parent="Uif-FormView">
     <property name="headerText" value="Session Timeout - Timeout View"/>
-    <property name="singlePageView" value="true"/>
-    <property name="page">
-      <bean parent="Uif-Page">
-        <property name="items">
-          <list>
-            <ref bean="Lab-SessionPolicy-Section"/>
-          </list>
-        </property>
-      </bean>
+    <property name="items">
+      <list>
+        <ref bean="Lab-SessionPolicy-Page1"/>
+        <ref bean="Lab-SessionPolicy-Page2"/>
+      </list>
+    </property>
+    <property name="navigation">
+      <ref bean="Lab-SessionPolicy-Menu"/>
     </property>
     <property name="sessionPolicy.renderTimeoutView" value="true"/>
+  </bean>
+
+  <bean id="Lab-SessionPolicy-Page1" parent="Uif-Page">
+    <property name="items">
+      <list>
+        <bean parent="Lab-SessionPolicy-Section"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-SessionPolicy-Page2" parent="Uif-Page">
+    <property name="items">
+      <list>
+        <bean parent="Lab-SessionPolicy-Section"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-SessionPolicy-Menu" parent="Uif-MenuNavigationGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 1" p:navigateToPageId="Lab-SessionPolicy-Page1"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 2" p:navigateToPageId="Lab-SessionPolicy-Page2"/>
+      </list>
+    </property>
   </bean>
 
   <bean id="Lab-SessionPolicy-Section" parent="Uif-VerticalBoxSection">
@@ -110,8 +135,8 @@
             <bean parent="Uif-VerticalBoxSection">
               <property name="items">
                 <list>
-                  <bean parent="Uif-Link" p:linkText="Missing Form" p:target="_self"
-                        p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm&amp;formKey=999999"/>
+                  <bean parent="Uif-ActionLink" p:methodToCall="refresh" p:actionLabel="Post Missing Form"
+                        p:preSubmitCall="jQuery('#formKey').val('99999999');return true;"/>
                 </list>
               </property>
             </bean>

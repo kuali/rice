@@ -25,6 +25,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.form.UifFormManager;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -107,11 +108,13 @@ public class UifSessionTimeoutFilter implements Filter {
             return;
         }
 
-        // check for requested form key and if found and session storage is enabled for the
+        // check for requested form key for a POST and if found and session storage is enabled for the
         // view, verify the form is present in the form manager
+        boolean isGetRequest = RequestMethod.GET.name().equals(httpServletRequest.getMethod());
+
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
-        if (StringUtils.isNotBlank(formKeyParam) && getViewDictionaryService().isSessionStorageEnabled(viewId) &&
-                (httpSession != null)) {
+        if (StringUtils.isNotBlank(formKeyParam) && !isGetRequest && getViewDictionaryService().isSessionStorageEnabled(
+                viewId) && (httpSession != null)) {
             UifFormManager uifFormManager = (UifFormManager) httpSession.getAttribute(UifParameters.FORM_MANAGER);
 
             // if session form not found, treat like a session timeout

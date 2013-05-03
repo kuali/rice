@@ -54,11 +54,17 @@
                 <#-- flow key to maintain a history flow -->
                 <@spring.formHiddenInput id="flowKey" path="KualiForm.flowKey"/>
 
-                <#-- Based on the view setting, form elements will be checked for dirtyness -->
+                <#-- based on the view setting, form elements will be checked for dirtyness -->
                 <@spring.formHiddenInput id="validateDirty" path="KualiForm.view.applyDirtyCheck"/>
 
-                <#-- Indicator which is set to true when content is being rendered inside a lightbox -->
+                <#-- indicator which is set to true when content is being rendered inside a lightbox -->
                 <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
+
+                <#-- indicator for single page view, used to drive script page handling logic -->
+                <@spring.formHiddenInput id="singlePageView" path="KualiForm.view.singlePageView"/>
+
+                <#-- indicator for disabling browser caching of the view -->
+                <@spring.formHiddenInput id="disableBrowserCache" path="KualiForm.view.disableBrowserCache"/>
             </#if>
 
             <@krad.template component=view/>

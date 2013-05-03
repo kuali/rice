@@ -75,13 +75,8 @@ jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function (event) {
 
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
-    //page redirect variables
-    var hashPageId = getUrlParameter("pageId", document.location.hash);
-    var currentPageIdField = jQuery("input#pageId");
-    var pageRedirect = hashPageId && currentPageIdField.length && currentPageIdField.val() != hashPageId;
-
-    //skip the page setup if we are performing a redirect
-    skipPageSetup = pageRedirect;
+    // determine whether we need to refresh or update the page
+    skipPageSetup = handlePageAndCacheRefreshing();
 
     // buttons
     jQuery("input:submit, input:button, a.button, .uif-dialogButtons").button();
@@ -117,29 +112,6 @@ jQuery(document).ready(function () {
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
-    //add listener for popstate to change pages
-    window.addEventListener("popstate", function (e) {
-        var currentPageId = jQuery("input#pageId").val();
-        if (e.state && e.state.pageId && e.state.pageId != currentPageId) {
-            var request = new KradRequest();
-            request.methodToCall = "navigate";
-            request.additionalData = {"actionParameters[navigateToPageId]": e.state.pageId};
-            request.send();
-        }
-    });
-
-    //add listener on hashchange to change pages when pageId hash changes
-    window.addEventListener("hashchange", function (e) {
-        var pageId = null;
-        if (document.location.hash) {
-            pageId = getUrlParameter("pageId", document.location.hash);
-        }
-
-        if (pageId && jQuery("input#pageId").length && pageId != jQuery("input#pageId").val()) {
-            handleHashPageId(pageId);
-        }
-    });
-
     //sticky(header) content variables must be initialized here to retain sticky location across page request
     stickyContent = jQuery("[data-sticky='true']");
     if (stickyContent.length) {
@@ -168,13 +140,8 @@ jQuery(document).ready(function () {
 
     hideEmptyCells();
 
-    //focus on first field
+    // focus on first field
     performFocus("FIRST");
-
-    //handle hash pageId redirect (old IE bookmark support)
-    if (pageRedirect) {
-        handleHashPageId(hashPageId);
-    }
 });
 
 /**
@@ -183,7 +150,6 @@ jQuery(document).ready(function () {
  * on the client
  */
 function initFieldHandlers() {
-
     var validationTooltipOptions = {
         position: "top",
         align: "left",
@@ -589,36 +555,14 @@ function setupPage(validate) {
     //flag to turn off and on validation mechanisms on the client
     validateClient = validate;
 
-    //select current page
-    var pageId = jQuery("input[name='view.currentPageId']").val();
+    // select current page
+    var pageId = getCurrentPageId();
+
     jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage: pageId});
     jQuery("ul.uif-tabMenu").selectTab({selectPage: pageId});
 
-    //handle page history/url
-    if (history.replaceState) {
-        //HTML5 history is supported...
-
-        //get formKey
-        var formKeyField = jQuery("#formKey");
-        var queryString = "";
-        if(formKeyField.length && formKeyField.val()){
-            queryString = getHistoryQueryString("formKey", formKeyField.val());
-        }
-
-        var urlPageId = getUrlParameter("pageId");
-        if (urlPageId && pageId && urlPageId != pageId) {
-            //push state if new page
-            history.pushState({pageId: pageId}, null, "?" + getHistoryQueryString("pageId", pageId, queryString));
-        }
-        else {
-            //otherwise replace state
-            history.replaceState({pageId: pageId}, null, "?" + getHistoryQueryString("pageId", pageId, queryString));
-        }
-    }
-    else {
-        //Add to hash if no HTML5 history support (old IE support)
-        document.location.hash = "#?pageId=" + pageId;
-    }
+    // update URL to reflect the current page
+    updateRequestUrl(pageId);
 
     //skip input field iteration and validation message writing, if no server messages
     var hasServerMessagesData = jQuery("[data-type='Page']").data(kradVariables.SERVER_MESSAGES);
@@ -662,7 +606,9 @@ function setupPage(validate) {
     });
 
     jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
+
     pageValidatorReady = true;
+
     jQuery(document).trigger(kradVariables.PAGE_LOAD_EVENT);
 
     jQuery.watermark.showAll();

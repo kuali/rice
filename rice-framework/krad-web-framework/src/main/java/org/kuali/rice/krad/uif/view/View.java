@@ -181,6 +181,7 @@ public class View extends ContainerBase {
     private boolean translateCodesOnReadOnlyDisplay;
     private boolean supportsRequestOverrideOfReadOnlyFields;
     private boolean disableNativeAutocomplete;
+    private boolean disableBrowserCache;
 
     private String preLoadScript;
 
@@ -201,6 +202,7 @@ public class View extends ContainerBase {
         viewStatus = ViewStatus.CREATED;
         formClass = UifFormBase.class;
         supportsRequestOverrideOfReadOnlyFields = true;
+        disableBrowserCache = true;
         persistFormToSession = true;
         sessionPolicy = new ViewSessionPolicy();
 
@@ -1783,6 +1785,32 @@ public class View extends ContainerBase {
      */
     public void setDisableNativeAutocomplete(boolean disableNativeAutocomplete) {
         this.disableNativeAutocomplete = disableNativeAutocomplete;
+    }
+
+    /**
+     * Enables functionality to bust the browsers cache by appending an unique cache key
+     *
+     * <p>
+     * Since response headers are unreliable for preventing caching in all browsers, the
+     * framework uses a technique for updating the URL to include an unique cache key. If the
+     * HTML 5 History API is supported a parameter can be added to the URL which causes the browser
+     * to not find the cached page when the user goes back. If not the framework falls back to using
+     * a hash key and resubmitting using script to pull the latest
+     * </p>
+     *
+     * @return true if cache for the view should be disabled, false if not
+     */
+    public boolean isDisableBrowserCache() {
+        return disableBrowserCache;
+    }
+
+    /**
+     * Setter to disable browser caching of the view
+     *
+     * @param disableBrowserCache
+     */
+    public void setDisableBrowserCache(boolean disableBrowserCache) {
+        this.disableBrowserCache = disableBrowserCache;
     }
 
     /**

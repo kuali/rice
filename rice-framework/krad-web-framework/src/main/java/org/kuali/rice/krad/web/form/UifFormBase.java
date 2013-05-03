@@ -138,7 +138,6 @@ public class UifFormBase implements ViewModel {
     protected Map<String, Object> extensionData;
 
     public UifFormBase() {
-        formKey = generateFormKey();
         defaultsApplied = false;
         renderedInLightBox = false;
         requestRedirected = false;
@@ -155,20 +154,16 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Creates the unique id used to store this "conversation" in the session.
-     * The default method generates a java UUID.
-     *
-     * @return
-     */
-    protected String generateFormKey() {
-        return UUID.randomUUID().toString();
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#postBind(javax.servlet.http.HttpServletRequest)
      */
     @Override
     public void postBind(HttpServletRequest request) {
+        // assign form key if this is a new form or the requested form key is not in session
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+        if (StringUtils.isBlank(formKey) || !uifFormManager.hasSessionForm(formKey)) {
+            formKey = generateFormKey();
+        }
+
         // default form post URL to request URL
         formPostUrl = request.getRequestURL().toString();
 
@@ -201,6 +196,16 @@ public class UifFormBase implements ViewModel {
             String readOnlyFields = request.getParameter(UifParameters.READ_ONLY_FIELDS);
             setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
         }
+    }
+
+    /**
+     * Creates the unique id used to store this "conversation" in the session.
+     * The default method generates a java UUID.
+     *
+     * @return UUID
+     */
+    protected String generateFormKey() {
+        return UUID.randomUUID().toString();
     }
 
     /**

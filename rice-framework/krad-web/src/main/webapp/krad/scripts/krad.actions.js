@@ -92,6 +92,16 @@ function submitForm(methodToCall, additionalData, validate, ajaxSubmit, successC
 }
 
 /**
+ * Within a multi-page view changes the currently loaded page to the page identified
+ * by the given id
+ *
+ * @param pageId id for the page to navigate to
+ */
+function navigateToPage(pageId) {
+    ajaxSubmitForm(kradVariables.NAVIGATE_METHOD_TO_CALL, {"actionParameters[navigateToPageId]": pageId});
+}
+
+/**
  * Convenience method for redirecting to a URL
  *
  * @param url to redirect to

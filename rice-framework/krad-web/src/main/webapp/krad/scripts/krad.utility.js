@@ -2091,106 +2091,29 @@ function containsAll(subArray, parentArray) {
 }
 
 /**
- * Handle the pageId value retrieved from the hash
+ * Method for creating a guid (note this is a low implementation and does not meet official
+ * standards such as RFC4122 for creating guids)
  *
- * @param pageId the pageId to change to
+ * @return {string}
  */
-function handleHashPageId(pageId) {
-    if (document.location.hash && pageId) {
-        var request = new KradRequest();
-        request.methodToCall = "navigate";
-        request.additionalData = {"actionParameters[navigateToPageId]": pageId};
-        request.send();
-    }
+function generateQuickGuid() {
+    return Math.random().toString(36).substring(2, 15) +
+        Math.random().toString(36).substring(2, 15);
 }
 
 /**
- * Search for a parameter by name in the window's url.  If a searchString is provided, look for the parameter there
- * instead.
+ * Retrieves the id for the page that is currently loaded into the DOM
  *
- * @param paramName the parameter by name we are looking for
- * @param searchString(optional) if provided, search for the parameter in this string of variables (if ? exists in string,
- * it will search after the ? character)
- * @return {*}
+ * @return id for current page
  */
-function getUrlParameter(paramName, searchString) {
-    if (searchString && searchString.indexOf('?') > -1) {
-        searchString = searchString.substring(searchString.indexOf('?') + 1);
-    }
-    else if (!searchString) {
-        searchString = window.location.search.substring(1);
-    }
-    var i;
-    var val;
-    var params = searchString.split("&");
+function getCurrentPageId() {
+    var page = jQuery("input#" + kradVariables.PAGE_ID);
 
-    for (i = 0; i < params.length; i++) {
-        val = params[i].split("=");
-        if (val[0] == paramName) {
-            return decodeURIComponent(val[1]);
-        }
+    if (page.length) {
+        return page.val();
     }
+
     return null;
-}
-
-/**
- * Get the HTML5 history query string to append to the current location.  The id and value specified will be the
- * an appendage (or replacement, if the value exists) for the current value in the url.
- *
- * @param appendageId id of the value to append/replace
- * @param appendageValue value to append
- * @return {String} the new query string value to append via history pushState/replaceState
- */
-function getHistoryQueryString(appendageId, appendageValue, searchString) {
-    if(searchString == undefined){
-        searchString = window.location.search.substring(1);
-    }
-    var i;
-    var val;
-
-    //if parameters are blank return back current query string
-    if (!appendageId || !appendageValue) {
-        return searchString;
-    }
-
-    //if the query string has nothing, append and return (should never happen in KRAD views in current implementation)
-    if (!searchString) {
-        return appendageId + "=" + appendageValue;
-    }
-
-    //if the current query parameters do not contain the id, just append and return
-    if (searchString && searchString.indexOf(appendageId) == -1) {
-        return searchString + "&" + appendageId + "=" + appendageValue;
-    }
-
-    //id already exists so replace it
-    var params = searchString.split("&");
-    var queryString = "";
-    for (i = 0; i < params.length; i++) {
-        val = params[i].split("=");
-
-        //skip the param we are replacing
-        if (val[0] == appendageId) {
-            continue;
-        }
-
-        if (queryString.length) {
-            queryString = queryString + "&" + val[0] + "=" + val[1];
-        }
-        else {
-            queryString = val[0] + "=" + val[1];
-        }
-    }
-
-    //append
-    if (queryString.length) {
-        queryString = queryString + "&" + appendageId + "=" + appendageValue;
-    }
-    else {
-        queryString = appendageId + "=" + appendageValue;
-    }
-
-    return queryString;
 }
 
 /**

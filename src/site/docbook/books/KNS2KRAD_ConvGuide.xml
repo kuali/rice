@@ -126,10 +126,10 @@
                 <itemizedlist>
                     <listitem><para>Lookups are now defined via <emphasis role="keyword">Uif-LookupView</emphasis> definitions 
                             instead of the KNS <emphasis role="keyword">LookupDefinition</emphasis>
-                            beans. [KNS line: 1, KRAD line: 1] [script converted: yes]</para></listitem>
+                            beans. [KNS line: 1, KRAD line: 1] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para></listitem>
                     <listitem><para>The title of the view is specified via the <emphasis role="keyword">headerText</emphasis>
                             property instead of the <emphasis role="keyword">title</emphasis>
-                            property. [KNS line: 2, KRAD line: 3] [script converted: yes]</para>
+                            property. [KNS line: 2, KRAD line: 3] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>The data object class is specified via the <emphasis role="keyword"
@@ -137,13 +137,13 @@
                             via the <emphasis role="keyword">BusinessObjectEntry</emphasis> as it
                             doesn't exist in KRAD anymore. A <emphasis role="keyword"
                                 >businessObject</emphasis> is no longer required and any object can
-                            be used. [KNS line: n/a, KRAD line: 2] [script converted: yes]</para>
+                            be used. [KNS line: n/a, KRAD line: 2] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>Instead of specifying the supplemental menu bar via the <emphasis
                                 role="keyword">menubar</emphasis> property, the <emphasis
                                 role="keyword">page.header.lowerGroup.items</emphasis> property is
-                            used. [KNS line: 3-4, KRAD line: 4-9] [script converted: yes]</para>
+                            used. [KNS line: 3-4, KRAD line: 4-9] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>To use multiple columns for the criteria fields use the <emphasis
@@ -154,7 +154,7 @@
                             layout manager the field label and the field itself have their own
                             columns and therefore the old <emphasis role="keyword"
                                 >numOfColumns</emphasis> value needs to be doubled. [KNS line: 5,
-                            KRAD line: 10] [script converted: yes]</para>
+                            KRAD line: 10] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                 </itemizedlist>
             </para>
@@ -164,22 +164,20 @@
                 <itemizedlist>
                     <listitem><para>The property that contains the lookup criteria fields was renamed from <emphasis
                                 role="keyword">lookupFields</emphasis> to <emphasis role="keyword"
-                                >criteriaFields</emphasis>. [KNS line: 9, KRAD line: 21] [script
-                            converted: yes]</para></listitem>
+                                >criteriaFields</emphasis>. [KNS line: 9, KRAD line: 21] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para></listitem>
                     <listitem><para>Criteria fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to <emphasis
                                 role="keyword">Uif-LookupCriteriaInput</emphasis>. [KNS line: 11-13,
-                            KRAD line: 23-25] [script converted: yes]</para></listitem>
+                            KRAD line: 23-25] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para></listitem>
                     <listitem>
                         <para>The <emphasis role="keyword">attributeName</emphasis> property on the
                             field is now a <emphasis role="keyword">propertyName</emphasis>
-                            property. [KNS line: 11-13, KRAD line: 23-25] [script converted:
-                            yes]</para>
+                            property. [KNS line: 11-13, KRAD line: 23-25] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>Not rendering a quickfinder on a lookup criteria field is specified
                             via the<emphasis role="keyword">quickfinder.render</emphasis> property
                             instead of the <emphasis role="keyword">noLookup</emphasis> property.
-                            [KNS line: 12, KRAD line 24] [script converted: yes]</para>
+                            [KNS line: 12, KRAD line 24] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>To use multiple columns for the criteria fields use the <emphasis
@@ -190,7 +188,7 @@
                             layout manager the field label and the field itself have their own
                             columns and therefore the old <emphasis role="keyword"
                                 >numOfColumns</emphasis> value needs to be doubled. [KNS line: 5,
-                            KRAD line: 10] [script converted: yes]</para>
+                            KRAD line: 10] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>Adding additional buttons to the bottom of the search criterias is
@@ -199,13 +197,13 @@
                                 >criteriaGroup.footer</emphasis> item list instead of using the
                                 <emphasis role="keyword">extraButtonSource</emphasis> and <emphasis
                                 role="keyword">extraButtonParms</emphasis> properties. [KNS line:
-                            6-7, KRAD line: 11-19] [script converted: yes]</para>
+                            6-7, KRAD line: 11-19] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>The property that specifies wether or not to show the search buttons
                             changed from <emphasis role="keyword">disableSearchButtons</emphasis> to
                                 <emphasis role="keyword">renderSearchButtons</emphasis>. [KNS line:
-                            8, KRAD line: 20] [script converted: yes]</para>
+                            8, KRAD line: 20] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>               
                 </itemizedlist>
             </para>
@@ -217,13 +215,12 @@
                         <para>Criteria fields changed from <emphasis role="keyword"
                                 >FieldDefinition</emphasis> to <emphasis role="keyword"
                                 >Uif-DataField</emphasis>. [KNS line: 18-21, KRAD line: 30-33]
-                            [script converted: yes]</para>
+                            <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>The <emphasis role="keyword">attributeName</emphasis> property on the
                             field is now a <emphasis role="keyword">propertyName</emphasis>
-                            property. [KNS line: 18-21, KRAD line: 30-33] [script converted:
-                            yes]</para>
+                            property. [KNS line: 18-21, KRAD line: 30-33] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>The <emphasis role="keyword">forceInquiry</emphasis> property does not
@@ -231,7 +228,7 @@
                                 <emphasis role="keyword">inquiry.render</emphasis> property on the
                                 <emphasis role="keyword">Uif-DataField</emphasis> to false to
                             supress the rendering of the inquiry link. [KNS line: 20, KRAD line:
-                            n/a] [script converted: yes]</para>
+                            n/a] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>Custom actions in the result rows are no longer specified by
@@ -242,7 +239,7 @@
                             <?oxy_comment_start author="cniesen" timestamp="20130425T151431-0500" comment="Do we need to add detailed example of how to add custom actions?"?>Look
                             in <emphasis role="keyword">UifLookupDefinition.xml</emphasis> to see
                             how the edit, copy and delete actions are defined.<?oxy_comment_end?>
-                            [script converted: no]</para>
+                            <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                     <listitem>
                         <para>The <emphasis role="keyword">SortDefinition</emphasis> bean with the
@@ -253,7 +250,7 @@
                             the <emphasis role="keyword">defaultSortAttributeName</emphasis>
                             property list on the <emphasis role="keyword"
                             >Uif-Lookup-View</emphasis>.  [KNS line: 24-33, KRAD line: 36-43]
-                            [script converted: yes]</para>
+                            <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
                 </itemizedlist>
             </para>

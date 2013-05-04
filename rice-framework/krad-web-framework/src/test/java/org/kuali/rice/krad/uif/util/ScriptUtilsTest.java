@@ -95,7 +95,7 @@ public class ScriptUtilsTest {
         String onClickScript = "alert('A click happened');";
         String onClickHandler = ScriptUtils.buildEventHandlerScript("u09", "click", onClickScript);
 
-        String expectedHandler = "jQuery('#u09').click(function(e) {" + onClickScript + "});";
+        String expectedHandler = "jQuery('#u09').on('click', function(e) {" + onClickScript + "}); ";
 
         assertEquals("generate event script is not correct", expectedHandler, onClickHandler);
     }

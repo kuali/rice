@@ -54,6 +54,7 @@
         <value>krad/plugins/watermark/jquery.watermark.js</value>
         <value>krad/plugins/validate/jquery.validate.js</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.js</value>
+        <value>krad/plugins/easing/jquery.easing-1.3.pack.js</value>
         <value>krad/plugins/rice/menu/krad.navigationMenu.js</value>
         <value>krad/plugins/rice/textpopout/krad.textareaPopout.js</value>
         <value>krad/plugins/dirtyform/jquery.dirtyform.js</value>
@@ -68,7 +69,6 @@
         <value>krad/plugins/jqform/jquery.form-3.31.0.js</value>
         <value>krad/plugins/fancybox/jquery.fancybox.pack.js</value>
         <value>krad/plugins/easydrag/jquery.easydrag.js</value>
-        <value>krad/plugins/easing/jquery.easing-1.3.pack.js</value>
         <value>krad/plugins/json/jquery.json-2.2.js</value>
         <value>krad/plugins/infusion/infusion-1.4.js</value>
         <value>krad/plugins/infusion/infusion.reorderer.js</value>

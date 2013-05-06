@@ -150,7 +150,7 @@
   <bean id="UifCompView-SecureActions" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean id="UifCompView-SecureAction1" parent="Uif-PrimaryActionButton" p:methodToCall="close"/>
+        <bean id="UifCompView-SecureAction1" parent="Uif-PrimaryActionButton" p:methodToCall="cancel"/>
         <bean id="UifCompView-SecureAction2" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionEvent="save">
           <property name="componentSecurity.performActionAuthz" value="true"/>
         </bean>

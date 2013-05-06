@@ -21,8 +21,11 @@
  * @param displayBreadcrumbsWhenOne display the breadcrumbs when there is only one when true, otherwise do not
  */
 function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
+    var breadcrumbsWrapper = jQuery("div#Uif-BreadcrumbWrapper");
+
     //clear the old breadcrumbs
-    jQuery("div#Uif-BreadcrumbWrapper").empty();
+    breadcrumbsWrapper.empty();
+    breadcrumbsWrapper.show();
 
     //find the new ones
     var breadcrumbList = jQuery("div#Uif-BreadcrumbUpdate > ol").detach();
@@ -30,6 +33,7 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
 
     //dont display if display when one is false and there is only one item
     if (!displayBreadcrumbsWhenOne && items.length == 1) {
+        breadcrumbsWrapper.hide();
         return;
     }
 

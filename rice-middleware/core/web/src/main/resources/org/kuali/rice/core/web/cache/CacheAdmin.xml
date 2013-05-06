@@ -46,7 +46,7 @@
       <property name="items">
         <list>
           <bean parent="Uif-SecondaryActionButton" p:methodToCall="flush" p:actionLabel="Flush"/>
-          <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
+          <bean parent="Uif-SecondaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"/>
         </list>
       </property>
   </bean>

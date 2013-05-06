@@ -25,8 +25,8 @@
         p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
         p:loadingMessageText="Saving..." p:id="usave"/>
 
-  <bean id="Uif-CloseAction" parent="Uif-SecondaryActionButton" p:methodToCall="close"
-        p:actionLabel="Close" p:performDirtyValidation="true" p:id="uclose"/>
+  <bean id="Uif-BackAction" parent="Uif-SecondaryActionButton" p:methodToCall="back"
+        p:actionLabel="&lt; Back" p:performDirtyValidation="true"/>
 
   <bean id="Uif-CancelAction" parent="Uif-ActionLink" p:methodToCall="cancel"
         p:actionLabel="Cancel" p:performDirtyValidation="true" p:id="ucancel"/>

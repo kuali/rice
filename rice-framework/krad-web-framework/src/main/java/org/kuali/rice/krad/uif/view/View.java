@@ -394,7 +394,16 @@ public class View extends ContainerBase {
 
             //if using flow setup a new HistoryFlow for this view and set into the HistoryManager
             if (usingFlow && form.getHistoryManager() != null) {
-                HistoryFlow historyFlow = form.getHistoryManager().process(form.getFlowKey(), form.getFormKey(),
+
+                //use original request form key if present to match history flows stored in map (incase key changed)
+                String formKey = form.getRequestedFormKey();
+                if (StringUtils.isBlank(formKey)) {
+                    formKey = form.getFormKey();
+                    form.setRequestedFormKey(formKey);
+                }
+
+                //get the historyFlow for this view
+                HistoryFlow historyFlow = form.getHistoryManager().process(form.getFlowKey(), formKey,
                         form.getRequestUrl());
                 if (historyFlow != null) {
                     form.setHistoryFlow(historyFlow);

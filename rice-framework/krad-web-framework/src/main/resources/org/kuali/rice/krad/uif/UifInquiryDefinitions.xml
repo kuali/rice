@@ -75,12 +75,9 @@
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="export" p:actionLabel="export"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}" p:disableBlocking="true"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToPrevious" p:actionLabel="Cancel"
-              p:render="@{#form.renderedInLightBox and !historyFlow?.flowUrls?.empty}"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
               p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{!#form.renderedInLightBox}"
-              p:onClickScript="e.preventDefault();window.close();return false;"/>
+        <bean parent="Uif-BackAction" p:render="@{!#form.renderedInLightBox}"/>
       </list>
     </property>
   </bean>

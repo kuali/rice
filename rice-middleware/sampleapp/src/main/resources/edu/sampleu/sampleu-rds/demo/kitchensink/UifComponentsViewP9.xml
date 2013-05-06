@@ -114,7 +114,7 @@
   </verticalBoxSection-bean>
   <verticalBoxSection-bean id="UifCompView-SecureActions">
     <items>
-      <primaryActionButton-bean id="UifCompView-SecureAction1" methodToCall="close"/>
+      <primaryActionButton-bean id="UifCompView-SecureAction1" methodToCall="cancel"/>
       <primaryActionButton-bean actionEvent="save" componentSecurity.performActionAuthz="true"
                                 id="UifCompView-SecureAction2" methodToCall="save"/>
     </items>

@@ -395,41 +395,44 @@ public class LightTable extends Group implements DataBinding {
      * @return the updated row
      */
     private String handleDataFieldInRow(Component item, Object obj, String row, int index, String originalId) {
-        if (item instanceof DataField) {
-            Object currentValue = ObjectPropertyUtils.getPropertyValue(obj, ((DataField) item).getPropertyName());
+        if (!(item instanceof DataField)) {
+            return row;
+        }
 
-            if (currentValue == null){
-                currentValue = "";
-            }
+        Object currentValue = ObjectPropertyUtils.getPropertyValue(obj, ((DataField) item).getPropertyName());
 
-            //for readOnly DataFields replace the value marked with the value on the current object
-            row = row.replaceAll(VALUE_TOKEN + originalId + VALUE_TOKEN, currentValue.toString());
+        if (currentValue == null){
+            currentValue = "";
+        }
 
-            if (((DataField) item).getInquiry() != null
-                    && ((DataField) item).getInquiry().getInquiryParameters() != null
-                    && ((DataField) item).getInquiry().getInquiryLink() != null) {
+        //for readOnly DataFields replace the value marked with the value on the current object
+        row = row.replaceAll(VALUE_TOKEN + originalId + VALUE_TOKEN, currentValue.toString());
 
-                String inquiryLinkId = ((DataField) item).getInquiry().getInquiryLink().getBaseId().replace(ID_TOKEN, "")
-                        + UifConstants.IdSuffixes.LINE
-                        + index;
+        if (((DataField) item).getInquiry() != null
+                && ((DataField) item).getInquiry().getInquiryParameters() != null
+                && ((DataField) item).getInquiry().getInquiryLink() != null) {
 
-                //process each Inquiry link parameter by replacing each in the inquiry url with their 
-                //current value
-                for (String key : ((DataField) item).getInquiry().getInquiryParameters().keySet()) {
-                    String name = ((DataField) item).getInquiry().getInquiryParameters().get(key);
+            String inquiryLinkId = ((DataField) item).getInquiry().getInquiryLink().getBaseId().replace(ID_TOKEN, "")
+                    + UifConstants.IdSuffixes.LINE
+                    + index;
 
-                    //omit the binding prefix fromt he key to get the path relative to the current object
-                    key = key.replace(((DataField) item).getBindingInfo().getBindByNamePrefix() + ".", "");
+            //process each Inquiry link parameter by replacing each in the inquiry url with their
+            //current value
+            for (String key : ((DataField) item).getInquiry().getInquiryParameters().keySet()) {
+                String name = ((DataField) item).getInquiry().getInquiryParameters().get(key);
 
-                    if (ObjectPropertyUtils.isReadableProperty(obj, key)) {
-                        String value = ObjectPropertyUtils.getPropertyValue(obj, key);
-                        row = row.replaceFirst("(" + inquiryLinkId + "(.|\\s)*?" + name + ")=.*?([&|\"])",
-                                "$1=" + value + "$3");
-                    }
+                //omit the binding prefix fromt he key to get the path relative to the current object
+                key = key.replace(((DataField) item).getBindingInfo().getBindByNamePrefix() + ".", "");
 
+                if (ObjectPropertyUtils.isReadableProperty(obj, key)) {
+                    String value = ObjectPropertyUtils.getPropertyValue(obj, key);
+                    row = row.replaceFirst("(" + inquiryLinkId + "(.|\\s)*?" + name + ")=.*?([&|\"])",
+                            "$1=" + value + "$3");
                 }
+
             }
         }
+
 
         return row;
     }
@@ -445,58 +448,61 @@ public class LightTable extends Group implements DataBinding {
      * @return the updated row
      */
     private String handleInputFieldInRow(Component item, Object obj, String row, int index, String originalId) {
-        if (item instanceof InputField && ((InputField) item).getControl() != null) {
-            Control control = ((InputField) item).getControl();
+        if (!(item instanceof InputField) || ((InputField) item).getControl() == null) {
+            return row;
+        }
 
-            //updates the name path to the current path for any instance this item's propertyName with
-            //a collection binding prefix
-            row = row.replace("name=\"" + ((InputField) item).getBindingInfo().getBindingPath() + "\"",
-                    "name=\"" + this.getBindingInfo().getBindingPath() + "[" + index + "]." + ((InputField) item)
-                            .getPropertyName() + "\"");
+        Control control = ((InputField) item).getControl();
 
-            Object value = ObjectPropertyUtils.getPropertyValue(obj, ((InputField) item).getPropertyName());
-            String stringValue = "";
+        //updates the name path to the current path for any instance this item's propertyName with
+        //a collection binding prefix
+        row = row.replace("name=\"" + ((InputField) item).getBindingInfo().getBindingPath() + "\"",
+                "name=\"" + this.getBindingInfo().getBindingPath() + "[" + index + "]." + ((InputField) item)
+                        .getPropertyName() + "\"");
 
-            if (value == null){
-                stringValue = "";
-            }else if (value.getClass().isAssignableFrom(boolean.class)) {
-                stringValue = "" + value;
-            } else if (!(value instanceof Collection)) {
-                stringValue = value.toString();
+        Object value = ObjectPropertyUtils.getPropertyValue(obj, ((InputField) item).getPropertyName());
+        String stringValue = "";
+
+        if (value == null){
+            stringValue = "";
+        }else if (value.getClass().isAssignableFrom(boolean.class)) {
+            stringValue = "" + value;
+        } else if (!(value instanceof Collection)) {
+            stringValue = value.toString();
+        }
+
+        String controlId = originalId + "_line" + index + UifConstants.IdSuffixes.CONTROL;
+
+        if (control instanceof CheckboxControl && stringValue.equalsIgnoreCase("true")) {
+            //CheckboxControl handling - only replace if true with a checked attribute appended
+            row = row.replaceAll("(id(\\s)*?=(\\s)*?\"" + controlId + "\")", "$1 checked=\"checked\" ");
+        } else if (control instanceof TextControl) {
+            //TextControl handling - replace with
+            row = row.replaceAll("(id(\\s)*?=(\\s)*?\"" + controlId + "\"(.|\\s)*?value=\")(.|\\s)*?\"",
+                    "$1" + stringValue + "\"");
+        } else if (control instanceof SelectControl && !((SelectControl) control).isMultiple()) {
+            //SelectControl handling (single item only)
+            Pattern pattern = Pattern.compile(
+                    "<select(\\s)*?id(\\s)*?=(\\s)*?\"" + controlId + "\"(.|\\s)*?</select>");
+            Matcher matcher = pattern.matcher(row);
+            String replacement = "";
+
+            if (matcher.find()) {
+                //remove selected from select options
+                String selected = "selected=\"selected\"";
+                replacement = matcher.group().replace(selected, "");
+
+                //put selected on only the selected option
+                String selectedValue = "value=\"" + stringValue + "\"";
+                replacement = replacement.replace(selectedValue, selectedValue + " " + selected);
             }
 
-            String controlId = originalId + "_line" + index + UifConstants.IdSuffixes.CONTROL;
-
-            if (control instanceof CheckboxControl && stringValue.equalsIgnoreCase("true")) {
-                //CheckboxControl handling - only replace if true with a checked attribute appended
-                row = row.replaceAll("(id(\\s)*?=(\\s)*?\"" + controlId + "\")", "$1 checked=\"checked\" ");
-            } else if (control instanceof TextControl) {
-                //TextControl handling - replace with 
-                row = row.replaceAll("(id(\\s)*?=(\\s)*?\"" + controlId + "\"(.|\\s)*?value=\")(.|\\s)*?\"",
-                        "$1" + stringValue + "\"");
-            } else if (control instanceof SelectControl && !((SelectControl) control).isMultiple()) {
-                //SelectControl handling (single item only)
-                Pattern pattern = Pattern.compile(
-                        "<select(\\s)*?id(\\s)*?=(\\s)*?\"" + controlId + "\"(.|\\s)*?</select>");
-                Matcher matcher = pattern.matcher(row);
-                String replacement = "";
-
-                if (matcher.find()) {
-                    //remove selected from select options
-                    String selected = "selected=\"selected\"";
-                    replacement = matcher.group().replace(selected, "");
-
-                    //put selected on only the selected option
-                    String selectedValue = "value=\"" + stringValue + "\"";
-                    replacement = replacement.replace(selectedValue, selectedValue + " " + selected);
-                }
-
-                //replace the old select tag with the old one
-                if (StringUtils.isNotBlank(replacement)) {
-                    row = matcher.replaceAll(replacement);
-                }
+            //replace the old select tag with the old one
+            if (StringUtils.isNotBlank(replacement)) {
+                row = matcher.replaceAll(replacement);
             }
         }
+
 
         return row;
     }

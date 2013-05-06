@@ -64,6 +64,8 @@ public class UifFormBase implements ViewModel {
     protected String pageId;
     protected String methodToCall;
     protected String formKey;
+    @SessionTransient
+    protected String requestedFormKey;
     protected String flowKey;
     protected String sessionId;
     protected int sessionTimeoutInterval;
@@ -621,6 +623,25 @@ public class UifFormBase implements ViewModel {
      */
     public void setFormKey(String formKey) {
         this.formKey = formKey;
+    }
+
+    /**
+     * This is the formKey sent on the original request.  It may differ from the actual form key stored in formKey
+     * based on if the form still exists in session by this key or not.
+     *
+     * @return the original requested form key
+     */
+    public String getRequestedFormKey() {
+        return requestedFormKey;
+    }
+
+    /**
+     * Set the requestedFormKey
+     *
+     * @param requestedFormKey
+     */
+    public void setRequestedFormKey(String requestedFormKey) {
+        this.requestedFormKey = requestedFormKey;
     }
 
     /**

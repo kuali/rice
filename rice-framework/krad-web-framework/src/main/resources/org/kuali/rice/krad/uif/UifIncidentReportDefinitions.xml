@@ -123,6 +123,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="submitReport" p:actionLabel="Submit Report"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="back" p:actionLabel="Retry"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"/>
       </list>
     </property>

@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.IncidentReportForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Properties;
 
 /**
  * Handler for incident reports
@@ -58,7 +64,27 @@ public class IncidentReportController extends UifControllerBase {
                 ((IncidentReportForm) uifForm).createEmailMessage());
 
         // return the close redirect
-        return close(uifForm, result, request, response);
+        return back(uifForm, result, request, response);
+    }
+
+    /**
+     * Returns back to the application url on a cancel
+     *
+     * @see UifControllerBase#cancel
+     */
+    @RequestMapping(params = "methodToCall=cancel")
+    public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        Properties props = new Properties();
+        props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
+
+        if (StringUtils.isNotBlank(form.getReturnFormKey())) {
+            props.put(UifParameters.FORM_KEY, form.getReturnFormKey());
+        }
+
+        String returnUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
+
+        return performRedirect(form, returnUrl, props);
     }
 
 }

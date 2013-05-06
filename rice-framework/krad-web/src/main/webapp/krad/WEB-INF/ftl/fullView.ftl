@@ -48,6 +48,9 @@
                 <#-- all forms will be stored in session, this is the conversation key -->
                 <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
 
+                <#-- original form key requested, may differ from actual form key-->
+                <@spring.formHiddenInput id="requestedFormKey" path="KualiForm.requestedFormKey"/>
+
                 <#-- tracks the session, used to determine timeouts -->
                 <@spring.formHiddenInput id="sessionId" path="KualiForm.sessionId"/>
 

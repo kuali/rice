@@ -57,7 +57,7 @@ import java.util.Map;
         @BeanTag(name = "secondaryNavigationActionButton-bean", parent = "Uif-SecondaryNavigationActionButton"),
         @BeanTag(name = "helpAction-bean", parent = "Uif-HelpAction"),
         @BeanTag(name = "saveAction-bean", parent = "Uif-SaveAction"),
-        @BeanTag(name = "closeAction-bean", parent = "Uif-CloseAction"),
+        @BeanTag(name = "backAction-bean", parent = "Uif-BackAction"),
         @BeanTag(name = "cancelAction-bean", parent = "Uif-CancelAction"),
         @BeanTag(name = "checkFormAction-bean", parent = "Uif-CheckFormAction"),
         @BeanTag(name = "addLineAction-bean", parent = "Uif-AddLineAction"),

@@ -35,10 +35,11 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.util.Assert;
 import org.kuali.rice.krad.web.form.UifFormManager;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -108,9 +109,23 @@ public abstract class UifControllerBase {
             uifFormManager.updateFormWithSession(requestForm, formKeyParam);
         }
 
-        String referer = request.getHeader(UifConstants.REFERER);
+        //set the originally requested form key
+        String requestedFormKey = request.getParameter(UifParameters.REQUESTED_FORM_KEY);
+        if (StringUtils.isNotBlank(requestedFormKey)) {
+            requestForm.setRequestedFormKey(requestedFormKey);
+        } else {
+            requestForm.setRequestedFormKey(formKeyParam);
+        }
+
         //get the initial referer
-        if (StringUtils.isBlank(requestForm.getReturnLocation()) && StringUtils.isNotBlank(referer)){
+        String referer = request.getHeader(UifConstants.REFERER);
+
+        //if none, set the no return flag string
+        if (StringUtils.isBlank(referer)) {
+            requestForm.setReturnLocation(UifConstants.NO_RETURN);
+        }
+
+        if (StringUtils.isBlank(requestForm.getReturnLocation())) {
             requestForm.setReturnLocation(referer);
         }
 
@@ -136,7 +151,7 @@ public abstract class UifControllerBase {
 
         //add history manager and current flowKey to the form
         if (requestForm != null && historyManager != null && historyManager instanceof HistoryManager) {
-            requestForm.setHistoryManager((HistoryManager)historyManager);
+            requestForm.setHistoryManager((HistoryManager) historyManager);
             requestForm.setFlowKey(flowKey);
         }
 
@@ -331,25 +346,48 @@ public abstract class UifControllerBase {
     @RequestMapping(params = "methodToCall=cancel")
     public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        return close(form, result, request, response);
+        return back(form, result, request, response);
     }
 
     /**
-     * Just returns as if return with no value was selected.
+     * Attempts to go back by looking at various return mechanisms in HistoryFlow and on the form.  If a back cannot
+     * be determined, returns to the application url.
      */
-    @RequestMapping(params = "methodToCall=close")
-    public ModelAndView close(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    @RequestMapping(params = "methodToCall=back")
+    public ModelAndView back(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         Properties props = new Properties();
         props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
+
         if (StringUtils.isNotBlank(form.getReturnFormKey())) {
             props.put(UifParameters.FORM_KEY, form.getReturnFormKey());
         }
 
-        // TODO this needs setup for lightbox and possible home location
-        // property
+        HistoryFlow historyFlow = form.getHistoryManager().getMostRecentFlowByFormKey(form.getFlowKey(),
+                form.getRequestedFormKey());
+
         String returnUrl = form.getReturnLocation();
-        if (StringUtils.isBlank(returnUrl)) {
+
+        //use history flow return location
+        if (historyFlow != null) {
+            returnUrl = historyFlow.getFlowReturnPoint();
+        }
+
+        //return to start handling
+        String returnToStart = form.getActionParamaterValue(UifConstants.HistoryFlow.RETURN_TO_START);
+        if (StringUtils.isBlank(returnToStart)) {
+            returnToStart = request.getParameter(UifConstants.HistoryFlow.RETURN_TO_START);
+        }
+
+        if (StringUtils.isNotBlank(returnToStart)
+                && Boolean.parseBoolean(returnToStart)
+                && historyFlow != null
+                && StringUtils.isNotBlank(historyFlow.getFlowStartPoint())) {
+            returnUrl = historyFlow.getFlowStartPoint();
+        }
+
+        //return to app url if returnUrl still blank
+        if (StringUtils.isBlank(returnUrl) || returnUrl.equals(UifConstants.NO_RETURN)) {
             returnUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
         }
 
@@ -392,7 +430,7 @@ public abstract class UifControllerBase {
     public ModelAndView returnToHistory(UifFormBase form, boolean homeFlag) {
         String returnUrl = form.getReturnLocation();
 
-        if (StringUtils.isBlank(returnUrl) || homeFlag){
+        if (StringUtils.isBlank(returnUrl) || homeFlag) {
             returnUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
         }
 

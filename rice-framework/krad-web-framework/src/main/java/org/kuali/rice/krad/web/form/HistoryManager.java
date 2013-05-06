@@ -17,6 +17,7 @@ package org.kuali.rice.krad.web.form;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -52,6 +53,10 @@ public class HistoryManager implements Serializable {
         }
 
         HistoryFlow newFlow = new HistoryFlow(flowKey);
+
+        if (currentUrl.contains("?") && !currentUrl.contains(UifParameters.FORM_KEY) && StringUtils.isNotBlank(formKey)){
+            currentUrl = currentUrl + "&" + UifParameters.FORM_KEY + "=" + formKey;
+        }
 
         if (getMostRecentFlowByFormKey(flowKey, formKey) != null) {
             newFlow = getMostRecentFlowByFormKey(flowKey, formKey);

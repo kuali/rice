@@ -53,6 +53,7 @@ public class UifConstants {
     public static final String SESSION_TIMEOUT_VIEW_ID = "Uif-SessionTimeoutView";
     public static final String LOGGED_OUT_VIEW_ID = "Uif-LoggedOutView";
     public static final String REFERER = "Referer";
+    public static final String NO_RETURN = "NO_RETURN";
 
     public static enum ReadOnlyListTypes {
         DELIMITED, BREAK, OL, UL
@@ -274,6 +275,7 @@ public class UifConstants {
         public static final String HISTORY_MANAGER = "historyManager";
         public static final String FLOW = "flow";
         public static final String START = "start";
+        public static final String RETURN_TO_START = "returnToStart";
         public static final String SEPARATOR = "@@";
     }
 

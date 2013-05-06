@@ -30,6 +30,7 @@ import java.util.Stack;
 public class HistoryFlow implements Serializable {
     protected Stack<UrlInfo> flowUrls = new Stack<UrlInfo>();
     protected String flowReturnPoint;
+    protected String flowStartPoint;
     protected String flowKey;
 
     protected BreadcrumbItem currentViewItem;
@@ -78,6 +79,14 @@ public class HistoryFlow implements Serializable {
      */
     public void setFlowReturnPoint(String flowReturnPoint) {
         this.flowReturnPoint = flowReturnPoint;
+    }
+
+    public String getFlowStartPoint() {
+        return flowStartPoint;
+    }
+
+    public void setFlowStartPoint(String flowStartPoint) {
+        this.flowStartPoint = flowStartPoint;
     }
 
     /**
@@ -183,6 +192,10 @@ public class HistoryFlow implements Serializable {
         if(prevFlow != null){
             flowReturnPoint = prevFlow.getCurrentLocation();
             this.setFlowUrls(prevFlow.getFlowUrls());
+
+            if(this.getFlowUrls() != null && !this.getFlowUrls().isEmpty()){
+                flowStartPoint = this.getFlowUrls().firstElement().getHref();
+            }
 
             pastItems = new ArrayList<BreadcrumbItem>();
 

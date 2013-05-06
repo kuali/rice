@@ -197,7 +197,6 @@
     <property name="items">
       <list>
         <bean parent="Uif-SaveAction"/>
-        <bean parent="Uif-CloseAction"/>
         <bean parent="Uif-CancelAction"/>
       </list>
     </property>

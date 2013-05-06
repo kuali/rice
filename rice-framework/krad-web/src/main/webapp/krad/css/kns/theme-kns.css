@@ -522,7 +522,7 @@ div.ui-tabs.ui-widget-content {
 	border: 1px solid #666666;
 }
 .ui-widget-header .ui-icon {
-	background: url(../../images/ui-icons_454545_256x240.png);
+	background: url(../../plugins/jqueryUI/images/ui-icons_454545_256x240.png);
 }
 .ui-icon.ui-icon-circle-triangle-e {
 	background-position: -112px -192px;

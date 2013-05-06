@@ -355,7 +355,7 @@ public class View extends ContainerBase {
             // warning minutes gives us the time before the timeout occurs to give the warning,
             // so we need to determine how long that should be from the session start
             int sessionTimeoutInterval = ((UifFormBase) model).getSessionTimeoutInterval();
-            int sessionWarningMilliseconds = (sessionPolicy.getTimeoutWarningMinutes() * 60000);
+            int sessionWarningMilliseconds = (sessionPolicy.getTimeoutWarningSeconds() * 1000);
 
             if (sessionWarningMilliseconds >= sessionTimeoutInterval) {
                 throw new RuntimeException(

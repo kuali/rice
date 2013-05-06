@@ -122,7 +122,7 @@
       </bean>
     </property>
     <property name="sessionPolicy.enableTimeoutWarning" value="true"/>
-    <property name="sessionPolicy.timeoutWarningMinutes" value="1"/>
+    <property name="sessionPolicy.timeoutWarningSeconds" value="60"/>
   </bean>
 
   <bean id="Lab-SessionPolicy-MissingForm" parent="Uif-FormView">

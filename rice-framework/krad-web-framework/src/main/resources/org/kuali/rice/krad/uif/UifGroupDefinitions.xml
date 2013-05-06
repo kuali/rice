@@ -1247,7 +1247,7 @@
     <property name="headerText" value="Still there?"/>
     <property name="promptText">
       <value>
-        [b]Due to inactivity, you will be logged out in [div id="UifTimeoutCountdown"]@{#view.sessionPolicy.timeoutWarningMinutes}[/div] minute(s).[/b][br]
+        [b]Due to inactivity, you will be logged out in [div id="UifTimeoutCountdown"]60[/div] minute(s).[/b][br]
         For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000} minutes of inactivity.
       </value>
     </property>
@@ -1259,7 +1259,7 @@
     </property>
     <property name="onDialogResponseScript" value="handleTimeoutWarningResponse(e);"/>
     <property name="onShowDialogScript"
-              value="displayCountdown('UifTimeoutCountdown', @{#view.sessionPolicy.timeoutWarningMinutes} * 60);"/>
+              value="displayCountdown('UifTimeoutCountdown', @{#view.sessionPolicy.timeoutWarningSeconds});"/>
   </bean>
 
   <bean id="Uif-SessionTimeout-DialogGroup" parent="Uif-DialogGroup">

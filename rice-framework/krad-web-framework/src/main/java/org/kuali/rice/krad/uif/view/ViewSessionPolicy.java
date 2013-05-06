@@ -48,12 +48,12 @@ public class ViewSessionPolicy extends DictionaryBeanBase implements Serializabl
     private String redirectUrl;
     private boolean renderTimeoutView;
     private boolean enableTimeoutWarning;
-    private int timeoutWarningMinutes;
+    private int timeoutWarningSeconds;
 
     public ViewSessionPolicy() {
         super();
 
-        timeoutWarningMinutes = 2;
+        timeoutWarningSeconds = 120;
     }
 
     /**
@@ -117,7 +117,7 @@ public class ViewSessionPolicy extends DictionaryBeanBase implements Serializabl
      * <p>
      * When enabled, a timer will be kept on the client to warning the user when their session is about
      * to timeout, and if the timeout actually occurs. The amount of time before a timeout to warn is specified
-     * by {@link #getTimeoutWarningMinutes()}
+     * by {@link #getTimeoutWarningSeconds()}
      * </p>
      *
      * <p>
@@ -142,21 +142,21 @@ public class ViewSessionPolicy extends DictionaryBeanBase implements Serializabl
     }
 
     /**
-     * When {@link #isEnableTimeoutWarning()} is true, the number of minutes before a timeout occurs to give a
-     * warning (default is 2 minutes)
+     * When {@link #isEnableTimeoutWarning()} is true, the number of seconds before a timeout occurs to give a
+     * warning (default is 120 (2 minutes))
      *
-     * @return number of minutes before timeout to give warning dialog
+     * @return number of seconds before timeout to give warning dialog
      */
-    public int getTimeoutWarningMinutes() {
-        return timeoutWarningMinutes;
+    public int getTimeoutWarningSeconds() {
+        return timeoutWarningSeconds;
     }
 
     /**
-     * Setter for the number of minutes before timeout to give a warning dialog
+     * Setter for the number of seconds before timeout to give a warning dialog
      *
-     * @param timeoutWarningMinutes
+     * @param timeoutWarningSeconds
      */
-    public void setTimeoutWarningMinutes(int timeoutWarningMinutes) {
-        this.timeoutWarningMinutes = timeoutWarningMinutes;
+    public void setTimeoutWarningSeconds(int timeoutWarningSeconds) {
+        this.timeoutWarningSeconds = timeoutWarningSeconds;
     }
 }

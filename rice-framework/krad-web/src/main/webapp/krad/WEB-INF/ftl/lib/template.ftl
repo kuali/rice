@@ -55,7 +55,7 @@
         </#if>
 
         <#-- generate event code for component -->
-        <@krad.eventScript component=component/>
+        <@krad.script component=component value="${component.eventHandlerScript}" />
 
         <#if component.postRenderContent?has_content>
             ${component.postRenderContent?html}

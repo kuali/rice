@@ -1220,7 +1220,7 @@ function setupLightboxForm() {
  * Closes any open lightbox
  */
 function closeLightbox() {
-    jQuery.fancybox.close();
+    getContext().fancybox.close();
 }
 
 /**

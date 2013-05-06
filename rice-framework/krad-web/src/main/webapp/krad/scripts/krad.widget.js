@@ -518,13 +518,6 @@ function checkDirectInquiryValueValid(value) {
 }
 
 /**
- * Closes the lightbox window
- */
-function closeLightbox() {
-    getContext().fancybox.close();
-}
-
-/**
  * Cleanup form data from server when lightbox window is closed
  */
 function cleanupClosedLightboxForms() {

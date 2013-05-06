@@ -28,11 +28,21 @@ public class FreemarkerSmoketestGenerator {
 
     public static void main(String[] args) throws Exception {
         cfg.setTemplateLoader(templateLoader);
-        String DEFAULT_PROPS_LOCATION = "/GenFiles/Inquiry.properties";
+        String DEFAULT_PROPS_LOCATION = "/GenFiles/WorkFlowDocType.properties";
         String STJUNITBASE_TMPL = "STJUnitBase.ftl";
+        String STJUNITBKMRKGEN_TMPL = "STJUnitBkMrkGen.ftl";
+        String STJUNITNAVGEN_TMPL = "STJUnitNavGen.ftl";
+        String STNGBASE_TMPL = "STNGBase.ftl";
+        String STNGBKMRKGEN_TMPL = "STNGBkMrkGen.ftl";
+        String STNGNAVGEN_TMPL = "STNGNavGen.ftl";
         
         //Here we can prepare a list of template & properties file and can iterate to generate files dynamically on single run.
         createFile(DEFAULT_PROPS_LOCATION,STJUNITBASE_TMPL);
+        createFile(DEFAULT_PROPS_LOCATION,STJUNITBKMRKGEN_TMPL);
+        createFile(DEFAULT_PROPS_LOCATION,STJUNITNAVGEN_TMPL);
+        createFile(DEFAULT_PROPS_LOCATION,STNGBASE_TMPL);
+        createFile(DEFAULT_PROPS_LOCATION,STNGBKMRKGEN_TMPL);
+        createFile(DEFAULT_PROPS_LOCATION,STNGNAVGEN_TMPL);
     }
 
     private static void createFile(String DEFAULT_PROPS_LOCATION, String TMPL) throws Exception

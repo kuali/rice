@@ -127,6 +127,12 @@ public class ITUtil {
      * remote.autologin
      */
     public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
+    
+    /**
+     * &docFormKey=
+     */
+    public static final String DOC_FORM_KEY = "&docFormKey=";
+    
 
     public static String blanketApprovalCleanUpErrorText(String errorText) {
         errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about

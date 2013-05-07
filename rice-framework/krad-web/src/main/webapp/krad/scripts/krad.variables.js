@@ -40,6 +40,7 @@ JavascriptKradVariables.prototype = {
      ERROR_MESSAGE_ITEM_CLASS : "uif-errorMessageItem-field",
      FIELD_CLASS : "uif-field",
      FORM_KEY : "formKey",
+     GRID_LAYOUT_CELL_CLASS : "uif-gridLayoutCell",
      HAS_ERROR_CLASS : "uif-hasError",
      HAS_INFO_CLASS : "uif-hasInfo",
      HAS_MODIFIED_ERROR_CLASS : "uif-hasError-modified",

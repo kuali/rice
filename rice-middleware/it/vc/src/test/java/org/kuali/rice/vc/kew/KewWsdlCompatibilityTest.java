@@ -21,6 +21,7 @@ import org.kuali.rice.vc.test.WsdlCompareTestCase;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,7 @@ public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
 
         blacklist.put("WorkflowDocumentService",
                 Arrays.asList(
+                        new WsdlCompareTestCase.VersionTransition("2.1.2", "2.2.0"),
                         new WsdlCompareTestCase.VersionTransition("2.2.0", "2.2.1")
                 ));
 

@@ -25,6 +25,7 @@
         <#if view.stickyTopGroup>
             <#local topGroupWrapData="data-sticky='true'"/>
         </#if>
+
         <div id="Uif-TopGroupWrapper" ${topGroupWrapData}>
             <@krad.template component=view.topGroup/>
         </div>
@@ -34,6 +35,7 @@
         <#if view.stickyBreadcrumbs>
             <#local breadcrumbWrapData="data-sticky='true'"/>
         </#if>
+
         <div id="Uif-BreadcrumbWrapper" ${breadcrumbWrapData}></div>
 
         <!-- VIEW HEADER -->
@@ -60,9 +62,9 @@
         <#if (view.dialogs?size > 0)>
             <!-- DIALOG LIST -->
             <div id="dialogs_div">
-            <#list view.dialogs as dialog>
-                <@krad.template component=dialog/>
-            </#list>
+                <#list view.dialogs as dialog>
+                    <@krad.template component=dialog/>
+                </#list>
             </div>
         </#if>
 

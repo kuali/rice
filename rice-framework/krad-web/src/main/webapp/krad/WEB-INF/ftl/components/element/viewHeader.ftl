@@ -30,65 +30,62 @@
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
 
-<#local wrapData=""/>
-<#if element.sticky>
-    <#local wrapData="data-sticky='true'"/>
-</#if>
+    <#local wrapData=""/>
+    <#if element.sticky>
+        <#local wrapData="data-sticky='true'"/>
+    </#if>
 
-<div class="uif-viewHeader-contentWrapper" ${wrapData}>
+    <div class="uif-viewHeader-contentWrapper" ${wrapData}>
 
-<#-- upper group -->
-    <@krad.template component=element.upperGroup/>
+        <#-- upper group -->
+        <@krad.template component=element.upperGroup/>
 
-    <@krad.div component=element>
+        <@krad.div component=element>
 
-        <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
+            <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
 
-        ${headerOpenTag}
+                ${headerOpenTag}
 
-            <#if element.areaTitleMessage?has_content && element.areaTitleMessage.messageText?has_content>
-                <@krad.template component=element.areaTitleMessage/>
-            </#if>
-
-            <span class="uif-headerText-span">
-                    <#-- rich message support -->
-                    <#if element.richHeaderMessage?has_content>
-                        <@krad.template component=element.richHeaderMessage/>
-                    <#else>
-                    ${element.headerText}
+                    <#if element.areaTitleMessage?has_content && element.areaTitleMessage.messageText?has_content>
+                        <@krad.template component=element.areaTitleMessage/>
                     </#if>
-                </span>
 
-            <#if element.context['parent']?has_content>
-                <#local group=element.context['parent']/>
-                <@krad.template component=group.help/>
-            </#if>
+                    <span class="uif-headerText-span">
+                            <#-- rich message support -->
+                            <#if element.richHeaderMessage?has_content>
+                                <@krad.template component=element.richHeaderMessage/>
+                            <#else>
+                            ${element.headerText}
+                            </#if>
+                        </span>
 
-            <span class="uif-supportTitle-wrapper">
-                <#if element.supportTitleMessage?has_content && element.supportTitleMessage.messageText?has_content
-                 && element.supportTitleMessage.messageText != '&nbsp;'>
-                    <@krad.template component=element.supportTitleMessage/>
+                    <#if element.context['parent']?has_content>
+                        <#local group=element.context['parent']/>
+                        <@krad.template component=group.help/>
+                    </#if>
+
+                    <span class="uif-supportTitle-wrapper">
+                        <#if element.supportTitleMessage?has_content && element.supportTitleMessage.messageText?has_content
+                         && element.supportTitleMessage.messageText != '&nbsp;'>
+                            <@krad.template component=element.supportTitleMessage/>
+                        </#if>
+                    </span>
+
+                ${headerCloseTag}
+
+                <#if element.metadataMessage?has_content && element.metadataMessage.messageText?has_content>
+                    <@krad.template component=element.metadataMessage/>
                 </#if>
-            </span>
 
-        ${headerCloseTag}
-
-            <#if element.metadataMessage?has_content && element.metadataMessage.messageText?has_content>
-                <@krad.template component=element.metadataMessage/>
+                <#-- right group -->
+                <@krad.template component=element.rightGroup/>
             </#if>
 
-        <#-- right group -->
-            <@krad.template component=element.rightGroup/>
-        </#if>
+        </@krad.div>
 
+        <#-- lower group -->
+        <@krad.template component=element.lowerGroup/>
 
-    </@krad.div>
-
-<#-- lower group -->
-    <@krad.template component=element.lowerGroup/>
-
-</div>
-
-
+    </div>
 
 </#macro>

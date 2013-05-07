@@ -2160,7 +2160,7 @@ function initStickyContent(currentScroll){
     stickyContent.each(function () {
         var height = jQuery(this).outerHeight();
         var thisOffset = jQuery(this).data("offset");
-        jQuery(this).addClass("uif-sticky");
+        jQuery(this).addClass(kradVariables.STICKY_CLASS);
 
         if(thisOffset.top < 1){
             automateMargin = true;
@@ -2192,22 +2192,24 @@ function initStickyContent(currentScroll){
     //non-sticky, sticky, non-sticky, sticky pattern through explicit css setting (non-calculated, complex)
     if(automateMargin && innerNonStickyCount == 1){
         //change the margin to account for content in the header that collapses (scrolls away)
-        jQuery("#Uif-Application").css("marginTop", (margin) + "px");
+        jQuery("#" + kradVariables.APP_ID).css("marginTop", (margin) + "px");
     }
 
-    var navigation = jQuery("#Uif-Navigation");
+    var navigation = jQuery("#" + kradVariables.NAVIGATION_ID);
     var navigationHeightAdjust = 0;
 
     if(navigation.length){
         if(navigation.is(".tab-navigation-block")){
             navigationHeightAdjust = navigation.height();
         }
+
         //move the navigation with total height of the header pieces - the scroll
         navigation.attr("style", "position:fixed; left: 0; top: " + (topOffset - currentScroll) + "px;");
     }
 
     //make the ViewContentWrapper margin-top reflect the visible header content pixel height
-    jQuery("#Uif-ViewContentWrapper").css("marginTop", (totalHeight + navigationHeightAdjust - margin) + "px");
+    jQuery("#" + kradVariables.VIEW_CONTENT_WRAPPER).css("marginTop",
+            (totalHeight + navigationHeightAdjust - margin) + "px");
 
     //set header height global
     currentHeaderHeight = (topOffset - currentScroll);
@@ -2224,7 +2226,6 @@ function handleStickyContent() {
     }
 
     if (jQuery(window).scrollTop() >= stickyContentOffset.top) {
-
         var topOffset = 0;
         var navAdjust = 0;
 
@@ -2244,11 +2245,12 @@ function handleStickyContent() {
                 jQuery(this).attr("style", "position:fixed; left: 0; top: " + topOffset + "px;");
                 navAdjust = topOffset + height;
             }
+
             topOffset = topOffset + height;
         });
 
         //adjust the fixed nav position (if navigation exists)
-        jQuery("#Uif-Navigation").attr("style", "position:fixed; left: 0; top: " +
+        jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:fixed; left: 0; top: " +
                 (navAdjust) + "px;");
         currentHeaderHeight = navAdjust;
 
@@ -2288,9 +2290,9 @@ function initStickyFooterContent(){
 
     var contentWindowDiff = jQuery(window).height()-jQuery("#Uif-Application").height();
     if (bottomOffset > contentWindowDiff){
-        jQuery("#Uif-Application").css("marginBottom", bottomOffset + "px");
+        jQuery("#" + kradVariables.APP_ID).css("marginBottom", bottomOffset + "px");
     }else{
-        jQuery("#Uif-Application").css("marginBottom", contentWindowDiff + "px");
+        jQuery("#" + kradVariables.APP_ID).css("marginBottom", contentWindowDiff + "px");
     }
 }
 
@@ -2299,7 +2301,6 @@ function initStickyFooterContent(){
  * function should be called on a scroll event.
  */
 function handleStickyFooterContent(){
-
     //early return when no footer content or no application footer or application footer is sticky itself
     //(no need for adjustment)
     if (!stickyFooterContent || stickyFooterContent.length == 0 || !applicationFooter || applicationFooter.length == 0

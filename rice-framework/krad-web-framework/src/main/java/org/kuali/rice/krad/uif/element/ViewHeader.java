@@ -25,9 +25,13 @@ import org.kuali.rice.krad.uif.view.View;
 import java.util.List;
 
 /**
- * The ViewHeader component represents the header for the view.  This header has support for a "Unified" header in
+ * The ViewHeader component represents the header for the view
+ *
+ * <p>This header has support for a "Unified" header in
  * which both the page title and view title appear in its content.  An "area title" and "metadata" can also be set
- * to provide context
+ * to provide context. </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "viewHeader-bean", parent = "Uif-ViewHeader")
 public class ViewHeader extends Header {
@@ -36,6 +40,9 @@ public class ViewHeader extends Header {
     private Message supportTitleMessage;
     private Message metadataMessage;
     private boolean sticky;
+
+    private static final String SUPPORT_TITLE_STYLE_CLASS = "uif-viewHeader-supportTitle";
+    private static final String HIDE_HEADER_TEXT_STYLE_CLASS = "uif-hideHeaderText";
 
     /**
      * Sets the supportTitleMessage if one has not been set and unified header is being used, based on the value
@@ -52,18 +59,19 @@ public class ViewHeader extends Header {
                 view.isUnifiedHeader()) {
             Header pageHeader = view.getCurrentPage().getHeader();
 
-            //hide page header text
-            pageHeader.addStyleClass("uif-hideHeaderText");
+            // hide page header text
+            pageHeader.addStyleClass(HIDE_HEADER_TEXT_STYLE_CLASS);
 
             Message pageHeaderMessage = pageHeader.getRichHeaderMessage();
 
             if (pageHeaderMessage != null && StringUtils.isBlank(supportTitleMessage.getMessageText())) {
-                pageHeaderMessage.addStyleClass("uif-viewHeader-supportTitle");
-                //use page header rich content
+                pageHeaderMessage.addStyleClass(SUPPORT_TITLE_STYLE_CLASS);
+
+                // use page header rich content
                 supportTitleMessage = pageHeaderMessage;
             } else if (StringUtils.isNotBlank(pageHeader.getHeaderText()) && StringUtils.isBlank(
                     supportTitleMessage.getMessageText())) {
-                //use set page header text
+                // use set page header text
                 supportTitleMessage.setMessageText(pageHeader.getHeaderText().trim());
             }
         }
@@ -84,8 +92,8 @@ public class ViewHeader extends Header {
     }
 
     /**
-     * The areaTitleText represents the area in which this view and page exist.
-     * This title appears above the view title.
+     * Represents the area in which this view and page exist (conceptially in the site);
+     * this title appears above the view title.
      *
      * @return the areaTitle text
      */
@@ -104,8 +112,7 @@ public class ViewHeader extends Header {
     }
 
     /**
-     * The areaTitleMessage represents the area in which this view and page exist.
-     * This title appears above the view title.
+     * Message object backing areaTitleText
      *
      * @return the areaTitle Message object
      */
@@ -205,7 +212,7 @@ public class ViewHeader extends Header {
     }
 
     /**
-     * If true, this ViewHeader will be sticky (fixed to top of window)
+     * If true, this ViewHeader will be sticky (fixed to top of window, stays at top during scrolling)
      *
      * @return true if sticky, false otherwise
      */

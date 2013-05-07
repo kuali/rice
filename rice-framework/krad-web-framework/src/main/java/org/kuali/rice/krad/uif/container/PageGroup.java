@@ -329,7 +329,7 @@ public class PageGroup extends Group {
     }
 
     /**
-     * When true, this page's footer will become sticky (fixed) at the bottom of the window.
+     * When true, this page's footer will become sticky (fixed) at the bottom of the window
      *
      * @return true if the page footer is sticky, false otherwise
      */

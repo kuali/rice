@@ -112,19 +112,36 @@ jQuery(document).ready(function () {
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
+    //setup any potential sticky/fixed content
+    setupStickyHeaderAndFooter();
+
+    hideEmptyCells();
+
+    // focus on first field
+    performFocus("FIRST");
+});
+
+/**
+ * Sets up and initializes the handlers for sticky header and footer content
+ */
+function setupStickyHeaderAndFooter(){
+
     //sticky(header) content variables must be initialized here to retain sticky location across page request
     stickyContent = jQuery("[data-sticky='true']");
     if (stickyContent.length) {
         stickyContent.each(function () {
             jQuery(this).data("offset", jQuery(this).offset())
         });
+
         stickyContentOffset = stickyContent.offset();
+
         initStickyContent();
     }
 
     //find and initialize stickyFooters
     stickyFooterContent = jQuery("[data-sticky_footer='true']");
-    applicationFooter = jQuery("#Uif-ApplicationFooter-Wrapper");
+    applicationFooter = jQuery("#" + kradVariables.APPLICATION_FOOTER_WRAPPER);
+
     initStickyFooterContent();
 
     //bind scroll and resize events to dynamically update sticky content positions
@@ -137,12 +154,7 @@ jQuery(document).ready(function () {
         handleStickyContent();
         handleStickyFooterContent();
     });
-
-    hideEmptyCells();
-
-    // focus on first field
-    performFocus("FIRST");
-});
+}
 
 /**
  * Sets up the various handlers for various field controls.
@@ -171,7 +183,7 @@ function initFieldHandlers() {
     });
 
     //add a focus handler for scroll manipulation when there is a sticky header or footer, so content stays in view
-    jQuery("#Uif-PageContentWrapper").on("focus", "a[href], area[href], input:not([disabled]), "
+    jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).on("focus", "a[href], area[href], input:not([disabled]), "
             + "select:not([disabled]), textarea:not([disabled]), button:not([disabled]), "
             + "iframe, object, embed, *[tabindex], *[contenteditable]",
             function () {
@@ -182,6 +194,7 @@ function initFieldHandlers() {
                     elementHeight = 24;
                 }
 
+                //if something is focused under the footer, adjust the scroll
                 if (stickyFooterContent && stickyFooterContent.length) {
                     var footerOffset = stickyFooterContent.offset().top;
                     if (element.offset().top + elementHeight > footerOffset) {
@@ -192,6 +205,7 @@ function initFieldHandlers() {
                     }
                 }
 
+                //if something is focused under the header content, adjust the scroll
                 if (stickyContent && stickyContent.length) {
                     var reversedStickyContent = jQuery(stickyContent.get().reverse());
                     var headerOffset = reversedStickyContent.offset().top + reversedStickyContent.outerHeight();
@@ -532,12 +546,12 @@ function setupPage(validate) {
     }
 
     //update the support title
-    var supportTitleUpdate = jQuery("#Uif-SupportTitleUpdate").find("> span").detach();
+    var supportTitleUpdate = jQuery("#" + kradVariables.SUPPORT_TITLE_WRAPPER).find("> span").detach();
     if (supportTitleUpdate.length){
         jQuery(".uif-supportTitle-wrapper").replaceWith(supportTitleUpdate);
     }
 
-    jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
+    jQuery('#' + kradVariables.KUALI_FORM).dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
     originalPageTitle = document.title;
 
     setupImages();
@@ -1067,7 +1081,7 @@ window.onerror = errorHandler;
 
 function errorHandler(msg, url, lno) {
     jQuery("#" + kradVariables.APP_ID).show();
-    jQuery("#" + kradVariables.PAGE_CONTENT_HEADER_CLASS).show();
+    jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).show();
     var context = getContext();
     context.unblockUI();
     showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');

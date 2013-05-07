@@ -30,43 +30,43 @@
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
 
-<div class="uif-header-contentWrapper">
+    <div class="uif-header-contentWrapper">
 
-<#-- upper group -->
-    <@krad.template component=element.upperGroup/>
+        <#-- upper group -->
+        <@krad.template component=element.upperGroup/>
 
-    <@krad.div component=element>
-
-
-        <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
+        <@krad.div component=element>
 
 
-        ${headerOpenTag}
-            <span class="uif-headerText-span">
-                <#-- rich message support -->
-                <#if element.richHeaderMessage?has_content>
-                    <@krad.template component=element.richHeaderMessage/>
-                <#else>
-                ${element.headerText}
+            <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
+
+
+            ${headerOpenTag}
+                <span class="uif-headerText-span">
+                    <#-- rich message support -->
+                    <#if element.richHeaderMessage?has_content>
+                        <@krad.template component=element.richHeaderMessage/>
+                    <#else>
+                    ${element.headerText}
+                    </#if>
+                </span>
+
+                <#if element.context['parent']?has_content>
+                    <#local group=element.context['parent']/>
+                    <@krad.template component=group.help/>
                 </#if>
-            </span>
 
-            <#if element.context['parent']?has_content>
-                <#local group=element.context['parent']/>
-                <@krad.template component=group.help/>
+            ${headerCloseTag}
+
+            <#-- right group -->
+                <@krad.template component=element.rightGroup/>
             </#if>
 
-        ${headerCloseTag}
+        </@krad.div>
 
-        <#-- right group -->
-            <@krad.template component=element.rightGroup/>
-        </#if>
+        <#-- lower group -->
+        <@krad.template component=element.lowerGroup/>
 
-    </@krad.div>
-
-<#-- lower group -->
-    <@krad.template component=element.lowerGroup/>
-
-</div>
+    </div>
 
 </#macro>

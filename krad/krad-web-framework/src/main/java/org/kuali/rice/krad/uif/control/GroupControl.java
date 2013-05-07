@@ -16,11 +16,16 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a group control, which is a special control to handle
@@ -29,7 +34,7 @@ import org.kuali.rice.krad.uif.field.InputField;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "kimGroupControl-bean", parent = "Uif-KimGroupControl")
-public class GroupControl extends TextControl {
+public class GroupControl extends TextControl implements FilterableLookupCriteriaControl {
     private static final long serialVersionUID = 5598459655735440981L;
 
     private String namespaceCodePropertyName;
@@ -112,5 +117,33 @@ public class GroupControl extends TextControl {
      */
     public void setGroupIdPropertyName(String groupIdPropertyName) {
         this.groupIdPropertyName = groupIdPropertyName;
+    }
+
+    /**
+     * @see FilterableLookupCriteriaControl#filterSearchCriteria(String, java.util.Map)
+     */
+    @Override
+    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
+        Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
+
+        // check valid groupId
+        // ToDo: move the groupId check and setting to the validation stage.  At that point
+        //       an error should be displayed to the user that the group name and namespace is invalid.
+        String groupName = searchCriteria.get(propertyName);
+        String groupNamespaceCd = searchCriteria.get(namespaceCodePropertyName);
+        if (StringUtils.isNotBlank(groupName) && StringUtils.isNotBlank(groupNamespaceCd)) {
+            Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(groupNamespaceCd,groupName);
+            if( group == null) {
+                return null;
+            } else {
+                filteredSearchCriteria.put(groupIdPropertyName, group.getId());
+            }
+        }
+
+        // filter
+        filteredSearchCriteria.remove(propertyName);
+        filteredSearchCriteria.remove(namespaceCodePropertyName);
+
+        return filteredSearchCriteria;
     }
 }

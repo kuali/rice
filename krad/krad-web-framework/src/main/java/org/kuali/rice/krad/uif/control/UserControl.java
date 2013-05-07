@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.control;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -29,6 +30,9 @@ import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Represents a user control, which is a special control to handle
  * the input of a Person
@@ -36,7 +40,7 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "kimPersonControl-bean", parent = "Uif-KimPersonControl")
-public class UserControl extends TextControl {
+public class UserControl extends TextControl implements FilterableLookupCriteriaControl {
     private static final long serialVersionUID = 7468340793076585869L;
 
     private String principalIdPropertyName;
@@ -183,5 +187,32 @@ public class UserControl extends TextControl {
      */
     public void setPersonObjectPropertyName(String personObjectPropertyName) {
         this.personObjectPropertyName = personObjectPropertyName;
+    }
+
+    /**
+     * @see FilterableLookupCriteriaControl#filterSearchCriteria(String, java.util.Map)
+     */
+    @Override
+    public Map<String, String>  filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
+        Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
+
+        // check valid principalName
+        // ToDo: move the principalId check and setting to the validation stage.  At that point the personName should
+        //       be set as well or an error be displayed to the user that the principalName is invalid.
+        String principalName = searchCriteria.get(propertyName);
+        if (StringUtils.isNotBlank(principalName)) {
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
+            if (principal == null) {
+                return null;
+            } else {
+                filteredSearchCriteria.put(principalIdPropertyName, principal.getPrincipalId());
+            }
+        }
+
+        // filter
+        filteredSearchCriteria.remove(propertyName);
+        filteredSearchCriteria.remove(personNamePropertyName);
+
+        return filteredSearchCriteria;
     }
 }

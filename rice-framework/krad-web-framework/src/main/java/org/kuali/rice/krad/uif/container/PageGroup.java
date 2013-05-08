@@ -34,6 +34,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * A PageGroup represents a page of a View.
+ *
+ * <p>
+ *     PageGroups should only be used with a View component.  The contain the main content that will be seen by the
+ *     user using the View.  Like all other groups, PageGroup can contain items, headers and footers.  Pages also
+ *     have their own BreadcrumbItem.
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "page-bean", parent = "Uif-Page"),
@@ -286,7 +294,7 @@ public class PageGroup extends Group {
      * override this inheritance.
      * </p>
      *
-     * @return the breadcrumbOptions
+     * @return the {@link BreadcrumbOptions}
      */
     @BeanTagAttribute(name = "breadcrumbOptions", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PageBreadcrumbOptions getBreadcrumbOptions() {

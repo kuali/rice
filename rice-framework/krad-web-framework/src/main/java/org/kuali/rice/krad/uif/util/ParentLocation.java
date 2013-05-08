@@ -92,70 +92,84 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
             return resolvedBreadcrumbItems;
         }
 
-        String viewId = viewBreadcrumbItem.getUrl().getViewId();
+        String parentViewId = viewBreadcrumbItem.getUrl().getViewId();
         String controllerMapping = viewBreadcrumbItem.getUrl().getControllerMapping();
 
         View parentView = null;
         //chaining is only allowed when the controllerMapping and viewId are explicitly set
         if (viewBreadcrumbItem.getUrl() != null && StringUtils.isNotBlank(controllerMapping) && StringUtils.isNotBlank(
-                viewId) && StringUtils.isBlank(viewBreadcrumbItem.getUrl().getOriginalHref())) {
-            parentView = KRADServiceLocatorWeb.getDataDictionaryService().getViewById(viewId);
+                parentViewId) && StringUtils.isBlank(viewBreadcrumbItem.getUrl().getOriginalHref())) {
+            parentView = KRADServiceLocatorWeb.getDataDictionaryService().getViewById(parentViewId);
         }
 
         //only do this processing if the parentView is not null (viewId was set on viewBreadcrumbItem to a valid View)
         if (parentView != null) {
-
-            //populate expression graph
-            ExpressionUtils.populatePropertyExpressionsFromGraph(parentView, false);
-
-            //chain parent locations if not null on parent
-            if (((View) parentView).getParentLocation() != null) {
-                resolvedBreadcrumbItems.addAll(
-                        ((View) parentView).getParentLocation().constructParentLocationBreadcrumbItems(parentView,
-                                currentModel, currentContext));
-            }
-
-            handleLabelExpressions(parentView, currentModel, currentContext);
-
-            //label automation, if parent has a label for its breadcrumb and one is not set here use that value
-            //it is assumed that if the label contains a SpringEL expression, those properties are available on the
-            //current form by the same name
-            if (StringUtils.isBlank(viewBreadcrumbItem.getLabel()) && parentView.getBreadcrumbItem() != null &&
-                    StringUtils.isNotBlank(parentView.getBreadcrumbItem().getLabel())) {
-                viewBreadcrumbItem.setLabel(parentView.getBreadcrumbItem().getLabel());
-            } else if (StringUtils.isBlank(viewBreadcrumbItem.getLabel()) && StringUtils.isNotBlank(
-                    parentView.getHeaderText())) {
-                viewBreadcrumbItem.setLabel(parentView.getHeaderText());
-            }
-
-            //siblingBreadcrumb inheritance automation
-            if (parentView.getBreadcrumbItem() != null
-                    && parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent() != null
-                    && viewBreadcrumbItem.getSiblingBreadcrumbComponent() == null) {
-                view.assignComponentIds(parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent());
-                viewBreadcrumbItem.setSiblingBreadcrumbComponent(
-                        parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent());
-            }
-
-            //page breadcrumb label automation, page must be a page of the view breadcrumb
-            if (pageBreadcrumbItem != null
-                    && StringUtils.isNotBlank(pageBreadcrumbItem.getUrl().getPageId())
-                    && StringUtils.isNotBlank(pageBreadcrumbItem.getUrl().getViewId())
-                    && pageBreadcrumbItem.getUrl().getViewId().equals(viewId)) {
-                handlePageBreadcrumb(parentView, currentModel);
-            }
-
+            processParentViewDerivedContent(parentView, parentViewId, view, currentModel, currentContext);
         }
 
+        //add parent view breadcrumb
         if (StringUtils.isNotEmpty(viewBreadcrumbItem.getLabel())) {
             resolvedBreadcrumbItems.add(viewBreadcrumbItem);
         }
 
+        //add parent page breadcrumb
         if (pageBreadcrumbItem != null && StringUtils.isNotEmpty(pageBreadcrumbItem.getLabel())) {
             resolvedBreadcrumbItems.add(pageBreadcrumbItem);
         }
 
         return resolvedBreadcrumbItems;
+    }
+
+    /**
+     * Processes content that can only be derived by looking at the parentView for a parentLocation, such as expressions
+     * and sibling breadcrumb content; evaluates and adds them to the ParentLocation BreadcrumbItem(s).
+     *
+     * @param parentView the parentView to derive breadcrumb content from
+     * @param parentViewId the parentView's id
+     * @param currentView the currentView (the view this parentLocation is on)
+     * @param currentModel the current model data
+     * @param currentContext the current context to evaluate expressions against
+     */
+    private void processParentViewDerivedContent(View parentView, String parentViewId, View currentView,
+            Object currentModel, Map<String, Object> currentContext) {
+        //populate expression graph
+        ExpressionUtils.populatePropertyExpressionsFromGraph(parentView, false);
+
+        //chain parent locations if not null on parent
+        if (((View) parentView).getParentLocation() != null) {
+            resolvedBreadcrumbItems.addAll(
+                    ((View) parentView).getParentLocation().constructParentLocationBreadcrumbItems(parentView,
+                            currentModel, currentContext));
+        }
+
+        handleLabelExpressions(parentView, currentModel, currentContext);
+
+        //label automation, if parent has a label for its breadcrumb and one is not set here use that value
+        //it is assumed that if the label contains a SpringEL expression, those properties are available on the
+        //current form by the same name
+        if (StringUtils.isBlank(viewBreadcrumbItem.getLabel()) && parentView.getBreadcrumbItem() != null &&
+                StringUtils.isNotBlank(parentView.getBreadcrumbItem().getLabel())) {
+            viewBreadcrumbItem.setLabel(parentView.getBreadcrumbItem().getLabel());
+        } else if (StringUtils.isBlank(viewBreadcrumbItem.getLabel()) && StringUtils.isNotBlank(
+                parentView.getHeaderText())) {
+            viewBreadcrumbItem.setLabel(parentView.getHeaderText());
+        }
+
+        //siblingBreadcrumb inheritance automation
+        if (parentView.getBreadcrumbItem() != null
+                && parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent() != null
+                && viewBreadcrumbItem.getSiblingBreadcrumbComponent() == null) {
+            currentView.assignComponentIds(parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent());
+            viewBreadcrumbItem.setSiblingBreadcrumbComponent(
+                    parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent());
+        }
+
+        //page breadcrumb label automation, page must be a page of the view breadcrumb
+        if (pageBreadcrumbItem != null && StringUtils.isNotBlank(pageBreadcrumbItem.getUrl().getPageId()) && StringUtils
+                .isNotBlank(pageBreadcrumbItem.getUrl().getViewId()) && pageBreadcrumbItem.getUrl().getViewId().equals(
+                parentViewId)) {
+            handlePageBreadcrumb(parentView, currentModel);
+        }
     }
 
     /**

@@ -195,26 +195,26 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      */
     private void handleLocationSuggestProperties(LocationSuggest fieldSuggest, Object result, Map<String, String> propMap){
 
-        //href property
+        // href property
         Object suggestHrefValue = null;
         if(StringUtils.isNotBlank(fieldSuggest.getHrefPropertyName())
                 && ObjectPropertyUtils.isReadableProperty(result, fieldSuggest.getHrefPropertyName())){
             suggestHrefValue = ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getHrefPropertyName());
         }
 
-        //add if found
+        // add if found
         if(suggestHrefValue != null){
             propMap.put(fieldSuggest.getHrefPropertyName(), suggestHrefValue.toString());
         }
 
-        //url addition/appendage property
+        // url addition/appendage property
         Object addUrlValue = null;
         if(StringUtils.isNotBlank(fieldSuggest.getAdditionalUrlPathPropertyName())
                         && ObjectPropertyUtils.isReadableProperty(result, fieldSuggest.getAdditionalUrlPathPropertyName())){
             addUrlValue = ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getAdditionalUrlPathPropertyName());
         }
 
-        //add if found
+        // add if found
         if(addUrlValue != null){
             propMap.put(fieldSuggest.getAdditionalUrlPathPropertyName(), addUrlValue.toString());
         }
@@ -223,7 +223,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             return;
         }
 
-        //add properties for each valid requestParameter property name
+        // add properties for each valid requestParameter property name
         for(String key: fieldSuggest.getRequestParameterPropertyNames().keySet()){
             String prop = fieldSuggest.getRequestParameterPropertyNames().get(key);
             Object propValue = null;

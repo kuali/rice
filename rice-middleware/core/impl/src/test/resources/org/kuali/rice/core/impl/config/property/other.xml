@@ -1,0 +1,4 @@
+<config>
+  <param name="sky">blue</param>
+  <param name="name" override="false">Fred</param>
+</config>

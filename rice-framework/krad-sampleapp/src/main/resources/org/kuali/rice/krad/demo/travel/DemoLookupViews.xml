@@ -130,9 +130,9 @@
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="[b]*[/b] Enter the value &quot;a1&quot; into the
-                [b]Travel Account Number[/b] criteria field to make the [b]Date Created[/b] criteria a read only. [br/]
+                [b]Travel Account Number[/b] criteria field to make the [b]Date Created[/b] criteria a required. [br/]
                 [b]*[/b] Enter the value &quot;a2&quot; into the [b]Travel Account Number[/b] criteria field to make
-                the [b]Date Created[/b] a required. [br/]
+                the [b]Date Created[/b] a read only. [br/]
                 [b]*[/b] Enter the value &quot;a3&quot; into the [b]Travel Account Number[/b] criteria field to hide
                 the [b]Date Created[/b] criteria."/>
           </list>

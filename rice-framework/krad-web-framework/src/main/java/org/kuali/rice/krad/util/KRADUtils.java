@@ -857,7 +857,6 @@ public final class KRADUtils {
             viewLabelPropertyValue = ObjectPropertyUtils.getPropertyValue(form, viewLabelPropertyPath);
         }
 
-        String titleAppend = "";
         if (viewLabelPropertyValue != null && StringUtils.isNotBlank(viewLabelPropertyValue.toString()) && StringUtils
                 .isNotBlank(title)) {
             return title + " (" + viewLabelPropertyValue.toString() + ")";

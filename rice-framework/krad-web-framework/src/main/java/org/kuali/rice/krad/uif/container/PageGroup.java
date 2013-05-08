@@ -353,6 +353,7 @@ public class PageGroup extends Group {
      */
     public void setStickyFooter(boolean stickyFooter) {
         this.stickyFooter = stickyFooter;
+
         if (this.getFooter() != null) {
             this.getFooter().addDataAttribute(UifConstants.DataAttributes.STICKY_FOOTER, Boolean.toString(
                     stickyFooter));

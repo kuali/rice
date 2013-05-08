@@ -360,7 +360,9 @@ public class View extends ContainerBase {
             if (sessionWarningMilliseconds >= sessionTimeoutInterval) {
                 throw new RuntimeException(
                         "Time until giving the session warning should be less than the session timeout. Session Warning is "
-                                + sessionWarningMilliseconds + "ms, session timeout is " + sessionTimeoutInterval
+                                + sessionWarningMilliseconds
+                                + "ms, session timeout is "
+                                + sessionTimeoutInterval
                                 + "ms.");
             }
 
@@ -372,7 +374,8 @@ public class View extends ContainerBase {
         }
 
         onReadyScript = ScriptUtils.appendScript(onReadyScript, "jQuery.extend(jQuery.validator.messages, "
-                + ClientValidationUtils.generateValidatorMessagesOption() + ");");
+                + ClientValidationUtils.generateValidatorMessagesOption()
+                + ");");
 
         this.setOnDocumentReadyScript(onReadyScript);
 
@@ -420,9 +423,11 @@ public class View extends ContainerBase {
                 List<BreadcrumbItem> pastItems = form.getHistoryFlow().getPastItems();
 
                 ComponentUtils.clearIds(pastItems);
+
                 for (BreadcrumbItem item : pastItems) {
                     this.assignComponentIds(item);
                 }
+
                 pathBasedBreadcrumbs = pastItems;
             }
         }
@@ -734,6 +739,45 @@ public class View extends ContainerBase {
     }
 
     /**
+     * When true, this view will use a unified header - the page header will be omitted and its title will be used
+     * in the ViewHeader supportTitle property (dynamically updated on page change)
+     *
+     * @return true if using a unified header
+     */
+    @BeanTagAttribute(name = "unifiedHeader")
+    public boolean isUnifiedHeader() {
+        return unifiedHeader;
+    }
+
+    /**
+     * Set to true, to use unified header functionality
+     *
+     * @param unifiedHeader
+     */
+    public void setUnifiedHeader(boolean unifiedHeader) {
+        this.unifiedHeader = unifiedHeader;
+    }
+
+    /**
+     * TopGroup is an optional group of content that appears above the breadcrumbs and view header
+     *
+     * @return the topGroup component
+     */
+    @BeanTagAttribute(name = "topGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Group getTopGroup() {
+        return topGroup;
+    }
+
+    /**
+     * Set the topGroup component which appears the breadcrumbs and view header
+     *
+     * @param topGroup
+     */
+    public void setTopGroup(Group topGroup) {
+        this.topGroup = topGroup;
+    }
+
+    /**
      * Header for the application containing the view
      *
      * <p>
@@ -781,6 +825,132 @@ public class View extends ContainerBase {
      */
     public void setApplicationFooter(Group applicationFooter) {
         this.applicationFooter = applicationFooter;
+    }
+
+
+    /**
+     * If true, the top group will be sticky (fixed to top of window)
+     *
+     * @return true if the top group is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyTopGroup")
+    public boolean isStickyTopGroup() {
+        return stickyTopGroup;
+    }
+
+    /**
+     * Set to true to make the top group sticky (fixed to top of window)
+     *
+     * @param stickyTopGroup
+     */
+    public void setStickyTopGroup(boolean stickyTopGroup) {
+        this.stickyTopGroup = stickyTopGroup;
+    }
+
+    /**
+     * If true, the breadcrumb widget will be sticky (fixed to top of window)
+     *
+     * @return true if breadcrumbs are sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyBreadcrumbs")
+    public boolean isStickyBreadcrumbs() {
+        return stickyBreadcrumbs;
+    }
+
+    /**
+     * Set to true to make the breadcrumbs sticky
+     *
+     * @param stickyBreadcrumbs
+     */
+    public void setStickyBreadcrumbs(boolean stickyBreadcrumbs) {
+        this.stickyBreadcrumbs = stickyBreadcrumbs;
+    }
+
+    /**
+     * If true, the ViewHeader for this view will be sticky (fixed to top of window)
+     *
+     * @return true if the header is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyHeader")
+    public boolean isStickyHeader() {
+        if (this.getHeader() != null && this.getHeader() instanceof ViewHeader) {
+            return ((ViewHeader) this.getHeader()).isSticky();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Set to true to make the ViewHeader sticky
+     *
+     * @param stickyHeader
+     */
+    public void setStickyHeader(boolean stickyHeader) {
+        this.stickyHeader = stickyHeader;
+        if (this.getHeader() != null && this.getHeader() instanceof ViewHeader) {
+            ((ViewHeader) this.getHeader()).setSticky(stickyHeader);
+        }
+    }
+
+    /**
+     * Set to true to make the applicationHeader sticky (fixed to top of window)
+     *
+     * @return true if applicationHeader is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyApplicationHeader")
+    public boolean isStickyApplicationHeader() {
+        return stickyApplicationHeader;
+    }
+
+    /**
+     * Set to true to make the applicationHeader sticky
+     *
+     * @param stickyApplicationHeader
+     */
+    public void setStickyApplicationHeader(boolean stickyApplicationHeader) {
+        this.stickyApplicationHeader = stickyApplicationHeader;
+    }
+
+    /**
+     * If true, the view footer will become sticky (fixed to bottom of window)
+     *
+     * @return ture if the view footer is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyFooter")
+    public boolean isStickyFooter() {
+        return stickyFooter;
+    }
+
+    /**
+     * Set to true to make the view footer sticky
+     *
+     * @param stickyFooter
+     */
+    public void setStickyFooter(boolean stickyFooter) {
+        this.stickyFooter = stickyFooter;
+        if (this.getFooter() != null) {
+            this.getFooter().addDataAttribute(UifConstants.DataAttributes.STICKY_FOOTER, Boolean.toString(
+                    stickyFooter));
+        }
+    }
+
+    /**
+     * If true, the applicationFooter will become sticky (fixed to bottom of window)
+     *
+     * @return true if the application footer is sticky, false otherwise
+     */
+    @BeanTagAttribute(name = "stickyApplicationFooter")
+    public boolean isStickyApplicationFooter() {
+        return stickyApplicationFooter;
+    }
+
+    /**
+     * Set to true to make the application footer sticky
+     *
+     * @param stickyApplicationFooter
+     */
+    public void setStickyApplicationFooter(boolean stickyApplicationFooter) {
+        this.stickyApplicationFooter = stickyApplicationFooter;
     }
 
     /**
@@ -1623,6 +1793,89 @@ public class View extends ContainerBase {
     }
 
     /**
+     * The breadcrumbOptions for this view.
+     *
+     * <p>Render options set at the view level are always ignored (only apply to
+     * page level BreadcrumbOptions).  BreadcrumbOptions for homewardPathBreadcrumbs,
+     * preViewBreadcrumbs, prePageBreadcrumbs,
+     * and breadcrumbOverrides are inherited by
+     * child pages unless they override them themselves.</p>
+     *
+     * @return the BreadcrumbOptions for this view
+     */
+    @BeanTagAttribute(name = "breadcrumbOptions", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public BreadcrumbOptions getBreadcrumbOptions() {
+        return breadcrumbOptions;
+    }
+
+    /**
+     * Set the breadcrumbOptions
+     *
+     * @param breadcrumbOptions
+     */
+    public void setBreadcrumbOptions(BreadcrumbOptions breadcrumbOptions) {
+        this.breadcrumbOptions = breadcrumbOptions;
+    }
+
+    /**
+     * The View's breadcrumbItem defines settings for the breadcrumb which appears in the breadcrumb list for this
+     * view.
+     *
+     * @return the breadcrumbItem
+     */
+    @BeanTagAttribute(name = "breadcrumbItem", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public BreadcrumbItem getBreadcrumbItem() {
+        return breadcrumbItem;
+    }
+
+    /**
+     * Set the breadcrumbItem
+     *
+     * @param breadcrumbItem
+     */
+    public void setBreadcrumbItem(BreadcrumbItem breadcrumbItem) {
+        this.breadcrumbItem = breadcrumbItem;
+    }
+
+
+    /**
+     * The parentLocation defines urls that represent the parent of a View in a conceptial site hierarchy.
+     *
+     * <p>
+     * By defining a parent with these urls defined, a breadcrumb chain can be generated and displayed automatically
+     * before this View's breadcrumbItem(s).  To chain multiple views, the urls must be defining viewId and
+     * controllerMapping settings instead of setting an href directly (this will end the chain).  If labels are
+     * not set on parentLocations, the labels will attempt to be derived from parent views/pages breadcrumbItem
+     * and headerText - if these contain expressions which cannot be evaluated in the current context an exception
+     * will be thrown.
+     * </p>
+     *
+     * @return the parentLocation
+     */
+    @BeanTagAttribute(name = "parentLocation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public ParentLocation getParentLocation() {
+        return parentLocation;
+    }
+
+    /**
+     * Set the parentLocation
+     *
+     * @param parentLocation
+     */
+    public void setParentLocation(ParentLocation parentLocation) {
+        this.parentLocation = parentLocation;
+    }
+
+    /**
+     * The pathBasedBreadcrumbs for this View.  These can only be set by the framework.
+     *
+     * @return the path based breadcrumbs
+     */
+    public List<BreadcrumbItem> getPathBasedBreadcrumbs() {
+        return pathBasedBreadcrumbs;
+    }
+
+    /**
      * Growls widget which sets up global settings for the growls used in this
      * view and its pages
      *
@@ -2001,248 +2254,4 @@ public class View extends ContainerBase {
         super.completeValidation(tracer.getCopy());
     }
 
-    /**
-     * The breadcrumbOptions for this view.
-     *
-     * <p>Render options set at the view level are always ignored (only apply to
-     * page level BreadcrumbOptions).  BreadcrumbOptions for homewardPathBreadcrumbs,
-     * preViewBreadcrumbs, prePageBreadcrumbs,
-     * and breadcrumbOverrides are inherited by
-     * child pages unless they override them themselves.</p>
-     *
-     * @return the BreadcrumbOptions for this view
-     */
-    @BeanTagAttribute(name = "breadcrumbOptions", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BreadcrumbOptions getBreadcrumbOptions() {
-        return breadcrumbOptions;
-    }
-
-    /**
-     * Set the breadcrumbOptions
-     *
-     * @param breadcrumbOptions
-     */
-    public void setBreadcrumbOptions(BreadcrumbOptions breadcrumbOptions) {
-        this.breadcrumbOptions = breadcrumbOptions;
-    }
-
-    /**
-     * The View's breadcrumbItem defines settings for the breadcrumb which appears in the breadcrumb list for this
-     * view.
-     *
-     * @return the breadcrumbItem
-     */
-    @BeanTagAttribute(name = "breadcrumbItem", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BreadcrumbItem getBreadcrumbItem() {
-        return breadcrumbItem;
-    }
-
-    /**
-     * Set the breadcrumbItem
-     *
-     * @param breadcrumbItem
-     */
-    public void setBreadcrumbItem(BreadcrumbItem breadcrumbItem) {
-        this.breadcrumbItem = breadcrumbItem;
-    }
-
-    /**
-     * The parentLocation defines urls that represent the parent of a View in a conceptial site hierarchy.
-     *
-     * <p>
-     * By defining a parent with these urls defined, a breadcrumb chain can be generated and displayed automatically
-     * before this View's breadcrumbItem(s).  To chain multiple views, the urls must be defining viewId and
-     * controllerMapping settings instead of setting an href directly (this will end the chain).  If labels are
-     * not set on parentLocations, the labels will attempt to be derived from parent views/pages breadcrumbItem
-     * and headerText - if these contain expressions which cannot be evaluated in the current context an exception
-     * will be thrown.
-     * </p>
-     *
-     * @return the parentLocation
-     */
-    @BeanTagAttribute(name = "parentLocation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public ParentLocation getParentLocation() {
-        return parentLocation;
-    }
-
-    /**
-     * Set the parentLocation
-     *
-     * @param parentLocation
-     */
-    public void setParentLocation(ParentLocation parentLocation) {
-        this.parentLocation = parentLocation;
-    }
-
-    /**
-     * The pathBasedBreadcrumbs for this View.  These can only be set by the framework.
-     *
-     * @return the path based breadcrumbs
-     */
-    public List<BreadcrumbItem> getPathBasedBreadcrumbs() {
-        return pathBasedBreadcrumbs;
-    }
-
-    /**
-     * When true, this view will use a unified header - the page header will be omitted and its title will be used
-     * in the ViewHeader supportTitle property (dynamically updated on page change)
-     *
-     * @return true if using a unified header
-     */
-    @BeanTagAttribute(name = "unifiedHeader")
-    public boolean isUnifiedHeader() {
-        return unifiedHeader;
-    }
-
-    /**
-     * Set to true, to use unified header functionality
-     *
-     * @param unifiedHeader
-     */
-    public void setUnifiedHeader(boolean unifiedHeader) {
-        this.unifiedHeader = unifiedHeader;
-    }
-
-    /**
-     * If true, the top group will be sticky (fixed to top of window)
-     *
-     * @return true if the top group is sticky, false otherwise
-     */
-    @BeanTagAttribute(name = "stickyTopGroup")
-    public boolean isStickyTopGroup() {
-        return stickyTopGroup;
-    }
-
-    /**
-     * Set to true to make the top group sticky (fixed to top of window)
-     *
-     * @param stickyTopGroup
-     */
-    public void setStickyTopGroup(boolean stickyTopGroup) {
-        this.stickyTopGroup = stickyTopGroup;
-    }
-
-    /**
-     * If true, the breadcrumb widget will be sticky (fixed to top of window)
-     *
-     * @return true if breadcrumbs are sticky, false otherwise
-     */
-    @BeanTagAttribute(name = "stickyBreadcrumbs")
-    public boolean isStickyBreadcrumbs() {
-        return stickyBreadcrumbs;
-    }
-
-    /**
-     * Set to true to make the breadcrumbs sticky
-     *
-     * @param stickyBreadcrumbs
-     */
-    public void setStickyBreadcrumbs(boolean stickyBreadcrumbs) {
-        this.stickyBreadcrumbs = stickyBreadcrumbs;
-    }
-
-    /**
-     * If true, the ViewHeader for this view will be sticky (fixed to top of window)
-     *
-     * @return true if the header is sticky, false otherwise
-     */
-    @BeanTagAttribute(name = "stickyHeader")
-    public boolean isStickyHeader() {
-        if (this.getHeader() != null && this.getHeader() instanceof ViewHeader) {
-            return ((ViewHeader) this.getHeader()).isSticky();
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Set to true to make the ViewHeader sticky
-     *
-     * @param stickyHeader
-     */
-    public void setStickyHeader(boolean stickyHeader) {
-        this.stickyHeader = stickyHeader;
-        if (this.getHeader() != null && this.getHeader() instanceof ViewHeader) {
-            ((ViewHeader) this.getHeader()).setSticky(stickyHeader);
-        }
-    }
-
-    /**
-     * Set to true to make the applicationHeader sticky (fixed to top of window)
-     *
-     * @return true if applicationHeader is sticky, false otherwise
-     */
-    @BeanTagAttribute(name = "stickyApplicationHeader")
-    public boolean isStickyApplicationHeader() {
-        return stickyApplicationHeader;
-    }
-
-    /**
-     * Set to true to make the applicationHeader sticky
-     *
-     * @param stickyApplicationHeader
-     */
-    public void setStickyApplicationHeader(boolean stickyApplicationHeader) {
-        this.stickyApplicationHeader = stickyApplicationHeader;
-    }
-
-    /**
-     * If true, the view footer will become sticky (fixed to bottom of window)
-     *
-     * @return ture if the view footer is sticky, false otherwise
-     */
-    @BeanTagAttribute(name = "stickyFooter")
-    public boolean isStickyFooter() {
-        return stickyFooter;
-    }
-
-    /**
-     * Set to true to make the view footer sticky
-     *
-     * @param stickyFooter
-     */
-    public void setStickyFooter(boolean stickyFooter) {
-        this.stickyFooter = stickyFooter;
-        if (this.getFooter() != null) {
-            this.getFooter().addDataAttribute(UifConstants.DataAttributes.STICKY_FOOTER, Boolean.toString(stickyFooter));
-        }
-    }
-
-    /**
-     * If true, the applicationFooter will become sticky (fixed to bottom of window)
-     *
-     * @return true if the application footer is sticky, false otherwise
-     */
-    @BeanTagAttribute(name = "stickyApplicationFooter")
-    public boolean isStickyApplicationFooter() {
-        return stickyApplicationFooter;
-    }
-
-    /**
-     * Set to true to make the application footer sticky
-     *
-     * @param stickyApplicationFooter
-     */
-    public void setStickyApplicationFooter(boolean stickyApplicationFooter) {
-        this.stickyApplicationFooter = stickyApplicationFooter;
-    }
-
-    /**
-     * TopGroup is an optional group of content that appears above the breadcrumbs and view header
-     *
-     * @return the topGroup component
-     */
-    @BeanTagAttribute(name = "topGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Group getTopGroup() {
-        return topGroup;
-    }
-
-    /**
-     * Set the topGroup component which appears the breadcrumbs and view header
-     *
-     * @param topGroup
-     */
-    public void setTopGroup(Group topGroup) {
-        this.topGroup = topGroup;
-    }
 }

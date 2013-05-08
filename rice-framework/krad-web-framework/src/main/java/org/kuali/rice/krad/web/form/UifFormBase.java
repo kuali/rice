@@ -300,9 +300,10 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * The current HistoryFlow for this form
+     * The current {@link HistoryFlow} for this form which stores a trail of urls/breadcrumbs primarily used for
+     * path-based breadcrumb display
      *
-     * @return the HistoryFlow
+     * @return the {@link HistoryFlow}
      */
     public HistoryFlow getHistoryFlow() {
         return historyFlow;
@@ -318,7 +319,9 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * The current HistoryManager that was pulled from session
+     * The current {@link HistoryManager} that was pulled from session which store all {@link HistoryFlow} objects in
+     * the current session to keep track of the path the user has taken across views (primarily used by path-based
+     * breadcrumbs)
      *
      * @return the HistoryManager
      */
@@ -336,8 +339,11 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * The flowKey representing the HistoryFlow this form may be in.  If null or blank, no flow (or path based
-     * breadcrumbs) are being tracked.
+     * The flowKey representing the HistoryFlow this form may be in.
+     *
+     * <p>This allows for a flow to continue by key or start (if set to "start").
+     * If null or blank, no flow (or path based
+     * breadcrumbs) are being tracked.</p>
      *
      * @return the flowKey
      */
@@ -355,7 +361,8 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * The original requestUrl for the View represented by this form
+     * The original requestUrl for the View represented by this form (url received by the controller for initial
+     * request)
      *
      * @return the requestUrl
      */

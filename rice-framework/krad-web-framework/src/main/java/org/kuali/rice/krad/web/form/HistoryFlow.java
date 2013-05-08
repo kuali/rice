@@ -135,6 +135,7 @@ public class HistoryFlow implements Serializable {
     public void update(String url){
         UrlInfo urlInfo = new UrlInfo();
         urlInfo.setHref(url);
+
         if(flowUrls.empty()){
             flowUrls.push(urlInfo);
         }
@@ -168,6 +169,7 @@ public class HistoryFlow implements Serializable {
         if(flowUrls != null && !flowUrls.isEmpty()){
             return flowUrls.peek().getHref();
         }
+
         return null;
     }
 

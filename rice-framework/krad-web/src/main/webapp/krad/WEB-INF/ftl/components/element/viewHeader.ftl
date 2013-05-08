@@ -30,12 +30,12 @@
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
 
-    <#local wrapData=""/>
+    <#local stickyDataAttribute=""/>
     <#if element.sticky>
-        <#local wrapData="data-sticky='true'"/>
+        <#local stickyDataAttribute="data-sticky='true'"/>
     </#if>
 
-    <div class="uif-viewHeader-contentWrapper" ${wrapData}>
+    <div class="uif-viewHeader-contentWrapper" ${stickyDataAttribute}>
 
         <#-- upper group -->
         <@krad.template component=element.upperGroup/>

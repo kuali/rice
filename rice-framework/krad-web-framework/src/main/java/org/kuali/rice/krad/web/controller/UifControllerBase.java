@@ -133,11 +133,12 @@ public abstract class UifControllerBase {
         if (requestForm != null && requestForm.getInitialRequestParameters() == null) {
             Map<String, String> requestParams = new HashMap<String, String>();
             Enumeration<String> names = request.getParameterNames();
-            Map mappy = request.getParameterMap();
+
             while (names != null && names.hasMoreElements()) {
                 String name = names.nextElement();
                 requestParams.put(name, request.getParameter(name));
             }
+
             requestParams.remove(UifConstants.UrlParams.LOGIN_USER);
             //requestParams.remove();
             requestForm.setInitialRequestParameters(requestParams);

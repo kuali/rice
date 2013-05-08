@@ -58,25 +58,25 @@ import java.util.regex.Pattern;
  * LightTable is a light-weight collection table implementation that supports a subset of features.
  * Current known supported features are:
  * <ul>
- *     <li>DataField</li>
- *     <li>InputField with TextControl, CheckboxControl, or single SelectControl</li>
- *     <li>MessageField</li>
- *     <li>LinkField</li>
- *     <li>ActionField</li>
- *     <li>ImageField</li>
- *     <li>most RichTable options</li>
- *     <li>FieldGroup containing only Actions, Image, Messages, or Links</li>
- *     <li>SpringEL for String properties on supported components only</li>
- *     <li>SpringEL specifically for the render property</li>
+ * <li>DataField</li>
+ * <li>InputField with TextControl, CheckboxControl, or single SelectControl</li>
+ * <li>MessageField</li>
+ * <li>LinkField</li>
+ * <li>ActionField</li>
+ * <li>ImageField</li>
+ * <li>most RichTable options</li>
+ * <li>FieldGroup containing only Actions, Image, Messages, or Links</li>
+ * <li>SpringEL for String properties on supported components only</li>
+ * <li>SpringEL specifically for the render property</li>
  * </ul>
  *
  * Other features are not guaranteed to work, but may work at your own risk.  The intent of this table is to be a
  * light-weight alternative to the fully featured table already available in KRAD and it is more suited to displaying
  * large sets of simple data to the user.
  */
-@BeanTags({@BeanTag(name = "lightTableGroup-bean", parent="Uif-LightTableGroup"),
+@BeanTags({@BeanTag(name = "lightTableGroup-bean", parent = "Uif-LightTableGroup"),
         @BeanTag(name = "lightTableSection-bean", parent = "Uif-LightTableSection"),
-        @BeanTag(name = "lightTableSubSection-bean", parent="Uif-LightTableSubSection")})
+        @BeanTag(name = "lightTableSubSection-bean", parent = "Uif-LightTableSubSection")})
 public class LightTable extends Group implements DataBinding {
 
     private static final String VALUE_TOKEN = "@v@";
@@ -149,49 +149,14 @@ public class LightTable extends Group implements DataBinding {
 
         if (item.getExpressionGraph() != null && !item.getExpressionGraph().isEmpty()) {
             for (String name : item.getExpressionGraph().keySet()) {
-                Class<?> clazz = ObjectPropertyUtils.getPropertyType(item, name);
-                if (clazz.isAssignableFrom(String.class)) {
-                    //add expressions for string properties only
-                    expressionMap.put(name + SEPARATOR + item.getId(), item.getExpressionGraph().get(name));
-                    toRemove.add(name);
-                    ObjectPropertyUtils.setPropertyValue(item, name, EXPRESSION_TOKEN + name + SEPARATOR + item.getId() + EXPRESSION_TOKEN);
-
-                } else if (name.endsWith(RENDER) && clazz.isAssignableFrom(boolean.class)) {
-                    //setup render tokens to be able to determine where to remove content for render false, if needed
-                    Component renderComponent = item;
-
-                    //check for nested render (child element)
-                    if (!name.equals(RENDER)) {
-                        renderComponent = ObjectPropertyUtils.getPropertyValue(item, StringUtils.removeEnd(name,
-                                ".render"));
-                    }
-
-                    //add render expression to the map
-                    renderIdExpressionMap.put(renderComponent.getId(), item.getExpressionGraph().get(name));
-                    toRemove.add(name);
-
-                    String renderMarker = A_TOKEN + RENDER + A_TOKEN + renderComponent.getId() + A_TOKEN;
-                    
-                    //setup pre render content token
-                    String pre =
-                            renderComponent.getPreRenderContent() == null ? "" : renderComponent.getPreRenderContent();
-                    renderComponent.setPreRenderContent(renderMarker + pre);
-
-                    //setup post render content token
-                    String post = renderComponent.getPostRenderContent() == null ? "" :
-                            renderComponent.getPostRenderContent();
-                    renderComponent.setPostRenderContent(post + renderMarker);
-
-                    //force render to true
-                    ObjectPropertyUtils.setPropertyValue(item, name, true);
-                }
+                processExpression(name, item, expressionMap, toRemove);
             }
         }
 
         //id placeholder
         item.setId(ID_TOKEN + item.getId() + ID_TOKEN);
 
-        if (item instanceof Group){
+        if (item instanceof Group) {
             ((Group) item).getLayoutManager().setId(ID_TOKEN + ((Group) item).getLayoutManager().getId() + ID_TOKEN);
         }
 
@@ -202,6 +167,53 @@ public class LightTable extends Group implements DataBinding {
         }
 
         return expressionMap;
+    }
+
+    /**
+     * Process the expression for the item by putting placeholder values in for String properties and adding markers
+     * for render expressions to the component; adds the original expression to the expressionMap
+     *
+     * @param name the property name
+     * @param item the component this expressio is on
+     * @param expressionMap the map to add expressions to
+     * @param toRemove the property name is added this map to be removed later
+     */
+    public void processExpression(String name, Component item, Map<String, String> expressionMap,
+            List<String> toRemove) {
+        Class<?> clazz = ObjectPropertyUtils.getPropertyType(item, name);
+        if (clazz.isAssignableFrom(String.class)) {
+            //add expressions for string properties only
+            expressionMap.put(name + SEPARATOR + item.getId(), item.getExpressionGraph().get(name));
+            toRemove.add(name);
+            ObjectPropertyUtils.setPropertyValue(item, name,
+                    EXPRESSION_TOKEN + name + SEPARATOR + item.getId() + EXPRESSION_TOKEN);
+
+        } else if (name.endsWith(RENDER) && clazz.isAssignableFrom(boolean.class)) {
+            //setup render tokens to be able to determine where to remove content for render false, if needed
+            Component renderComponent = item;
+
+            //check for nested render (child element)
+            if (!name.equals(RENDER)) {
+                renderComponent = ObjectPropertyUtils.getPropertyValue(item, StringUtils.removeEnd(name, ".render"));
+            }
+
+            //add render expression to the map
+            renderIdExpressionMap.put(renderComponent.getId(), item.getExpressionGraph().get(name));
+            toRemove.add(name);
+
+            String renderMarker = A_TOKEN + RENDER + A_TOKEN + renderComponent.getId() + A_TOKEN;
+
+            //setup pre render content token
+            String pre = renderComponent.getPreRenderContent() == null ? "" : renderComponent.getPreRenderContent();
+            renderComponent.setPreRenderContent(renderMarker + pre);
+
+            //setup post render content token
+            String post = renderComponent.getPostRenderContent() == null ? "" : renderComponent.getPostRenderContent();
+            renderComponent.setPostRenderContent(post + renderMarker);
+
+            //force render to true
+            ObjectPropertyUtils.setPropertyValue(item, name, true);
+        }
     }
 
     /**
@@ -263,7 +275,7 @@ public class LightTable extends Group implements DataBinding {
 
         //set emptyTable true if null, empty, or not valid collection
         if (collectionValue == null || !(collectionValue instanceof Collection) ||
-                ((Collection) collectionValue).isEmpty()){
+                ((Collection) collectionValue).isEmpty()) {
             emptyTable = true;
         }
     }
@@ -288,7 +300,7 @@ public class LightTable extends Group implements DataBinding {
      * @return the full set of rows for the table in html(String) to be used by the calling ftl
      */
     public String buildRows(String rowTemplate, UifFormBase model) {
-        if(StringUtils.isBlank(rowTemplate)){
+        if (StringUtils.isBlank(rowTemplate)) {
             return "";
         }
 
@@ -325,28 +337,14 @@ public class LightTable extends Group implements DataBinding {
                 //special InputField handling
                 row = handleInputFieldInRow(item, obj, row, i, originalId);
 
-                Matcher matcher = expressionPattern.matcher(row);
-
                 //add item context
                 if (item.getContext() != null) {
                     expandedContext.putAll(item.getContext());
                 }
 
                 //evaluate expressions found by the pattern
-                while (matcher.find()) {
-                    String matchingGroup = matcher.group(1);
-                    String expression = expressionConversionMap.get(matchingGroup);
-
-                    //adjust prefix for evaluation
-                    expression = expression.replace(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
-                            this.getBindingInfo().getBindingPath() + "[" + i + "].");
-
-                    //get expression result
-                    Object value = expressionEvaluatorService.evaluateExpressionTemplate(model, expandedContext,
-                            expression);
-
-                    row = row.replace(matcher.group(), value.toString());
-                }
+                row = evaluateAndReplaceExpressionValues(row, i, model, expandedContext, expressionPattern,
+                        expressionEvaluatorService);
 
                 itemIndex++;
             }
@@ -354,27 +352,7 @@ public class LightTable extends Group implements DataBinding {
             row = "<tr>" + row + "</tr>";
 
             //special render property expression handling
-            for (String id : renderIdExpressionMap.keySet()) {
-                String expression = renderIdExpressionMap.get(id);
-
-                //adjust prefix for evaluation
-                expression = expression.replace(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
-                        this.getBindingInfo().getBindingPath() + "[" + i + "].");
-
-                //get expression result
-                Object value = expressionEvaluatorService.evaluateExpressionTemplate(model, expandedContext,
-                        expression);
-
-                String wrap = A_TOKEN + RENDER + A_TOKEN + id + A_TOKEN;
-
-                if (value != null && value instanceof String && Boolean.parseBoolean((String) value) == false) {
-                    //do not render this component - remove content between render wrappers
-                    row = row.replaceAll(wrap + "(.|\\s)*?" + wrap, "");
-                } else {
-                    //remove render wrappers only - keep content
-                    row = row.replaceAll(wrap, "");
-                }
-            }
+            row = evaluateRenderExpressions(row, i, model, expandedContext, expressionEvaluatorService);
 
             //append row
             rows.append("\n" + row);
@@ -382,6 +360,76 @@ public class LightTable extends Group implements DataBinding {
         }
 
         return rows.toString();
+    }
+
+    /**
+     * Evaluate expressions and replace content found by the expressionPattern in the row
+     *
+     * @param row the row being modified
+     * @param index the line index
+     * @param model the model
+     * @param expandedContext the context to evaluate expressions against
+     * @param expressionPattern the expression pattern used to find expression tokens for value replacement
+     * @param expressionEvaluatorService the expression service to use for evaluation
+     * @return the modified row
+     */
+    private String evaluateAndReplaceExpressionValues(String row, int index, Object model,
+            Map<String, Object> expandedContext, Pattern expressionPattern,
+            ExpressionEvaluatorService expressionEvaluatorService) {
+
+        Matcher matcher = expressionPattern.matcher(row);
+
+        while (matcher.find()) {
+            String matchingGroup = matcher.group(1);
+            String expression = expressionConversionMap.get(matchingGroup);
+
+            //adjust prefix for evaluation
+            expression = expression.replace(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
+                    this.getBindingInfo().getBindingPath() + "[" + index + "].");
+
+            //get expression result
+            Object value = expressionEvaluatorService.evaluateExpressionTemplate(model, expandedContext, expression);
+
+            row = row.replace(matcher.group(), value.toString());
+        }
+
+        return row;
+    }
+
+    /**
+     * Evaluates the render expressions for the row and removes the content if render is evaluated false
+     *
+     * @param row the row being modified
+     * @param index the line index
+     * @param model the model
+     * @param expandedContext the context to evaluate expressions against
+     * @param expressionEvaluatorService the expression service to use for evaluation
+     * @return the modified row
+     */
+    private String evaluateRenderExpressions(String row, int index, Object model, Map<String, Object> expandedContext,
+            ExpressionEvaluatorService expressionEvaluatorService) {
+        for (String id : renderIdExpressionMap.keySet()) {
+            String expression = renderIdExpressionMap.get(id);
+
+            //adjust prefix for evaluation
+            expression = expression.replace(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
+                    this.getBindingInfo().getBindingPath() + "[" + index + "].");
+
+            //get expression result
+            Object value = expressionEvaluatorService.evaluateExpressionTemplate(model, expandedContext, expression);
+
+            String wrap = A_TOKEN + RENDER + A_TOKEN + id + A_TOKEN;
+
+            if (value != null && value instanceof String && Boolean.parseBoolean((String) value) == false) {
+                //do not render this component - remove content between render wrappers
+                row = row.replaceAll(wrap + "(.|\\s)*?" + wrap, "");
+            } else {
+                //remove render wrappers only - keep content
+                row = row.replaceAll(wrap, "");
+            }
+        }
+
+        return row;
     }
 
     /**
@@ -401,7 +449,7 @@ public class LightTable extends Group implements DataBinding {
 
         Object currentValue = ObjectPropertyUtils.getPropertyValue(obj, ((DataField) item).getPropertyName());
 
-        if (currentValue == null){
+        if (currentValue == null) {
             currentValue = "";
         }
 
@@ -433,7 +481,6 @@ public class LightTable extends Group implements DataBinding {
             }
         }
 
-
         return row;
     }
 
@@ -463,9 +510,9 @@ public class LightTable extends Group implements DataBinding {
         Object value = ObjectPropertyUtils.getPropertyValue(obj, ((InputField) item).getPropertyName());
         String stringValue = "";
 
-        if (value == null){
+        if (value == null) {
             stringValue = "";
-        }else if (value.getClass().isAssignableFrom(boolean.class)) {
+        } else if (value.getClass().isAssignableFrom(boolean.class)) {
             stringValue = "" + value;
         } else if (!(value instanceof Collection)) {
             stringValue = value.toString();
@@ -482,8 +529,7 @@ public class LightTable extends Group implements DataBinding {
                     "$1" + stringValue + "\"");
         } else if (control instanceof SelectControl && !((SelectControl) control).isMultiple()) {
             //SelectControl handling (single item only)
-            Pattern pattern = Pattern.compile(
-                    "<select(\\s)*?id(\\s)*?=(\\s)*?\"" + controlId + "\"(.|\\s)*?</select>");
+            Pattern pattern = Pattern.compile("<select(\\s)*?id(\\s)*?=(\\s)*?\"" + controlId + "\"(.|\\s)*?</select>");
             Matcher matcher = pattern.matcher(row);
             String replacement = "";
 
@@ -503,7 +549,6 @@ public class LightTable extends Group implements DataBinding {
             }
         }
 
-
         return row;
     }
 
@@ -512,7 +557,7 @@ public class LightTable extends Group implements DataBinding {
      *
      * @return the propertyName of this collection
      */
-    @BeanTagAttribute(name="propertyName")
+    @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
         return propertyName;
     }
@@ -531,7 +576,7 @@ public class LightTable extends Group implements DataBinding {
      *
      * @return the bindingInfo
      */
-    @BeanTagAttribute(name="bindingInfo",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return bindingInfo;
     }
@@ -559,7 +604,7 @@ public class LightTable extends Group implements DataBinding {
      *
      * @return the RichTable widget
      */
-    @BeanTagAttribute(name="richTable",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "richTable", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public RichTable getRichTable() {
         return richTable;
     }

@@ -23,12 +23,12 @@
 
         <!-- APPLICATION HEADER -->
         <#if view.applicationHeader?has_content>
-            <#assign appHeaderData=""/>
+            <#assign stickyDataAttribute=""/>
             <#if view.stickyApplicationHeader>
-                <#assign appHeaderData="data-sticky='true'"/>
+                <#assign stickyDataAttribute="data-sticky='true'"/>
             </#if>
 
-            <div id="Uif-ApplicationHeader-Wrapper" ${appHeaderData}>
+            <div id="Uif-ApplicationHeader-Wrapper" ${stickyDataAttribute}>
                 <@krad.template component=view.applicationHeader/>
                 <!-- Backdoor info (here to inherit stickyness with the header, if set) -->
                 <@krad.backdoor/>
@@ -85,12 +85,12 @@
 
     <!-- APPLICATION FOOTER -->
     <#if view.applicationFooter?has_content>
-        <#assign appFooterData=""/>
+        <#assign stickyFooterDataAttribute=""/>
         <#if view.stickyApplicationFooter>
-            <#assign appFooterData="data-sticky_footer='true'"/>
+            <#assign stickyFooterDataAttribute="data-sticky_footer='true'"/>
         </#if>
 
-        <div id="Uif-ApplicationFooter-Wrapper" ${appFooterData}>
+        <div id="Uif-ApplicationFooter-Wrapper" ${stickyFooterDataAttribute}>
             <@krad.template component=view.applicationFooter/>
         </div>
     </#if>

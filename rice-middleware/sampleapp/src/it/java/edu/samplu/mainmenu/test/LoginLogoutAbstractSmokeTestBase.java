@@ -31,8 +31,8 @@ import edu.samplu.common.WebDriverLegacyITBase;
 public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
-     * LoginLogout can use {@link ITUtil#PORTAL} for both navigation and bookmark tests so it will not be overridden by subclasses.
-     * @return {@link ITUtil#PORTAL}
+     * LoginLogout can use {@link edu.samplu.common.ITUtil#PORTAL} for both navigation and bookmark tests so it will not be overridden by subclasses.
+     * @return {@link edu.samplu.common.ITUtil#PORTAL}
      */
     @Override
     public String getTestUrl() {
@@ -45,10 +45,10 @@ public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyIT
     }
 
     /**
-     * Navigate to the page under test click logout.  {@link LoginLogoutAbstractSmokeTestBase#waitAndClickLogout(edu.samplu.common.Failable)}
+     * Navigate to the page under test click logout.  {@link edu.samplu.mainmenu.test.LoginLogoutAbstractSmokeTestBase#waitAndClickLogout(edu.samplu.common.Failable)}
      *
      * @param failable {@link edu.samplu.common.Failable}
-     * @throws Exception
+     * @throws {@link Exception}
      */
     public void testLogoutNav(Failable failable) throws Exception {
         navigate(failable);
@@ -56,7 +56,7 @@ public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyIT
     }
 
     /**
-     * Click Logout on the current page.  {@link LoginLogoutAbstractSmokeTestBase#waitAndClickLogout(edu.samplu.common.Failable)}
+     * Click Logout on the current page. {@link edu.samplu.mainmenu.test.LoginLogoutAbstractSmokeTestBase#waitAndClickLogout(edu.samplu.common.Failable)}
      *
      * @param failable {@link edu.samplu.common.Failable}
      * @throws Exception

@@ -236,7 +236,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         // defined in the files with system properties if systemOverride==true.
         resolveRawToCache();
 
-        //
         LOG.info("----------------Rice Configuration Loaded-----------------");
         logPropertyValues(resolvedProperties);
     }

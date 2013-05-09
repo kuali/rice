@@ -35,7 +35,7 @@ public abstract class ReferenceCampusTypeAbstractSmokeTestBase extends AdminTmpl
 
     /**
      * {@inheritDoc}
-     * Document Type
+     * Campus Type
      * @return
      */
     @Override

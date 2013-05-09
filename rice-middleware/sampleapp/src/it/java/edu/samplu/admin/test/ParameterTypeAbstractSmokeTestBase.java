@@ -41,7 +41,7 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
     
     /**
      * {@inheritDoc}
-     * Document Type
+     * Parameter Type
      * @return
      */
     @Override

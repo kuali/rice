@@ -35,7 +35,7 @@ public abstract class ReferenceCampusTypeBlanketAppAbstractSmokeTestBase extends
 
     /**
      * {@inheritDoc}
-     * Document Type
+     * Campus Type
      * @return
      */
     @Override

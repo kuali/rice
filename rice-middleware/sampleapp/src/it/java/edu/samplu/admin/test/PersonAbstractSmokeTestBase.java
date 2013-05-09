@@ -40,7 +40,7 @@ public abstract class PersonAbstractSmokeTestBase extends AdminTmplMthdSTNavBase
     
     /**
      * {@inheritDoc}
-     * Document Type
+     * Person
      * @return
      */
     @Override

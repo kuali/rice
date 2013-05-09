@@ -40,7 +40,7 @@ public abstract class PermissionAbstractSmokeTestBase extends AdminTmplMthdSTNav
     
     /**
      * {@inheritDoc}
-     * Document Type
+     * Permission
      * @return
      */
     @Override

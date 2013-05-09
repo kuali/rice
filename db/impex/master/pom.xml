@@ -53,9 +53,9 @@
     <profile>
       <id>exportmaster</id>
       <properties>
-        <impex.username>RICEMASTER</impex.username>
-        <impex.password>RICEMASTER</impex.password>
-        <impex.database>RICEMASTER</impex.database>
+        <impex.username>${export.db.username}</impex.username>
+        <impex.password>${export.db.password}</impex.password>
+        <impex.database>${export.db.usernames}</impex.database>
       </properties>
       <build>
         <plugins>

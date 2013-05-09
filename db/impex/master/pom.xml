@@ -55,7 +55,7 @@
       <properties>
         <impex.username>${export.db.username}</impex.username>
         <impex.password>${export.db.password}</impex.password>
-        <impex.database>${export.db.usernames}</impex.database>
+        <impex.database>${export.db.username}</impex.database>
       </properties>
       <build>
         <plugins>

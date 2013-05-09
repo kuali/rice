@@ -6,12 +6,12 @@
         <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
         <column name="CMPNT_CD" primaryKey="true" size="100" type="VARCHAR"/>
         <column name="MSG_KEY" primaryKey="true" size="100" type="VARCHAR"/>
-        <column name="LOC" primaryKey="true" size="255" type="VARCHAR"/>
+        <column name="LOC" primaryKey="true" size="80" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="MSG_DESC" size="255" type="VARCHAR"/>
         <column name="TXT" size="4000" type="VARCHAR"/>
-        <unique name="KRAD_MSG_TC2">
+        <unique name="KRAD_MSG_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
@@ -3486,7 +3486,8 @@
         <column name="DOC_HDR_ID" required="true" size="14" type="VARCHAR"/>
         <column name="GNRT_DT" required="true" type="DATE"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="SESN_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="undefined" name="SESN_ID" required="true"
+            size="40" type="VARCHAR"/>
         <unique name="KRNS_PESSIMISTIC_LOCK_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>

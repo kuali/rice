@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
@@ -300,6 +301,12 @@ public class LookupView extends FormView {
                 // Create field group
                 FieldGroup rangeFieldGroup = ComponentUtils.copy(rangeFieldGroupPrototype, criteriaField.getId());
                 rangeFieldGroup.setLabel(((LookupInputField)criteriaField).getLabel());
+
+                // Evaluate and set the required property and reset the required message on the 'to' label
+                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluatePropertyExpression(view, model,
+                        criteriaField.getContext(), criteriaField, "required", true);
+                rangeFieldGroup.setRequired(criteriaField.getRequired());
+                ((LookupInputField) criteriaField).getFieldLabel().setRequiredMessage(new Message());
 
                 // Evaluate and set the render property
                 KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluatePropertyExpression(view, model,

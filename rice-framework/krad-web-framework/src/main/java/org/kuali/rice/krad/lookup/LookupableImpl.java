@@ -514,7 +514,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             LookupView lookupView = (LookupView) form.getPostedView();
             InputField inputField = criteriaFields.get(searchPropertyName);
             if (inputField != null) {
-                if (StringUtils.isBlank(searchPropertyValue) && BooleanUtils.isTrue(inputField.getRequired())) {
+                if (StringUtils.isBlank(searchPropertyValue) && inputField.getRequired()) {
                     GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
                             RiceKeyConstants.ERROR_REQUIRED, inputField.getLabel());
                 }

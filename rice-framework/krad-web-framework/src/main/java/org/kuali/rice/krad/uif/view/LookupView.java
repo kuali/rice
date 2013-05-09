@@ -21,7 +21,6 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -45,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * View type for Maintenance documents
@@ -108,6 +106,8 @@ public class LookupView extends FormView {
     private String maintenanceUrlMapping;
 
     private FieldGroup rangeFieldGroupPrototype;
+
+    private Message rangedToMessage;
 
     private boolean autoAddActiveCriteria;
 
@@ -323,11 +323,11 @@ public class LookupView extends FormView {
                 // Set the criteria fields labels
                 fromDate.setLabel("");
                 fromDate.getFieldLabel().setRenderColon(false);
-                ((LookupInputField)criteriaField).setLabel("to");
-                ((LookupInputField)criteriaField).getFieldLabel().setRenderColon(false);
+                ((LookupInputField)criteriaField).getFieldLabel().setRender(false);
 
                 // Add the cirteria fields to the field group
                 fieldGroupItems.add(fromDate);
+                fieldGroupItems.add(rangedToMessage);
                 fieldGroupItems.add(criteriaField);
                 rangeFieldGroup.setItems(fieldGroupItems);
 
@@ -354,6 +354,7 @@ public class LookupView extends FormView {
         List<Component> components = super.getComponentPrototypes();
 
         components.add(rangeFieldGroupPrototype);
+        components.add(rangedToMessage);
 
         return components;
     }
@@ -769,4 +770,21 @@ public class LookupView extends FormView {
         this.autoAddActiveCriteria = autoAddActiveCriteria;
     }
 
+    /**
+     * The Message to render between the two range fields for ranged criteria fields
+     *
+     * @return
+     */
+    public Message getRangedToMessage() {
+        return rangedToMessage;
+    }
+
+    /**
+     * Setter for the Message rendered between the two range fields for ranged criteria fields
+     *
+     * @param rangedToMessage
+     */
+    public void setRangedToMessage(Message rangedToMessage) {
+        this.rangedToMessage = rangedToMessage;
+    }
 }

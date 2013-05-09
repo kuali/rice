@@ -52,7 +52,9 @@
     <property name="rangeFieldGroupPrototype">
       <bean parent="Uif-HorizontalFieldGroup"/>
     </property>
-
+    <property name="rangedToMessage">
+      <bean parent="Uif-Message" p:messageText="to"/>
+    </property>
   </bean>
 
   <bean id="Uif-LookupView-ResultActions" parent="Uif-LinkGroup">

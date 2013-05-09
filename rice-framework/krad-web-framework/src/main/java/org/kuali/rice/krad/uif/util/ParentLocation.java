@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
@@ -121,7 +122,8 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
     }
 
     /**
-     * Processes content that can only be derived by looking at the parentView for a parentLocation, such as expressions
+     * Processes content that can only be derived by looking at the parentView for a parentLocation, such as
+     * expressions
      * and sibling breadcrumb content; evaluates and adds them to the ParentLocation BreadcrumbItem(s).
      *
      * @param parentView the parentView to derive breadcrumb content from
@@ -185,9 +187,10 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
             Header header = parentView.getHeader();
 
             if (header != null) {
-                if (StringUtils.isNotBlank(parentView.getPropertyExpressions().get("headerText"))) {
-                    header.getPropertyExpressions().put("headerText", parentView.getPropertyExpressions().get(
-                            "headerText"));
+                if (StringUtils.isNotBlank(parentView.getPropertyExpressions().get(
+                        UifConstants.ComponentProperties.HEADER_TEXT))) {
+                    header.getPropertyExpressions().put(UifConstants.ComponentProperties.HEADER_TEXT,
+                            parentView.getPropertyExpressions().get(UifConstants.ComponentProperties.HEADER_TEXT));
                 }
 
                 KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(parentView,
@@ -226,9 +229,10 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
                 Header pageHeader = thePage.getHeader();
 
                 if (pageHeader != null) {
-                    if (StringUtils.isNotBlank(thePage.getPropertyExpressions().get("headerText"))) {
-                        pageHeader.getPropertyExpressions().put("headerText", thePage.getPropertyExpressions().get(
-                                "headerText"));
+                    if (StringUtils.isNotBlank(thePage.getPropertyExpressions().get(
+                            UifConstants.ComponentProperties.HEADER_TEXT))) {
+                        pageHeader.getPropertyExpressions().put(UifConstants.ComponentProperties.HEADER_TEXT,
+                                thePage.getPropertyExpressions().get(UifConstants.ComponentProperties.HEADER_TEXT));
                     }
 
                     KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(parentView,

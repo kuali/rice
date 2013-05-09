@@ -238,6 +238,15 @@ public class UifConstants {
         public static final String NONE = "none";
     }
 
+    public static class ComponentProperties {
+        public static final String HEADER_TEXT = "headerText";
+    }
+
+    public static class CssClasses {
+        public static final String SUPPORT_TITLE_STYLE_CLASS = "uif-viewHeader-supportTitle";
+        public static final String HIDE_HEADER_TEXT_STYLE_CLASS = "uif-hideHeaderText";
+    }
+
     public static class UrlParams {
         public static final String ACTION_EVENT = "actionEvent";
         public static final String SHOW_HISTORY = "showHistory";

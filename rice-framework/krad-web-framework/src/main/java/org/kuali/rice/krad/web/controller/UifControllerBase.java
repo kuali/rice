@@ -121,11 +121,10 @@ public abstract class UifControllerBase {
         String referer = request.getHeader(UifConstants.REFERER);
 
         //if none, set the no return flag string
-        if (StringUtils.isBlank(referer)) {
+        if (StringUtils.isBlank(referer) && StringUtils.isBlank(requestForm.getReturnLocation())) {
             requestForm.setReturnLocation(UifConstants.NO_RETURN);
         }
-
-        if (StringUtils.isBlank(requestForm.getReturnLocation())) {
+        else if (StringUtils.isBlank(requestForm.getReturnLocation())) {
             requestForm.setReturnLocation(referer);
         }
 

@@ -346,11 +346,6 @@ public class Action extends ContentElementBase {
             submitData.put(key, additionalSubmitData.get(key));
         }
 
-        // TODO possibly fix some other way - this is a workaround, prevents
-        // showing history and showing home again on actions which submit the form
-        submitData.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
-        submitData.put(UifConstants.UrlParams.SHOW_HOME, "false");
-
         // if focus id not set default to focus on action
         if (focusOnIdAfterSubmit == null){
             focusOnIdAfterSubmit = UifConstants.Order.SELF.toString();

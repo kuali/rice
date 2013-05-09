@@ -21,7 +21,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * Abstract base class for LoginLogout Smoke Tests.  Framework specific classes should not be depended upon in this
- * class but abstracted behind {@link edu.samplu.common.Failable}.
+ * class but abstracted behind the {@link edu.samplu.common.Failable} interface.
  *
  * @see edu.samplu.common.Failable
  * @see LoginLogoutSTNGBase

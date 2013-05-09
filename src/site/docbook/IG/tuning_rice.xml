@@ -23,7 +23,7 @@
         collecting performance tuning information in the Kuali Rice wiki at <link
             xlink:href="https://wiki.kuali.org/x/2hOeEg"
         >https://wiki.kuali.org/x/2hOeEg</link>.</para>
-    <section>
+    <section xml:id="JVM_Tuning">
         <title>JVM Tuning</title>
         <para>To avoid OutOfMemoryError errors, tune the JVM by increasing the allocated
             memory.</para>

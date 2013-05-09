@@ -75,7 +75,7 @@
             the appendix for examples of hardware and software configurations of Kuali Rice
             servers.</para>
     </section>
-    <section>
+    <section xml:id="install_db">
         <title>Installing and Configuring the Database Management System</title>
         <para>Kuali Rice was developed using two relational database management systems: <emphasis
                 role="bold">MySQL</emphasis> and <emphasis role="bold">Oracle</emphasis>. The
@@ -160,7 +160,7 @@
                 </tgroup>
             </table>
         </section>
-        <section>
+        <section xml:id="mysql_db_prep">
             <title>MySQL Database Preparation</title>
             <para>Kuali Rice supports both MySQL and Oracle databases. However, MySQL is easier to
                 install than Oracle and uses less machine resources so many developers prefer to use
@@ -260,7 +260,7 @@ mysql> </programlisting>
                     installation scripts are running.</para>
             </section>
         </section>    
-        <section>
+        <section xml:id="oracle_db_prep">
             <title>Oracle Database Preparation</title>
             <section>
                 <title>Installation</title>
@@ -336,13 +336,13 @@ mysql> </programlisting>
                     </orderedlist></para>
             </section>
         </section>
-        <section>
+        <section xml:id="sql_client_sw">
             <title>Suggested SQL Client Software</title>
             <para>To examine and test your database setup, SQL client software is useful. Any SQL client
                 software that will connect to a MySQL or Oracle database will work. Two tools used by
                 the development team are the <emphasis role="bold">mysql</emphasis> command-line client
                 and SQuirrel SQL.</para>
-            <section>
+            <section xml:id="mysql_client_sw">
                 <title>mysql client software</title>
                 <para>The <emphasis role="bold">mysql</emphasis> command-line client only works with MySQL
                     and is usually installed with the MySQL Server software. An example of connection to
@@ -391,7 +391,7 @@ Database changed</programlisting>
             </section>
         </section>
     </section> 
-    <section>
+    <section xml:id="install_sw">
         <title>Install and Configure Required Software</title>
         <section>
             <title>Overview</title>
@@ -493,7 +493,7 @@ export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_
                        variable changes to be effective.</para></note>
                 </section>
         </section> 
-       <section>
+       <section xml:id="Java_SDK">
             <title>Java SDK</title>
             <section>
                 <title>Installation</title>
@@ -538,7 +538,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisti
             </section>
         </section>
         <!-- TODO: Determine if we need to add a section for ant or if we're done here -->
-        <section>
+        <section xml:id="Maven">
             <title>Maven</title>
             <para>Maven is the primary build tool used by the Kuali Rice project. Maven is based on a
                 project object model (POM) that defines various standards and conventions surrounding
@@ -585,7 +585,7 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                             >PATH</emphasis> environment variable.</para>
             </section>
         </section>
-        <section>
+        <section xml:id="Apache_Tomcat">
             <title>Install and Setup Apache Tomcat</title>
             <para>Kuali Rice ${project.version} supports the following Tomcat versions:<itemizedlist>
                     <listitem>
@@ -600,7 +600,7 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
             <para>Other servlet containers can be used with Kuali Rice, but this guide will focus on
                 Tomcat.</para>
         </section>
-        <section>
+        <section xml:id="Rice_SW">
             <title>Install Rice software from distribution</title>
             <para>The quickest way to get Rice installed on a standalone server is to download the
                     <emphasis role="bold">Standalone Server</emphasis> distribution from the <link
@@ -608,7 +608,7 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                 downloaded, decompress the software.</para>
         </section>
     </section>    
-    <section>
+    <section xml:id="Rice_DB">
         <title>Building the Rice Database</title>
         <section>
             <title>Load Impex Data with Maven</title>
@@ -689,7 +689,7 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                 oracle).</para>
         </section>
     </section>    
-    <section>
+    <section xml:id="Rice_Config">
         <title>Configure Rice</title>
         <section>
             <title>Deploying the WAR file</title>

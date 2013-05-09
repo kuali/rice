@@ -136,9 +136,9 @@
                         <title>Breadcrumb Properties</title>
                         <?dbfo table-width="100%" ?>
                         <tgroup cols="3">
-                            <colspec colname="c1" colnum="1" colwidth="1*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.69*"/>
-                            <colspec colname="c3" colnum="3" colwidth="1.15*"/>
+                            <colspec colname="c1" colnum="1" colwidth="2.94*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1*"/>
+                            <colspec colname="c3" colnum="3" colwidth="7.35*"/>
                             <thead>
                                 <row>
                                     <entry>
@@ -154,27 +154,17 @@
                             </thead>
                             <tbody>
                                 <row>
-                                    <entry> displayHomewardPath </entry>
-                                    <entry> true </entry>
-                                    <entry> Flag to hide/display home path </entry>
-                                </row>
-                                <row>
-                                    <entry> displayPassedHistory </entry>
-                                    <entry> true </entry>
-                                    <entry> Flag to hide/display passed on from previous view </entry>
+                                    <entry> usePathBasedBreadcrumbs</entry>
+                                    <entry> false</entry>
+                                    <entry> Uses path-based breadcrumb generation when set.  This
+                                        requires additional setup, see Breadcrumbs in "The View"
+                                        section. </entry>
                                 </row>
                                 <row>
                                     <entry> displayBreadcrumbsWhenOne </entry>
                                     <entry> false </entry>
                                     <entry> Flag to hide/display breadcrumbs when there is only one
                                         history item </entry>
-                                </row>
-                                <row>
-                                    <entry> homewardPathList </entry>
-                                    <entry> &lt;bean parent="Uif-HistoryEntry" p:title="Home"
-                                        p:url="@{#ConfigProperties['application.url']}/portal.do"/&gt; </entry>
-                                    <entry> This history entry that points to the portal will be used
-                                        when home is selected. </entry>
                                 </row>
                             </tbody>
                         </tgroup>

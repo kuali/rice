@@ -60,7 +60,7 @@ public class Breadcrumbs extends WidgetBase {
     }
 
     /**
-     * If true, breadcrumbs will not be displayed if only one breadcrumb is
+     * If false, breadcrumbs will not be displayed if only one breadcrumb is
      * going to be shown, this improves visual clarity of the page
      *
      * @return the displayBreadcrumbsWhenOne
@@ -71,6 +71,8 @@ public class Breadcrumbs extends WidgetBase {
     }
 
     /**
+     * Set displayBreadcrumbsWhenOne
+     *
      * @param displayBreadcrumbsWhenOne the displayBreadcrumbsWhenOne to set
      */
     public void setDisplayBreadcrumbsWhenOne(boolean displayBreadcrumbsWhenOne) {

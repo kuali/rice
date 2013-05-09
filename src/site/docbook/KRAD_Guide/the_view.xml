@@ -387,6 +387,267 @@
         </section>
     </section>
     <section>
+        <title>Breadcrumbs</title>
+        <para>Breadcrumbs represent where the view is located in the overall application structure.
+            They give the user a way to navigate to "parent" views/urls that may be associated with
+            your application and are related to the View itself.  Because different applications
+            have the ability to build out various unique site structures with Krad, what appears in
+            the breadcrumb trail for a View is highly configurable.  </para>
+        <para>In the UI, Breadcrumbs are part of every View and appear at the very top of each View
+            below the application's header and below the View's topGroup (if these are configured).
+            By default, with no configuration, the breadcrumbs will contain a View breadcrumb, with
+            the view title as determined by headerText of the View's header component and a page
+            breadcrumb (also determined by its header's headerText).  If no title can be determined,
+            the item is omitted from the trail.  In addition, by default, if there are zero or one
+            breadcrumbs in the trail, the Breadcrumbs widget is omitted from the View.</para>
+        <para>However, there are various ways to customize breadcrumbs beyond this default
+            behavior.</para>
+        <para/>
+        <section>
+            <title>BreadcrumbItem</title>
+            <para>A BreadcrumbItem represents the label and the url for a breadcrumb that appears in
+                the breadcrumbs trail.  Both View and PageGroup contain a BreadcrumbItem property
+                called "breadcrumbItem".  As described above, the title and url of these
+                BreadcrumbItems are determined automatically by Krad base beans and lifecycle
+                methods, if not configured directly through xml.</para>
+            <para>BreadcrumbItems contain the following properties:<table frame="all" pgwide="1"
+                    tabstyle="striped">
+                    <title>Tooltip Properties</title>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.4*"/>
+                        <colspec colname="c3" colnum="2" colwidth="6.97*"/>
+                        <thead>
+                            <row>
+                                <entry>Property</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>label</entry>
+                                <entry>The label for this breadcrumbItem. The label is the textual
+                                    content that will be displayed for the breadcrumb.  This label
+                                    can contain SpringEL to contain text based on a property of the
+                                    form.</entry>
+                            </row>
+                            <row>
+                                <entry>url</entry>
+                                <entry>The url (backed by a UrlInfo object) used for the breadcrumb
+                                    link represented by this item</entry>
+                            </row>
+                            <row>
+                                <entry>renderAsLink</entry>
+                                <entry>If true, the BreadcrumbItem will render as a link, otherwise
+                                    it will render as a span (not-clickable). By default, the last
+                                    BreadcrumbItem in the list will ALWAYS render as span regardless
+                                    of this property's value.</entry>
+                            </row>
+                            <row>
+                                <entry>siblingBreadcrumbComponent</entry>
+                                <entry>Set the sibling breadcrumb component for this breadcrumbs
+                                    sibling content/navigation. This content will appear in a pop-up
+                                    menu.  This should probably be set to one of the follow types: a
+                                    text input field using a LocationSuggest widget, a dropdown
+                                    field backed by KeyValueLocation, or an options list field
+                                    backed by KeyValueLocation.</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table></para>
+            <para>By explicitly setting the values on UrlInfo in the url property or by setting the
+                label, the text of the breadcrumb and location the breadcrumb link points to can be
+                changed.  Setting renderAsLink makes the item no longer a link.  The
+                siblingBreadcrumbComponent allows for any content to pop up when they click an arrow
+                icon rendered next to the breadcrumb, but this content most likely (and should)
+                represent navigation to parallel locations to the location represented by the
+                BreadcrumbItem.</para>
+        </section>
+        <section>
+            <title>BreadcrumbOptions</title>
+            <para>Both View and PageGroup also have multiple options for breadcrumb display in the
+                object BreadcrumbOptions ("breadcrumbOptions" property).  The BreadcrumbOptions
+                contains multiple lists that can contain additional BreadcrumbItems.   If set on the
+                View, these lists are inherited by the PageGroup if the PageGroup does explicitly
+                set them to something different. These lists are:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">homewardPathBreadcrumbs</emphasis> - breadcrumbs
+                            that will appear at the start of the breadcrumb trail.  These should
+                            represent the trail back to home (often one item labeled "Home").  These
+                            breadcrumbs will appear before any ParentLocations or path-based
+                            breadcrumbs (described later).</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">preViewBreadcrumbs</emphasis> - breadcrumbs that
+                            will appear before the breadcrumb represented by the View's
+                            BreadcrumbItem</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">prePageBreadcrumbs</emphasis> - breadcrumbs that
+                            will appear before the breadcrumb represented by the current PageGroup's
+                            BreadcrumbItem</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">breadcrumbOverrides</emphasis> - the breadcrumbs
+                            in this list will be used instead of any configured BreadcrumbItems on
+                            the View, PageGroup, or in the preViewBreadcrumbs and
+                            prePageBreadcrumbs.  homewardPathBreadcrumbs and
+                            ParentLocation/path-based breadcrumbs will still render.</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>The PageGroup BreadcrumbOptions object have more options defined in its class
+                PageBreadcrumbOptions, that are specifically for rendering.  All the rendering of
+                breadcrumbs is handled per a page so these flags can be toggled to display or not
+                display the appropriate breadcrumbs on each page.  By default, any BreadcrumbItem or
+                BreadcrumbItem list that has content is rendered.</para>
+        </section>
+        <section>
+            <title>ParentLocation breadcrumbs</title>
+            <para>The ParentLocation object is used to define another View or url as a "parent" to
+                the current View.  When ParentLocation is defined, the View will attempt to follow
+                the ParentLocation trail by first finding the View defined by the ParentLocation and
+                then finding the next ParentLocation View of <emphasis role="italic">that</emphasis>
+                View, and so forth, until the end of the trail is found (or a ParentLocation does
+                not point to a View).  During this traversal, the BreadcrumbItems for these parent
+                locations are collected from the Views processed to be used in the breadcrumbs trail
+                rendered by the UI.</para>
+            <para>ParentLocation can be configured by setting the "parentLocation" on a View.  The
+                ParentLocation object has the following properties:<table frame="all" pgwide="1"
+                    tabstyle="striped">
+                    <title>Tooltip Properties</title>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.4*"/>
+                        <colspec colname="c3" colnum="2" colwidth="6.97*"/>
+                        <thead>
+                            <row>
+                                <entry>Property</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>parentViewLabel</entry>
+                                <entry>Label to use for the parent view - if not defined the label
+                                    will be derived from the parent view's BreadcrumbItem first then
+                                    the View's header</entry>
+                            </row>
+                            <row>
+                                <entry>parentPageLabel</entry>
+                                <entry>Label to use for the parent page - if not defined the label
+                                    will be derived from the parent page's BreadcrumbItem first then
+                                    the page's header</entry>
+                            </row>
+                            <row>
+                                <entry>parentViewUrl</entry>
+                                <entry>UrlInfo object which represents the location of the
+                                    ParentLocation.  If viewId is defined on this object, the View
+                                    will be used during ParentLocation traversal (ie viewId is
+                                    REQUIRED for View traversal).</entry>
+                            </row>
+                            <row>
+                                <entry>parentPageUrl</entry>
+                                <entry>UrlInfo object which represents the location of the
+                                    ParentLocation.  The viewId must be the same as the viewId
+                                    defined in parentViewUrl and parentViewUrl must be defined to
+                                    use a parent page location.</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table></para>
+            <para>To use ParentLocation functionality, at a minimum some information in the
+                parentViewUrl is required such as the viewId and controllerMapping (or a concrete
+                href). <emphasis role="bold"> Important:  If the properties of BreadcrumbItems
+                    derived from parent Views contain SpringEL, the current form must contain the
+                    properties they reference.</emphasis>
+            </para>
+            <para>In this example, a parent location is defined which points to the
+                "UifBreadcrumbTest2" View and "/uicomponents" controller.  Instead of deriving the
+                title of this View from the ParentLocation's View, we are overriding it to display
+                ParentView.<programlisting>    &lt;property name="parentLocation.parentViewLabel" value="Parent View"/>
+    &lt;property name="parentLocation.parentViewUrl.viewId" value="UifBreadcrumbTest2"/>
+    &lt;property name="parentLocation.parentViewUrl.controllerMapping" value="/uicomponents"/></programlisting></para>
+            <para/>
+        </section>
+        <section>
+            <title>Path-based Breadcrumbs</title>
+            <para>The Breadcrumbs widget contains an option entitled "usePathBasedBreadcrumbs".
+                When set to true, path-based breadcrumbs are used for the View.  However, for this
+                to work the View must be part of or start a HistoryFlow.  To do this, the request
+                must contain the request parameter "flow" with the flow key passed from a previous
+                view or the value "start" to start a new HistoryFlow.  The flowKey can be retrieved
+                from the current form in the "flowKey" property of the form (or hidden input with
+                name "flowKey" on the client-side).</para>
+            <para>
+                <para>Taking the above into acount the following setup is required for Path-based
+                    Breadcrumbs to function:<itemizedlist>
+                        <listitem>
+                            <para>The flow request parameter must be set on the request to either
+                                the flow key of the previous View or the keyword "start"</para>
+                        </listitem>
+                        <listitem>
+                            <para>The usePathBasedBreadcrumbs property must be set to true for this
+                                View's Breadcrumbs widget</para>
+                        </listitem>
+                        <listitem>
+                            <para>To continue collecting path-based breadcrumbs on a View linked
+                                from the current View, that link must pass this View's flowKey
+                                forward as a request parameter</para>
+                        </listitem>
+                    </itemizedlist></para>
+            </para>
+            <para>Like ParentLocation breadcrumbs, path-based breadcrumbs derive the BreadcrumbItems
+                from the previous Views in the HistoryFlow.  ParentLocation breadcrumbs and
+                path-based breadcrumbs cannot be used together.  The current usage of path-based
+                breadcrumbs in the Krad framework is for Lookup and Inquiry lightbox breadcrumb
+                trails.</para>
+        </section>
+        <section>
+            <title>Understanding Breadcrumb Rendering order</title>
+            <para>
+                <para>Breadcrumbs are rendered in the following order through its template (note:
+                    any option that is not configured is not rendered):<itemizedlist>
+                        <listitem>
+                            <para>homewardPathBreadcrumbs</para>
+                        </listitem>
+                        <listitem>
+                            <para>Either ParentLocation breadcrumbs or path-based breadcrumbs
+                                (optional)</para>
+                        </listitem>
+                        <listitem>
+                            <para>If breadcrumbOverrides is not set:<itemizedlist>
+                                    <listitem>
+                                        <para>preViewBreadcrumbs</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>View's BreadcrumbItem</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>prePageBreadcrumbs</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>current PageGroup's BreadcrumbItem</para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                    </itemizedlist></para>
+            </para>
+            <para>For example, in most views, you would like breadcrumbs to appear as: "Home > View1
+                > Page".  The only setup that needs to be done is to either setup
+                homewardPathBreadcrumbs with a home BreadcrumbItem or use the View's ParentLocation
+                pointing to a home url (because the "View1" and "Page" breadcrumbs are automated if
+                not configured).  </para>
+            <para>Inorder to chose the appropriate mechanism to use in this scenario, it is up to
+                your application needs, but if this View potentially links to another View, using
+                ParentLocation would allow you to inherit the "Home" breadcrumb (if you make "View1"
+                its parent) resulting in something like "Home > View1 > View2 > Page".  </para>
+            <para>Alternatively, if your View bean parents from another base View bean defined in
+                your project, every view in your project could inherit the homewardPathBreadcrumbs
+                property from it. </para>
+            <para>It is important to take into consideration how your application will setup its own
+                breadcrumb structure to meet your project's application needs by taking these
+                options and rendering order into account.</para>
+        </section>
+    </section>
+    <section>
         <title>View Indexing </title>
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.

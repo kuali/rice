@@ -691,12 +691,14 @@
     &lt;inverse-foreignkey field-ref="bookId" />  
 &lt;/collection-descriptor>        </programlisting></para>
             <para>The collection descriptor supports the same auto-x attributes we saw in reference
-                descriptor. Figure 5 gives a picture of the reference and collection descriptors </para>
-            <para><inlinemediaobject>
+                descriptor. <xref linkend="fig5"/> gives a picture of the reference and collection descriptors </para>
+            <para><figure xml:id="fig5">
+                <title>Building Blocks</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRAD_Guide/OJB_descriptors.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure></para>
         </section>
         <section role="NotInToc">
             <title>RECAP</title>

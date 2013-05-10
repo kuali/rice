@@ -185,7 +185,7 @@
             components KRAD provides out of the box.</para>
         <section>
             <title> Parts of a Component</title>
-            <para> A component is made up of three different artifacts (see figure 6). The first of
+            <para> A component is made up of three different artifacts (see <xref linkend="fig6"/>). The first of
                 these is a Java class. The Java class defines the properties and behavior the
                 component can have. As we will see later on, the properties are what we can use to
                 configure the component, while the behavior includes things such as how the
@@ -195,11 +195,13 @@
                 (or a composition). In addition, components may extend from other components to
                 inherit properties and behavior. This forms a component hierarchy. The component
                 class may exist anywhere on the class path.</para>
-            <para><inlinemediaobject>
+            <para><figure xml:id="fig6">
+                <title>Building Blocks</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRAD_Guide/componentParts.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure></para>
             <para>The second artifact for a component is its rendering template. The template is a
                 FreeMarker file that renders HTML/JS contents for the component instance. The
                 template is an optional artifact. Components may 'self-render', which means the
@@ -311,12 +313,14 @@
             <para>Recall besides the base 'plumbing' of the UIF, a set of components is provided to
                 build pages with. Each of these components brings a piece of functionality to the
                 framework. Thus we can think of them as 'building blocks' for the framework as shown
-                in Figure 7. </para>
-            <para><inlinemediaobject>
+                in <xref linkend="fig7"/>.</para>
+            <para><figure xml:id="fig7">
+                <title>Building Blocks</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRAD_Guide/componentBuildingBlocks.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure></para>
             <para>Now let's suppose we want to customize a 'core' component.  To do this, we simply
                 change one of the component parts (class, bean, or template). We saw previously how
                 we can change the bean configuration for a component by providing another bean
@@ -391,13 +395,16 @@
                 </orderedlist></para>
             <para>Essentially we need to create the three artifacts for the component just like the
                 core components. Once created, using custom components is no different than using
-                the provided components.  Therefore as depicted in Figure 8, core and custom
+                the provided components.  Therefore as depicted in <xref linkend="fig8"/>, core and custom
                 components work together as part of the framework. </para>
-            <para><inlinemediaobject>
+            <para><figure xml:id="fig8">
+                <title>Building Blocks</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRAD_Guide/componentBuildingBlock2.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure>
+                </para>
             <tip>
                 <para><emphasis role="bold">Planned Feature</emphasis></para>
                 <para><emphasis role="bold">Component 'Drop In': </emphasis> In the future KRAD
@@ -464,7 +471,7 @@
                 Objects in the Spring container, so these objects' instances now contain the
                 developer's configuration. We can then expose these objects to the FreeMarker
                 templates, which will combine the object values with static contents to produce the
-                resulting markup (see figure 6).</para>
+                resulting markup (see <xref linkend="fig6"/>).</para>
         <para>Templates within KRAD are created using the FreeMarker framework. FreeMarker is a
             templating framework that allows template files to be assembled at runtime. To create a
             template in FreeMarker, we start by creating a file with extension .ftl. This can be
@@ -1201,7 +1208,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                     <para>Within templates we can use the interpolation syntax '${}' to output dynamic values.</para>
                 </listitem>
                 <listitem>
-                    <para>By default the UIF Form object, request object, user session, and configuratin properties are made
+                    <para>By default the UIF Form object, request object, user session, and configuration properties are made
                     available to templates.</para>
                 </listitem>
                 <listitem>
@@ -1223,7 +1230,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                     or more times.</para>
                 </listitem>
                 <listitem>
-                    <para>Macros provide the ability to create reusable template content that can be parametrized and create
+                    <para>Macros provide the ability to create reusable template content that can be parameterized and create
                     variables in a local namespace.</para>
                 </listitem>
                 <listitem>
@@ -2088,7 +2095,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <title>KRAD Intellij Project Pane</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KRAD_Guide/kradProjectPane.png"/>
+                    <imagedata fileref="../images/KRAD_Guide/kradProjectPane.png"/> 
                 </imageobject>
             </mediaobject>
         </figure>

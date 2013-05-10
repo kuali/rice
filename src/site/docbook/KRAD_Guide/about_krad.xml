@@ -146,8 +146,8 @@
                     (Simple Object Access Protocol) Web Services allowing access from non Kuali
                     based applications. Rice comes with reference implementations for all services.
                     However, implementations can easily be changed to meet the needs of the
-                    implementing institution. The SOA architecture is depicted in Figure 1.</para>
-                <para><figure><title>Figure 1</title>
+                    implementing institution. The SOA architecture is depicted in <xref linkend="fig1"></xref>.</para>
+                <para><figure xml:id="fig1"><title>Service Based Architecture</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/KRAD_Guide/soa.png"/>
@@ -346,9 +346,9 @@
         <para>Designing a good user interface is an art, but there are development process aspects
             that are highly correlated with projects and brands that are loved by users.  We cover
             two of those here, one having to do with the use of common user interface (UI) artifacts
-            and the other having to do with the teamwork and user engagement model. Figure 2 shows
+            and the other having to do with the teamwork and user engagement model. <xref linkend="fig2"></xref> shows
             the Aspects of UI Development Process Maturity.</para>
-        <para><figure><title>UI Process Maturity</title>
+        <para><figure xml:id="fig2"><title>UI Process Maturity</title>
             <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/KRAD_Guide/ui_process_maturity.png"/>

@@ -514,7 +514,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Left Menu"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LeftMenu-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

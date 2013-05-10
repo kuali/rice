@@ -129,7 +129,7 @@ function showLibraryNav() {
             jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-y", "hidden");
             jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-x", "scroll");
         });
-        jQuery(".uif-pageContentWrapper").animate({width:'700px'}, 25);
+        jQuery(".uif-pageContentWrapper").animate({width:'700px', marginLeft: '256px'}, 25);
 
         jQuery("#Uif-Navigation").css("width", "0");
         jQuery("#Uif-Navigation").show();
@@ -144,7 +144,7 @@ function showLibraryNav() {
             jQuery("#Uif-Navigation").hide();
         }});
 
-        jQuery(".uif-pageContentWrapper").animate({width:'940px'}, 425);
+        jQuery(".uif-pageContentWrapper").animate({width:'940px', marginLeft: '20px'}, 425);
         jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width:'916px'}, 450, function () {
             jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-y", "hidden");
             jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-x", "hidden");

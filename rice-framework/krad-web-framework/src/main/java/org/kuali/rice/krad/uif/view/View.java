@@ -497,7 +497,7 @@ public class View extends ContainerBase {
             } else if (isSinglePageView() && this.getPage() != null) {
                 //single page
                 breadcrumbItem.getUrl().setPageId(this.getPage().getId());
-            } else if (items.get(0) != null) {
+            } else if (!items.isEmpty() && items.get(0) != null) {
                 //multi page
                 breadcrumbItem.getUrl().setPageId(items.get(0).getId());
             }

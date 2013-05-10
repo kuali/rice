@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 /*********** General styles *****************************************************/
-.uif-view {
-    padding-top: 56px;
-}
 
 .demo-sampleAppView {
     min-height: 600px;
@@ -36,7 +33,6 @@
 
 /*********** Home styles *******************************************************/
 .demo-sampleAppHomeView {
-    margin-top: -7px;
     margin-bottom: -8px;
 }
 
@@ -280,7 +276,7 @@
 
 .demo-componentLibView > .uif-viewContentWrapper > .uif-pageContentWrapper {
     float: left;
-    margin-left: 20px;
+    margin-left: 256px;
     width: 700px;
 }
 
@@ -379,6 +375,7 @@
 
 .demo-xLargeLibraryView > .uif-viewContentWrapper > .uif-pageContentWrapper{
     width: 940px;
+    margin: 20px;
 }
 
 .demo-xLargeLibraryView div#Uif-Navigation{
@@ -397,10 +394,6 @@
     display: block;
     position: absolute;
     top: -25px;
-}
-
-.demo-xLargeLibraryView .demo-sampleAppPage {
-    padding-top: 50px;
 }
 
 /**** Source code viewer *********************************************************/
@@ -437,7 +430,6 @@
     min-height: 500px;
     padding-bottom: 24px;
     padding-top: 40px;
-    margin-top: 7px;
 }
 
 
@@ -702,11 +694,7 @@ a.demo-documentationLink {
 .demo-appHeader {
     background-color: black;
     height: 56px;
-    position: fixed;
-    top: 0;
     width: 100%;
-    z-index: 2;
-    display: none;
 }
 
 .demo-brand {
@@ -774,6 +762,16 @@ a.demo-documentationLink {
     padding-bottom: 22px;
     padding-left: 40px;
     padding-top: 22px;
+}
+
+.demo-appFooter .demo-poweredBy {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #999999;
+    font-size: 14px;
+    padding-top: 5px;
+    text-align: center;
 }
 
 .demo-appFooter a {
@@ -960,6 +958,10 @@ div#Demo-RichMessages-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
 }
 
 div#Demo-Suggest-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
+    min-height: 300px;
+}
+
+div#Demo-Breadcrumbs-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 300px;
 }
 

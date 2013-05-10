@@ -23,6 +23,10 @@
 function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
     var breadcrumbsWrapper = jQuery("div#Uif-BreadcrumbWrapper");
 
+    if (!breadcrumbsWrapper.length){
+        return;
+    }
+
     //clear the old breadcrumbs
     breadcrumbsWrapper.empty();
     breadcrumbsWrapper.show();
@@ -32,7 +36,7 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
     var items = breadcrumbList.find("> li");
 
     //dont display if display when one is false and there is only one item
-    if (!displayBreadcrumbsWhenOne && items.length == 1) {
+    if ((!displayBreadcrumbsWhenOne && items.length == 1) || items.length == 0) {
         breadcrumbsWrapper.hide();
         return;
     }

@@ -137,6 +137,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoStickyFooter.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoUnifiedHeader.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoOptionListControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoBreadcrumbs.xml</value>
         <value>classpath:org/kuali/rice/krad/labs</value>
         <value>classpath:org/kuali/rice/krad/labs/kitchensink</value>
       </list>
@@ -229,6 +230,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoStickyFooterResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoUnifiedHeaderResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoOptionListResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoBreadcrumbsResources</value>
         <!-- kitchen sink -->
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewResources</value>
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP2Resources</value>

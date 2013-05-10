@@ -57,6 +57,7 @@
         <value>scripts/kradSampleApp.js</value>
       </list>
     </property>
+    <property name="stickyApplicationHeader" value="true"/>
     <property name="applicationHeader">
       <bean parent="Uif-GlobalApplicationHeader-parentBean"
             p:template="/WEB-INF/ftl/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
@@ -272,7 +273,7 @@
         <property name="items">
           <list>
             <bean id="ComponentLibrary-ShowNavLink" parent="Uif-ActionLink" p:actionScript="showLibraryNav();"
-                  p:actionLabel=">> Show Library Navigation"/>
+                  p:actionLabel="@{#view.exampleSize ne null and #view.exampleSize.toString() eq 'XLARGE'?'&gt;&gt; Open Library Navigation':'&lt;&lt; Close Library Navigation'}"/>
           </list>
         </property>
       </bean>
@@ -498,8 +499,8 @@
   <bean id="ComponentLibrary-Nav-Widgets" p:headerText="Widgets" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <!--        <bean parent="Uif-Link" p:linkText="Breadcrumbs"
-        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>-->
+        <bean parent="Uif-Link" p:linkText="Breadcrumbs"
+        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Disclosure"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Suggest"

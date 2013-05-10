@@ -128,8 +128,9 @@
                         </listitem>
                         <listitem>
                             <para>breadcrumbs – A Breadcrumbs widget used to provide application
-                                crumbs. Note this provides the location of the view within the
-                                application, not the 'trail'</para>
+                                crumbs. Note this provides the conceptial location of the view
+                                within the application, not the 'trail', unless you are using
+                                path-based breadcrumbs.</para>
                         </listitem>
                         <listitem>
                             <para>growls – Growls widget that can be used to configure growls that
@@ -392,7 +393,14 @@
             They give the user a way to navigate to "parent" views/urls that may be associated with
             your application and are related to the View itself.  Because different applications
             have the ability to build out various unique site structures with Krad, what appears in
-            the breadcrumb trail for a View is highly configurable.  </para>
+            the breadcrumb trail for a View is highly configurable.  <figure>
+                <title>Breadcrumbs Appearance</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/breadcrumbs.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure></para>
         <para>In the UI, Breadcrumbs are part of every View and appear at the very top of each View
             below the application's header and below the View's topGroup (if these are configured).
             By default, with no configuration, the breadcrumbs will contain a View breadcrumb, with
@@ -402,7 +410,6 @@
             breadcrumbs in the trail, the Breadcrumbs widget is omitted from the View.</para>
         <para>However, there are various ways to customize breadcrumbs beyond this default
             behavior.</para>
-        <para/>
         <section>
             <title>BreadcrumbItem</title>
             <para>A BreadcrumbItem represents the label and the url for a breadcrumb that appears in
@@ -474,7 +481,15 @@
                             that will appear at the start of the breadcrumb trail.  These should
                             represent the trail back to home (often one item labeled "Home").  These
                             breadcrumbs will appear before any ParentLocations or path-based
-                            breadcrumbs (described later).</para>
+                            breadcrumbs (described
+                            later).<programlisting>    &lt;property name="breadcrumbOptions.homewardPathBreadcrumbs">
+      &lt;list>
+        &lt;bean parent="Uif-BreadcrumbItem">
+          &lt;property name="label" value="Home"/>
+          &lt;property name="url.href" value="@{#ConfigProperties['application.url']}"/>
+        &lt;/bean>
+      &lt;/list>
+    &lt;/property></programlisting></para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">preViewBreadcrumbs</emphasis> - breadcrumbs that
@@ -484,14 +499,39 @@
                     <listitem>
                         <para><emphasis role="bold">prePageBreadcrumbs</emphasis> - breadcrumbs that
                             will appear before the breadcrumb represented by the current PageGroup's
-                            BreadcrumbItem</para>
+                            BreadcrumbItem<programlisting>    &lt;property name="breadcrumbOptions.preViewBreadcrumbs">
+      &lt;list>
+        &lt;bean parent="Uif-BreadcrumbItem" p:label="Application"
+              p:url.href="@{#ConfigProperties['application.url']}"/>
+      &lt;/list>
+    &lt;/property>
+    &lt;property name="breadcrumbOptions.prePageBreadcrumbs">
+      &lt;list>
+        &lt;bean parent="Uif-BreadcrumbItem" p:label="Previous Page"
+              p:url.viewId="Demo-Breadcrumbs" p:url.pageId="Demo-Breadcrumbs-Page1"
+              p:url.controllerMapping="/kradsampleapp"/>
+      &lt;/list>
+    &lt;/property></programlisting></para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">breadcrumbOverrides</emphasis> - the breadcrumbs
                             in this list will be used instead of any configured BreadcrumbItems on
                             the View, PageGroup, or in the preViewBreadcrumbs and
                             prePageBreadcrumbs.  homewardPathBreadcrumbs and
-                            ParentLocation/path-based breadcrumbs will still render.</para>
+                            ParentLocation/path-based breadcrumbs will still
+                            render.<programlisting>    &lt;property name="breadcrumbOptions.breadcrumbOverrides">
+      &lt;list>
+        &lt;bean parent="Uif-BreadcrumbItem" p:label="Application"
+              p:url.href="@{#ConfigProperties['application.url']}"/>
+        &lt;bean parent="Uif-BreadcrumbItem" p:label="Breadcrumbs Demo"
+              p:url.viewId="Demo-Breadcrumbs-View" p:url.controllerMapping="/kradsampleapp"/>
+        &lt;bean parent="Uif-BreadcrumbItem" p:label="Override Demo"
+              p:url.viewId="Demo-Breadcrumbs-View9" p:url.controllerMapping="/kradsampleapp"/>
+        &lt;bean parent="Uif-BreadcrumbItem" p:label="Demo Page"
+              p:url.viewId="Demo-Breadcrumbs-View9" p:url.pageId="Demo-Breadcrumbs-Page1"
+              p:url.controllerMapping="/kradsampleapp"/>
+      &lt;/list>
+    &lt;/property></programlisting></para>
                     </listitem>
                 </itemizedlist></para>
             <para>The PageGroup BreadcrumbOptions object have more options defined in its class
@@ -562,10 +602,10 @@
             <para>In this example, a parent location is defined which points to the
                 "UifBreadcrumbTest2" View and "/uicomponents" controller.  Instead of deriving the
                 title of this View from the ParentLocation's View, we are overriding it to display
-                ParentView.<programlisting>    &lt;property name="parentLocation.parentViewLabel" value="Parent View"/>
+                "Parent
+                View".<programlisting>    &lt;property name="parentLocation.parentViewLabel" value="Parent View"/>
     &lt;property name="parentLocation.parentViewUrl.viewId" value="UifBreadcrumbTest2"/>
     &lt;property name="parentLocation.parentViewUrl.controllerMapping" value="/uicomponents"/></programlisting></para>
-            <para/>
         </section>
         <section>
             <title>Path-based Breadcrumbs</title>
@@ -594,11 +634,20 @@
                         </listitem>
                     </itemizedlist></para>
             </para>
+            <para>Example of setting up path-based breadcrumbs and a link which will continue the
+                flow (continue collecting BreadcrumbItems for the trail) when clicked.  If the view
+                we are navigating to is also using path-based breadcrumbs, then the collected items
+                will be displayed.</para>
+            <programlisting>&lt;property name="breadcrumbs.usePathBasedBreadcrumbs" value="true"/>
+...
+&lt;!-- query parameter "flow" on the href is what continues the history flow (continues the path-based breadcrumbs) -->
+&lt;bean parent="Uif-Link" p:linkText="Click me to continue chaining path-based breadcrumbs"
+    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View8&amp;amp;methodToCall=start&amp;amp;<emphasis role="bold">flow=@{flowKey}</emphasis>"/></programlisting>
             <para>Like ParentLocation breadcrumbs, path-based breadcrumbs derive the BreadcrumbItems
-                from the previous Views in the HistoryFlow.  ParentLocation breadcrumbs and
-                path-based breadcrumbs cannot be used together.  The current usage of path-based
-                breadcrumbs in the Krad framework is for Lookup and Inquiry lightbox breadcrumb
-                trails.</para>
+                from the previous Views in the HistoryFlow (but do so while the user is navigating).
+                ParentLocation breadcrumbs and path-based breadcrumbs cannot be used together.  The
+                main usage of path-based breadcrumbs in the Krad framework is for Lookup and Inquiry
+                lightbox breadcrumb trails.</para>
         </section>
         <section>
             <title>Understanding Breadcrumb Rendering order</title>
@@ -628,13 +677,12 @@
                                     </listitem>
                                 </itemizedlist></para>
                         </listitem>
-                    </itemizedlist></para>
+                    </itemizedlist>For example, in most views, you would like breadcrumbs to appear
+                    as: "Home > View1 > Page".  The only setup that needs to be done is to either
+                    setup homewardPathBreadcrumbs with a home BreadcrumbItem or use the View's
+                    ParentLocation pointing to a home url (because the "View1" and "Page"
+                    breadcrumbs are automated if not configured).  </para>
             </para>
-            <para>For example, in most views, you would like breadcrumbs to appear as: "Home > View1
-                > Page".  The only setup that needs to be done is to either setup
-                homewardPathBreadcrumbs with a home BreadcrumbItem or use the View's ParentLocation
-                pointing to a home url (because the "View1" and "Page" breadcrumbs are automated if
-                not configured).  </para>
             <para>Inorder to chose the appropriate mechanism to use in this scenario, it is up to
                 your application needs, but if this View potentially links to another View, using
                 ParentLocation would allow you to inherit the "Home" breadcrumb (if you make "View1"

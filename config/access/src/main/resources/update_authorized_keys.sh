@@ -42,6 +42,7 @@ ec2-user@env7.rice.kuali.org
 ec2-user@env8.rice.kuali.org
 ec2-user@env9.rice.kuali.org
 ec2-user@env10.rice.kuali.org
+ec2-user@env11.rice.kuali.org
 )
 
 # Make sure key file exists and it is not zero byte

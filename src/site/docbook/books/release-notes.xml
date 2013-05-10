@@ -27,8 +27,8 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para> Rice ${project.version} is a bug fix release consisting of one correction for a
-                version compatibility issue with Rice 2.1.4.</para>
+            <para> Rice ${project.version} is a bug fix release with some documentation
+                updates.</para>
         </section>
         <section>
             <title>Download</title>
@@ -57,13 +57,105 @@
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
     </section>
+    <section xml:id="upgrade-guide" xreflabel="Upgrade Guide">
+        <title>Upgrade Guide</title>
+        <caution><para>We recommend backing up your database before performing any upgrade!</para></caution>
+        <section>
+            <title>Upgrading the server database</title>
+            <para>MySQL and Oracle scripts for performing these updates are available in the
+                following locations in the Rice distribution downloads:<variablelist>
+                    <varlistentry>
+                        <term>MySQL</term>
+                        <listitem>
+                            <para><code>scripts/upgrades/2.1.5 to
+                                    2.1.6/final/update_final_mysql.sql</code></para>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>Oracle</term>
+                        <listitem>
+                            <para><code>scripts/upgrades/2.1.5 to
+                                    2.1.6/final/update_final_oracle.sql</code></para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist></para>
+        </section>
+        <section>
+            <title>Upgrading the client database</title>
+            <para>MySQL and Oracle scripts for performing these updates are available in the
+                following locations in the Rice distribution downloads:<variablelist>
+                    <varlistentry>
+                        <term>MySQL</term>
+                        <listitem>
+                            <para><code>scripts/upgrades/2.1.5 to
+                                    2.1.6/final/update_client_final_mysql.sql</code></para>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>Oracle</term>
+                        <listitem>
+                            <para><code>scripts/upgrades/2.1.5 to
+                                    2.1.6/final/update_client_final_oracle.sql</code></para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist></para>
+        </section>
+    </section>
     <section xml:id="items_addressed_in_rice">
         <title>Items Addressed in Rice ${project.version}</title>
                 <itemizedlist>
                     <listitem>
-                        <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9253"
-                            >KULRICE-9253</link>] - Backwards compabitility broken for RoleTypeService</para>
-                    </listitem>
+                        <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-7930"
+                            >KULRICE-7930</link>] - Person document is allowing add of role memberships with bad information</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-8844"
+                    >KULRICE-8844</link>] - KualiDocumentFormBase permission checks are more expensive than they have to be</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-8967"
+                    >KULRICE-8967</link>] - VC integration test KewWsdlCompatibilityTest.compareKewApiWsdls false negatives</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9143"
+                    >KULRICE-9143</link>] - Non data dictionary attributes missing shortLabel in DataDictionaryTypeServiceBase</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9144"
+                    >KULRICE-9144</link>] - NPE from AttributesMapBuilder when maxLength not set on AttributeDefinition</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9153"
+                    >KULRICE-9153</link>] - Analyze IU patch for preventing role member lookup from causing out of memory exceptions</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9265"
+                    >KULRICE-9265</link>] - Validation change to support ad hoc routing</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9268"
+                    >KULRICE-9268</link>] - Investigate QuickLinksServiceTest.testGetRecentSearches</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9272"
+                    >KULRICE-9272</link>] - Instructions to setting up a Rice cluster are incorrect (installation guide)</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9288"
+                    >KULRICE-9288</link>] - org.kuali.rice.kns.service.impl.PessimisticLockServiceTest fails with Column 'SESN_ID' cannot be null</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9299"
+                    >KULRICE-9299</link>] - Entering nothing into the Login prompt and hitting enter returns stack trace</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9358"
+                    >KULRICE-9358</link>] - Form and WorkflowDocument no longer being persisted to session after disabling the SessionDocumentService</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9386"
+                    >KULRICE-9386</link>] - Issues with doctype xml ingestion</para>
+            </listitem>
                 </itemizedlist>           
         
     </section>

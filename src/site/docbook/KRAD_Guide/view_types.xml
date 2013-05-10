@@ -1439,7 +1439,7 @@
         <title>Message View</title>
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/KRAD_Guide/messageView.png"/>
+            <imagedata fileref="../images/KRAD_Guide/messageView.png" contentwidth="470"/>
           </imageobject>
         </mediaobject>
       </figure>

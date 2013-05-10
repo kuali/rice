@@ -387,8 +387,7 @@
         <title>Data Object Developer</title>
         <mediaobject>
           <imageobject>
-            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_DOMainMenu.jpg" width="500px"
-                       depth="500px"/>
+            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_DOMainMenu.jpg" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
         <para>The Data Object is a simple java class that contains a number of properties (data
@@ -475,8 +474,7 @@
         <title>DDL Developer</title>
         <mediaobject>
           <imageobject>
-            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_DDLMainMenu.jpg" width="500px"
-                       depth="500px"/>
+            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_DDLMainMenu.jpg" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
         <para>
@@ -576,8 +574,7 @@
         <title>OJB Developer</title>
         <mediaobject>
           <imageobject>
-            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_OJBMainMenu.jpg" width="500px"
-                       depth="500px"/>
+            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_OJBMainMenu.jpg" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
         <para> The OJB file is a OJB Class Descriptor using Apache OJB Repository XML files. The
@@ -675,8 +672,7 @@
         <title>Data Dictionary Developer</title>
         <mediaobject>
           <imageobject>
-            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_DDMainMenu.jpg" width="500px"
-                       depth="500px"/>
+            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_DDMainMenu.jpg" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
         <para>The Data Dictionary File is an xml file generated using the Spring Beans format. The
@@ -800,8 +796,7 @@
         <title>View Developer</title>
         <mediaobject>
           <imageobject>
-            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_ViewMainMenu.jpg" width="500px"
-                       depth="500px"/>
+            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDO_ViewMainMenu.jpg" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
         <para>The View File is an xml file generated using the Spring Beans format. The Views
@@ -1047,8 +1042,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDV_MainMenu.jpg" width="500px"
-                       depth="500px"/>
+            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDV_MainMenu.jpg" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
 

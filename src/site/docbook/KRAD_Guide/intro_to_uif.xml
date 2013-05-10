@@ -1175,9 +1175,9 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             </programlisting>
           
             <para>The template macro will then create the call for invoking the component macro, and
-                passing the component parameter (and any additional parameters). The figure below
+                passing the component parameter (and any additional parameters). <xref linkend="KRAD_Rendering_Process"/>
                 depicts the rendering process.</para>
-            <figure>
+            <figure xml:id="KRAD_Rendering_Process">
                 <title>KRAD Rendering Process</title>
                 <mediaobject>
                     <imageobject>
@@ -1833,9 +1833,9 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 named <emphasis role="keyword">Container</emphasis>. The main job of container
                 components is to hold a configured list of components and render them using a
                 layout. A container is divided into three parts: the header, the body, and the
-                footer. Generally, these appear in the user interface as show by the figure below: </para>
-            <figure>
-                <title>KRAD Containter Parts</title>
+                footer. Generally, these appear in the user interface as show by <xref linkend="KRAD_Container_Parts"/>. </para>
+            <figure xml:id="KRAD_Container_Parts">
+                <title>KRAD Container Parts</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRAD_Guide/KRAD_Container_Parts.png"/>

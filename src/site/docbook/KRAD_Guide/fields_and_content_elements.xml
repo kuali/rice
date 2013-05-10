@@ -132,10 +132,10 @@ public class FieldBase extends ComponentBase implements Field {
       <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="LEFT"/&gt;</programlisting>
       <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="TOP"/&gt;</programlisting>
       <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="RIGHT"/&gt;</programlisting>
-      <para>These three configurations are shown in the figure below. </para>
-      <figure>
-        <title>labelPlacement Options</title>
-        <mediaobject>
+      <para>These three configurations are shown in <xref linkend="figplacement"/>. </para>
+       <figure xml:id="figplacement">
+          <title>labelPlacement Options</title>
+          <mediaobject>
           <imageobject>
             <imagedata fileref="../images/KRAD_Guide/labelPlacement.png"/>
           </imageobject>
@@ -244,8 +244,8 @@ public class BookForm {
       <para>&lt;bean parent="Uif-DataField" p:propertyName="bookId" p:label="Book"/&gt;</para>
       <para>Recall from the previous section that our data field includes a label element and, by
         default, is configured to be placed to the left of the field content. Therefore, the result
-        of this will appear as in the figure below.</para>
-      <figure>
+        of this will appear as in <xref linkend="dataFieldLabel"/>.</para>
+      <figure xml:id="dataFieldLabel">
         <title>Data Field Label</title>
         <mediaobject>
           <imageobject>
@@ -288,7 +288,7 @@ public class Book {
                 for the input field using the <emphasis role="keyword">control</emphasis>
                 property:</para>
       <programlisting>
-&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:label="Book Id"&gt;
+&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:label="Book"&gt;
     &lt;property name="control"&gt;
     &lt;bean parent="Uif-TextControl"/&gt;
     &lt;/property&gt;
@@ -297,8 +297,17 @@ public class Book {
         tag to provide the value. In this example, we are using the text control whose bean id is
         'Uif-TextControl'. If needed, we could set properties on the text control component using
         the p namespace or nested property tags.</para>
-      <para>In the figure below we see the result of the above input field
+      <para>In <xref linkend="inputfield"/> we see the result of the above input field
                 configuration.</para>
+      <para>
+        <figure xml:id="inputfield">
+          <title>Input Field</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/inputField.png"/>
+            </imageobject>
+          </mediaobject></figure>
+      </para>
       <para>The rendered HTML for our input field will be the following:</para>
       <programlisting>&lt;input id=&quot;u66&quot; name=&quot;bookId&quot; class=&quot;uif-control uif-textControl valid&quot; tabindex=&quot;0&quot; type=&quot;text&quot; value=&quot;&quot; size=&quot;30&quot; aria-invalid=&quot;false&quot;&gt;</programlisting>
       <para>Where did all these attributes come from? Since we didn't assign an id, the framework

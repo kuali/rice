@@ -37,9 +37,9 @@ import java.util.Map;
  * A PageGroup represents a page of a View.
  *
  * <p>
- *     PageGroups should only be used with a View component.  The contain the main content that will be seen by the
- *     user using the View.  Like all other groups, PageGroup can contain items, headers and footers.  Pages also
- *     have their own BreadcrumbItem.
+ * PageGroups should only be used with a View component.  The contain the main content that will be seen by the
+ * user using the View.  Like all other groups, PageGroup can contain items, headers and footers.  Pages also
+ * have their own BreadcrumbItem.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -68,6 +68,21 @@ public class PageGroup extends Group {
     @Override
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
+
+        //check to see if one of the items is a page, if so throw an exception
+        for (Component item : this.getItems()) {
+            if (item != null && item instanceof PageGroup) {
+                throw new RuntimeException("The page with id='"
+                        + this.getId()
+                        + "' contains a page with id='"
+                        + item.getId()
+                        + "'.  Nesting a page within a page is not allowed since only one "
+                        + "page's content can be shown on the View "
+                        + "at a time.  This may have been caused by possible misuse of the singlePageView flag (when "
+                        + "this flag is true, items set on the View become items of the single page.  Instead use "
+                        + "the page property on the View to set the page being used).");
+            }
+        }
 
         setupBreadcrumbs(view, model);
     }
@@ -115,7 +130,7 @@ public class PageGroup extends Group {
                 && viewBreadcrumbOptions.getHomewardPathBreadcrumbs() != null) {
             breadcrumbOptions.setHomewardPathBreadcrumbs(viewBreadcrumbOptions.getHomewardPathBreadcrumbs());
 
-            for (BreadcrumbItem item: breadcrumbOptions.getHomewardPathBreadcrumbs()){
+            for (BreadcrumbItem item : breadcrumbOptions.getHomewardPathBreadcrumbs()) {
                 view.assignComponentIds(item);
             }
         }
@@ -125,7 +140,7 @@ public class PageGroup extends Group {
                 && viewBreadcrumbOptions.getPrePageBreadcrumbs() != null) {
             breadcrumbOptions.setPrePageBreadcrumbs(viewBreadcrumbOptions.getPrePageBreadcrumbs());
 
-            for (BreadcrumbItem item: breadcrumbOptions.getPrePageBreadcrumbs()){
+            for (BreadcrumbItem item : breadcrumbOptions.getPrePageBreadcrumbs()) {
                 view.assignComponentIds(item);
             }
         }
@@ -135,7 +150,7 @@ public class PageGroup extends Group {
                 && viewBreadcrumbOptions.getPreViewBreadcrumbs() != null) {
             breadcrumbOptions.setPreViewBreadcrumbs(viewBreadcrumbOptions.getPreViewBreadcrumbs());
 
-            for (BreadcrumbItem item: breadcrumbOptions.getPreViewBreadcrumbs()){
+            for (BreadcrumbItem item : breadcrumbOptions.getPreViewBreadcrumbs()) {
                 view.assignComponentIds(item);
             }
         }
@@ -145,7 +160,7 @@ public class PageGroup extends Group {
                 && viewBreadcrumbOptions.getBreadcrumbOverrides() != null) {
             breadcrumbOptions.setBreadcrumbOverrides(viewBreadcrumbOptions.getBreadcrumbOverrides());
 
-            for (BreadcrumbItem item: breadcrumbOptions.getBreadcrumbOverrides()){
+            for (BreadcrumbItem item : breadcrumbOptions.getBreadcrumbOverrides()) {
                 view.assignComponentIds(item);
             }
         }
@@ -264,25 +279,6 @@ public class PageGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this);
-
-        // Checks that no invalid items are present
-        for (int i = 0; i < getItems().size(); i++) {
-            if (getItems().get(i).getClass() == PageGroup.class || getItems().get(i).getClass()
-                    == NavigationGroup.class) {
-                String currentValues[] = {"item(" + i + ").class =" + getItems().get(i).getClass()};
-                tracer.createError("Items in PageGroup cannot be PageGroup or NaviagtionGroup", currentValues);
-            }
-        }
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
      * The breadcrumbOptions specific to this page.
      *
      * <p>
@@ -358,5 +354,24 @@ public class PageGroup extends Group {
             this.getFooter().addDataAttribute(UifConstants.DataAttributes.STICKY_FOOTER, Boolean.toString(
                     stickyFooter));
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that no invalid items are present
+        for (int i = 0; i < getItems().size(); i++) {
+            if (getItems().get(i).getClass() == PageGroup.class || getItems().get(i).getClass()
+                    == NavigationGroup.class) {
+                String currentValues[] = {"item(" + i + ").class =" + getItems().get(i).getClass()};
+                tracer.createError("Items in PageGroup cannot be PageGroup or NaviagtionGroup", currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

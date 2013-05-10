@@ -1,26 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    Copyright 2005-2013 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<xsd:schema xmlns="http://www.kuali.org/krad/schema" xmlns:spring="http://www.springframework.org/schema/beans"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            attributeFormDefault="unqualified" elementFormDefault="qualified"
-            targetNamespace="http://www.kuali.org/krad/schema"
-            xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns="http://www.kuali.org/krad/schema" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.kuali.org/krad/schema" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
   <xsd:import namespace="http://www.springframework.org/schema/beans"/>
   <xsd:include schemaLocation="krad-elements.xsd"/>
   <xsd:complexType name="basicList-type">
@@ -82,8 +60,7 @@
     </xsd:attribute>
     <xsd:attribute name="onBlurScript">
       <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en">
-          <![CDATA[Script that should be executed when the component's onBlur event is fired]]></xsd:documentation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onBlur event is fired]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="selfRendered">
@@ -96,6 +73,11 @@
  will not be invoked and the renderOutput String will be written to the
  response as is.
  ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="additionalCssClasses">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="required">
@@ -140,6 +122,11 @@
       <xsd:annotation>
         <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
  component is refreshed]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="postRenderContent">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="onKeyDownScript">
@@ -216,8 +203,7 @@
     </xsd:attribute>
     <xsd:attribute name="onLoadScript">
       <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en">
-          <![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="methodToCallOnRefresh">
@@ -258,14 +244,12 @@
     </xsd:attribute>
     <xsd:attribute name="componentCode">
       <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en">
-          <![CDATA[documentation not available]]></xsd:documentation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="onDocumentReadyScript">
       <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en">
-          <![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="refreshWhenChangedPropertyNames">
@@ -370,7 +354,7 @@
 
  The component MUST BE a container or field type. conditionalRefresh is
  defined in a limited Spring EL syntax. Only valid form property names,
- and, or, logical comparison operators (non-arithmetic), #listContains, #emptyList, and the matches
+ and, or, logical comparison operators (non-arithmetic), and the matches
  clause are allowed. String and regex values must use single quotes ('),
  booleans must be either true or false, numbers must be a valid double
  either negative or positive.
@@ -407,15 +391,14 @@
     </xsd:attribute>
     <xsd:attribute name="namespaceCode">
       <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en">
-          <![CDATA[documentation not available]]></xsd:documentation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="progressiveRender">
       <xsd:annotation>
         <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST BE a
  container or field type. progressiveRender is defined in a limited Spring EL syntax. Only valid
- form property names, and, or, logical comparison operators (non-arithmetic), #listContains, #emptyList, matches
+ form property names, and, or, logical comparison operators (non-arithmetic), and the matches
  clause are allowed. String and regex values must use single quotes ('), booleans must be either true or false,
  numbers must be a valid double, either negative or positive.
 
@@ -436,6 +419,11 @@
         <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options
  that will export that options as a JavaScript Map for use in js and
  jQuery plugins]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="preRenderContent">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="onMouseOutScript">
@@ -478,8 +466,7 @@
     </xsd:attribute>
     <xsd:attribute name="componentSecurity">
       <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en">
-          <![CDATA[Security object that indicates what authorization (permissions) exist for the component]]></xsd:documentation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Security object that indicates what authorization (permissions) exist for the component]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="readOnly">
@@ -620,6 +607,11 @@
  fired]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
+    <xsd:attribute name="templateName">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"/>
+      </xsd:annotation>
+    </xsd:attribute>
     <xsd:attribute name="cssClasses">
       <xsd:annotation>
         <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
@@ -633,26 +625,21 @@
  ]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="templateName">
-      <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"/>
-      </xsd:annotation>
-    </xsd:attribute>
     <xsd:attribute name="parent" type="xsd:string"/>
     <xsd:anyAttribute processContents="skip"/>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Breadcrumbs">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
+    </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.keyvalues.KeyValuesBase">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
       <xsd:element ref="keyValuesFinder-bean"/>
-    </xsd:choice>
-  </xsd:complexType>
-  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Disclosure">
-    <xsd:choice maxOccurs="unbounded" minOccurs="0">
-      <xsd:element ref="spring:ref"/>
-      <xsd:element ref="spring:bean"/>
-      <xsd:element ref="disclosure-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.view.ViewAuthorizer">
@@ -662,11 +649,26 @@
       <xsd:element ref="viewAuthorizer-bean"/>
     </xsd:choice>
   </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Disclosure">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="disclosure-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.widget.Help">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
       <xsd:element ref="help-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.ParentLocation">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="parentLocation-bean"/>
+      <xsd:element ref="ricePortalParentLocation"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.layout.LayoutManager">
@@ -779,6 +781,14 @@
       <xsd:element ref="businessObjectEntry-bean"/>
     </xsd:choice>
   </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.BreadcrumbOptions">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbOptions-bean"/>
+      <xsd:element ref="pageBreadcrumbOptions-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.control.HiddenControl">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
@@ -820,18 +830,20 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="fieldSecurity-bean"/>
       <xsd:element ref="disclosure-bean"/>
       <xsd:element ref="tabSubSection-bean"/>
       <xsd:element ref="tabGroup-bean"/>
       <xsd:element ref="tabSection-bean"/>
       <xsd:element ref="help-bean"/>
+      <xsd:element ref="parentLocation-bean"/>
+      <xsd:element ref="ricePortalParentLocation"/>
       <xsd:element ref="lookupView-bean"/>
       <xsd:element ref="kimPersonControl-bean"/>
       <xsd:element ref="treeGroup-bean"/>
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="colGroupingField-bean"/>
       <xsd:element ref="messageField-bean"/>
       <xsd:element ref="spaceField-bean"/>
@@ -849,11 +861,11 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
       <xsd:element ref="tooltip-bean"/>
       <xsd:element ref="tooltipFocus-bean"/>
       <xsd:element ref="tooltipHelp-bean"/>
@@ -890,8 +902,12 @@
       <xsd:element ref="gridLayout-bean"/>
       <xsd:element ref="sixColumnGridLayout-bean"/>
       <xsd:element ref="twoColumnGridLayout-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="dataTable-bean"/>
       <xsd:element ref="pageValidationMessages-bean"/>
+      <xsd:element ref="url-bean"/>
       <xsd:element ref="fieldValidationMessages-bean"/>
       <xsd:element ref="formFooter-bean"/>
       <xsd:element ref="maintenanceVerticalBoxSubSection-bean"/>
@@ -961,6 +977,7 @@
       <xsd:element ref="fieldBase-withLabel-bean"/>
       <xsd:element ref="collectionGroupSecurity-bean"/>
       <xsd:element ref="widget-bean"/>
+      <xsd:element ref="attributeQueryConfig-bean"/>
       <xsd:element ref="image-bean"/>
       <xsd:element ref="helpImage-bean"/>
       <xsd:element ref="directInquiryImage-bean"/>
@@ -1091,9 +1108,9 @@
       <xsd:element ref="maintenanceCompare-modifier-bean"/>
       <xsd:element ref="lookupCriteriaInputField-bean"/>
       <xsd:element ref="imageField-bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="spinner-bean"/>
       <xsd:element ref="attributeSecurity-bean"/>
-      <xsd:element ref="actionField-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="bindingInfo-bean"/>
@@ -1102,6 +1119,8 @@
       <xsd:element ref="incidentReportView-bean"/>
       <xsd:element ref="initiatedDocumentView-KNS-bean"/>
       <xsd:element ref="initiatedDocumentView-bean"/>
+      <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
       <xsd:element ref="linkField-bean"/>
       <xsd:element ref="richTable-bean"/>
       <xsd:element ref="pagedRichTable-bean"/>
@@ -1131,6 +1150,7 @@
       <xsd:element ref="suggest-bean"/>
       <xsd:element ref="inquiry-bean"/>
       <xsd:element ref="reorderer-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
       <xsd:element ref="workflowAttributeMetadata-bean"/>
       <xsd:element ref="navigationGroup-bean"/>
       <xsd:element ref="menuNavigationGroup-bean"/>
@@ -1141,6 +1161,7 @@
       <xsd:element ref="inquiryPage-bean"/>
       <xsd:element ref="disclosure-page-bean"/>
       <xsd:element ref="lookupPage-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="columnCalculationInfo-sum-bean"/>
       <xsd:element ref="columnCalculationInfo-bean"/>
       <xsd:element ref="columnCalculationInfo-max-bean"/>
@@ -1173,6 +1194,7 @@
       <xsd:element ref="dropdownControl-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.container.ActiveCollectionFilter">
@@ -1233,11 +1255,13 @@
       <xsd:element ref="workflowPropertyGroup-bean"/>
     </xsd:choice>
   </xsd:complexType>
-  <xsd:complexType name="org.kuali.rice.krad.uif.view.History">
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.LightTable">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
-      <xsd:element ref="history-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.element.DataTable">
@@ -1245,6 +1269,13 @@
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
       <xsd:element ref="dataTable-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.UrlInfo">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="url-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.AttributeDefinitionBase">
@@ -1279,6 +1310,9 @@
       <xsd:element ref="treeGroup-bean"/>
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="formFooter-bean"/>
       <xsd:element ref="maintenanceVerticalBoxSubSection-bean"/>
       <xsd:element ref="disclosureActionsGroup-bean"/>
@@ -1434,9 +1468,9 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="disclosure-bean"/>
       <xsd:element ref="help-bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
       <xsd:element ref="tooltip-bean"/>
       <xsd:element ref="tooltipFocus-bean"/>
@@ -1453,6 +1487,7 @@
       <xsd:element ref="collectionQuickFinder-bean"/>
       <xsd:element ref="quickFinderByScript-bean"/>
       <xsd:element ref="growls-bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="spinner-bean"/>
       <xsd:element ref="richTable-bean"/>
       <xsd:element ref="pagedRichTable-bean"/>
@@ -1668,6 +1703,7 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="disclosure-bean"/>
       <xsd:element ref="tabSubSection-bean"/>
       <xsd:element ref="tabGroup-bean"/>
@@ -1678,7 +1714,6 @@
       <xsd:element ref="treeGroup-bean"/>
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="colGroupingField-bean"/>
       <xsd:element ref="messageField-bean"/>
       <xsd:element ref="spaceField-bean"/>
@@ -1696,11 +1731,11 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
       <xsd:element ref="tooltip-bean"/>
       <xsd:element ref="tooltipFocus-bean"/>
       <xsd:element ref="tooltipHelp-bean"/>
@@ -1724,6 +1759,9 @@
       <xsd:element ref="createNewLink-bean"/>
       <xsd:element ref="kimGroupControl-bean"/>
       <xsd:element ref="blockUI-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="dataTable-bean"/>
       <xsd:element ref="pageValidationMessages-bean"/>
       <xsd:element ref="fieldValidationMessages-bean"/>
@@ -1912,8 +1950,8 @@
       <xsd:element ref="view-knsTheme-bean"/>
       <xsd:element ref="lookupCriteriaInputField-bean"/>
       <xsd:element ref="imageField-bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="spinner-bean"/>
-      <xsd:element ref="actionField-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="formView-bean"/>
@@ -1921,6 +1959,8 @@
       <xsd:element ref="incidentReportView-bean"/>
       <xsd:element ref="initiatedDocumentView-KNS-bean"/>
       <xsd:element ref="initiatedDocumentView-bean"/>
+      <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
       <xsd:element ref="linkField-bean"/>
       <xsd:element ref="richTable-bean"/>
       <xsd:element ref="pagedRichTable-bean"/>
@@ -1942,6 +1982,7 @@
       <xsd:element ref="suggest-bean"/>
       <xsd:element ref="inquiry-bean"/>
       <xsd:element ref="reorderer-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
       <xsd:element ref="navigationGroup-bean"/>
       <xsd:element ref="menuNavigationGroup-bean"/>
       <xsd:element ref="tabNavigationGroup-bean"/>
@@ -1951,6 +1992,7 @@
       <xsd:element ref="inquiryPage-bean"/>
       <xsd:element ref="disclosure-page-bean"/>
       <xsd:element ref="lookupPage-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint">
@@ -2006,18 +2048,20 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="fieldSecurity-bean"/>
       <xsd:element ref="disclosure-bean"/>
       <xsd:element ref="tabSubSection-bean"/>
       <xsd:element ref="tabGroup-bean"/>
       <xsd:element ref="tabSection-bean"/>
       <xsd:element ref="help-bean"/>
+      <xsd:element ref="parentLocation-bean"/>
+      <xsd:element ref="ricePortalParentLocation"/>
       <xsd:element ref="lookupView-bean"/>
       <xsd:element ref="kimPersonControl-bean"/>
       <xsd:element ref="treeGroup-bean"/>
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="helpDefinition-bean"/>
       <xsd:element ref="colGroupingField-bean"/>
       <xsd:element ref="messageField-bean"/>
@@ -2036,11 +2080,11 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
       <xsd:element ref="tooltip-bean"/>
       <xsd:element ref="tooltipFocus-bean"/>
       <xsd:element ref="tooltipHelp-bean"/>
@@ -2079,8 +2123,12 @@
       <xsd:element ref="gridLayout-bean"/>
       <xsd:element ref="sixColumnGridLayout-bean"/>
       <xsd:element ref="twoColumnGridLayout-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="dataTable-bean"/>
       <xsd:element ref="pageValidationMessages-bean"/>
+      <xsd:element ref="url-bean"/>
       <xsd:element ref="fieldValidationMessages-bean"/>
       <xsd:element ref="inactivationBlockingDefinition-bean"/>
       <xsd:element ref="attributeDefinition-bean"/>
@@ -2154,6 +2202,7 @@
       <xsd:element ref="externalizableAttributeDefinitionProxy-bean"/>
       <xsd:element ref="collectionGroupSecurity-bean"/>
       <xsd:element ref="widget-bean"/>
+      <xsd:element ref="attributeQueryConfig-bean"/>
       <xsd:element ref="image-bean"/>
       <xsd:element ref="helpImage-bean"/>
       <xsd:element ref="directInquiryImage-bean"/>
@@ -2286,10 +2335,10 @@
       <xsd:element ref="maintenanceCompare-modifier-bean"/>
       <xsd:element ref="lookupCriteriaInputField-bean"/>
       <xsd:element ref="imageField-bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="supportAttributeDefinition-bean"/>
       <xsd:element ref="spinner-bean"/>
       <xsd:element ref="attributeSecurity-bean"/>
-      <xsd:element ref="actionField-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="bindingInfo-bean"/>
@@ -2298,6 +2347,8 @@
       <xsd:element ref="incidentReportView-bean"/>
       <xsd:element ref="initiatedDocumentView-KNS-bean"/>
       <xsd:element ref="initiatedDocumentView-bean"/>
+      <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
       <xsd:element ref="linkField-bean"/>
       <xsd:element ref="richTable-bean"/>
       <xsd:element ref="pagedRichTable-bean"/>
@@ -2332,6 +2383,7 @@
       <xsd:element ref="suggest-bean"/>
       <xsd:element ref="inquiry-bean"/>
       <xsd:element ref="reorderer-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
       <xsd:element ref="workflowAttributeMetadata-bean"/>
       <xsd:element ref="maintenanceDocumentEntry-bean"/>
       <xsd:element ref="navigationGroup-bean"/>
@@ -2343,6 +2395,7 @@
       <xsd:element ref="inquiryPage-bean"/>
       <xsd:element ref="disclosure-page-bean"/>
       <xsd:element ref="lookupPage-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="columnCalculationInfo-sum-bean"/>
       <xsd:element ref="columnCalculationInfo-bean"/>
       <xsd:element ref="columnCalculationInfo-max-bean"/>
@@ -2378,6 +2431,7 @@
       <xsd:element ref="controlBase-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase">
@@ -2421,6 +2475,13 @@
       <xsd:element ref="spring:bean"/>
     </xsd:choice>
   </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.PageBreadcrumbOptions">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="pageBreadcrumbOptions-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
@@ -2451,19 +2512,20 @@
       <xsd:element ref="inquiryView-bean"/>
     </xsd:choice>
   </xsd:complexType>
-  <xsd:complexType name="org.kuali.rice.krad.uif.field.ActionField">
-    <xsd:choice maxOccurs="unbounded" minOccurs="0">
-      <xsd:element ref="spring:ref"/>
-      <xsd:element ref="spring:bean"/>
-      <xsd:element ref="actionField-bean"/>
-    </xsd:choice>
-  </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.control.RadioGroupControl">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.field.ActionField">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.container.ContainerBase">
@@ -2478,6 +2540,9 @@
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
       <xsd:element ref="maintenanceView-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="formFooter-bean"/>
       <xsd:element ref="maintenanceVerticalBoxSubSection-bean"/>
       <xsd:element ref="disclosureActionsGroup-bean"/>
@@ -2677,8 +2742,7 @@
       <xsd:element ref="validationMessages-bean"/>
     </xsd:choice>
   </xsd:complexType>
-  <xsd:complexType
-          name="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint">
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
@@ -2701,6 +2765,7 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="suggest-bean"/>
     </xsd:choice>
   </xsd:complexType>
@@ -2709,6 +2774,13 @@
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
       <xsd:element ref="methodInvokerConfig-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.control.OptionListControl">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="optionListControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.control.ValueConfiguredControl">
@@ -2763,18 +2835,20 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="fieldSecurity-bean"/>
       <xsd:element ref="disclosure-bean"/>
       <xsd:element ref="tabSubSection-bean"/>
       <xsd:element ref="tabGroup-bean"/>
       <xsd:element ref="tabSection-bean"/>
       <xsd:element ref="help-bean"/>
+      <xsd:element ref="parentLocation-bean"/>
+      <xsd:element ref="ricePortalParentLocation"/>
       <xsd:element ref="lookupView-bean"/>
       <xsd:element ref="kimPersonControl-bean"/>
       <xsd:element ref="treeGroup-bean"/>
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="helpDefinition-bean"/>
       <xsd:element ref="colGroupingField-bean"/>
       <xsd:element ref="messageField-bean"/>
@@ -2793,11 +2867,11 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
       <xsd:element ref="tooltip-bean"/>
       <xsd:element ref="tooltipFocus-bean"/>
       <xsd:element ref="tooltipHelp-bean"/>
@@ -2836,8 +2910,12 @@
       <xsd:element ref="gridLayout-bean"/>
       <xsd:element ref="sixColumnGridLayout-bean"/>
       <xsd:element ref="twoColumnGridLayout-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="dataTable-bean"/>
       <xsd:element ref="pageValidationMessages-bean"/>
+      <xsd:element ref="url-bean"/>
       <xsd:element ref="fieldValidationMessages-bean"/>
       <xsd:element ref="inactivationBlockingDefinition-bean"/>
       <xsd:element ref="attributeDefinition-bean"/>
@@ -2911,6 +2989,7 @@
       <xsd:element ref="externalizableAttributeDefinitionProxy-bean"/>
       <xsd:element ref="collectionGroupSecurity-bean"/>
       <xsd:element ref="widget-bean"/>
+      <xsd:element ref="attributeQueryConfig-bean"/>
       <xsd:element ref="image-bean"/>
       <xsd:element ref="helpImage-bean"/>
       <xsd:element ref="directInquiryImage-bean"/>
@@ -3043,10 +3122,10 @@
       <xsd:element ref="maintenanceCompare-modifier-bean"/>
       <xsd:element ref="lookupCriteriaInputField-bean"/>
       <xsd:element ref="imageField-bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="supportAttributeDefinition-bean"/>
       <xsd:element ref="spinner-bean"/>
       <xsd:element ref="attributeSecurity-bean"/>
-      <xsd:element ref="actionField-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="bindingInfo-bean"/>
@@ -3055,6 +3134,8 @@
       <xsd:element ref="incidentReportView-bean"/>
       <xsd:element ref="initiatedDocumentView-KNS-bean"/>
       <xsd:element ref="initiatedDocumentView-bean"/>
+      <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
       <xsd:element ref="linkField-bean"/>
       <xsd:element ref="richTable-bean"/>
       <xsd:element ref="pagedRichTable-bean"/>
@@ -3089,6 +3170,7 @@
       <xsd:element ref="suggest-bean"/>
       <xsd:element ref="inquiry-bean"/>
       <xsd:element ref="reorderer-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
       <xsd:element ref="workflowAttributeMetadata-bean"/>
       <xsd:element ref="maintenanceDocumentEntry-bean"/>
       <xsd:element ref="navigationGroup-bean"/>
@@ -3100,6 +3182,7 @@
       <xsd:element ref="inquiryPage-bean"/>
       <xsd:element ref="disclosure-page-bean"/>
       <xsd:element ref="lookupPage-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="columnCalculationInfo-sum-bean"/>
       <xsd:element ref="columnCalculationInfo-bean"/>
       <xsd:element ref="columnCalculationInfo-max-bean"/>
@@ -3168,6 +3251,7 @@
       <xsd:element ref="controlBase-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.field.Field">
@@ -3204,16 +3288,10 @@
       <xsd:element ref="lookupCriteriaInputField-bean"/>
       <xsd:element ref="imageField-bean"/>
       <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
       <xsd:element ref="linkField-bean"/>
       <xsd:element ref="customTemplateField-bean"/>
       <xsd:element ref="genericField-bean"/>
-    </xsd:choice>
-  </xsd:complexType>
-  <xsd:complexType name="org.kuali.rice.krad.uif.widget.BreadCrumbs">
-    <xsd:choice maxOccurs="unbounded" minOccurs="0">
-      <xsd:element ref="spring:ref"/>
-      <xsd:element ref="spring:bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.layout.LayoutManagerBase">
@@ -3267,10 +3345,10 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.widget.SyntaxHighlighter">
@@ -3278,6 +3356,13 @@
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.BreadcrumbItem">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.bo.DataObjectAuthorizer">
@@ -3313,9 +3398,9 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="disclosure-bean"/>
       <xsd:element ref="help-bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
       <xsd:element ref="tooltip-bean"/>
       <xsd:element ref="tooltipFocus-bean"/>
@@ -3332,6 +3417,7 @@
       <xsd:element ref="collectionQuickFinder-bean"/>
       <xsd:element ref="quickFinderByScript-bean"/>
       <xsd:element ref="growls-bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="spinner-bean"/>
       <xsd:element ref="richTable-bean"/>
       <xsd:element ref="pagedRichTable-bean"/>
@@ -3395,6 +3481,13 @@
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
       <xsd:element ref="floatingPointPatternConstraint-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.UifKeyValueLocation">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="keyValueLocation-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.component.PropertyReplacer">
@@ -3639,6 +3732,7 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="keyValueLocation-bean"/>
       <xsd:element ref="keyValuePair-bean"/>
       <xsd:element ref="keyLabelPair-bean"/>
     </xsd:choice>
@@ -3684,6 +3778,7 @@
       <xsd:element ref="lookupCriteriaInputField-bean"/>
       <xsd:element ref="imageField-bean"/>
       <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
       <xsd:element ref="linkField-bean"/>
       <xsd:element ref="customTemplateField-bean"/>
       <xsd:element ref="genericField-bean"/>
@@ -3728,10 +3823,10 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
       <xsd:element ref="hiddenControl-bean"/>
       <xsd:element ref="largeTextControl-bean"/>
       <xsd:element ref="textControl-bean"/>
@@ -3807,6 +3902,8 @@
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="contentElement-bean"/>
       <xsd:element ref="validationMessages-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.element.Iframe">
@@ -3878,6 +3975,9 @@
       <xsd:element ref="treeGroup-bean"/>
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="dataField-withoutLabel-bean"/>
       <xsd:element ref="dataField-bean"/>
       <xsd:element ref="dataField-labelRight-bean"/>
@@ -3990,12 +4090,14 @@
       <xsd:element ref="dropdownControl-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.component.ComponentBase">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="disclosure-bean"/>
       <xsd:element ref="tabSubSection-bean"/>
       <xsd:element ref="tabGroup-bean"/>
@@ -4006,7 +4108,6 @@
       <xsd:element ref="treeGroup-bean"/>
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="colGroupingField-bean"/>
       <xsd:element ref="messageField-bean"/>
       <xsd:element ref="spaceField-bean"/>
@@ -4024,11 +4125,11 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
       <xsd:element ref="tooltip-bean"/>
       <xsd:element ref="tooltipFocus-bean"/>
       <xsd:element ref="tooltipHelp-bean"/>
@@ -4052,6 +4153,9 @@
       <xsd:element ref="createNewLink-bean"/>
       <xsd:element ref="kimGroupControl-bean"/>
       <xsd:element ref="blockUI-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="dataTable-bean"/>
       <xsd:element ref="pageValidationMessages-bean"/>
       <xsd:element ref="fieldValidationMessages-bean"/>
@@ -4240,8 +4344,8 @@
       <xsd:element ref="view-knsTheme-bean"/>
       <xsd:element ref="lookupCriteriaInputField-bean"/>
       <xsd:element ref="imageField-bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="spinner-bean"/>
-      <xsd:element ref="actionField-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="formView-bean"/>
@@ -4249,6 +4353,8 @@
       <xsd:element ref="incidentReportView-bean"/>
       <xsd:element ref="initiatedDocumentView-KNS-bean"/>
       <xsd:element ref="initiatedDocumentView-bean"/>
+      <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
       <xsd:element ref="linkField-bean"/>
       <xsd:element ref="richTable-bean"/>
       <xsd:element ref="pagedRichTable-bean"/>
@@ -4270,6 +4376,7 @@
       <xsd:element ref="suggest-bean"/>
       <xsd:element ref="inquiry-bean"/>
       <xsd:element ref="reorderer-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
       <xsd:element ref="navigationGroup-bean"/>
       <xsd:element ref="menuNavigationGroup-bean"/>
       <xsd:element ref="tabNavigationGroup-bean"/>
@@ -4279,6 +4386,7 @@
       <xsd:element ref="inquiryPage-bean"/>
       <xsd:element ref="disclosure-page-bean"/>
       <xsd:element ref="lookupPage-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.control.SpinnerControl">
@@ -4436,6 +4544,13 @@
       <xsd:element ref="imageField-bean"/>
     </xsd:choice>
   </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.LocationSuggest">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.SupportAttributeDefinition">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
@@ -4454,6 +4569,7 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="keyValueLocation-bean"/>
       <xsd:element ref="keyValuePair-bean"/>
       <xsd:element ref="keyLabelPair-bean"/>
     </xsd:choice>
@@ -4536,10 +4652,10 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
       <xsd:element ref="hiddenControl-bean"/>
       <xsd:element ref="largeTextControl-bean"/>
       <xsd:element ref="textControl-bean"/>
@@ -4615,6 +4731,8 @@
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="contentElement-bean"/>
       <xsd:element ref="validationMessages-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.mask.Mask">
@@ -4638,17 +4756,24 @@
       <xsd:element ref="inquiryView-bean"/>
     </xsd:choice>
   </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.view.ViewAuthorizerBase">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="viewAuthorizer-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
     </xsd:choice>
   </xsd:complexType>
-  <xsd:complexType name="org.kuali.rice.krad.uif.view.ViewAuthorizerBase">
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.ReferenceDefinition">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
-      <xsd:element ref="viewAuthorizer-bean"/>
+      <xsd:element ref="referenceDefinition-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.container.Container">
@@ -4663,6 +4788,9 @@
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
       <xsd:element ref="maintenanceView-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="formFooter-bean"/>
       <xsd:element ref="maintenanceVerticalBoxSubSection-bean"/>
       <xsd:element ref="disclosureActionsGroup-bean"/>
@@ -4785,11 +4913,11 @@
       <xsd:element ref="lookupPage-bean"/>
     </xsd:choice>
   </xsd:complexType>
-  <xsd:complexType name="org.kuali.rice.krad.datadictionary.ReferenceDefinition">
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.RoutingTypeDefinition">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
-      <xsd:element ref="referenceDefinition-bean"/>
+      <xsd:element ref="routingTypeDefinition-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry">
@@ -4797,13 +4925,6 @@
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
       <xsd:element ref="transactionalDocumentEntry-bean"/>
-    </xsd:choice>
-  </xsd:complexType>
-  <xsd:complexType name="org.kuali.rice.krad.datadictionary.RoutingTypeDefinition">
-    <xsd:choice maxOccurs="unbounded" minOccurs="0">
-      <xsd:element ref="spring:ref"/>
-      <xsd:element ref="spring:bean"/>
-      <xsd:element ref="routingTypeDefinition-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint">
@@ -4854,8 +4975,16 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="keyValueLocation-bean"/>
       <xsd:element ref="keyValuePair-bean"/>
       <xsd:element ref="keyLabelPair-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.ViewHeader">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="spring:ref"/>
+      <xsd:element ref="spring:bean"/>
+      <xsd:element ref="viewHeader-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint">
@@ -4908,18 +5037,20 @@
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="spring:ref"/>
       <xsd:element ref="spring:bean"/>
+      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="fieldSecurity-bean"/>
       <xsd:element ref="disclosure-bean"/>
       <xsd:element ref="tabSubSection-bean"/>
       <xsd:element ref="tabGroup-bean"/>
       <xsd:element ref="tabSection-bean"/>
       <xsd:element ref="help-bean"/>
+      <xsd:element ref="parentLocation-bean"/>
+      <xsd:element ref="ricePortalParentLocation"/>
       <xsd:element ref="lookupView-bean"/>
       <xsd:element ref="kimPersonControl-bean"/>
       <xsd:element ref="treeGroup-bean"/>
       <xsd:element ref="treeSection-bean"/>
       <xsd:element ref="treeSubSection-bean"/>
-      <xsd:element ref="breadcrumbs-bean"/>
       <xsd:element ref="colGroupingField-bean"/>
       <xsd:element ref="messageField-bean"/>
       <xsd:element ref="spaceField-bean"/>
@@ -4937,11 +5068,11 @@
       <xsd:element ref="headerFive-bean"/>
       <xsd:element ref="documentViewHeader-bean"/>
       <xsd:element ref="headerThree-bean"/>
-      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="lookupPageHeader-bean"/>
       <xsd:element ref="headerFour-bean"/>
       <xsd:element ref="editablePageHeader-bean"/>
       <xsd:element ref="syntaxHighlighter-bean"/>
+      <xsd:element ref="breadcrumbItem-bean"/>
       <xsd:element ref="tooltip-bean"/>
       <xsd:element ref="tooltipFocus-bean"/>
       <xsd:element ref="tooltipHelp-bean"/>
@@ -4978,8 +5109,12 @@
       <xsd:element ref="gridLayout-bean"/>
       <xsd:element ref="sixColumnGridLayout-bean"/>
       <xsd:element ref="twoColumnGridLayout-bean"/>
+      <xsd:element ref="lightTableGroup-bean"/>
+      <xsd:element ref="lightTableSection-bean"/>
+      <xsd:element ref="lightTableSubSection-bean"/>
       <xsd:element ref="dataTable-bean"/>
       <xsd:element ref="pageValidationMessages-bean"/>
+      <xsd:element ref="url-bean"/>
       <xsd:element ref="fieldValidationMessages-bean"/>
       <xsd:element ref="formFooter-bean"/>
       <xsd:element ref="maintenanceVerticalBoxSubSection-bean"/>
@@ -5049,6 +5184,7 @@
       <xsd:element ref="fieldBase-withLabel-bean"/>
       <xsd:element ref="collectionGroupSecurity-bean"/>
       <xsd:element ref="widget-bean"/>
+      <xsd:element ref="attributeQueryConfig-bean"/>
       <xsd:element ref="image-bean"/>
       <xsd:element ref="helpImage-bean"/>
       <xsd:element ref="directInquiryImage-bean"/>
@@ -5179,9 +5315,9 @@
       <xsd:element ref="maintenanceCompare-modifier-bean"/>
       <xsd:element ref="lookupCriteriaInputField-bean"/>
       <xsd:element ref="imageField-bean"/>
+      <xsd:element ref="locationSuggest-bean"/>
       <xsd:element ref="spinner-bean"/>
       <xsd:element ref="attributeSecurity-bean"/>
-      <xsd:element ref="actionField-bean"/>
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="bindingInfo-bean"/>
@@ -5190,6 +5326,8 @@
       <xsd:element ref="incidentReportView-bean"/>
       <xsd:element ref="initiatedDocumentView-KNS-bean"/>
       <xsd:element ref="initiatedDocumentView-bean"/>
+      <xsd:element ref="actionField-bean"/>
+      <xsd:element ref="actionLinkField-bean"/>
       <xsd:element ref="linkField-bean"/>
       <xsd:element ref="richTable-bean"/>
       <xsd:element ref="pagedRichTable-bean"/>
@@ -5219,6 +5357,7 @@
       <xsd:element ref="suggest-bean"/>
       <xsd:element ref="inquiry-bean"/>
       <xsd:element ref="reorderer-bean"/>
+      <xsd:element ref="optionListControl-bean"/>
       <xsd:element ref="workflowAttributeMetadata-bean"/>
       <xsd:element ref="navigationGroup-bean"/>
       <xsd:element ref="menuNavigationGroup-bean"/>
@@ -5229,6 +5368,7 @@
       <xsd:element ref="inquiryPage-bean"/>
       <xsd:element ref="disclosure-page-bean"/>
       <xsd:element ref="lookupPage-bean"/>
+      <xsd:element ref="viewHeader-bean"/>
       <xsd:element ref="columnCalculationInfo-sum-bean"/>
       <xsd:element ref="columnCalculationInfo-bean"/>
       <xsd:element ref="columnCalculationInfo-max-bean"/>

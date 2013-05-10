@@ -1,43 +1,13 @@
-<!--
-
-    Copyright 2005-2013 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<?xml version="1.0" encoding="UTF-8"?><!--
-  ~ Copyright 2006-2013 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
-<xsd:schema xmlns="http://www.kuali.org/krad/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified"
-            elementFormDefault="qualified" targetNamespace="http://www.kuali.org/krad/schema">
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns="http://www.kuali.org/krad/schema" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.kuali.org/krad/schema" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
   <xsd:include schemaLocation="krad-types3.xsd"/>
   <xsd:include schemaLocation="krad-types2.xsd"/>
   <xsd:include schemaLocation="krad-types1.xsd"/>
   <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+  <xsd:element name="breadcrumbs-bean" type="breadcrumbs-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="fieldSecurity-bean" type="fieldSecurity-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.field.FieldSecurity" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.field.FieldSecurity
@@ -92,6 +62,16 @@ Widget that renders help on a component
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="parentLocation-bean" type="parentLocation-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.util.ParentLocation" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="ricePortalParentLocation" type="parentLocation-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.util.ParentLocation" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="lookupView-bean" type="lookupView-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.view.LookupView
@@ -143,18 +123,9 @@ Group component that is backed by a Tree data structure and typically
  rendered as a tree in the user interface]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="breadcrumbs-bean" type="breadcrumbs-bean-type">
-    <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.widget.Breadcrumbs" xml:lang="en"><![CDATA[<![CDATA[Backing Class: org.kuali.rice.krad.uif.widget.Breadcrumbs
-
-The breadcrumb widget contains various settings for setting up
- Breadcrumb/History support on the view]]>]]></xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
   <xsd:element name="helpDefinition-bean" type="helpDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.HelpDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.HelpDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="messageField-bean" type="messageField-bean-type">
@@ -390,19 +361,6 @@ Content element that renders a header element and optionally a Group to
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="viewHeader-bean" type="header-bean-type">
-    <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.element.Header" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.element.Header
-
-Content element that renders a header element and optionally a Group to
- present along with the header text
-
- 
- Generally the group is used to display content to the right of the header,
- such as links for the group or other information
- ]]></xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
   <xsd:element name="lookupPageHeader-bean" type="header-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.element.Header" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.element.Header
@@ -454,6 +412,11 @@ Widget that renders text syntax highlighted
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="breadcrumbItem-bean" type="breadcrumbItem-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.util.BreadcrumbItem" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="tooltip-bean" type="tooltip-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tooltip" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.widget.Tooltip
@@ -492,8 +455,7 @@ Widget that renders a Tooltip on a component
   </xsd:element>
   <xsd:element name="dataObjectEntry-bean" type="dataObjectEntry-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.DataObjectEntry" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.DataObjectEntry" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="compareConfig-bean" type="compareConfig-bean-type">
@@ -516,8 +478,12 @@ Provides configuration for comparing an object with another object
   </xsd:element>
   <xsd:element name="businessObjectEntry-bean" type="businessObjectEntry-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.BusinessObjectEntry" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.BusinessObjectEntry" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="breadcrumbOptions-bean" type="breadcrumbOptions-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.util.BreadcrumbOptions" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="hiddenControl-bean" type="hiddenControl-bean-type">
@@ -531,18 +497,12 @@ Represents a HTML Hidden control, generally rendered as an input control of
   </xsd:element>
   <xsd:element name="listLayout-bean" type="listLayout-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.layout.ListLayoutManager" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.layout.ListLayoutManager
-
-List layout manager is a layout manager for group types to output their items as either ordered or
- unordered lists]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.layout.ListLayoutManager" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="orderedListLayout-bean" type="listLayout-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.layout.ListLayoutManager" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.layout.ListLayoutManager
-
-List layout manager is a layout manager for group types to output their items as either ordered or
- unordered lists]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.layout.ListLayoutManager" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="tableCollectionLayout-bean" type="tableCollectionLayout-bean-type">
@@ -564,8 +524,7 @@ Layout manager that works with CollectionGroup components and
   </xsd:element>
   <xsd:element name="anyCharacterPatternConstraint-bean" type="anyCharacterPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AnyCharacterPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AnyCharacterPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AnyCharacterPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AnyCharacterPatternConstraint
 
 Pattern for matching any printable character]]></xsd:documentation>
     </xsd:annotation>
@@ -620,11 +579,14 @@ Represents a HTML Text control, generally rendered as a input field of type
   </xsd:element>
   <xsd:element name="floatingPointPatternConstraint-bean" type="floatingPointPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.FloatingPointPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.FloatingPointPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.FloatingPointPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.FloatingPointPatternConstraint
 
 Validation pattern for matching floating point numbers, optionally matching negative numbers]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="keyValueLocation-bean" type="keyValueLocation-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.util.UifKeyValueLocation" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="propertyReplacer-bean" type="propertyReplacer-bean-type">
@@ -715,16 +677,14 @@ Configuration for replacing a property value based on a condition
   </xsd:element>
   <xsd:element name="validDataPatternConstraint-bean" type="validDataPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint
 
 ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="constraint-bean" type="constraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint" xml:lang="en">
-        <![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint
 
 A class that implements the required accessor for label keys. This provides a convenient base class
  from which other constraints can be derived.
@@ -736,14 +696,12 @@ A class that implements the required accessor for label keys. This provides a co
   </xsd:element>
   <xsd:element name="searchingAttribute-bean" type="searchingAttribute-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.SearchingAttribute" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.SearchingAttribute" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="maskFormatterLiteral-bean" type="maskFormatterLiteral-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.mask.MaskFormatterLiteral" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.mask.MaskFormatterLiteral" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="dataFieldSecurity-bean" type="dataFieldSecurity-bean-type">
@@ -891,16 +849,14 @@ Content element that renders a link]]></xsd:documentation>
   </xsd:element>
   <xsd:element name="alphaNumericPatternConstraint-bean" type="alphaNumericPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint
 
 A ValidCharactersConstraint based on AlphaNumericValidationPattern.]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="alphaNumericWithBasicPunc-bean" type="alphaNumericPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint
 
 A ValidCharactersConstraint based on AlphaNumericValidationPattern.]]></xsd:documentation>
     </xsd:annotation>
@@ -934,9 +890,7 @@ BlockUI element is used within the view element for managing element/page blocki
   </xsd:element>
   <xsd:element name="utf8AnyCharacterPatternConstraint-bean" type="utf8AnyCharacterPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint
 
 Pattern for matching any printable character]]></xsd:documentation>
     </xsd:annotation>
@@ -950,8 +904,7 @@ Implementation of ViewPresentationController that implements no logic by default
   </xsd:element>
   <xsd:element name="workflowPropertyGroup-bean" type="workflowPropertyGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowPropertyGroup" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowPropertyGroup" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="gridLayout-bean" type="gridLayout-bean-type">
@@ -1022,6 +975,21 @@ Layout manager that organizes its components in a table based grid
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="lightTableGroup-bean" type="lightTableGroup-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.LightTable" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="lightTableSection-bean" type="lightTableGroup-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.LightTable" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="lightTableSubSection-bean" type="lightTableGroup-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.LightTable" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="dataTable-bean" type="dataTable-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.element.DataTable" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.element.DataTable
@@ -1050,6 +1018,11 @@ ValidationMessages for logic and options specific to pages
  TODO this class is currently a placeholder for possible future functionality (ex. flatValidationMessages)]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="url-bean" type="url-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.util.UrlInfo" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="fieldValidationMessages-bean" type="fieldValidationMessages-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.element.FieldValidationMessages" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.element.FieldValidationMessages
@@ -1059,14 +1032,12 @@ ValidationMessages for logic and options specific to groups]]></xsd:documentatio
   </xsd:element>
   <xsd:element name="inactivationBlockingDefinition-bean" type="inactivationBlockingDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="attributeDefinition-bean" type="attributeDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.AttributeDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.AttributeDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="group-bean" type="group-bean-type">
@@ -2325,8 +2296,7 @@ Container that holds a list of Field or other Group
   </xsd:element>
   <xsd:element name="simpleContraint-bean" type="simpleContraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
 
 A simple constraint stores 'basic' constraints for a field.  This constraint is meant to be used as a
  constraint for WhenConstraints in CaseConstraint, and is also used internally in InputField.]]></xsd:documentation>
@@ -2334,8 +2304,7 @@ A simple constraint stores 'basic' constraints for a field.  This constraint is 
   </xsd:element>
   <xsd:element name="requiredConstraint-bean" type="simpleContraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
 
 A simple constraint stores 'basic' constraints for a field.  This constraint is meant to be used as a
  constraint for WhenConstraints in CaseConstraint, and is also used internally in InputField.]]></xsd:documentation>
@@ -2413,14 +2382,12 @@ Special Group that presents a grouping on links, which can
   </xsd:element>
   <xsd:element name="relationshipDefinition-bean" type="relationshipDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.RelationshipDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.RelationshipDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="maintenaceActiveCollectionFilter-bean" type="maintenaceActiveCollectionFilter-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter" xml:lang="en">
-        <![CDATA[Backing Class: org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter
 
 Collection filter for maintenance groups that removes inactive lines if certain
  conditions are met]]></xsd:documentation>
@@ -2460,11 +2427,9 @@ Base class for Field implementations
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="externalizableAttributeDefinitionProxy-bean"
-               type="externalizableAttributeDefinitionProxy-bean-type">
+  <xsd:element name="externalizableAttributeDefinitionProxy-bean" type="externalizableAttributeDefinitionProxy-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.ExternalizableAttributeDefinitionProxy"
-                         xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.ExternalizableAttributeDefinitionProxy" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="collectionGroupSecurity-bean" type="collectionGroupSecurity-bean-type">
@@ -2565,37 +2530,27 @@ Content element that encloses an iframe]]></xsd:documentation>
   </xsd:element>
   <xsd:element name="accordionGroup-bean" type="accordionGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.AccordionGroup
-
-Accordion group class used to stack groups by there header titles in an accordion layout]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="accordionSubSection-bean" type="accordionGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.AccordionGroup
-
-Accordion group class used to stack groups by there header titles in an accordion layout]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="accordionSection-bean" type="accordionGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.AccordionGroup
-
-Accordion group class used to stack groups by there header titles in an accordion layout]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="disclosure-accordionSection-bean" type="accordionGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.AccordionGroup
-
-Accordion group class used to stack groups by there header titles in an accordion layout]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="disclosure-accordionSubSection-bean" type="accordionGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.AccordionGroup
-
-Accordion group class used to stack groups by there header titles in an accordion layout]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.AccordionGroup" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="conditionalCollectionFilter-bean" type="conditionalCollectionFilter-bean-type">
@@ -2870,21 +2825,17 @@ Used for rendering a calendar in the UI that can be used to selected dates
   </xsd:element>
   <xsd:element name="accordion-bean" type="accordion-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.widget.Accordion
-
-Accordion widget class used to create an accordion based layout]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="workflowProperty-bean" type="workflowProperty-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowProperty" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowProperty" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="maskFormatteSubString-bean" type="maskFormatteSubString-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.mask.MaskFormatterSubString" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.mask.MaskFormatterSubString" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="lightBox-bean" type="lightBox-bean-type">
@@ -2905,8 +2856,7 @@ Used for rendering a lightbox in the UI to display action links in dialog
   </xsd:element>
   <xsd:element name="fixedPointPatternConstraint-bean" type="fixedPointPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint
 
 TODO delyea don't forget to fill this in.]]></xsd:documentation>
     </xsd:annotation>
@@ -2929,16 +2879,14 @@ Represents a HTML Select control. Provides preset options for the User to
   </xsd:element>
   <xsd:element name="integerPatternConstraint-bean" type="integerPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.IntegerPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.IntegerPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.IntegerPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.IntegerPatternConstraint
 
 TODO Administrator don't forget to fill this in.]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="documentValuePathGroup-bean" type="documentValuePathGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.DocumentValuePathGroup" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.DocumentValuePathGroup" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="keyValuesFinder-bean" type="keyValuesFinder-bean-type">
@@ -3027,8 +2975,7 @@ Pulls Label instances out of a contained field so they will
   </xsd:element>
   <xsd:element name="collectionDefinition-bean" type="collectionDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.CollectionDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.CollectionDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="componentConverter-modifier-bean" type="componentConverter-modifier-bean-type">
@@ -3061,28 +3008,24 @@ For a given Component instance converts all component properties
   </xsd:element>
   <xsd:element name="stateMapping-bean" type="stateMapping-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.state.StateMappingBase" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.state.StateMappingBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="workflowStateMapping-bean" type="stateMapping-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.state.StateMappingBase" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.state.StateMappingBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="alphaPatternConstraint-bean" type="alphaPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint
 
 Pattern for matching alpha characters]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="alphaWithBasicPunc-bean" type="alphaPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint
 
 Pattern for matching alpha characters]]></xsd:documentation>
     </xsd:annotation>
@@ -3096,8 +3039,7 @@ Pattern for matching alpha characters]]></xsd:documentation>
   </xsd:element>
   <xsd:element name="charsetPatternConstraint-bean" type="charsetPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.CharsetPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.CharsetPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.CharsetPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.CharsetPatternConstraint
 
 Pattern for matching any character in the given list (String)]]></xsd:documentation>
     </xsd:annotation>
@@ -3437,8 +3379,7 @@ Field that encapsulates data input/output captured by an attribute within the
   </xsd:element>
   <xsd:element name="routingAttribute-bean" type="routingAttribute-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.RoutingAttribute" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.RoutingAttribute" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="componentBase-bean" type="componentBase-bean-type">
@@ -3517,8 +3458,7 @@ Growls sets up settings for growls global to the current view and its pages
   </xsd:element>
   <xsd:element name="numericPatternConstraint-bean" type="numericPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint
 
 Pattern for matching numeric characters, difference between NumericPatternConstraint and IntegerPatternConstraint
  is that a numeric pattern constraint is for matching numeric characters and can be mixed with other characters
@@ -3527,8 +3467,7 @@ Pattern for matching numeric characters, difference between NumericPatternConstr
   </xsd:element>
   <xsd:element name="numericWithOperators-bean" type="numericPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint
 
 Pattern for matching numeric characters, difference between NumericPatternConstraint and IntegerPatternConstraint
  is that a numeric pattern constraint is for matching numeric characters and can be mixed with other characters
@@ -4223,8 +4162,7 @@ Root of the component tree which encompasses a set of related
   </xsd:element>
   <xsd:element name="workflowProperties-bean" type="workflowProperties-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowProperties" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowProperties" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="stackedCollectionLayout-bean" type="stackedCollectionLayout-bean-type">
@@ -4327,6 +4265,11 @@ Component security is used to flag permissions that exist in KIM for various com
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="pageBreadcrumbOptions-bean" type="pageBreadcrumbOptions-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.util.PageBreadcrumbOptions" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="compareFieldCreate-modifier-bean" type="compareFieldCreate-modifier-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.modifier.CompareFieldCreateModifier" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.modifier.CompareFieldCreateModifier
@@ -4363,8 +4306,7 @@ Generates Field instances to produce a comparison view among
   </xsd:element>
   <xsd:element name="caseConstriant-bean" type="caseConstriant-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint" xml:lang="en">
-        <![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint
 
 CaseConstraint is imposed only when a certain condition is met
 
@@ -4393,10 +4335,14 @@ Field that wraps an image content element.
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="locationSuggest-bean" type="locationSuggest-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.widget.LocationSuggest" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="supportAttributeDefinition-bean" type="supportAttributeDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.SupportAttributeDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.SupportAttributeDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="spinner-bean" type="spinner-bean-type">
@@ -4414,15 +4360,7 @@ Widget that decorates a control transforming into a spinner
   </xsd:element>
   <xsd:element name="attributeSecurity-bean" type="attributeSecurity-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.AttributeSecurity" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="actionField-bean" type="actionField-bean-type">
-    <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.field.ActionField" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.field.ActionField
-
-Field that encloses an @{link org.kuali.rice.krad.uif.element.Action} element]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.AttributeSecurity" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="verticalRadioControl-bean" type="verticalRadioControl-bean-type">
@@ -4495,6 +4433,20 @@ Provides configuration for View instances that render an HTML
  form]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="actionField-bean" type="actionField-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.field.ActionField" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.field.ActionField
+
+Field that encloses an @{link org.kuali.rice.krad.uif.element.Action} element]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="actionLinkField-bean" type="actionField-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.field.ActionField" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.field.ActionField
+
+Field that encloses an @{link org.kuali.rice.krad.uif.element.Action} element]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="linkField-bean" type="linkField-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.field.LinkField" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.field.LinkField
@@ -4540,20 +4492,12 @@ Decorates a HTML Table client side with various tools
   </xsd:element>
   <xsd:element name="searchingTypeDefinition-bean" type="searchingTypeDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.SearchingTypeDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="primitiveAttributeDefinition-bean" type="primitiveAttributeDefinition-bean-type">
-    <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.SearchingTypeDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="mustOccurConstraint-bean" type="mustOccurConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint
 
 Must occur constraints are constraints that indicate some range of acceptable valid results. So a must occur
  constraint
@@ -4580,11 +4524,14 @@ Must occur constraints are constraints that indicate some range of acceptable va
  and min=2/max=2 at the leaf constraint, this requirement can be enforced.]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="primitiveAttributeDefinition-bean" type="primitiveAttributeDefinition-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="validCharactersPatternContraint-bean" type="validCharactersPatternContraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersPatternConstraint
 
 This abstract class extends from ValidCharactersConstraint. Its subclasses contain a regex that
  is built out with flags that can be turned off and on. All ValidCharactersPatternConstraints
@@ -4646,8 +4593,7 @@ A placeholder in the configuration for a Container list of items that will be in
   </xsd:element>
   <xsd:element name="mask-bean" type="mask-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.mask.Mask" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.mask.Mask" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="dialogGroup-bean" type="dialogGroup-bean-type">
@@ -4985,10 +4931,14 @@ Layout manager that organizes components in a single row (horizontal) or
  ]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="historyEntry-bean" type="historyEntry-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.view.HistoryEntry" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="prerequisiteConstraint-bean" type="prerequisiteConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint
 
 Prerequisite constraints require that some other attribute be non-empty in order for the constraint to be valid.
  So, a 7-digit US phone number might have a prerequisite of an area code, or an address street2 might have a
@@ -5049,26 +4999,22 @@ Implementation of ViewAuthorizer that verifies authorization with KIM permission
   </xsd:element>
   <xsd:element name="referenceDefinition-bean" type="referenceDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.ReferenceDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.ReferenceDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="transactionalDocumentEntry-bean" type="transactionalDocumentEntry-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="routingTypeDefinition-bean" type="routingTypeDefinition-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.RoutingTypeDefinition" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.RoutingTypeDefinition" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="datePatternConstraint-bean" type="datePatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint
 
 DatePatternConstraint constrains a field to only allow dates which are part of the formats
  defined in the system. Constraining a field all these formats is often not appropriate for
@@ -5079,8 +5025,7 @@ DatePatternConstraint constrains a field to only allow dates which are part of t
   </xsd:element>
   <xsd:element name="basicDatePatternConstraint-bean" type="datePatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint
 
 DatePatternConstraint constrains a field to only allow dates which are part of the formats
  defined in the system. Constraining a field all these formats is often not appropriate for
@@ -5096,125 +5041,88 @@ DatePatternConstraint constrains a field to only allow dates which are part of t
 Decorates a group with scroll functionality]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="configurationBasedRegexPatternConstraint-bean"
-               type="configurationBasedRegexPatternConstraint-bean-type">
+  <xsd:element name="configurationBasedRegexPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="emailAddressPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="monthPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="urlPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="timestampPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="yearPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="timePatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="phoneNumberPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="javaClassPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="zipcodePatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="noWhitespacePatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="time24HPatternConstraint-bean" type="configurationBasedRegexPatternConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation
-              source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-              xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint
 
-ConfigurationBasedRegexPatternConstraint uses a patternTypeKey to get the regex used for validation by key from
- the KualiConfigurationService]]></xsd:documentation>
+]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="genericField-bean" type="genericField-bean-type">
@@ -5270,6 +5178,11 @@ Widget for rendering an Inquiry link or DirectInquiry action field
 Allows client-side reordering of the group contents]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="optionListControl-bean" type="optionListControl-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.control.OptionListControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="methodInvokerConfig-bean" type="methodInvokerConfig-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.component.MethodInvokerConfig" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.component.MethodInvokerConfig
@@ -5280,14 +5193,12 @@ Extends MethodInvoker to add properties for specifying
   </xsd:element>
   <xsd:element name="workflowAttributeMetadata-bean" type="workflowAttributeMetadata-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowAttributeMetadata" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowAttributeMetadata" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="maintenanceDocumentEntry-bean" type="maintenanceDocumentEntry-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="navigationGroup-bean" type="navigationGroup-bean-type">
@@ -5388,10 +5299,14 @@ KRAD version of KeyValue to enable use in schema]]></xsd:documentation>
 KRAD version of KeyValue to enable use in schema]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="viewHeader-bean" type="viewHeader-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.element.ViewHeader" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="validCharactersConstraint-bean" type="validCharactersConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint"
-                         xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint
 
 This is a constraint that limits attribute values to some subset of valid characters or to match a particular
  regular
@@ -5449,8 +5364,7 @@ ColumnCalculationInfo is used to specify which columns and what types of calcula
   </xsd:element>
   <xsd:element name="whenConstraint-bean" type="whenConstraint-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint" xml:lang="en">
-        <![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint
 
 WhenConstraint is a child of a CaseConstraint
 
@@ -5469,8 +5383,7 @@ WhenConstraint is a child of a CaseConstraint
   </xsd:element>
   <xsd:element name="workflowAttributes-bean" type="workflowAttributes-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowAttributes" xml:lang="en">
-        <![CDATA[documentation not available]]></xsd:documentation>
+      <xsd:documentation source="org.kuali.rice.krad.datadictionary.WorkflowAttributes" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
 </xsd:schema>

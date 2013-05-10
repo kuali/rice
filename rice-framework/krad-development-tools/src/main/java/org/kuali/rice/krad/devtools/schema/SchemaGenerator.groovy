@@ -32,7 +32,7 @@ import org.kuali.rice.krad.datadictionary.parse.CustomTagAnnotations
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-ResourceBundle doc = ResourceBundle.getBundle("org.kuali.rice.devtools.krad.documentation.PropertiesDescription");
+ResourceBundle doc = ResourceBundle.getBundle("org.kuali.rice.krad.devtools.documentation.PropertiesDescription");
 CustomTagAnnotations.generateSchemaFile(doc);
 
 

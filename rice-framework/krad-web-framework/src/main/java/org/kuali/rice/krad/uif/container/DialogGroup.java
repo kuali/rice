@@ -435,6 +435,7 @@ public class DialogGroup extends Group {
      *
      * @return javascript that will execute for the response event
      */
+    @BeanTagAttribute(name = "onDialogResponseScript")
     public String getOnDialogResponseScript() {
         return onDialogResponseScript;
     }
@@ -459,6 +460,7 @@ public class DialogGroup extends Group {
      *
      * @return JavaScript code to execute when the dialog is shown
      */
+    @BeanTagAttribute(name = "onShowDialogScript")
     public String getOnShowDialogScript() {
         return onShowDialogScript;
     }

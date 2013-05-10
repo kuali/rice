@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
@@ -36,7 +37,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "actionField-bean", parent = "Uif-ActionField")
+@BeanTags({@BeanTag(name = "actionField-bean", parent = "Uif-ActionField"),
+        @BeanTag(name = "actionLinkField-bean", parent = "Uif-ActionLinkField")})
 public class ActionField extends FieldBase {
     private static final long serialVersionUID = -8495752159848603102L;
 
@@ -184,6 +186,21 @@ public class ActionField extends FieldBase {
      */
     public void setActionParameters(Map<String, String> actionParameters) {
         action.setActionParameters(actionParameters);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#getAdditionalSubmitData()
+     */
+    @BeanTagAttribute(name = "additionalSubmitData", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    public Map<String, String> getAdditionalSubmitData() {
+        return action.getAdditionalSubmitData();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#setAdditionalSubmitData(java.util.Map<java.lang.String,java.lang.String>)
+     */
+    public void setAdditionalSubmitData(Map<String, String> additionalSubmitData) {
+        action.setAdditionalSubmitData(additionalSubmitData);
     }
 
     /**
@@ -401,9 +418,38 @@ public class ActionField extends FieldBase {
      * @param errorCallback
      * @see org.kuali.rice.krad.uif.element.Action#setErrorCallback(java.lang.String)
      */
-
     public void setErrorCallback(String errorCallback) {
         action.setErrorCallback(errorCallback);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#getRefreshId()
+     */
+    @BeanTagAttribute(name = "refreshId")
+    public String getRefreshId() {
+        return action.getRefreshId();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#setRefreshId(java.lang.String)
+     */
+    public void setRefreshId(String refreshId) {
+        action.setRefreshId(refreshId);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#isDisableBlocking()
+     */
+    @BeanTagAttribute(name = "disableBlocking")
+    public boolean isDisableBlocking() {
+        return action.isDisableBlocking();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#setDisableBlocking(boolean)
+     */
+    public void setDisableBlocking(boolean disableBlocking) {
+        action.setDisableBlocking(disableBlocking);
     }
 
     /**

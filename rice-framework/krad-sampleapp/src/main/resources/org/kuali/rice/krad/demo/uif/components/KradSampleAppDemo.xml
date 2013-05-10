@@ -505,6 +505,7 @@
         <bean parent="Uif-Link" p:linkText="Suggest"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Suggest-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Help" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Help-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Tooltip" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Tooltip-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

@@ -47,6 +47,10 @@
 
   <properties>
     <properties.resolve>false</properties.resolve>
+
+    <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
+    <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
+
     <!-- These properties modify the release process -->
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
     <kuali.release.goals>deploy</kuali.release.goals>
@@ -192,7 +196,52 @@
   </properties>
 
   <profiles>
-    <!-- Optimize the nightly build -->
+    <!-- Setup the dependency tree needed by the deploy logic -->
+    <profile>
+      <id>kdo</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>spring-maven-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.kuali.rice</groupId>
+                <artifactId>rice-impex-master</artifactId>
+                <classifier>sql</classifier>
+                <version>${project.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.kuali.common</groupId>
+                <artifactId>kuali-jdbc</artifactId>
+                <version>${kuali-jdbc.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.kuali.common</groupId>
+                <artifactId>kuali-util</artifactId>
+                <version>${kuali-util.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.kuali.common</groupId>
+                <artifactId>kuali-deploy</artifactId>
+                <version>${kuali-deploy.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>MacOSX</id>
+      <activation>
+        <file>
+          <exists>${java.home}/../Classes/classes.jar</exists>
+        </file>
+      </activation>
+      <properties>
+        <tools.jar.path>${java.home}/../Classes/classes.jar</tools.jar.path>
+      </properties>
+    </profile>    <!-- Optimize the nightly build -->
     <profile>
       <id>nightly</id>
       <properties>

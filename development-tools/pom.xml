@@ -41,8 +41,6 @@
   </profiles>
   <properties>
     <generateReports>false</generateReports>
-    <!-- Default this to the location that works for Unix and Windows -->
-    <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
   </properties>
   <dependencies>
     <dependency>

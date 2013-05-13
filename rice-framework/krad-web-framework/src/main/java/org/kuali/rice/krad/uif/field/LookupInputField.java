@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControl;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
@@ -39,6 +40,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Custom <code>InputField</code> for search fields within a lookup view
@@ -307,5 +309,19 @@ public class LookupInputField extends InputField {
      */
     public void setRanged(boolean ranged) {
         this.ranged = ranged;
+    }
+
+    /**
+     * Remove any search criteria that are not part of the database lookup.
+     *
+     * @param searchCriteria - the search criteria to be filtered
+     * @return the filteredSearchCriteria
+     */
+    public Map<String, String> filterSearchCriteria( Map<String, String> searchCriteria) {
+        if (getControl() instanceof FilterableLookupCriteriaControl) {
+            return ((FilterableLookupCriteriaControl) getControl()).filterSearchCriteria(getPropertyName(), searchCriteria);
+        } else {
+            return searchCriteria;
+        }
     }
 }

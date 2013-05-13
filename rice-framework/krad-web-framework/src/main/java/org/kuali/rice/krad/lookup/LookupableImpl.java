@@ -36,6 +36,7 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
@@ -149,6 +150,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // removed blank search values and decrypt any encrypted search values
         Map<String, String> nonBlankSearchCriteria = processSearchCriteria(form, searchCriteria);
 
+        // return empty search results (none found) when the search doesn't have any nonBlankSearchCriteria although
+        // a filtered search criteria is specified
+        if (nonBlankSearchCriteria == null) {
+            return new ArrayList<Object>();
+        }
+
         // if this class is an EBO, just call the module service to get the results
         if (ExternalizableBusinessObject.class.isAssignableFrom(getDataObjectClass())) {
             return getSearchResultsForEBO(nonBlankSearchCriteria, unbounded);
@@ -241,8 +248,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * Process the search criteria to be used with the lookup
      *
      * <p>
-     * Processing entails primarily of the removal of unused/blank search criteria.  Encrypted field values are
-     * decrypted in this process as well.
+     * Processing entails primarily of the removal of filtered and unused/blank search criteria.  Encrypted field values
+     * are decrypted in this process as well.
      * </p>
      *
      * @param lookupForm lookup form instance containing the lookup data
@@ -255,9 +262,20 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getPostedView(), lookupForm);
         }
 
+        Map<String, String> filteredSearchCriteria = new HashMap<String,String>(searchCriteria);
+        for (String fieldName: searchCriteria.keySet()) {
+            InputField inputField = criteriaFields.get(fieldName);
+            if ((inputField != null) && (inputField instanceof LookupInputField)) {
+                filteredSearchCriteria = ((LookupInputField) inputField).filterSearchCriteria(filteredSearchCriteria);
+                if (filteredSearchCriteria == null) {
+                    return null;
+                }
+            }
+        }
+
         Map<String, String> nonBlankSearchCriteria = new HashMap<String, String>();
-        for (String fieldName : searchCriteria.keySet()) {
-            String fieldValue = searchCriteria.get(fieldName);
+        for (String fieldName : filteredSearchCriteria.keySet()) {
+            String fieldValue = filteredSearchCriteria.get(fieldName);
 
             // don't add hidden criteria
             InputField inputField = criteriaFields.get(fieldName);
@@ -505,26 +523,41 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getPostedView(),
                 form);
 
+        // build list of hidden properties configured with criteria fields
+        List<String> hiddenCriteria = new ArrayList<String>();
+        for (InputField field : criteriaFields.values()) {
+            if (field.getAdditionalHiddenPropertyNames() != null) {
+                hiddenCriteria.addAll(field.getAdditionalHiddenPropertyNames());
+            }
+        }
+
         // validate required
         // TODO: this will be done by the uif validation service at some point
         for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
             String searchPropertyName = searchKeyValue.getKey();
             String searchPropertyValue = searchKeyValue.getValue();
 
-            LookupView lookupView = (LookupView) form.getPostedView();
             InputField inputField = criteriaFields.get(searchPropertyName);
+
+            String adjustedSearchPropertyPath = UifPropertyPaths.LOOKUP_CRITERIA + "[" + searchPropertyName + "]";
+            if (inputField == null && hiddenCriteria.contains(adjustedSearchPropertyPath)) {
+                return valid;
+            }
+
+
+            // verify the property sent is a valid to search on
+            if ((inputField == null) && !searchPropertyName.contains(
+                    KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+                throw new RuntimeException("Invalid search field sent for property name: " + searchPropertyName);
+            }
+
             if (inputField != null) {
                 if (StringUtils.isBlank(searchPropertyValue) && inputField.getRequired()) {
-                    GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
-                            RiceKeyConstants.ERROR_REQUIRED, inputField.getLabel());
+                    GlobalVariables.getMessageMap().putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,
+                            inputField.getLabel());
                 }
 
                 validateSearchParameterWildcardAndOperators(inputField, searchPropertyValue);
-            } else {
-                // TODO: should we consider hiddenPropertyNames for input fields before throwing an exception?
-                if (!searchPropertyName.contains(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-                    throw new RuntimeException("Invalid search field sent for property name: " + searchPropertyName);
-                }
             }
         }
 

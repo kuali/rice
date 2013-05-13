@@ -40,6 +40,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -302,17 +303,17 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
          * @return a new collection containing CacheTargets
          */
         private Collection<CacheTarget> exhaustQueue(Queue<CacheTarget> targets) {
-            final List<CacheTarget> normalized = new ArrayList<CacheTarget>();
-            final Set<String> completeFlush = new HashSet<String>();
-
+            final Set<CacheTarget> normalized = new HashSet<CacheTarget>();
+            final Set<String> completeFlush = new HashSet<String>();    
+            
             CacheTarget target;
             while ((target = targets.poll()) != null) {
-                normalized.add(target);
+            	normalized.add(target);
                 if (!target.containsKey()) {
-                    completeFlush.add(target.getCache());
+                	completeFlush.add(target.getCache());
                 }
             }
-
+         
             return Collections2.filter(normalized, new Predicate<CacheTarget>() {
                 @Override
                 public boolean apply(CacheTarget input) {

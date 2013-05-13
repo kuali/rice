@@ -478,4 +478,27 @@
     </collection-descriptor>
   </class-descriptor>
 
+  <!-- For testing Uif-KimPersonControl -->
+  <class-descriptor class="org.kuali.rice.krad.demo.travel.UserControlSample" table="KRIM_PRNCPL_T">
+    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="principalName" column="PRNCPL_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="password" column="PRNCPL_PSWD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" primarykey="true"  />
+  </class-descriptor>
+
+  <!-- For testing Uif-KimGroupControl -->
+  <class-descriptor class="org.kuali.rice.krad.demo.travel.GroupControlSample" table="KRIM_GRP_MBR_T">
+    <field-descriptor name="id" column="GRP_MBR_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_GRP_MBR_ID_S" />
+    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="typeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+    <field-descriptor name="activeFromDateValue" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDateValue" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
+  </class-descriptor>
+
 </descriptor-repository>

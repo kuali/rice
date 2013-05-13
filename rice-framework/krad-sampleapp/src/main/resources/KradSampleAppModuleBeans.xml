@@ -61,6 +61,8 @@
         <value>classpath:org/kuali/rice/krad/demo/travel/authorization/datadictionary/PrimaryDestination.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/authorization/PrimaryDestinationLookup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/DemoLookupViews.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/UserControlSample.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/travel/GroupControlSample.xml</value>
 
         <!-- KRAD sample app - component library -->
         <value>classpath:org/kuali/rice/krad/demo/uif/components/KradSampleAppDemo.xml</value>

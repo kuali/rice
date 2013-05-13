@@ -66,6 +66,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      *
      * @param view view instance to which the component belongs
      * @param model top level object containing the data (could be the form or a
+     * top level business object, dto)
      * @param parent
      */
     public void performApplyModel(View view, Object model, Component parent) {

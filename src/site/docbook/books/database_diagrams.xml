@@ -43,6 +43,10 @@
                     </listitem>
 -->
             <listitem>
+                <para>Rice KRAD (KRAD): <link xlink:show="new"
+                    xlink:href="../db_diagrams/rice-krad.png">png*</link> / <link
+                        xlink:show="new" xlink:href="../db_diagrams/rice-krad.pdf">pdf</link></para>
+            </listitem><listitem>
                 <para>Rice KREN (KEN): <link xlink:show="new"
                         xlink:href="../db_diagrams/rice-kren.png">png*</link> / <link
                         xlink:show="new" xlink:href="../db_diagrams/rice-kren.pdf">pdf</link></para>

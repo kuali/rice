@@ -146,11 +146,11 @@
     <section>
         <title>Web Service URL</title>
         <para>By default, the Notification Web Service API may be accessed at: <link
-            xlink:href="http://yourlocalip:8080/notification/services/Notification"
-            >http://yourlocalip:8080/notification/services/Notification</link></para>
+            xlink:href="http://yourlocalip:8080/remoting/soap/ken/v2_0/sendNotificationService"
+            >http://yourlocalip:8080/remoting/soap/ken/v2_0/sendNotificationService</link></para>
         <para>A WSDL may be obtained using the following URL: <link
-            xlink:href="http://yourlocalip:8080/notification/services/Notification?wsdl"
-            >http://yourlocalip:8080/notification/services/Notification?wsdl</link></para>
+            xlink:href="http://yourlocalip:8080/remoting/soap/ken/v2_0/sendNotificationService?wsdl"
+            >http://yourlocalip:8080/remoting/soap/ken/v2_0/sendNotificationService?wsdl</link></para>
         <note><para>In the URLs above, replace yourlocalip with the hostname where KEN is deployed.</para></note>
     </section>
     <section>

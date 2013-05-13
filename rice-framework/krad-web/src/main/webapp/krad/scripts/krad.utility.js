@@ -414,17 +414,7 @@ function runScriptsForId(id) {
  * @param jqueryObj - a jquery object representing a hidden input element with a script in its value attribute
  */
 function evalHiddenScript(jqueryObj) {
-    try {
-        eval(jqueryObj.val());
-    }
-    catch (e) {
-        if (console) {
-            console.log("Error evaluating script: " + jqueryObj.val());
-            console.log(e.name);
-            console.log(e.message);
-        }
-    }
-
+    eval(jqueryObj.val());
     jqueryObj.attr("script", "first_run");
     jqueryObj.removeAttr("name");
 }

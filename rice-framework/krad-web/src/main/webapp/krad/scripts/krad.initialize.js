@@ -1084,7 +1084,11 @@ function errorHandler(msg, url, lno) {
     jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).show();
     var context = getContext();
     context.unblockUI();
-    showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');
+    var errorMessage = msg + '<br/>' + url + '<br/>' + lno;
+    showGrowl(errorMessage, 'Javascript Error', 'errorGrowl');
+    if (window.console) {
+        console.log(errorMessage);
+    }
     return false;
 }
 

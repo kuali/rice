@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+  Copyright 2005-2013 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -46,6 +46,11 @@
   </ciManagement>
 
   <properties>
+    <properties.resolve>false</properties.resolve>
+
+    <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
+    <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
+
     <!-- These properties modify the release process -->
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
     <kuali.release.goals>deploy</kuali.release.goals>
@@ -100,6 +105,16 @@
     <connector-api.version>1.5</connector-api.version>
     <cxf.version>2.7.0</cxf.version>
     <jaxb-impl.version>2.2.6</jaxb-impl.version>
+    <!--
+      There appears to be a problem with the 2.2.5 version of jaxb-impl which cxf 2.7.0 depends on by default.
+      Get the following exception when attempting to run cxf-java2ws-plugin on services that use certain Enums:
+
+      java.lang.ClassCastException: com.sun.xml.bind.v2.model.impl.RuntimeEnumLeafInfoImpl cannot be cast to com.sun.xml.bind.v2.model.impl.ClassInfoImpl
+
+      One of the specific offenders here is WorkflowDocumentService and it's use of DocumentStatus enum.
+      Switching to the 2.1-based verson of jaxb-impl version 2.1.13 causes the problem to go away.
+    -->
+    <cxf-java2ws-plugin.jaxb-impl.version>2.1.13</cxf-java2ws-plugin.jaxb-impl.version>
     <db-ojb.version>1.0.4-patch8</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
@@ -199,6 +214,7 @@
   </properties>
 
   <profiles>
+    <!-- Setup the dependency tree needed by the deploy logic -->
     <!-- Optimize the nightly build -->
     <profile>
       <id>nightly</id>

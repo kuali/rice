@@ -390,7 +390,12 @@ public class LightTable extends Group implements DataBinding {
             //get expression result
             Object value = expressionEvaluatorService.evaluateExpressionTemplate(model, expandedContext, expression);
 
-            row = row.replace(matcher.group(), value.toString());
+            if (value != null){
+                row = row.replace(matcher.group(), value.toString());
+            }
+            else {
+                row = row.replace(matcher.group(), "");
+            }
         }
 
         return row;

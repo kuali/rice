@@ -73,9 +73,6 @@
           <property name="control">
             <bean parent="Uif-DropdownControl" p:options-ref="test-options"/>
           </property>
-          <!--          <property name="toolTip">
-                      <bean parent="Uif-Tooltip" p:tooltipContent="You got content @{#lp.field1}"/>
-                    </property>-->
         </bean>
         <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group" p:group.validationMessages.render="false">
           <property name="items">

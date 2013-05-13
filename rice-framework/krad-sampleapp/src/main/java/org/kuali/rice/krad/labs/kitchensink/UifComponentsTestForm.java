@@ -375,8 +375,12 @@ public class UifComponentsTestForm extends UifFormBase {
         doubleGroupedList.add(new UITestObject("Spring", "2003", "DDD123", "2"));
 
         for (int i = 0; i < 1000; i++) {
-            list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6),
-                    RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6)));
+            UITestObject newObj = new UITestObject(RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6),
+                                "a" + i%10, RandomStringUtils.randomNumeric(1));
+            if(i%2 == 0){
+                newObj.setBfield(true);
+            }
+            list6.add(newObj);
         }
 
         { // scope for name hiding purposes

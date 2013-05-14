@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,20 @@
  */
 package ${package};
 
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import edu.samplu.common.NavTemplateMethodSTBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ${className}STNGNavGen extends ${className}STNGBase {
+public abstract class ${className}TmplMthdSTNavBase extends NavTemplateMethodSTBase {
 
-    @Test(groups = { "all", "fast", "default", "nav" }, description = "test${className}Nav")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void test${className}Nav() throws Exception {
-        test${className}Nav(this);
+    @Override
+    protected String getCreateNewLinkLocator() {
+        return ${createNewLinkLocator};
+    }
+
+    @Override
+    protected String getMenuLinkLocator() {
+        return ${menuLinkLocator};
     }
 }

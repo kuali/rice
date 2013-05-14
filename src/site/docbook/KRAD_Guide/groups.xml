@@ -1911,6 +1911,93 @@ public class Test2Object {
       <para>Coming Soon!</para>
 <!-- TODO: Add content here.
           -->    </section>
+    <section>
+      <title>LightTable Group</title>
+      <para> which does not contain or allow many of the options already described in this section.  </para>
+      <para>The LightTable group ("Uif-LightTableGroup") and sections are special collections that
+        are a light-weight collection table implementation, supporting a subset of features
+        available in a normal collection.  Since the LightTable does not retain the many of the
+        features of the full featured collection table groups, the usage of a LightTable is to allow
+        for a very fast render/response of a large table with many rows.  Its purpose (in most
+        cases) is to display these entries as read-only, therefore, adding is not allowed for this
+        collection.</para>
+      <para>Currently the features officially supported by this table in Krad are: </para>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>DataField </para>
+          </listitem>
+          <listitem>
+            <para>InputField with TextControl</para>
+          </listitem>
+          <listitem>
+            <para>InputField with CheckboxControl</para>
+          </listitem>
+          <listitem>
+            <para>InputField with a single-select SelectControl (ie, "Uif-Dropdown")</para>
+          </listitem>
+          <listitem>
+            <para>MessageField </para>
+          </listitem>
+          <listitem>
+            <para>LinkField </para>
+          </listitem>
+          <listitem>
+            <para>ActionField </para>
+          </listitem>
+          <listitem>
+            <para>ImageField </para>
+          </listitem>
+          <listitem>
+            <para>most RichTable widget options (including sorting and paging, among other jQuery
+              DataTables options)</para>
+          </listitem>
+          <listitem>
+            <para>FieldGroup containing only Actions, Image, Messages, or Links </para>
+          </listitem>
+          <listitem>
+            <para>SpringEL (Spring Expression Language) for String properties on components
+              supported by this table only </para>
+          </listitem>
+          <listitem>
+            <para>SpringEL specifically for the render property</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+      <para>Other features are not guaranteed by the framework to work, but may be still be
+        functional.</para>
+      <para>LightTable has the following relevant properties:<itemizedlist>
+          <listitem>
+            <para>propertyName and bindingInfo - for data binding purposes</para>
+          </listitem>
+          <listitem>
+            <para>richTable - RichTable widget configuration for sorting and other advanced
+              features</para>
+          </listitem>
+          <listitem>
+            <para>items - list of Fields/FieldGroups (must be of these types) for this table</para>
+          </listitem>
+          <listitem>
+            <para>other properties inherited from the Group component</para>
+          </listitem>
+        </itemizedlist></para>
+      <para>Example of using a LightTable group to display a very simple table that is highly
+        performant with large sets of
+        data:<programlisting>  &lt;bean id="Demo-LightTableGroup1" parent="Uif-LightTableGroup">
+    &lt;property name="propertyName" value="list6"/>
+    &lt;property name="items">
+      &lt;list>
+        &lt;bean parent="Uif-DataField" p:label="Field 1" p:propertyName="field1"/>
+        &lt;bean parent="Uif-DataField" p:label="Field 2" p:propertyName="field2"/>
+        &lt;bean parent="Uif-DataField" p:label="Field 3" p:propertyName="field3"/>
+        &lt;bean parent="Uif-DataField" p:label="Field 4" p:propertyName="field4"/>
+      &lt;/list>
+    &lt;/property>
+  &lt;/bean></programlisting></para>
+      <para>The appearance of this table will be exactly the same as if a CollectionGroup with a
+        TableCollectionLayout was being used (though it is limited by the types of components and
+        advanced functionality allowed).</para>
+    </section>
     <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>

@@ -468,6 +468,16 @@
                 icon rendered next to the breadcrumb, but this content most likely (and should)
                 represent navigation to parallel locations to the location represented by the
                 BreadcrumbItem.</para>
+            <para>The siblingBreadcrumbComponent using a navigation OptionList control field will
+                appear like this:<figure>
+                    <title>siblingBreadcrumbComponent after clicking arrow</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRAD_Guide/siblingBreadcrumbComp.png"
+                                scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure></para>
         </section>
         <section>
             <title>BreadcrumbOptions</title>
@@ -878,6 +888,94 @@
                             properties applicationHeader and applicationFooter</para>
                     </listitem>
                 </itemizedlist>
+        </section>
+    </section>
+    <section>
+        <title>Sticky Headers And Footers</title>
+        <para>Specific headers and footers of the view can become "sticky" to always stay in the
+            view when the user scrolls.  The page content will appear to scroll underneath these
+            fixed portions.  If pieces of the header/footer are sticky and other pieces are not, it
+            will appear that the non-sticky pieces are either collapsing out of view or expanding
+            into View when the user scrolls the window.  This sticky functionality is useful to
+            always keep information important to the application visible; such as navigation,
+            document information, or buttons that perform actions on the current View (allowing the
+            user to click buttons that would normally appear in a footer and require a user to
+            scroll down to them when not sticky).</para>
+        <para>Since this functionality is heavily css and style based, and is completely automated
+            by the framework through javascript, it is not recommended that you change default
+            styling related to width or positioning for the headers/footers you are attempting to
+            make sticky in your application.  Keep in mind that sticky content must have a solid
+            background color or pattern and remain a width of 100% to appear correctly to the
+            user.</para>
+        <section>
+            <title>Sticky Header Options</title>
+            <para>There are 4 main sections of the header content you can make sticky.  These are:
+                application header, the View's topGroup, breadcrumbs, and the View's header.  These
+                can be mixed and matched as needed for your application or View needs.  </para>
+            <para>Important note:  The pattern (not sticky)-(sticky)-(not sticky)-(sticky) for
+                header content is NOT ALLOWED; ie, two independent areas that "scroll collapse"
+                offscreen are not allowed.</para>
+            <para>The View has the following properties for controlling sticky header content: <itemizedlist>
+                    <listitem>
+                        <para>stickyApplicationHeader - make the application's header sticky </para>
+                    </listitem>
+                    <listitem>
+                        <para>stickyTopGroup - make the View's custom topGroup (content appears
+                            above breadcrumbs) content sticky</para>
+                    </listitem>
+                    <listitem>
+                        <para>stickyBreadcrumbs - make the View's breadcrumbs sticky</para>
+                    </listitem>
+                    <listitem>
+                        <para>stickyHeader - make the View's header component sticky</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>To make the application header sticky, the following code on the View is
+                used:<programlisting>&lt;property name="stickyApplicationHeader" value="true"/></programlisting></para>
+            <para>For sticky View's
+                topGroup:<programlisting>&lt;property name="stickyTopGroup" value="true"/></programlisting></para>
+            <para>For sticky breadcrumbs and View's
+                header:<programlisting>&lt;property name="stickyBreadcrumbs" value="true"/>
+&lt;property name="stickyHeader" value="true"/></programlisting></para>
+            <para>The flags demonstrated can be used in any combination except the following
+                combination.  <emphasis role="bold">This code WILL NOT work appropriately and will
+                    break user
+                interaction</emphasis>:<programlisting>&lt;!-- NEVER do this -->
+&lt;property name="stickyApplicationHeader" value="false"/>
+&lt;property name="stickyTopGroup" value="true"/>
+&lt;property name="stickyBreadcrumbs" value="false"/>
+&lt;property name="stickyHeader" value="true"/></programlisting></para>
+        </section>
+        <section>
+            <title>Sticky Footer Options</title>
+            <para>There are 3 main sections of the View's footer you can make sticky.  These are:
+                application footer, the View's footer, the current PageGroup's footer.  A common use
+                case is to make the page or View's footer sticky to have buttons always available to
+                the user without forcing the user to scroll to get to them.</para>
+            <para>The View has the following properties for controlling sticky footer content: <itemizedlist>
+                    <listitem>
+                        <para>stickyFooter</para>
+                    </listitem>
+                    <listitem>
+                        <para>stickyApplicationFooter</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>The PageGroup (page) also has the stickyFooter property, to make its footer
+                sticky.</para>
+            <para>The following code makes all footers sticky.  Note the usage of stickyFooter on
+                each PageGroup item of the
+                View:<programlisting>  &lt;bean id="Demo-StickyHeaderFooter-View9" parent="Demo-StickyHeaderFooter-BaseView">
+    &lt;property name="items">
+      &lt;list>
+        &lt;bean parent="Demo-StickyHeaderFooter-Page1" p:stickyFooter="true"/>
+        &lt;bean parent="Demo-StickyHeaderFooter-Page2" p:stickyFooter="true"/>
+      &lt;/list>
+    &lt;/property>
+    &lt;property name="stickyFooter" value="true"/>
+    &lt;property name="stickyApplicationFooter" value="true"/>
+  &lt;/bean></programlisting></para>
+            <para>Like sticky header options, these options can be mixed and matched as needed per a
+                View.</para>
         </section>
     </section>
     <section>

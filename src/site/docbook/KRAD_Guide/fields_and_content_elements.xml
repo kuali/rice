@@ -1864,24 +1864,136 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
           configures how many options should be visible to the user without using the arrow. This
           dictates the vertical size of the control. As an example the select control above was set
           to 4. </para>
+        <section>
+          <title>Location Select (Navigation Select)</title>
+          <para>Select controls have the ability to be backed by a location, which allows for
+            navigation when an option is selected.  This should only be used for single Select
+            controls.  This control may be particularily useful in configuring a
+            siblingBreadcrumbComponent for a BreadcrumbItem (see "Breadcrumbs" section in "The
+            View").</para>
+          <para>This is set up the same way a normal Select control would be set up, except instead
+            of using a UifKeyValue object, a UifKeyValueLocation object is used instead.  The
+            location property of this object is backed by a UrlInfo object for ease of the
+            configuration (minimal set-up of navigation information for Views and controller
+            mappings).  </para>
+          <para>The following configuration demonstrates this
+            usage:<programlisting>        &lt;bean parent="Uif-InputField" p:label='Dropdown Navigation' p:instructionalText="Navigate on dropdown selection"
+              p:width="auto">
+          &lt;property name="control">
+            &lt;bean parent="Uif-DropdownControl">
+              &lt;property name="options">
+                &lt;list>
+                  &lt;bean parent="Uif-KeyValueLocation" p:key="1" p:value="" p:location.href=""/>
+                  &lt;bean parent="Uif-KeyValueLocation" p:key="2" p:value="Kuali.org"
+                        p:location.href="http://www.kuali.org"/>
+                  &lt;bean parent="Uif-KeyValueLocation" p:key="3" p:value="Jira"
+                        p:location.href="https://jira.kuali.org"/>
+                  &lt;bean parent="Uif-KeyValueLocation" p:key="4" p:value="InputField Demo"
+                        p:location.viewId="Demo-InputField-View"
+                        p:location.controllerMapping="/kradsampleapp"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+          &lt;/property>
+        &lt;/bean></programlisting></para>
+        </section>
       </section>
       <section>
-        <title>KIM Group</title>
-        <para>The KIM Group control is not an actual different type of HTML control. Instead, it is
-          a wrapper for the text control that provides additional functionality related to selecting
-          a KIM group. The KIM group and KIM user entities are used often in Rice enabled
-          applications; therefore, these controls are provided to simplify the configuration.</para>
-        <para>The group control adds a quickfinder (lookup icon) to the text control that is
-                    configured to invoke the KIM group lookup. The lookup is configured to return
-                    the group id, namespace, and name. The namespace and name fields can then be
-                    displayed as data or input fields, and the group id will be added as a
-                    hidden.</para>
-        <para>To use the KIM group control a bean with parent of 'Uif-KimGroupControl' should be
-          given. The property that backs the input field for which the control is configured is
-          assumed to hold the group name. As usual this is configured using the propertyName
-          property on input field. In order for the control to work properly, we must then specify
-          the properties that hold the group id and namespace:</para>
-        <programlisting>
+        <title>OptionList</title>
+        <para>The OptionList control is a MultiValueControl which is used for the display a read
+          only list of key-value pairs.  It can be used to display those key-value pairs which were
+          "selected" (when backed by with a propertyName and setting the appropriate option) or to
+          display all available key-value pairs configured by the options (default).  The values
+          which are considered "selected" (whether all options are being render or not) have an
+          addiontal css style class when rendered defined by selectedItemCssClass property.</para>
+        <para>The main use case of this control is to display the available set of options available
+          in an option list or to display the ones that may have been selected previously (for
+          display in a read-only View for example).</para>
+        <para>The following code displays an OptionsList that only shows the values which match in
+          the property defined by
+          propertyName:<programlisting>      &lt;bean parent="Uif-InputField" p:label='Option List'
+              p:propertyName="optionListSelection">
+          &lt;property name="control">
+            &lt;bean parent="Uif-OptionListControl">
+              <emphasis role="bold">&lt;property name="showOnlySelected" value="true"/></emphasis>
+              &lt;property name="options">
+                &lt;list>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="4" p:value="Option 4"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+          &lt;/property>
+        &lt;/bean></programlisting></para>
+        <para>Lets assume that the optionListSelection property defined by propertyName only
+          contains the values 2 and 4.  Since showOnlySelected is set to true, the result is a
+          read-only control that will look like the following:<figure>
+            <title>OptionList Control</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="../images/KRAD_Guide/optionList.png" scalefit="1"/>
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+        <para>Though it is not apparent, the selected values also have a different css style class
+          added.  By default it is not different from normal text and must be customized for your
+          project needs, when applicable.</para>
+        <section>
+          <title>Navigation OptionList</title>
+          <para>Like a location-backed Select control, an OptionList can also be backed by a list of
+            UifKeyValueLocation beans for its options.  This will output the OptionList as a list of
+            links which the user can click.  If showOnlySelected flag is being used, only those
+            links which match the value of the property defined by propertyName of the field will be
+            shown.  Like a location-backed Select control, this control is useful for use in the
+            siblingBreadcrumbComponent property of a BreadcrumbItem.</para>
+          <para>The following configuration will output a list of links (note that no propertyName
+            is being used here nor the showOnlySelected
+            property):<programlisting>&lt;bean parent="Uif-InputField" p:label='Nav Option List'>
+          &lt;property name="control">
+            &lt;bean parent="Uif-OptionListControl">
+              &lt;property name="options">
+                &lt;list>
+                  &lt;bean parent="Uif-KeyValueLocation" p:key="1" p:value="Kuali.org"
+                        p:location.href="http://www.kuali.org"/>
+                  &lt;bean parent="Uif-KeyValueLocation" p:key="2" p:value="Jira"
+                        p:location.href="https://jira.kuali.org"/>
+                  &lt;bean parent="Uif-KeyValueLocation" p:key="3" p:value="InputField Demo"
+                        p:location.viewId="Demo-InputField-View"
+                        p:location.controllerMapping="/kradsampleapp"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+          &lt;/property>
+        &lt;/bean></programlisting></para>
+          <para>That will look like the following:<figure>
+              <title>Navigation OptionList Control</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/KRAD_Guide/navigationOptionList.png" scalefit="1"/>
+                </imageobject>
+              </mediaobject>
+            </figure></para>
+        </section>
+      </section>
+    </section>
+    <section>
+      <title>KIM Group</title>
+      <para>The KIM Group control is not an actual different type of HTML control. Instead, it is a
+        wrapper for the text control that provides additional functionality related to selecting a
+        KIM group. The KIM group and KIM user entities are used often in Rice enabled applications;
+        therefore, these controls are provided to simplify the configuration.</para>
+      <para>The group control adds a quickfinder (lookup icon) to the text control that is
+        configured to invoke the KIM group lookup. The lookup is configured to return the group id,
+        namespace, and name. The namespace and name fields can then be displayed as data or input
+        fields, and the group id will be added as a hidden.</para>
+      <para>To use the KIM group control a bean with parent of 'Uif-KimGroupControl' should be
+        given. The property that backs the input field for which the control is configured is
+        assumed to hold the group name. As usual this is configured using the propertyName property
+        on input field. In order for the control to work properly, we must then specify the
+        properties that hold the group id and namespace:</para>
+      <programlisting>
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;groupNamespaceCode&quot; p:label=&quot;Namespace Code&quot;/&gt;
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;groupName&quot; p:label=&quot;Name&quot;&gt;
     &lt;property name=&quot;control&quot;&gt;
@@ -1889,53 +2001,53 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
     &lt;/property&gt;
 &lt;/bean&gt;
                 </programlisting>
-        <para>Notice we are displaying the group namespace in an input field before the group name.</para>
-      </section>
-      <section>
-        <title>KIM User</title>
-        <para>The KIM User control is similar to the KIM Group control but instead of a KIM group,
-          it allows us to find a KIM User. This control does several things for us. First, like the
-          group control, it will configure a quickfinder for our field that is configured to invoke
-          the KIM User lookup. The lookup will then return the principal id, principal name
-          (username), and person name (full name). Also, like the group control, it will
-          automatically add the principal id as a hidden field for us. In addition, it sets up a
-          field query (covered later on in this chapter) that displays the person name under the
-          control on return from the lookup, or when tabbing out of the control.</para>
-        <para>To use the KIM User control, a bean with parent of 'Uif-KimPersonControl' should be
-          given. The property that backs the input field for which the control is configured is
-          assumed to hold the principal name. As usual this is configured using the propertyName
-          property on input field. In order for the control to work properly, we must then specify
-          the properties that hold the principal id and the person name:</para>
-        <programlisting>
+      <para>Notice we are displaying the group namespace in an input field before the group
+        name.</para>
+    </section>
+    <section>
+      <title>KIM User</title>
+      <para>The KIM User control is similar to the KIM Group control but instead of a KIM group, it
+        allows us to find a KIM User. This control does several things for us. First, like the group
+        control, it will configure a quickfinder for our field that is configured to invoke the KIM
+        User lookup. The lookup will then return the principal id, principal name (username), and
+        person name (full name). Also, like the group control, it will automatically add the
+        principal id as a hidden field for us. In addition, it sets up a field query (covered later
+        on in this chapter) that displays the person name under the control on return from the
+        lookup, or when tabbing out of the control.</para>
+      <para>To use the KIM User control, a bean with parent of 'Uif-KimPersonControl' should be
+        given. The property that backs the input field for which the control is configured is
+        assumed to hold the principal name. As usual this is configured using the propertyName
+        property on input field. In order for the control to work properly, we must then specify the
+        properties that hold the principal id and the person name:</para>
+      <programlisting>
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;principalName&quot; p:label=&quot;Person Name&quot; p:required=&quot;true&quot;&gt;
     &lt;property name=&quot;control&quot;&gt;
         &lt;bean parent=&quot;Uif-KimPersonControl&quot; p:principalIdPropertyName=&quot;principalId&quot; p:personNamePropertyName=&quot;personName&quot;/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
                 </programlisting>
-        <para>It a common setup to carry the principal id as a primitive field, with a nested Person
-          object. In these cases, it is not necessary to have a separate property for the principal
-          name and person name, but instead the properties on the nested person object can be used.
-          For these cases, the user control provides a simpler way to configure it by setting the
-          personObjectPropertyName. This is the name of the property that holds the nested person
-          object. </para>
-        <programlisting>
+      <para>It a common setup to carry the principal id as a primitive field, with a nested Person
+        object. In these cases, it is not necessary to have a separate property for the principal
+        name and person name, but instead the properties on the nested person object can be used.
+        For these cases, the user control provides a simpler way to configure it by setting the
+        personObjectPropertyName. This is the name of the property that holds the nested person
+        object. </para>
+      <programlisting>
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;principalName&quot; p:label=&quot;Person Name&quot; p:required=&quot;true&quot;&gt;
     &lt;property name=&quot;control&quot;&gt;
         &lt;bean parent=&quot;Uif-KimPersonControl&quot; p:personObjectPropertyName=&quot;person"/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
                 </programlisting>
-        <para>Below shows the user control with the person name displayed:</para>
-        <figure>
-          <title>KIM Group Control</title>
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/KIMGroupControl.png"/>
-            </imageobject>
-          </mediaobject>
-        </figure>
-      </section>
+      <para>Below shows the user control with the person name displayed:</para>
+      <figure>
+        <title>KIM Group Control</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/KIMGroupControl.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
     </section>
     <section role="NotInToc">
       <title>Recap</title>
@@ -2091,9 +2203,14 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
               values to be selected</para>
           </listitem>
           <listitem>
-            <para>The select control supports the <emphasis role="keyword">size</emphasis>
-                            property which controls the number of options that are visible without
-                            clicking the arrow</para>
+            <para>The select control supports the <emphasis role="keyword">size</emphasis> property
+              which controls the number of options that are visible without clicking the
+              arrow</para>
+          </listitem>
+          <listitem>
+            <para>The select and option list controls can be backed by a UifKeyValueLocation
+              ("Uif-KeyValueLocation") objects in their options which allow these controls to
+              provide easy navigation to the user</para>
           </listitem>
           <listitem>
             <para>The <emphasis role="keyword">KIMGroup</emphasis> control is a special

@@ -130,7 +130,7 @@ public class LocationSuggest extends Suggest {
 
     /**
      * The objectIdPropertyName that represents the key for getting the object as a request parameter.  The property
-     * will be added to the request parameters by the name give with the value pulled from the result object.
+     * will be added to the request parameters by the name given with the value pulled from the result object.
      *
      * <p>
      *     This convenience method is essentially equivalent to having a property by objectIdPropertyName as a

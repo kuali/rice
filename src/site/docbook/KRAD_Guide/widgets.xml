@@ -779,6 +779,114 @@
             </section>
         </section>
         <section>
+            <title>LocationSuggest</title>
+            <para>The LocationSuggest behaves the same and is backed by the same plugin as the
+                Suggest widget.  It contains all the same options and configuration as Suggest, as
+                well.  However, when one of its options is selected the user is navigated to a new
+                page.  </para>
+            <section>
+                <title>Properties</title>
+                <para>
+                    <table frame="all" tabstyle="striped">
+                        <title>Suggest Properties</title>
+                        <tgroup cols="3">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Property</entry>
+                                    <entry>Default</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry> baseUrl </entry>
+                                    <entry>@{#ConfigProperties['krad.url']}</entry>
+                                    <entry>The baseUrl used to construct the url to navigate
+                                        to</entry>
+                                </row>
+                                <row>
+                                    <entry>additionalUrlPathPropertyName</entry>
+                                    <entry/>
+                                    <entry>The property in the returned objects which contains a
+                                        path to be appended to the baseUrl (often the controller
+                                        path)</entry>
+                                </row>
+                                <row>
+                                    <entry>hrefPropertyName</entry>
+                                    <entry>href</entry>
+                                    <entry>The property which contains the full href (url) to
+                                        navigate to.  If the objects returned have this property,
+                                        this will be used instead of constructing a url with
+                                        baseUrl</entry>
+                                </row>
+                                <row>
+                                    <entry>objectIdPropertyName</entry>
+                                    <entry/>
+                                    <entry>The objectIdPropertyName that represents the key for
+                                        getting the object as a request parameter. The property will
+                                        be added to the request parameters by the <emphasis
+                                            role="bold">name given</emphasis> with the <emphasis
+                                            role="bold">value</emphasis> pulled from the result
+                                        object.</entry>
+                                </row>
+                                <row>
+                                    <entry>requestParameterPropertyNames</entry>
+                                    <entry/>
+                                    <entry>requestParameterPropertyNames specify the properties that
+                                        should be included in the request parameters. The key is
+                                        used as the key of the request parameter and the value is
+                                        used as the property name to look for in the suggestion
+                                        result object. If the property name specified exists on the
+                                        result object, the request parameter in the url will appear
+                                        as key=propertyValue in the request parameters.  A common
+                                        usage is using this to set a unique viewId per item.</entry>
+                                </row>
+                                <row>
+                                    <entry>additionalRequestParameters</entry>
+                                    <entry/>
+                                    <entry>additionalRequestParameters specify the static(constant)
+                                        request parameters that should be appended to the url. The
+                                        key represents the key of the request parameter and the
+                                        value represents the value of the request parameter. This
+                                        will be used on each suggestion which uses a generated url
+                                        (using baseUrl construction).  A common usage is to set
+                                        properties that are common to all locations such as
+                                        "methodToCall" as "start"</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+                <para>For example the following, will retrieve objects from the getViewOptions
+                    method.  If they contain an "id" these will be used as the "viewId" on the url
+                    that is navigated to.  Note that baseUrl is overriden because all viewIds
+                    expected back in the objects returned use the same controller.  Also note the
+                    usage of additionalRequestParameters, all urls also require "methodToCall=start"
+                    in this
+                    scenario:<programlisting>            &lt;bean parent="Uif-LocationSuggest" p:render="true" p:retrieveAllSuggestions="true"
+                    p:baseUrl="@{#ConfigProperties['krad.url']}/kradsampleapp">
+              &lt;property name="valuePropertyName" value="value"/>
+              &lt;property name="additionalRequestParameters">
+                &lt;map>
+                  &lt;entry key="methodToCall" value="start"/>
+                &lt;/map>
+              &lt;/property>
+              &lt;property name="requestParameterPropertyNames">
+                &lt;map>
+                  &lt;entry key="viewId" value="id"/>
+                &lt;/map>
+              &lt;/property>
+              &lt;property name="suggestQuery">
+                &lt;bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
+                        "org.kuali.rice.krad.demo.uif.components.ComponentSuggestClass.getViewOptions"/>
+              &lt;/property>
+...</programlisting></para>
+            </section>
+        </section>
+        <section>
             <title>Tabs</title>
             <para>The Tabs widget used for creating tabs to break up content into multiple sections.
                 See <link xlink:href="http://jqueryui.com/demos/tabs/"

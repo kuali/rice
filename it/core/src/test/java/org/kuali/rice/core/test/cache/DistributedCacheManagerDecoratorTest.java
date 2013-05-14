@@ -47,123 +47,122 @@ import static org.junit.Assert.*;
  */
 public class DistributedCacheManagerDecoratorTest extends CORETestCase {
 
-	 private static final String ROLE_RESPONSIBILITY_CACHE = "http://rice.kuali.org/kim/v2_0/RoleResponsibilityType";
-	    private static final String ROLE_TYPE_CACHE = "http://rice.kuali.org/kim/v2_0/RoleType";
-	    private static final String DELEGATE_TYPE_CACHE = "http://rice.kuali.org/kim/v2_0/DelegateTypeType";
-	    private static final String ROLE_MEMBER_TYPE= "http://rice.kuali.org/kim/v2_0/RoleMemberType";
-	    private static final String PERMISSION_TYPE = "http://rice.kuali.org/kim/v2_0/PermissionType";
-	    private static final String INNER_CLASS = "CacheMessageSendingTransactionSynchronization";
+    private static final String ROLE_RESPONSIBILITY_CACHE = "http://rice.kuali.org/kim/v2_0/RoleResponsibilityType";
+    private static final String ROLE_TYPE_CACHE = "http://rice.kuali.org/kim/v2_0/RoleType";
+    private static final String DELEGATE_TYPE_CACHE = "http://rice.kuali.org/kim/v2_0/DelegateTypeType";
+    private static final String ROLE_MEMBER_TYPE= "http://rice.kuali.org/kim/v2_0/RoleMemberType";
+    private static final String PERMISSION_TYPE = "http://rice.kuali.org/kim/v2_0/PermissionType";
+    private static final String INNER_CLASS = "CacheMessageSendingTransactionSynchronization";
 
-	    @Before
-	    public void setUp() throws Exception {
-	        super.setUp();
-	    }
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+    }
 
-	    @Test
-	    public void testDuplicateCacheRemovalCase1() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-	        Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue(); 
-	        targets.add(CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE));
-	        targets.add(CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE));
-	        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(ROLE_MEMBER_TYPE));
-	        targets.add(CacheTarget.entireCache(ROLE_MEMBER_TYPE));
-	        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
-	        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
-	        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
-	        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"));
-	        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"));
-	        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
+    @Test
+    public void testDuplicateCacheRemovalCase1() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue(); 
+        targets.add(CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE));
+        targets.add(CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE));
+        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(ROLE_MEMBER_TYPE));
+        targets.add(CacheTarget.entireCache(ROLE_MEMBER_TYPE));
+        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
+        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"));
+        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"));
+        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
 
-	        ArrayList<CacheTarget> correctResults = Lists.newArrayList(
-	                CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE), 
-	                CacheTarget.entireCache(ROLE_MEMBER_TYPE),
-	                CacheTarget.entireCache(ROLE_TYPE_CACHE), 
-	                CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
-	                CacheTarget.entireCache(PERMISSION_TYPE));
+        ArrayList<CacheTarget> correctResults = Lists.newArrayList(
+                CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE), 
+                CacheTarget.entireCache(ROLE_MEMBER_TYPE),
+                CacheTarget.entireCache(ROLE_TYPE_CACHE), 
+                CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
+                CacheTarget.entireCache(PERMISSION_TYPE));
 
-	        Collection<CacheTarget> results = new ArrayList<CacheTarget>(invokeExhaustQueue(targets));
-	        assertTrue(CollectionUtils.diff(correctResults, results).isEmpty());
-	    }
+        Collection<CacheTarget> results = new ArrayList<CacheTarget>(invokeExhaustQueue(targets));
+        assertTrue(CollectionUtils.diff(correctResults, results).isEmpty());
+    }
 
-	    @Test
-	    public void testDuplicateCacheRemovalCase2() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-	        Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue();
-	        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
-	        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
-	        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
-	        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"));
-	        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"));
-	        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
+    @Test
+    public void testDuplicateCacheRemovalCase2() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue();
+        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
+        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"));
+        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"));
+        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
 
-	        ArrayList<CacheTarget> correctResults = Lists.newArrayList(
-	                CacheTarget.entireCache(ROLE_TYPE_CACHE), 
-	                CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
-	                CacheTarget.entireCache(PERMISSION_TYPE), 
-	                CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"),
-	                CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"), 
-	                CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"),
-	                CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
+        ArrayList<CacheTarget> correctResults = Lists.newArrayList(
+                CacheTarget.entireCache(ROLE_TYPE_CACHE), 
+                CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
+                CacheTarget.entireCache(PERMISSION_TYPE), 
+                CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"),
+                CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"), 
+                CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"),
+                CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
 
-	        Collection<CacheTarget> results = new ArrayList<CacheTarget>(invokeExhaustQueue(targets));
-	        assertTrue(CollectionUtils.diff(correctResults, results).isEmpty());
-	    }
+        Collection<CacheTarget> results = new ArrayList<CacheTarget>(invokeExhaustQueue(targets));
+        assertTrue(CollectionUtils.diff(correctResults, results).isEmpty());
+    }
 
-	    @Test
-	    public void testDuplicateCacheRemovalCase3() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-	        Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue();
-	        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
-	        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
-	        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
-	        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
-	        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
-	        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key2"));
-	        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key2"));
+    @Test
+    public void testDuplicateCacheRemovalCase3() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue();
+        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
+        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+        targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
+        targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
+        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key2"));
+        targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key2"));
 
-	        ArrayList<CacheTarget> correctResults = Lists.newArrayList(
-	                CacheTarget.entireCache(ROLE_TYPE_CACHE), 
-	                CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
-	                CacheTarget.entireCache(PERMISSION_TYPE), 
-	                CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"),
-	                CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key2"));
+        ArrayList<CacheTarget> correctResults = Lists.newArrayList(
+                CacheTarget.entireCache(ROLE_TYPE_CACHE), 
+                CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
+                CacheTarget.entireCache(PERMISSION_TYPE), 
+                CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"),
+                CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key2"));
 
-	        Collection<CacheTarget> results = new ArrayList<CacheTarget>(invokeExhaustQueue(targets));
-	        assertTrue(CollectionUtils.diff(correctResults, results).isEmpty());
-	    }
+        Collection<CacheTarget> results = new ArrayList<CacheTarget>(invokeExhaustQueue(targets));
+        assertTrue(CollectionUtils.diff(correctResults, results).isEmpty());
+    }
 
-	    /*
-	     * Invoking the DistributedCacheManagerDecorator via reflection since the exhaustQueue method is a private method
-	     * in a private inner class.
-	     */
-	    protected Collection<CacheTarget> invokeExhaustQueue(Queue<CacheTarget> targets) throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
-	        Class<?> c = DistributedCacheManagerDecorator.class;
-	        Class<?>[] classes = c.getDeclaredClasses();
-	        Class<?> correctInnerClass = null;
+    /*
+     * Invoking the DistributedCacheManagerDecorator via reflection since the exhaustQueue method is a private method
+     * in a private inner class.
+     */
+    protected Collection<CacheTarget> invokeExhaustQueue(Queue<CacheTarget> targets) throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
+        Class<?> c = DistributedCacheManagerDecorator.class;
+        Class<?>[] classes = c.getDeclaredClasses();
+        Class<?> correctInnerClass = null;
 
-	        //Trying to find the correct inner class  
-	        for (Class<?> clazz : classes) {
-	            if (clazz.getName().endsWith(INNER_CLASS)) {
-	                correctInnerClass = clazz;
-	                break;
-	            }
-	        }
+        //Trying to find the correct inner class  
+        for (Class<?> clazz : classes) {
+            if (clazz.getName().endsWith(INNER_CLASS)) {
+                correctInnerClass = clazz;
+                break;
+            }
+        }
 
-	        Constructor<?> constructor = correctInnerClass.getDeclaredConstructors()[0];
-	        constructor.setAccessible(true);
-	        Object inner = constructor.newInstance(c.newInstance());
-	        Method method = inner.getClass().getDeclaredMethod("exhaustQueue", new Class[] {Queue.class});
-	        method.setAccessible(true);
+        Constructor<?> constructor = correctInnerClass.getDeclaredConstructors()[0];
+        constructor.setAccessible(true);
+        Object inner = constructor.newInstance(c.newInstance());
+        Method method = inner.getClass().getDeclaredMethod("exhaustQueue", new Class[] {Queue.class});
+        method.setAccessible(true);
 
-	        return (Collection<CacheTarget>) method.invoke(inner, new Object[]{targets});
-	    }
-  
+        return (Collection<CacheTarget>) method.invoke(inner, new Object[]{targets});
+    }
 }

@@ -4,6 +4,7 @@
 package edu.samplu.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 import org.apache.commons.io.FileUtils;
@@ -14,7 +15,7 @@ import freemarker.template.Configuration;
 import sun.applet.Main;
 
 /**
- * @author hardik
+ * @author dmoteria
  * 
  */
 public class FreemarkerSmoketestGenerator {
@@ -22,13 +23,14 @@ public class FreemarkerSmoketestGenerator {
 
     // Templates for File Generation
     private static String DIR_TMPL = "/Gen/";
-
+    
     //Configuration
     private static TemplateLoader templateLoader = new ClassTemplateLoader(Main.class, DIR_TMPL);
 
     public static void main(String[] args) throws Exception {
         cfg.setTemplateLoader(templateLoader);
-        String DEFAULT_PROPS_LOCATION = "/GenFiles/WorkFlowDocType.properties";
+        
+        String DEFAULT_PROPS_LOCATION = "/GenFiles/Group.properties";
         String STJUNITBASE_TMPL = "STJUnitBase.ftl";
         String STJUNITBKMRKGEN_TMPL = "STJUnitBkMrkGen.ftl";
         String STJUNITNAVGEN_TMPL = "STJUnitNavGen.ftl";

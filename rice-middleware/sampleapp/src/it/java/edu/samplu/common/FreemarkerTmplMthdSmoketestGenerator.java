@@ -15,7 +15,7 @@ import freemarker.template.Configuration;
 import sun.applet.Main;
 
 /**
- * @author hardik
+ * @author dmoteria
  * 
  */
 public class FreemarkerTmplMthdSmoketestGenerator {

@@ -61,6 +61,9 @@ public final class RiceKeyConstants {
     // KULRICE-8760: Multiple complete adhoc requests should not be allowed on the same document
     public static final String ERROR_ADHOC_COMPLETE_MORE_THAN_ONE = "error.adhoc.complete.more.than.one.request";
     
+    // KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added 
+    public static final String ERROR_ADHOC_COMPLETE_BLANKET_APPROVE_NOT_ALLOWED = "error.adhoc.complete.blanket.approve.not.allowed";    
+    
     public static final String ERROR_INVALID_ADHOC_PERSON_ID = "error.adhoc.invalid.person";
     public static final String ERROR_MISSING_ADHOC_PERSON_ID = "error.adhoc.missing.person";
     public static final String ERROR_UNAUTHORIZED_ADHOC_PERSON_ID = "error.adhoc.unauthorized.person";

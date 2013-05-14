@@ -295,9 +295,11 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         /**
          * Iterates over the passed in {@link Queue} calling the {@link Queue#poll} for each item.
          *
-         * The returned list will also be normalized such that cache targets with keys will not be
-         * present in the returned collection if a cache target exists for the same cache but
-         * w/o a key (a complete cache flush)
+         * The returned list will also be normalized such that:
+         * (1) cache targets with keys will not be present in the returned collection if a cache target exists for the
+         * same cache but w/o a key (a complete cache flush);
+         * (2) duplicate targets (both complete cache flushes and specific keys) will be filtered so only unique
+         * targets will exist in the returned collection
          *
          * @param targets the queue to iterate over and exhaust
          * @return a new collection containing CacheTargets

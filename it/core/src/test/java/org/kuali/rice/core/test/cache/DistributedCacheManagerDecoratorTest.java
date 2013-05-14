@@ -15,34 +15,27 @@
  */
 package org.kuali.rice.core.test.cache;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
 import org.apache.cxf.common.util.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.core.test.CORETestCase;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.cache.CacheAdminService;
-import org.kuali.rice.core.api.cache.CacheTarget;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Queue;
 
-import javax.xml.namespace.QName;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 
 /**
- * Default test base for a full KNS enabled unit test.
- * 
+ * Unit tests for the DistributedCacheManagerDecorator
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DistributedCacheManagerDecoratorTest extends CORETestCase {
@@ -59,8 +52,16 @@ public class DistributedCacheManagerDecoratorTest extends CORETestCase {
         super.setUp();
     }
 
+    /**
+     * Test that duplicate cache flushes are filtered by
+     * DistributedCacheManagerDecorator.CacheMessageSendingTransactionSynchronization.exhaustQueue(...)
+     * to just the unique set, and that individual cache entry flushes  are filtered if the containing caches are also
+     * being flushed in their entirety.
+     */
     @Test
-    public void testDuplicateCacheRemovalCase1() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void testDuplicateCacheRemovalCase1() {
+
+        // duplicate caches, we expect these to be filtered to the unique set
         Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue(); 
         targets.add(CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE));
         targets.add(CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE));
@@ -72,15 +73,19 @@ public class DistributedCacheManagerDecoratorTest extends CORETestCase {
         targets.add(CacheTarget.entireCache(ROLE_MEMBER_TYPE));
         targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
         targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+
+        // specific cache entries by key.  We expect these all to be filtered out because the entire caches
+        // are being flushed based on the targets added above.
         targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
         targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"));
         targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"));
         targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
 
+        // the expected result is the unique set of caches from targets
         ArrayList<CacheTarget> correctResults = Lists.newArrayList(
-                CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE), 
+                CacheTarget.entireCache(ROLE_RESPONSIBILITY_CACHE),
                 CacheTarget.entireCache(ROLE_MEMBER_TYPE),
-                CacheTarget.entireCache(ROLE_TYPE_CACHE), 
+                CacheTarget.entireCache(ROLE_TYPE_CACHE),
                 CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
                 CacheTarget.entireCache(PERMISSION_TYPE));
 
@@ -88,26 +93,37 @@ public class DistributedCacheManagerDecoratorTest extends CORETestCase {
         assertTrue(CollectionUtils.diff(correctResults, results).isEmpty());
     }
 
+    /**
+     * Test that duplicate cache flushes are filtered by
+     * DistributedCacheManagerDecorator.CacheMessageSendingTransactionSynchronization.exhaustQueue(...)
+     * to just the unique set, and that duplicate cache entry flushes are filtered to just the unique set as well.
+     */
     @Test
-    public void testDuplicateCacheRemovalCase2() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void testDuplicateCacheRemovalCase2() {
         Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue();
+
+        // duplicate caches, we expect these to be filtered to the unique set
         targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
         targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
         targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
         targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
         targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
         targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+
+        // cache entries -- we expect no filtering, since (1) the caches these entries are in are not being
+        // flushed in their entirety, and (2) the cache + key combinations are unique
         targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
         targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"));
         targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"));
         targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
 
+        // the expected result is the unique set of caches, and each of the specified cache entries
         ArrayList<CacheTarget> correctResults = Lists.newArrayList(
-                CacheTarget.entireCache(ROLE_TYPE_CACHE), 
+                CacheTarget.entireCache(ROLE_TYPE_CACHE),
                 CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
-                CacheTarget.entireCache(PERMISSION_TYPE), 
+                CacheTarget.entireCache(PERMISSION_TYPE),
                 CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"),
-                CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"), 
+                CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key2"),
                 CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key3"),
                 CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key4"));
 
@@ -115,20 +131,30 @@ public class DistributedCacheManagerDecoratorTest extends CORETestCase {
         assertTrue(CollectionUtils.diff(correctResults, results).isEmpty());
     }
 
+    /**
+     * Test that duplicate cache flushes are filtered by
+     * DistributedCacheManagerDecorator.CacheMessageSendingTransactionSynchronization.exhaustQueue(...)
+     * to just the unique set, and that duplicate cache entry flushes are filtered to just the unique set as well.
+     */
     @Test
-    public void testDuplicateCacheRemovalCase3() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void testDuplicateCacheRemovalCase3() {
         Queue<CacheTarget> targets = Queues.newLinkedBlockingQueue();
+
+        // duplicate caches, we expect these to be filtered to the unique set
         targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
         targets.add(CacheTarget.entireCache(ROLE_TYPE_CACHE));
         targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
         targets.add(CacheTarget.entireCache(DELEGATE_TYPE_CACHE));
         targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
         targets.add(CacheTarget.entireCache(PERMISSION_TYPE));
+
+        // duplicate cache entries, we expect these to be filtered down to the unique set.
         targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
         targets.add(CacheTarget.singleEntry(ROLE_MEMBER_TYPE, "key1"));
         targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key2"));
         targets.add(CacheTarget.singleEntry(ROLE_RESPONSIBILITY_CACHE, "key2"));
 
+        // the expected result is the unique set of caches, and the unique set of specified cache entries
         ArrayList<CacheTarget> correctResults = Lists.newArrayList(
                 CacheTarget.entireCache(ROLE_TYPE_CACHE), 
                 CacheTarget.entireCache(DELEGATE_TYPE_CACHE),
@@ -144,7 +170,9 @@ public class DistributedCacheManagerDecoratorTest extends CORETestCase {
      * Invoking the DistributedCacheManagerDecorator via reflection since the exhaustQueue method is a private method
      * in a private inner class.
      */
-    protected Collection<CacheTarget> invokeExhaustQueue(Queue<CacheTarget> targets) throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
+    protected Collection<CacheTarget> invokeExhaustQueue(Queue<CacheTarget> targets) {
+        Collection<CacheTarget> results = null;
+
         Class<?> c = DistributedCacheManagerDecorator.class;
         Class<?>[] classes = c.getDeclaredClasses();
         Class<?> correctInnerClass = null;
@@ -159,10 +187,19 @@ public class DistributedCacheManagerDecoratorTest extends CORETestCase {
 
         Constructor<?> constructor = correctInnerClass.getDeclaredConstructors()[0];
         constructor.setAccessible(true);
-        Object inner = constructor.newInstance(c.newInstance());
-        Method method = inner.getClass().getDeclaredMethod("exhaustQueue", new Class[] {Queue.class});
-        method.setAccessible(true);
 
-        return (Collection<CacheTarget>) method.invoke(inner, new Object[]{targets});
+        try {
+            Object inner = constructor.newInstance(c.newInstance());
+            Method method = inner.getClass().getDeclaredMethod("exhaustQueue", new Class[] {Queue.class});
+            method.setAccessible(true);
+
+            results = (Collection<CacheTarget>) method.invoke(inner, new Object[]{targets});
+        } catch (Exception e) {
+            // there are a number of reflection-related exceptions that can be thrown here.  We'll catch all and
+            // throw a runtime exception since we will not be handling them.
+            throw new RuntimeException("Unable to reflectively invoke exhaustQueue", e);
+        }
+
+        return results;
     }
 }

@@ -61,7 +61,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * </p>
  */
 public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, BeanNameAware, NamedBean {
-    
+
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
 
     private static final String DISABLE_ALL_CACHES_PARAM = "rice.cache.disableAllCaches";
@@ -305,15 +305,15 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         private Collection<CacheTarget> exhaustQueue(Queue<CacheTarget> targets) {
             final Set<CacheTarget> normalized = new HashSet<CacheTarget>();
             final Set<String> completeFlush = new HashSet<String>();    
-            
+
             CacheTarget target;
             while ((target = targets.poll()) != null) {
-            	normalized.add(target);
+                normalized.add(target);
                 if (!target.containsKey()) {
-                	completeFlush.add(target.getCache());
+                    completeFlush.add(target.getCache());
                 }
             }
-         
+
             return Collections2.filter(normalized, new Predicate<CacheTarget>() {
                 @Override
                 public boolean apply(CacheTarget input) {

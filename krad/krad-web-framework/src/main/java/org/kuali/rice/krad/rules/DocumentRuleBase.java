@@ -102,7 +102,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         getDictionaryValidationService().validateBusinessObject(document.getDocumentHeader());
         validateSensitiveDataValue(KRADPropertyConstants.EXPLANATION, document.getDocumentHeader().getExplanation(),
                 getDataDictionaryService().getAttributeLabel(DocumentHeader.class, KRADPropertyConstants.EXPLANATION));
-        validateSensitiveDataValue(KRADPropertyConstants.DESCRIPTION,
+        validateSensitiveDataValue(KRADPropertyConstants.DOCUMENT_DESCRIPTION,
                 document.getDocumentHeader().getDocumentDescription(), getDataDictionaryService().getAttributeLabel(
                 DocumentHeader.class, KRADPropertyConstants.DOCUMENT_DESCRIPTION));
 

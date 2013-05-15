@@ -171,8 +171,7 @@
                     role="italic">MySendNotification</emphasis> method to invoke the
                 Notification web service. </para>
             <para>A SOAP style web services binding stub is available in the <emphasis
-                role="bold">notification.jar</emphasis> file, as described above in the
-                <emphasis role="bold">Dependencies</emphasis> section. </para>
+                role="bold">notification.jar</emphasis> file. </para>
             <para>You may use this code as a template for sending a notification using the web
                 service:</para>
             <programlisting>package edu.cornell.library.notification;

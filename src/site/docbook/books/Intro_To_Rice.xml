@@ -29,10 +29,10 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../Intro_To_Rice/intro.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../Intro_To_Rice/software_architecture.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../Intro_To_Rice/technical_overview.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_Global.xml" />
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_FeaturesGuide.xml" />
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_Global.xml" />
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_LOCATION.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../Intro_To_Rice/UG_Global.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../Intro_To_Rice/UG_FeaturesGuide.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../Intro_To_Rice/TRG_Global.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../Intro_To_Rice/UG_LOCATION.xml" />
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../common/glossary.xml"/>
 

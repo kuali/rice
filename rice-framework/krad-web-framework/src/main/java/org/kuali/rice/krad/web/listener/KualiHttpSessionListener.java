@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -57,10 +58,14 @@ public class KualiHttpSessionListener implements HttpSessionListener {
      * Remove any locks that the user has for this session
      */
     private void releaseLocks() {
-        String sessionId = GlobalVariables.getUserSession().getKualiSessionId();
+        UserSession userSession = GlobalVariables.getUserSession();
+
+        if (userSession == null) return;
+
+        String sessionId = userSession.getKualiSessionId();
         List<PessimisticLock> locks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForSession(
                 sessionId);
-        Person user = GlobalVariables.getUserSession().getPerson();
+        Person user = userSession.getPerson();
 
         KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, user);
     }

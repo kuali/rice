@@ -77,8 +77,8 @@ public class FreemarkerSTGenerator {
                     + File.separatorChar + "GenFiles" + File.separatorChar + props.getProperty("className")
                     + TMPL.substring(0, TMPL.length() - 4) + ".java");
 
-            String output1 = FreeMarkerTemplateUtils.processTemplateIntoString(cfg.getTemplate(TMPL), props);
-            FileUtils.writeStringToFile(f1, output1);
+            //Write Content in file
+            FreemarkerUtil.writeTemplateToFile(f1, cfg.getTemplate(TMPL), props);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -29,7 +29,7 @@ import sun.applet.Main;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FreemarkerSTTmplMthdGenerator {
+public class FreemarkerSTTmplMthdBlanketAppGenerator {
     private static Configuration cfg = new Configuration();
 
     // Templates for File Generation
@@ -38,14 +38,16 @@ public class FreemarkerSTTmplMthdGenerator {
     //Configuration
     private static TemplateLoader templateLoader = new ClassTemplateLoader(Main.class, DIR_TMPL);
 
+   
+    
     public static void main(String[] args) throws Exception {
         cfg.setTemplateLoader(templateLoader);
 
-        String DEFAULT_PROPS_LOCATION = "/GenFiles/MainTmplMthdSTNavBase.properties";
-        String TMPLMTHDSTNAVBASE_TMPL = "TmplMthdSTNavBase.ftl";
+        String DEFAULT_PROPS_LOCATION = "/GenFiles/AdminTmplMthdBlanketAppSTNavBase.properties";
+        String TMPLMTHDSTNAVBASE_TMPL = "TmplMthdBlanketAppSTNavBase.ftl";
 
         //Here we can prepare a list of template & properties file and can iterate to generate files dynamically on single run.
-        createFile(DEFAULT_PROPS_LOCATION, TMPLMTHDSTNAVBASE_TMPL);        
+        createFile(DEFAULT_PROPS_LOCATION, TMPLMTHDSTNAVBASE_TMPL);       
     }
 
     private static void createFile(String DEFAULT_PROPS_LOCATION, String TMPL) throws Exception {
@@ -66,7 +68,7 @@ public class FreemarkerSTTmplMthdGenerator {
             File f1 = new File("src" + File.separatorChar + "it" + File.separatorChar + "resources"
                     + File.separatorChar + "GenFiles" + File.separatorChar + props.getProperty("className")
                     + TMPL.substring(0, TMPL.length() - 4) + ".java");
-
+            
             //Write Content in file
             FreemarkerUtil.writeTemplateToFile(f1, cfg.getTemplate(TMPL), props);
         } catch (Exception e) {

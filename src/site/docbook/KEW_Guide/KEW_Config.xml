@@ -255,7 +255,7 @@
                         role="bold">web.xml</emphasis>:</para>
                 <programlisting>&lt;filter>
     &lt;filter-name>UserLoginFilter&lt;/filter-name>
-    &lt;filter-class>org.kuali.rice.kew.web.UserLoginFilter&lt;/filter-class>
+    &lt;filter-class>org.kuali.rice.krad.web.filter.UserLoginFilter&lt;/filter-class>
 
 &lt;/filter>
 
@@ -338,7 +338,7 @@
     &lt;url-pattern>/en/EDocLite&lt;/url-pattern>
 &lt;/servlet-mapping>
 </programlisting>
-                <para><emphasis role="bold">org.kuali.rice.kew.web.UserLoginFilter</emphasis> – This
+                <para><emphasis role="bold">org.kuali.rice.krad.web.filter.UserLoginFilter</emphasis> – This
                     filter is used to assist the KEW bundled web application in determining who the
                     authenticated user is. Specifically, the login filter invokes the KIM identity
                     management service to determine the identity of the authenticated user. </para>
@@ -354,7 +354,7 @@
                         >web.xml</emphasis>: </para>
                 <programlisting>&lt;filter>
     &lt;filter-name>LoginFilter&lt;/filter-name>
-    &lt;filter-class>org.kuali.rice.kew.web.UserLoginFilter&lt;/filter-class>
+    &lt;filter-class>org.kuali.rice.krad.web.filter.UserLoginFilter&lt;/filter-class>
 
 &lt;/filter>
 
@@ -366,7 +366,7 @@
 &lt;/filter-mapping>
 </programlisting>
                 <para>and in the <emphasis role="bold">rice-config.xml</emphasis>:</para>
-                <programlisting>&lt;param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter&lt;/param>
+                <programlisting>&lt;param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param>
 &lt;param name="filtermapping.login.1">/*&lt;/param>
 </programlisting>
                 <para><emphasis role="bold">org.apache.struts.action.ActionServlet </emphasis>- The
@@ -661,7 +661,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             </para>
             <para>As a minimum, you must enable the dummy login filter by adding these lines to the
             rice-config.xml file for default login screen:</para>
-            <programlisting>&lt;param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter&lt;/param>
+            <programlisting>&lt;param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param>
 &lt;param name="filtermapping.login.1">/*&lt;/param>
 </programlisting>
         </section>

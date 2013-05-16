@@ -644,7 +644,7 @@ cp -p rice-config.xml rice-config-prd2.xml</programlisting></para>
 
 
 	&lt;!-- Dummy Login Filter - use if you don't want to go through CAS -->
-	&lt;param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter&lt;/param>
+	&lt;param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param>
 	&lt;param name="filtermapping.login.1">/*&lt;/param>
 
 &lt;/config>

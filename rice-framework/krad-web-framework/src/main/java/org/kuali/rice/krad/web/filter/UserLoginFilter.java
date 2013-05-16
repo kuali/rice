@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.web;
+package org.kuali.rice.krad.web.filter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
@@ -21,8 +21,8 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.AuthenticationService;
@@ -50,10 +50,10 @@ import java.util.Collections;
 import java.util.UUID;
 
 /**
- * A filter for processing user logins and creating a {@link UserSession}
+ * A filter for processing user logins and creating a {@link org.kuali.rice.krad.UserSession}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @see UserSession
+ * @see org.kuali.rice.krad.UserSession
  */
 public class UserLoginFilter implements Filter {
 

@@ -20,7 +20,7 @@
   <param name="module.name" override="false">sample-app</param>
   <param name="application.id">RICE</param>
 
-  <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
+  <param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter</param>
   <param name="filtermapping.login.1">/*</param>
 
   <!--

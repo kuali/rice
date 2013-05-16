@@ -41,7 +41,7 @@ in configuration files outside of the project.
   <param name="application.id">${artifactId}</param>
   <param name="app.context.name">${artifactId}</param>
 
-  <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
+  <param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter</param>
   <param name="filtermapping.login.1">/*</param>
 
   <param name="dev.mode">true</param>

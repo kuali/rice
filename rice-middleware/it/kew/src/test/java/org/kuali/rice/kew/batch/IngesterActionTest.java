@@ -40,7 +40,7 @@ import org.kuali.rice.core.web.impex.IngesterForm;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.web.MockFormFile;
 import org.kuali.rice.kew.test.web.WorkflowServletRequest;
-import org.kuali.rice.kew.web.UserLoginFilter;
+import org.kuali.rice.krad.web.filter.UserLoginFilter;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;

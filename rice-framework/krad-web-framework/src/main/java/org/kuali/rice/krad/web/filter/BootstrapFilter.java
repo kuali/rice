@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.web;
+package org.kuali.rice.krad.web.filter;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;

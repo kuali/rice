@@ -78,7 +78,7 @@
     <!-- Embedded KEW user login filter -->
     <filter>
         <filter-name>UserLoginFilter</filter-name>
-        <filter-class>org.kuali.rice.kew.web.UserLoginFilter</filter-class>
+        <filter-class>org.kuali.rice.krad.web.filter.UserLoginFilter</filter-class>
     </filter>
 
 

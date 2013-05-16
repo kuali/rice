@@ -2461,7 +2461,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
         snippet:</para>
         <programlisting>&lt;param name="module.name">sample-app&lt;/param>
 &lt;param name="service.namespace">RICE&lt;/param>
-&lt;param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter&lt;/param>
+&lt;param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param>
 &lt;param name="filtermapping.login.1">/*&lt;/param>
 &lt;param name="config.location">classpath:META-INF/test-config-defaults.xml&lt;/param>
 &lt;param name="serviceServletUrl">http://localhost:9916/${app.context.name}/remoting/&lt;/param>

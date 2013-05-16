@@ -60,7 +60,7 @@
     <param name="encryption.key">*** encryption key ***</param> 
 
 	<!-- Dummy Login Filter - use if you don't want to go through CAS -->
-	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
+	<param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter</param>
 	<param name="filtermapping.login.1">/*</param>
 
     <!-- Allow for single sign-out for CAS 

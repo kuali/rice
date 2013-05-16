@@ -868,7 +868,7 @@
 
         <para><filename>sample-app-config.xml</filename></para>
 
-        <programlisting>  &lt;param name="filter.login.class"&gt;org.kuali.rice.kew.web.DummyLoginFilter&lt;/param&gt;
+        <programlisting>  &lt;param name="filter.login.class"&gt;org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param&gt;
           &lt;param name="filtermapping.login.1"&gt;/*&lt;/param&gt;
           &lt;param name="filterexclude.login"&gt;.*/kr-kradguest/.*&lt;/param&gt;
 

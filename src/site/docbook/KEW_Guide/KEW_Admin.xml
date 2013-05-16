@@ -118,7 +118,7 @@
             <figure><title>Ingester</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/ingester.png" scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KEW_Guide/ingester.png" scalefit="1" width="100%"  />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -127,7 +127,7 @@
             <figure><title>Ingestion Complete</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/ingestion_complete.png" scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KEW_Guide/ingestion_complete.png" scalefit="1" width="100%"  />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -147,7 +147,7 @@
                 <title>Message Queue Screen</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/route_queue_screen2.png" scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KEW_Guide/route_queue_screen2.png" scalefit="1" width="100%"  />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -254,7 +254,7 @@
                 <title>Route Queue Entry Edit Screen</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/route_queue_entry_edit.png" scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KEW_Guide/route_queue_entry_edit.png" scalefit="1" width="100%"  />
                     </imageobject>
                 </mediaobject>
             </figure>

@@ -56,7 +56,7 @@
                 <title>EDL Controller Chain</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/edl_controller_chain.png" scalefit="1" width="100%" contentdepth="100%" />
+                            <imagedata fileref="../images/KEW_Guide/edl_controller_chain.png" scalefit="1" width="100%" />
                         </imageobject>
                     </mediaobject>
             </figure>
@@ -437,7 +437,7 @@ EDL EDoclite Example
                         role="italic">widget_render</emphasis> with the title of an EDL field,
                     followed by calling <emphasis role="italic">widget_render</emphasis> again with
                     the input field. Widgets are a wrapper for XSLT stylesheets that offer the
-                    ability to create HTML. Paramters offer different ways to render HTML when
+                    ability to create HTML. Parameters offer different ways to render HTML when
                     making calls to widgets. Note that the variable value <emphasis role="italic"
                         >$isPastInitiated</emphasis> is passed as a parameter to widgets_render so
                     that the html <emphasis role="italic">readOnly</emphasis> attribute is generated
@@ -668,7 +668,7 @@ EDL EDoclite Example
                 <para>To make another rule attribute for a different field, clone this one, change
                     all references to the field 'campus' to your different edl field name. Then cut
                     and paste in the values section. Then in the edl definition, the new field must
-                    carry the extra syntax 'attributeName='. For example the eld definition for
+                    carry the extra syntax 'attributeName='. For example the edl definition for
                     campus looks like this: </para>
                 <programlisting>&lt;fieldDef name="campus" title="Campus" workflowType="ALL"></programlisting>
             </section>

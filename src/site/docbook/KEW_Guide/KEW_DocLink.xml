@@ -24,7 +24,7 @@
             related. The link between related documents is created and removed in a double link
             double delete fashion, which means: when a link is added/deleted from 1 document to
             another document, a link in the reverse direction is also added/deleted, this
-            feature will garuantee that searching for linked documents can be done from either
+            feature will guarantee that searching for linked documents can be done from either
             side of the link. Using this option, client applications can link documents by using
             document link API.</para>
     </section>
@@ -38,7 +38,7 @@
                         throws WorkflowException </para>
                 </listitem>
                 <listitem>
-                    <para>get the link from orgn doc to a specifc doc </para>
+                    <para>get the link from orgn doc to a specific doc </para>
                     <para>public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO)
                         throws WorkflowException </para>
                 </listitem>

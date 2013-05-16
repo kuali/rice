@@ -17,6 +17,7 @@
     
 -->
 <chapter xml:id="KEW_Defs" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
+    
     <title>Defining Workflow Processes</title>
     <section>
         <title>Defining Workflow Processes Using Document Types</title>
@@ -499,7 +500,7 @@
                     <figure><title>BlanketApproveSequentialTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KEW_Guide/BlanketApproveSequentialTest.png" scalefit="1" contentdepth="600"/>
+                                <imagedata fileref="../images/KEW_Guide/BlanketApproveSequentialTest.png" scalefit="1" contentdepth="600" />
                             </imageobject>
                     </mediaobject>
                     </figure>
@@ -726,7 +727,7 @@
                     <figure><title>BlanketApproveParallelTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KEW_Guide/BlanketApproveParallelTest.png" scalefit="1" contentdepth="600"/>
+                                <imagedata fileref="../images/KEW_Guide/BlanketApproveParallelTest.png" scalefit="1" width="100%" />
                             </imageobject>
                         </mediaobject>
                         </figure>
@@ -885,7 +886,7 @@
                     <figure><title>NotificationTest Workflow</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KEW_Guide/NotificationTest.png" scalefit="1" width="100%" contentdepth="100%"/>
+                                <imagedata fileref="../images/KEW_Guide/NotificationTest.png" scalefit="1" width="100%" />
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -1118,7 +1119,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata
-                                fileref="../images/KEW_Guide/BlanketApproveMandatoryNodeTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
+                                fileref="../images/KEW_Guide/BlanketApproveMandatoryNodeTest_workflow.png" scalefit="1" contentdepth="600" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1233,7 +1234,7 @@
                 <figure><title>Save Action Event Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/SaveActionEventTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
+                            <imagedata fileref="../images/KEW_Guide/SaveActionEventTest_workflow.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1364,7 +1365,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata
-                                fileref="../images/KEW_Guide/SaveActionEventTestNonInitiator_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
+                                fileref="../images/KEW_Guide/SaveActionEventTestNonInitiator_workflow.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1475,7 +1476,7 @@
                 <figure><title>Take Workgroup Authority</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/TakeWorkgroupAuthorityDoc_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
+                            <imagedata fileref="../images/KEW_Guide/TakeWorkgroupAuthorityDoc_workflow.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1624,7 +1625,7 @@
                 <figure><title>Move Sequential Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/MoveSequentialTest_workflow.png" scalefit="1" contentdepth="600"/>
+                            <imagedata fileref="../images/KEW_Guide/MoveSequentialTest_workflow.png" scalefit="1" contentdepth="600" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1772,7 +1773,7 @@
                 <figure><title>Move In Process Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/MoveInProcessTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
+                            <imagedata fileref="../images/KEW_Guide/MoveInProcessTest_workflow.png" scalefit="1" contentdepth="600" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1873,7 +1874,7 @@
                 <figure><title>Adhoc Route Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/AdhocRouteTest_workflow.png" scalefit="1" width="100%" contentdepth="100%"/>
+                            <imagedata fileref="../images/KEW_Guide/AdhocRouteTest_workflow.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2204,6 +2205,8 @@
                                             </listitem>
                                         </itemizedlist></para>
                                 </listitem>
+                                <!-- force a page break here by inserting some blank paragraph tags -->
+                            </itemizedlist><itemizedlist><para/><para/><para/><para/><para/>
                                 <listitem>
                                     <para>The next node in the routing for this Document Type is
                                             <emphasis role="bold">resetStartedVar</emphasis>. <itemizedlist>
@@ -2266,7 +2269,7 @@
                 <figure><title>Variables Test</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/VariablesTest_workflow.png" scalefit="1" contentdepth="600"/>
+                            <imagedata fileref="../images/KEW_Guide/VariablesTest_workflow.png" scalefit="1" contentdepth="600" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2608,7 +2611,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/KEW_Guide/super_user_action_on_action_requests.png"
-                                scalefit="1" width="100%" contentdepth="100%" />
+                                scalefit="1" width="100%"  />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2678,7 +2681,7 @@
 
           <section>
             <title>SEND_NOTIFICATION_ON_SU_DISAPPROVE</title>
-            <para>By default, acknowledgedments are not sent on Super User Disapproval like they are for normal Disapprove actions.
+            <para>By default, acknowledgements are not sent on Super User Disapproval like they are for normal Disapprove actions.
                   This policy can be used to enable sending of acknowledgements upon Super User Disapproval.</para>
             <programlisting>&lt;policies>
               &lt;policy>
@@ -2793,7 +2796,7 @@
             proceeds in parallel, but all must be done within the stop before proceeding to the next
             stop. </para>
         <para>You can call/execute a PeopleFlow from within a KEW workflow node directly, or you can
-            invoke the Kuali Rules Managment System (KRMS) engine from an application and any
+            invoke the Kuali Rules Management System (KRMS) engine from an application and any
             PeopleFlows that get selected during rule execution, defined in a KRMS agenda, will be
             called. In this way, you can integrate business rules across applications and workflows. </para>
         <para>The same PeopleFlow that defines a routing order among a set of persons, groups or

@@ -44,7 +44,7 @@
                 <title>Kuali Portal: Action List Button</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/KEW_kfs_kew.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/KEW_kfs_kew.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -255,7 +255,7 @@
                             <title>Action List</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/KEW_Guide/KEW_action_list.png" contentwidth="400"/>
+                                    <imagedata fileref="../images/KEW_Guide/KEW_action_list.png" width="100%" scalefit="1"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -272,7 +272,7 @@
                             <title>Route Log</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/KEW_Guide/route_log.png" contentwidth="400"/>
+                                    <imagedata fileref="../images/KEW_Guide/route_log.png" width="100%" scalefit="1"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -311,7 +311,7 @@
             <figure><title>Action List: Preferences Button</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/action_list_page.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/action_list_page.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -321,7 +321,7 @@
             <figure><title>Action List Preference Page</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/action_list_preferences.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/action_list_preferences.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -331,7 +331,7 @@
                 <title>Action List Preferences: General section</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/action_list_preferences_general.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/action_list_preferences_general.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -373,8 +373,7 @@
                             <mediaobject>
                                 <imageobject>
                                     <imagedata
-                                        fileref="../images/KEW_Guide/fields_displayed_in_action_list.png"
-                                        scale="85" contentwidth="400"/>
+                                        fileref="../images/KEW_Guide/fields_displayed_in_action_list.png" width="100%" scalefit="1"/>
                                 </imageobject>
                             </mediaobject></figure>
                     <itemizedlist>
@@ -392,8 +391,7 @@
                             <title>Action List Preferences: Document Route Status Colors Section</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/KEW_Guide/document_route_status_colors.png"
-                                        scale="85" contentwidth="400"/>
+                                    <imagedata fileref="../images/KEW_Guide/document_route_status_colors.png" width="100%" scalefit="1"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -420,7 +418,7 @@
             <figure><title>Action List Preferences: Document Route Status Colors Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/action_list_preferences2.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/action_list_preferences2.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -430,7 +428,7 @@
             <figure><title>Action List Preferences: Document Route Status Colors Action List Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/document_route_status_colors_exp.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/document_route_status_colors_exp.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -439,7 +437,7 @@
             <figure><title>Action List Preferences: Email Notifications Preferences</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/action_list_prefs_email_settings.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/action_list_prefs_email_settings.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>            
@@ -493,7 +491,7 @@
                 <title>Action List Preferences: Document Type Notifications</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/document_type_notifications.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/document_type_notifications.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>    
@@ -521,7 +519,7 @@
                 <title>Action List Preferences: Action Requested Email Notification</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/action_requested_email_notification.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/action_requested_email_notification.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure> 
@@ -557,7 +555,7 @@
                 <figure><title>Action List Filter Page</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/action_list_filter.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/action_list_filter.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -726,8 +724,7 @@
                                         <mediaobject>
                                             <imageobject>
                                                 <imagedata
-                                                  fileref="../images/KEW_Guide/document_type_lookup.png"
-                                                  scale="85" contentwidth="400"/>
+                                                    fileref="../images/KEW_Guide/document_type_lookup.png" width="100%" scalefit="1"/>
                                             </imageobject>
                                         </mediaobject>
                                     </figure>
@@ -758,7 +755,7 @@
                         <figure><title>Date Widget</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/KEW_Guide/date_created.png" scale="85" contentwidth="400"/>
+                                    <imagedata fileref="../images/KEW_Guide/date_created.png" width="100%" scalefit="1"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -780,7 +777,7 @@
                 <figure><title>Action List: Clear Filter Button</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/action_list_old.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/action_list_old.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -941,7 +938,7 @@
                 <figure><title>Delegation Tree Example</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/action_request_tree.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/action_request_tree.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -980,7 +977,7 @@
                         starts at the parent request and works down the tree, activating each level of the
                         tree in turn. </para>
                     <para>Roles can have an All Approve policy. All Approve means that all members of a role
-                        must approve the docusment before the entire request is deactivated. (See
+                        must approve the document before the entire request is deactivated. (See
                         Deactivation below.)</para>
                 </note>
             </section>
@@ -1001,7 +998,7 @@
                 <figure><title>Delegation Tree Example: Deactivation</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/deactivation_flow.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/deactivation_flow.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1231,10 +1228,10 @@
             </section>
             <section>
                 <title>Recall</title>
-                <para>Use this action to recall a doucment that has been submitted to your action list. 
+                <para>Use this action to recall a document that has been submitted to your action list. 
                     You can only use this action on a document if you have a specific role for the application
                     and/or document you are trying to recall. When you use this action, you are given the option 
-                    to recall the document to your action list for updating or you can recall and cancel the doucment
+                    to recall the document to your action list for updating or you can recall and cancel the document
                     with one action if it is no longer needed.</para>
             </section>            
             <section>
@@ -1299,7 +1296,7 @@
             </section>
             <section>
                 <title>Superuser Quick Action's Tab</title>
-                <para>With the relese of Rice 2.1 a new option is avaialbe for applications to enable. 
+                <para>With the release of Rice 2.1 a new option is available for applications to enable. 
                     Superuser's can now access documents directly from the standard document search 
                     and quickly perform approval, acknowledgment, FYI, or disapproval actions from this 
                     new tab on the document. This streamlined version of the still available superuser 
@@ -1310,11 +1307,11 @@
                 <para>By default, the new tab will not appear on a document.  
                     <programlisting>&lt;kul:superUserActions /></programlisting>This needs to be included in the JSP of 
                     a document for the superuser tab to be shown. The logic for whether it should actually display anything 
-                    is containted inside of this. Developers may also look at KualiMaintenanceDocument.jsp in the Rice code for an example.</para>
+                    is contained inside of this. Developers may also look at KualiMaintenanceDocument.jsp in the Rice code for an example.</para>
                 <figure><title>New Superuser Tab Example</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/new_superuser_tab.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/new_superuser_tab.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>

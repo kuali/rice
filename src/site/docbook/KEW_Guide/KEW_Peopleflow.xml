@@ -26,7 +26,7 @@
         same stop proceeds in parallel, but all must be done within the stop before proceeding
         to the next stop. </para>
     <para>You can call/execute a PeopleFlow from within a KEW workflow node directly, or you can
-        invoke the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRMS_Guide.html">Kuali Rules Managment System (KRMS)</link>engine from an application and any
+        invoke the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRMS_Guide.html">Kuali Rules Management System (KRMS)</link>engine from an application and any
         PeopleFlows that get selected during rule execution, defined in a KRMS agenda, will be
         called. In this way, you can integrate business rules across applications and workflows. </para>
     <para>The same PeopleFlow that defines a routing order among a set of persons, groups or
@@ -46,8 +46,7 @@
                 <title>PeopleFlow selection on the Main tab in the Kuali Portal</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowOnMainTabInPortal.png"
-                            contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowOnMainTabInPortal.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -59,7 +58,7 @@
                 <title>PeopleFlow Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowLookup.png" scalefit="1" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowLookup.png" scalefit="1" width="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -72,7 +71,7 @@
                 <title>PeopleFlow - Create New</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowCreateNew.png" scalefit="1" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowCreateNew.png" scalefit="1" width="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -87,7 +86,7 @@
                 <title>PeopleFlow - Create New (with additional type attributes)</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowCreateNewWithType.png" scalefit="1" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowCreateNewWithType.png" scalefit="1" width="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -99,7 +98,7 @@
                 <title>PeopleFlow - Create New - with 2 stops added</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowAddingStops.png" scalefit="1" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/KEW-PeopleFlowAddingStops.png" scalefit="1" width="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>   

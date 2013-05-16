@@ -18,7 +18,7 @@
 -->
 <chapter xml:id="KEW_Routing" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
         <title>Routing</title>
-        <para><emphasis role="bold">Please Note:</emphasis> The following secitons on routing and
+        <para><emphasis role="bold">Please Note:</emphasis> The following sections on routing and
             rules are written as they relate the legacy/traditional KNS workflow. A new concept of
             workflows, called PeopleFlows, and their use and maintenance is covered in a separate
             section.</para>
@@ -31,7 +31,7 @@
             <figure><title>Workflow Channel: Routing Rules Delegation Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/routing_rules_delegation.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/routing_rules_delegation.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -41,7 +41,7 @@
             <figure><title>Delegation Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/delegate_rule_lookup.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/delegate_rule_lookup.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -81,7 +81,7 @@
             <figure><title>Delegation Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/rules_list.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/rules_list.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -115,7 +115,7 @@
             <figure><title>Delegation Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/delegation_rule_inquiry.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/delegation_rule_inquiry.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -131,7 +131,7 @@
             <figure><title>Delegation Rule: Create New Screen</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/delegate_routing_rule_creation.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/delegate_routing_rule_creation.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -154,8 +154,7 @@
                             <mediaobject>
                                 <imageobject>
                                     <imagedata
-                                        fileref="../images/KEW_Guide/delegate_routing_rule_creation2.png"
-                                        scale="85" contentwidth="400"/>
+                                        fileref="../images/KEW_Guide/delegate_routing_rule_creation2.png" width="100%" scalefit="1"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
@@ -190,7 +189,7 @@
             <figure><title>Routing Rule Delegation: Overview</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/routing_rule_delegation.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/routing_rule_delegation.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -239,10 +238,10 @@
                 <para>The Delegation Details screen is displayed differently, depending on whether
                     you are creating a new Rule or editing/copying a Rule. The version you see when
                     creating a new Rule looks similar to this:</para>
-                <figure><title>Routing Rule Deleation: Details Section</title>
+                <figure><title>Routing Rule Delegation: Details Section</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/delegation_details.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/delegation_details.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -255,7 +254,7 @@
                 <figure><title>Routing Rules Delegation: Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/copying_rules.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/copying_rules.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -325,7 +324,7 @@
                 <figure><title>Routing Rules Delegation: Delegate Rule Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/delegate_rule.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/delegate_rule.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -336,7 +335,7 @@
                 <figure><title>Routing Rule Delegation: Delegate Rule Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/delegate_rule_copy.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/delegate_rule_copy.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -446,7 +445,7 @@
                 <figure><title>Routing Rules Delegation: Persons Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/persons_tab.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/persons_tab.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -458,7 +457,7 @@
                 <figure><title>Routing Rules Delegation: Persons tab, Copy/Edit View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/persons_tab_copy.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/persons_tab_copy.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -521,7 +520,7 @@
                 <figure><title>Routing Rules Delegation: Groups Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/groups_tab.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/groups_tab.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -532,7 +531,7 @@
                 <figure><title>Routing Rules Delegation: Groups Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/groups_tab_copy.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/groups_tab_copy.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -541,7 +540,7 @@
                 <note><para>When you create a new group, you must click the <emphasis role="bold">add</emphasis> button
                         after you enter information in the required fields.</para></note>
                 <para><table frame="none" tabstyle="striped">
-                    <title>Routing Rules Deleation: Groups Tab Attributes</title>
+                    <title>Routing Rules Delegation: Groups Tab Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="0.5*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -600,7 +599,7 @@
             <figure><title>Workflow Channel: Routing Rules Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/routing_rules_link.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/routing_rules_link.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -614,7 +613,7 @@
             <figure><title>Routing Rules Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/rule_lookup.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/rule_lookup.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -638,7 +637,7 @@
             <figure><title>Routing Rules Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/rule_lookup_results.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/rule_lookup_results.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -666,7 +665,7 @@
             <figure><title>Routing Rules Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/rule_inquiry.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/rule_inquiry.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -680,7 +679,7 @@
             <figure><title>Routing Rules Creation</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/routing_rule_creation.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/routing_rule_creation.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -734,7 +733,7 @@
             <figure><title>Workflow Channel: Routing report</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/sample_travel_app.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/sample_travel_app.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -753,7 +752,7 @@
                 <figure><title>Routing Report: Template Selection</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/select_rule_template.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/select_rule_template.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -766,7 +765,7 @@
                 <figure><title>Routing Report: Template Selection, Detail</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/select_rule_template2.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/select_rule_template2.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -779,7 +778,7 @@
                 <figure><title>Routing Report: Routing Data Entry</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/routing_data_entry.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/routing_data_entry.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -789,7 +788,7 @@
                 <figure><title>Routing Report: Route Log View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/view_route_log_report.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/view_route_log_report.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -805,7 +804,7 @@
                 <figure><title>Routing Report: Route Log View, Pending Action Requests</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/pending_action_requests.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/pending_action_requests.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -819,7 +818,7 @@
                 <title>Rule Maintenance Document Type Document</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/rule_maintenance_document_type_document.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/rule_maintenance_document_type_document.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -869,7 +868,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Rule Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/rule_tab.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/rule_tab.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -877,7 +876,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Rule Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/rule_tab_copy.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/rule_tab_copy.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -952,7 +951,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Person Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/person_tab.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/person_tab.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -960,7 +959,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Person Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/person_tab_copy.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/person_tab_copy.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1020,7 +1019,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Groups Tab</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/groups_tab.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/groups_tab.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1028,7 +1027,7 @@
                 <figure><title>Rule Maintenance Document Type Document: Groups Tab, Edit/Copy View</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/groups_tab_copy.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/groups_tab_copy.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -1096,7 +1095,7 @@
             <figure><title>Rule Template Lookup</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/rule_template_lookup.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/rule_template_lookup.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1108,7 +1107,7 @@
             <figure><title>Rule Template Lookup: Results Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/rule_template_results.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/rule_template_results.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1162,7 +1161,7 @@
             <figure><title>Rule Template Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/rule_template_inquiry.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/rule_template_inquiry.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>

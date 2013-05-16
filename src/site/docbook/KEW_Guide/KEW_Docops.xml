@@ -30,7 +30,7 @@
             <title>Initial Screen</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KEW_Guide/DocOp_Ex9.png" scalefit="1"/>
+                    <imagedata fileref="../images/KEW_Guide/DocOp_Ex9.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -61,7 +61,7 @@
                 <title>Document Actions</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/DocOp_DocumentActions.png" scalefit="1"/>
+                        <imagedata fileref="../images/KEW_Guide/DocOp_DocumentActions.png" width="100%"  scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -118,7 +118,7 @@
                 <title>Document</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/DocOp_Ex8.png" scalefit="1"/>
+                        <imagedata fileref="../images/KEW_Guide/DocOp_Ex8.png" width="100%"  scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -131,7 +131,7 @@
                     <listitem><para>Route Status - The current status of the document</para></listitem>
                     <listitem><para>Route Level - A legacy field providing a numerical representation of where the document is in the route path
                         </para></listitem>
-                    <listitem><para>Create Date - The initial date the document was created, doesn't not reflect wether the doucment was routed, saved, etc.</para></listitem>
+                    <listitem><para>Create Date - The initial date the document was created, doesn't not reflect whether the document was routed, saved, etc.</para></listitem>
                     <listitem><para>Doc Status Modification Date - The date at which the document's status was last modified</para></listitem>
                     <listitem><para>Approved Date - The date at which the document's state transitioned to APPROVED</para></listitem>
                     <listitem><para>Finalized Date - The date at which the document's state transitioned to FINAL</para></listitem>
@@ -153,7 +153,7 @@
                 <title>Action Requests</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/DocOp_ActionRequest.png" scalefit="1"/>
+                        <imagedata fileref="../images/KEW_Guide/DocOp_ActionRequest.png" width="100%"  scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -197,7 +197,7 @@
                 <title>Actions Taken</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/DocOp_ActionsTaken.png" scalefit="1"/>
+                        <imagedata fileref="../images/KEW_Guide/DocOp_ActionsTaken.png" width="100%"  scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -225,7 +225,7 @@
                 <title>Action Items</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/DocOp_ActionItems.png" scalefit="1"/>
+                        <imagedata fileref="../images/KEW_Guide/DocOp_ActionItems.png" width="100%"  scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -256,7 +256,7 @@
                 <title>Route Node Instances</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/DocOp_RouteNode.png" scalefit="1"/>
+                        <imagedata fileref="../images/KEW_Guide/DocOp_RouteNode.png" width="100%"  scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -283,7 +283,7 @@
                 <title>Branch States</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/DocOp_Ex6.png" scalefit="1"/>
+                        <imagedata fileref="../images/KEW_Guide/DocOp_Ex6.png" width="100%"  scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -304,7 +304,7 @@
                 <title>Annotation</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/DocOp_Ex7.png" scalefit="1"/>
+                        <imagedata fileref="../images/KEW_Guide/DocOp_Ex7.png" width="100%"  scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>

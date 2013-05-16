@@ -65,7 +65,7 @@
                 approves or denies his request, KEW may route it to more people for further action
                 to be taken.</para>
             <para>Once John's Leave Request document is processed, it triggers a <emphasis
-                role="bold">PostProcessor</emphasis>, which can peform any desired additional
+                role="bold">PostProcessor</emphasis>, which can perform any desired additional
                 processing. This is most commonly used to "finalize" the business transaction once
                 all approvers have signed off on it. In this particular example, it might call
                 another service that would update records in the Leave Request application's

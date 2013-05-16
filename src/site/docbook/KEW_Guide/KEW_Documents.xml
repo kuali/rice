@@ -69,7 +69,7 @@
             <figure><title>Workflow Channel: eDocLite Link</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/edoclite_link.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/edoclite_link.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject></figure>
             <section>
@@ -91,7 +91,7 @@
                 <figure><title>eDocLite Lookup</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/edoclite_lookup.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/edoclite_lookup.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -144,7 +144,7 @@
                 <figure><title>eDocLite Lookup: Search Results</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/search_results.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/search_results.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -235,7 +235,7 @@
             <figure><title>eDocLite Inquiry</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/edoclite_inquiry.png" contentwidth="400"/>
+                        <imagedata fileref="../images/KEW_Guide/edoclite_inquiry.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -393,7 +393,7 @@
                 <para>The following is one example of an eDocLite form:</para>
                 <para><inlinemediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/edoclite_form.png" contentwidth="400"/>
+                            <imagedata fileref="../images/KEW_Guide/edoclite_form.png" width="100%" scalefit="1"/>
                         </imageobject>
                     </inlinemediaobject></para>
                 <note><para>Notes that have been added to an eDocLite document can be edited or

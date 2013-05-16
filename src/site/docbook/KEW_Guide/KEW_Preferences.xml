@@ -23,7 +23,7 @@
     <figure><title>Workflow Channel: User Preferences Link</title>
         <mediaobject>
             <imageobject>
-                <imagedata fileref="../images/KEW_Guide/select_user_preferences.png" contentwidth="400"/>
+                <imagedata fileref="../images/KEW_Guide/select_user_preferences.png" width="100%" scalefit="1"/>
             </imageobject>
         </mediaobject>
     </figure>
@@ -31,7 +31,7 @@
     <figure><title>Workflow Preferences</title>
         <mediaobject>
             <imageobject>
-                <imagedata fileref="../images/KEW_Guide/workflow_preferences.png" contentwidth="400"/>
+                <imagedata fileref="../images/KEW_Guide/workflow_preferences.png" width="100%" scalefit="1"/>
             </imageobject>
         </mediaobject>
     </figure>

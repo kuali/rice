@@ -30,7 +30,7 @@
             <figure><title>Custom Search Screen:Offer Request Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/offer_request_search.png" scalefit="1" width="100%" contentdepth="100%"/>
+                        <imagedata fileref="../images/KEW_Guide/offer_request_search.png" scalefit="1" width="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -239,7 +239,7 @@
             <figure><title>Custom Document Search: Department Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/document_search.png" scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KEW_Guide/document_search.png" scalefit="1" width="100%"  />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -254,7 +254,7 @@
         <figure><title>Document Search Screen: Application Document Status Example</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KEW_Guide/doc_search_application_status.png" scalefit="1" width="100%" contentdepth="100%"/>
+                    <imagedata fileref="../images/KEW_Guide/doc_search_application_status.png" scalefit="1" width="100%" />
                 </imageobject>
             </mediaobject>
         </figure>
@@ -647,7 +647,7 @@
             <figure><title>Standard Doc Search Results Set</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/standard_search_result_table.png" scalefit="1" width="100%" contentdepth="100%" />
+                        <imagedata fileref="../images/KEW_Guide/standard_search_result_table.png" scalefit="1" width="100%"  />
                     </imageobject>
                 </mediaobject>
             </figure>

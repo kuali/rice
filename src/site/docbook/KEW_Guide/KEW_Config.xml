@@ -234,7 +234,7 @@
                         <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/KEW_Guide/kew_embedded_deployment2.png"
-                                        scalefit="1" width="100%" contentdepth="100%"/>
+                                        scalefit="1" width="100%" />
                                 </imageobject>
                             </mediaobject>
                     </figure>
@@ -396,7 +396,7 @@
                     <title>Bundled deployment diagram</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/bundled_deployment_diagram.png" scalefit="1" width="100%" contentdepth="100%"/>
+                            <imagedata fileref="../images/KEW_Guide/bundled_deployment_diagram.png" scalefit="1" width="100%" />
                         </imageobject>
                     </mediaobject>
                     </figure>
@@ -595,7 +595,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <title>Thin client deployment diagram</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/thin_client_deployment_diagram.png" scalefit="1" width="100%" contentdepth="100%"/>
+                            <imagedata fileref="../images/KEW_Guide/thin_client_deployment_diagram.png" scalefit="1" width="100%" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -612,7 +612,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <title>Typical enterprise deployment of Kuali Rice</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/enterprise_deployment.png" scalefit="1" width="100%" contentdepth="100%"/>
+                        <imagedata fileref="../images/KEW_Guide/enterprise_deployment.png" scalefit="1" width="100%" />
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -684,7 +684,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         <tbody>
                             <row>
                                 <entry>actionlist.outbox</entry>
-                                <entry>Determines if the KEW actionlist "outbox" (ie, the actions
+                                <entry>Determines if the KEW actionlist "outbox" (i.e., the actions
                                     already completed) will be viewable by users of the Rice
                                     application.</entry>
                                 <entry>false</entry>
@@ -890,7 +890,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             <section>
                 <title>The 'datasource.platform' Parameter</title>
                 <para>KEW requires and uses the database platform implementation in order to
-                    function. These may be be implemented differently for each support database
+                    function. These may be implemented differently for each support database
                     management system. </para>
                 <para>The current functional implementations of this platform are:<itemizedlist>
                         <listitem>
@@ -1718,7 +1718,7 @@ document.routeDocument("user inputted annotation");
                     to active all those requests in parallel the activation type of (R = <emphasis 
                     role="italic">priority-parallel</emphasis> activation).
                     Once all requests are approved, then the next priority will be activated.  This
-                    is essentially a hyprid of the traditional sequential and parallel activation
+                    is essentially a hybrid of the traditional sequential and parallel activation
                     types.  Activation type is only relevant when multiple rules are
                     generated.</para>
                 <para>
@@ -1726,7 +1726,7 @@ document.routeDocument("user inputted annotation");
                     <title>Parallel and Sequential Activation Types</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KEW_Guide/activation_type2.png" scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KEW_Guide/activation_type2.png" scalefit="1" width="100%"  />
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -1736,7 +1736,7 @@ document.routeDocument("user inputted annotation");
                         <title>Parallel-Priority Activation Type</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KEW_Guide/pp_activation_type2.png" scalefit="1" width="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KEW_Guide/pp_activation_type2.png" scalefit="1" width="100%"  />
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -2114,7 +2114,7 @@ document.routeDocument("user inputted annotation");
          &lt;/ruleAttribute>
     &lt;/ruleAttributes>
 &lt;/data></programlisting>
-                <para>There are a few areas where the configuration could be changed in this rule attrbute</para>
+                <para>There are a few areas where the configuration could be changed in this rule attribute</para>
                 <itemizedlist>
                   <listitem>
                     <para><emphasis role="bold">name</emphasis> - The attribute should be named so that it can be

@@ -46,7 +46,7 @@
               <b>Search for Members by Name:</b>
                   <kul:htmlControlAttribute property="memberSearchValue" attributeEntry="${roleMemberAttributes.memberName}" readOnly="false" />
                   <kul:lookup boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
-                       fieldConversions="principalName:memberSearchValue" anchor="${tabKey}" />
+                       fieldConversions="principalName:memberSearchValue"/>
               <br/>
               <br/>
             </div>

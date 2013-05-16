@@ -323,4 +323,17 @@
     </property>
   </bean>
 
+  <bean id="Uif-PasswordControl" parent="Uif-PasswordControl-parentBean"/>
+  <bean id="Uif-PasswordControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.PasswordControl"
+        scope="prototype" parent="Uif-ControlBase">
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/password.ftl"/>
+    <property name="templateName" value="uif_password"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-passwordControl</value>
+      </list>
+    </property>
+    <property name="size" value="30"/>
+  </bean>
+
 </beans>

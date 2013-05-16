@@ -16290,6 +16290,800 @@
     <xsd:attribute name="parent" type="xsd:string"/>
     <xsd:anyAttribute processContents="skip"/>
   </xsd:complexType>
+  <xsd:complexType name="passwordControl-bean-type">
+  <xsd:complexContent>
+      <xsd:extension base="componentAttributes-type">
+        <xsd:choice maxOccurs="unbounded" minOccurs="0">
+          <xsd:element maxOccurs="1" minOccurs="0" name="onChangeScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onChange event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onKeyPressScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="tabIndex" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Unique index of the control within the tab order
+
+
+ Tab index provides a way to set the order users will tab through the
+ controls. The control with index 1 will receive focus when the page is
+ rendered. Tabing from the field will then take the user to the control
+ with index 2, then index 3, and so on.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onDblClickScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onDblClick event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="additionalComponentsToRefresh" type="basicList-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Returns a list of componentIds which will be also be refreshed when this component is refreshed
+
+
+ This will be a comma separated list of componentIds that need to be refreshed when a refresh
+ condition has been set on this component.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onBlurScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onBlur event is fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="selfRendered" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether the component contains its own render output (through
+ the renderOutput property)
+
+
+ If self rendered is true, the corresponding template for the component
+ will not be invoked and the renderOutput String will be written to the
+ response as is.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="additionalCssClasses" type="basicList-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="required" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether the component is required
+
+
+ At the general component level required means there is some action the
+ user needs to take within the component. For example, within a section it
+ might mean the fields within the section should be completed. At a field
+ level, it means the field should be completed. This provides the ability
+ for the renderers to indicate the required action.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodToCall" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[The name of the method that should be invoked for finalizing the component
+ configuration (full method name, without parameters or return type)
+
+
+ Note the method can also be set with the finalizeMethodInvoker
+ targetMethod property. If the method is on the configured
+ ViewHelperService, only this property needs to be configured
+
+
+
+ The model backing the view will be passed as the first argument method and then
+ the Component instance as the second argument. If any additional method
+ arguments are declared with the finalizeMethodAdditionalArguments, they will then
+ be passed in the order declared in the list
+
+
+
+ If the component is selfRendered, the finalize method can return a string which
+ will be set as the component's renderOutput. The selfRendered indicator will also
+ be set to true on the component.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="resetDataOnRefresh" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
+ component is refreshed]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onKeyDownScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyDown event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="postRenderContent" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="template" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[The path to the JSP file that should be called to render the component
+
+
+ The path should be relative to the web root. An attribute will be available to the component to use under the
+ name given by the method getComponentTypeName. Based on the component type, additional attributes could
+ be available for use. See the component documentation for more information on such attributes.
+
+
+
+ e.g. '/krad/WEB-INF/jsp/tiles/component.jsp'
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="align" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
+
+
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how the component
+ should be aligned horizontally within the container. During the finalize
+ phase the CSS text-align style will be created for the align setting.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseDownScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="width" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Width the component should take up in the container
+
+
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies a width the component
+ should take up in the Container. This is not applicable for all layout
+ managers. During the finalize phase the CSS width style will be created
+ for the width setting.
+
+
+
+ e.g. '30%', '55px'
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onClickScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onClick event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="render" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether the component should be rendered in the UI
+
+
+ If set to false, the corresponding component template will not be invoked
+ (therefore nothing will be rendered to the UI).
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="size" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Retrieves the configured size for the control, which reflects the display width in characters for
+ the control within the UI]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onLoadScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="methodToCallOnRefresh" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Name of a method on the controller that should be invoked as part of the component refresh and disclosure
+ process
+
+
+ During the component refresh or disclosure process it might be necessary to perform other operations, such as
+ preparing data or executing a business process. This allows the configuration of a method on the underlying
+ controller that should be called for the component refresh action. In this method, the necessary logic can be
+ performed and then the base component update method invoked to carry out the component refresh.
+
+
+
+ Controller method to invoke must accept the form, binding result, request, and response arguments
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodInvoker" type="org.kuali.rice.krad.uif.component.MethodInvokerConfig">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
+ for finalizing the component configuration
+
+
+ MethodInvoker can be configured to specify the class or object the method
+ should be called on. For static method invocations, the targetClass
+ property can be configured. For object invocations, that targetObject
+ property can be configured
+
+
+
+ If the component is selfRendered, the finalize method can return a string which
+ will be set as the component's renderOutput. The selfRendered indicator will also
+ be set to true on the component.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="componentModifiers">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[ComponentModifier instances that should be invoked to
+ initialize the component
+
+
+ These provide dynamic initialization behavior for the component and are
+ configured through the components definition. Each initializer will get
+ invoked by the initialize method.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:complexContent>
+                <xsd:extension base="org.kuali.rice.krad.uif.modifier.ComponentModifier">
+                  <xsd:attribute name="merge" type="xsd:boolean"/>
+                </xsd:extension>
+              </xsd:complexContent>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="disabledWhenChangedPropertyNames" type="basicList-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Gets the property names of fields that when changed, will disable this component]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="enabledWhenChangedPropertyNames" type="basicList-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Gets the property names of fields that when changed, will enable this component]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="componentCode" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
+
+ They will be evaluated
+ during the view lifecycle to conditionally set properties on the
+ Component based on expression evaluations]]></xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:complexContent>
+                <xsd:extension base="org.kuali.rice.krad.uif.component.PropertyReplacer">
+                  <xsd:attribute name="merge" type="xsd:boolean"/>
+                </xsd:extension>
+              </xsd:complexContent>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="refreshWhenChangedPropertyNames" type="basicList-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Specifies a property by name that when its value changes will automatically perform
+ a refresh on this component
+
+
+ This can be a comma
+ separated list of multiple properties that require this component to be
+ refreshed when any of them change. DO NOT use with progressiveRender
+ unless it is know that progressiveRender condition will always be
+ satisfied before one of these fields can be changed.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseUpScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseUp event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onKeyUpScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="renderedHtmlOutput" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
+ response (can contain static text and HTML)]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="disabledReason" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[If the control is disabled, gives a reason for why which will be displayed as a tooltip
+ on the control]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="colSpan" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Number of places the component should take up horizontally in the
+ container
+
+
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how many places
+ horizontally the component should take up within the container. This is
+ only applicable for table based layout managers. Default is 1
+
+
+ TODO: this should not be on component interface since it only applies if
+ the layout manager supports it, need some sort of layoutOptions map for
+ field level options that depend on the manager]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onCloseScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onClose event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="id" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[The unique id (within a given tree) for the component
+
+
+ The id will be used by renderers to set the HTML element id. This gives a way to find various elements
+ for scripting. If the id is not given, a default will be generated by the framework
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="title" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[The component title
+
+
+ Depending on the component can be used in various ways. For example with a Container component the title is
+ used to set the header text. For components like controls other other components that render an HTML element it
+ is used to set the HTML title attribute.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="order" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="style" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[CSS style string to be applied to the component
+
+
+ Any style override or additions can be specified with this attribute.
+ This is used by the renderer to set the style attribute on the
+ corresponding element.
+
+
+
+ e.g. 'color: #000000;text-decoration: underline;'
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="maxLength" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Maximum number of characters that can be inputted
+
+ If not set on control, max length of field will be used]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodAdditionalArguments">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[The List of Object instances that should be passed as arguments to the finalize method
+
+
+ These arguments are passed to the finalize method after the standard model and component
+ arguments. They are passed in the order declared in the list
+ ]]></xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:complexContent>
+                <xsd:extension base="spring:listOrSetType">
+                  <xsd:attribute name="merge" type="xsd:boolean"/>
+                </xsd:extension>
+              </xsd:complexContent>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="minLength" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Minimum number of characters that can be inputted
+
+ If not set on control, min length of field will be used]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
+
+ The component MUST BE a container or field type. conditionalRefresh is
+ defined in a limited Spring EL syntax. Only valid form property names,
+ and, or, logical comparison operators (non-arithmetic), and the matches
+ clause are allowed. String and regex values must use single quotes ('),
+ booleans must be either true or false, numbers must be a valid double
+ either negative or positive.
+
+ DO NOT use progressiveRender and conditionalRefresh on the same component
+ unless it is known that the component will always be visible in all cases
+ when a conditionalRefresh happens (ie conditionalRefresh has
+ progressiveRender's condition anded with its own condition). If a
+ component should be refreshed every time it is shown, use the
+ progressiveRenderAndRefresh option with this property instead.]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Number of places the component should take up vertically in the container
+
+
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how many places
+ vertically the component should take up within the container. This is
+ only applicable for table based layout managers. Default is 1
+
+
+ TODO: this should not be on component interface since it only applies if
+ the layout manager supports it, need some sort of layoutOptions map for
+ field level options that depend on the manager]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="namespaceCode" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRender" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST BE a
+ container or field type. progressiveRender is defined in a limited Spring EL syntax. Only valid
+ form property names, and, or, logical comparison operators (non-arithmetic), and the matches
+ clause are allowed. String and regex values must use single quotes ('), booleans must be either true or false,
+ numbers must be a valid double, either negative or positive.
+
+
+ DO NOT use progressiveRender and a conditional refresh statement on the same component
+ unless it is known that the component will always be visible in all cases when a conditional refresh happens
+ (ie conditional refresh has progressiveRender's condition anded with its own condition).
+
+
+
+ If a component should be refreshed every time it is shown, use the progressiveRenderAndRefresh option
+ with this property instead.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="templateOptionsJSString" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options
+ that will export that options as a JavaScript Map for use in js and
+ jQuery plugins]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="preRenderContent" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOutScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOut event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="templateOptions">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[The options that are passed through to the Component renderer
+
+
+ The Map key is the option name, with the Map value as the option value. See
+ documentation on the particular widget render for available options.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:complexContent>
+                <xsd:extension base="spring:mapType">
+                  <xsd:attribute name="merge" type="xsd:boolean"/>
+                </xsd:extension>
+              </xsd:complexContent>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="toolTip" type="org.kuali.rice.krad.uif.widget.Tooltip">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[The Tooltip widget that renders a tooltip with additional information about the element on
+ specified trigger event]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOverScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="dataAttributes">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Get the dataAttributes setup for this component - to be written to the html/jQuery data
+
+ The attributes that are complex objects (contain {}) they will be written through script.
+ The attritubes that are simple (contain no objects) will be written directly to the html of the
+ component using standard data-.
+ Either way they can be access through .data() call in jQuery]]></xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:complexContent>
+                <xsd:extension base="spring:mapType">
+                  <xsd:attribute name="merge" type="xsd:boolean"/>
+                </xsd:extension>
+              </xsd:complexContent>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="evaluateDisabledOnKeyUp" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Evaluate the disable condition on controls which disable it on each key up event]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="componentSecurity" type="org.kuali.rice.krad.uif.component.ComponentSecurity">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Security object that indicates what authorization (permissions) exist for the component]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="readOnly" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether the component can be edited
+
+
+ When readOnly the controls and widgets of Field components
+ will not be rendered. If the Field has an underlying value it will be
+ displayed readOnly to the user.
+
+
+
+ For a Container component, the readOnly setting will apply
+ to all contained components (making a section readOnly makes all fields
+ within the section readOnly).
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseMoveScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseMove event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderAndRefresh" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[If true, when the progressiveRender condition is satisfied, the component
+ will always be retrieved from the server and shown(as opposed to being
+ stored on the client, but hidden, after the first retrieval as is the
+ case with the progressiveRenderViaAJAX option).
+
+ By default, this is
+ false, so components with progressive render capabilities will always be
+ already within the client html and toggled to be hidden or visible.]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="hidden" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether the component should be hidden in the UI
+
+
+ How the hidden data is maintained depends on the views persistence mode.
+ If the mode is request, the corresponding data will be rendered to the UI
+ but not visible. If the mode is session, the data will not be rendered to
+ the UI but maintained server side.
+
+
+
+ For a Container component, the hidden setting will apply to
+ all contained components (making a section hidden makes all fields within
+ the section hidden)
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="skipInTabOrder" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Flag indicating that this component and its nested components must be
+ skipped when keyboard tabbing.]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="context">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Context map for the component
+
+
+ Any el statements configured for the components properties (e.g.
+ title="@{foo.property}") are evaluated using the el context map. This map
+ will get populated with default objects like the model, view, and request
+ from the ViewHelperService. Other components can push
+ further objects into the context so that they are available for use with
+ that component. For example, Field instances that are part
+ of a collection line as receive the current line instance
+
+
+
+ Context map also provides objects to methods that are invoked for
+ GeneratedField instances
+
+
+
+ The Map key gives the name of the variable that can be used within
+ expressions, and the Map value gives the object instance for which
+ expressions containing the variable should evaluate against
+
+
+
+ NOTE: Calling getContext().putAll() will skip updating any configured property replacers for the
+ component. Instead you should call #pushAllToContext
+ ]]></xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:complexContent>
+                <xsd:extension base="spring:mapType">
+                  <xsd:attribute name="merge" type="xsd:boolean"/>
+                </xsd:extension>
+              </xsd:complexContent>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onUnloadScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onUnload event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="forceSessionPersistence" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether the component should be stored with the session view regardless of configuration
+
+
+ By default the framework nulls out any components that do not have a refresh condition or are needed for
+ collection processing. This can be a problem if custom application code is written to refresh a component
+ without setting the corresponding component flag. In this case this property can be set to true to force the
+ framework to keep the component in session. Defaults to false
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="valign" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Vertical alignment of the component within its container
+
+
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how the component
+ should be aligned vertically within the container. During the finalize
+ phase the CSS vertical-align style will be created for the valign
+ setting.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onFocusScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="disabled" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether the control is disabled (doesn't allow input)]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderViaAJAX" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved
+ from the server when it first satisfies its progressive render condition.
+
+ After the first retrieval, it is hidden/shown in the html by the js when
+ its progressive condition result changes. By default, this is false,
+ so components with progressive render capabilities will always be already
+ within the client html and toggled to be hidden or visible.]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="templateName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="basicList-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+
+
+ Declares style classes for the component. Multiple classes are specified
+ with a space delimiter. This is used by the renderer to set the class
+ attribute on the corresponding element. The class(s) declared must be
+ available in the common style sheets or the style sheets specified for
+ the view
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="unbounded" minOccurs="0" ref="spring:property"/>
+        </xsd:choice>
+        <xsd:attribute name="tabIndex">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Unique index of the control within the tab order
+
+
+ Tab index provides a way to set the order users will tab through the
+ controls. The control with index 1 will receive focus when the page is
+ rendered. Tabing from the field will then take the user to the control
+ with index 2, then index 3, and so on.
+ ]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="size">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Retrieves the configured size for the control, which reflects the display width in characters for
+ the control within the UI]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="disabledWhenChangedPropertyNames">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Gets the property names of fields that when changed, will disable this component]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="enabledWhenChangedPropertyNames">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Gets the property names of fields that when changed, will enable this component]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="disabledReason">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[If the control is disabled, gives a reason for why which will be displayed as a tooltip
+ on the control]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="maxLength">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Maximum number of characters that can be inputted
+
+ If not set on control, max length of field will be used]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="minLength">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Minimum number of characters that can be inputted
+
+ If not set on control, min length of field will be used]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="evaluateDisabledOnKeyUp">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Evaluate the disable condition on controls which disable it on each key up event]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="disabled">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Indicates whether the control is disabled (doesn't allow input)]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:anyAttribute processContents="skip"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
   <xsd:complexType name="textControl-bean-type">
     <xsd:complexContent>
       <xsd:extension base="componentAttributes-type">

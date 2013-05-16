@@ -841,6 +841,7 @@
       <xsd:element ref="mediumTextControl-bean"/>
       <xsd:element ref="kimGroupControl-bean"/>
       <xsd:element ref="spinnerControl-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean">
@@ -1185,6 +1186,7 @@
       <xsd:element ref="columnCalculationInfo-average-bean"/>
       <xsd:element ref="columnCalculationInfo-min-bean"/>
       <xsd:element ref="workflowAttributes-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.mask.MaskFormatterLiteral">
@@ -2010,6 +2012,7 @@
       <xsd:element ref="disclosure-page-bean"/>
       <xsd:element ref="lookupPage-bean"/>
       <xsd:element ref="viewHeader-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint">
@@ -2419,6 +2422,7 @@
       <xsd:element ref="columnCalculationInfo-average-bean"/>
       <xsd:element ref="columnCalculationInfo-min-bean"/>
       <xsd:element ref="workflowAttributes-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.control.ControlBase">
@@ -2449,6 +2453,7 @@
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="optionListControl-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase">
@@ -3206,6 +3211,7 @@
       <xsd:element ref="columnCalculationInfo-average-bean"/>
       <xsd:element ref="columnCalculationInfo-min-bean"/>
       <xsd:element ref="workflowAttributes-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.field.FieldSecurity">
@@ -3269,6 +3275,7 @@
       <xsd:element ref="verticalRadioControl-bean"/>
       <xsd:element ref="horizontalRadioControl-bean"/>
       <xsd:element ref="optionListControl-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.field.Field">
@@ -3475,6 +3482,7 @@
       <xsd:element ref="dropdownControl-bean"/>
       <xsd:element ref="spinnerControl-bean"/>
       <xsd:element ref="fileControl-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.layout.TableLayoutManager">
@@ -3921,6 +3929,7 @@
       <xsd:element ref="validationMessages-bean"/>
       <xsd:element ref="optionListControl-bean"/>
       <xsd:element ref="viewHeader-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.element.Iframe">
@@ -4404,6 +4413,7 @@
       <xsd:element ref="disclosure-page-bean"/>
       <xsd:element ref="lookupPage-bean"/>
       <xsd:element ref="viewHeader-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.control.SpinnerControl">
@@ -4750,6 +4760,7 @@
       <xsd:element ref="validationMessages-bean"/>
       <xsd:element ref="optionListControl-bean"/>
       <xsd:element ref="viewHeader-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.mask.Mask">
@@ -5392,6 +5403,7 @@
       <xsd:element ref="columnCalculationInfo-average-bean"/>
       <xsd:element ref="columnCalculationInfo-min-bean"/>
       <xsd:element ref="workflowAttributes-bean"/>
+      <xsd:element ref="passwordControl-bean"/>
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint">

@@ -420,6 +420,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SelectControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Option List"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-OptionList-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Password"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PasswordControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Spinner"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SpinnerControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Text"

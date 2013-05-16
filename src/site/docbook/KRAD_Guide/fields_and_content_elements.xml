@@ -1322,6 +1322,30 @@ public class TravelAccount {
       </tip>
     </section>
     <section>
+      <title>Password</title>
+      <para>The Password control renders the HTML input element with type of "password". This is a
+        single-line box that allows the user to type a masked value.</para>
+      <para>To specify that a password control should be used, a bean with parent of 'Uif-PasswordControl'
+        should be given:</para>
+      <programlisting>
+&lt;bean parent="Uif-InputField" p:propertyName="password" p:label="Password"&gt;
+    &lt;property name="control"&gt;
+        &lt;bean parent="Uif-PasswordControl"/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+      <para>The password control supports the following properties:</para>
+      <para><emphasis role="keyword">size</emphasis> – This is the display size for the control in
+        number of characters.</para>
+      <para><emphasis role="keyword">maxLength</emphasis> – When a value is given, this is the
+        maximum number of characters in length the value can have. If set, the browser will
+        stop the user from entering more characters than allowed.</para>
+      <para><emphasis role="keyword">minLength</emphasis> – When a value is given, this is the minimum
+        number of characters in length the value can have. Note that this is not supported by the
+        HTML input tag itself, but is used by the KRAD validators to check the value client side or
+        server side.</para>
+    </section>
+    <section>
       <title>Text</title>
       <para>The Text control renders the HTML input element with type of "text". This is a
         single-line box that allows the user to type the value.</para>

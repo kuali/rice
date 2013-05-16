@@ -391,6 +391,7 @@
         <bean parent="UifCompView-TextFields1"/>
         <bean parent="UifCompView-TextFields2"/>
         <bean parent="UifCompView-TextFields3"/>
+        <bean parent="UifCompView-PasswordFields"/>
         <bean parent="UifCompView-TextAreas"/>
       </list>
     </property>
@@ -514,6 +515,39 @@
             <bean parent="Uif-TextControl" p:size="30"/>
           </property>
         </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+********************************************************************************************************************
+                                         UIF Comp - Password Control
+********************************************************************************************************************
+-->
+  <bean id="UifCompView-PasswordFields" parent="Uif-HorizontalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field140" p:labelPlacement="TOP"
+              p:fieldLabel.renderColon="false">
+          <property name="control">
+            <bean parent="Uif-PasswordControl" p:size="30"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field141" p:labelPlacement="TOP"
+              p:fieldLabel.renderColon="false">
+          <property name="control">
+            <bean parent="Uif-PasswordControl" p:size="15" p:maxLength="10"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field142" p:labelPlacement="TOP"
+              p:fieldLabel.renderColon="false">
+          <property name="control">
+            <bean parent="Uif-PasswordControl" p:size="30" p:disabled="true"/>
+          </property>
+        </bean>
+
       </list>
     </property>
   </bean>

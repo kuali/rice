@@ -546,6 +546,14 @@ Layout manager that works with CollectionGroup components and
 Pattern for matching any printable character]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <xsd:element name="passwordControl-bean" type="passwordControl-bean-type">
+    <xsd:annotation>
+      <xsd:documentation source="org.kuali.rice.krad.uif.control.PasswordControl" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.control.PasswordControl
+
+Represents a HTML password text control, rendered as a input field of type
+ 'password'. This can receive and display a mask for a single value]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:element name="textControl-bean" type="textControl-bean-type">
     <xsd:annotation>
       <xsd:documentation source="org.kuali.rice.krad.uif.control.TextControl" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.control.TextControl

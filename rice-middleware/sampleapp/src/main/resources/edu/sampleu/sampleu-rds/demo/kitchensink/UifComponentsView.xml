@@ -192,6 +192,7 @@
       <group-bean parent="UifCompView-TextFields2"/>
       <group-bean parent="UifCompView-TextFields3"/>
       <group-bean parent="UifCompView-TextAreas"/>
+      <group-bean parent="UifCompView-PasswordFields"/>
     </items>
   </disclosure-verticalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-TextFields1">
@@ -272,6 +273,25 @@
                        uppercaseValue="true">
         <control>
           <textControl-bean size="30"/>
+        </control>
+      </inputField-bean>
+    </items>
+  </horizontalBoxSection-bean>
+  <horizontalBoxSection-bean id="UifCompView-PasswordFields">
+    <items>
+      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field140">
+        <control>
+          <passwordControl-bean size="30"/>
+        </control>
+      </inputField-bean>
+      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field141">
+        <control>
+          <passwordControl-bean maxLength="10" size="15"/>
+        </control>
+      </inputField-bean>
+      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field142">
+        <control>
+          <passwordControl-bean disabled="true" size="30"/>
         </control>
       </inputField-bean>
     </items>

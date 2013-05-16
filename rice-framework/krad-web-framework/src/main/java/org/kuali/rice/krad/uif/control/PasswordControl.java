@@ -27,8 +27,8 @@ import org.kuali.rice.krad.uif.widget.DatePicker;
 import java.util.List;
 
 /**
- * Represents a HTML Text control, generally rendered as a input field of type
- * 'text'. This can display and receive a single value
+ * Represents a HTML password text control, rendered as a input field of type
+ * 'password'. This can receive and display a mask for a single value.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

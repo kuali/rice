@@ -127,7 +127,7 @@ public class DummyLoginFilter implements Filter {
                 response.sendRedirect(getLoginRedirectUrl(request));
                 return;
 
-                }
+            }
         } else {
             request = new HttpServletRequestWrapper(request) {
                 @Override
@@ -139,16 +139,16 @@ public class DummyLoginFilter implements Filter {
         chain.doFilter(request, response);
     }
 	
-	/**
-	 * Handles and invalid login attempt.
+    /**
+     * Handles and invalid login attempt.
      *
      * Sets error message and redirects to login screen
-	 *  
-	 * @param request the incoming request
-	 * @param response the outgoing response
-	 * @throws javax.servlet.ServletException if unable to handle the invalid login
-	 * @throws java.io.IOException if unable to handle the invalid login
-	 */
+     *
+     * @param request the incoming request
+     * @param response the outgoing response
+     * @throws javax.servlet.ServletException if unable to handle the invalid login
+     * @throws java.io.IOException if unable to handle the invalid login
+     */
 	private void handleInvalidLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuffer redirectUrl = new StringBuffer(getLoginRedirectUrl(request));
         redirectUrl.append("&login_message=Invalid Login");
@@ -187,7 +187,7 @@ public class DummyLoginFilter implements Filter {
      * @return Url string
      */
     private String findTargetUrl(HttpServletRequest request) {
-        StringBuffer targetUrl = new StringBuffer();
+        StringBuilder targetUrl = new StringBuilder();
         targetUrl.append(request.getServletPath());
 
         if (StringUtils.isNotBlank(request.getPathInfo())) {

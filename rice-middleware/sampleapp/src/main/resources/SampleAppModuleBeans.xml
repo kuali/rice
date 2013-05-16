@@ -149,6 +149,9 @@
         <value>classpath:edu/sampleu/kew/uif/DocumentTypeInquiry.xml</value>
         <value>classpath:edu/sampleu/kew/uif/IngesterView.xml</value>
         <value>classpath:edu/sampleu/kew/uif/StatsView.xml</value>
+
+        <!-- DummyLogin -->
+        <value>classpath:/org/kuali/rice/krad/login/DummyLoginView.xml</value>
       </list>
     </property>
     <property name="databaseRepositoryFilePaths">

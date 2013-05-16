@@ -141,8 +141,12 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoOptionListControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoBreadcrumbs.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLightTable.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoPasswordControl.xml</value>
         <value>classpath:org/kuali/rice/krad/labs</value>
         <value>classpath:org/kuali/rice/krad/labs/kitchensink</value>
+
+        <!-- DummyLogin -->
+        <value>classpath:/org/kuali/rice/krad/login/DummyLoginView.xml</value>
       </list>
     </property>
     <property name="databaseRepositoryFilePaths">
@@ -235,6 +239,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoOptionListResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoBreadcrumbsResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLightTableResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPasswordControlResources</value>
         <!-- kitchen sink -->
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewResources</value>
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP2Resources</value>

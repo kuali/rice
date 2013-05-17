@@ -780,7 +780,7 @@
                 results than the system default; as a result, system administrators may need to be
                 able to limit this set of returned results on an entity-by-entity basis.</para>
         </section>
-        <section>
+        <section xml:id="frequent_tab">
             <title>Frequently Used Tabs</title>
             <para>To make it easier to do your work, Rice often provides access to the same
                 information from several screens. Some of the most frequently used are described
@@ -869,7 +869,7 @@
                         </tgroup>
                     </table></para>
             </section>
-            <section>
+            <section xml:id="doc_overview_tab">
                 <title>Document Overview Tab</title>
                 <para>The Document Overview tab contains the short description for a document and
                     two other optional fields. This tab is used for many documents.</para>

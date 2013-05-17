@@ -234,7 +234,7 @@
                         <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/KEW_Guide/kew_embedded_deployment2.png"
-                                        scalefit="1" width="100%" />
+                                        scalefit="1" width="100%" contentdepth="100%"/>
                                 </imageobject>
                             </mediaobject>
                     </figure>
@@ -396,7 +396,7 @@
                     <title>Bundled deployment diagram</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/bundled_deployment_diagram.png" scalefit="1" width="100%" />
+                            <imagedata fileref="../images/KEW_Guide/bundled_deployment_diagram.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                     </figure>
@@ -595,7 +595,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <title>Thin client deployment diagram</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/thin_client_deployment_diagram.png" scalefit="1" width="100%" />
+                            <imagedata fileref="../images/KEW_Guide/thin_client_deployment_diagram.png" scalefit="1" width="100%" contentdepth="100%"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -612,7 +612,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <title>Typical enterprise deployment of Kuali Rice</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW_Guide/enterprise_deployment.png" scalefit="1" width="100%" />
+                        <imagedata fileref="../images/KEW_Guide/enterprise_deployment.png" scalefit="1" width="100%" contentdepth="100%"/>
                     </imageobject>
                 </mediaobject>
             </figure>

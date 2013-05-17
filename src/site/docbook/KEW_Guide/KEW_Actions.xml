@@ -938,7 +938,7 @@
                 <figure><title>Delegation Tree Example</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/action_request_tree.png" width="100%" scalefit="1"/>
+                            <imagedata fileref="../images/KEW_Guide/action_request_tree.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -998,7 +998,7 @@
                 <figure><title>Delegation Tree Example: Deactivation</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/deactivation_flow.png" width="100%" scalefit="1"/>
+                            <imagedata fileref="../images/KEW_Guide/deactivation_flow.png" contentwidth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>

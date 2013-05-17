@@ -56,7 +56,7 @@
                 <title>EDL Controller Chain</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KEW_Guide/edl_controller_chain.png" scalefit="1" width="100%" />
+                            <imagedata fileref="../images/KEW_Guide/edl_controller_chain.png" scalefit="1" width="100%" contentdepth="100%" />
                         </imageobject>
                     </mediaobject>
             </figure>

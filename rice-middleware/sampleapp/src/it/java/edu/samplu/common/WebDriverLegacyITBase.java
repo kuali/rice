@@ -3731,34 +3731,35 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Thread.sleep(500);
         boolean valid = false;
 
-        for (int second = 0;; second++) {
+        for (int second = 0; second < 5; second++) {
             if ((valid = validateErrorImage(validateVisible, second, ARIA_INVALID_XPATH)) == true) {
                 break;
             }
         }
 
         if (validateVisible) {
-            SeleneseTestBase.assertTrue(isElementPresentByXpath(ARIA_INVALID_XPATH));
+            SeleneseTestBase.assertTrue("valid = " + valid + " when validateVisible is " + validateVisible, valid);
         } else {
-            SeleneseTestBase.assertTrue(!isElementPresentByXpath(ARIA_INVALID_XPATH));
+            SeleneseTestBase.assertFalse("valid = " + valid + " when validateVisible is " + validateVisible, valid);
         }
 
         return valid;
     }
 
     private boolean validateErrorImage(boolean validateVisible, int second, String xpath) throws InterruptedException {
-        if (second >= 5)
-            SeleneseTestBase.fail(TIMEOUT_MESSAGE);
         try {
             if (validateVisible) {
-                if (isElementPresentByXpath(xpath))
-                    ;
-                return true;
-            } else {
-                if (!isElementPresentByXpath(xpath))
+                if (isElementPresentByXpath(xpath) && isVisibleByXpath(xpath)) {
                     return true;
+                }
+            } else {
+                if (!isElementPresentByXpath(xpath) || !isVisibleByXpath(xpath)) {
+                    return true;
+                }
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            // don't fail here, we're in a loop let the caller decide when to fail
+        }
         Thread.sleep(1000);
         return false;
     }

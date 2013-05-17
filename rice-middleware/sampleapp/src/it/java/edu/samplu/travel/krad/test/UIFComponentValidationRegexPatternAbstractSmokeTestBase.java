@@ -37,7 +37,7 @@ public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase ex
     }
 
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link UifComponentValidationRegexPatternAbstractSmokeTestBase#BOOKMARK_URL}
+     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return BOOKMARK_URL
      * {@inheritDoc}
      * @return
      */
@@ -68,9 +68,28 @@ public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase ex
         waitAndClickByXpath("//a[contains(text(),'Validation - Regex')]");
 
         //---------------------------------------------Fixed Point------------------------------//
+        waitAndTypeByName("field50", "123.12");
+        fireEvent("field50", "blur");
+        try {
+            validateErrorImage(true);
+            fail("Framework error validateErrorImage(true) should have thrown an AssertionExcpetion");
+        } catch (AssertionError ae) {
+            jGrowl("validateErrorImage(true) when not expected okay.");
+            // expected
+        }
+        validateErrorImage(false);
+
+        clearTextByName("field50");
         waitAndTypeByName("field50", "123.123");
         fireEvent("field50", "blur");
+        try {
+            validateErrorImage(false);
+            fail("Framework error validateErrorImage(false) should have thrown an AssertionExcpetion");
+        } catch (AssertionError ae) {
+            jGrowl("validateErrorImage(false) when expected okay.");
+        }
         validateErrorImage(true);
+
         clearTextByName("field50");
         waitAndTypeByXpath("//input[@name='field50']", "1234.4");
         fireEvent("field50", "blur");

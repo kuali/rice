@@ -34,7 +34,7 @@
             
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KIM_responsibility.png"/>
+                    <imagedata fileref="../images/KIM_responsibility_new.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -54,7 +54,7 @@
             
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/responsibility_lookup.png"/>
+                    <imagedata fileref="../images/responsibility_lookup_new.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -164,22 +164,29 @@
                         <entry>Optional. A specific responsibility detail value
                             associated with a responsibility</entry>
                     </row>
+                    <row>
+                        <entry>Active Indicator</entry>
+                        
+                        <entry>Required (defaults to Yes). Change the default
+                            selection to view responsibilities that are inactive or to see all
+                            (active and inactive).</entry>
+                    </row>
                 </tbody>
             </tgroup>
         </table></para>
         
         <figure>
-            <title>Responsibility Look: Results</title>
+            <title>Responsibility Lookup: Results</title>
             
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/responsibility_results.png"/>
+                    <imagedata fileref="../images/responsibility_results_new.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>
         
         <para><table frame="none" tabstyle="striped">
-            <title>Responsibility Lookup: Resutls Attributes</title>
+            <title>Responsibility Lookup: Results Attributes</title>
             
             <tgroup cols="2">
                 <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -283,8 +290,7 @@
             
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/responsibility_inquiry.png"
-                        scale="90"/>
+                    <imagedata fileref="../images/responsibility_inquiry_new.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>

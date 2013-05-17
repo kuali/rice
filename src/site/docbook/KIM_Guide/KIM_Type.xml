@@ -31,7 +31,7 @@
             
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/Kim_type_lookup.png"/>
+                    <imagedata fileref="../images/Kim_type_lookup_new.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -93,7 +93,7 @@
             
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/kim_type_lookup_results.png"/>
+                    <imagedata fileref="../images/kim_type_lookup_results_new.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -110,16 +110,16 @@
         <para>The KIM Type Inquiry screen provides details about a KIM Type data
             element.</para>
         
-        <para>To access this screen, from the <emphasis role="bold">Role
-            Lookup</emphasis> screen, click a <emphasis role="bold">Role Type
-                Name</emphasis> in your search results list.</para>
+        <para>To access this screen, from the <emphasis role="bold">Kim Type Lookup</emphasis>
+            screen, click a <emphasis role="bold">Type Name</emphasis> in your search results
+            list.</para>
         
         <figure>
             <title>KIM Type Inquiry</title>
             
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/kim_type.png"/>
+                    <imagedata fileref="../images/kim_type_new.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>

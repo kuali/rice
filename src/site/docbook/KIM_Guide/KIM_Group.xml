@@ -34,7 +34,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/select_group.png"/>
+            <imagedata fileref="../images/select_group_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -44,7 +44,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/group_lookup.png"/>
+            <imagedata fileref="../images/group_lookup_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -62,7 +62,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/group_lookup_results.png"/>
+            <imagedata fileref="../images/group_lookup_results_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -86,7 +86,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/group_inquiry.png"/>
+            <imagedata fileref="../images/group_inquiry_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -159,12 +159,11 @@
       <section>
         <title>Creating New Groups</title>
 
-        <para>If you are creating a new Group and have clicked the <emphasis
-        role="bold">Create New</emphasis> button on the Group Lookup screen,
-        you will be redirected to the Group creation page. One of the first
-        things to do, if wanting to create a group with a non-default Group
-        Type, is to use the kim type lookup to select a different group type.
-        Once clicked you will redirected to a screen like the
+        <para>If you are creating a new Group and have clicked the <emphasis role="bold">Create
+          New</emphasis> button on the Group Lookup screen, you will be redirected to the Group
+        creation page. One of the first things to do, if wanting to create a group with a
+        non-default Group Type, is to use the kim type lookup to select a different group type. Once
+        you click on the Type Name in the Overview tab, you will be redirected to a screen like the
         following:</para>
 
         <figure>
@@ -172,7 +171,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/Kim_type_lookup.png"/>
+              <imagedata fileref="../images/Kim_type_lookup_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -245,15 +244,16 @@
           </itemizedlist></para>
 
         <para>The Overview and Assignees tabs are described below. Information
-        on the others can be found in the Common Features and Functions
-        section of this User Guide.</para>
+        on the Ad Hoc Recipients and Route Log tabs can be found in the 
+          <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/Intro_To_Rice.html#frequent_tab">Frequently Used Tabs</link>
+        section of the Introduction to Rice Guide.</para>
 
         <figure>
           <title>Group Maintenance Document</title>
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/group_maintenance_document.png"/>
+              <imagedata fileref="../images/group_maintenance_document_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -270,7 +270,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/group_overview.png" scale="85"/>
+                <imagedata fileref="../images/group_overview_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -326,6 +326,11 @@
                     (it is no longer valid when making role
                     assignments).</entry>
                   </row>
+                  <row>
+                    <entry>Group Description</entry>
+                    
+                    <entry>Optional. Some text to describe the group.</entry>
+                  </row>
                 </tbody>
               </tgroup>
             </table></para>
@@ -349,7 +354,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/assignees_tab.png" scale="85"/>
+                <imagedata fileref="../images/assignees_tab_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -369,7 +374,7 @@
                 </thead>
                 <tbody>
                   <row>
-                    <entry>Member Type Code</entry>
+                    <entry>Type Code</entry>
                     <entry>Required. Select the Type of the member you are
                     adding to this Group. Group members can be Principals (as
                     defined on the Person document), Roles, or other
@@ -386,6 +391,13 @@
                     role="bold">Role</emphasis> lookup, based on your
                     <emphasis role="bold">Member Type Code</emphasis>
                     selection.</entry>
+                  </row>
+                  <row>
+                    <entry>Name</entry>
+                    
+                    <entry>Optional. Enter the person name. Clicking on the magnifying glass icon
+                    brings up the Person Lookup screen, where a person may be looked up and, once
+                    located, inserted.</entry>
                   </row>
                   <row>
                     <entry>Active From Date</entry>

@@ -43,7 +43,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/permission_lookup.png"/>
+            <imagedata fileref="../images/permission_lookup_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -188,7 +188,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/permission_lookup_results.png"/>
+            <imagedata fileref="../images/permission_lookup_results_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -240,7 +240,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/permission_inquiry.png"/>
+            <imagedata fileref="../images/permission_inquiry_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -263,7 +263,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/permission_template_inquiry.png"/>
+            <imagedata fileref="../images/permission_template_inquiry_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -364,7 +364,7 @@
 
                 <entry>Route Document</entry>
 
-                <entry>Authorizes user to route a doucment from their action
+                <entry>Authorizes user to route a document from their action
                 list</entry>
 
                 <entry><code>documentTypeName=</code></entry>
@@ -391,7 +391,7 @@
 
                 <entry>Ad Hoc Review Document</entry>
 
-                <entry>Authorizes user to review a doucment that has been sent
+                <entry>Authorizes user to review a document that has been sent
                 to them via an Ad Hoc Request</entry>
 
                 <entry><code>documentTypeName=</code></entry>
@@ -824,7 +824,7 @@
 
                 <entry>Send Ad Hoc Request</entry>
 
-                <entry>Authorizes a user to create an action reques to user(s)
+                <entry>Authorizes a user to create an action request to user(s)
                 outside the normal route chain</entry>
 
                 <entry><para>

@@ -43,7 +43,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/role_lookup.png"/>
+            <imagedata fileref="../images/role_lookup_new.png" width="100%" scalefit="1"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -64,7 +64,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/role_maintenance_document.png"/>
+              <imagedata fileref="../images/role_maintenance_document_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -113,51 +113,37 @@
       <section>
         <title>Role Maintenance Document</title>
 
-        <para>The Role document includes eight tabs:<itemizedlist>
-            <listitem>
-              <para>Document Overview</para>
-            </listitem>
+        <para>The Role document includes six tabs:<itemizedlist>
+          <listitem>
+            <para>Document Overview</para>
+          </listitem>
+          <listitem>
+            <para>Overview</para>
+          </listitem>
+          <listitem>
+            <para>Permissions</para>
+          </listitem>
+          <listitem>
+            <para>Responsibilities</para>
+          </listitem>
+          <listitem>
+            <para>Ad Hoc Recipients</para>
+          </listitem>
+          <listitem>
+            <para>Route Log</para>
+          </listitem>
+        </itemizedlist></para>
 
-            <listitem>
-              <para>Overview</para>
-            </listitem>
-
-            <listitem>
-              <para>Permissions</para>
-            </listitem>
-
-            <listitem>
-              <para>Responsibilities</para>
-            </listitem>
-
-            <listitem>
-              <para>Assignees</para>
-            </listitem>
-
-            <listitem>
-              <para>Delegations</para>
-            </listitem>
-
-            <listitem>
-              <para>Ad Hoc Recipients</para>
-            </listitem>
-
-            <listitem>
-              <para>Route Log</para>
-            </listitem>
-          </itemizedlist></para>
-
-        <para>Those contains unique information are addressed below. For more
-        information about the Document Overview, Ad Hoc Recipients and Route
-        Log tabs, please see the <emphasis role="bold">Common Features and
-        Functions</emphasis> document.</para>
+        <para>Those that contain unique information are addressed below. For more information about
+          the Document Overview, Ad Hoc Recipients and Route Log tabs, please see the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/Intro_To_Rice.html#frequent_tab">Frequently Used Tabs</link>
+          section of the Introduction to Rice Guide.</para>
 
         <figure>
           <title>Role Maintenance Document: Tabs</title>
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/role_tabs.png"/>
+              <imagedata fileref="../images/role_tabs_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -175,7 +161,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/role_overview.png" scale="90"/>
+                <imagedata fileref="../images/role_overview_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -198,7 +184,7 @@
 
                 <tbody>
                   <row>
-                    <entry>Role Identifier</entry>
+                    <entry>Role</entry>
 
                     <entry>Display-only. The unique, system-assigned ID number
                     that identifies this Role</entry>
@@ -217,7 +203,7 @@
                   </row>
 
                   <row>
-                    <entry>Role Namespace</entry>
+                    <entry>Namespace</entry>
 
                     <entry>Required. An indicator that associates the Role
                     with a particular application and module</entry>
@@ -238,6 +224,11 @@
                     Permissions and Responsibilities. Uncheck the Active box
                     to indicate that this Role is inactive.</entry>
                   </row>
+                  <row>
+                    <entry>Description</entry>
+                    
+                    <entry>Optional. Text description of the role.</entry>
+                  </row>
                 </tbody>
               </tgroup>
             </table></para>
@@ -256,7 +247,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/Kim_type_lookup.png"/>
+                <imagedata fileref="../images/Kim_type_lookup_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -283,7 +274,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/role_permissions.png"/>
+                <imagedata fileref="../images/role_permissions_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -340,14 +331,13 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/role_add_permission.png"/>
+                <imagedata fileref="../images/role_add_permission_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
 
           <para><table frame="none" tabstyle="striped">
-              <title>Role Maintenance Document: Permissions Tabb, Add
-              Attributes</title>
+              <title>Role Maintenance Document: Permissions Tab, Add Attributes</title>
 
               <tgroup cols="2">
                 <colspec colname="c1" colnum="1" colwidth="0.5*"/>
@@ -431,7 +421,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/role_responsibilities.png"/>
+                <imagedata fileref="../images/role_responsibilities_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -488,7 +478,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/role_responsibility_added.png"/>
+                <imagedata fileref="../images/role_responsibility_added_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -623,8 +613,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/role_responsibility_action.png"
-                           scale="90"/>
+                <imagedata fileref="../images/role_responsibility_action_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -703,258 +692,6 @@
                     allows a request to be immediately fulfilled if the Role
                     member has previously taken action on this specific
                     document.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
-        </section>
-
-        <section>
-          <title>Assignees Tab</title>
-
-          <para>This tab displays all members who belong to this Role. You may
-          also use the tab to add new members and to edit the values
-          associated with existing members.</para>
-
-          <para>Just as with group, role members not added by the specific
-          maintenance document will have their "delete" buttons inactivated.
-          To end that member's active association with the group, set the
-          "Active To Date" field to the end of the membership.</para>
-
-          <figure>
-            <title>Role Maintenance Document: Assignees Tab</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="../images/role_assignees.png"/>
-              </imageobject>
-            </mediaobject>
-          </figure>
-
-          <para><table frame="none" tabstyle="striped">
-              <title>Role Maintenance Document: Assignees Tab
-              Attributes</title>
-
-              <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
-
-                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-
-                <thead>
-                  <row>
-                    <entry>Field Name</entry>
-
-                    <entry>Description</entry>
-                  </row>
-                </thead>
-
-                <tbody>
-                  <row>
-                    <entry>Type Code</entry>
-
-                    <entry>Required. Role members can be Principals (as
-                    defined on the Person document), Groups, or other Roles.
-                    Select the Type of member you want to add to this
-                    Role.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Member Identifier</entry>
-
-                    <entry>Required. Enter the ID of the member you want to
-                    add, or use the lookup to search for and select a Member.
-                    The lookup icon displays the <emphasis
-                    role="bold">Principal</emphasis>, <emphasis
-                    role="bold">Group</emphasis>, or <emphasis
-                    role="bold">Role</emphasis> Lookup screen based on the
-                    <emphasis role="bold">Type Code you selected for this Role
-                    member</emphasis>.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Namespace Cd</entry>
-
-                    <entry>Display-only. Identifies the namespace code
-                    associated with this Role member. Note that only Groups
-                    and Roles display a namespace code.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Name</entry>
-
-                    <entry>Display-only. Identifies the name of the member you
-                    are assigning to this Role</entry>
-                  </row>
-
-                  <row>
-                    <entry>Active From Dt</entry>
-
-                    <entry>Optional. Enter a <emphasis role="bold">Active
-                    From</emphasis> date to define the earliest date on which
-                    this member is a valid member of this Role.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Active To Dt</entry>
-
-                    <entry><para>Optional. Allows you to deactivate a member's
-                    association with a Role on a specific date. Enter the date
-                    the user is no longer a member of this Role.</para>
-                    <para><emphasis role="bold">Note: </emphasis>You cannot
-                    delete or inactivate Role members. To remove a member from
-                    a Role, enter an <emphasis role="bold">Active To
-                    Dt.</emphasis></para></entry>
-                  </row>
-
-                  <row>
-                    <entry>Actions</entry>
-
-                    <entry>Click the <emphasis role="bold">Add</emphasis>
-                    button to add this member to the Role.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
-        </section>
-
-        <section>
-          <title>Delegations Tab</title>
-
-          <para>This tab defines and identifies Delegates associated with this
-          Role. Delegates are users that a member of this Role has authorized
-          to have the same Permissions and take the same actions as that
-          member is authorized to take. For example, a manager may make
-          someone a Delegate for his or her actions in a particular
-          Role.</para>
-
-          <para>The Assignees Tab dealing with Delegates is slightly
-          different, as shown in the following table. Note that if the members
-          of a Role require qualifying values, the delegation requires these
-          values as well. In most cases, Delegates must have the same
-          qualifiers as the Role member with which they are associated.</para>
-
-          <para>Just as with Group and Role Associations, delegations added
-          outside of the current maintenance document have inactive "delete"
-          buttons and must have the "Active To Date" field set to end the
-          delegation.</para>
-
-          <figure>
-            <title>Role Maintenance Document: Delegations Tab</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="../images/role_delegations.png"/>
-              </imageobject>
-            </mediaobject>
-          </figure>
-
-          <para><table frame="none" tabstyle="striped">
-              <title>Role Maintenance Document: Delegations Tab
-              Attributes</title>
-
-              <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="0.5*"/>
-
-                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-
-                <thead>
-                  <row>
-                    <entry>Field Name</entry>
-
-                    <entry>Description</entry>
-                  </row>
-                </thead>
-
-                <tbody>
-                  <row>
-                    <entry>Role Member</entry>
-
-                    <entry>Required. Use the lookup to search for, and return,
-                    the Member of this Role for whom you wish to create a
-                    Delegate.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Member Type Code</entry>
-
-                    <entry>Required. Select the <emphasis
-                    role="bold">Type</emphasis> of Delegate you want to add to
-                    this Role. Delegates may be Principals (as defined on the
-                    Person document), Groups, or other Roles.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Member Identifier</entry>
-
-                    <entry>Required. Enter the ID that identifies the Delegate
-                    you want to add, or use the lookup to search for and
-                    select a Delegate. Note that the lookup takes you to the
-                    <emphasis role="bold">Principal</emphasis>, <emphasis
-                    role="bold">Group</emphasis>, or<emphasis role="bold">
-                    Role Lookup</emphasis> screen, depending on the Member
-                    Type Code you selected.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Member Namespace Code</entry>
-
-                    <entry>Display-only. The namespace of this Delegate. Note
-                    that only delegations to Groups or Roles display a Member
-                    Namespace Code.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Member Name</entry>
-
-                    <entry>Display-only. The name of the selected
-                    Delegate</entry>
-                  </row>
-
-                  <row>
-                    <entry>Active From Date</entry>
-
-                    <entry>Optional. You may choose to qualify this Delegate's
-                    association with this Role by date. Entering an <emphasis
-                    role="bold">Active From Date</emphasis> is the earliest
-                    date on which this Delegate is valid for this
-                    Role.</entry>
-                  </row>
-
-                  <row>
-                    <entry>Active To Date</entry>
-
-                    <entry><para>Optional. Allows you to deactivate a
-                    Delegate's association with a Role on a specific date. The
-                    date you enter is the date on which this user is no longer
-                    a Delegate for this Role.</para> <para><emphasis
-                    role="bold">Note: </emphasis>You <emphasis
-                    role="italic">cannot</emphasis> delete or deactivate
-                    Delegates. To remove a Delegate from a Role, enter an
-                    <emphasis role="bold">Active To
-                    Date</emphasis>.</para></entry>
-                  </row>
-
-                  <row>
-                    <entry>Delegation Type Code</entry>
-
-                    <entry>Required. Select <emphasis
-                    role="italic">Secondary</emphasis> or <emphasis
-                    role="italic">Primary</emphasis>. Note that this selection
-                    only applies to Responsibilities associated with the Role.
-                    This indicates whether the Delegate automatically receives
-                    documents directly in their Action List (<emphasis
-                    role="italic">Primary</emphasis>) or if the Delegate may
-                    only choose to view documents in their Action List using
-                    the <emphasis role="bold">Secondary Delegate</emphasis>
-                    dropdown (<emphasis
-                    role="italic">Secondary</emphasis>).</entry>
-                  </row>
-
-                  <row>
-                    <entry>Actions</entry>
-
-                    <entry>Click the <emphasis role="bold">Add</emphasis>
-                    button to add this Delegate to this Role.</entry>
                   </row>
                 </tbody>
               </tgroup>

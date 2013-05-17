@@ -68,7 +68,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/person_lookup.png"/>
+                <imagedata fileref="../images/person_lookup_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -94,8 +94,7 @@
 
                   <mediaobject>
                     <imageobject>
-                      <imagedata fileref="../images/person_results.png"
-                                 scale="85"/>
+                      <imagedata fileref="../images/person_results_new.png" width="100%" scalefit="1"/>
                     </imageobject>
                   </mediaobject>
                 </figure>
@@ -118,17 +117,10 @@
 
                   <mediaobject>
                     <imageobject>
-                      <imagedata fileref="../images/person_document.png"/>
+                      <imagedata fileref="../images/person_document_new.png" width="100%" scalefit="1"/>
                     </imageobject>
                   </mediaobject>
                 </figure>
-
-                <para>The <emphasis role="bold">Return Value</emphasis> column
-                has a <emphasis role="bold">return value</emphasis> link for
-                each person. Click this return value link for the Person whose
-                information you need, and Kuali goes back to the screen you
-                were on before and automatically enters the information about
-                that person on the screen for you.</para>
               </listitem>
             </itemizedlist></para>
         </section>
@@ -149,7 +141,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/person_lookup_create_new.png"/>
+                <imagedata fileref="../images/person_lookup_create_new_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -257,7 +249,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/person_document2.png"/>
+              <imagedata fileref="../images/person_document2_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -271,8 +263,9 @@
         Principal ID.</para>
 
         <para>Additional information on the <emphasis role="bold">Document
-        Overview Tab</emphasis> can be found in the Common Features and
-        Functions section of this User Guide.</para>
+        Overview Tab</emphasis> can be found in the 
+          <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/Intro_To_Rice.html#doc_overview_tab">Document Overview Tab</link>
+        section of the Introduction to Rice Guide.</para>
       </section>
       <section>
         <title>Overview Tab</title>
@@ -296,7 +289,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/person_overview_tab.png"/>
+              <imagedata fileref="../images/person_overview_tab_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -340,28 +333,10 @@
                     <entry>Required. The user name for this Principal</entry>
                   </row>
                   <row>
-                    <entry>Tax Identification Number</entry>
-
-                    <entry>Required. Enter the Individual Tax Identification
-                    Number (ITIN) for this Principal ID</entry>
-                  </row>
-                  <row>
-                    <entry>Principal Password</entry>
-                    <entry>Optional. Enter the password for this Principal
-                    ID</entry>
-                  </row>
-                  <row>
                     <entry>Active</entry>
                     <entry>Check the box to indicate that this Principal ID is
                     Active. Uncheck the box to indicate that this Principal ID
                     is Inactive.</entry>
-                  </row>
-                  <row>
-                    <entry>Actions</entry>
-
-                    <entry>Click the <emphasis role="bold">Add</emphasis>
-                    button under <emphasis role="bold">Actions</emphasis> to
-                    save the information you enter in this section.</entry>
                   </row>
                 </tbody>
               </tgroup>
@@ -448,7 +423,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/faculty_staff_affiliate_fields.png"/>
+                <imagedata fileref="../images/faculty_staff_affiliate_fields_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -566,7 +541,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/person_contact_tab.png"/>
+              <imagedata fileref="../images/person_contact_tab_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -578,7 +553,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/person_names_section.png"/>
+                <imagedata fileref="../images/person_names_section_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -598,7 +573,7 @@
                 </thead>
                 <tbody>
                   <row>
-                    <entry>Name Type</entry>
+                    <entry>Name Code</entry>
 
                     <entry><para>Optional. Select the type of name to be added
                     in this row. Options:</para><itemizedlist>
@@ -614,9 +589,9 @@
                       </itemizedlist></entry>
                   </row>
                   <row>
-                    <entry>Title</entry>
+                    <entry>Name Prefix</entry>
 
-                    <entry><para>Optional. Select the appropriate title for
+                    <entry><para>Optional. Select the appropriate title or name prefix for
                     the name being added in this row. Options:</para>
                     <itemizedlist>
                         <listitem>
@@ -635,16 +610,21 @@
                   </row>
                   <row>
                     <entry>First Name</entry>
-                    <entry>Optional. Enter the first name for this
+                    <entry>Required. Enter the first name for this
                     record.</entry>
+                  </row>
+                  <row>
+                    <entry>Middle Name</entry>
+                    <entry>Optional. Enter the first name for this
+                      record.</entry>
                   </row>
                   <row>
                     <entry>Last Name</entry>
-                    <entry>Optional. Enter the last name for this
+                    <entry>Required. Enter the last name for this
                     record.</entry>
                   </row>
                   <row>
-                    <entry>Suffix</entry>
+                    <entry>Name Suffix</entry>
 
                     <entry><para>Optional. Select a suffix for this name
                     record. Options:</para> <itemizedlist>
@@ -692,7 +672,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/addresses_section.png"/>
+                <imagedata fileref="../images/addresses_section_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -738,7 +718,7 @@
                     address.</entry>
                   </row>
                   <row>
-                    <entry>State</entry>
+                    <entry>State/Province</entry>
                     <entry>Optional. Select the state associated with this
                     address from the list.</entry>
                   </row>
@@ -783,7 +763,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/phone_numbers_section.png"/>
+                <imagedata fileref="../images/phone_numbers_section_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -873,7 +853,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/email_addresses_section.png"/>
+                <imagedata fileref="../images/email_addresses_section_new.png" width="100%" scalefit="1"/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -948,7 +928,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/privacy_preferences_tab.png"/>
+              <imagedata fileref="../images/privacy_preferences_tab_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -1013,7 +993,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/membership_tab.png"/>
+              <imagedata fileref="../images/membership_tab_new.png" width="100%" scalefit="1"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -1026,7 +1006,7 @@
           <title>Groups Section</title>
 
           <para><table frame="none" tabstyle="striped">
-              <title>Person Document: Memeberships Tab, Groups
+              <title>Person Document: Memberships Tab, Groups
               Attributes</title>
 
               <tgroup cols="2">
@@ -1096,7 +1076,7 @@
           <title>Roles Section</title>
 
           <para><table frame="none" tabstyle="striped">
-              <title>Person Document: Memeberships Tab, Roles
+              <title>Person Document: Memberships Tab, Roles
               Attributes</title>
 
               <tgroup cols="2">

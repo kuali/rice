@@ -84,7 +84,7 @@
       frequently.</para>
 
       <para>The <emphasis role="bold">IdentityService</emphasis> contains
-      service methods that allow for the retrieval, creation, and upating of
+      service methods that allow for the retrieval, creation, and updating of
       entity information.</para>
 
       <para>Additionally, it also provides caching for the retrieval methods

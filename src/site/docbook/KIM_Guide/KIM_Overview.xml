@@ -35,7 +35,7 @@
         <title>KIM Architecture</title>
         <mediaobject>
             <imageobject>
-                <imagedata fileref="../images/KIM_architecture.png"/>
+                <imagedata fileref="../images/KIM_architecture.png" width="100%" scalefit="1"/>
             </imageobject>
         </mediaobject>
     </figure>
@@ -91,11 +91,11 @@
         <para>A more detailed picture of the KIM architecture:</para>
         
         <figure>
-            <title>Detailed KIM Achitecture</title>
+            <title>Detailed KIM Architecture</title>
             
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KIM_architecture_detailed.png"/>
+                    <imagedata fileref="../images/KIM_architecture_detailed.png" width="100%" scalefit="1"/>
                 </imageobject>
             </mediaobject>
         </figure>

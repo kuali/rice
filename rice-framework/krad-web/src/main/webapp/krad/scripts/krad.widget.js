@@ -968,7 +968,9 @@ function toggleRowDetails(actionComponent) {
  * @param collectionId - id for the collection to select checkboxes for
  */
 function selectAllLines(collectionId) {
-    jQuery("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', true);
+
+    // fire change event for setMultivalueLookupReturnButton()
+    jQuery("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', true).change();
 }
 
 /**
@@ -978,7 +980,9 @@ function selectAllLines(collectionId) {
  * @param collectionId - id for the collection to deselect checkboxes for
  */
 function deselectAllLines(collectionId) {
-    jQuery("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', false);
+
+    // fire change event for setMultivalueLookupReturnButton()
+    jQuery("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', false).change();
 }
 
 /**

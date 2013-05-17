@@ -2371,3 +2371,19 @@ function displayCountdown(targetId, until, overrideOptions) {
         target.countdown(options);
     }
 }
+
+/**
+ * Enables the return selected button on the multi value lookup when at least one item is selected
+ *
+ * @param selectControl
+ */
+function setMultivalueLookupReturnButton(selectControl) {
+    var resultsCollection = jQuery(selectControl).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS);
+    var checked = jQuery('input.kr-select-line:checked' ).length;
+    if (checked > 0) {
+        jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).removeAttr('disabled');
+    } else {
+        jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).attr('disabled', 'disabled');
+    }
+
+}

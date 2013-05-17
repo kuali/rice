@@ -97,6 +97,7 @@ JavascriptKradVariables.prototype = {
      RETRIEVE_MESSAGE_METHOD_TO_CALL : "retrieveMessage",
      RETURN_TYPE_UPDATE_COMPONENT : "update-component",
      RETURN_FROM_LIGHTBOX_METHOD_TO_CALL : "returnFromLightbox",
+     RETURN_SELECTED_ACTION_CLASS : "uif-returnSelectedAction",
      REQUIRED_MESSAGE_CLASS : "uif-requiredMessage",
      SAVE_LINE_ACTION_CLASS : "uif-saveLineAction",
      SERVER_MESSAGE_ITEMS_CLASS : "uif-serverMessageItems",

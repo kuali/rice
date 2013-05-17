@@ -97,6 +97,7 @@
            (!#empty(returnFormKey) and !#empty(returnLocation) and !view.hideReturnLinks)}"/>
     <property name="layoutManager.actionColumnPlacement" value="LEFT"/>
     <property name="layoutManager.selectFieldPrototype.finalizeMethodToCall" value="setMultiValueLookupSelect"/>
+    <property name="layoutManager.selectFieldPrototype.control.onChangeScript" value="setMultivalueLookupReturnButton(this)"/>
     <property name="renderAddLine" value="false"/>
     <property name="readOnly" value="false"/>
     <property name="collectionLookup.render" value="false" />
@@ -212,7 +213,13 @@
         <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false"
               p:preSubmitCall="setMultiValueReturnTarget();return true;"
               p:successCallback="closeLightbox()" p:errorCallback="closeLightbox()"
-              p:methodToCall="returnSelected" p:actionLabel="return selected"/>
+              p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
+            <property name="cssClasses">
+              <list merge="true">
+                <value>uif-returnSelectedAction</value>
+              </list>
+            </property>
+        </bean>
       </list>
     </property>
   </bean>

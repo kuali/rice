@@ -122,6 +122,19 @@ public class KradSampleAppForm extends UifFormBase {
     //preset fields
     private List<String> optionListSelection = Arrays.asList("2", "4");
 
+    private String codeSample = ""
+            + "        if ((testPerson == null) || !StringUtils.equals(testPerson.getPrincipalId(), getTestPersonId())) {\n"
+            + "            testPerson = KimApiServiceLocator.getPersonService().getPerson(getTestPersonId());\n"
+            + "\n"
+            + "            if (testPerson == null) {\n"
+            + "                try {\n"
+            + "                    testPerson = KimApiServiceLocator.getPersonService().getPersonImplementationClass().newInstance();\n"
+            + "                } catch (Exception e) {\n"
+            + "                    throw new RuntimeException(e);\n"
+            + "                }\n"
+            + "            }\n"
+            + "        }";
+
     public KradSampleAppForm() {
         super();
 
@@ -929,5 +942,13 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setOptionListSelection(List<String> optionListSelection) {
         this.optionListSelection = optionListSelection;
+    }
+
+    public String getCodeSample() {
+        return codeSample;
+    }
+
+    public void setCodeSample(String codeSample) {
+        this.codeSample = codeSample;
     }
 }

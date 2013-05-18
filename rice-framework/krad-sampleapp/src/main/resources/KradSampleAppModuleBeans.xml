@@ -105,6 +105,8 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoNavigationGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoHelp.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTooltip.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDatePicker.xml</value>
+        <!--<value>classpath:org/kuali/rice/krad/demo/uif/library/DemoGrowls.xml</value>-->
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoReorderingGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutDetails.xml</value>
@@ -203,6 +205,8 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoNavigationGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoHelpResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTooltipResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDatePickerResources</value>
+        <!--<value>org.kuali.rice.krad.demo.uif.library.resources.DemoGrowlsResources</value>-->
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoReorderingGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSequenceResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutDetailsResources</value>

@@ -46,7 +46,7 @@
               <b>Search for Members by Name:</b>
                   <kul:htmlControlAttribute property="memberSearchValue" attributeEntry="${roleMemberAttributes.memberName}" readOnly="false" />
                   <kul:lookup boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
-                       fieldConversions="principalName:memberSearchValue" anchor="${tabKey}" />
+                       fieldConversions="principalName:memberSearchValue" anchor="${currentTabIndex}" />
               <br/>
               <br/>
             </div>
@@ -55,9 +55,9 @@
         <tr>
           <td class="infoline">
             <div align="center">
-              <html:image property="methodToCall.search.anchor${tabKey}"
-                          src="${ConfigProperties.kr.externalizable.images.url}tinybutton-search.gif" styleClass="tinybutton"/>
-              <html:image property="methodToCall.clear.anchor${tabKey}"
+              <html:image property="methodToCall.search.anchor${currentTabIndex}"
+                          src="${ConfigProperties.kr.externalizable.images.url}tinybutton-search.gif" styleClass="tinybutton" onchange="methodToCall.search.anchor${currentTabIndex}"/>
+              <html:image property="methodToCall.clear.anchor${currentTabIndex}"
                           src="${ConfigProperties.kr.externalizable.images.url}tinybutton-clear1.gif" styleClass="tinybutton"/>
             </div>
           </td>

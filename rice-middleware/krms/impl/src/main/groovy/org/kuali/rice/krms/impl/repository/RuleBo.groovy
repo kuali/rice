@@ -93,6 +93,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
    public Map<String, String> getAttributes() {
        HashMap<String, String> attributes = new HashMap<String, String>();
        for (RuleAttributeBo attr : attributeBos) {
+       	   attr.refreshReferenceObject("attributeDefinition");
            attributes.put( attr.getAttributeDefinition().getName(), attr.getValue() );
        }
        return attributes;

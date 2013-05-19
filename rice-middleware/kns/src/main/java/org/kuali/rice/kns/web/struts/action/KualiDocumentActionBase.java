@@ -834,6 +834,14 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
 
+        // KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added 
+        boolean hasPendingAdhocForCompletion = this.hasPendingAdhocForCompletion(kualiDocumentFormBase);
+        if(hasPendingAdhocForCompletion){
+            GlobalVariables.getMessageMap().putError(KRADConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME, RiceKeyConstants.ERROR_ADHOC_COMPLETE_BLANKET_APPROVE_NOT_ALLOWED);
+            
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+        
         kualiDocumentFormBase.setDerivedValuesOnForm(request);
         ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
         if (preRulesForward != null) {
@@ -2201,6 +2209,25 @@ public class KualiDocumentActionBase extends KualiAction {
         kualiDocumentFormBase.setAnnotation("");
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    /**
+     * KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added 
+     * 
+     * determine whether any adhoc recipient in the given document has been just added for completion action
+     */
+    protected boolean hasPendingAdhocForCompletion(KualiDocumentFormBase kualiDocumentFormBase){
+        List<AdHocRouteRecipient> adHocRecipients = this.combineAdHocRecipients(kualiDocumentFormBase);
+        
+        for(AdHocRouteRecipient receipients : adHocRecipients){
+            String actionRequestedCode = receipients.getActionRequested();
+            
+            if(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequestedCode)){
+                return true;
+            }
+        }
+        
+        return false;
     }
     
 }

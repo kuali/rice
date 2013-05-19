@@ -21,7 +21,7 @@
 
 DECLARE temp NUMBER;
 BEGIN
-  select count(*) into c from user_tables where table_name = upper('krad_msg_t');
+  select count(*) into temp from user_tables where table_name = upper('krad_msg_t');
 	IF temp = 0 THEN EXECUTE IMMEDIATE
 		'CREATE TABLE krad_msg_t ( nmspc_cd VARCHAR2(20) NOT NULL, 	cmpnt_cd VARCHAR2(100) NOT NULL, msg_key VARCHAR2(100) NOT NULL, loc VARCHAR2(255) NOT NULL, obj_id VARCHAR2(36) NOT NULL, ver_nbr DECIMAL(8) DEFAULT 1 NOT NULL, msg_desc VARCHAR2(255), txt VARCHAR2(4000) )';
 	END IF;

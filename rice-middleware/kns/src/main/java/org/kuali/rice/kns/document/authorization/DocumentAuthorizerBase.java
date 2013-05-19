@@ -179,7 +179,9 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
     }
 
     public boolean canCancel(Document document, Person user) {
-        return isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
+        // KULRICE-8762: CANCEL button should be enabled for a person who is doing COMPLETE action 
+        boolean isCompletionRequested = document.getDocumentHeader().getWorkflowDocument().isCompletionRequested();
+        return isCompletionRequested || isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CANCEL_DOCUMENT, user.getPrincipalId());
     }
 

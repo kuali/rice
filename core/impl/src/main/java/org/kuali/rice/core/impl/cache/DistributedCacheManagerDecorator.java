@@ -40,6 +40,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -60,7 +61,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * </p>
  */
 public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, BeanNameAware, NamedBean {
-    
+
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
 
     private static final String DISABLE_ALL_CACHES_PARAM = "rice.cache.disableAllCaches";
@@ -294,16 +295,18 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         /**
          * Iterates over the passed in {@link Queue} calling the {@link Queue#poll} for each item.
          *
-         * The returned list will also be normalized such that cache targets with keys will not be
-         * present in the returned collection if a cache target exists for the same cache but
-         * w/o a key (a complete cache flush)
+         * The returned list will also be normalized such that:
+         * (1) cache targets with keys will not be present in the returned collection if a cache target exists for the
+         * same cache but w/o a key (a complete cache flush);
+         * (2) duplicate targets (both complete cache flushes and specific keys) will be filtered so only unique
+         * targets will exist in the returned collection
          *
          * @param targets the queue to iterate over and exhaust
          * @return a new collection containing CacheTargets
          */
         private Collection<CacheTarget> exhaustQueue(Queue<CacheTarget> targets) {
-            final List<CacheTarget> normalized = new ArrayList<CacheTarget>();
-            final Set<String> completeFlush = new HashSet<String>();
+            final Set<CacheTarget> normalized = new HashSet<CacheTarget>();
+            final Set<String> completeFlush = new HashSet<String>();    
 
             CacheTarget target;
             while ((target = targets.poll()) != null) {

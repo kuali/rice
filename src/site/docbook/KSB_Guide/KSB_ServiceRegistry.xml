@@ -46,7 +46,7 @@
     <figure><title>Service Registry</title>
         <mediaobject>
             <imageobject>
-                <imagedata fileref="../images/KSB_Guide/service_registry_top.png"/>
+                <imagedata fileref="../images/KSB_Guide/service_registry_top.png" width="100%" scalefit="1"/>
             </imageobject>
         </mediaobject>
     </figure>
@@ -59,7 +59,7 @@
     <figure><title>Service Registry Results</title>
         <mediaobject>
             <imageobject>
-                <imagedata fileref="../images/KSB_Guide/service_registry_bottom.png"/>
+                <imagedata fileref="../images/KSB_Guide/service_registry_bottom_new.png" width="100%" scalefit="1"/>
             </imageobject>
         </mediaobject>
     </figure>

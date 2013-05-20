@@ -149,7 +149,7 @@
         <value>classpath:org/kuali/rice/krad/labs/kitchensink</value>
 
         <!-- DummyLogin -->
-        <value>classpath:/org/kuali/rice/krad/login/DummyLoginView.xml</value>
+        <value>classpath:org/kuali/rice/krad/login/DummyLoginView.xml</value>
       </list>
     </property>
     <property name="databaseRepositoryFilePaths">

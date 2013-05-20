@@ -171,7 +171,7 @@
   <servlet>
     <servlet-name>login</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <load-on-startup>5</load-on-startup>
+    <load-on-startup>3</load-on-startup>
   </servlet>
 
   <servlet-mapping>

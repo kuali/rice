@@ -40,19 +40,20 @@ import java.net.URLEncoder;
 
 /**
  * A login filter which forwards to a login page that allows for the desired
- * authentication ID to be entered without the need for a password.
+ * authentication ID to be entered (with testing password if option enabled)
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DummyLoginFilter implements Filter {
     private String loginPath;
     private boolean showPassword = false;
+
     @Override
 	public void init(FilterConfig config) throws ServletException {
         loginPath = ConfigContext.getCurrentContextConfig().getProperty("loginPath");
         showPassword = Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("showPassword")).booleanValue();
+
         if (loginPath == null) {
-            // TODO not really sure of where to put this as a constant?
             loginPath = "/kr-login/login?methodToCall=start&viewId=DummyLoginView&dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm";
         }
     }
@@ -61,74 +62,17 @@ public class DummyLoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		this.doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
-    
+
 	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         final UserSession session = KRADUtils.getUserSessionFromRequest(request);
 
         if (session == null) {
-            IdentityService auth = KimApiServiceLocator.getIdentityService();
-            final String user = request.getParameter("__login_user");
-            final String password = request.getParameter("__login_pw");
+            loginRequired(request, response, chain);
 
-            if (user != null) {
+            return;
 
-                // if passwords are used, they cannot be blank
-                if (showPassword && StringUtils.isBlank(password)) {
-                    handleInvalidLogin(request, response);
-                    return;
-                }
-
-                // Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
-                //    password must have non null value on krim_prncpl_t record
-                final Principal principal = showPassword ? auth.getPrincipalByPrincipalNameAndPassword(user, password) : auth.getPrincipalByPrincipalName(user);
-
-                if (principal == null) {
-                    handleInvalidLogin(request, response);
-                    return;
-                }
-
-                UserSession userSession = new UserSession(user);
-
-                if ( userSession.getPerson() == null ) {
-                    throw new AuthenticationException("Invalid User: " + user  );
-                }
-
-                request.getSession().setAttribute(KRADConstants.USER_SESSION_KEY, userSession);
-
-                // wrap the request with the remote user
-                // UserLoginFilter and WebAuthenticationService will create the session
-                request = new HttpServletRequestWrapper(request) {
-                    @Override
-					public String getRemoteUser() {
-                        return user;
-                    }
-                };
-
-                StringBuffer redirectUrl = new StringBuffer(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY));
-                redirectUrl.append(findTargetUrl(request));
-
-                response.sendRedirect(redirectUrl.toString());
-                return;
-
-            } else {
-                // allow ajax calls from login screen
-                if (ObjectUtils.isNotNull(request.getPathInfo())&&request.getPathInfo().equals("/listener")){
-                    chain.doFilter(request, response);
-                    return;
-                }
-
-                // process login request
-                if (ObjectUtils.isNotNull(request.getPathInfo())&&request.getPathInfo().equals("/login")){
-                    chain.doFilter(request, response);
-                    return;
-                }
-
-                // no session has been established and this is not a login form submission, so redirect to login page
-                response.sendRedirect(getLoginRedirectUrl(request));
-                return;
-
-            }
         } else {
+            // Perform request as signed in user
             request = new HttpServletRequestWrapper(request) {
                 @Override
                 public String getRemoteUser() {
@@ -138,7 +82,64 @@ public class DummyLoginFilter implements Filter {
         }
         chain.doFilter(request, response);
     }
-	
+
+    private void loginRequired(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (StringUtils.isNotBlank(request.getParameter("__login_user"))) {
+            performLoginAttempt(request, response);
+        } else {
+            // allow ajax calls & form submit from login screen
+            if (StringUtils.equals(request.getPathInfo(),"/listener")
+                    || StringUtils.equals(request.getPathInfo(),"/login")) {
+                chain.doFilter(request, response);
+            } else {
+                // no session has been established and this is not a login form submission, so redirect to login page
+                response.sendRedirect(getLoginRedirectUrl(request));
+            }
+        }
+    }
+
+    private void performLoginAttempt(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        IdentityService auth = KimApiServiceLocator.getIdentityService();
+        final String user = request.getParameter("__login_user");
+        String password = request.getParameter("__login_pw");
+
+        // if passwords are used, they cannot be blank
+        if (showPassword && StringUtils.isBlank(password)) {
+            handleInvalidLogin(request, response);
+            return;
+        }
+
+        // Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
+        //    password must have non null value on krim_prncpl_t record
+        Principal principal = showPassword ? auth.getPrincipalByPrincipalNameAndPassword(user, password) : auth.getPrincipalByPrincipalName(user);
+        if (principal == null) {
+            handleInvalidLogin(request, response);
+            return;
+        }
+
+        UserSession userSession = new UserSession(user);
+
+        // Test if session was successfully build for this user
+        if ( userSession.getPerson() == null ) {
+            throw new AuthenticationException("Invalid User: " + user  );
+        }
+
+        request.getSession().setAttribute(KRADConstants.USER_SESSION_KEY, userSession);
+
+        // wrap the request with the signed in user
+        // UserLoginFilter and WebAuthenticationService will build the session
+        request = new HttpServletRequestWrapper(request) {
+            @Override
+            public String getRemoteUser() {
+                return user;
+            }
+        };
+
+        StringBuilder redirectUrl = new StringBuilder(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY));
+        redirectUrl.append(findTargetUrl(request));
+        response.sendRedirect(redirectUrl.toString());
+    }
+
     /**
      * Handles and invalid login attempt.
      *
@@ -150,11 +151,9 @@ public class DummyLoginFilter implements Filter {
      * @throws java.io.IOException if unable to handle the invalid login
      */
 	private void handleInvalidLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        StringBuffer redirectUrl = new StringBuffer(getLoginRedirectUrl(request));
+        StringBuilder redirectUrl = new StringBuilder(getLoginRedirectUrl(request));
         redirectUrl.append("&login_message=Invalid Login");
-
         response.sendRedirect(redirectUrl.toString());
-        return;
     }
 
     @Override
@@ -172,7 +171,7 @@ public class DummyLoginFilter implements Filter {
     private String getLoginRedirectUrl(HttpServletRequest request) throws IOException {
         String targetUrl = findTargetUrl(request);
 
-        StringBuffer redirectUrl = new StringBuffer(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY));
+        StringBuilder redirectUrl = new StringBuilder(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY));
         redirectUrl.append(loginPath);
         redirectUrl.append("&returnLocation=");
         redirectUrl.append(URLEncoder.encode(targetUrl,"UTF-8"));
@@ -181,7 +180,7 @@ public class DummyLoginFilter implements Filter {
     }
 
     /**
-     * Construct a url from a HttpServletRequest & removing login properties
+     * Construct a url from a HttpServletRequest with login properties removed
      *
      * @param request
      * @return Url string
@@ -198,27 +197,39 @@ public class DummyLoginFilter implements Filter {
         if (StringUtils.isNotBlank(request.getQueryString())) {
             targetUrl.append("?");
 
-            for (String pair : request.getQueryString().split("&")) {
-                int eq = pair.indexOf("=");
-
-                if (eq < 0) {
-                    // key with no value
-                    targetUrl.append("&").append(pair);
-                } else {
-                    // key=value
-                    String key = pair.substring(0, eq);
-                    if (!key.equals("__login_pw")
-                             && !key.equals("__login_user")
-                             && !key.equals("login_message")
-                             && !key.equals("returnLocation")) {
-                        targetUrl.append("&").append(pair);
-                    }
-                }
-
+            for (String keyValuePair : request.getQueryString().split("&")) {
+                if (isValidProperty(keyValuePair)) targetUrl.append("&").append(keyValuePair);
             }
 
         }
 
+        // clean up delimiters and return url string
         return targetUrl.toString().replace("&&","&").replace("?&","?");
     }
+
+    /**
+     * Test if property is needed (ie: Not a login property)
+     *
+     * @param keyValuePair
+     * @return Boolean
+     */
+    private Boolean isValidProperty(String keyValuePair) {
+        int eq = keyValuePair.indexOf("=");
+
+        if (eq < 0) {
+            // key with no value
+            return Boolean.FALSE;
+        }
+
+        String key = keyValuePair.substring(0, eq);
+        if (!key.equals("__login_pw")
+                && !key.equals("__login_user")
+                && !key.equals("login_message")
+                && !key.equals("returnLocation")) {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
+
 }

@@ -75,6 +75,7 @@ jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function (event) {
 
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
+    time(true, "viewSetup-phase-1");
     // determine whether we need to refresh or update the page
     skipPageSetup = handlePageAndCacheRefreshing();
 
@@ -103,11 +104,16 @@ jQuery(document).ready(function () {
         hideLoading();
     });
 
+    time(false, "viewSetup-phase-1");
+    // show the page
+        jQuery("#" + kradVariables.APP_ID).show();
+
     //run all the scripts
     runHiddenScripts("");
 
-    // show the page
-    jQuery("#" + kradVariables.APP_ID).show();
+    time(true, "viewSetup-phase-2");
+
+
 
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
@@ -118,7 +124,11 @@ jQuery(document).ready(function () {
     hideEmptyCells();
 
     // focus on first field
-    performFocus("FIRST");
+    jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
+        performFocus("FIRST");
+    });
+
+    time(false, "viewSetup-phase-2");
 });
 
 /**
@@ -162,6 +172,8 @@ function setupStickyHeaderAndFooter(){
  * on the client
  */
 function initFieldHandlers() {
+    time(true, "field-handlers");
+
     var validationTooltipOptions = {
         position: "top",
         align: "left",
@@ -507,6 +519,8 @@ function initFieldHandlers() {
             refreshDatatableCellRedraw(input)
         }, 300);
     });
+
+    time(false, "field-handlers");
 }
 
 /**
@@ -539,6 +553,8 @@ function hideBubblePopups(element) {
  * Sets up the validator and the dirty check and other page scripts
  */
 function setupPage(validate) {
+    time(true, "page-setup");
+
     //if we are skipping this page setup, reset the flag, and return (this logic is for redirects)
     if (skipPageSetup) {
         skipPageSetup = false;
@@ -626,6 +642,8 @@ function setupPage(validate) {
     jQuery(document).trigger(kradVariables.PAGE_LOAD_EVENT);
 
     jQuery.watermark.showAll();
+
+    time(false, "page-setup");
 }
 
 /**

@@ -18,30 +18,29 @@
 <#macro uif_lightTable group params...>
     <@krad.groupWrap group=group>
 
-    <#if !group.emptyTable>
-        <#local row>
-            <#compress>
-            <#list group.items as item>
-            <td><@krad.template component=item/></td>
-            </#list>
-            </#compress>
-        </#local>
-    </#if>
-
-    <table id="${group.id}_lightTable">
-        <thead>
-            <tr>
-                <#list group.headerLabels as label>
-                    <th><@krad.template component=label/></th>
+        <#if !group.emptyTable>
+            <#local row>
+                <#compress>
+                <#list group.items as item>
+                @quot@<@krad.template component=item/>@quot@,
                 </#list>
-            </tr>
-        </thead>
-        <tbody>
-        <!-- call to get table content -->
-            ${group.buildRows(row, KualiForm)}
-        </tbody>
-    </table>
+                </#compress>
+            </#local>
+        </#if>
 
-       <@krad.script value="createTable('${group.id}_lightTable', ${group.richTable.templateOptionsJSString}); "/>
+        <table id="${group.id}_lightTable">
+            <thead>
+                <tr>
+                    <#list group.headerLabels as label>
+                        <th><@krad.template component=label/></th>
+                    </#list>
+                </tr>
+            </thead>
+        </table>
+
+        <#-- build the rows and add the content to aaData in templateOptions -->
+        ${group.buildRows(row, KualiForm)}
+
+        <@krad.script value="createTable('${group.id}_lightTable', ${group.richTable.templateOptionsJSString}); "/>
     </@krad.groupWrap>
 </#macro>

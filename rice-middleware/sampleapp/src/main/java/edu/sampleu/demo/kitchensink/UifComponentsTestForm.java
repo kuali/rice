@@ -227,6 +227,7 @@ public class UifComponentsTestForm extends UifFormBase {
     private boolean bField1;
     private boolean bField2;
     private boolean bField3;
+    private boolean booleanField;
 
     private Date date1;
     private Date date2;
@@ -1441,6 +1442,14 @@ public class UifComponentsTestForm extends UifFormBase {
      */
     public void setbField3(boolean bField3) {
         this.bField3 = bField3;
+    }
+
+    public boolean isBooleanField() {
+        return booleanField;
+    }
+
+    public void setBooleanField(boolean booleanField) {
+        this.booleanField = booleanField;
     }
 
     /**

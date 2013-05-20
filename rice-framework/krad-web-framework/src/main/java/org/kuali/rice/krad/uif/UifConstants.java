@@ -204,6 +204,8 @@ public class UifConstants {
         public static final String TABLE_SORT = "bSort";
         public static final String SAJAX_SOURCE = "sAjaxSource";
         public static final String FOOTER_CALLBACK = "fnFooterCallback";
+        public static final String AA_DATA = "aaData";
+        public static final String DEFER_RENDER = "bDeferRender";
     }
 
     public static class TableToolsValues {
@@ -218,6 +220,7 @@ public class UifConstants {
         public static final String CURRENCY = "kuali_currency";
         public static final String TIMESTAMP = "kuali_timestamp";
         public static final String FALSE = "false";
+        public static final String TRUE = "true";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
     }

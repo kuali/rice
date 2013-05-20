@@ -44,6 +44,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.uif.widget.Tooltip;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -83,6 +84,7 @@ public class LightTable extends Group implements DataBinding {
     private static final String EXPRESSION_TOKEN = "@e@";
     private static final String RENDER = "render";
     private static final String ID_TOKEN = "@id@";
+    private static final String QUOTE_TOKEN = "@quot@";
     private static final String A_TOKEN = "@";
     private static final String SEPARATOR = "@@@";
 
@@ -299,10 +301,12 @@ public class LightTable extends Group implements DataBinding {
      * @param model the model
      * @return the full set of rows for the table in html(String) to be used by the calling ftl
      */
-    public String buildRows(String rowTemplate, UifFormBase model) {
+    public void buildRows(String rowTemplate, UifFormBase model) {
         if (StringUtils.isBlank(rowTemplate)) {
-            return "";
+            return;
         }
+
+        rowTemplate = StringUtils.removeEnd(rowTemplate, ",");
 
         StringBuffer rows = new StringBuffer();
         List<Object> collectionObjects = ObjectPropertyUtils.getPropertyValue(model, bindingInfo.getBindingPath());
@@ -349,17 +353,30 @@ public class LightTable extends Group implements DataBinding {
                 itemIndex++;
             }
 
-            row = "<tr>" + row + "</tr>";
+            row = row.replace("\n", "");
+            row = row.replace("\r", "");
+            row = row.replace("\"", "\\\"");
+            row = "[" + row + "],";
 
             //special render property expression handling
             row = evaluateRenderExpressions(row, i, model, expandedContext, expressionEvaluatorService);
 
             //append row
-            rows.append("\n" + row);
+            rows.append(row);
             i++;
         }
 
-        return rows.toString();
+        // construct aaData option to set data in dataTable options (speed enhancement)
+        String aaData = StringUtils.removeEnd(rows.toString(), ",");
+        aaData = "[" + aaData  + "]";
+        aaData = aaData.replace(QUOTE_TOKEN, "\"");
+
+        //set the aaData option on datatable for faster rendering
+        richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.AA_DATA, aaData);
+
+        //make sure deferred rendering is forced whether set or not
+        richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.DEFER_RENDER,
+                UifConstants.TableToolsValues.TRUE);
     }
 
     /**

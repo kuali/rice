@@ -326,6 +326,7 @@ function getLabel(id) {
  * they handle this during the setupPage call
  */
 function runHiddenScripts(id, isSelector, skipValidationBubbling) {
+    profile(true, "run-scripts:" + id);
     if (id) {
 
         var selector = "#" + id;
@@ -356,6 +357,8 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         //reinitialize BubblePopup
         initBubblePopups();
     }
+
+    profile(false, "run-scripts:" + id);
 }
 
 /**
@@ -896,7 +899,7 @@ function uppercaseValue(controlId) {
  * @param testingText text to be printed with this profile
  */
 function profile(start, testingText) {
-    if (profilingOn) {
+    if (profilingOn && window.console && window.console.time && window.console.profile) {
         if (start) {
             console.time(testingText);
             console.profile(testingText);
@@ -916,7 +919,7 @@ function profile(start, testingText) {
  * @param testingText text to be printed out with time results
  */
 function time(start, testingText) {
-    if (profilingOn) {
+    if (profilingOn && window.console && window.console.time) {
         if (start) {
             console.time(testingText);
         }

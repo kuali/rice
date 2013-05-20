@@ -759,6 +759,14 @@ function createTable(tableId, additionalOptions, groupingOptions) {
 
         var oTable = table.dataTable(options);
 
+        //make sure scripts are run after table renders (must be done here for deferred rendering)
+        runHiddenScripts(tableId, false, true);
+
+        //insure scripts (if any) are run on each draw, fixes bug with scripts lost when paging after a refresh
+        jQuery(oTable).on("dataTables.tableDraw", function (){
+            runHiddenScripts(tableId, false, true);
+        });
+
         //handle row details related functionality setup
         if (detailsOpen != undefined) {
             jQuery(oTable).on("dataTables.tableDraw", function () {

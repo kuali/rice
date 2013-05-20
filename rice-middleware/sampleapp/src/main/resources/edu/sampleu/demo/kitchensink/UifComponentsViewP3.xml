@@ -51,7 +51,10 @@
     <property name="disclosure.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field A" p:propertyName="field6">
+        <bean parent="Uif-InputField-LabelTop" p:label="Field A" p:propertyName="booleanField">
+          <property name="control">
+            <bean parent="Uif-CheckboxControl"/>
+          </property>
           <property name="dependencyConstraints">
             <list>
               <bean parent="PrerequisiteConstraint" p:propertyName="field7"/>
@@ -59,11 +62,15 @@
             </list>
           </property>
         </bean>
-        <bean parent="GenericTextField" p:label="Field B" p:propertyName="field7" />
+        <bean parent="GenericTextField" p:label="Field B" p:propertyName="field7">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="@{!booleanField}"/>
+          </property>
+        </bean>
         <bean parent="GenericTextField" p:label="Field C" p:propertyName="field8">
           <property name="dependencyConstraints">
             <list>
-              <bean parent="PrerequisiteConstraint" p:propertyName="field6"/>
+              <bean parent="PrerequisiteConstraint" p:propertyName="booleanField"/>
             </list>
           </property>
         </bean>

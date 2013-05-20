@@ -206,6 +206,7 @@ public class ExpressionUtils {
         }
 
         List<String> removeControlNames = new ArrayList<String>();
+        List<String> addControlNames = new ArrayList<String>();
         //convert property names to use coerceValue function and convert arrays to js arrays
         for (String propertyName : controlNames) {
             //array definitions are caught in controlNames because of the nature of the parse - convert them and remove
@@ -217,10 +218,21 @@ public class ExpressionUtils {
                 continue;
             }
 
-            conditionJs = conditionJs.replace(propertyName, "coerceValue(\"" + propertyName + "\")");
+            //handle not
+            if (propertyName.startsWith("!")){
+                String actualPropertyName = StringUtils.removeStart(propertyName, "!");
+                conditionJs = conditionJs.replace(propertyName,
+                        "!coerceValue(\"" + actualPropertyName + "\")");
+                removeControlNames.add(propertyName);
+                addControlNames.add(actualPropertyName);
+            }
+            else{
+                conditionJs = conditionJs.replace(propertyName, "coerceValue(\"" + propertyName + "\")");
+            }
         }
 
         controlNames.removeAll(removeControlNames);
+        controlNames.addAll(addControlNames);
 
         return conditionJs;
     }
@@ -253,6 +265,7 @@ public class ExpressionUtils {
                     || stack.equalsIgnoreCase("and")
                     || stack.equalsIgnoreCase("or")
                     || stack.contains("#empty")
+                    || stack.equals("!")
                     || stack.contains("#emptyList")
                     || stack.contains("#listContains")
                     || stack.startsWith("'")

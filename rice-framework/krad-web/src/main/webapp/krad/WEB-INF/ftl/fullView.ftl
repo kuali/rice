@@ -77,8 +77,10 @@
 
         <#-- set focus and perform jump to -->
         <#if KualiForm.view.currentPage?has_content>
-            <@krad.script value="performFocusAndJumpTo(${KualiForm.view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
-                                          '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
+            <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
+                    performFocusAndJumpTo(${KualiForm.view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
+                        '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');
+                });" component=Component/>
         </#if>
 
     </div>

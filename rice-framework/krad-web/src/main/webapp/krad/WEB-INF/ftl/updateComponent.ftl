@@ -29,7 +29,9 @@
         <@krad.script value="${KualiForm.growlScript!}" component=Component/>
 
         <#-- set focus if configured but do not perform jump -->
-        <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, false, false, '${KualiForm.focusId!}',
-                             '', '');" component=Component/>
+        <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
+                    performFocusAndJumpTo(${view.currentPage.autoFocus?string}, false, false, '${KualiForm.focusId!}',
+                        '', '');
+                });" component=Component/>
     </div>
 </html>

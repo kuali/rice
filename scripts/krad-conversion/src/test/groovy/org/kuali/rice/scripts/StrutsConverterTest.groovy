@@ -44,7 +44,7 @@ class StrutsConverterTest {
     void testBuildController() {
         def expectedFile = new File(strutsTestDir + "SampleController.java")
         def expectedText = expectedFile.text
-        def controllerBinding = ["header": "/** test **/",
+        def controllerBinding = ["header": null,
                 "author": "rice",
                 "package": "org.kuali.rice.test",
                 "className": "SampleController",

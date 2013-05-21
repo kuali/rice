@@ -815,7 +815,7 @@
         <para>This screen print shows the point on a Service Registry page where KSB displays a
             notation that there are no published temporary services and the beginning of the
                 <emphasis role="bold">All Registry Services</emphasis> table:</para>
-        <figure><title>Service Reigstery Results</title>
+        <figure><title>Service Registry Results</title>
             <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/service_registry_bottom.png"/>
@@ -823,7 +823,7 @@
             </mediaobject>
         </figure>
         <para>Please note, you may have permissions that allow you to click on a row's Endpoint 
-            URL to view the WSDL fiels assoicated with the given service.  In Internet Explorer or
+            URL to view the WSDL fields associated with the given service.  In Internet Explorer or
             Firefox, this WSDL will be displayed normally in a separate window.  In Google Chrome or
             Safari, however, you will need to click the link then right click to view the frame source
             to see the WSDL due to current restricts in Chrome and Safari.</para>

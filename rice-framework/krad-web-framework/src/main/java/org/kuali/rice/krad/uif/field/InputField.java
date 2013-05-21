@@ -128,6 +128,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     // widgets
     private QuickFinder quickfinder;
     private Suggest suggest;
+    private boolean widgetInputOnly;
 
     public InputField() {
         super();
@@ -1185,6 +1186,27 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
                 && quickfinder.isRender()
                 && quickfinder.getQuickfinderAction() != null
                 && quickfinder.getQuickfinderAction().isRender());
+    }
+
+    /**
+     * Indicates indicates whether the field can only be updated through a widget.
+     *
+     * When widgetInputOnly the inputField is set to readOnly but widgets are still rendered and the value can be
+     * changed through via widgets.
+     *
+     * @return true if only widget input is allowed, false otherwise
+     */
+    @BeanTagAttribute(name = "widgetInputOnly")
+    public boolean isWidgetInputOnly() {
+        return this.widgetInputOnly;
+    }
+
+    /**
+     * Setter for the widget input only indicator
+     * @param widgetInputOnly
+     */
+    public void setWidgetInputOnly(boolean widgetInputOnly) {
+        this.widgetInputOnly = widgetInputOnly;
     }
 
     /**

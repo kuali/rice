@@ -106,7 +106,13 @@ select[multiple="multiple"] option:hover {
     background: none repeat scroll 0 0 #ECFCEB;
 }
 
-input[readonly], input[disabled], textarea[disabled], select[disabled] {
+input[readonly] {
+    background-color: #eeeeee;
+    color: #999;
+    border: 1px solid #AAAAAA;
+}
+
+input[disabled], textarea[disabled], select[disabled] {
     background-color: #dddddd;
     color: #999;
     border: 1px solid #AAAAAA;

@@ -251,7 +251,7 @@ public class CloneUtils {
     }
 
     public static Field[] getFields(Class<?> c, boolean includeStatic, boolean includeTransient) {
-        String cacheKey = c.getCanonicalName() + ":" + includeStatic;
+        String cacheKey = c.getName() + ":" + includeStatic;
         Field[] array = fieldCache.get(cacheKey);
 
         if (array == null) {
@@ -296,7 +296,7 @@ public class CloneUtils {
             return null;
         }
 
-        String key = object.getClass().getCanonicalName() + "." + fieldName;
+        String key = object.getClass().getName() + "." + fieldName;
         Field field = internalFields.get(key);
         if (field == null) {
             Field[] fields = getFields(object.getClass(), false);

@@ -52,6 +52,8 @@
                               p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Lab-NativeAutocomplete-DisableForm"/>
                         <bean parent="Uif-Link" p:linkText="Native Autocomplete Field Disabled" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Lab-NativeAutocomplete-DisableField"/>
+                        <bean parent="Uif-Link" p:linkText="Performance Medium" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-PerformanceMedium"/>
                       </list>
                   </property>
               </bean>

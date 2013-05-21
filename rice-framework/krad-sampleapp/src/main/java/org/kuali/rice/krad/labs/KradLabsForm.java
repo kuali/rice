@@ -104,6 +104,9 @@ public class KradLabsForm extends UifFormBase {
     private List<UITestObject> collection4 = new ArrayList<UITestObject>();
     private List<UITestObject> collection5 = new ArrayList<UITestObject>();
 
+    private List<UITestObject> mediumCollection1 = new ArrayList<UITestObject>();
+    private List<UITestObject> mediumCollection2 = new ArrayList<UITestObject>();
+
     private List<UIInactivatableTestObject> inactivatableCollection = new ArrayList<UIInactivatableTestObject>();
     private List<UIInactivatableTestObject> inactivatableCollection2 = new ArrayList<UIInactivatableTestObject>();
 
@@ -131,6 +134,30 @@ public class KradLabsForm extends UifFormBase {
         getCollection1().add(new UITestObject("1", "5", "5", "4"));
         getCollection1().add(new UITestObject("5", "5", "5", "5"));
         getCollection1().add(new UITestObject("5", "7", "3", "1"));
+
+        for (int i = 0; i < 10; i++) {
+            List<UITestObject> mediumSubCollection1 = new ArrayList<UITestObject>();
+            List<UITestObject> mediumSubCollection2 = new ArrayList<UITestObject>();
+
+            for (int j = 0; j < 3; j++) {
+                mediumSubCollection1.add(new UITestObject("ab extra", "ab extra", "ab extra", "ab extra", "ab extra",
+                        "ab extra", "ab extra", "ab extra"));
+
+                mediumSubCollection2.add(new UITestObject("ab extra", "ab extra", "ab extra", "ab extra", "ab extra",
+                        "ab extra", "ab extra", "ab extra"));
+            }
+
+            UITestObject line = new UITestObject("ab extra", "ab extra", "ab extra", "ab extra", "ab extra",
+                                "ab extra", "ab extra", "ab extra");
+            line.setSubList(mediumSubCollection1);
+
+            UITestObject line2 = new UITestObject("ab extra", "ab extra", "ab extra", "ab extra", "ab extra",
+                                "ab extra", "ab extra", "ab extra");
+            line2.setSubList(mediumSubCollection2);
+
+            mediumCollection1.add(line);
+            mediumCollection2.add(line2);
+        }
 
         collection1_2.addAll(collection1);
         collection1_3.addAll(collection1);
@@ -822,4 +849,19 @@ public class KradLabsForm extends UifFormBase {
         this.sessionTimeoutInterval = interval;
     }
 
+    public List<UITestObject> getMediumCollection1() {
+        return mediumCollection1;
+    }
+
+    public void setMediumCollection1(List<UITestObject> mediumCollection1) {
+        this.mediumCollection1 = mediumCollection1;
+    }
+
+    public List<UITestObject> getMediumCollection2() {
+        return mediumCollection2;
+    }
+
+    public void setMediumCollection2(List<UITestObject> mediumCollection2) {
+        this.mediumCollection2 = mediumCollection2;
+    }
 }

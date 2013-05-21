@@ -515,6 +515,18 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
             processing - if it was set that content would be used instead!</para>
         </tip></para>
     </section>
+    <section>
+      <title>Additional Display Properties for Input Fields with Widgets</title>
+      <para>For certain widgets  (i.e. quickfinder, date picker, spinner, etc) a user can interact
+        through the widget or enter a value directly into the input field. In some cases it may be
+        desirable to allow changes to these widgets through its controls. In order to do so set the
+          <emphasis role="keyword">widgetInputOnly</emphasis> property of the InputField to true.
+        This will cause the value of the widget to become read only while the widget controls are
+        fully functional.</para>
+      <para>The following would put a dash with spaces between each item of the
+        list:<programlisting>&lt;bean parent="Uif-InputField" p:propertyName="author" p:widgetInputOnly="true">
+...</programlisting></para>
+    </section>
     <section role="NotInToc">
       <title>Recap</title>
       <para>
@@ -577,8 +589,13 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
           <listitem>
             <para>In some cases when the state is read-only we might need to display the value for
               another property instead of the field's property, or display the value in addition to
-              it. This is done by using the <emphasis role="keyword">readOnlyDisplayReplacementPropertyName</emphasis> and <emphasis role="keyword">readOnlyDisplaySuffixPropertyName</emphasis>
-                            properties</para>
+              it. This is done by using the <emphasis role="keyword"
+                >readOnlyDisplayReplacementPropertyName</emphasis> and <emphasis role="keyword"
+                >readOnlyDisplaySuffixPropertyName</emphasis> properties</para>
+          </listitem>
+          <listitem>
+            <para>User interaction can by restricted to the widget controls by setting the <emphasis
+                role="keyword">widgetInputOnly</emphasis> property</para>
           </listitem>
         </itemizedlist>
             </para>

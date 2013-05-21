@@ -29,7 +29,7 @@
         <#local attributes='${attributes} disabled="disabled"'/>
     </#if>
 
-    <#if control.readOnly>
+    <#if control.readOnly  || field.widgetInputOnly!false>
         <#local attributes='${attributes} readonly="readonly"'/>
     </#if>
 

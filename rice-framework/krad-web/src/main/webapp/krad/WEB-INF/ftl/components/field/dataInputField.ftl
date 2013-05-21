@@ -28,8 +28,10 @@
                     <legend style="display: none">${field.label!}</legend>
             </#if>
 
-            <#-- render field value (if read-only) or control (if edit) -->
-            <#if readOnly>
+            <#local quickfinderInputOnly=(field.widgetInputOnly!false) && (field.quickfinder.dataObjectClassName?has_content) />
+
+            <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
+            <#if readOnly || quickfinderInputOnly>
 
                 <#local readOnlyDisplay>
                     <#-- if it is a textarea add a pre tag to preserve formatting-->

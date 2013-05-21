@@ -84,7 +84,7 @@
 
     <#-- alternate ajax placeholder setup -->
     <#if (component.progressiveRenderViaAJAX && !(component.progressiveRender!?length > 0))
-    || (!component.render && component.disclosedByAction)>
+    || (!component.render && (component.disclosedByAction || component.refreshedByAction))>
         <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
     </#if>
 

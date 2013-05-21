@@ -87,9 +87,13 @@ public class DummyLoginFilter implements Filter {
         if (StringUtils.isNotBlank(request.getParameter("__login_user"))) {
             performLoginAttempt(request, response);
         } else {
-            // allow ajax calls & form submit from login screen
-            if (StringUtils.equals(request.getPathInfo(),"/listener")
-                    || StringUtils.equals(request.getPathInfo(),"/login")) {
+            // ignore ajax calls from login screen
+            if (StringUtils.equals(request.getPathInfo(),"/listener")) {
+               return;
+            }
+
+            // allow redirect and form submit from login screen
+            if (StringUtils.equals(request.getPathInfo(),"/login")) {
                 chain.doFilter(request, response);
             } else {
                 // no session has been established and this is not a login form submission, so redirect to login page

@@ -2385,6 +2385,7 @@ function setMultivalueLookupReturnButton(selectControl) {
     var checked = jQuery('input.kr-select-line:checked' ).length;
     if (checked > 0) {
         jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).removeAttr('disabled');
+        jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).removeClass('disabled');
     } else {
         jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).attr('disabled', 'disabled');
     }

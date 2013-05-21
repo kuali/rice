@@ -17,6 +17,7 @@ package org.kuali.rice.scripts
 
 import groovy.util.logging.Log
 import org.apache.commons.lang.ClassUtils
+import org.apache.commons.lang.StringUtils
 
 /**
  * Converts kns form data into relevant uif form data
@@ -79,11 +80,14 @@ class FormConverter {
         // for each form, build krad form
         log.finer "generating spring krad forms (" + formBeans.size() + ")"
         (0..<formBeans.size()).each {
-            def formClassFileName = ClassUtils.getShortClassName(formBeans[it].@type)
-            def formFileList = ConversionUtils.findFilesByName(formSearchDir, formClassFileName)
+            def formClassName = ClassUtils.getShortClassName(formBeans[it].@type)
+            def formFileList = []
+            if (!StringUtils.isBlank(formClassName)) {
+                formFileList = ConversionUtils.findFilesByName(formSearchDir, formClassName + ".java")
+            }
 
             if (formFileList.size() > 1) {
-                log.warning("form list for " + formClassFileName + " returns more than 1 result [" + formFileList.size() + "]")
+                log.warning("form list for " + formClassName + " returns more than 1 result [" + formFileList.size() + "]")
             }
             if (formFileList.size() > 0) {
                 // gather relevant data  and build form file
@@ -120,7 +124,7 @@ class FormConverter {
 
         // build file
         def formFileName = formBinding.className + ".java"
-        def formFilePath = outputPaths.dir + outputPaths.src.java + ConversionUtils.getRelativePathFromPackage(formBinding.package)
+        def formFilePath = outputDir + outputPaths.src.java + ConversionUtils.getRelativePathFromPackage(formBinding.package)
         ConversionUtils.buildFile(formFilePath, formFileName, formText)
         log.info "generating new form file: " + formFilePath + "/" + formFileName
     }

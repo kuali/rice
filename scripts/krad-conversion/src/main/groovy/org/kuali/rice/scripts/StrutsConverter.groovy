@@ -24,6 +24,7 @@ package org.kuali.rice.scripts
 
 import groovy.util.logging.Log
 import org.apache.commons.lang.ClassUtils
+import org.apache.commons.lang.StringUtils
 
 @Log
 class StrutsConverter {
@@ -102,12 +103,15 @@ class StrutsConverter {
         formConverter.generateUifForms(formBeans, javaClassSearchDirPath)
 
         // for each action
-        log.finer "generating action related components (" + actionBeans.size() + ")"
+        log.info "generating action related components (" + actionBeans.size() + ")"
         (0..<actionBeans.size()).each {
             // extracts relevant data from form bean
             def actionBean = actionBeans[it]
-            def actionClassFileName = ClassUtils.getShortClassName(actionBean.@type)
-            def actionClassFiles = ConversionUtils.findFilesByName(javaClassSearchDirPath, actionClassFileName)
+            def actionClassName = ClassUtils.getShortClassName(actionBean.@type)
+            def actionClassFiles = []
+            if (!StringUtils.isBlank(actionClassName)) {
+                actionClassFiles = ConversionUtils.findFilesByName(javaClassSearchDirPath, actionClassName + ".java")
+            }
 
             if (actionClassFiles.size() > 0) {
                 // gather relevant data to build controller

@@ -182,6 +182,13 @@
     </property>
   </bean>
 
+  <bean id="Uif-ActionLinkField" parent="Uif-ActionLinkField-parentBean"/>
+  <bean id="Uif-ActionLinkField-parentBean" abstract="true" parent="Uif-ActionField" scope="prototype">
+    <property name="action">
+      <bean parent="Uif-ActionLink"/>
+    </property>
+  </bean>
+
   <bean id="Uif-MessageField" parent="Uif-MessageField-parentBean"/>
   <bean id="Uif-MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
         parent="Uif-FieldBase-withLabel" scope="prototype">

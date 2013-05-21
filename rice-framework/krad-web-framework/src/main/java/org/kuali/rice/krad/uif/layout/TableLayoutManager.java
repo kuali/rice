@@ -320,41 +320,36 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                         cInfo.setColumnNumber(i);
                     }
                 }
+
                 this.getColumnsToCalculate().add(cInfo.getColumnNumber().toString());
             } else {
                 throw new RuntimeException("TableLayoutManager(" + container.getId() + "->" + this.getId() +
                         ") ColumnCalculationInfo MUST have a propertyName set");
             }
 
-            FieldGroup calculationFieldGroup;
-            List<Component> groupItems;
-            Component columnComponent = footerCalculationComponents.get(cInfo.getColumnNumber());
-
-            //Create a new field group to hold the totals fields
-            calculationFieldGroup = ComponentFactory.getFieldGroup();
+            // create a new field group to hold the totals fields
+            FieldGroup calculationFieldGroup = ComponentFactory.getFieldGroup();
             calculationFieldGroup.addDataAttribute(UifConstants.DataAttributes.ROLE, "totalsBlock");
-            groupItems = new ArrayList<Component>();
+
+            List<Component> calculationFieldGroupItems = new ArrayList<Component>();
 
             //setup page total field and add it to footer's group for this column
             if (cInfo.isShowPageTotal()) {
                 Field pageTotalDataField = setupTotalField(cInfo.getPageTotalField(), cInfo, this.isShowPageTotal(),
                         this.getPageTotalLabel(), "pageTotal", leftLabelColumnIndex);
-                groupItems.add(pageTotalDataField);
+                calculationFieldGroupItems.add(pageTotalDataField);
             }
 
             //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
                 Field totalDataField = setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(),
                         this.getTotalLabel(), "total", leftLabelColumnIndex);
-                /*                if(((MessageField)totalDataField).getMessage().getMessageText().contains("@{")){
-                    ((MessageField)totalDataField).getMessage().getPropertyExpressions().put("messageText",
-                            ((MessageField)totalDataField).getMessage().getMessageText());
-                }*/
+
                 if (!cInfo.isRecalculateTotalClientside()) {
                     totalDataField.addDataAttribute(UifConstants.DataAttributes.SKIP_TOTAL, "true");
                 }
 
-                groupItems.add(totalDataField);
+                calculationFieldGroupItems.add(totalDataField);
             }
 
             //setup total field and add it to footer's group for this column
@@ -365,7 +360,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                         leftLabelColumnIndex);
                 groupTotalDataField.setId(container.getId() + "_gTotal" + cInfo.getColumnNumber());
                 groupTotalDataField.setStyle("display: none;");
-                groupItems.add(groupTotalDataField);
+
+                calculationFieldGroupItems.add(groupTotalDataField);
 
                 if (this.isRenderOnlyLeftTotalLabels() && !this.isShowGroupTotal()) {
                     generateGroupTotalRows = false;
@@ -374,7 +370,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
 
-            calculationFieldGroup.setItems(groupItems);
+            calculationFieldGroup.setItems(calculationFieldGroupItems);
+
             view.assignComponentIds(calculationFieldGroup);
 
             //Determine if there is already a fieldGroup present for this column's footer
@@ -384,16 +381,20 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             if (component != null && component instanceof FieldGroup) {
                 Group verticalComboCalcGroup = ComponentFactory.getVerticalBoxGroup();
                 view.assignComponentIds(verticalComboCalcGroup);
+
                 List<Component> comboGroupItems = new ArrayList<Component>();
                 comboGroupItems.add(component);
                 comboGroupItems.add(calculationFieldGroup);
                 verticalComboCalcGroup.setItems(comboGroupItems);
+
                 footerCalculationComponents.set(cInfo.getColumnNumber(), verticalComboCalcGroup);
             } else if (component != null && component instanceof Group) {
                 List<Component> comboGroupItems = new ArrayList<Component>();
                 comboGroupItems.addAll(((Group) component).getItems());
                 comboGroupItems.add(calculationFieldGroup);
+
                 ((Group) component).setItems(comboGroupItems);
+
                 footerCalculationComponents.set(cInfo.getColumnNumber(), component);
             } else {
                 footerCalculationComponents.set(cInfo.getColumnNumber(), calculationFieldGroup);
@@ -440,7 +441,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 component.performFinalize(view, model, container);
             }
         }
-
     }
 
     /**

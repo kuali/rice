@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.util;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.view.View;
@@ -56,9 +55,8 @@ public class BreadcrumbItem extends ContentElementBase {
             context.putAll(view.getContext());
 
             ExpressionUtils.populatePropertyExpressionsFromGraph(url, false);
-            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, url, model,
+            view.getViewHelperService().getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, url,
                     context);
-
         }
     }
 

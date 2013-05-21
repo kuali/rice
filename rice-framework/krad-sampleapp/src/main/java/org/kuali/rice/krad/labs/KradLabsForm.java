@@ -135,11 +135,11 @@ public class KradLabsForm extends UifFormBase {
         getCollection1().add(new UITestObject("5", "5", "5", "5"));
         getCollection1().add(new UITestObject("5", "7", "3", "1"));
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             List<UITestObject> mediumSubCollection1 = new ArrayList<UITestObject>();
             List<UITestObject> mediumSubCollection2 = new ArrayList<UITestObject>();
 
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 5; j++) {
                 mediumSubCollection1.add(new UITestObject("ab extra", "ab extra", "ab extra", "ab extra", "ab extra",
                         "ab extra", "ab extra", "ab extra"));
 

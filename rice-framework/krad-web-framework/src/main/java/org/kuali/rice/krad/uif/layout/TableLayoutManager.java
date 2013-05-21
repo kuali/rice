@@ -18,9 +18,7 @@ package org.kuali.rice.krad.uif.layout;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
@@ -36,7 +34,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -498,18 +496,19 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         // since expressions are not evaluated on child components yet, we need to evaluate any properties
         // we are going to read for building the table
-        ExpressionEvaluatorService expressionEvaluatorService = KRADServiceLocatorWeb.getExpressionEvaluatorService();
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
         for (Field lineField : lineFields) {
             lineField.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             lineField.pushAllToContext(view.getViewHelperService().getCommonContext(view, lineField));
 
-            expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
+            expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
                     UifPropertyPaths.ROW_SPAN, true);
-            expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
+            expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
                     UifPropertyPaths.COL_SPAN, true);
-            expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
+            expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
                     UifPropertyPaths.REQUIRED, true);
-            expressionEvaluatorService.evaluatePropertyExpression(view, model, lineField.getContext(), lineField,
+            expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
                     UifPropertyPaths.READ_ONLY, true);
         }
 

@@ -39,7 +39,7 @@
         </table>
 
         <#-- build the rows and add the content to aaData in templateOptions -->
-        ${group.buildRows(row, KualiForm)}
+        ${group.buildRows(view, row, KualiForm)}
 
         <@krad.script value="createTable('${group.id}_lightTable', ${group.richTable.templateOptionsJSString}); "/>
     </@krad.groupWrap>

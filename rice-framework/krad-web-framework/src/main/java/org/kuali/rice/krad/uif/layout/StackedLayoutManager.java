@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -178,7 +177,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
                     ((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
-            headerText = buildLineHeaderText(modelCollection.get(lineIndex), lineGroup);
+            headerText = buildLineHeaderText(view, modelCollection.get(lineIndex), lineGroup);
         }
 
         // don't set header if text is blank (could already be set by other means)
@@ -222,13 +221,14 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * property expressions map to set the title for the line group (which will have the item context variable set)
      * </p>
      *
+     * @param view view instance the collection belongs to, used to get the expression evaluator
      * @param line Collection line containing data
      * @param lineGroup Group instance for rendering the line and whose title should be built
      * @return header text for line
      */
-    protected String buildLineHeaderText(Object line, Group lineGroup) {
+    protected String buildLineHeaderText(View view, Object line, Group lineGroup) {
         // check for expression on summary title
-        if (KRADServiceLocatorWeb.getExpressionEvaluatorService().containsElPlaceholder(summaryTitle)) {
+        if (view.getViewHelperService().getExpressionEvaluator().containsElPlaceholder(summaryTitle)) {
             lineGroup.getPropertyExpressions().put(UifPropertyPaths.HEADER_TEXT, summaryTitle);
             return null;
         }

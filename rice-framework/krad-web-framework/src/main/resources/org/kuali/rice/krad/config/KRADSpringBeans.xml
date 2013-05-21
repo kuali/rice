@@ -1000,9 +1000,6 @@
     </property>
   </bean>
 
-  <bean id="expressionEvaluatorService" class="org.kuali.rice.krad.uif.service.impl.ExpressionEvaluatorServiceImpl">
-  </bean>
-
   <bean id="inquiryViewTypeService" class="org.kuali.rice.krad.uif.service.impl.InquiryViewTypeServiceImpl"/>
 
   <bean id="lookupViewTypeService" class="org.kuali.rice.krad.uif.service.impl.LookupViewTypeServiceImpl"/>

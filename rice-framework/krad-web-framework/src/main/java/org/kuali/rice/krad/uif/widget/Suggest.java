@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.widget;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
@@ -73,8 +72,8 @@ public class Suggest extends WidgetBase {
         super.performApplyModel(view, model, parent);
 
         if (suggestQuery != null) {
-            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, suggestQuery,
-                    model, getContext());
+            view.getViewHelperService().getExpressionEvaluator().evaluateExpressionsOnConfigurable(view,
+                    suggestQuery, getContext());
         }
     }
 

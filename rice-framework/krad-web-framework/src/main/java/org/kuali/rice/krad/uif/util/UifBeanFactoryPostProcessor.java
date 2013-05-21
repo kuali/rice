@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
@@ -576,7 +576,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
         for (Object elem : setVal) {
             if (hasExpression(elem)) {
                 String strValue = getStringValue(elem);
-                propertyExpressions.put(propertyName + ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR,
+                propertyExpressions.put(propertyName + ExpressionEvaluator.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR,
                         strValue);
             } else {
                 // process set value bean definition as a top level bean
@@ -603,7 +603,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             Map<String, String> adjustedParentExpressions = new HashMap<String, String>();
             for (Map.Entry<String, String> parentExpression : parentPropertyExpressions.entrySet()) {
                 if (!parentExpression.getKey().startsWith(
-                        propertyName + ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR)) {
+                        propertyName + ExpressionEvaluator.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR)) {
                     adjustedParentExpressions.put(parentExpression.getKey(), parentExpression.getValue());
                 }
             }

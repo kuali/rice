@@ -283,12 +283,13 @@ public class LookupView extends FormView {
      * Helper method to do any lookup specific changes to the criteria fields
      */
     private void setupLookupCriteriaFields(View view, Object model) {
-
-        int rangeIndex = 0;
         HashMap<Integer, Component> dateRangeFieldMap = new HashMap<Integer, Component>();
 
-        for (Component criteriaField : criteriaGroup.getItems()) {
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
 
+        int rangeIndex = 0;
+        for (Component criteriaField : criteriaGroup.getItems()) {
             // Set the max length on the controls to allow for wildcards
             Control control = ((InputField)criteriaField).getControl();
             if (control instanceof TextControl) {
@@ -303,22 +304,25 @@ public class LookupView extends FormView {
                 rangeFieldGroup.setLabel(((LookupInputField)criteriaField).getLabel());
 
                 // Evaluate and set the required property and reset the required message on the 'to' label
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluatePropertyExpression(view, model,
-                        criteriaField.getContext(), criteriaField, "required", true);
+                expressionEvaluator.evaluatePropertyExpression(view, criteriaField.getContext(), criteriaField,
+                        "required", true);
                 rangeFieldGroup.setRequired(criteriaField.getRequired());
                 ((LookupInputField) criteriaField).getFieldLabel().setRequiredMessage(new Message());
 
                 // Evaluate and set the render property
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluatePropertyExpression(view, model,
-                        criteriaField.getContext(), criteriaField, UifPropertyPaths.RENDER, true);
+                expressionEvaluator.evaluatePropertyExpression(view, criteriaField.getContext(), criteriaField,
+                        UifPropertyPaths.RENDER, true);
                 rangeFieldGroup.setRender(criteriaField.isRender());
 
                 List<Component> fieldGroupItems = new ArrayList<Component>();
 
                 // Create a new from date field
-                LookupInputField fromDate = (LookupInputField)ComponentUtils.copy(criteriaField, KRADConstants.LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
-                fromDate.getBindingInfo().setBindingName(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
-                fromDate.setPropertyName(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
+                LookupInputField fromDate = (LookupInputField) ComponentUtils.copy(criteriaField,
+                        KRADConstants.LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
+                fromDate.getBindingInfo().setBindingName(
+                        KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
+                fromDate.setPropertyName(
+                        KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
 
                 // Set the criteria fields labels
                 fromDate.setLabel("");
@@ -334,6 +338,7 @@ public class LookupView extends FormView {
                 // Add fieldgroup to map with index as key
                 dateRangeFieldMap.put(rangeIndex, rangeFieldGroup);
             }
+
             rangeIndex++;
         }
 

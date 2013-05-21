@@ -17,9 +17,8 @@ package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -52,6 +51,9 @@ public class ELCollectionFilter implements CollectionFilter {
         List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
                 collectionGroup.getBindingInfo().getBindingPath());
 
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
+
         // iterate through and add index that pass the expression
         List<Integer> showIndexes = new ArrayList<Integer>();
 
@@ -61,8 +63,7 @@ public class ELCollectionFilter implements CollectionFilter {
             context.put(UifConstants.ContextVariableNames.LINE, line);
             context.put(UifConstants.ContextVariableNames.INDEX, lineIndex);
 
-            Boolean conditionPasses = (Boolean) getExpressionEvaluatorService().evaluateExpression(model, context,
-                    expression);
+            Boolean conditionPasses = (Boolean) expressionEvaluator.evaluateExpression(context, expression);
             if (conditionPasses) {
                 showIndexes.add(lineIndex);
             }
@@ -97,7 +98,4 @@ public class ELCollectionFilter implements CollectionFilter {
         this.expression = expression;
     }
 
-    public ExpressionEvaluatorService getExpressionEvaluatorService() {
-        return KRADServiceLocatorWeb.getExpressionEvaluatorService();
-    }
 }

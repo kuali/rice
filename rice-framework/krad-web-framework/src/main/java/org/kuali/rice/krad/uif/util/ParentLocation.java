@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.io.Serializable;
@@ -72,7 +73,8 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
         }
 
         //evaluate expressions on relevant content before comparisons
-        this.handleExpressions(view, currentModel, currentContext);
+        this.handleExpressions(view, currentModel, currentContext,
+                view.getViewHelperService().getExpressionEvaluator());
 
         //set url values into breadcrumb objects
         if (StringUtils.isNotBlank(parentViewUrl.getOriginalHref()) || (StringUtils.isNotBlank(
@@ -144,7 +146,8 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
                             currentModel, currentContext));
         }
 
-        handleLabelExpressions(parentView, currentModel, currentContext);
+        handleLabelExpressions(parentView, currentModel, currentContext,
+                currentView.getViewHelperService().getExpressionEvaluator());
 
         //label automation, if parent has a label for its breadcrumb and one is not set here use that value
         //it is assumed that if the label contains a SpringEL expression, those properties are available on the
@@ -181,8 +184,10 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      * @param parentView the parentView
      * @param currentModel the currentModel
      * @param currentContext the currentContext
+     * @param expressionEvaluator instance of expression evaluator for the current view
      */
-    private void handleLabelExpressions(View parentView, Object currentModel, Map<String, Object> currentContext) {
+    private void handleLabelExpressions(View parentView, Object currentModel, Map<String, Object> currentContext,
+            ExpressionEvaluator expressionEvaluator) {
         try {
             Header header = parentView.getHeader();
 
@@ -193,15 +198,14 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
                             parentView.getPropertyExpressions().get(UifConstants.ComponentProperties.HEADER_TEXT));
                 }
 
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(parentView,
-                        header, currentModel, currentContext);
+                expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, header, currentContext);
             }
 
             BreadcrumbItem breadcrumbItem = parentView.getBreadcrumbItem();
 
             if (breadcrumbItem != null) {
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(parentView,
-                        breadcrumbItem, currentModel, currentContext);
+                expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, breadcrumbItem,
+                        currentContext);
             }
 
             if (pageBreadcrumbItem != null && pageBreadcrumbItem.getUrl() != null && StringUtils.isNotBlank(
@@ -235,15 +239,15 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
                                 thePage.getPropertyExpressions().get(UifConstants.ComponentProperties.HEADER_TEXT));
                     }
 
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(parentView,
-                            pageHeader, currentModel, currentContext);
+                    expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, pageHeader,
+                            currentContext);
                 }
 
                 BreadcrumbItem pageBreadcrumb = thePage.getBreadcrumbItem();
 
                 if (pageBreadcrumb != null) {
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(parentView,
-                            pageBreadcrumb, currentModel, currentContext);
+                    expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, pageBreadcrumb,
+                            currentContext);
                 }
             }
         } catch (RuntimeException e) {
@@ -262,37 +266,35 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      * @param view the view
      * @param currentModel the current model
      * @param currentContext the current context
+     * @param expressionEvaluator instance of expression evaluator for the current view
      */
-    private void handleExpressions(View view, Object currentModel, Map<String, Object> currentContext) {
+    private void handleExpressions(View view, Object currentModel, Map<String, Object> currentContext,
+            ExpressionEvaluator expressionEvaluator) {
         try {
             //Evaluate view url/breadcrumb expressions
-            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
-                    viewBreadcrumbItem, currentModel, currentContext);
+            expressionEvaluator.evaluateExpressionsOnConfigurable(view, viewBreadcrumbItem, currentContext);
 
             if (viewBreadcrumbItem.getUrl() != null) {
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
-                        viewBreadcrumbItem.getUrl(), currentModel, currentContext);
+                expressionEvaluator.evaluateExpressionsOnConfigurable(view, viewBreadcrumbItem.getUrl(),
+                        currentContext);
             }
 
             if (parentViewUrl != null) {
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
-                        parentViewUrl, currentModel, currentContext);
+                expressionEvaluator.evaluateExpressionsOnConfigurable(view, parentViewUrl, currentContext);
             }
 
             //evaluate same for potential page properties
             if (pageBreadcrumbItem != null) {
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
-                        pageBreadcrumbItem, currentModel, currentContext);
+                expressionEvaluator.evaluateExpressionsOnConfigurable(view, pageBreadcrumbItem, currentContext);
 
                 if (pageBreadcrumbItem.getUrl() != null) {
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
-                            pageBreadcrumbItem.getUrl(), currentModel, currentContext);
+                    expressionEvaluator.evaluateExpressionsOnConfigurable(view, pageBreadcrumbItem.getUrl(),
+                            currentContext);
                 }
             }
 
             if (parentPageUrl != null) {
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
-                        parentPageUrl, currentModel, currentContext);
+                expressionEvaluator.evaluateExpressionsOnConfigurable(view, parentPageUrl, currentContext);
             }
         } catch (RuntimeException e) {
             throw new RuntimeException("There was likely a problem evaluating an expression in a parent view or page"

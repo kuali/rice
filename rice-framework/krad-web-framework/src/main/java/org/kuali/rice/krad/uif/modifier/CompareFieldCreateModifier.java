@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
@@ -30,6 +29,7 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.layout.GridLayoutManager;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -135,9 +135,11 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         context.putAll(view.getContext());
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
+
         for (ComparableInfo comparable : groupComparables) {
-            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, comparable,
-                    model, context);
+            expressionEvaluator.evaluateExpressionsOnConfigurable(view, comparable, context);
         }
 
         // generate compare header

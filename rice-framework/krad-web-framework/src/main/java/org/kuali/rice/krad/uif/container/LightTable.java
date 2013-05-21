@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -37,14 +36,13 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.uif.widget.Tooltip;
-import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -297,11 +295,12 @@ public class LightTable extends Group implements DataBinding {
      * Build the rows from the rowTemplate passed in.  This method uses regex to locate pieces of the row that need
      * to be replaced with row specific content per row.
      *
+     * @param view the view instance the table is being built within
      * @param rowTemplate the first row of the collection in html generated from the ftl
      * @param model the model
      * @return the full set of rows for the table in html(String) to be used by the calling ftl
      */
-    public void buildRows(String rowTemplate, UifFormBase model) {
+    public void buildRows(View view, String rowTemplate, UifFormBase model) {
         if (StringUtils.isBlank(rowTemplate)) {
             return;
         }
@@ -318,7 +317,8 @@ public class LightTable extends Group implements DataBinding {
         Pattern idPattern = Pattern.compile(ID_TOKEN + "(.*?)" + ID_TOKEN);
         Pattern expressionPattern = Pattern.compile(EXPRESSION_TOKEN + "(.*?)" + EXPRESSION_TOKEN);
 
-        ExpressionEvaluatorService expressionEvaluatorService = KRADServiceLocatorWeb.getExpressionEvaluatorService();
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
 
         int i = 0;
         for (Object obj : collectionObjects) {
@@ -348,7 +348,7 @@ public class LightTable extends Group implements DataBinding {
 
                 //evaluate expressions found by the pattern
                 row = evaluateAndReplaceExpressionValues(row, i, model, expandedContext, expressionPattern,
-                        expressionEvaluatorService);
+                        expressionEvaluator);
 
                 itemIndex++;
             }
@@ -359,7 +359,7 @@ public class LightTable extends Group implements DataBinding {
             row = "[" + row + "],";
 
             //special render property expression handling
-            row = evaluateRenderExpressions(row, i, model, expandedContext, expressionEvaluatorService);
+            row = evaluateRenderExpressions(row, i, model, expandedContext, expressionEvaluator);
 
             //append row
             rows.append(row);
@@ -387,12 +387,12 @@ public class LightTable extends Group implements DataBinding {
      * @param model the model
      * @param expandedContext the context to evaluate expressions against
      * @param expressionPattern the expression pattern used to find expression tokens for value replacement
-     * @param expressionEvaluatorService the expression service to use for evaluation
+     * @param expressionEvaluator the expression service to use for evaluation
      * @return the modified row
      */
-    private String evaluateAndReplaceExpressionValues(String row, int index, Object model,
+    protected String evaluateAndReplaceExpressionValues(String row, int index, Object model,
             Map<String, Object> expandedContext, Pattern expressionPattern,
-            ExpressionEvaluatorService expressionEvaluatorService) {
+            ExpressionEvaluator expressionEvaluator) {
 
         Matcher matcher = expressionPattern.matcher(row);
 
@@ -405,7 +405,7 @@ public class LightTable extends Group implements DataBinding {
                     this.getBindingInfo().getBindingPath() + "[" + index + "].");
 
             //get expression result
-            Object value = expressionEvaluatorService.evaluateExpressionTemplate(model, expandedContext, expression);
+            Object value = expressionEvaluator.evaluateExpressionTemplate(expandedContext, expression);
 
             if (value != null){
                 row = row.replace(matcher.group(), value.toString());
@@ -425,11 +425,11 @@ public class LightTable extends Group implements DataBinding {
      * @param index the line index
      * @param model the model
      * @param expandedContext the context to evaluate expressions against
-     * @param expressionEvaluatorService the expression service to use for evaluation
+     * @param expressionEvaluator the expression service to use for evaluation
      * @return the modified row
      */
-    private String evaluateRenderExpressions(String row, int index, Object model, Map<String, Object> expandedContext,
-            ExpressionEvaluatorService expressionEvaluatorService) {
+    protected String evaluateRenderExpressions(String row, int index, Object model, Map<String, Object> expandedContext,
+            ExpressionEvaluator expressionEvaluator) {
         for (String id : renderIdExpressionMap.keySet()) {
             String expression = renderIdExpressionMap.get(id);
 
@@ -438,7 +438,7 @@ public class LightTable extends Group implements DataBinding {
                     this.getBindingInfo().getBindingPath() + "[" + index + "].");
 
             //get expression result
-            Object value = expressionEvaluatorService.evaluateExpressionTemplate(model, expandedContext, expression);
+            Object value = expressionEvaluator.evaluateExpressionTemplate(expandedContext, expression);
 
             String wrap = A_TOKEN + RENDER + A_TOKEN + id + A_TOKEN;
 
@@ -464,7 +464,7 @@ public class LightTable extends Group implements DataBinding {
      * @param originalId the original id of the component item
      * @return the updated row
      */
-    private String handleDataFieldInRow(Component item, Object obj, String row, int index, String originalId) {
+    protected String handleDataFieldInRow(Component item, Object obj, String row, int index, String originalId) {
         if (!(item instanceof DataField)) {
             return row;
         }
@@ -516,7 +516,7 @@ public class LightTable extends Group implements DataBinding {
      * @param originalId the original id of the component item
      * @return the updated row
      */
-    private String handleInputFieldInRow(Component item, Object obj, String row, int index, String originalId) {
+    protected String handleInputFieldInRow(Component item, Object obj, String row, int index, String originalId) {
         if (!(item instanceof InputField) || ((InputField) item).getControl() == null) {
             return row;
         }

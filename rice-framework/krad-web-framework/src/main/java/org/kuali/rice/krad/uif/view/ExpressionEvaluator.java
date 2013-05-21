@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.service;
+package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
-import org.kuali.rice.krad.uif.view.View;
 
 import java.util.Map;
 
@@ -30,13 +29,25 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ExpressionEvaluatorService {
+public interface ExpressionEvaluator {
 
     /**
      * Indicator that can be added to a property name to indicate the expression result should be added to the
      * property (assumed to be a collection) instead of replaced
      */
     public static String EMBEDDED_PROPERTY_NAME_ADD_INDICATOR = ".add";
+
+    /**
+     * Initializes the expression context for the given expression context object
+     *
+     * <p>
+     * The object given here will form the default context for expression terms (terms without any
+     * variable prefix)
+     * </p>
+     *
+     * @param contextObject instance of an Object
+     */
+    public void initializeEvaluationContext(Object contextObject);
 
     /**
      * Evaluates any el expressions that are found as a string property value
@@ -59,16 +70,14 @@ public interface ExpressionEvaluatorService {
      * match occurs those property replacements are made
      * </p>
      *
-     * @param view - view instance being rendered
-     * @param expressionConfigurable - object whose properties should be checked for expressions
+     * @param view view instance being rendered
+     * @param expressionConfigurable object whose properties should be checked for expressions
      * and evaluated
-     * @param contextObject - context object for the expression evaluations
-     * @param evaluationParameters - map of parameters that may appear in expressions, the map
-     * key gives the parameter name that may appear in the
-     * expression, and the map value is the object that expression
+     * @param evaluationParameters map of parameters that may appear in expressions, the map
+     * key gives the parameter name that may appear in the expression, and the map value is the object that expression
      * should evaluate against when that name is found
      */
-    public void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable, Object contextObject,
+    public void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable,
             Map<String, Object> evaluationParameters);
 
     /**
@@ -83,29 +92,25 @@ public interface ExpressionEvaluatorService {
      * If no placeholders are found, the string will be returned unchanged
      * </p>
      *
-     * @param contextObject - context object for the expression evaluations
-     * @param evaluationParameters - map of parameters that may appear in expressions, the map
-     * key gives the parameter name that may appear in the
-     * expression, and the map value is the object that expression
+     * @param evaluationParameters map of parameters that may appear in expressions, the map
+     * key gives the parameter name that may appear in the expression, and the map value is the object that expression
      * should evaluate against when that name is found
-     * @param expressionTemplate - string that should be evaluated for el expressions
-     * @return String formed by replacing any el expressions in the original
-     *         expression template with their corresponding evaluation results
+     * @param expressionTemplate string that should be evaluated for el expressions
+     * @return String formed by replacing any el expressions in the original expression template with
+     * their corresponding evaluation results
      */
-    public String evaluateExpressionTemplate(Object contextObject, Map<String, Object> evaluationParameters,
-            String expressionTemplate);
+    public String evaluateExpressionTemplate(Map<String, Object> evaluationParameters, String expressionTemplate);
 
     /**
      * Evaluates the configured expression for the given property name (if not exists) on the given configurable
      *
      * @param view view instance the configurable is associated with, used to adjust binding prefixes
-     * @param contextObject model object containing data
      * @param evaluationParameters map that will be exposed as EL parameters
      * @param expressionConfigurable configurable object to pull and evaluate the expression on
      * @param propertyName name of the property whose expression should be evaluated
      * @param removeExpression boolean that indicates whether the expression should be removed after evaluation
      */
-    public void evaluatePropertyExpression(View view, Object contextObject, Map<String, Object> evaluationParameters,
+    public void evaluatePropertyExpression(View view, Map<String, Object> evaluationParameters,
             UifDictionaryBean expressionConfigurable, String propertyName, boolean removeExpression);
 
     /**
@@ -119,25 +124,22 @@ public interface ExpressionEvaluatorService {
      * return for a boolean expression, or a string for string expression
      * </p>
      *
-     * @param contextObject - context object for the expression evaluations
-     * @param evaluationParameters - map of parameters that may appear in expressions, the map
-     * key gives the parameter name that may appear in the
-     * expression, and the map value is the object that expression
+     * @param evaluationParameters map of parameters that may appear in expressions, the map
+     * key gives the parameter name that may appear in the expression, and the map value is the object that expression
      * should evaluate against when that name is found
-     * @param expression - el expression to evaluate
+     * @param expression el expression to evaluate
      * @return Object result of the expression evaluation
      */
-    public Object evaluateExpression(Object contextObject, Map<String, Object> evaluationParameters, String expression);
+    public Object evaluateExpression(Map<String, Object> evaluationParameters, String expression);
 
     /**
-     * Indicates whether or not the given string contains the el placholder
+     * Indicates whether or not the given string contains the el placeholder
      * (begin and end delimiters)
      *
-     * @param value - String to check for contained placeholders
-     * @return boolean true if the string contains one or more placeholders,
-     *         false if it contains none
-     * @see org.kuali.rice.krad.uif.UifConstants.EL_PLACEHOLDER_PREFIX
-     * @see org.kuali.rice.krad.uif.UifConstants.EL_PLACEHOLDER_SUFFIX
+     * @param value String to check for contained placeholders
+     * @return boolean true if the string contains one or more placeholders, false if it contains none
+     * @see org.kuali.rice.krad.uif.UifConstants#EL_PLACEHOLDER_PREFIX
+     * @see org.kuali.rice.krad.uif.UifConstants#EL_PLACEHOLDER_SUFFIX
      */
     public boolean containsElPlaceholder(String value);
 
@@ -153,9 +155,9 @@ public interface ExpressionEvaluatorService {
      * by the view's default path if it is set.
      * </p>
      *
-     * @param view - the parent view of the object
-     * @param object - Object to adjust property expressions on
-     * @param expression - The expression to adjust
+     * @param view the parent view of the object
+     * @param object Object to adjust property expressions on
+     * @param expression The expression to adjust
      * @return the adjusted expression String
      */
     public String replaceBindingPrefixes(View view, Object object, String expression);

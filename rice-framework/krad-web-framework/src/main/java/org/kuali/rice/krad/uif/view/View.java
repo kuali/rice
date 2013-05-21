@@ -23,7 +23,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -291,7 +290,7 @@ public class View extends ContainerBase {
         super.performApplyModel(view, model, parent);
 
         if (theme != null) {
-            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, theme, model,
+            view.getViewHelperService().getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, theme,
                     getContext());
         }
 

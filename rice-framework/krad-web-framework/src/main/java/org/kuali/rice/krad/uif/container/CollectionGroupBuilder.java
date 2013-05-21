@@ -21,7 +21,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -36,8 +35,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -453,6 +451,9 @@ public class CollectionGroupBuilder implements Serializable {
             List<Field> lineFields, Object currentLine, int lineIndex) {
         List<Field> fields = new ArrayList<Field>();
 
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
+
         for (Field lineField : lineFields) {
             String conditionalRender = lineField.getPropertyExpression("render");
 
@@ -462,11 +463,10 @@ public class CollectionGroupBuilder implements Serializable {
 
                 // Adjust the condition as ExpressionUtils.adjustPropertyExpressions will only be
                 // executed after the collection is built.
-                conditionalRender = KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view,
-                        lineField, conditionalRender);
-
-                Boolean render = (Boolean) getExpressionEvaluatorService().evaluateExpression(model, context,
+                conditionalRender = expressionEvaluator.replaceBindingPrefixes(view, lineField,
                         conditionalRender);
+
+                Boolean render = (Boolean) expressionEvaluator.evaluateExpression(context, conditionalRender);
                 lineField.setRender(render);
             }
 
@@ -560,6 +560,9 @@ public class CollectionGroupBuilder implements Serializable {
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
+
         for (Field lineField : lineFields) {
             String propertyName = null;
             if (lineField instanceof DataBinding) {
@@ -571,7 +574,7 @@ public class CollectionGroupBuilder implements Serializable {
             ComponentSecurity componentSecurity = lineField.getComponentSecurity();
 
             Map<String, Object> context = getContextForField(view, collectionGroup, lineField);
-            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, componentSecurity, model, context);
+            expressionEvaluator.evaluateExpressionsOnConfigurable(view, componentSecurity, context);
 
             // check view field auth
             if (lineField.isRender() && !lineField.isHidden()) {
@@ -660,8 +663,8 @@ public class CollectionGroupBuilder implements Serializable {
             context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             context.put(UifConstants.ContextVariableNames.COMPONENT, subCollectionGroup);
 
-            Boolean render = (Boolean) getExpressionEvaluatorService().evaluateExpression(model, context,
-                    conditionalRender);
+            Boolean render = (Boolean) view.getViewHelperService().getExpressionEvaluator().evaluateExpression(
+                    context, conditionalRender);
             subCollectionGroup.setRender(render);
         }
 
@@ -884,10 +887,6 @@ public class CollectionGroupBuilder implements Serializable {
         if (newLine != null) {
             view.getViewHelperService().applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
         }
-    }
-
-    protected ExpressionEvaluatorService getExpressionEvaluatorService() {
-        return KRADServiceLocatorWeb.getExpressionEvaluatorService();
     }
 
 }

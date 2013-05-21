@@ -21,14 +21,13 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.FormView;
@@ -153,12 +152,11 @@ public class Action extends ContentElementBase {
 
         disabledExpression = this.getPropertyExpression("disabled");
         if (disabledExpression != null) {
-            ExpressionEvaluatorService expressionEvaluatorService =
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService();
+            ExpressionEvaluator expressionEvaluator =
+                    view.getViewHelperService().getExpressionEvaluator();
 
-            disabledExpression = expressionEvaluatorService.replaceBindingPrefixes(view, this, disabledExpression);
-            disabled = (Boolean) expressionEvaluatorService.evaluateExpression(model, this.getContext(),
-                    disabledExpression);
+            disabledExpression = expressionEvaluator.replaceBindingPrefixes(view, this, disabledExpression);
+            disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
         }
     }
 
@@ -181,6 +179,9 @@ public class Action extends ContentElementBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
+
         if (StringUtils.isNotEmpty(disabledExpression)
                 && !disabledExpression.equalsIgnoreCase("true")
                 && !disabledExpression.equalsIgnoreCase("false")) {
@@ -190,17 +191,15 @@ public class Action extends ContentElementBase {
 
         List<String> adjustedDisablePropertyNames = new ArrayList<String>();
         for (String propertyName : disabledWhenChangedPropertyNames) {
-            adjustedDisablePropertyNames.add(
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
-                            propertyName));
+            adjustedDisablePropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,
+                    propertyName));
         }
         disabledWhenChangedPropertyNames = adjustedDisablePropertyNames;
 
         List<String> adjustedEnablePropertyNames = new ArrayList<String>();
         for (String propertyName : enabledWhenChangedPropertyNames) {
-            adjustedEnablePropertyNames.add(
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
-                            propertyName));
+            adjustedEnablePropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,
+                    propertyName));
         }
         enabledWhenChangedPropertyNames = adjustedEnablePropertyNames;
 

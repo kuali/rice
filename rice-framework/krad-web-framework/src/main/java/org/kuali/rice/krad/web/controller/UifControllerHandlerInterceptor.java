@@ -68,6 +68,8 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             request.getSession().setAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER, new HistoryManager());
         }
 
+        System.out.println("Pre " + (new java.util.Date()).getTime());
+
         return true;
     }
 
@@ -82,7 +84,9 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
+        System.out.println("Before lifecycle " + (new java.util.Date()).getTime());
         UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);
+        System.out.println("After lifecycle " + (new java.util.Date()).getTime());
     }
 
     /**
@@ -96,6 +100,8 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             Exception ex) throws Exception {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
+
+        System.out.println("After Render " + (new java.util.Date()).getTime());
 
         if ((uifForm == null) || (uifForm.getView() == null && uifForm.getPostedView() == null)) {
             return;

@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
@@ -66,7 +65,6 @@ public class KRADServiceLocatorWeb {
     public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
     public static final String DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE = "inactivationBlockingDetectionService";
     public static final String DATA_OBJECT_METADATA_SERVICE = "dataObjectMetaDataService";
-    public static final String EXPRESSION_EVALUATOR_SERVICE = "expressionEvaluatorService";
     public static final String VIEW_SERVICE = "viewService";
     public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
     public static final String VIEW_VALIDATION_SERVICE = "viewValidationService";
@@ -157,10 +155,6 @@ public class KRADServiceLocatorWeb {
 
     public static DataObjectMetaDataService getDataObjectMetaDataService() {
         return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);
-    }
-
-    public static ExpressionEvaluatorService getExpressionEvaluatorService() {
-        return (ExpressionEvaluatorService) getService(EXPRESSION_EVALUATOR_SERVICE);
     }
 
     public static ViewService getViewService() {

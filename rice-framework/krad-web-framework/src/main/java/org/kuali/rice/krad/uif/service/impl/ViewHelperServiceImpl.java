@@ -34,6 +34,8 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -51,7 +53,6 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -99,7 +100,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
 
     private transient DataDictionaryService dataDictionaryService;
-    private transient ExpressionEvaluatorService expressionEvaluatorService;
+    private transient ExpressionEvaluator expressionEvaluator;
     private transient ViewDictionaryService viewDictionaryService;
     private transient ConfigurationService configurationService;
 
@@ -186,6 +187,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // will not conflict with components on the page when navigation happens
         view.setIdSequence(100000);
         performComponentInitialization(view, model, view);
+
+        // initialize the expression evaluator impl
+        getExpressionEvaluator().initializeEvaluationContext(model);
 
         // get the list of dialogs from the view and then set the refreshedByAction on the dialog to true.
         // This will leave the component in the viewIndex to be updated using an AJAX call
@@ -657,7 +661,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // evaluate view expressions for further context
         for (Entry<String, String> variableExpression : view.getExpressionVariables().entrySet()) {
             String variableName = variableExpression.getKey();
-            Object value = getExpressionEvaluatorService().evaluateExpression(model, view.getContext(),
+            Object value = getExpressionEvaluator().evaluateExpression(view.getContext(),
                     variableExpression.getValue());
             view.pushObjectToContext(variableName, value);
         }
@@ -710,27 +714,24 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         component.pushAllToContext(getCommonContext(view, component));
 
         for (PropertyReplacer replacer : component.getPropertyReplacers()) {
-            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, replacer, model,
-                    component.getContext());
+            getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, replacer, component.getContext());
         }
 
         for (ComponentModifier modifier : component.getComponentModifiers()) {
-            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, modifier, model,
-                    component.getContext());
+            getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, modifier, component.getContext());
         }
 
-        getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, component, model,
-                component.getContext());
+        getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, component, component.getContext());
 
         // evaluate expressions on component security
         ComponentSecurity componentSecurity = component.getComponentSecurity();
-        getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, componentSecurity, model,
+        getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, componentSecurity,
                 component.getContext());
 
         // evaluate expressions on the binding info object
         if (component instanceof DataBinding) {
             BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
-            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, bindingInfo, model,
+            getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, bindingInfo,
                     component.getContext());
         }
 
@@ -743,7 +744,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
 
-                getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, layoutManager, model,
+                getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, layoutManager,
                         layoutManager.getContext());
 
                 layoutManager.setId(adjustIdIfNecessary(layoutManager.getId(), visitedIds));
@@ -1013,8 +1014,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     context.put(UifConstants.ContextVariableNames.COMPONENT, component);
                     context.put(UifConstants.ContextVariableNames.VIEW, view);
 
-                    String conditionEvaluation = getExpressionEvaluatorService().evaluateExpressionTemplate(model,
-                            context, modifier.getRunCondition());
+                    String conditionEvaluation = getExpressionEvaluator().evaluateExpressionTemplate(context,
+                            modifier.getRunCondition());
                     runModifier = Boolean.parseBoolean(conditionEvaluation);
                 }
 
@@ -1693,9 +1694,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
             // populate default value if given and path is valid
             if (StringUtils.isNotBlank(defaultValue) && ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
-                if (getExpressionEvaluatorService().containsElPlaceholder(defaultValue)) {
+                if (getExpressionEvaluator().containsElPlaceholder(defaultValue)) {
                     Map<String, Object> context = getPreModelContext(view);
-                    defaultValue = getExpressionEvaluatorService().evaluateExpressionTemplate(null, context, defaultValue);
+                    defaultValue = getExpressionEvaluator().evaluateExpressionTemplate(context, defaultValue);
                 }
 
                 // TODO: this should go through our formatters
@@ -1877,21 +1878,21 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * @return expression evaluator service
      */
-    protected ExpressionEvaluatorService getExpressionEvaluatorService() {
-        if (this.expressionEvaluatorService == null) {
-            this.expressionEvaluatorService = KRADServiceLocatorWeb.getExpressionEvaluatorService();
+    public ExpressionEvaluator getExpressionEvaluator() {
+        if (this.expressionEvaluator == null) {
+            this.expressionEvaluator = new DefaultExpressionEvaluator();
         }
 
-        return this.expressionEvaluatorService;
+        return this.expressionEvaluator;
     }
 
     /**
      * Sets the expression evaluator service
      *
-     * @param expressionEvaluatorService
+     * @param expressionEvaluator
      */
-    public void setExpressionEvaluatorService(ExpressionEvaluatorService expressionEvaluatorService) {
-        this.expressionEvaluatorService = expressionEvaluatorService;
+    public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator) {
+        this.expressionEvaluator = expressionEvaluator;
     }
 
     /**

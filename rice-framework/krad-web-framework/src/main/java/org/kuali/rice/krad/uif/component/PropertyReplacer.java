@@ -158,7 +158,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      * </p>
      *
      * @return expression that should be evaluated
-     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService
+     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator
      * @see org.kuali.rice.krad.uif.UifConstants.ContextVariableNames
      */
     @BeanTagAttribute(name = "condition")

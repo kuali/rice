@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.service;
 
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.Inquiry;
@@ -280,5 +281,18 @@ public interface ViewHelperService {
      *            - line instance to apply default values to
      */
     void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup, Object line);
+
+    /**
+     * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating expressions
+     * contained on the view
+     *
+     * <p>
+     * A ExpressionEvaluator must be initialized with a model for expression evaluation. One instance is
+     * constructed for the view lifecycle and made available to all components/helpers through this method
+     * </p>
+     *
+     * @return instance of ExpressionEvaluator
+     */
+    public ExpressionEvaluator getExpressionEvaluator();
 
 }

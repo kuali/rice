@@ -17,12 +17,12 @@ package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
@@ -87,14 +87,18 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
+
         if (options != null && !options.isEmpty()) {
             for (KeyValue option : options) {
                 if (option instanceof UifKeyValueLocation) {
                     locationSelect = true;
+
                     UrlInfo url = ((UifKeyValueLocation) option).getLocation();
+
                     ExpressionUtils.populatePropertyExpressionsFromGraph(url, false);
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, url,
-                            model, view.getContext());
+                    expressionEvaluator.evaluateExpressionsOnConfigurable(view, url, view.getContext());
                 }
             }
         }

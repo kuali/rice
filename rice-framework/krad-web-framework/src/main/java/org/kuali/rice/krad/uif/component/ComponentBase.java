@@ -21,11 +21,10 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -215,11 +214,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void performApplyModel(View view, Object model, Component parent) {
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
             // progressive anded with render, will not render at least one of the two are false
-            ExpressionEvaluatorService expressionEvaluatorService =
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService();
-            String adjustedProgressiveRender = expressionEvaluatorService.replaceBindingPrefixes(view, this,
+            ExpressionEvaluator expressionEvaluator =
+                    view.getViewHelperService().getExpressionEvaluator();
+
+            String adjustedProgressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this,
                     progressiveRender);
-            Boolean progRenderEval = (Boolean) expressionEvaluatorService.evaluateExpression(model, context,
+            Boolean progRenderEval = (Boolean) expressionEvaluator.evaluateExpression(context,
                     adjustedProgressiveRender);
 
             this.setRender(progRenderEval);
@@ -240,17 +240,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
+        ExpressionEvaluator expressionEvaluator =
+                view.getViewHelperService().getExpressionEvaluator();
+
         if (StringUtils.isNotEmpty(progressiveRender)) {
-            progressiveRender = KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
-                    progressiveRender);
+            progressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this, progressiveRender);
             progressiveDisclosureControlNames = new ArrayList<String>();
             progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
                     progressiveDisclosureControlNames);
         }
 
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
-            conditionalRefresh = KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view,
-                    this, conditionalRefresh);
+            conditionalRefresh = expressionEvaluator.replaceBindingPrefixes(view, this, conditionalRefresh);
             conditionalRefreshControlNames = new ArrayList<String>();
             conditionalRefreshConditionJs = ExpressionUtils.parseExpression(conditionalRefresh,
                     conditionalRefreshControlNames);
@@ -259,8 +260,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         List<String> adjustedRefreshPropertyNames = new ArrayList<String>();
         for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
             adjustedRefreshPropertyNames.add(
-                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
-                            refreshPropertyName));
+                    expressionEvaluator.replaceBindingPrefixes(view, this, refreshPropertyName));
         }
         refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
 

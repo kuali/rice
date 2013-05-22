@@ -1248,6 +1248,7 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
 
 &lt;beans>
     &lt;!-- point Rice to the file containing your configuration params -->
+    &lt;!-- which should include a parameter setting kew.mode to "THIN" -->
     &lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
         &lt;property name="configLocations">
             &lt;list>
@@ -1267,12 +1268,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         &lt;property name="properties" ref="configProperties" />
     &lt;/bean>
     &lt;!-- The RiceConfigurer that sets up thin client mode -->
-    &lt;bean id="rice" class="org.kuali.rice.kew.config.ThinClientKEWConfigurer">
+    &lt;bean id="rice" class="org.kuali.rice.kew.config.KEWConfigurer">
         &lt;!-- inject the "config" bean into our configurer -->
         &lt;property name="rootConfig" ref="config" />
     &lt;/bean>
 &lt;/beans>  
-</programlisting>
+</programlisting><para>For more details on configuring Rice for a thin client, please see the
+    <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/TRG.html#thin_client">Thin Client Implementation</link> sub-section of this Technical Reference Guide.</para>
             </section>
             <section>
                 <title>Endpoint URLs</title>

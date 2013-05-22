@@ -447,6 +447,54 @@
                 loader is consulted last because it gives priority to using locally deployed
                 services over remote services (if the service is available both locally and
                 remotely). This is meant to help maximize performance.</para>
+            <section xml:id="thin_client">
+                <title>Thin Client Implementation</title>
+                <para>To implement a thin client version of Rice, modify the configuration files as
+                    per the following</para>
+                <para>config.xml:<programlisting>&lt;config>
+    &lt;param name="environment" override="false">dev&lt;/param>
+    &lt;param name="application.id">rice-remote-test-client&lt;/param>
+    &lt;param name="message.persistence">false&lt;/param>
+    &lt;param name="kim.mode">THIN&lt;/param>
+    &lt;param name="kew.mode">THIN&lt;/param>
+    &lt;param name="ksb.mode">THIN&lt;/param>
+    &lt;param name="standalone.application.id">TRAVEL&lt;/param>
+	&lt;param name="config.location">${user.home}/kuali/main/${environment}/rice-remote-test-client-config.xml&lt;/param>
+    &lt;param name="config.location">classpath:META-INF/common-config-defaults.xml&lt;/param>
+&lt;/config>
+                </programlisting></para>
+                <para>SpringBeans.xml:<programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+&lt;bean id="jtaTransactionManager" class="org.springframework.transaction.jta.JotmFactoryBean">
+    &lt;property name="defaultTimeout" value="3600"/>
+&lt;/bean>
+
+&lt;bean id="bootstrapConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean"
+            p:initialize="true">
+    &lt;property name="configLocations">
+			&lt;list>
+				&lt;value>classpath:config.xml&lt;/value>
+			&lt;/list>
+	&lt;/property>
+&lt;/bean>
+
+&lt;bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer" depends-on="bootstrapConfig"
+          p:transactionManager-ref="jtaTransactionManager"
+          p:userTransaction-ref="jtaTransactionManager"/>
+
+&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"/>
+
+&lt;bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
+
+&lt;bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
+
+&lt;/beans>
+                </programlisting></para>
+            </section>
         </section>
         <section>
             <title>Accessing Rice Services and Beans Using Spring</title>

@@ -261,6 +261,14 @@ public class View extends ContainerBase {
                 throw new RuntimeException("For single paged views the page Group must be set.");
             }
         }
+        // if items is only size one and instance of page, set singlePageView to true
+        else if ((this.items != null) && (this.items.size() == 1)) {
+            Component itemComponent = this.items.get(0);
+
+            if (itemComponent instanceof PageGroup) {
+                this.singlePageView = true;
+            }
+        }
 
         if (sessionPolicy.isEnableTimeoutWarning()) {
             Group warningDialog = ComponentFactory.getSessionTimeoutWarningDialog();

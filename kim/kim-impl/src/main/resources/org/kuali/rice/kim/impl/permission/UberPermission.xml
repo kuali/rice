@@ -164,9 +164,19 @@
   </bean>
   
   <bean id="UberPermissionImpl-id" parent="UberPermissionImpl-id-parentBean"/>
-  <bean id="UberPermissionImpl-id-parentBean" parent="AttributeDefinition" abstract="true" p:name="id" p:label="Permission Identifier" p:shortLabel="Permission Identifier" p:maxLength="10" p:required="false">
+  <bean id="UberPermissionImpl-id-parentBean"
+        parent="AttributeDefinition"
+        abstract="true"
+        p:name="id"
+        p:label="Permission Identifier"
+        p:shortLabel="Permission Identifier"
+        p:maxLength="40"
+        p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AlphaNumericPatternConstraint" p:allowDash="true" p:allowUnderscore="true"/>
     </property>
   </bean>
   

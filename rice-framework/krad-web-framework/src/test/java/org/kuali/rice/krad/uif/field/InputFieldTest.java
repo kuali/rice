@@ -17,16 +17,12 @@ package org.kuali.rice.krad.uif.field;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinderFactory;
-import org.kuali.rice.krad.keyvalues.PlaceholderKeyValuesFinder;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.web.form.UifFormBase;
 import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
@@ -48,6 +44,9 @@ public class InputFieldTest {
     @Before
     public void setUp() {
         view = Mockito.mock(View.class);
+        ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
+        when(view.getViewHelperService()).thenReturn(mockViewHelperService);
+
         optionsFinder = Mockito.mock(KeyValuesFinder.class);
         bindingInfo = Mockito.mock(BindingInfo.class);
         model = new TestModel();
@@ -80,5 +79,4 @@ public class InputFieldTest {
             return 1;
         }
     }
-
 }

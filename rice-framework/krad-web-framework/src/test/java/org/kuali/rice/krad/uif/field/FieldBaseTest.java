@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.view.View;
 
 import org.junit.Test;
@@ -39,8 +40,10 @@ public class FieldBaseTest {
      */
     public void testRequiredMessageDisplay() {
 
-        // create mock objects for view, model, and component
+        // create mock objects for view, view helper service, model, and component
         View mockView =  mock(View.class);
+        ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
+        when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
         Object nullModel = null;
         Component mockComponent = mock(Component.class);
 
@@ -70,5 +73,4 @@ public class FieldBaseTest {
             fail("Unit Test Exception - " + ex.getMessage());
         }
     }
-
 }

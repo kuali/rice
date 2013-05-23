@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -32,6 +33,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * test the RichTable widget
@@ -54,6 +57,7 @@ public class RichTableTest {
     
     private RichTable richTable;
     private CollectionGroup group;
+    private View mockView;
 
     //private
     @Before
@@ -81,6 +85,10 @@ public class RichTableTest {
         items.add(contactEmail);
 
         group.setItems(items);
+
+        mockView =  mock(View.class);
+        ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
+        when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
     }
 
     @Test
@@ -153,7 +161,7 @@ public class RichTableTest {
      */
     private void assertRichTableComponentOptions(String optionsOnGroup, String optionsOnRichTable, String optionKey) {
         richTable.getTemplateOptions().put(optionKey, optionsOnGroup);
-        richTable.performFinalize(new View(), new UifFormBase(), group);
+        richTable.performFinalize(mockView, new UifFormBase(), group);
         assertEquals(optionsOnRichTable, richTable.getTemplateOptions().get(optionKey));
     }
 }

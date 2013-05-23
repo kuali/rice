@@ -27,6 +27,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.AccountWithDDAttributesDocument;
@@ -45,6 +46,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
 /**
  * DataDictionarySearchableAttributeTest performs various DataDictionarySearchableAttribute-related tests on the doc search, including verification of proper wildcard functionality
@@ -294,11 +296,15 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     public void testValidateUserSearchInputsNoCast() throws Exception {
     	DataDictionarySearchableAttribute searchableAttribute = new DataDictionarySearchableAttribute();
     	final DocumentService documentService = KRADServiceLocatorWeb.getDocumentService();
-    	
-    	AccountWithDDAttributesDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
-    	documentService.saveDocument(document);
-    	final String documentNumber = document.getDocumentNumber();
-    	    	
+
+        try {
+            AccountWithDDAttributesDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
+            documentService.saveDocument(document);
+            final String documentNumber = document.getDocumentNumber();
+        } catch (UnknownDocumentTypeException udte) {
+            fail("CI failure - https://jira.kuali.org/browse/KULRICE-9289 " + udte.getMessage());
+        }
+
     	Exception caughtException;
     	List foundErrors;
     	

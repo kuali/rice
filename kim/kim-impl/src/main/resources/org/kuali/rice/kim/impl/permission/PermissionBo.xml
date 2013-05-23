@@ -60,11 +60,14 @@
 		<property name="label" value="Permission Identifier"/>
 		<property name="shortLabel" value="Permission Identifier"/>
 		<property name="maxLength" value="40"/>
-    <property name="validCharactersConstraint">
-      <bean parent="AlphaNumericPatternConstraint" p:allowDash="true" p:allowUnderscore="true"/>
-    </property>
+        <property name="validationPattern">
+            <bean parent="AlphaNumericValidationPattern"
+                p:allowDash="true"
+                p:allowUnderscore="true"
+                p:allowWhitespace="false"/>
+        </property>
 		<property name="control">
-			<bean parent="TextControlDefinition" p:size="10"/>
+		    <bean parent="TextControlDefinition" p:size="10"/>
 		</property>
         <property name="controlField">
             <bean parent="Uif-TextControl" p:size="10"/>

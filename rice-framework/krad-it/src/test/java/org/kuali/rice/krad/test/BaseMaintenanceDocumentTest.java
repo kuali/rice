@@ -26,6 +26,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  *  BaseMaintenanceDocumentTest is a base class for testing maintenance documents
@@ -43,10 +44,16 @@ public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
     public void setUp() throws Exception {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession(getInitiatorPrincipalName()));
-        MaintenanceDocument maintenanceDocument =
+        try {
+            MaintenanceDocument maintenanceDocument =
                 (MaintenanceDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument(getDocumentTypeName());
-        maintenanceDocument.getDocumentHeader().setDocumentDescription("test maintenance document");
-        setDocument(maintenanceDocument);
+            maintenanceDocument.getDocumentHeader().setDocumentDescription("test maintenance document");
+            setDocument(maintenanceDocument);
+        } catch (org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException udte) {
+            if (udte.getMessage().contains("AccountManagerMaintenanceDocument")) {
+                fail("CI failure - https://jira.kuali.org/browse/KULRICE-9285");
+            }
+        }
     }
 
     @Before

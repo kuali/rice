@@ -2381,13 +2381,50 @@ function displayCountdown(targetId, until, overrideOptions) {
  * @param selectControl
  */
 function setMultivalueLookupReturnButton(selectControl) {
-    var resultsCollection = jQuery(selectControl).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS);
-    var checked = jQuery('input.kr-select-line:checked' ).length;
-    if (checked > 0) {
+    refreshDatatableCellRedraw(selectControl);
+
+    var oTable = getDataTableHandle(getParentRichTableId(selectControl));
+
+    var checked = false;
+    jQuery.each(getDataTablesColumnData(0, oTable), function(index, value) {
+        if (jQuery(':input:checked', value).length) {
+            checked = true;
+        }
+    });
+
+    if (checked) {
         jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).removeAttr('disabled');
         jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).removeClass('disabled');
     } else {
         jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).attr('disabled', 'disabled');
     }
 
+}
+
+/**
+ * Returns the table id of parent table of an element if it is a richtable
+ *
+ * @param childElement
+ * @returns table id
+ */
+function getParentRichTableId(childElement) {
+    return jQuery(childElement).parents('table.dataTable').attr('id');
+}
+
+/**
+ * Builds an array of all the content in a datatable for a column across pages
+ *
+ * @param columnIndex
+ * @param oTable
+ * @returns {Array}
+ */
+function getDataTablesColumnData(columnIndex, oTable) {
+    var allDataObject = oTable.fnGetData();
+    var colData = [];
+
+    jQuery.each(allDataObject, function(index, value) {
+        colData.push(value[columnIndex]);
+    });
+
+    return colData;
 }

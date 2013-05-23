@@ -42,6 +42,7 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KSB_Guide/KSB_LoadBalancing.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KSB_Guide/KSB_ObjectRemoting.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KSB_Guide/KSB_PublishingServices.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KSB_Guide/KSB_ResourceLoader.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KSB_Guide/KSB_QueueAndTopicInvocation.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KSB_Guide/KSB_Parameters.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../KSB_Guide/KSB_JAX-RS.xml" />

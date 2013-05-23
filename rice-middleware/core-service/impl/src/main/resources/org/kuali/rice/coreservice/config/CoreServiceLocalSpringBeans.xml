@@ -123,6 +123,7 @@
         <value>classpath:org/kuali/rice/coreservice/web/namespace/NamespaceMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/cache/CacheAdmin.xml</value>
+        <value>classpath:org/kuali/rice/core/web/impex/XmlIngester.xml</value>
       </list>
     </property>
     <property name="packagePrefixes">

@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.kew.krad.controller;
+package org.kuali.rice.core.web.impex;
 
-import edu.sampleu.kew.krad.KEWConstants;
-import edu.sampleu.kew.krad.form.IngesterForm;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -53,14 +51,14 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/ingester")
-public class IngesterController extends UifControllerBase {
+public class XmlIngesterController extends UifControllerBase {
 
     /**
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected IngesterForm createInitialForm(HttpServletRequest request) {
-        return new IngesterForm();
+    protected XmlIngesterForm createInitialForm(HttpServletRequest request) {
+        return new XmlIngesterForm();
     }
 
 	@Override
@@ -68,14 +66,14 @@ public class IngesterController extends UifControllerBase {
 	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		IngesterForm ingesterForm = (IngesterForm)form;
+		XmlIngesterForm ingesterForm = (XmlIngesterForm)form;
 		
 //		checkAuthorization(form,"");
 		return super.start(ingesterForm, result, request, response);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=upload")
-	public ModelAndView upload(@ModelAttribute("KualiForm") IngesterForm ingesterForm, BindingResult result,
+	public ModelAndView upload(@ModelAttribute("KualiForm") XmlIngesterForm ingesterForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 		
 		List<File> tempFiles = new ArrayList<File>();
@@ -101,7 +99,8 @@ public class IngesterController extends UifControllerBase {
 	                fos = new FileOutputStream(temp);
 	                fos.write(file.getBytes());
 	            } catch (IOException ioe) {
-	            	GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID,KEWConstants.ERROR_INGESTER_COPY_FILE , file.getOriginalFilename(), ExceptionUtils.getFullStackTrace(ioe));
+	            	GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID,
+                            XmlIngesterConstants.ERROR_INGESTER_COPY_FILE , file.getOriginalFilename(), ExceptionUtils.getFullStackTrace(ioe));
 	                continue;
 	            } finally{
 	                if (fos != null) {
@@ -117,18 +116,18 @@ public class IngesterController extends UifControllerBase {
 	                try {
 	                    collections.add(new ZipXmlDocCollection(temp));
 	                } catch (IOException ioe) {
-	                    GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.ERROR_INGESTER_LOAD_FILE, file.getOriginalFilename());
+	                    GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_LOAD_FILE, file.getOriginalFilename());
 	                }
 	            } else if (file.getOriginalFilename().endsWith(".xml")) {
 	                collections.add(new FileXmlDocCollection(temp, file.getOriginalFilename()));
 	            } else {
-	            	GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.ERROR_INGESTER_EXTRANEOUS_FILE, file.getOriginalFilename());
+	            	GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_EXTRANEOUS_FILE, file.getOriginalFilename());
 	            }
 	        }
 	
 	        if (collections.size() == 0) {
 	            String message = "No valid files to ingest";
-	            GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.ERROR_INGESTER_NO_VALID_FILES);
+	            GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_NO_VALID_FILES);
 	        } else {
 	            // wrap in composite collection to make transactional
 	            CompositeXmlDocCollection compositeCollection = new CompositeXmlDocCollection(collections);
@@ -139,7 +138,7 @@ public class IngesterController extends UifControllerBase {
 	                Collection<XmlDocCollection> failed = CoreApiServiceLocator.getXmlIngesterService().ingest(c, GlobalVariables.getUserSession().getPrincipalId());
 	                boolean txFailed = failed.size() > 0;
 	                if (txFailed) {
-	                	GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.ERROR_INGESTER_FAILED);
+	                	GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_FAILED);
 	                }
 	                for (XmlDocCollection collection1 : collections)
 	                {
@@ -151,14 +150,14 @@ public class IngesterController extends UifControllerBase {
 	                            if (!txFailed)
 	                            {
 	                                totalProcessed++;
-	                                GlobalVariables.getMessageMap().putInfoForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.INFO_INGESTER_SUCCESS, doc1.getName(),doc1.getProcessingMessage());
+	                                GlobalVariables.getMessageMap().putInfoForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.INFO_INGESTER_SUCCESS, doc1.getName(),doc1.getProcessingMessage());
 //	                                messages.add("Ingested xml doc: " + doc1.getName() + (doc1.getProcessingMessage() == null ? "" : "\n" + doc1.getProcessingMessage()));
 	                            } else
-	                            {GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.ERROR_INGESTER_ROLLEDBACK, doc1.getName(),doc1.getProcessingMessage());
+	                            {GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_ROLLEDBACK, doc1.getName(),doc1.getProcessingMessage());
 //	                                messages.add("Rolled back doc: " + doc1.getName() + (doc1.getProcessingMessage() == null ? "" : "\n" + doc1.getProcessingMessage()));
 	                            }
 	                        } else
-	                        {GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.ERROR_INGESTER_FAILED_XML, doc1.getName(),doc1.getProcessingMessage());
+	                        {GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_FAILED_XML, doc1.getName(),doc1.getProcessingMessage());
 //	                            messages.add("Failed to ingest xml doc: " + doc1.getName() + (doc1.getProcessingMessage() == null ? "" : "\n" + doc1.getProcessingMessage()));
 	                        }
 	                    }
@@ -167,11 +166,11 @@ public class IngesterController extends UifControllerBase {
 //	                String message = "Error during ingest";
 	                //LOG.error(message, e);
 //	                messages.add(message + ": " + e  + ":\n" + ExceptionUtils.getFullStackTrace(e));
-	                GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.ERROR_INGESTER_DURING_INJECT, ExceptionUtils.getFullStackTrace(e));
+	                GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_DURING_INJECT, ExceptionUtils.getFullStackTrace(e));
 	            }
 	            if (totalProcessed == 0) {
 //	                String message = "No xml docs ingested";
-	                GlobalVariables.getMessageMap().putErrorForSectionId(KEWConstants.INGESTER_SECTION_ID, KEWConstants.ERROR_INGESTER_NO_XMLS);
+	                GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_NO_XMLS);
 	            }
 	        }
 	    } finally {
@@ -191,7 +190,7 @@ public class IngesterController extends UifControllerBase {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
-	public ModelAndView close(@ModelAttribute("KualiForm") IngesterForm ingesterForm, BindingResult result,
+	public ModelAndView close(@ModelAttribute("KualiForm") XmlIngesterForm ingesterForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		return null;

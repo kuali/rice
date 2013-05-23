@@ -22,9 +22,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-   <bean id="KEW-IngesterView" parent="Uif-FormView-KnsTheme">
-      <property name="id" value="KEW-IngesterView"/>
-      <property name="headerText" value="Ingester"/>
+   <bean id="XmlIngester" parent="Uif-FormView-KnsTheme">
+      <property name="id" value="XmlIngester"/>
+      <property name="headerText" value="XML Ingester"/>
       <property name="items">
         <list>
           <bean parent="Uif-Page" p:id="page1" p:autoFocus="false" p:validationMessages.displayFieldLabelWithMessages="false">
@@ -36,7 +36,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean> 
         </list>
       </property>    
-      <property name="formClass" value="edu.sampleu.kew.krad.form.IngesterForm"/>
+      <property name="formClass" value="org.kuali.rice.core.web.impex.XmlIngesterForm"/>
       <property name="footer">
 			<ref bean="Footer_UploadClose" />
 		</property>

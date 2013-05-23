@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.kew.krad;
+package org.kuali.rice.core.web.impex;
 
 /**
  * This is a description of what this class does - Venkat don't forget to fill this in. 
@@ -21,7 +21,7 @@ package edu.sampleu.kew.krad;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KEWConstants {
+public class XmlIngesterConstants {
 
 	public static final String ERROR_INGESTER_COPY_FILE = "error.ingester.copy.file.data";
 	public static final String ERROR_INGESTER_LOAD_FILE = "error.ingester.load.file";

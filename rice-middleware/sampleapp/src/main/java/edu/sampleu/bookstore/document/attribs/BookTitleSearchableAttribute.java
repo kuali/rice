@@ -15,7 +15,6 @@
  */
 package edu.sampleu.bookstore.document.attribs;
 
-import edu.sampleu.kew.krad.KEWConstants;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;

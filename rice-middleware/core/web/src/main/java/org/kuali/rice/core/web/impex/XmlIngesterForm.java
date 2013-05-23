@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.kew.krad.form;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.kuali.rice.core.web.impex;
 
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - Venkat don't forget to fill this in. 
@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class IngesterForm  extends UifFormBase {
+public class XmlIngesterForm extends UifFormBase {
 
 	private static final long serialVersionUID = -6874672285597100759L;
 	
@@ -47,7 +47,7 @@ public class IngesterForm  extends UifFormBase {
 		this.files = files;
 	}
 
-	public IngesterForm(){
+	public XmlIngesterForm(){
 		files = new ArrayList<MultipartFile>();
 		files.add(null);
 		files.add(null);

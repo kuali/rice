@@ -147,7 +147,6 @@
         <value>classpath:edu/sampleu/kew/uif/DocumentTypeMaintenanceDocument.xml</value>
         <value>classpath:edu/sampleu/kew/uif/DocumentTypeLookup.xml</value>
         <value>classpath:edu/sampleu/kew/uif/DocumentTypeInquiry.xml</value>
-        <value>classpath:edu/sampleu/kew/uif/IngesterView.xml</value>
         <value>classpath:edu/sampleu/kew/uif/StatsView.xml</value>
 
         <!-- DummyLogin -->

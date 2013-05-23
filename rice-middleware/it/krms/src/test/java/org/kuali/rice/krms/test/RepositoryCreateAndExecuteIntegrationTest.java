@@ -94,7 +94,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         perfLog.log("starting rule execution");
         EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(sc1, factsBuilder1.build(), xOptions1);
         perfLog.log("finished rule execution", true);
-        List<ResultEvent> rEvents1 = eResults1.getAllResults();
+        List<ResultEvent> rEvents1 = executeEngileResults(eResults1);
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
@@ -142,7 +142,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         perfLog.log("starting rule execution");
         EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(sc1, factsBuilder1.build(), xOptions1);
         perfLog.log("finished rule execution", true);
-        List<ResultEvent> rEvents1 = eResults1.getAllResults();
+        List<ResultEvent> rEvents1 = executeEngileResults(eResults1);
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
@@ -197,7 +197,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         perfLog.log("starting rule execution 1");
         EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(selectionCriteria, factsBuilder2.build(), xOptions2);
         perfLog.log("finished rule execution 1");
-        List<ResultEvent> rEvents1 = eResults1.getAllResults();
+        List<ResultEvent> rEvents1 = executeEngileResults(eResults1);
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
@@ -247,7 +247,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         perfLog.log("starting rule execution 1");
         EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(selectionCriteria, factsBuilder2.build(), xOptions2);
         perfLog.log("finished rule execution 1");
-        List<ResultEvent> rEvents1 = eResults1.getAllResults();
+        List<ResultEvent> rEvents1 = executeEngileResults(eResults1);
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
@@ -269,6 +269,15 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
 
         assertAgendaDidNotExecute(AGENDA4);
         assertAgendaDidNotExecute(AGENDA5);
+    }
+
+    private List<ResultEvent> executeEngileResults(EngineResults eResults1) {
+        try {
+            return eResults1.getAllResults(); // CI NPE
+        } catch (NullPointerException npe) {
+            fail("https://jira.kuali.org/browse/KULRICE-8625 KRMS RepositoryCreateAndExecuteIntegrationTest fails with NPE in CI passes locally");
+        }
+        return null;
     }
 
     private void assertAgendaDidNotExecute(String agendaName) {

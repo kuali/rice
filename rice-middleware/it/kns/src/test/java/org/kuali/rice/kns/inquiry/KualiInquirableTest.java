@@ -47,7 +47,7 @@ public class KualiInquirableTest extends KNSTestCase {
      */
     @Test public final void testBuildInquiryUrl() {
     	String inquiryUrl = ((HtmlData.AnchorHtmlData)new KualiInquirableImpl().getInquiryUrl(am, "amId", true)).getHref();
-        Assert.assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl,
+        Assert.assertTrue("An inquiry URL to AccountManager should be built. CI Failure - https://jira.kuali.org/browse/KULRICE-9286", StringUtils.contains(inquiryUrl,
                 "amId=1"));
         Assert.assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl,
                 "businessObjectClassName=" + AccountManager.class.getName()));

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.permission.PermissionService;
@@ -70,7 +71,8 @@ public class PermissionServiceTest extends KIMTestCase {
 	}
 	
 	@Test
-	public void testIsAuthorizedByTemplateName() {
+    @Ignore // TODO implement testIsAuthorizedByTemplateName
+    public void testIsAuthorizedByTemplateName() {
 		// assertTrue(getPermissionService().isAuthorizedByTemplate(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification)("entity123pId", "KR-NS", "1", new Map<String, String>()));
 	}
 	
@@ -88,7 +90,8 @@ public class PermissionServiceTest extends KIMTestCase {
 	}
 	
 	@Test
-	public void testGetPermissionAssigneesForTemplateName() {
+    @Ignore // TODO implement testGetPermissionAssigneesForTemplateName
+    public void testGetPermissionAssigneesForTemplateName() {
 		/*
 		List<PermissionAssigneeInfo> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In", null, null);
 		assertNotNull(assignees);
@@ -101,19 +104,23 @@ public class PermissionServiceTest extends KIMTestCase {
 	}
 	
 	@Test
-	public void testIsPermissionDefined() {
+    @Ignore // TODO implement testIsPermissionDefined
+    public void testIsPermissionDefined() {
 	}
 	
 	@Test
-	public void testIsPermissionDefinedForTemplateName() {
+    @Ignore // TODO implement testIsPermissionDefinedForTemplateName
+    public void testIsPermissionDefinedForTemplateName() {
 	}
 	
 	@Test
-	public void testGetAuthorizedPermissions() {
+    @Ignore // TODO implement testGetAuthorizedPermissions
+    public void testGetAuthorizedPermissions() {
 	}
 	
 	@Test
-	public void testGetAuthorizedPermissionsByTemplateName() {
+    @Ignore // TODO implement testGetAuthorizedPermissionsByTemplateName
+    public void testGetAuthorizedPermissionsByTemplateName() {
 	}
 	
 	@Test
@@ -138,27 +145,33 @@ public class PermissionServiceTest extends KIMTestCase {
 	}
 	
 	@Test
-	public void testGetPermissionsByTemplateName() {
+    @Ignore // TODO implement testGetPermissionsByTemplateName
+    public void testGetPermissionsByTemplateName() {
 	}
 	
 	@Test
-	public void testGetPermissionsByName() {
+    @Ignore // TODO implement testGetPermissionsByName
+    public void testGetPermissionsByName() {
 	}
 	
 	@Test
-	public void testLookupPermissions() {
+    @Ignore // TODO implement testLookupPermissions
+    public void testLookupPermissions() {
 	}
 	
 	@Test
-	public void testGetRoleIdsForPermission() {
+    @Ignore // TODO implement testGetRoleIdsForPermission
+    public void testGetRoleIdsForPermission() {
 	}
 	
 	@Test
-	public void testGetRoleIdsForPermissions() {
+    @Ignore // TODO implement testGetRoleIdsForPermissions
+    public void testGetRoleIdsForPermissions() {
 	}
 	
 	@Test
-	public void testGetPermissionDetailLabel() {
+    @Ignore // TODO implement testGetPermissionDetailLabel
+    public void testGetPermissionDetailLabel() {
 	}
 
 	public PermissionService getPermissionService() {

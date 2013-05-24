@@ -81,6 +81,8 @@ public class UifFormBase implements ViewModel {
     protected String jumpToName;
     @SessionTransient
     protected String focusId;
+    @SessionTransient
+    protected boolean dirtyForm;
 
     protected String formPostUrl;
     protected String controllerMapping;
@@ -815,6 +817,47 @@ public class UifFormBase implements ViewModel {
      */
     public void setFocusId(String focusId) {
         this.focusId = focusId;
+    }
+
+    /**
+     * True when the form is considered dirty (data has changed from original value), false otherwise
+     *
+     * <p>For most scenarios, this flag should NOT be set to true.
+     * If this is set, it must be managed explicitly by the application.  This flag exists for marking a
+     * form dirty from a server call, so it must be changed to false when the form is no longer considered dirty.
+     * The krad save Action and navigate methodToCall resets this flag back to false, but any other setting of
+     * this flag must be managed by custom configuration/methods, if custom dirtyForm management is needed.</p>
+     *
+     * @return true if the form is considered dirty, false otherwise
+     */
+    public boolean isDirtyForm() {
+        return dirtyForm;
+    }
+
+    /**
+     * Sets the dirtyForm flag
+     *
+     * <p>For most scenarios, this flag should NOT be set to true.
+     * If this is set, it must be managed explicitly by the application.  This flag exists for marking a
+     * form dirty from a server call, so it must be changed to false when the form is no longer considered dirty.
+     * The krad save Action and navigate methodToCall resets this flag back to false, but any other setting of
+     * this flag must be managed by custom configuration/methods, if custom dirtyForm management is needed.</p>
+     *
+     * @param dirtyForm
+     */
+    public void setDirtyForm(boolean dirtyForm) {
+        this.dirtyForm = dirtyForm;
+    }
+
+    /**
+     * Set the dirtyForm flag using a String that will be converted to boolean
+     *
+     * @param dirtyForm
+     */
+    public void setDirtyForm(String dirtyForm) {
+        if(dirtyForm != null){
+            this.dirtyForm = Boolean.parseBoolean(dirtyForm);
+        }
     }
 
     /**

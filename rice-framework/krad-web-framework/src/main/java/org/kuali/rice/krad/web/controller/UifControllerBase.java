@@ -452,6 +452,9 @@ public abstract class UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
 
+        //clear dirty flag, if set
+        form.setDirtyForm(false);
+
         return getUIFModelAndView(form, pageId);
     }
 

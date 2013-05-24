@@ -32,6 +32,7 @@
         <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
                     performFocusAndJumpTo(${view.currentPage.autoFocus?string}, false, false, '${KualiForm.focusId!}',
                         '', '');
+                    dirtyFormState.setDirty(${KualiForm.dirtyForm?string});
                 });" component=Component/>
     </div>
 </html>

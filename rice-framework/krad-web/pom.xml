@@ -88,7 +88,6 @@
                 <jsSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/menu/krad.navigationMenu.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/textpopout/krad.textareaPopout.js</jsSourceFile>
-                <jsSourceFile>plugins/dirtyform/jquery.dirtyform.js</jsSourceFile>
                 <jsSourceFile>plugins/scrollto/jquery.scrollTo-1.4.3-min.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/menu/krad.tabMenu.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/datatables/jquery.dataTables.js</jsSourceFile>
@@ -108,6 +107,7 @@
                 <jsSourceFile>plugins/countdown/jquery.countdown.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.message.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.dirty.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.widget.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.url.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.utility.js</jsSourceFile>

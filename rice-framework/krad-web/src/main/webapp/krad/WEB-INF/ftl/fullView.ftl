@@ -60,6 +60,9 @@
                 <#-- based on the view setting, form elements will be checked for dirtyness -->
                 <@spring.formHiddenInput id="validateDirty" path="KualiForm.view.applyDirtyCheck"/>
 
+                <#-- based on the view setting, form elements will be checked for dirtyness -->
+                <@spring.formHiddenInput id="dirtyForm" path="KualiForm.dirtyForm"/>
+
                 <#-- indicator which is set to true when content is being rendered inside a lightbox -->
                 <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
 

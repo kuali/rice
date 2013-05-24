@@ -306,6 +306,8 @@ public class LightTable extends Group implements DataBinding {
         }
 
         rowTemplate = StringUtils.removeEnd(rowTemplate, ",");
+        rowTemplate = rowTemplate.replace("\n", "");
+        rowTemplate = rowTemplate.replace("\r", "");
 
         StringBuffer rows = new StringBuffer();
         List<Object> collectionObjects = ObjectPropertyUtils.getPropertyValue(model, bindingInfo.getBindingPath());
@@ -353,8 +355,7 @@ public class LightTable extends Group implements DataBinding {
                 itemIndex++;
             }
 
-            row = row.replace("\n", "");
-            row = row.replace("\r", "");
+
             row = row.replace("\"", "\\\"");
             row = "[" + row + "],";
 

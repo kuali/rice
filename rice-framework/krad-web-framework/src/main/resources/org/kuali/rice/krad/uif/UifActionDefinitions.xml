@@ -23,7 +23,7 @@
 
   <bean id="Uif-SaveAction" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save"
         p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
-        p:loadingMessageText="Saving..." p:id="usave"/>
+        p:loadingMessageText="Saving..." p:clearDirtyOnAction="true" p:id="usave"/>
 
   <bean id="Uif-BackAction" parent="Uif-SecondaryActionButton" p:methodToCall="back"
         p:actionLabel="&lt; Back" p:performDirtyValidation="true"/>
@@ -36,12 +36,12 @@
 
   <bean id="Uif-AddLineAction" parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add"
         p:actionEvent="addLine" p:loadingMessageText="Adding Line..." p:focusOnIdAfterSubmit="LINE_FIRST"
-        p:id="@{#collectionGroup.id}_add"/>
+        p:dirtyOnAction="true" p:id="@{#collectionGroup.id}_add"/>
 
   <bean id="Uif-DeleteLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
         p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
         p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"
-        p:onClickScript="writeCurrentPageToSession(this);"
+        p:onClickScript="writeCurrentPageToSession(this);" p:dirtyOnAction="true"
         p:loadingMessageText="Deleting Line..." p:id="@{#collectionGroup.id}_del@{#lineSuffix}"/>
 
   <bean id="Uif-SaveLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"

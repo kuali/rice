@@ -46,6 +46,11 @@
         </#if>
     </#list>
 
+
+</head>
+
+<body>
+  <#nested/>
     <#list view.theme.scriptFiles as javascriptFile>
         <#if javascriptFile?starts_with('http')>
             <script type="text/javascript" src="${javascriptFile}"></script>
@@ -79,10 +84,6 @@
             })
         </script>
     </#if>
-</head>
-
-<body>
-  <#nested/>
 </body>
 
 </html>

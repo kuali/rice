@@ -41,6 +41,9 @@ var summaryTextExistence = new Object();
 var clientErrorExistsCheck = false;
 var skipPageSetup = false;
 
+//dirty form state management
+var dirtyFormState;
+
 var originalPageTitle;
 var errorImage;
 var errorGreyImage;
@@ -78,6 +81,7 @@ jQuery(document).ready(function () {
     time(true, "viewSetup-phase-1");
     // determine whether we need to refresh or update the page
     skipPageSetup = handlePageAndCacheRefreshing();
+    dirtyFormState = new DirtyFormState();
 
     // buttons
     jQuery("input:submit, input:button, a.button, .uif-dialogButtons").button();
@@ -113,7 +117,8 @@ jQuery(document).ready(function () {
 
     time(true, "viewSetup-phase-2");
 
-
+    //setup dirty field processing
+    dirtyFormState.dirtyHandlerSetup();
 
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
@@ -555,6 +560,8 @@ function hideBubblePopups(element) {
 function setupPage(validate) {
     time(true, "page-setup");
 
+    dirtyFormState.resetDirtyFieldCount();
+
     //if we are skipping this page setup, reset the flag, and return (this logic is for redirects)
     if (skipPageSetup) {
         skipPageSetup = false;
@@ -567,7 +574,6 @@ function setupPage(validate) {
         jQuery(".uif-supportTitle-wrapper").replaceWith(supportTitleUpdate);
     }
 
-    jQuery('#' + kradVariables.KUALI_FORM).dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
     originalPageTitle = document.title;
 
     setupImages();
@@ -612,22 +618,6 @@ function setupPage(validate) {
     if (jQuery(".uif-pageValidationHeader").length) {
         jQuery(".uif-pageValidationHeader").focus();
     }
-
-    // make sure form doesn't have any unsaved data when user clicks on any other portal links,
-    // closes browser or presses fwd/back browser button
-    jQuery(window).bind('beforeunload', function (event) {
-        // methodToCall check is needed to skip form posts
-        var methodToCall = jQuery("[name='methodToCall']").val();
-        if (!methodToCall) {
-            var dirty = checkDirty(event);
-
-            // prompt does not come through in checkDirty since we are unloaded, so we
-            // need to return the question
-            if (dirty) {
-                return getMessage(kradVariables.MESSAGE_KEY_DIRTY_FIELDS);
-            }
-        }
-    });
 
     setupValidator(jQuery('#kualiForm'));
 
@@ -1111,13 +1101,13 @@ function errorHandler(msg, url, lno) {
 }
 
 // script that should execute when the page unloads
-jQuery(window).bind('beforeunload', function (evt) {
+//jQuery(window).bind('beforeunload', function (evt) {
     // clear server form if closing the browser tab/window or going back
     // TODO: work out back button problem so we can add this clearing
 //    if (!event.pageY || (event.pageY < 0)) {
 //        clearServerSideForm();
 //    }
-});
+//});
 
 
 

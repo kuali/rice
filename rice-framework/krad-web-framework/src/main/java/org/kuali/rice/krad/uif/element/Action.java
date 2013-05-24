@@ -93,6 +93,8 @@ public class Action extends ContentElementBase {
 
     private boolean performClientSideValidation;
     private boolean performDirtyValidation;
+    private boolean clearDirtyOnAction;
+    private boolean dirtyOnAction;
 
     private String preSubmitCall;
     private boolean ajaxSubmit;
@@ -241,7 +243,7 @@ public class Action extends ContentElementBase {
         // add dirty check if it is enabled for the view and the action requires it
         if (view instanceof FormView) {
             if (((FormView) view).isApplyDirtyCheck() && performDirtyValidation) {
-                onClickScript = "if (checkDirty(e) == false) { " + onClickScript + " ; } ";
+                onClickScript = "if (dirtyFormState.checkDirty(e) == false) { " + onClickScript + " ; } ";
             }
         }
 
@@ -330,6 +332,8 @@ public class Action extends ContentElementBase {
         addDataAttributeIfNonEmpty("ajaxreturntype", this.ajaxReturnType);
         addDataAttributeIfNonEmpty("refreshid", this.refreshId);
         addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
+        addDataAttribute("dirtyOnAction", Boolean.toString(this.dirtyOnAction));
+        addDataAttribute("clearDirtyOnAction", Boolean.toString(this.clearDirtyOnAction));
 
         // all action parameters should be submitted with action
         Map<String, String> submitData = new HashMap<String, String>();
@@ -765,6 +769,51 @@ public class Action extends ContentElementBase {
     @BeanTagAttribute(name = "performDirtyValidation")
     public boolean isPerformDirtyValidation() {
         return performDirtyValidation;
+    }
+
+    /**
+     * True to make this action clear the dirty flag before submitting
+     *
+     * <p>This will clear both the dirtyForm flag on the form and the count of fields considered dirty on the
+     * client-side.  This will only be performed if this action is a request based action.</p>
+     *
+     * @return true if the dirty
+     */
+    @BeanTagAttribute(name = "clearDirtyOnAction")
+    public boolean isClearDirtyOnAction() {
+        return clearDirtyOnAction;
+    }
+
+    /**
+     * Set clearDirtyOnAction
+     *
+     * @param clearDirtyOnAction
+     */
+    public void setClearDirtyOnAction(boolean clearDirtyOnAction) {
+        this.clearDirtyOnAction = clearDirtyOnAction;
+    }
+
+    /**
+     * When true, this action will mark the form dirty by incrementing the dirty field count, but if this action
+     * refreshes the entire view this will be lost (most actions only refresh the page)
+     *
+     * <p>This will increase count of fields considered dirty on the
+     * client-side by 1.  This will only be performed if this action is a request based action.</p>
+     *
+     * @return true if this action is considered dirty, false otherwise
+     */
+    @BeanTagAttribute(name = "dirtyOnAction")
+    public boolean isDirtyOnAction() {
+        return dirtyOnAction;
+    }
+
+    /**
+     * Set to true, if this action is considered one that changes the form's data (makes the form dirty)
+     *
+     * @param dirtyOnAction
+     */
+    public void setDirtyOnAction(boolean dirtyOnAction) {
+        this.dirtyOnAction = dirtyOnAction;
     }
 
     /**

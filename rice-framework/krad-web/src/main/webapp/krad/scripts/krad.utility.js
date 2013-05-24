@@ -337,9 +337,6 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         evaluateScripts(selector);
         runScriptsForId(id);
 
-        //reinit dirty fields
-        jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
-
         //reinitialize BubblePopup
         initBubblePopups();
 
@@ -560,47 +557,7 @@ function occursBefore(name1, name2) {
     }
 }
 
-/**
- * Validate dirty fields on the form
- *
- * <p>Whenever the user clicks on the action field which navigates away from the page,
- * form dirtyness is checked. It checks for any input elements which has "dirty" class. If present,
- * it pops a message to the user to confirm whether they want to stay on the page or want to navigate.
- * </p>
- *
- * @param event - the event which triggered the action
- * @returns true if the form has dirty fields, false if not
- */
-function checkDirty(event) {
-    var validateDirty = jQuery("#validateDirty").val();
-    var dirty = jQuery("." + kradVariables.FIELD_CLASS).find("input." + kradVariables.DIRTY_CLASS);
 
-    if (validateDirty == "true" && dirty.length > 0) {
-        var dirtyMessage = getMessage(kradVariables.MESSAGE_KEY_DIRTY_FIELDS);
-        var answer = confirm(dirtyMessage);
-
-        if (answer == false) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-
-            // change the current nav button class to 'current' if user doesn't wants to leave the page
-            var ul = jQuery("#" + event.target.id).closest("ul");
-            if (ul.length > 0) {
-                var pageId = jQuery("[name='view.currentPageId']").val();
-                if (ul.hasClass(kradVariables.TAB_MENU_CLASS)) {
-                    jQuery("#" + ul.attr("id")).selectTab({selectPage: pageId});
-                }
-                else {
-                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage: pageId});
-                }
-            }
-
-            return true;
-        }
-    }
-
-    return false;
-}
 
 /**
  * Gets the actual attribute id to use element manipulation related to this attribute.
@@ -1206,7 +1163,6 @@ function setupLightboxForm() {
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);
-    kualiLightboxForm.dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 }
 
 /**

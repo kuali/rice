@@ -2872,7 +2872,7 @@
 				_fnLog( oSettings, 0, "Unknown paging action: "+mAction );
 			}
 			$(oSettings.oInstance).trigger('page', oSettings);
-            jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+
 			return iOldStart != oSettings._iDisplayStart;
 		}
 		

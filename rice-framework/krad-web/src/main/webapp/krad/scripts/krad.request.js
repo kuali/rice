@@ -61,6 +61,14 @@ function KradRequest(action) {
         if (action.data("refreshid") !== undefined) {
             this.refreshId = action.data("refreshid");
         }
+
+        if (action.data("dirtyonaction") !== undefined) {
+            this.dirtyOnAction = action.data("dirtyonaction");
+        }
+
+        if (action.data("cleardirtyonaction") !== undefined) {
+            this.clearDirtyOnAction = action.data("cleardirtyonaction");
+        }
     }
 }
 
@@ -84,6 +92,10 @@ KradRequest.prototype = {
     // indicates whether client side validation should be performed before making
     // the request (see ajaxReturnHandlers)
     validate: false,
+
+    dirtyOnAction: false,
+
+    clearDirtyOnAction: false,
 
     // when blocking is enabled will display this text with the blocking overlay
     loadingMessage: getMessage(kradVariables.MESSAGE_LOADING),
@@ -146,6 +158,16 @@ KradRequest.prototype = {
 
                 return;
             }
+        }
+
+        //reset dirty form state
+        if (this.clearDirtyOnAction){
+            dirtyFormState.reset();
+        }
+
+        //increase dirty field count when this flag is true
+        if (this.dirtyOnAction){
+            dirtyFormState.incrementDirtyFieldCount();
         }
 
         // check for non-ajax request

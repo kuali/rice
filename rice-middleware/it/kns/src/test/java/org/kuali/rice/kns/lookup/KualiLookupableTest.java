@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +77,13 @@ public class KualiLookupableTest extends KNSTestCase {
         lookupableImpl = new KualiLookupableImpl();
         lookupableImpl.setLookupableHelperService((LookupableHelperService) GlobalResourceLoader.getService(
                 "lookupableHelperService"));
-        lookupableImpl.setBusinessObjectClass(Account.class);
+        try {
+            lookupableImpl.setBusinessObjectClass(Account.class);
+        } catch (RuntimeException re) {
+            if (re.getMessage().contains("Lookup not defined for business object class org.kuali.rice.krad.test.document.bo.Account")) {
+                fail("CI Failure Jira https://jira.kuali.org/browse/KULRICE-9287 " + re.getMessage() + " " + ExceptionUtils.getStackTrace(re));
+            }
+        }
     }
 
     /**

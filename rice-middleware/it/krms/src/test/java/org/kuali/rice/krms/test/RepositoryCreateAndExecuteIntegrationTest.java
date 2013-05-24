@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -275,7 +276,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         try {
             return eResults1.getAllResults(); // CI NPE
         } catch (NullPointerException npe) {
-            fail("https://jira.kuali.org/browse/KULRICE-8625 KRMS RepositoryCreateAndExecuteIntegrationTest fails with NPE in CI passes locally");
+            fail("https://jira.kuali.org/browse/KULRICE-8625 KRMS RepositoryCreateAndExecuteIntegrationTest fails with NPE in CI passes locally." + ExceptionUtils.getStackTrace(npe));
         }
         return null;
     }

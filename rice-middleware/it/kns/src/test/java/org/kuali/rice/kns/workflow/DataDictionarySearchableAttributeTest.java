@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.workflow;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -302,7 +303,7 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
             documentService.saveDocument(document);
             final String documentNumber = document.getDocumentNumber();
         } catch (UnknownDocumentTypeException udte) {
-            fail("CI failure - https://jira.kuali.org/browse/KULRICE-9289 " + udte.getMessage());
+            fail("CI failure - https://jira.kuali.org/browse/KULRICE-9289 " + udte.getMessage() + ExceptionUtils.getStackTrace(udte));
         }
 
     	Exception caughtException;

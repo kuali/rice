@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.test;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
@@ -51,7 +51,7 @@ public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
             setDocument(maintenanceDocument);
         } catch (org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException udte) {
             if (udte.getMessage().contains("AccountManagerMaintenanceDocument")) {
-                fail("CI failure - https://jira.kuali.org/browse/KULRICE-9285");
+                fail("CI failure - https://jira.kuali.org/browse/KULRICE-9285" + udte.getMessage() + " "  +ExceptionUtils.getStackTrace(udte));
             }
         }
     }

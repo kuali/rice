@@ -1189,10 +1189,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * Indicates indicates whether the field can only be updated through a widget.
+     * Indicates indicates whether the field can only be updated through a widget
      *
-     * When widgetInputOnly the inputField is set to readOnly but widgets are still rendered and the value can be
-     * changed through via widgets.
+     * widgetInputOnly behaves similar to ReadOnly with the exception that the value of the input field
+     * can be changed via the associated widget (e.g. spinner, date picker, quickfinder, etc).
      *
      * @return true if only widget input is allowed, false otherwise
      */
@@ -1203,6 +1203,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
     /**
      * Setter for the widget input only indicator
+     *
      * @param widgetInputOnly
      */
     public void setWidgetInputOnly(boolean widgetInputOnly) {

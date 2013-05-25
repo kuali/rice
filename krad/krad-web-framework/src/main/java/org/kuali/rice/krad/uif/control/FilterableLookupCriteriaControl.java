@@ -23,15 +23,14 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public interface FilterableLookupCriteriaControl {
 
     /**
-     * Removes any searchCriteria that are not part of the database lookup.
+     * Removes any searchCriteria that are not part of the database lookup
      *
-     * @param propertyName - the propertyName of the current component
-     * @param searchCriteria - the search criteria to be filtered
+     * @param propertyName the propertyName of the current component
+     * @param searchCriteria the search criteria to be filtered
      * @return the filteredSearchCriteria
      */
-    Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria);
+    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria);
 }

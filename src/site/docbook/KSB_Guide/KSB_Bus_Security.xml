@@ -658,14 +658,6 @@ RJuO40x5n3tPtNXhq5U=
                 represents the actual request of calling the <emphasis role="bold">findAllCampuses</emphasis> 
                 method. The bus security starts inside the header with the <emphasis role="bold">&lt;wsse:Security>
                 </emphasis>stanza.
-                <itemizedlist>
-                    <listitem><para>&lt;ds:Signature> begins the signing of the request</para></listitem>
-                    <listitem><para>&lt;ds:SignedInfo> is the signature package. Once generated, the following bytes all the way down to the &lt;/ds:SignatureValue> cannot be altered</para></listitem>
-                    <listitem><para>&lt;ds:DigestValue> is the hash digest generated from the body of the request and the signature value</para></listitem>
-                    <listitem><para>&lt;ds:SignatureValue> is the signature. In this case some of the bytes, when printed, represent a new-line character. Any modification of this stanza byte stream will invalidate the signature</para></listitem>
-                    <listitem><para>&lt;ds:X509IssuerName> is the alias expected and must be in the keystores of the server and the client</para></listitem>
-                    <listitem><para>&lt;ds:X509SerialNumber> is directly from the keystore and must match between the server and the client. Using the <emphasis role="bold">keytool</emphasis> tool, you can see this value (represented in hex)</para></listitem>
-                </itemizedlist>
                 <note><para>The X509IssuerName and X509SerialNumber come directly from the <link linkend="new_keystore_alias">keystore</link>. Here the serial number is in base 10, in the <link linkend="new_keystore_alias">keystore</link> the value is shown in hex.</para></note>
             </para>
         </section>

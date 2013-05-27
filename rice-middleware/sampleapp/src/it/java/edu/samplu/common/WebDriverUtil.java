@@ -158,10 +158,10 @@ public class WebDriverUtil {
      */
     public static void tearDown(boolean passed, String sessionId, String testParam, String userParam) throws Exception {
 
-        if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
-            SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
-                    System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
-        }
+//        if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
+//            SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
+//                    System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+//        }
 
         if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
             ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="

@@ -84,8 +84,8 @@ public class XMLIngesterNavIT extends AdminTmplMthdSTNavBase {
     }
 
     @Override
-    public void setUp() throws Exception {
-        super.setUp();
+    public void stetUp() throws Exception {
+        super.stetUp();
         // generated load users and group resources
         cfg = new Configuration();
         cfg.setTemplateLoader(new ClassTemplateLoader(getClass().getClassLoader().getClass(), DIR_TMPL));

@@ -30,10 +30,11 @@ public class InvalidUserNameWDIT extends WebDriverLegacyITBase {
     public String getTestUrl() {
         return ITUtil.PORTAL;
     }
+
     @Override
-    public void setUp() throws Exception {
+    public void stetUp() throws Exception {
         System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "notnull");
-        super.setUp();
+        super.stetUp();
     }
 
     /**

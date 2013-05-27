@@ -17,7 +17,9 @@
 package edu.samplu.common;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -47,12 +49,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class WebDriverUtil {
 
+    public static boolean jGrowlEnabled = true;
     /**
      * TODO apparent dup WebDriverITBase.DEFAULT_WAIT_SEC
      * TODO parametrize for JVM Arg
      * 30 Seconds
      */
     public static int DEFAULT_IMPLICIT_WAIT_TIME = 30;
+
+    /**
+     * false
+     * TODO upgrade to config via JVM param.
+     */
+    public static final boolean JGROWL_ERROR_FAILURE = false;
 
     /**
      * TODO introduce SHORT_IMPLICIT_WAIT_TIME with param in WebDriverITBase
@@ -71,6 +80,11 @@ public class WebDriverUtil {
      * Selenium's webdriver.chrome.driver parameter, you can set -Dwebdriver.chrome.driver= or Rice's REMOTE_PUBLIC_CHROME
      */
     public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
+
+    /**
+     * Set -Dremote.jgrowl.enabled=
+     */
+    public static final String REMOTE_JGROWL_ENABLED = "remote.jgrowl.enabled";
 
     /**
      * Set -Dremote.public.chrome= or WEBDRIVER_CHROME_DRIVER
@@ -144,10 +158,10 @@ public class WebDriverUtil {
      */
     public static void tearDown(boolean passed, String sessionId, String testParam, String userParam) throws Exception {
 
-//        if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
-//            SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
-//                    System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
-//        }
+        if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
+            SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
+                    System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+        }
 
         if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
             ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
@@ -212,6 +226,31 @@ public class WebDriverUtil {
             }
         }
         return null;
+    }
+
+    public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message, Throwable t) {
+        if (jGrowlEnabled) { // check if jGrowl is enabled to skip over the stack trace extraction if it is not.
+            jGrowl(driver, jGrowlHeader, sticky, message + " " + t.getMessage() + "\n" + ExceptionUtils.getStackTrace(t));
+        }
+    }
+
+    public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message) {
+        if (jGrowlEnabled) {
+            try {
+                String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
+                ((JavascriptExecutor) driver).executeScript(javascript);
+            } catch (Throwable t) {
+                jGrowlException(t);
+            }
+        }
+    }
+
+    public static void jGrowlException(Throwable t) {
+        String failMessage = t.getMessage() + "\n" + ExceptionUtils.getStackTrace(t);
+        System.out.println("jGrowl failure " + failMessage);
+        if (JGROWL_ERROR_FAILURE) {
+            SeleneseTestBase.fail(failMessage);
+        }
     }
 
     /**

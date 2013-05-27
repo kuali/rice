@@ -29,7 +29,6 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
@@ -38,6 +37,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -45,7 +45,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
 
 /**
  * <p>
@@ -207,12 +206,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * edit
      */
     public static final String EDIT_LINK_TEXT = "edit";
-
-    /**
-     * true
-     * TODO upgrade to config via JVM param.
-     */
-    public static final boolean JGROWL_ERROR_FAILURE = false;
 
     /**
      * iframeportlet
@@ -392,8 +385,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public abstract String getTestUrl();
 
+    @BeforeMethod
+    protected void startSession(Method method) throws Exception {
+        testMethodName = method.getName(); // TestNG
+    }
+
     /**
-     * Setup the WebDriver properties, test, and login
+     * Setup the WebDriver properties, test, and login.  Named stetUp so it runs after TestNG's startSession(Method)
      *
      * {@link WebDriverUtil#determineUser(String)}
      * {@link WebDriverUtil#setUp(String, String, String, String)}
@@ -401,12 +399,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     @Before
     @BeforeMethod
-    public void setUp() throws Exception {
+    public void stetUp() throws Exception {
 
-        if (testName != null) {
+        if (testName != null && testName.getMethodName() != null) { // JUnit
             testMethodName = testName.getMethodName();
-        } else {
-            testMethodName = "TODO TestNG test method name.";
         }
 
         try {
@@ -424,6 +420,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
         WebDriverUtil.login(driver, user, this);
         jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
+        System.out.println(jGrowlHeader + " sessionId is " + sessionId);
         jGrowl("setUp");
     }
 
@@ -1014,12 +1011,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void jGrowl(String message) {
-        try {
-            String javascript="jQuery.jGrowl('" + message + "' , {sticky: false, header : '" + jGrowlHeader + "'});";
-            ((JavascriptExecutor) driver).executeScript(javascript);
-        } catch (Throwable t) {
-            jGrowlException(t);
-        }
+        WebDriverUtil.jGrowl(driver, jGrowlHeader, false, message);
     }
 
     /**
@@ -1027,19 +1019,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * in an infinite loop if JGROWL_ERROR_FAILURE is true so please don't.
      */
     protected void jGrowlSticky(String message) {
-        try {
-            String javascript="jQuery.jGrowl('" + message + "' , {sticky: true, header : '" + jGrowlHeader + "'});";
-            ((JavascriptExecutor) driver).executeScript(javascript);
-        } catch (Throwable t) {
-            jGrowlException(t);
-        }
-    }
-
-    private void jGrowlException(Throwable t) {
-        System.out.println("jGrowl failure " + t.getMessage());
-        if (JGROWL_ERROR_FAILURE) {
-            fail(t.getMessage());
-        }
+        WebDriverUtil.jGrowl(driver, jGrowlHeader, true, message);
     }
 
     private void jiraAwareFail(By by, String message, Throwable t) {

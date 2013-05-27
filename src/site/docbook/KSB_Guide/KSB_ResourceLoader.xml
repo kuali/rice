@@ -52,8 +52,8 @@
                         
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KSB_Guide/global_resource_loader.png"
-                                    contentwidth="100%" contentdepth="100%" />
+                                <imagedata fileref="../images/KSB_Guide/global_resource_loader2.png"
+                                    width="100%" scalefit="1"/>
                             </imageobject>
                         </mediaobject>
                     </figure>

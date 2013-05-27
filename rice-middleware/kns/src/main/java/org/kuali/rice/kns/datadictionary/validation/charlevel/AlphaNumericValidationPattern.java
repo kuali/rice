@@ -32,6 +32,7 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
     protected boolean allowDollar = false;
     protected boolean allowForwardSlash = false;
     protected boolean lowerCase = false;
+    protected boolean allowDash = false;
     
     /**
      * @return allowPeriod
@@ -90,7 +91,7 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
 	}
 
 	/**
-	 * @param allowforwardSlash the allowforwardSlash to set
+	 * @param allowForwardSlash the allowforwardSlash to set
 	 */
 	public void setAllowForwardSlash(boolean allowForwardSlash) {
 		this.allowForwardSlash = allowForwardSlash;
@@ -119,7 +120,7 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
     }
 
     /**
-     * @param allowWhitespace
+     * @param allowUnderscore
      */
     public void setAllowUnderscore(boolean allowUnderscore) {
         this.allowUnderscore = allowUnderscore;
@@ -138,7 +139,21 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
 	public void setLowerCase(boolean lowerCase) {
 		this.lowerCase = lowerCase;
 	}
-    
+
+    /**
+     * @return allowDash
+     */
+    public boolean getAllowDash() {
+        return allowDash;
+    }
+
+    /**
+     * @param allowDash
+     */
+    public void setAllowDash(boolean allowDash) {
+        this.allowDash = allowDash;
+    }
+
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */
@@ -170,6 +185,9 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
         }
         if(allowForwardSlash) {
         	regexString.append("/");
+        }
+        if (allowDash) {
+            regexString.append("-");
         }
         regexString.append("]");
 
@@ -207,6 +225,9 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
             exportMap.set("allowForwardSlash", "true");
 
         }
+        if (allowDash) {
+            exportMap.set("allowDash", "true");
+        }
     }
 
 	@Override
@@ -233,6 +254,9 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
 		}
 		if(allowForwardSlash) {
 			opts.append(".allowForwardSlash");
+		}
+        if (allowDash) {
+            opts.append(".allowDash");
 		}
 
 		return opts.toString();

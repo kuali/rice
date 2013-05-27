@@ -265,11 +265,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         Map<String, String> filteredSearchCriteria = new HashMap<String,String>(searchCriteria);
         for (String fieldName: searchCriteria.keySet()) {
             InputField inputField = criteriaFields.get(fieldName);
-            if ((inputField != null) && (inputField instanceof LookupInputField)) {
-                filteredSearchCriteria = ((LookupInputField) inputField).filterSearchCriteria(filteredSearchCriteria);
-                if (filteredSearchCriteria == null) {
-                    return null;
-                }
+            if ((inputField == null) || !(inputField instanceof LookupInputField)) {
+                continue;
+            }
+
+            filteredSearchCriteria = ((LookupInputField) inputField).filterSearchCriteria(filteredSearchCriteria);
+            if (filteredSearchCriteria == null) {
+                return null;
             }
         }
 

@@ -312,9 +312,9 @@ public class LookupInputField extends InputField {
     }
 
     /**
-     * Remove any search criteria that are not part of the database lookup.
+     * Remove any search criteria that are not part of the database lookup
      *
-     * @param searchCriteria - the search criteria to be filtered
+     * @param searchCriteria the search criteria to be filtered
      * @return the filteredSearchCriteria
      */
     public Map<String, String> filterSearchCriteria( Map<String, String> searchCriteria) {

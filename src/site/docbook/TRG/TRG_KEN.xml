@@ -911,6 +911,21 @@ public interface NotificationMessageDeliverer {
   public void dismissMessageDelivery(NotificationMessageDelivery messageDelivery, String user, String cause) throws NotificationMessageDismissalException;
 </programlisting>
         </section>
+        <section>
+            <title>Default Delivery Types</title> 
+            <para>To find and configure the default delivery types configured for Rice, on the Main Menu
+                tab, under the Notification area, click on Delivery Types.</para>
+            <para>
+                <figure><title>Find Delivery Types</title>
+                    <mediaobject><imageobject><imagedata fileref="../images/delivery_select.png" scalefit="1" width="100%" contentdepth="100%"/></imageobject></mediaobject>
+                </figure>
+            </para>
+            <para>
+                <figure><title>List and Configure Delivery Types</title>
+                    <mediaobject><imageobject><imagedata fileref="../images/delivery_types.png" scalefit="1" width="100%" contentdepth="100%"/></imageobject></mediaobject>
+                </figure>
+            </para>
+        </section>
     </section>
     <section>
         <title>KEN: Sending a Notification</title>

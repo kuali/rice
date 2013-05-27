@@ -21,6 +21,7 @@
     <xsl:import href="appendix.xsl"/>
 	<xsl:import href="xref.xsl"/>
 	<xsl:import href="titlepage.xsl"/>
+    <xsl:param name="callout.graphics.path">src/site/docbook/images/callouts/</xsl:param>
     <xsl:template match="*[@role = 'keyword']" mode="class.value">
         <xsl:value-of select="'keyword'"/>
     </xsl:template>

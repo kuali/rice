@@ -1065,7 +1065,7 @@
               <chunkedOutput>true</chunkedOutput>
               <htmlStylesheet>../../css/stylesheet.css</htmlStylesheet>
               <targetDirectory>${rice.docbook.dest}/html-multi</targetDirectory>
-              <calloutGraphicsPath>../images/callouts/</calloutGraphicsPath>
+              <calloutGraphicsPath>../../images/callouts/</calloutGraphicsPath>
               <imgSrcPath>../</imgSrcPath>
               <tableBordersWithCss>true</tableBordersWithCss>
             </configuration>

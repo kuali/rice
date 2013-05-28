@@ -18,7 +18,9 @@ package org.kuali.rice.krad.demo.uif.options;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
+import org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 import java.util.ArrayList;
@@ -31,18 +33,26 @@ public class FoodKeyValuesFinder extends UifKeyValuesFinderBase {
 
     @Override
     public List<KeyValue> getKeyValues(ViewModel model) {
-        KradSampleAppForm testForm = (KradSampleAppForm) model;
+        String foodType = null;
+
+        if (model instanceof KradSampleAppForm) {
+            KradSampleAppForm testForm = (KradSampleAppForm) model;
+            foodType = testForm.getInputField4();
+        } else {
+            UifComponentsTestForm testForm = (UifComponentsTestForm) model;
+            foodType = testForm.getField88();
+        }
 
         List<KeyValue> options = new ArrayList<KeyValue>();
 
         //options would come from a db in a real scenario
-        if (testForm.getInputField4() == null || testForm.getInputField4().equals("Fruits")) {
+        if (foodType == null || foodType.equals("Fruits")) {
             options.add(new ConcreteKeyValue("Apples", "Apples"));
             options.add(new ConcreteKeyValue("Bananas", "Bananas"));
             options.add(new ConcreteKeyValue("Cherries", "Cherries"));
             options.add(new ConcreteKeyValue("Oranges", "Oranges"));
             options.add(new ConcreteKeyValue("Pears", "Pears"));
-        } else if (testForm.getInputField4().equals("Vegetables")) {
+        } else if (foodType.equals("Vegetables")) {
             options.add(new ConcreteKeyValue("Beans", "Beans"));
             options.add(new ConcreteKeyValue("Broccoli", "Broccoli"));
             options.add(new ConcreteKeyValue("Cabbage", "Cabbage"));

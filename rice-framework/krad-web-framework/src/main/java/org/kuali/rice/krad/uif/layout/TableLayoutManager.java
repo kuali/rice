@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -86,7 +87,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private int numberOfDataColumns;
 
     private List<Label> headerLabels;
-    private List<Component> dataFields;
+    private List<Field> allRowFields;
+    private List<Field> firstRowFields;
 
     private RichTable richTable;
     private boolean headerAdded;
@@ -132,7 +134,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         rowDetailsOpen = false;
 
         headerLabels = new ArrayList<Label>();
-        dataFields = new ArrayList<Component>();
+        allRowFields = new ArrayList<Field>();
         columnsToCalculate = new ArrayList<String>();
         columnCalculations = new ArrayList<ColumnCalculationInfo>();
     }
@@ -230,7 +232,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         //setup the column calculations functionality and components
         if (columnCalculations != null && richTable != null &&
-                this.getDataFields() != null && !this.getDataFields().isEmpty()) {
+                this.getAllRowFields() != null && !this.getAllRowFields().isEmpty()) {
             setupColumnCalculations(view, model, container, totalColumns);
         }
 
@@ -312,7 +314,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //propertyName is REQUIRED throws exception if not set
             if (StringUtils.isNotBlank(cInfo.getPropertyName())) {
                 for (int i = 0; i < this.getNumberOfColumns(); i++) {
-                    Component component = this.getDataFields().get(i);
+                    Component component = this.getAllRowFields().get(i);
                     if (component != null && component instanceof DataField &&
                             ((DataField) component).getPropertyName().equals(cInfo.getPropertyName())) {
                         cInfo.setColumnNumber(i);
@@ -483,7 +485,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * field prototype is copied for the line sequence field. Likewise a copy of
      * the actionFieldPrototype is made and the given actions are set as the
      * items for the action field. Finally the generated items are assembled
-     * together into the dataFields list with the given lineFields.
+     * together into the allRowFields list with the given lineFields.
      *
      * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup,
@@ -513,7 +515,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         // if first line for table set number of data columns
-        if (dataFields.isEmpty()) {
+        if (allRowFields.isEmpty()) {
             if (isSuppressLineWrapping()) {
                 setNumberOfDataColumns(lineFields.size());
             } else {
@@ -527,6 +529,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (lineIndex == -1 || (lineFields.size() != numberOfDataColumns
                 && ((lineIndex + 1) * numberOfDataColumns) < lineFields.size())) {
             isAddLine = true;
+        }
+
+        // capture the first row of fields for widgets that build off the table
+        if (lineIndex == 0) {
+            this.firstRowFields = lineFields;
         }
 
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
@@ -569,7 +576,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         // TODO: implement repeat header
         if (!headerAdded) {
             headerLabels = new ArrayList<Label>();
-            dataFields = new ArrayList<Component>();
+            allRowFields = new ArrayList<Field>();
 
             buildTableHeaderRows(collectionGroup, lineFields);
             ComponentUtils.pushObjectToContext(headerLabels, UifConstants.ContextVariableNames.LINE, currentLine);
@@ -595,7 +602,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         // sequence field is always first and should span all rows for the line
         if (renderSequenceField) {
-            Component sequenceField = null;
+            Field sequenceField = null;
             if (!isAddLine) {
                 sequenceField = ComponentUtils.copy(getSequenceFieldPrototype(), idSuffix);
 
@@ -606,7 +613,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     ((MessageField) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
                 }
             } else {
-                sequenceField = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
+                sequenceField = ComponentFactory.getMessageField();
+                view.assignComponentIds(sequenceField);
+
+                Message sequenceMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
+                ((MessageField) sequenceField).setMessage(sequenceMessage);
                 
                 // adjusting add line label to match sequence prototype cells attributes
                 sequenceField.setCellWidth(getSequenceFieldPrototype().getCellWidth());
@@ -622,7 +633,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             setCellAttributes(sequenceField);
 
             ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex, idSuffix);
-            dataFields.add(sequenceField);
+            allRowFields.add(sequenceField);
             extraColumns++;
 
             if (actionColumnIndex == 2 && renderActions) {
@@ -638,7 +649,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             ComponentUtils.updateContextForLine(selectField, currentLine, lineIndex, idSuffix);
             setCellAttributes(selectField);
 
-            dataFields.add(selectField);
+            allRowFields.add(selectField);
 
             extraColumns++;
 
@@ -674,8 +685,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             if (hasGrouping && lineField instanceof MessageField &&
                     lineField.getDataAttributes().get("role") != null && lineField.getDataAttributes().get("role")
                     .equals("grouping")) {
-                int groupFieldIndex = dataFields.size() - extraColumns;
-                dataFields.add(groupFieldIndex, lineField);
+                int groupFieldIndex = allRowFields.size() - extraColumns;
+                allRowFields.add(groupFieldIndex, lineField);
                 groupingColumnIndex = 0;
                 if (isAddLine) {
                     ((MessageField) lineField).getMessage().getPropertyExpressions().remove("messageText");
@@ -687,7 +698,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
                 }
 
-                dataFields.add(lineField);
+                allRowFields.add(lineField);
             }
 
             // action field
@@ -732,7 +743,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         // add sub-collection fields to end of data fields
-        dataFields.addAll(subCollectionFields);
+        allRowFields.addAll(subCollectionFields);
     }
 
     /**
@@ -754,7 +765,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         setCellAttributes(lineActionsField);
 
-        dataFields.add(lineActionsField);
+        allRowFields.add(lineActionsField);
     }
 
     /**
@@ -950,7 +961,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         components.add(richTable);
         components.add(addLineGroup);
         components.addAll(headerLabels);
-        components.addAll(dataFields);
+        components.addAll(allRowFields);
 
         for (ColumnCalculationInfo cInfo : columnCalculations) {
             components.add(cInfo.getTotalField());
@@ -1276,13 +1287,21 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * List of {@code Component} instances that make up the tables body. Pulled
-     * by the layout manager template to send through the Grid layout
+     * List of {@link Field} instances that make up all the table's rows of data
      *
      * @return table body fields
      */
-    public List<Component> getDataFields() {
-        return this.dataFields;
+    public List<Field> getAllRowFields() {
+        return this.allRowFields;
+    }
+
+    /**
+     * List of {@link Field} instances that make us the table's first row of data
+     *
+     * @return list of field instances
+     */
+    public List<Field> getFirstRowFields() {
+        return firstRowFields;
     }
 
     /**

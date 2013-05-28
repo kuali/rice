@@ -73,7 +73,7 @@ public class GroupValidationMessages extends ValidationMessages {
             if (((CollectionGroup) parent).getLayoutManager() instanceof StackedLayoutManager) {
                 items = ((StackedLayoutManager) ((CollectionGroup) parent).getLayoutManager()).getStackedGroups();
             } else if (((CollectionGroup) parent).getLayoutManager() instanceof TableLayoutManager) {
-                items = ((TableLayoutManager) ((CollectionGroup) parent).getLayoutManager()).getDataFields();
+                items = ((TableLayoutManager) ((CollectionGroup) parent).getLayoutManager()).getAllRowFields();
                 skipSections = true;
             }
         }

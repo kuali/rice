@@ -263,15 +263,16 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append("]");
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                         tableToolsColumnOptions.toString());
-            } else {
-
+            } else if (layoutManager instanceof TableLayoutManager) {
+                // build column defs from the first row of the table
                 // TODO: does this handle multiple rows correctly?
-                for (Component component : collectionGroup.getItems()) {
+                for (Component component : ((TableLayoutManager) layoutManager).getFirstRowFields()) {
                     if (actionFieldVisible && columnIndex + 1 == actionIndex) {
                         String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
                         tableToolsColumnOptions.append(actionColOptions + " , ");
                         columnIndex++;
                     }
+
                     // for FieldGroup, get the first field from that group
                     if (component instanceof FieldGroup) {
                         component = ((FieldGroup) component).getItems().get(0);
@@ -334,7 +335,6 @@ public class RichTable extends WidgetBase {
                         tableToolsColumnOptions.append(colOptions + " , ");
                         columnIndex++;
                     }
-
                 }
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
@@ -344,6 +344,7 @@ public class RichTable extends WidgetBase {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
                             ", "));
                 }
+
                 //merge the aoColumnDefs passed in
                 if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))) {
                     String origAoOptions = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS).trim();
@@ -351,6 +352,7 @@ public class RichTable extends WidgetBase {
                     origAoOptions = StringUtils.removeEnd(origAoOptions, "]");
                     tableToolsColumnOptions.append("," + origAoOptions);
                 }
+
                 tableToolsColumnOptions.append("]");
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                         tableToolsColumnOptions.toString());

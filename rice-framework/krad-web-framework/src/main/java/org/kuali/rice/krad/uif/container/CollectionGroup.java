@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -107,7 +108,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private String addLinePropertyName;
     private BindingInfo addLineBindingInfo;
 
-    private Label addLineLabel;
+    private Message addLineLabel;
     private List<? extends Component> addLineItems;
     private List<Action> addLineActions;
 
@@ -514,7 +515,7 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public String getAddLabel() {
         if (getAddLineLabel() != null) {
-            return getAddLineLabel().getLabelText();
+            return getAddLineLabel().getMessageText();
         }
 
         return null;
@@ -527,28 +528,28 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setAddLabel(String addLabelText) {
         if (getAddLineLabel() != null) {
-            getAddLineLabel().setLabelText(addLabelText);
+            getAddLineLabel().setMessageText(addLabelText);
         }
     }
 
     /**
-     * <code>Label</code> instance for the add line label
+     * <code>Message</code> instance for the add line label
      *
-     * @return add line label field.
+     * @return add line Message
      * @see #getAddLabel
      */
     @BeanTagAttribute(name = "addLineLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Label getAddLineLabel() {
+    public Message getAddLineLabel() {
         return this.addLineLabel;
     }
 
     /**
-     * Setter for the <code>Label</code> instance for the add line label
+     * Setter for the <code>Message</code> instance for the add line label
      *
      * @param addLineLabel
      * @see #getAddLabel
      */
-    public void setAddLineLabel(Label addLineLabel) {
+    public void setAddLineLabel(Message addLineLabel) {
         this.addLineLabel = addLineLabel;
     }
 

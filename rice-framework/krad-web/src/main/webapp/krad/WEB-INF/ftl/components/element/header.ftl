@@ -37,17 +37,15 @@
 
         <@krad.div component=element>
 
-
             <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
 
-
-            ${headerOpenTag}
+                ${headerOpenTag}
                 <span class="uif-headerText-span">
                     <#-- rich message support -->
                     <#if element.richHeaderMessage?has_content>
                         <@krad.template component=element.richHeaderMessage/>
                     <#else>
-                    ${element.headerText}
+                        ${element.headerText}
                     </#if>
                 </span>
 
@@ -56,9 +54,9 @@
                     <@krad.template component=group.help/>
                 </#if>
 
-            ${headerCloseTag}
+                ${headerCloseTag}
 
-            <#-- right group -->
+                <#-- right group -->
                 <@krad.template component=element.rightGroup/>
             </#if>
 

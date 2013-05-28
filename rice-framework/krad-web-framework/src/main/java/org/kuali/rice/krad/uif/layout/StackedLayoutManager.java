@@ -168,21 +168,22 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
 
         ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex, idSuffix);
 
-        // build header text for group
-        String headerText = "";
+        // build header for the group
         if (isAddLine) {
-            headerText = collectionGroup.getAddLabel();
+            if (lineGroup.getHeader() != null) {
+                lineGroup.getHeader().setRichHeaderMessage(collectionGroup.getAddLineLabel());
+            }
         } else {
             // get the collection for this group from the model
             List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
                     ((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
-            headerText = buildLineHeaderText(view, modelCollection.get(lineIndex), lineGroup);
-        }
+            String headerText = buildLineHeaderText(view, modelCollection.get(lineIndex), lineGroup);
 
-        // don't set header if text is blank (could already be set by other means)
-        if (StringUtils.isNotBlank(headerText) && lineGroup.getHeader() != null) {
-            lineGroup.getHeader().setHeaderText(headerText);
+            // don't set header if text is blank (could already be set by other means)
+            if (StringUtils.isNotBlank(headerText) && lineGroup.getHeader() != null) {
+                lineGroup.getHeader().setHeaderText(headerText);
+            }
         }
 
         // stack all fields (including sub-collections) for the group
@@ -192,17 +193,17 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
 
         // set line actions on group footer
         if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly() && (lineGroup.getFooter() != null)) {
-
             // add the actions to the line group if isActionsInLineGroup flag is true
             if (isActionsInLineGroup()) {
                 groupFields.addAll(actions);
                 lineGroup.setRenderFooter(false);
-            }else{
+            } else {
                 lineGroup.getFooter().setItems(actions);
             }
         }
 
         lineGroup.setItems(groupFields);
+
         stackedGroups.add(lineGroup);
     }
 

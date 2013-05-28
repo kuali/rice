@@ -35,7 +35,7 @@
         <@krad.template component=manager.addLineGroup/>
     </#if>
 
-    <#if manager.dataFields?? && (manager.dataFields?size gt 0)>
+    <#if manager.allRowFields?? && (manager.allRowFields?size gt 0)>
 
     <#-- action button for opening and closing all details -->
     <#if manager.showToggleAllDetails>
@@ -53,7 +53,7 @@
         </#if>
 
         <tbody>
-            <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumns
+            <@krad.grid items=manager.allRowFields numberOfColumns=manager.numberOfColumns
             applyAlternatingRowStyles=manager.applyAlternatingRowStyles
             applyDefaultCellWidths=manager.applyDefaultCellWidths
             renderAlternatingHeaderColumns=false

@@ -635,7 +635,7 @@
       <ref bean="Uif-BindingInfo"/>
     </property>
     <property name="addLineLabel">
-      <bean parent="Uif-Label" p:labelText="add" p:requiredMessage.render="false"/>
+      <bean parent="Uif-Message" p:messageText="add"/>
     </property>
     <property name="addLineActions">
       <list>
@@ -704,7 +704,7 @@
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderFour"/>
+      <bean parent="Uif-HeaderFour" p:headerText="Add Header"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
       <bean parent="Uif-HeaderFour"/>

@@ -192,7 +192,7 @@ Certificate fingerprints:
                 <title>Identify rice.keystore to the SoapUI project</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KSB_Guide/identify_keystore_soapui.png" width="100%" scalefit="1"/>
+                        <imagedata fileref="../images/KSB_Guide/identify_keystore_soapui2.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -237,7 +237,7 @@ Certificate fingerprints:
                 <title>Identify rice.keystore to the SoapUI project</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KSB_Guide/config_outgoing_soapui.png" width="100%" scalefit="1"/>
+                        <imagedata fileref="../images/KSB_Guide/config_outgoing_soapui2.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -255,7 +255,7 @@ Certificate fingerprints:
                 <title>Associate Outgoing Config to a Request</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KSB_Guide/config_outgoing2_soapui.png" width="100%" scalefit="1"/>
+                        <imagedata fileref="../images/KSB_Guide/config_outgoing2_soapui2.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -272,7 +272,7 @@ Certificate fingerprints:
                 <title>Execute request</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KSB_Guide/execute_request_soapui.png" width="100%" scalefit="1"/>
+                        <imagedata fileref="../images/KSB_Guide/execute_request_soapui2.png" width="100%" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -299,7 +299,7 @@ Certificate fingerprints:
                 <listitem><para>http://demo.rice.kuali.org/remoting/soap/location/v2_0/campusService?wsdl the WSDL location to the <emphasis role="bold">campusService</emphasis> service</para></listitem>
             </itemizedlist>
                 Your output should look similar to this listing.
-                <programlisting><emphasis role="bold">wsimport</emphasis>
+                <programlisting><emphasis role="keyword">wsimport</emphasis>
 $ wsimport -keep -Xnocompile -verbose http://demo.rice.kuali.org/remoting/soap/location/v2_0/campusService?wsdl
 parsing WSDL...
  
@@ -599,6 +599,8 @@ UA : UNIVER ADMIN : UNIVERSITY ADMINISTRATION </programlisting></listitem>
             <para>What does the SOAP request look like, anyway?</para>
             <para>Because the demo Rice server is using the http protocol, we can use our favorite
                 network sniffer to watch the traffic. Your SOAP message looks like the following:
+                <informalexample>
+                    <?dbfo pgwide="1"?>
                 <programlisting><emphasis role="bold">SOAP request</emphasis>
 &lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v2="http://rice.kuali.org/location/v2_0">
    &lt;soapenv:Header>
@@ -608,13 +610,15 @@ UA : UNIVER ADMIN : UNIVERSITY ADMINISTRATION </programlisting></listitem>
          &lt;ds:Signature Id="SIG-6" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"> <co xml:id="signature-co" linkends="signature"/>
             &lt;ds:SignedInfo> <co xml:id="signedinfo-co" linkends="signedinfo"/>
                &lt;ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
-                  &lt;ec:InclusiveNamespaces PrefixList="soapenv v2" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                  &lt;ec:InclusiveNamespaces PrefixList="soapenv v2" 
+                      xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#"/>
                &lt;/ds:CanonicalizationMethod>
                &lt;ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
                &lt;ds:Reference URI="#id-5">
                   &lt;ds:Transforms>
                      &lt;ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"> 
-                        &lt;ec:InclusiveNamespaces PrefixList="v2" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                        &lt;ec:InclusiveNamespaces PrefixList="v2" 
+                            xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#"/>
                      &lt;/ds:Transform>
                   &lt;/ds:Transforms>
                   &lt;ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
@@ -643,6 +647,7 @@ RJuO40x5n3tPtNXhq5U=
       &lt;v2:findAllCampuses/>
    &lt;/soapenv:Body>
 &lt;/soapenv:Envelope></programlisting>
+                </informalexample>
             </para>
             <para><emphasis role="bold">Request breakdown</emphasis></para>
             <calloutlist>

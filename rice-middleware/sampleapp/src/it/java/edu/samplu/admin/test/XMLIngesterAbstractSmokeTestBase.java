@@ -118,7 +118,9 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
 
     /**
      * Based on load user and groups manual tests; dynamically generates user and group file
-     * and loads into the xml ingester screen
+     * and loads into the xml ingester screen.
+     * This test should suffice for both KRAD and KNS versions of the ingester screen.
+     *
      *
      */
     protected void testIngestion(Failable failable) throws Exception {
@@ -128,13 +130,23 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
 
         for(File file : fileUploadList) {
             String path = file.getAbsolutePath().toString();
-            driver.findElement(By.name("file[" + cnt + "]")).sendKeys(path);
+            if (isKrad()){
+                driver.findElement(By.name("files[" + cnt + "]")).sendKeys(path);
+            } else {
+                driver.findElement(By.name("file[" + cnt + "]")).sendKeys(path);
+            }
             cnt++;
         }
 
-        waitAndClickByXpath("//*[@id='imageField']");
+        // Click the Upload Button
+        if (isKrad()){
+            waitAndClickByXpath("//button");
+        } else {
+            waitAndClickByXpath("//*[@id='imageField']");
+        }
 
         // confirm all files were uploaded successfully
+        Thread.sleep(1000);
         for(File file: fileUploadList) {
             assertTextPresent("Ingested xml doc: " + file.getName());
         }

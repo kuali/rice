@@ -18,7 +18,6 @@ package org.kuali.rice.krad.datadictionary.parse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hsqldb.lib.StringUtil;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
@@ -254,7 +253,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
 
         // Checks if the user overrides the default attribute type of the schema.
         String overrideType = tag.getAttribute("overrideBeanType");
-        if (!StringUtil.isEmpty(overrideType)) {
+        if (!StringUtils.isEmpty(overrideType)) {
             if (overrideType.toLowerCase().compareTo("singlebean") == 0) {
                 return BeanTagAttribute.AttributeType.SINGLEBEAN;
             }
@@ -376,7 +375,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
 
         // Creates a custom name for the new bean.
         String name = bean.getBeanDefinition().getParentName() + "$Customchild" + beanNumber;
-        if (tag.getAttribute("id") != null && !StringUtil.isEmpty(tag.getAttribute("id"))) {
+        if (tag.getAttribute("id") != null && !StringUtils.isEmpty(tag.getAttribute("id"))) {
             name = tag.getAttribute("id");
         } else {
             beanNumber++;
@@ -403,7 +402,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
                     parent.getBeanDefinition());
 
             String name = beanDefinition.getParentName() + "$Customchild" + beanNumber;
-            if (tag.getAttribute("id") != null && !StringUtil.isEmpty(tag.getAttribute("id"))) {
+            if (tag.getAttribute("id") != null && !StringUtils.isEmpty(tag.getAttribute("id"))) {
                 name = tag.getAttribute("id");
             } else {
                 beanNumber++;

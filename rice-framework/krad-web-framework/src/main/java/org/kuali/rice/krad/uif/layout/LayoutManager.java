@@ -162,17 +162,6 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
     public List<Component> getComponentPrototypes();
 
 	/**
-	 * Used by the copy process to determine for which properties only the value
-	 * reference should be copied (not a new copy instance). Subclasses can
-	 * define the properties for which only the reference should be copied
-	 *
-	 * @return Set<String> property names for which only the value reference
-	 *         should be copied
-	 * @see org.kuali.rice.krad.uif.util.ComponentUtils#copy(org.kuali.rice.krad.uif.component.Component)
-	 */
-	public Set<String> getPropertiesForReferenceCopy();
-
-	/**
 	 * CSS style string to be applied to the area (div) the layout manager
 	 * generates for the items
 	 *

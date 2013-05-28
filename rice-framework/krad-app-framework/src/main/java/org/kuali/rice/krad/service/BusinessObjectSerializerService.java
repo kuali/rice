@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.krad.service;
 
-
+/**
+ * Serializes an object instance to a XML string
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface BusinessObjectSerializerService {
     
 	public String serializeBusinessObjectToXml(Object businessObject);

@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * View type for Maintenance documents
+ * View type for lookups
  *
  * <p>
  * Supports doing a search against a data object class or performing a more advanced query. The view

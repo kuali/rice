@@ -1522,6 +1522,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefreshJs
+     */
+    public String getAdditionalComponentsToRefreshJs() {
+        if (!(this.getAdditionalComponentsToRefresh().isEmpty())) {
+            additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(
+                    this.getAdditionalComponentsToRefresh());
+        }
+
+        return additionalComponentsToRefreshJs;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#isRefreshedByAction()
      */
     public boolean isRefreshedByAction() {
@@ -1706,15 +1718,33 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefreshJs
+     * @see Component#getPreRenderContent()
      */
-    public String getAdditionalComponentsToRefreshJs() {
-        if (!(this.getAdditionalComponentsToRefresh().isEmpty())) {
-            additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(
-                    this.getAdditionalComponentsToRefresh());
-        }
+    @BeanTagAttribute(name = "preRenderContent")
+    public String getPreRenderContent() {
+        return preRenderContent;
+    }
 
-        return additionalComponentsToRefreshJs;
+    /**
+     * @see Component#setPreRenderContent(String)
+     */
+    public void setPreRenderContent(String preRenderContent) {
+        this.preRenderContent = preRenderContent;
+    }
+
+    /**
+     * @see Component#getPostRenderContent()
+     */
+    @BeanTagAttribute(name = "postRenderContent")
+    public String getPostRenderContent() {
+        return postRenderContent;
+    }
+
+    /**
+     * @see Component#setPostRenderContent(String)
+     */
+    public void setPostRenderContent(String postRenderContent) {
+        this.postRenderContent = postRenderContent;
     }
 
     /**
@@ -1806,33 +1836,4 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
     }
 
-    /**
-     * @see Component#getPreRenderContent()
-     */
-    @BeanTagAttribute(name = "preRenderContent")
-    public String getPreRenderContent() {
-        return preRenderContent;
-    }
-
-    /**
-     * @see Component#setPreRenderContent(String)
-     */
-    public void setPreRenderContent(String preRenderContent) {
-        this.preRenderContent = preRenderContent;
-    }
-
-    /**
-     * @see Component#getPostRenderContent()
-     */
-    @BeanTagAttribute(name = "postRenderContent")
-    public String getPostRenderContent() {
-        return postRenderContent;
-    }
-
-    /**
-     * @see Component#setPostRenderContent(String)
-     */
-    public void setPostRenderContent(String postRenderContent) {
-        this.postRenderContent = postRenderContent;
-    }
 }

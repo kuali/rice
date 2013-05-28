@@ -158,7 +158,7 @@
           </property>
         </bean>
 
-        <bean id="prog3-refreshGroup" parent="Uif-VerticalBoxSection" p:id="timer1" p:refreshTimer="10"
+        <bean id="timer1" parent="Uif-VerticalBoxSection" p:refreshTimer="10"
               p:methodToCallOnRefresh="refreshProgGroup">
           <property name="items">
             <list>

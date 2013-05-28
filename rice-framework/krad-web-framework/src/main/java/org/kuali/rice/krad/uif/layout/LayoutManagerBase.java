@@ -97,22 +97,6 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	}
 
 	/**
-	 * Set of property names for the layout manager base for which on the
-	 * property value reference should be copied. Subclasses can override this
-	 * but should include a call to super
-	 *
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertiesForReferenceCopy()
-	 */
-    @Override
-    public Set<String> getPropertiesForReferenceCopy() {
-		Set<String> refCopyProperties = new HashSet<String>();
-
-		refCopyProperties.add(UifPropertyPaths.CONTEXT);
-
-		return refCopyProperties;
-	}
-
-	/**
 	 * Default Impl
 	 *
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getSupportedContainer()

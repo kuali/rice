@@ -24,13 +24,14 @@ import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibi
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.SerializationState;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase implements BusinessObjectSerializerService {
 
     private DocumentDictionaryService documentDictionaryService;
 
     /**
-     * Serializes a document for routing
-     *
      * @see org.kuali.rice.krad.service.DocumentSerializerService#serializeDocumentToXml(org.kuali.rice.krad.document.Document)
      */
     public String serializeBusinessObjectToXml(Object businessObject) {

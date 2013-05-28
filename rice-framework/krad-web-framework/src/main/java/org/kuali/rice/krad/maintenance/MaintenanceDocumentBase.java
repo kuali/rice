@@ -139,30 +139,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             insertable = false, updatable = false)
     protected List<MultiDocumentAttachment> attachments;
 
-    public String getAttachmentPropertyName() {
-        return this.attachmentPropertyName;
-    }
-
-    public void setAttachmentPropertyName(String attachmentPropertyName) {
-        this.attachmentPropertyName = attachmentPropertyName;
-    }
-
-    public String getAttachmentListPropertyName() {
-        return this.attachmentListPropertyName;
-    }
-
-    public void setAttachmentListPropertyName(String attachmentListPropertyName) {
-        this.attachmentListPropertyName = attachmentListPropertyName;
-    }
-
-    public String getAttachmentCollectionName() {
-        return this.attachmentCollectionName;
-    }
-
-    public void setAttachmentCollectionName(String attachmentCollectionName) {
-        this.attachmentCollectionName = attachmentCollectionName;
-    }
-
     public MaintenanceDocumentBase() {
         super();
         fieldsClearedOnCopy = false;
@@ -1053,6 +1029,30 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     public void setAttachments(List<MultiDocumentAttachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public String getAttachmentPropertyName() {
+        return this.attachmentPropertyName;
+    }
+
+    public void setAttachmentPropertyName(String attachmentPropertyName) {
+        this.attachmentPropertyName = attachmentPropertyName;
+    }
+
+    public String getAttachmentListPropertyName() {
+        return this.attachmentListPropertyName;
+    }
+
+    public void setAttachmentListPropertyName(String attachmentListPropertyName) {
+        this.attachmentListPropertyName = attachmentListPropertyName;
+    }
+
+    public String getAttachmentCollectionName() {
+        return this.attachmentCollectionName;
+    }
+
+    public void setAttachmentCollectionName(String attachmentCollectionName) {
+        this.attachmentCollectionName = attachmentCollectionName;
     }
 
     /**

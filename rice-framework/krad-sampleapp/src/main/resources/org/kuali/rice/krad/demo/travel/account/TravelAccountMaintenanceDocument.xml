@@ -35,21 +35,4 @@
     <property name="businessRulesClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccountRules"/>
   </bean>
 
-<!-- Maintenance Section Definitions -->
-
-
-  <bean id="TravelAccountMaintenanceDocument-EditTravelAccount" parent="TravelAccountMaintenanceDocument-EditTravelAccount-parentBean"/>
-
-  <bean id="TravelAccountMaintenanceDocument-EditTravelAccount-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="maintainableItems">
-      <list>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="number"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="foId"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="extension.accountTypeCode"/>
-      </list>
-    </property>
-    <property name="id" value="Edit Travel Account "/>
-    <property name="title" value="Edit Travel Account "/>
-  </bean>
 </beans>

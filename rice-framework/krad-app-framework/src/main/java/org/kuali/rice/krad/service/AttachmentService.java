@@ -25,7 +25,7 @@ import java.io.InputStream;
 /**
  * Defines the methods common to all AttachmentService implementations
  *
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface AttachmentService {
     /**

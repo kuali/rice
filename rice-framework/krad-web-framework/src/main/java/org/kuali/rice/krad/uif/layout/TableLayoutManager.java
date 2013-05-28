@@ -135,6 +135,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         headerLabels = new ArrayList<Label>();
         allRowFields = new ArrayList<Field>();
+        firstRowFields = new ArrayList<Field>();
         columnsToCalculate = new ArrayList<String>();
         columnCalculations = new ArrayList<ColumnCalculationInfo>();
     }

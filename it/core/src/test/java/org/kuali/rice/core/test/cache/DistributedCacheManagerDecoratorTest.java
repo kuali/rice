@@ -185,10 +185,11 @@ public class DistributedCacheManagerDecoratorTest extends CORETestCase {
             }
         }
 
-        Constructor<?> constructor = correctInnerClass.getDeclaredConstructors()[0];
-        constructor.setAccessible(true);
-
         try {
+            // KULRICE-9622 - get the correct constructor in JDK7 by asking for it specifically
+            Constructor<?> constructor = correctInnerClass.getDeclaredConstructor(DistributedCacheManagerDecorator.class);
+            constructor.setAccessible(true);
+
             Object inner = constructor.newInstance(c.newInstance());
             Method method = inner.getClass().getDeclaredMethod("exhaustQueue", new Class[] {Queue.class});
             method.setAccessible(true);

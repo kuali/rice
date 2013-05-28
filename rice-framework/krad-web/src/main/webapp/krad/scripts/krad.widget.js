@@ -628,69 +628,39 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
 
         var expandImage = "";
         var collapseImage = "";
-        if (renderImage) {
-            var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_EXPAND) + "' class='uif-disclosure-image'/>";
-            var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
+        if (renderImage && defaultOpen) {
+            expandImage = "<img id='" + groupToggleLinkId + "_exp" + "' src='" + expandImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_EXPAND) + "' class='uif-disclosure-image'/>";
+            collapseImage = "<img style='display:none;' id='" + groupToggleLinkId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
+        }
+        else if (renderImage && !defaultOpen) {
+            expandImage = "<img style='display:none;' id='" + groupToggleLinkId + "_exp" + "' src='" + expandImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_EXPAND) + "' class='uif-disclosure-image'/>";
+            collapseImage = "<img id='" + groupToggleLinkId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
         }
 
-        var groupAccordionSpanId = groupId + "_disclosureContent";
+        var content = jQuery(groupId + "_disclosureContent");
 
         // perform initial open/close and insert toggle link and image
-        var headerText = jQuery("#" + headerId + " > :header, #" + headerId + " > label").find(".uif-headerText-span");
+        //var headerText = jQuery("#" + headerId + " > :header, #" + headerId + " > label").find(".uif-headerText-span");
+        var headerText = jQuery("#" + headerId).find(".uif-headerText-span:first");
         if (defaultOpen) {
-            jQuery("#" + groupAccordionSpanId).slideDown(000);
+            content.show();
+            content.attr("data-open", true);
             headerText.prepend(expandImage);
-        }
-        else {
-            jQuery("#" + groupAccordionSpanId).slideUp(000);
             headerText.prepend(collapseImage);
         }
-
-        headerText.wrap("<a data-role='disclosureLink' data-linkfor='" + groupAccordionSpanId + "' href='#' "
-                + "id='" + groupToggleLinkId + "'></a>");
-
-        var animationFinishedCallback = function () {
-            jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", false);
-        };
-        var disclosureContent = jQuery("#" + groupAccordionSpanId);
-        // perform slide and switch image
-        if (defaultOpen) {
-            disclosureContent.data("open", true);
-            jQuery("#" + groupToggleLinkId).toggle(
-                    function () {
-                        jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        disclosureContent.data("open", false);
-                        disclosureContent.slideUp(animationSpeed, animationFinishedCallback);
-                        jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
-                        setComponentState(widgetId, 'open', false);
-                    }, function () {
-                        jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        disclosureContent.data("open", true);
-                        disclosureContent.slideDown(animationSpeed, animationFinishedCallback);
-                        jQuery("#" + groupId + "_col").replaceWith(expandImage);
-                        setComponentState(widgetId, 'open', true);
-                    }
-            );
-        }
         else {
-            disclosureContent.data("open", false);
-            jQuery("#" + groupToggleLinkId).toggle(
-                    function () {
-                        jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        disclosureContent.data("open", true);
-                        disclosureContent.slideDown(animationSpeed, animationFinishedCallback);
-                        jQuery("#" + groupId + "_col").replaceWith(expandImage);
-                        setComponentState(widgetId, 'open', true);
-
-                    }, function () {
-                        jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        disclosureContent.data("open", false);
-                        disclosureContent.slideUp(animationSpeed, animationFinishedCallback);
-                        jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
-                        setComponentState(widgetId, 'open', false);
-                    }
-            );
+            content.hide();
+            content.attr("data-open", false);
+            headerText.prepend(collapseImage);
+            headerText.prepend(expandImage);
         }
+
+        headerText.wrap("<a data-role='disclosureLink' data-linkfor='" + content.attr("id") + "' href='#' "
+                + "id='" + groupToggleLinkId + "' "
+                + "data-open='" + defaultOpen + "' "
+                + "data-widgetid='" + widgetId + "' "
+                + "data-speed='" + animationSpeed + "' "
+                + "></a>");
     });
 }
 
@@ -760,6 +730,7 @@ function createTable(tableId, additionalOptions, groupingOptions) {
 
         //make sure scripts are run after table renders (must be done here for deferred rendering)
         runHiddenScripts(tableId, false, true);
+        initBubblePopups();
 
         //insure scripts (if any) are run on each draw, fixes bug with scripts lost when paging after a refresh
         jQuery(oTable).on("dataTables.tableDraw", function (){
@@ -867,6 +838,11 @@ function openDetails(oTable, row, actionComponent, animate) {
     var newRow = oTable.fnOpenCustom(row[0], detailsGroup, "uif-rowDetails");
     detailsGroup = jQuery(newRow).find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
 
+    detailsGroup.attr("data-open", "true");
+
+    //make sure scripts are run on the now shown group
+    runHiddenScripts(detailsGroup, true, true);
+
     if (animate && !ajaxRetrieval) {
         detailsGroup.slideDown();
     }
@@ -932,6 +908,8 @@ function closeDetails(oTable, row, actionComponent, animate) {
     if (actionComponent && jQuery(actionComponent).data("swap") && jQuery(actionComponent).find("img").length) {
         jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
     }
+
+    detailsContent.attr("data-open", "false");
 
     if (animate) {
         detailsContent.slideUp(function () {

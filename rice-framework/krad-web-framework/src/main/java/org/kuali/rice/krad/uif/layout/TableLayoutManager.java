@@ -1484,6 +1484,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         dataAttributes = new TreeMap<String, String>();
         dataAttributes.put("role", "details");
+        dataAttributes.put("open", Boolean.toString(this.rowDetailsOpen));
         this.getRowDetailsGroup().setDataAttributes(dataAttributes);
 
         if (ajaxDetailsRetrieval) {

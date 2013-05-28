@@ -335,15 +335,17 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         }
 
         evaluateScripts(selector);
-        runScriptsForId(id);
 
-        //reinitialize BubblePopup
-        initBubblePopups();
+        if(!isSelector){
+            runScriptsForId(id);
+        }
 
         //Interpret new server message state for refreshed InputFields and write them out
         if (!skipValidationBubbling) {
+            //reinitialize BubblePopup
+            initBubblePopups();
+
             jQuery(selector).find("div[data-role='InputField']").andSelf().filter("div[data-role='InputField']").each(function () {
-                var data = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
                 handleMessagesAtField(jQuery(this).attr('id'));
             });
         }
@@ -414,6 +416,9 @@ function runScriptsForId(id) {
  * @param jqueryObj - a jquery object representing a hidden input element with a script in its value attribute
  */
 function evalHiddenScript(jqueryObj) {
+    if (jqueryObj.attr("name") === undefined || jqueryObj.closest("div[data-open='false']").length){
+        return;
+    }
     eval(jqueryObj.val());
     jqueryObj.attr("script", "first_run");
     jqueryObj.removeAttr("name");

@@ -120,6 +120,9 @@ jQuery(document).ready(function () {
     //setup dirty field processing
     dirtyFormState.dirtyHandlerSetup();
 
+    //disclosure handler setup
+    setupDisclosureHandler();
+
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
@@ -526,6 +529,43 @@ function initFieldHandlers() {
     });
 
     time(false, "field-handlers");
+}
+
+/**
+ * Setup a global disclosure handler which will handle click events on disclosure links to toggle them open and closed
+ */
+function setupDisclosureHandler(){
+    jQuery(document).on("click", "a[data-role='disclosureLink']", function(event){
+        event.preventDefault();
+
+        var link = jQuery(this);
+        var isOpen = link.data("open");
+        var disclosureContent = jQuery("#" + link.data("linkfor"));
+        var animationSpeed = link.data("speed");
+        var linkId = link.attr("id");
+        var widgetId = link.data("widgetid");
+
+        if(isOpen){
+            link.data("open", false);
+            disclosureContent.attr("data-open", false);
+            disclosureContent.slideUp(animationSpeed);
+            jQuery(this).find("#" + linkId + "_exp").hide();
+            jQuery(this).find("#" + linkId + "_col").show();
+            setComponentState(widgetId, 'open', false);
+        }
+        else{
+            link.data("open", true);
+            disclosureContent.attr("data-open", true);
+
+            //run scripts for previously hidden content
+            runHiddenScripts(disclosureContent, true, true);
+
+            disclosureContent.slideDown(animationSpeed);
+            jQuery(this).find("#" + linkId + "_exp").show();
+            jQuery(this).find("#" + linkId + "_col").hide();
+            setComponentState(widgetId, 'open', true);
+        }
+    });
 }
 
 /**

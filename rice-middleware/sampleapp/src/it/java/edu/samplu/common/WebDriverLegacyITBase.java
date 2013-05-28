@@ -263,6 +263,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
 
     /**
+     * Set -Dremote.login.uif=KNS to use old login screen.  Default value = KRAD
+     */
+    public static final String REMOTE_LOGIN_UIF = "remote.login.uif";
+
+    /**
      * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC
      */
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
@@ -349,11 +354,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public static final String XML_INGESTER_LINK_TEXT = "XML Ingester";
 
+    static ChromeDriverService chromeDriverService;
+
     protected WebDriver driver;
     protected String user = "admin";
     protected int waitSeconds = DEFAULT_WAIT_SEC;
     protected boolean passed = false;
-    static ChromeDriverService chromeDriverService;
+    protected String uiFramework = ITUtil.REMOTE_UIF_KNS;   // default to KNS
+
     private Log log = LogFactory.getLog(getClass());
 
     public @Rule
@@ -418,7 +426,18 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             fail("Exception in setUp " + e.getMessage());
             e.printStackTrace();
         }
-        WebDriverUtil.login(driver, user, this);
+
+        // login via either KRAD or KNS login page
+        String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
+        if (loginUif == null) {
+            loginUif = ITUtil.REMOTE_UIF_KRAD;
+        }
+        if (isKradLogin()){
+            WebDriverUtil.kradLogin(driver, user, this);
+        } else {
+            WebDriverUtil.login(driver, user, this);
+        }
+
         jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
         System.out.println(jGrowlHeader + " sessionId is " + sessionId);
         jGrowl("setUp");
@@ -4202,5 +4221,37 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
         waitNotVisible(By.xpath(locator));
+    }
+
+    /**
+     * Use the KRAD Login Screen or the old KNS Login Screen
+     */
+    protected boolean isKradLogin(){
+        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(System.getProperty(REMOTE_LOGIN_UIF)));
+    }
+
+    /**
+     * Does the test page use KRAD UIF?
+     * Useful if trying to re-use a test for both a KNS and KRAD screens that have different paths to the elements.
+     * @return
+     */
+    protected boolean isKrad(){
+        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(getUiFramework()));
+    }
+
+    /**
+     * Determines whether KRAD or KNS UIF is used for this test.
+     * Useful if trying to re-use a test for both a KNS and KRAD screens that have different paths to the elements.
+     * @return
+     */
+    public String getUiFramework() {
+        return uiFramework;
+    }
+
+    /**
+     * Sets which UIF is used by this test
+     */
+    public void setUiFramework(String uiFramework) {
+        this.uiFramework = uiFramework;
     }
 }

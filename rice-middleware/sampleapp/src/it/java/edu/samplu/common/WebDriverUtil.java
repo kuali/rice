@@ -299,7 +299,26 @@ public class WebDriverUtil {
     }
 
     /**
+     * Logs in using the KRAD Login Page
      * If the JVM arg remote.autologin is set, auto login as admin will not be done.
+     * @param driver
+     * @param userName
+     * @param failable
+     * @throws InterruptedException
+     */
+    public static void kradLogin(WebDriver driver, String userName, Failable failable) throws InterruptedException {
+        if (System.getProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY) == null) {
+            driver.findElement(By.name("login_user")).clear();
+            driver.findElement(By.name("login_user")).sendKeys(userName);
+            driver.findElement(By.id("LoginButton")).click();
+            Thread.sleep(1000);
+            String contents = driver.getPageSource();
+            ITUtil.failOnInvalidUserName(userName, contents, failable);
+        }
+    }
+
+    /**
+     * Logs into the Rice portal using the KNS Style Login Page.
      * @param driver
      * @param userName
      * @param failable

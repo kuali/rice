@@ -127,7 +127,17 @@ public class ITUtil {
      * remote.autologin
      */
     public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
-    
+
+    /**
+     * KRAD
+     */
+    public static final String REMOTE_UIF_KRAD = "KRAD";
+
+    /**
+     * KNS
+     */
+    public static final String REMOTE_UIF_KNS  = "KNS";
+
     /**
      * &docFormKey=
      */

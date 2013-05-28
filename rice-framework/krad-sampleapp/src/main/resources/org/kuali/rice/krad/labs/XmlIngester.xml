@@ -36,7 +36,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean> 
         </list>
       </property>    
-      <property name="formClass" value="org.kuali.rice.core.web.impex.XmlIngesterForm"/>
+      <property name="formClass" value="org.kuali.rice.krad.labs.fileUploads.XmlIngesterForm"/>
       <property name="footer">
 			<ref bean="Footer_UploadClose" />
 		</property>

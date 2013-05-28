@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.web.impex;
+package org.kuali.rice.krad.labs.fileUploads;
 
 /**
- * This is a description of what this class does - Venkat don't forget to fill this in. 
+ * Common constants used by the XmlIngester
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -36,6 +36,5 @@ public class XmlIngesterConstants {
 	public static final String ERROR_INGESTER_DURING_INJECT = "error.ingester.during.inject";
 	public static final String ERROR_INGESTER_NO_XMLS = "error.ingester.no.xmls";
 	
-	public static final String INGESTER_SECTION_ID = "KEW-IngesterView";
-	
+	public static final String INGESTER_SECTION_ID = "XmlIngester";
 }

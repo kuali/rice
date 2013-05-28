@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.web.impex;
+package org.kuali.rice.krad.labs.fileUploads;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -44,7 +44,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * This is a description of what this class does - Venkat don't forget to fill this in. 
+ * Controller for the XML Ingester View
+ *
+ * <p>
+ *     Displays the initial Ingester view page and processes file upload requests.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -77,11 +81,8 @@ public class XmlIngesterController extends UifControllerBase {
 			HttpServletRequest request, HttpServletResponse response) {
 		
 		List<File> tempFiles = new ArrayList<File>();
-		
 		try {
-			
 			List<XmlDocCollection> collections = new ArrayList<XmlDocCollection>();
-			
 			for (MultipartFile file : ingesterForm.getFiles())
 	        {
 	            if (file == null || StringUtils.isBlank(file.getOriginalFilename())) {
@@ -135,11 +136,14 @@ public class XmlIngesterController extends UifControllerBase {
 	            List<XmlDocCollection> c = new ArrayList<XmlDocCollection>(1);
 	            c.add(compositeCollection);
 	            try {
+                    // ingest the collection of files
 	                Collection<XmlDocCollection> failed = CoreApiServiceLocator.getXmlIngesterService().ingest(c, GlobalVariables.getUserSession().getPrincipalId());
 	                boolean txFailed = failed.size() > 0;
 	                if (txFailed) {
 	                	GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_FAILED);
 	                }
+
+                    // loop through the results, collecting the error messages for each doc
 	                for (XmlDocCollection collection1 : collections)
 	                {
 	                    List<? extends XmlDoc> docs = collection1.getXmlDocs();
@@ -168,6 +172,7 @@ public class XmlIngesterController extends UifControllerBase {
 //	                messages.add(message + ": " + e  + ":\n" + ExceptionUtils.getFullStackTrace(e));
 	                GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_DURING_INJECT, ExceptionUtils.getFullStackTrace(e));
 	            }
+
 	            if (totalProcessed == 0) {
 //	                String message = "No xml docs ingested";
 	                GlobalVariables.getMessageMap().putErrorForSectionId(XmlIngesterConstants.INGESTER_SECTION_ID, XmlIngesterConstants.ERROR_INGESTER_NO_XMLS);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.web.impex;
+package org.kuali.rice.krad.labs.fileUploads;
 
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is a description of what this class does - Venkat don't forget to fill this in. 
+ * This form backs the XmlIngester View
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

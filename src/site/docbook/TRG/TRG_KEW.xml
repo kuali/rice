@@ -5891,7 +5891,7 @@ document.routeDocument("user inputted annotation");
             &lt;superUserGroupName namespace=KR-WKFLW">WorkflowAdmin&lt;/superUserGroupName>
             &lt;blanketApproveGroupName namespace=KR-WKFLW">WorkflowAdmin&lt;/blanketApproveGroupName>
             &lt;defaultExceptionGroupName>&lt;/defaultExceptionGroupName>
-            &lt;docHandler>https://uisapp2.iu.edu/en-prd/Rule.do?methodToCall=docHandler&lt;/docHandler>
+            &lt;docHandler>https://yourlocalIP/en-prd/Rule.do?methodToCall=docHandler&lt;/docHandler>
             &lt;active>true&lt;/active>
             &lt;routingVersion>1&lt;/routingVersion>
             &lt;routePaths>

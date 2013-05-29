@@ -34,8 +34,8 @@
         <@template component=group.footer/>
 
         <#if group.disclosure.render>
-            <@template component=group.disclosure parent=group/>
             </div>
+            <@template component=group.disclosure parent=group/>
         </#if>
 
     </@div>

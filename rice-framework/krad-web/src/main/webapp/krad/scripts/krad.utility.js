@@ -97,7 +97,7 @@ function convertToHtml(text, removeAnchors) {
         text = text.replace(/&lt;\/a&gt;/gi, "");
     }
 
-    return jQuery("<span />", { html: text }).text();
+    return jQuery("<span />", { html: text }).html();
 }
 
 /**

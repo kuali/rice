@@ -669,6 +669,9 @@ function setupPage(validate) {
 
     pageValidatorReady = true;
 
+    //ensure bubblepopups are initialized
+    initBubblePopups();
+
     jQuery(document).trigger(kradVariables.PAGE_LOAD_EVENT);
 
     jQuery.watermark.showAll();

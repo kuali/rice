@@ -637,7 +637,7 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
             collapseImage = "<img id='" + groupToggleLinkId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
         }
 
-        var content = jQuery(groupId + "_disclosureContent");
+        var content = jQuery("#" + groupId + "_disclosureContent");
 
         // perform initial open/close and insert toggle link and image
         //var headerText = jQuery("#" + headerId + " > :header, #" + headerId + " > label").find(".uif-headerText-span");

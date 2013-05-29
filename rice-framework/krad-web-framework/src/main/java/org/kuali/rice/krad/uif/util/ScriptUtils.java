@@ -263,7 +263,7 @@ public class ScriptUtils {
         if (string == null) {
             return null;
         } else {
-            return StringEscapeUtils.escapeHtml(string).replace("'", "&apos;");
+            return StringEscapeUtils.escapeHtml(string).replace("'", "&apos;").replace("&quot;", "\\u0022");
         }
     }
 

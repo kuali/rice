@@ -201,10 +201,10 @@
     <property name="items">
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPages" p:actionLabel="select all from all pages"
-              p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
+              p:actionScript="selectAllPagesLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPages"
               p:actionLabel="deselect all from all pages"
-              p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
+              p:actionScript="deselectAllPagesLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPage" p:actionLabel="select all from this page"
               p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage"
